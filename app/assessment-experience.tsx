@@ -286,6 +286,46 @@ const EX: Record<string, React.CSSProperties> = {
   insStartDisabled: { background: "#d7dae0", color: "#8a8f98", cursor: "not-allowed", boxShadow: "none" },
 };
 
+// Clean single-column exam UI (mirrors the /testing exam screen).
+const BLUE = "#3b4a9c";
+const XS: Record<string, React.CSSProperties> = {
+  wrap: { minHeight: "82vh", display: "flex", flexDirection: "column", background: "#fff", border: "1px solid var(--line)", borderRadius: 20, overflow: "hidden", boxShadow: "var(--shadow)" },
+  header: { background: BLUE, color: "#fff" },
+  headerInner: { padding: "18px 26px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" },
+  eyebrow: { fontSize: "0.66rem", textTransform: "uppercase", letterSpacing: "0.12em", color: "rgba(255,255,255,0.62)", marginBottom: 3 },
+  counter: { fontSize: "1.05rem", fontWeight: 800 },
+  timers: { display: "flex", alignItems: "center", gap: 12 },
+  timerChip: { display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 999, padding: "6px 12px", fontSize: "0.82rem", fontWeight: 700 },
+  timerLabel: { fontSize: "0.66rem", fontWeight: 500, color: "rgba(255,255,255,0.7)" },
+  totalTimer: { fontSize: "0.8rem", color: "rgba(255,255,255,0.82)", whiteSpace: "nowrap" },
+  progressBar: { height: 7, background: "rgba(255,255,255,0.25)" },
+  progressFill: { height: "100%", background: "#fff", transition: "width 0.35s ease" },
+
+  body: { flex: 1, width: "100%", maxWidth: 780, margin: "0 auto", padding: "38px 28px 26px" },
+  subtrait: { display: "inline-block", fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700, color: BLUE, background: "#eef2ff", padding: "5px 13px", borderRadius: 999, marginBottom: 16 },
+  qLabel: { fontSize: 14, fontWeight: 700, color: BLUE, marginBottom: 8 },
+  question: { fontSize: "1.42rem", lineHeight: 1.45, margin: "0 0 24px", fontWeight: 600, color: "#1f2937" },
+  options: { display: "flex", flexDirection: "column", gap: 10, maxWidth: 620 },
+  option: { display: "flex", alignItems: "center", gap: 14, width: "100%", textAlign: "left", padding: "14px 18px", border: "1px solid #d7dbe6", borderRadius: 12, background: "#fff", fontSize: "1rem", fontWeight: 600, color: "#334155", cursor: "pointer", transition: "all .14s ease" },
+  optionOn: { borderColor: "#4a90d9", background: "#f0f7ff" },
+  radio: { flex: "0 0 auto", width: 20, height: 20, borderRadius: "50%", border: "2px solid #94a3b8", display: "grid", placeItems: "center" },
+  radioOn: { borderColor: "#4a90d9" },
+  radioDot: { width: 10, height: 10, borderRadius: "50%", background: "#4a90d9" },
+  optionText: { fontSize: "1rem" },
+  optionTextOn: { color: "#1d4ed8" },
+
+  footer: { background: "#eef1f6", borderTop: "1px solid var(--line)", padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 },
+  footerCenter: { display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center" },
+  exit: { width: 44, background: "none", border: "none", color: "var(--muted)", fontSize: 13, fontWeight: 600, cursor: "pointer", textAlign: "left" },
+  navBtn: { padding: "11px 24px", borderRadius: 10, fontSize: 14.5, fontWeight: 700, cursor: "pointer", border: "none" },
+  prevBtn: { background: "#fff", color: "#475569", border: "1px solid #cbd5e1" },
+  markBtn: { background: "#fff", color: "#b08900", border: "1px solid #e2c15a" },
+  markOn: { background: "#fef3c7", color: "#92400e" },
+  nextBtn: { background: "#4a90d9", color: "#fff" },
+  submitBtn: { background: "#16a34a", color: "#fff" },
+  navDisabled: { opacity: 0.45, cursor: "not-allowed" },
+};
+
 function formatAgeGroup(ageGroup: string): string {
   if (ageGroup === "Class 11-12") return "Class 11-12 (Inter)";
   return ageGroup;
@@ -1432,173 +1472,102 @@ export default function AssessmentExperience() {
       ) : null}
 
       {session && !results && instructionsAccepted && currentQuestion ? (
-        <section className="exam2">
-          <div className="exam2-main">
-            {/* dark header bar */}
-            <div className="exam2-topbar">
-              <div>
-                <p className="exam2-eyebrow">
+        <section style={XS.wrap}>
+          {/* header */}
+          <div style={XS.header}>
+            <div style={XS.headerInner}>
+              <div style={{ minWidth: 0 }}>
+                <div style={XS.eyebrow}>
                   {selectedJourney?.name ?? "Assessment"} · {currentQuestion.parameterName}
-                </p>
-                <p className="exam2-qcount">
+                </div>
+                <div style={XS.counter}>
                   Question {currentIndex + 1} of {session.totalQuestions}
-                </p>
+                </div>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                <span style={EX.timerChip}>
+              <div style={XS.timers}>
+                <span style={XS.timerChip}>
                   ⏱ <b style={{ color: qLeft <= 10 ? "#ffd0d0" : "#fff" }}>{fmtTime(qLeft)}</b>
-                  <span style={EX.timerLabel}>this question</span>
+                  <span style={XS.timerLabel}>this question</span>
                 </span>
-                <span style={EX.totalTimer}>
-                  Total left <b>{fmtTime(totalLeft)}</b>
-                </span>
+                <span style={XS.totalTimer}>Total left <b>{fmtTime(totalLeft)}</b></span>
               </div>
             </div>
-            <div className="exam2-progress">
-              <div
-                className="exam2-progress-fill"
-                style={{ width: `${((currentIndex + 1) / session.totalQuestions) * 100}%` }}
-              />
-            </div>
-
-            <div className="exam2-body">
-              <p className="exam2-subtrait">{currentQuestion.subTraitName}</p>
-              <h2 className="exam2-question">{currentQuestion.text}</h2>
-
-              <div className="exam2-options">
-                {optionList(currentQuestion).map((option) => {
-                  const selected = answers[currentQuestion.id] === option.value;
-                  const saving = savingQuestionId === currentQuestion.id;
-                  return (
-                    <button
-                      key={option.value}
-                      className={`exam2-option${selected ? " selected" : ""}`}
-                      onClick={() => void saveAnswer(option.value)}
-                      disabled={saving}
-                      type="button"
-                    >
-                      <span className="exam2-radio">{selected ? <span /> : null}</span>
-                      {option.label}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className="exam2-actions">
-                <button
-                  className="exam2-back"
-                  disabled={currentIndex === 0}
-                  onClick={() => setCurrentIndex((i) => Math.max(i - 1, 0))}
-                  type="button"
-                >
-                  ‹ Back
-                </button>
-                <button
-                  className={`exam2-mark${marked[currentQuestion.id] ? " on" : ""}`}
-                  onClick={() =>
-                    setMarked((m) => ({
-                      ...m,
-                      [currentQuestion.id]: !m[currentQuestion.id],
-                    }))
-                  }
-                  type="button"
-                >
-                  {marked[currentQuestion.id] ? "★ Marked for review" : "☆ Mark for review"}
-                </button>
-                {currentIndex < session.totalQuestions - 1 ? (
-                  <button
-                    className="exam2-next"
-                    disabled={!answers[currentQuestion.id]}
-                    onClick={() =>
-                      setCurrentIndex((i) => Math.min(i + 1, session.totalQuestions - 1))
-                    }
-                    type="button"
-                  >
-                    Save &amp; Next ›
-                  </button>
-                ) : (
-                  <button
-                    className="exam2-finish"
-                    disabled={!answers[currentQuestion.id] || completing || savingQuestionId !== null}
-                    onClick={() => void finishAssessment()}
-                    type="button"
-                  >
-                    {completing ? "Scoring…" : "✓ See my results"}
-                  </button>
-                )}
-              </div>
+            <div style={XS.progressBar}>
+              <div style={{ ...XS.progressFill, width: `${((currentIndex + 1) / session.totalQuestions) * 100}%` }} />
             </div>
           </div>
 
-          <div className="exam2-mid">
-            <div className="exam2-mid-art">
-              <CheckCircle2 size={40} />
-            </div>
-            <h3>
-              You&apos;re doing great{lead.name ? `, ${lead.name.trim().split(/\s+/)[0]}` : ""}!
-            </h3>
-            <p>
-              There are no wrong answers here — go with your first instinct. Every
-              response helps us map the careers that fit you best.
-            </p>
-            <div className="exam2-mid-progress">
-              <div className="exam2-mid-track">
-                <div
-                  className="exam2-mid-fill"
-                  style={{ width: `${(answeredCount / session.totalQuestions) * 100}%` }}
-                />
-              </div>
-              <span>
-                {answeredCount} of {session.totalQuestions} answered
-              </span>
-            </div>
-          </div>
+          {/* body */}
+          <div style={XS.body}>
+            <div style={XS.subtrait}>{currentQuestion.subTraitName}</div>
+            <div style={XS.qLabel}>Question {currentIndex + 1}</div>
+            <h2 style={XS.question}>{currentQuestion.text}</h2>
 
-          <aside className="exam2-palette">
-            <div className="exam2-palette-head">
-              <p className="exam2-palette-title">Question palette</p>
-              <div className="exam2-legend">
-                <span>
-                  <i className="dot answered" />
-                  Answered ({answeredCount})
-                </span>
-                <span>
-                  <i className="dot marked" />
-                  Marked for review ({markedCount})
-                </span>
-                <span>
-                  <i className="dot left" />
-                  Not answered ({session.totalQuestions - answeredCount})
-                </span>
-              </div>
-            </div>
-            <div className="exam2-grid">
-              {session.questions.map((question, index) => {
-                const isCurrent = index === currentIndex;
-                const isAnswered = Boolean(savedAnswers[question.id]);
-                const isMarked = Boolean(marked[question.id]);
-                const wasVisited = Boolean(visited[question.id]);
-                let cls = "left";
-                if (isAnswered && isMarked) cls = "ansmark";
-                else if (isAnswered) cls = "answered";
-                else if (isMarked) cls = "marked";
-                else if (wasVisited) cls = "visited";
+            <div style={XS.options}>
+              {optionList(currentQuestion).map((option) => {
+                const selected = answers[currentQuestion.id] === option.value;
+                const saving = savingQuestionId === currentQuestion.id;
                 return (
                   <button
-                    key={question.id}
-                    className={`exam2-cell ${cls}${isCurrent ? " current" : ""}`}
-                    onClick={() => setCurrentIndex(index)}
+                    key={option.value}
                     type="button"
+                    disabled={saving}
+                    onClick={() => void saveAnswer(option.value)}
+                    style={{ ...XS.option, ...(selected ? XS.optionOn : {}) }}
                   >
-                    {index + 1}
+                    <span style={{ ...XS.radio, ...(selected ? XS.radioOn : {}) }}>
+                      {selected && <span style={XS.radioDot} />}
+                    </span>
+                    <span style={{ ...XS.optionText, ...(selected ? XS.optionTextOn : {}) }}>
+                      {option.label}
+                    </span>
                   </button>
                 );
               })}
             </div>
-            <button className="exam2-quit" onClick={resetToBlueprint} type="button">
-              Exit assessment
-            </button>
-          </aside>
+          </div>
+
+          {/* footer nav */}
+          <div style={XS.footer}>
+            <button style={XS.exit} onClick={resetToBlueprint} type="button">Exit</button>
+            <div style={XS.footerCenter}>
+              <button
+                style={{ ...XS.navBtn, ...XS.prevBtn, ...(currentIndex === 0 ? XS.navDisabled : {}) }}
+                disabled={currentIndex === 0}
+                onClick={() => setCurrentIndex((i) => Math.max(i - 1, 0))}
+                type="button"
+              >
+                Previous
+              </button>
+              <button
+                style={{ ...XS.navBtn, ...XS.markBtn, ...(marked[currentQuestion.id] ? XS.markOn : {}) }}
+                onClick={() => setMarked((m) => ({ ...m, [currentQuestion.id]: !m[currentQuestion.id] }))}
+                type="button"
+              >
+                {marked[currentQuestion.id] ? "★ Marked" : "☆ Mark for review"}
+              </button>
+              {currentIndex < session.totalQuestions - 1 ? (
+                <button
+                  style={{ ...XS.navBtn, ...XS.nextBtn, ...(answers[currentQuestion.id] ? {} : XS.navDisabled) }}
+                  disabled={!answers[currentQuestion.id]}
+                  onClick={() => setCurrentIndex((i) => Math.min(i + 1, session.totalQuestions - 1))}
+                  type="button"
+                >
+                  Save &amp; Next →
+                </button>
+              ) : (
+                <button
+                  style={{ ...XS.navBtn, ...XS.submitBtn, ...((!answers[currentQuestion.id] || completing || savingQuestionId !== null) ? XS.navDisabled : {}) }}
+                  disabled={!answers[currentQuestion.id] || completing || savingQuestionId !== null}
+                  onClick={() => void finishAssessment()}
+                  type="button"
+                >
+                  {completing ? "Scoring…" : "Submit test"}
+                </button>
+              )}
+            </div>
+            <div style={{ width: 44 }} />
+          </div>
         </section>
       ) : null}
 
