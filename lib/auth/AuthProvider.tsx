@@ -2,7 +2,7 @@
 
 /**
  * Auth context: wraps the app, tracks the signed-in Firebase user and their
- * Firestore profile, and exposes register / signIn / signOut helpers.
+ * Firestore profile, and exposes register / signIn / logout + saveAssessment.
  */
 
 import {
@@ -23,19 +23,34 @@ import {
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { firebaseReady, getFirebaseAuth, getDb } from "@/lib/firebase/client";
 
+/** Trimmed report saved under the user so the dashboard can render it. */
+export interface AssessmentSummary {
+  journeyCode: string;
+  journeyName: string;
+  completedAt: string;
+  feedbackRating: number | null;
+  overallFitmentPct: number | null;
+  topCareer: string | null;
+  summary: string | null;
+  matches: { title: string; fitmentPct: number; band: string; blurb: string }[];
+  topStrengths: { parameterName: string; subTraitName: string; normalizedScore: number }[];
+}
+
 export interface UserProfile {
   uid: string;
   name: string;
   email: string;
   phone: string;
-  city: string;
-  institution: string;
-  classLevel: string; // MILESTONE value, e.g. "career_planning"
   status: string; // School student / College student / Working professional / Other
   createdAt?: unknown;
+  latestAssessment?: AssessmentSummary;
 }
 
-export type RegisterInput = Omit<UserProfile, "uid" | "createdAt"> & {
+export type RegisterInput = {
+  name: string;
+  email: string;
+  phone: string;
+  status: string;
   password: string;
 };
 
@@ -47,6 +62,7 @@ interface AuthState {
   register: (input: RegisterInput) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  saveAssessment: (summary: AssessmentSummary) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthState | null>(null);
@@ -65,6 +81,8 @@ export function authErrorMessage(err: unknown): string {
     case "auth/wrong-password":
     case "auth/user-not-found":
       return "Incorrect email or password.";
+    case "auth/operation-not-allowed":
+      return "Email/password sign-in isn't enabled in Firebase yet.";
     case "auth/too-many-requests":
       return "Too many attempts. Please wait a moment and try again.";
     default:
@@ -88,8 +106,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (u) {
         const db = getDb();
         if (db) {
-          const snap = await getDoc(doc(db, "users", u.uid));
-          setProfile(snap.exists() ? (snap.data() as UserProfile) : null);
+          try {
+            const snap = await getDoc(doc(db, "users", u.uid));
+            setProfile(snap.exists() ? (snap.data() as UserProfile) : null);
+          } catch {
+            setProfile(null);
+          }
         }
       } else {
         setProfile(null);
@@ -104,11 +126,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const db = getDb();
     if (!auth || !db) throw new Error("Accounts are not configured yet.");
 
-    const cred = await createUserWithEmailAndPassword(
-      auth,
-      input.email.trim(),
-      input.password
-    );
+    const cred = await createUserWithEmailAndPassword(auth, input.email.trim(), input.password);
     await updateFirebaseProfile(cred.user, { displayName: input.name.trim() });
 
     const profileDoc: UserProfile = {
@@ -116,9 +134,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       name: input.name.trim(),
       email: input.email.trim(),
       phone: input.phone.trim(),
-      city: input.city.trim(),
-      institution: input.institution.trim(),
-      classLevel: input.classLevel,
       status: input.status,
     };
     await setDoc(doc(db, "users", cred.user.uid), {
@@ -139,9 +154,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (auth) await signOut(auth);
   }
 
+  async function saveAssessment(summary: AssessmentSummary) {
+    const db = getDb();
+    if (!db || !user) throw new Error("Not signed in.");
+    await setDoc(doc(db, "users", user.uid), { latestAssessment: summary }, { merge: true });
+    setProfile((p) => (p ? { ...p, latestAssessment: summary } : p));
+  }
+
   return (
     <AuthContext.Provider
-      value={{ ready: firebaseReady, loading, user, profile, register, signIn, logout }}
+      value={{ ready: firebaseReady, loading, user, profile, register, signIn, logout, saveAssessment }}
     >
       {children}
     </AuthContext.Provider>

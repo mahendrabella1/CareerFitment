@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth, type AssessmentSummary } from "@/lib/auth/AuthProvider";
 import {
   Sparkles,
   ArrowRight,
@@ -307,6 +308,10 @@ function optionList(question: SessionQuestion) {
 
 export default function AssessmentExperience() {
   const router = useRouter();
+  const { user, profile, loading: authLoading, saveAssessment } = useAuth();
+  const [beginHandled, setBeginHandled] = useState(false);
+  const [feedbackRating, setFeedbackRating] = useState<number | null>(null);
+  const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
   const [journeys, setJourneys] = useState<Journey[]>([]);
   const [selectedJourneyCode, setSelectedJourneyCode] = useState<string | null>(null);
   const [blueprint, setBlueprint] = useState<BlueprintData | null>(null);
@@ -614,7 +619,70 @@ export default function AssessmentExperience() {
     setCurrentIndex(0);
     setErrorMessage(null);
     setLeadId(null);
+    setFeedbackRating(null);
     setView("landing");
+  }
+
+  // "Start assessment": signed-in users go straight to stage selection;
+  // everyone else is sent to register (which returns here with ?begin=1).
+  function startFlow() {
+    setErrorMessage(null);
+    if (user) setView("details");
+    else router.push("/register");
+  }
+
+  // Handle the post-register redirect (/?begin=1) once auth has settled.
+  useEffect(() => {
+    if (beginHandled || authLoading) return;
+    if (typeof window === "undefined") return;
+    const begin = new URLSearchParams(window.location.search).get("begin");
+    if (begin !== "1") return;
+    setBeginHandled(true);
+    if (user) setView("details");
+    else router.replace("/register");
+  }, [authLoading, user, beginHandled, router]);
+
+  // Prefill the lead form from the signed-in profile.
+  useEffect(() => {
+    if (!profile) return;
+    setLead((l) => ({
+      ...l,
+      name: l.name || profile.name || "",
+      email: l.email || profile.email || "",
+      phone: l.phone || profile.phone || "",
+    }));
+  }, [profile]);
+
+  // After scoring, save a trimmed report under the user + record their rating.
+  async function submitFeedback() {
+    if (feedbackRating == null || !results) return;
+    setFeedbackSubmitting(true);
+    const summary: AssessmentSummary = {
+      journeyCode: results.journey.code,
+      journeyName: results.journey.name,
+      completedAt: new Date().toISOString(),
+      feedbackRating,
+      overallFitmentPct: fitment?.matches?.[0]?.fitmentPct ?? null,
+      topCareer: fitment?.matches?.[0]?.title ?? results.fitment?.outcomeLabel ?? null,
+      summary: results.fitment?.summary ?? null,
+      matches: (fitment?.matches ?? []).slice(0, 5).map((m) => ({
+        title: m.title,
+        fitmentPct: m.fitmentPct,
+        band: m.band,
+        blurb: m.blurb,
+      })),
+      topStrengths: (results.topStrengths ?? []).slice(0, 8).map((s) => ({
+        parameterName: s.parameterName,
+        subTraitName: s.subTraitName,
+        normalizedScore: s.normalizedScore,
+      })),
+    };
+    try {
+      await saveAssessment(summary);
+    } catch {
+      /* best-effort — still send them to the dashboard */
+    }
+    router.push("/account");
   }
 
   return (
@@ -628,7 +696,7 @@ export default function AssessmentExperience() {
             <a href="#how">How it works</a>
             <a href="#measure">How we score</a>
             <a href="#benefits">Benefits</a>
-            <button className="ognav-cta" onClick={() => setView("details")} type="button">
+            <button className="ognav-cta" onClick={startFlow} type="button">
               Start now
             </button>
           </nav>
@@ -815,7 +883,7 @@ export default function AssessmentExperience() {
                   </li>
                 ))}
               </ul>
-              <button className="btn-red" onClick={() => setView("details")} type="button">
+              <button className="btn-red" onClick={startFlow} type="button">
                 Try the assessment <ArrowRight size={18} />
               </button>
             </div>
@@ -988,7 +1056,7 @@ export default function AssessmentExperience() {
                   className="agecard"
                   onClick={() => {
                     setLead((l) => ({ ...l, journeyCode: a.j }));
-                    setView("details");
+                    startFlow();
                   }}
                   type="button"
                 >
@@ -1073,7 +1141,7 @@ export default function AssessmentExperience() {
             <div className="lx-cta-inner">
               <h2>Ready to see where you fit?</h2>
               <p>Takes about 15–20 minutes. Get your top-5 career report instantly.</p>
-              <button className="btn-light" onClick={() => setView("details")} type="button">
+              <button className="btn-light" onClick={startFlow} type="button">
                 Start Career Assessment <ArrowRight size={18} />
               </button>
               <div className="lx-cta-trust">
@@ -1368,7 +1436,105 @@ export default function AssessmentExperience() {
         </section>
       ) : null}
 
-      {results ? (
+      {results && user ? (
+        <section
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "40px 20px",
+            background: "#eef1f6",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              maxWidth: 560,
+              background: "#fff",
+              borderRadius: 18,
+              padding: "38px 34px",
+              boxShadow: "0 16px 50px rgba(30,41,59,.14)",
+              textAlign: "center",
+            }}
+          >
+            <div style={{ fontSize: 40, marginBottom: 8 }}>🎉</div>
+            <h2 style={{ fontSize: 24, fontWeight: 800, margin: "0 0 6px" }}>
+              Assessment complete!
+            </h2>
+            <p style={{ color: "#64748b", fontSize: 15, margin: "0 0 26px", lineHeight: 1.6 }}>
+              Before we show your report — how would you rate this assessment
+              experience?
+            </p>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 8,
+                justifyContent: "center",
+                marginBottom: 10,
+              }}
+            >
+              {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => {
+                const active = feedbackRating === n;
+                return (
+                  <button
+                    key={n}
+                    type="button"
+                    onClick={() => setFeedbackRating(n)}
+                    style={{
+                      width: 42,
+                      height: 42,
+                      borderRadius: 10,
+                      border: active ? "2px solid #3b4a9c" : "1px solid #cbd5e1",
+                      background: active ? "#3b4a9c" : "#fff",
+                      color: active ? "#fff" : "#334155",
+                      fontWeight: 800,
+                      fontSize: 15,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {n}
+                  </button>
+                );
+              })}
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                fontSize: 12,
+                color: "#94a3b8",
+                maxWidth: 460,
+                margin: "0 auto 26px",
+              }}
+            >
+              <span>1 — Poor</span>
+              <span>10 — Excellent</span>
+            </div>
+            <button
+              type="button"
+              disabled={feedbackRating == null || feedbackSubmitting}
+              onClick={() => void submitFeedback()}
+              style={{
+                width: "100%",
+                padding: "14px",
+                borderRadius: 12,
+                border: "none",
+                background: feedbackRating == null ? "#cbd5e1" : "#3b4a9c",
+                color: feedbackRating == null ? "#64748b" : "#fff",
+                fontSize: 15.5,
+                fontWeight: 800,
+                cursor: feedbackRating == null ? "not-allowed" : "pointer",
+              }}
+            >
+              {feedbackSubmitting ? "Saving…" : "Submit & view my report →"}
+            </button>
+          </div>
+        </section>
+      ) : null}
+
+      {results && !user ? (
         <section className="results-layout">
           {fitment ? (
             <div className="panel report-panel">
