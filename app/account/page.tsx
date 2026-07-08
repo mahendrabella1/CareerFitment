@@ -46,22 +46,24 @@ export default function AccountPage() {
 
   return (
     <div style={S.page}>
-      <div style={S.banner}>
-        <div style={S.bannerInner}>
-          <div style={S.head}>
-            <div style={S.avatar}>{initial}</div>
-            <div>
-              <div style={S.name}>{profile?.name || user.displayName || "Your dashboard"}</div>
-              <div style={S.email}>{user.email}</div>
-            </div>
-          </div>
-          <button style={S.logout} onClick={() => { void logout().then(() => router.push("/signin")); }}>
-            Sign out
-          </button>
-        </div>
-      </div>
+      <header style={S.header}>
+        <Link href="/" className="og-logo" style={S.logo}>
+          One<span>Grasp</span>
+        </Link>
+        <button style={S.logout} onClick={() => { void logout().then(() => router.push("/signin")); }}>
+          Sign out
+        </button>
+      </header>
 
       <div style={S.body}>
+        <div style={S.welcome}>
+          <div style={S.avatar}>{initial}</div>
+          <div>
+            <div style={S.name}>{profile?.name || user.displayName || "Your dashboard"}</div>
+            <div style={S.email}>{user.email}</div>
+          </div>
+        </div>
+
         {/* Details */}
         <section style={S.card}>
           <div style={S.cardTitle}>Your details</div>
@@ -165,14 +167,14 @@ function Centered({ children }: { children: React.ReactNode }) {
 const BLUE = "#3b4a9c";
 const S: Record<string, React.CSSProperties> = {
   page: { minHeight: "100vh", background: "#eef1f6", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: "#1e293b" },
-  banner: { background: `linear-gradient(135deg, ${BLUE}, #5a6fce)`, color: "#fff" },
-  bannerInner: { maxWidth: 720, margin: "0 auto", padding: "26px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" },
-  head: { display: "flex", alignItems: "center", gap: 14 },
-  avatar: { width: 52, height: 52, borderRadius: "50%", background: "rgba(255,255,255,.2)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, fontWeight: 800, border: "2px solid rgba(255,255,255,.5)" },
-  name: { fontSize: 21, fontWeight: 800 },
-  email: { fontSize: 13.5, opacity: .9, marginTop: 2 },
-  logout: { padding: "9px 18px", background: "rgba(255,255,255,.15)", color: "#fff", border: "1px solid rgba(255,255,255,.4)", borderRadius: 10, fontSize: 13.5, fontWeight: 700, cursor: "pointer" },
-  body: { maxWidth: 720, margin: "0 auto", padding: "22px 24px 48px" },
+  header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 22px", background: "#fff", borderBottom: "1px solid #e6e9ef" },
+  logo: { textDecoration: "none", fontSize: "1.5rem", fontWeight: 800, letterSpacing: "-0.02em" },
+  logout: { padding: "8px 16px", background: "#fff", color: "#b91c1c", border: "1px solid #fca5a5", borderRadius: 9, fontSize: 13.5, fontWeight: 700, cursor: "pointer" },
+  body: { maxWidth: 640, margin: "0 auto", padding: "22px 24px 48px" },
+  welcome: { display: "flex", alignItems: "center", gap: 14, marginBottom: 18 },
+  avatar: { width: 48, height: 48, borderRadius: "50%", background: BLUE, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, fontWeight: 800 },
+  name: { fontSize: 20, fontWeight: 800 },
+  email: { fontSize: 13.5, color: "#64748b", marginTop: 2 },
   card: { background: "#fff", border: "1px solid #e2e8f0", borderRadius: 14, padding: "20px 22px", marginBottom: 16, boxShadow: "0 2px 10px rgba(30,41,59,.04)" },
   cardTitle: { fontSize: 15, fontWeight: 800, color: "#0f172a", marginBottom: 12 },
   table: { display: "flex", flexDirection: "column" },
