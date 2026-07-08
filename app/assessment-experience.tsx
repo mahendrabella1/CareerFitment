@@ -301,7 +301,22 @@ const XS: Record<string, React.CSSProperties> = {
   progressBar: { height: 7, background: "rgba(255,255,255,0.25)" },
   progressFill: { height: "100%", background: "#fff", transition: "width 0.35s ease" },
 
-  body: { flex: 1, width: "100%", maxWidth: 780, margin: "0 auto", padding: "38px 28px 26px" },
+  split: { display: "grid", gridTemplateColumns: "1fr 300px", flex: 1, minHeight: 0 },
+  mainCol: { display: "flex", flexDirection: "column", minWidth: 0 },
+  palette: { borderLeft: "1px solid var(--line)", background: "#f8fafc", padding: "18px 18px 22px", overflow: "auto" },
+  palTitle: { fontSize: 13, fontWeight: 800, color: "#334155", marginBottom: 12 },
+  legend: { display: "flex", flexDirection: "column", gap: 7, marginBottom: 16 },
+  legItem: { display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#64748b", fontWeight: 600 },
+  dot: { width: 13, height: 13, borderRadius: 4, display: "inline-block", flexShrink: 0 },
+  palGrid: { display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 },
+  cell: { height: 38, borderRadius: 9, border: "1px solid #d7dbe6", background: "#fff", color: "#64748b", fontWeight: 800, fontSize: 13, cursor: "pointer", transition: "transform .1s ease" },
+  cellAnswered: { background: "#16a34a", borderColor: "#16a34a", color: "#fff" },
+  cellMarked: { background: "#f2c94c", borderColor: "#e0b53c", color: "#3a2f00" },
+  cellAnsMark: { background: "#16a34a", borderColor: "#16a34a", color: "#fff", boxShadow: "inset 0 0 0 2px #f2c94c" },
+  cellCurrent: { outline: "3px solid #3b4a9c", outlineOffset: 1 },
+  palHint: { fontSize: 11, color: "#94a3b8", marginTop: 12 },
+
+  body: { flex: 1, width: "100%", maxWidth: 720, margin: "0 auto", padding: "34px 28px 22px" },
   subtrait: { display: "inline-block", fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700, color: BLUE, background: "#eef2ff", padding: "5px 13px", borderRadius: 999, marginBottom: 16 },
   qLabel: { fontSize: 14, fontWeight: 700, color: BLUE, marginBottom: 8 },
   question: { fontSize: "1.42rem", lineHeight: 1.45, margin: "0 0 24px", fontWeight: 600, color: "#1f2937" },
@@ -1516,6 +1531,8 @@ export default function AssessmentExperience() {
             </div>
           </div>
 
+          <div className="xs-split" style={XS.split}>
+            <div style={XS.mainCol}>
           {/* body */}
           <div style={XS.body}>
             <div style={XS.subtrait}>{currentQuestion.subTraitName}</div>
@@ -1586,6 +1603,39 @@ export default function AssessmentExperience() {
               )}
             </div>
             <div style={{ width: 44 }} />
+          </div>
+            </div>
+
+            <aside className="xs-palette" style={XS.palette}>
+              <div style={XS.palTitle}>Question palette</div>
+              <div style={XS.legend}>
+                <span style={XS.legItem}><i style={{ ...XS.dot, background: "#16a34a" }} /> Answered ({Object.keys(answers).length})</span>
+                <span style={XS.legItem}><i style={{ ...XS.dot, background: "#f2c94c" }} /> Marked ({Object.values(marked).filter(Boolean).length})</span>
+                <span style={XS.legItem}><i style={{ ...XS.dot, border: "1px solid #cbd5e1", background: "#fff" }} /> Not answered ({session.totalQuestions - Object.keys(answers).length})</span>
+              </div>
+              <div style={XS.palGrid}>
+                {session.questions.map((q, i) => {
+                  const isCurrent = i === currentIndex;
+                  const isAnswered = answers[q.id] !== undefined;
+                  const isMarked = Boolean(marked[q.id]);
+                  let cell: React.CSSProperties = { ...XS.cell };
+                  if (isAnswered && isMarked) cell = { ...cell, ...XS.cellAnsMark };
+                  else if (isAnswered) cell = { ...cell, ...XS.cellAnswered };
+                  else if (isMarked) cell = { ...cell, ...XS.cellMarked };
+                  return (
+                    <button
+                      key={q.id}
+                      type="button"
+                      onClick={() => setCurrentIndex(i)}
+                      style={{ ...cell, ...(isCurrent ? XS.cellCurrent : {}) }}
+                    >
+                      {i + 1}
+                    </button>
+                  );
+                })}
+              </div>
+              <div style={XS.palHint}>Tap a number to jump to that question.</div>
+            </aside>
           </div>
         </section>
       ) : null}
