@@ -234,9 +234,11 @@ function computeBigFive(
       if (YES(ans)) r.Conscientiousness.score += 1;
     }
     // Agreeableness: dedicated Big Five item, or the 10-set's blended axes.
+    // "Low Agreeableness" items are reverse-scored (Yes = less agreeable).
     if (main.includes("agreeableness")) {
+      const isLowAgree = main.includes("low agreeableness");
       r.Agreeableness.max += 1;
-      if (YES(ans)) r.Agreeableness.score += 1;
+      if (isLowAgree ? NO(ans) : YES(ans)) r.Agreeableness.score += 1;
     }
   }
 
@@ -278,9 +280,22 @@ function computeTemperaments(
 function computeDominant(
   temperaments: Record<Temperament, ScoreMax>
 ): DominantResult {
-  const max = Math.max(...TEMPERAMENTS.map((t) => temperaments[t].score));
-  const leaders = TEMPERAMENTS.filter((t) => temperaments[t].score === max);
-  // Resolve ties by alphabetical concatenation, e.g. "Choleric-Phlegmatic".
+  // Different temperaments have different numbers of questions, so raw points
+  // would structurally favour whichever has the most items. Rank by ENDORSEMENT
+  // RATIO (score / max) first — a fair, per-person measure — and break ties by
+  // raw score, then alphabetically. (For a fully-endorsed set this still yields
+  // the same result as raw, e.g. Phlegmatic 3/3 beats Sanguine 1/1.)
+  const ratio = (t: Temperament) =>
+    temperaments[t].max > 0 ? temperaments[t].score / temperaments[t].max : 0;
+
+  const maxRatio = Math.max(...TEMPERAMENTS.map(ratio));
+  let leaders = TEMPERAMENTS.filter((t) => ratio(t) === maxRatio);
+
+  if (leaders.length > 1) {
+    const maxRaw = Math.max(...leaders.map((t) => temperaments[t].score));
+    leaders = leaders.filter((t) => temperaments[t].score === maxRaw);
+  }
+
   return {
     dominant: [...leaders].sort().join("-"),
     isTie: leaders.length > 1,
