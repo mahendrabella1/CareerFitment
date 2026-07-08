@@ -623,12 +623,55 @@ export default function AssessmentExperience() {
     setView("landing");
   }
 
-  // "Start assessment": signed-in users go straight to stage selection;
-  // everyone else is sent to register (which returns here with ?begin=1).
+  // Start the assessment directly from the signed-in profile (category ->
+  // journey), skipping the extra details step. Falls back to details if the
+  // profile has no journey yet.
+  async function startFromProfile() {
+    if (!profile?.journeyCode) {
+      setView("details");
+      return;
+    }
+    setErrorMessage(null);
+    setLead((l) => ({
+      ...l,
+      name: profile.name,
+      email: profile.email,
+      phone: profile.phone,
+      journeyCode: profile.journeyCode,
+      dreamCareer: profile.desiredCareer || "",
+    }));
+    try {
+      const created = await fetchJson<{ id: string }>("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: profile.name,
+          email: profile.email,
+          phone: profile.phone,
+          journeyCode: profile.journeyCode,
+          dreamCareer: profile.desiredCareer,
+          stage: profile.clarity,
+        }),
+      });
+      setLeadId(created.id);
+      await selectJourney(profile.journeyCode);
+      await startAssessment(profile.journeyCode);
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Unable to start the assessment.");
+      setView("details");
+    }
+  }
+
+  // "Start assessment": signed-in users with a category go straight into the
+  // exam; everyone else is sent to register (which returns via ?begin=1).
   function startFlow() {
     setErrorMessage(null);
-    if (user) setView("details");
-    else router.push("/register");
+    if (!user) {
+      router.push("/register");
+      return;
+    }
+    if (profile?.journeyCode) void startFromProfile();
+    else setView("details");
   }
 
   // Handle the post-register redirect (/?begin=1) once auth has settled.
@@ -638,9 +681,15 @@ export default function AssessmentExperience() {
     const begin = new URLSearchParams(window.location.search).get("begin");
     if (begin !== "1") return;
     setBeginHandled(true);
-    if (user) setView("details");
-    else router.replace("/register");
-  }, [authLoading, user, beginHandled, router]);
+    if (!user) {
+      router.replace("/register");
+    } else if (profile?.journeyCode) {
+      void startFromProfile();
+    } else {
+      setView("details");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authLoading, user, profile, beginHandled, router]);
 
   // Prefill the lead form from the signed-in profile.
   useEffect(() => {
@@ -650,6 +699,8 @@ export default function AssessmentExperience() {
       name: l.name || profile.name || "",
       email: l.email || profile.email || "",
       phone: l.phone || profile.phone || "",
+      journeyCode: l.journeyCode || profile.journeyCode || "",
+      dreamCareer: l.dreamCareer || profile.desiredCareer || "",
     }));
   }, [profile]);
 
@@ -657,6 +708,14 @@ export default function AssessmentExperience() {
   async function submitFeedback() {
     if (feedbackRating == null || !results) return;
     setFeedbackSubmitting(true);
+    const desired = (profile?.desiredCareer || "").trim();
+    const desiredMatch = desired
+      ? (fitment?.matches ?? []).find((m) => {
+          const t = m.title.toLowerCase();
+          const d = desired.toLowerCase();
+          return t.includes(d) || d.includes(t);
+        })
+      : undefined;
     const summary: AssessmentSummary = {
       journeyCode: results.journey.code,
       journeyName: results.journey.name,
@@ -664,6 +723,8 @@ export default function AssessmentExperience() {
       feedbackRating,
       overallFitmentPct: fitment?.matches?.[0]?.fitmentPct ?? null,
       topCareer: fitment?.matches?.[0]?.title ?? results.fitment?.outcomeLabel ?? null,
+      desiredCareer: desired || null,
+      desiredCareerFitPct: desiredMatch?.fitmentPct ?? null,
       summary: results.fitment?.summary ?? null,
       matches: (fitment?.matches ?? []).slice(0, 5).map((m) => ({
         title: m.title,

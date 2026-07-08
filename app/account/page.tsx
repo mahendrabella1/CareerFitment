@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth/AuthProvider";
+import { categoryLabel } from "@/lib/auth/formOptions";
 
 export default function AccountPage() {
   const router = useRouter();
@@ -37,7 +38,10 @@ export default function AccountPage() {
     { label: "Full name", value: profile?.name || user.displayName || "—" },
     { label: "Email", value: profile?.email || user.email || "—" },
     { label: "Phone", value: profile?.phone || "—" },
-    { label: "Current status", value: profile?.status || "—" },
+    { label: "School / College / Company", value: profile?.institution || "—" },
+    { label: "Desired career", value: profile?.desiredCareer || "—" },
+    { label: "Category", value: profile?.category ? categoryLabel(profile.category) : "—" },
+    { label: "Current status", value: profile?.clarity || "—" },
   ];
 
   return (
@@ -92,6 +96,14 @@ export default function AccountPage() {
               {a.summary && <p style={S.summary}>{a.summary}</p>}
               {a.topCareer && (
                 <div style={S.topCareer}>Best-fit direction: <b>{a.topCareer}</b></div>
+              )}
+              {a.desiredCareer && (
+                <div style={S.desired}>
+                  🎯 Your desired career: <b>{a.desiredCareer}</b>
+                  {a.desiredCareerFitPct != null
+                    ? ` — assessed fit ${a.desiredCareerFitPct}%`
+                    : " — not among your top matches this time"}
+                </div>
               )}
             </section>
 
@@ -174,6 +186,7 @@ const S: Record<string, React.CSSProperties> = {
   fitLabel: { fontSize: 10.5, color: "#6366f1", textTransform: "uppercase", letterSpacing: .5 },
   summary: { fontSize: 14, color: "#475569", lineHeight: 1.6, margin: "6px 0 0" },
   topCareer: { marginTop: 12, padding: "10px 14px", background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 10, fontSize: 14, color: "#166534" },
+  desired: { marginTop: 10, padding: "10px 14px", background: "#eef2ff", border: "1px solid #c7d2fe", borderRadius: 10, fontSize: 14, color: "#312e81" },
   match: { padding: "12px 0", borderTop: "1px solid #f1f5f9" },
   matchTop: { display: "flex", justifyContent: "space-between", gap: 12, marginBottom: 7 },
   matchTitle: { fontSize: 14.5, fontWeight: 700, color: "#1e293b" },

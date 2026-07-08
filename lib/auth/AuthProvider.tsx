@@ -31,6 +31,8 @@ export interface AssessmentSummary {
   feedbackRating: number | null;
   overallFitmentPct: number | null;
   topCareer: string | null;
+  desiredCareer: string | null;
+  desiredCareerFitPct: number | null; // fit of the desired career, if matched
   summary: string | null;
   matches: { title: string; fitmentPct: number; band: string; blurb: string }[];
   topStrengths: { parameterName: string; subTraitName: string; normalizedScore: number }[];
@@ -41,7 +43,11 @@ export interface UserProfile {
   name: string;
   email: string;
   phone: string;
-  status: string; // School student / College student / Working professional / Other
+  institution: string; // school / college / company
+  desiredCareer: string; // e.g. Doctor, Engineer — also used in the report
+  category: string; // CATEGORY_OPTIONS value, e.g. "class_11"
+  journeyCode: string; // assessment journey derived from category
+  clarity: string; // "current status" = one of the 4 clarity stages
   createdAt?: unknown;
   latestAssessment?: AssessmentSummary;
 }
@@ -50,7 +56,11 @@ export type RegisterInput = {
   name: string;
   email: string;
   phone: string;
-  status: string;
+  institution: string;
+  desiredCareer: string;
+  category: string;
+  journeyCode: string;
+  clarity: string;
   password: string;
 };
 
@@ -134,7 +144,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       name: input.name.trim(),
       email: input.email.trim(),
       phone: input.phone.trim(),
-      status: input.status,
+      institution: input.institution.trim(),
+      desiredCareer: input.desiredCareer.trim(),
+      category: input.category,
+      journeyCode: input.journeyCode,
+      clarity: input.clarity,
     };
     await setDoc(doc(db, "users", cred.user.uid), {
       ...profileDoc,

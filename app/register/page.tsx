@@ -2,9 +2,10 @@
 
 /**
  * /register — compact account form with the site header + a small visual.
- * Fields: name, email, phone (required), current status, password (validated).
+ * Fields: name, email, phone (required), school/college/company, desired
+ * career, category (class/stage), current status (clarity), password.
  * Creates a Firebase Auth account + Firestore profile, then sends the user
- * into the assessment (/?begin=1).
+ * into the assessment (/?begin=1) using the chosen category's journey.
  */
 
 import { useMemo, useState } from "react";
@@ -12,7 +13,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth, authErrorMessage } from "@/lib/auth/AuthProvider";
 import {
-  STATUS_OPTIONS,
+  CATEGORY_OPTIONS,
+  CLARITY_STAGES,
+  journeyForCategory,
   PASSWORD_RULES,
   passwordIsValid,
   emailIsValid,
@@ -27,7 +30,10 @@ export default function RegisterPage() {
     name: "",
     email: "",
     phone: "",
-    status: "",
+    institution: "",
+    desiredCareer: "",
+    category: "",
+    clarity: "",
     password: "",
     confirm: "",
   });
@@ -45,6 +51,7 @@ export default function RegisterPage() {
       f.name.trim() !== "" &&
       emailIsValid(f.email) &&
       phoneIsValid(f.phone) &&
+      f.category !== "" &&
       pwOk &&
       f.password === f.confirm,
     [f, pwOk]
@@ -65,7 +72,11 @@ export default function RegisterPage() {
         name: f.name,
         email: f.email,
         phone: f.phone,
-        status: f.status,
+        institution: f.institution,
+        desiredCareer: f.desiredCareer,
+        category: f.category,
+        journeyCode: journeyForCategory(f.category),
+        clarity: f.clarity,
         password: f.password,
       });
       router.push("/?begin=1");
@@ -76,9 +87,10 @@ export default function RegisterPage() {
     }
   }
 
+  const selStyle = (v: string): React.CSSProperties => ({ ...S.input, color: v ? "#1e293b" : "#94a3b8" });
+
   return (
     <div style={S.page}>
-      {/* Site header */}
       <header style={S.header}>
         <Link href="/" className="og-logo" style={S.logo}>
           One<span>Grasp</span>
@@ -89,14 +101,13 @@ export default function RegisterPage() {
         </div>
       </header>
 
-      {/* Compact card */}
       <main style={S.wrap}>
         <div style={S.card}>
           <div style={S.visual}>
             <Illustration />
             <div>
               <div style={S.vTitle}>Create your free account</div>
-              <div style={S.vSub}>Takes a minute — then start your career assessment.</div>
+              <div style={S.vSub}>A minute to sign up, then start your career assessment.</div>
             </div>
           </div>
 
@@ -108,7 +119,7 @@ export default function RegisterPage() {
           {error && <div style={S.errorBox}>{error}</div>}
 
           <form onSubmit={onSubmit} noValidate style={S.form}>
-            <div style={S.full}>
+            <div>
               <input style={S.input} value={f.name} onChange={set("name")} placeholder="Full name *" />
               {touched && !f.name.trim() && <Err>Name is required.</Err>}
             </div>
@@ -124,14 +135,27 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            <div style={S.full}>
-              <select style={{ ...S.input, color: f.status ? "#1e293b" : "#94a3b8" }} value={f.status} onChange={set("status")}>
-                <option value="">Current status…</option>
-                {STATUS_OPTIONS.map((s) => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
-              </select>
+            <input style={S.input} value={f.institution} onChange={set("institution")} placeholder="School / College / Company" />
+
+            <div style={S.row}>
+              <input style={S.input} value={f.desiredCareer} onChange={set("desiredCareer")} placeholder="Desired career (e.g. Doctor)" />
+              <div>
+                <select style={selStyle(f.category)} value={f.category} onChange={set("category")}>
+                  <option value="">Category / class *</option>
+                  {CATEGORY_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+                </select>
+                {touched && !f.category && <Err>Select a category.</Err>}
+              </div>
             </div>
+
+            <select style={selStyle(f.clarity)} value={f.clarity} onChange={set("clarity")}>
+              <option value="">Current status — where are you with your career?</option>
+              {CLARITY_STAGES.map((s) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
+            </select>
 
             <div style={S.row}>
               <div style={S.pwWrap}>
@@ -208,19 +232,18 @@ const S: Record<string, React.CSSProperties> = {
   haveAcct: { fontSize: 13, color: "#64748b" },
   signInBtn: { padding: "8px 16px", background: BLUE, color: "#fff", borderRadius: 9, fontSize: 13.5, fontWeight: 700, textDecoration: "none" },
 
-  wrap: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "24px 16px" },
-  card: { width: "100%", maxWidth: 440, background: "#fff", borderRadius: 16, padding: "22px 24px 24px", boxShadow: "0 12px 40px rgba(30,41,59,.12)" },
-  visual: { display: "flex", alignItems: "center", gap: 14, marginBottom: 18 },
-  illus: { width: 58, height: 58, flexShrink: 0 },
+  wrap: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "22px 16px" },
+  card: { width: "100%", maxWidth: 460, background: "#fff", borderRadius: 16, padding: "20px 24px 24px", boxShadow: "0 12px 40px rgba(30,41,59,.12)" },
+  visual: { display: "flex", alignItems: "center", gap: 14, marginBottom: 16 },
+  illus: { width: 54, height: 54, flexShrink: 0 },
   vTitle: { fontSize: 18, fontWeight: 800, lineHeight: 1.2 },
   vSub: { fontSize: 12.5, color: "#64748b", marginTop: 3 },
 
   warn: { background: "#fffbeb", border: "1px solid #fcd34d", color: "#92400e", padding: "9px 12px", borderRadius: 9, fontSize: 12.5, marginBottom: 12 },
   errorBox: { background: "#fee2e2", border: "1px solid #fca5a5", color: "#b91c1c", padding: "9px 12px", borderRadius: 9, fontSize: 13, marginBottom: 12, fontWeight: 600 },
 
-  form: { display: "flex", flexDirection: "column", gap: 11 },
-  full: {},
-  row: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 11 },
+  form: { display: "flex", flexDirection: "column", gap: 10 },
+  row: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 },
   input: { width: "100%", padding: "10px 12px", borderRadius: 9, border: "1px solid #cbd5e1", fontSize: 14, outline: "none", boxSizing: "border-box", background: "#fff" },
   fieldErr: { color: "#dc2626", fontSize: 11, marginTop: 3 },
   pwWrap: { position: "relative" },
