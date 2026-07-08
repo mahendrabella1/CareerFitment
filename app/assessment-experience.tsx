@@ -281,6 +281,26 @@ function fmtTime(totalSeconds: number): string {
   return `${m}:${r.toString().padStart(2, "0")}`;
 }
 
+function enterFullscreen() {
+  try {
+    const el = document.documentElement as HTMLElement & { webkitRequestFullscreen?: () => void };
+    if (el.requestFullscreen) void el.requestFullscreen();
+    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  } catch {
+    /* fullscreen may be blocked — the fixed overlay still fills the viewport */
+  }
+}
+
+function exitFullscreen() {
+  try {
+    const d = document as Document & { webkitExitFullscreen?: () => void };
+    if (d.fullscreenElement && d.exitFullscreen) void d.exitFullscreen();
+    else if (d.webkitExitFullscreen) d.webkitExitFullscreen();
+  } catch {
+    /* ignore */
+  }
+}
+
 function fmtClock(totalSeconds: number): string {
   const s = Math.max(0, Math.floor(totalSeconds));
   const h = Math.floor(s / 3600);
@@ -328,6 +348,9 @@ const EX: Record<string, React.CSSProperties> = {
 const BLUE = "#3b4a9c";
 const FS: Record<string, React.CSSProperties> = {
   overlay: { position: "fixed", inset: 0, zIndex: 1000, background: "#f1f5f9", display: "flex", flexDirection: "column", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: "#1f2937" },
+  loadWrap: { position: "fixed", inset: 0, zIndex: 1100, background: "#eef1f6", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14, fontFamily: "Inter, system-ui, Segoe UI, sans-serif" },
+  loadText: { fontSize: 19, fontWeight: 800, color: "#1e293b" },
+  loadSub: { fontSize: 14, color: "#64748b" },
 
   topbar: { background: "#fff", borderBottom: "1px solid #e6e9ef", padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" },
   brand: { display: "flex", alignItems: "center", gap: 12, minWidth: 0 },
@@ -642,6 +665,8 @@ export default function AssessmentExperience() {
     setErrorMessage(null);
 
     try {
+      // brief pause so the "Preparing your assessment…" screen is visible
+      await new Promise((resolve) => setTimeout(resolve, 1300));
       const data = await fetchJson<SessionData>("/api/assessment/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -715,6 +740,7 @@ export default function AssessmentExperience() {
         `/api/assessment/${session.sessionId}/score`
       );
       setResults(scoreData);
+      exitFullscreen();
       try {
         const fitmentData = await fetchJson<FitmentResult>(
           `/api/assessment/${session.sessionId}/fitment`
@@ -759,6 +785,7 @@ export default function AssessmentExperience() {
     setInstructionsAccepted(false);
     setAgreeChecked(false);
     setSectionShown({});
+    exitFullscreen();
     setView("landing");
   }
 
@@ -1525,7 +1552,15 @@ export default function AssessmentExperience() {
         </section>
       ) : null}
 
-      {session && !results && !instructionsAccepted ? (
+      {starting ? (
+        <div style={FS.loadWrap}>
+          <div className="exam-spinner" />
+          <div style={FS.loadText}>Preparing your assessment…</div>
+          <div style={FS.loadSub}>Selecting your personalised questions</div>
+        </div>
+      ) : null}
+
+      {session && !results && !instructionsAccepted && !starting ? (
         <section style={EX.insWrap}>
           <div style={EX.insCard}>
             <div style={EX.insBadge}>📋</div>
@@ -1548,7 +1583,7 @@ export default function AssessmentExperience() {
               type="button"
               style={{ ...EX.insStart, ...(agreeChecked ? {} : EX.insStartDisabled) }}
               disabled={!agreeChecked}
-              onClick={() => setInstructionsAccepted(true)}
+              onClick={() => { enterFullscreen(); setInstructionsAccepted(true); }}
             >
               Agree &amp; start the test →
             </button>
