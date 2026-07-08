@@ -22,7 +22,7 @@ export type Lead = {
   completedAt: string | null;
 };
 
-const COLLECTION = "Participants";
+const COLLECTION = "leads";
 
 export async function fsCreateLead(
   lead: Omit<Lead, "id"> & { id?: string }

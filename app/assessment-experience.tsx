@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Sparkles,
   ArrowRight,
@@ -305,6 +306,7 @@ function optionList(question: SessionQuestion) {
 }
 
 export default function AssessmentExperience() {
+  const router = useRouter();
   const [journeys, setJourneys] = useState<Journey[]>([]);
   const [selectedJourneyCode, setSelectedJourneyCode] = useState<string | null>(null);
   const [blueprint, setBlueprint] = useState<BlueprintData | null>(null);
@@ -667,10 +669,7 @@ export default function AssessmentExperience() {
             <div className="cine-cta anim-up d3">
               <button
                 className="cine-btn"
-                onClick={() => {
-                  setView("details");
-                  setErrorMessage(null);
-                }}
+                onClick={() => router.push("/register")}
                 type="button"
               >
                 <span>Start free assessment</span>
@@ -1331,11 +1330,11 @@ export default function AssessmentExperience() {
                 </span>
                 <span>
                   <i className="dot marked" />
-                  Marked ({markedCount})
+                  Marked for review ({markedCount})
                 </span>
                 <span>
                   <i className="dot left" />
-                  Left ({session.totalQuestions - answeredCount})
+                  Not answered ({session.totalQuestions - answeredCount})
                 </span>
               </div>
             </div>

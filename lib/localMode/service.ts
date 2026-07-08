@@ -1,5 +1,6 @@
 import { createHash, randomUUID } from "crypto";
 import { promises as fs } from "fs";
+import os from "os";
 import path from "path";
 import { deriveCareerFit } from "@/lib/engine/careerFitment";
 import { computeFitment } from "@/lib/engine/fitment/computeFitment";
@@ -149,7 +150,16 @@ type LocalScorePayload = {
   totalScores: number;
 };
 
-const DATA_DIR = path.join(process.cwd(), "data");
+// Bundled seed data (read-only on serverless like Vercel/Lambda).
+const SEED_DIR = path.join(process.cwd(), "data");
+// Writable location for runtime data. The project's data/ dir is read-only on
+// Vercel (EROFS), so on serverless we write to the OS temp dir instead and seed
+// it from the bundled files. NOTE: temp storage is ephemeral per instance —
+// configure Supabase/Firestore for durable persistence.
+const IS_SERVERLESS = Boolean(
+  process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY
+);
+const DATA_DIR = IS_SERVERLESS ? path.join(os.tmpdir(), "onegrasp-data") : SEED_DIR;
 const AUTHORED_QUESTIONS_FILE = path.join(DATA_DIR, "local-authored-questions.json");
 const SESSIONS_FILE = path.join(DATA_DIR, "local-sessions.json");
 const LEADS_FILE = path.join(DATA_DIR, "local-leads.json");
@@ -354,19 +364,41 @@ function shuffle<T>(arr: T[]): T[] {
   return copy;
 }
 
+// Read the bundled seed copy of a runtime file, if present (used to initialise
+// the writable temp store on serverless).
+async function readSeed<T>(filePath: string): Promise<T | null> {
+  if (DATA_DIR === SEED_DIR) return null;
+  try {
+    const raw = await fs.readFile(path.join(SEED_DIR, path.basename(filePath)), "utf8");
+    return JSON.parse(raw) as T;
+  } catch {
+    return null;
+  }
+}
+
 async function ensureJsonFile<T>(filePath: string, fallback: T): Promise<void> {
-  await fs.mkdir(path.dirname(filePath), { recursive: true });
   try {
     await fs.access(filePath);
+    return;
   } catch {
-    await fs.writeFile(filePath, JSON.stringify(fallback, null, 2), "utf8");
+    /* needs creating */
+  }
+  const initial = (await readSeed<T>(filePath)) ?? fallback;
+  try {
+    await fs.mkdir(path.dirname(filePath), { recursive: true });
+    await fs.writeFile(filePath, JSON.stringify(initial, null, 2), "utf8");
+  } catch {
+    /* read-only FS — reads will fall back to seed/fallback */
   }
 }
 
 async function readJsonFile<T>(filePath: string, fallback: T): Promise<T> {
   await ensureJsonFile(filePath, fallback);
-  const raw = await fs.readFile(filePath, "utf8");
-  return JSON.parse(raw) as T;
+  try {
+    return JSON.parse(await fs.readFile(filePath, "utf8")) as T;
+  } catch {
+    return (await readSeed<T>(filePath)) ?? fallback;
+  }
 }
 
 async function writeJsonFile<T>(filePath: string, data: T): Promise<void> {
