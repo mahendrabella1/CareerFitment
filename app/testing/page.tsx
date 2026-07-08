@@ -283,10 +283,25 @@ function ReportScreen({
   const { validity, bigFive, temperaments, dominantTemperament } = report;
   const maxTemp = Math.max(...TEMPERAMENTS.map((t) => temperaments[t].score));
 
+  /** Export the report as a PDF via the browser's print-to-PDF (no deps). */
+  function downloadPdf() {
+    const prev = document.title;
+    const safe = (candidate || "Candidate").replace(/[^\w-]+/g, "_");
+    document.title = `Personality-Report-${safe}`;
+    const restore = () => {
+      document.title = prev;
+      window.removeEventListener("afterprint", restore);
+    };
+    window.addEventListener("afterprint", restore);
+    window.print();
+  }
+
   return (
-    <div style={S.reportWrap}>
+    <div style={S.reportWrap} className="pa-report">
+      {/* Print-only stylesheet: renders just the report cleanly as a PDF. */}
+      <style>{PRINT_CSS}</style>
       {/* Banner */}
-      <div style={S.reportBanner}>
+      <div style={S.reportBanner} className="pa-banner">
         <div style={S.reportBannerInner}>
           <div>
             <div style={S.reportKicker}>Personality Evaluation Report</div>
@@ -300,7 +315,7 @@ function ReportScreen({
 
       <div style={S.reportBody}>
         {/* Module 1 — Validity */}
-        <section style={S.card}>
+        <section style={S.card} className="pa-card">
           <div style={S.cardTitle}><span style={S.cardNum}>1</span> Test Validity &amp; Reliability</div>
           {validity.itemCount > 0 ? (
             <>
@@ -333,7 +348,7 @@ function ReportScreen({
         </section>
 
         {/* Module 2 — Four Temperaments */}
-        <section style={S.card}>
+        <section style={S.card} className="pa-card">
           <div style={S.cardTitle}><span style={S.cardNum}>2</span> Four Temperaments Breakdown</div>
           <p style={S.cardSub}>Absolute points scored for each biological disposition.</p>
           {TEMPERAMENTS.map((t) => {
@@ -356,7 +371,7 @@ function ReportScreen({
         </section>
 
         {/* Module 3 — Big Five */}
-        <section style={S.card}>
+        <section style={S.card} className="pa-card">
           <div style={S.cardTitle}><span style={S.cardNum}>3</span> Big Five Mental Dimensions</div>
           <p style={S.cardSub}>How you structure tasks, handle stress, and manage social energy.</p>
           {BIG_FIVE_ORDER.filter((t) => bigFive[t].max > 0).map((t) => {
@@ -373,14 +388,40 @@ function ReportScreen({
           })}
         </section>
 
-        <div style={S.reportActions}>
+        <div style={S.reportActions} className="no-print">
           <button style={S.secondaryBtn} onClick={onHome}>Home</button>
-          <button style={S.primaryBtn} onClick={onRetake}>Take Again</button>
+          <button style={S.secondaryBtn} onClick={onRetake}>Take Again</button>
+          <button style={S.primaryBtn} onClick={downloadPdf}>⬇ Download PDF</button>
         </div>
+        <p style={S.printHint} className="no-print">
+          Tip: in the print dialog choose “Save as PDF”. The report fits on a single page.
+        </p>
       </div>
     </div>
   );
 }
+
+/* ---- Print stylesheet: turns the report screen into a clean PDF -------- */
+const PRINT_CSS = `
+@media print {
+  @page { size: A4; margin: 12mm; }
+  html, body { background: #fff !important; }
+  /* Hide everything except the report while printing */
+  body * { visibility: hidden !important; }
+  .pa-report, .pa-report * { visibility: visible !important; }
+  .pa-report { position: absolute; inset: 0; background: #fff !important; }
+  .no-print { display: none !important; }
+  .pa-banner { border-radius: 0 !important; margin: -12mm -12mm 8mm !important; }
+  .pa-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #e2e8f0 !important;
+    margin-bottom: 10px !important;
+  }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+`;
 
 /* ------------------------------- Styles --------------------------------- */
 const BLUE = "#3b4a9c";
@@ -475,7 +516,8 @@ const S: Record<string, React.CSSProperties> = {
   b5Top: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 },
   b5Name: { fontSize: 15, fontWeight: 700, color: "#1e293b" },
   b5Desc: { fontSize: 13, color: "#64748b", marginTop: 5, fontStyle: "italic" },
-  reportActions: { display: "flex", justifyContent: "center", gap: 14, marginTop: 8 },
+  reportActions: { display: "flex", justifyContent: "center", gap: 14, marginTop: 8, flexWrap: "wrap" },
+  printHint: { textAlign: "center", fontSize: 12, color: "#94a3b8", marginTop: 12 },
   primaryBtn: { padding: "12px 32px", background: BLUE, color: "#fff", border: "none", borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: "pointer" },
   secondaryBtn: { padding: "12px 32px", background: "#fff", color: "#475569", border: "1px solid #cbd5e1", borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: "pointer" },
 };
