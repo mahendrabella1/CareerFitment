@@ -261,6 +261,19 @@ async function fetchJson<T>(input: RequestInfo, init?: RequestInit): Promise<T> 
   return payload.data;
 }
 
+// Feel-good lines shown on each section's intro screen (cycled by section).
+const SECTION_QUOTES = [
+  "Believe in yourself — you’re capable of amazing things.",
+  "Every expert was once a beginner. Keep going!",
+  "Trust your instincts — there are no wrong answers here.",
+  "Great things never come from comfort zones.",
+  "Your potential is endless. Just be honest and shine.",
+  "Small steps every day lead to big results.",
+  "You are exactly where you need to be. Keep going!",
+  "Curiosity is the key that unlocks your future.",
+  "Be yourself — that’s your greatest strength.",
+];
+
 function fmtTime(totalSeconds: number): string {
   const s = Math.max(0, Math.floor(totalSeconds));
   const m = Math.floor(s / 60);
@@ -284,6 +297,14 @@ const EX: Record<string, React.CSSProperties> = {
   insAgree: { display: "flex", alignItems: "center", gap: 10, justifyContent: "center", fontSize: 13.5, color: "var(--ink)", margin: "0 0 20px", cursor: "pointer" },
   insStart: { width: "100%", padding: "14px", background: "var(--accent)", color: "#fff", border: "none", borderRadius: 12, fontSize: 15.5, fontWeight: 800, cursor: "pointer", boxShadow: "0 10px 24px rgba(224,36,46,0.28)" },
   insStartDisabled: { background: "#d7dae0", color: "#8a8f98", cursor: "not-allowed", boxShadow: "none" },
+
+  secCard: { width: "100%", maxWidth: 520, background: "#fff", border: "1px solid var(--line)", borderRadius: 20, padding: "38px 36px", boxShadow: "var(--shadow)", textAlign: "center" },
+  secStep: { fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: "#3b4a9c" },
+  secBadge: { width: 64, height: 64, borderRadius: "50%", margin: "16px auto 14px", background: "linear-gradient(135deg,#3b4a9c,#5a6fce)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, fontWeight: 800 },
+  secTitle: { fontSize: 26, fontWeight: 800, margin: "0 0 4px" },
+  secCount: { fontSize: 13, color: "var(--muted)", margin: "0 0 22px" },
+  secQuote: { fontSize: 16, fontStyle: "italic", color: "#334155", lineHeight: 1.6, background: "#eef2ff", border: "1px solid #dbe2ff", borderRadius: 12, padding: "16px 18px", margin: "0 0 24px" },
+  secStart: { width: "100%", padding: "14px", background: "#3b4a9c", color: "#fff", border: "none", borderRadius: 12, fontSize: 15.5, fontWeight: 800, cursor: "pointer", boxShadow: "0 10px 24px rgba(59,74,156,0.3)" },
 };
 
 // Clean single-column exam UI (mirrors the /testing exam screen).
@@ -394,6 +415,7 @@ export default function AssessmentExperience() {
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
   const [instructionsAccepted, setInstructionsAccepted] = useState(false);
   const [agreeChecked, setAgreeChecked] = useState(false);
+  const [sectionShown, setSectionShown] = useState<Record<string, boolean>>({});
   const [qLeft, setQLeft] = useState(60); // seconds left on the current question
   const [totalLeft, setTotalLeft] = useState(0); // seconds left overall
   const [journeys, setJourneys] = useState<Journey[]>([]);
@@ -611,6 +633,7 @@ export default function AssessmentExperience() {
       setCurrentIndex(0);
       setInstructionsAccepted(false);
       setAgreeChecked(false);
+      setSectionShown({});
       setTotalLeft(60 * (data.totalQuestions || 0));
       setQLeft(60);
       if (leadId) {
@@ -710,6 +733,7 @@ export default function AssessmentExperience() {
     setFeedbackRating(null);
     setInstructionsAccepted(false);
     setAgreeChecked(false);
+    setSectionShown({});
     setView("landing");
   }
 
@@ -794,8 +818,23 @@ export default function AssessmentExperience() {
     }));
   }, [profile]);
 
+  // --- Sections: group questions by parameter (category) -----------------
+  const sections = session?.parameters ?? [];
+  const currentSectionId = currentQuestion?.parameterId ?? "";
+  const sectionIndex = sections.findIndex((p) => p.parameterId === currentSectionId);
+  const sectionQuestionCount = session
+    ? session.questions.filter((q) => q.parameterId === currentSectionId).length
+    : 0;
+  // Show a category intro screen the first time the user enters each section.
+  const sectionIntroActive = Boolean(
+    instructionsAccepted && session && !results && currentQuestion && !sectionShown[currentSectionId]
+  );
+
   // --- Exam timers: 1 minute per question + a total budget ---------------
-  const examLive = Boolean(session && !results && instructionsAccepted);
+  // Timers pause while a section-intro screen is showing.
+  const examLive = Boolean(
+    session && !results && instructionsAccepted && !sectionIntroActive
+  );
 
   // Reset the per-question timer whenever the question changes.
   useEffect(() => {
@@ -1505,7 +1544,28 @@ export default function AssessmentExperience() {
         </section>
       ) : null}
 
-      {session && !results && instructionsAccepted && currentQuestion ? (
+      {session && !results && instructionsAccepted && sectionIntroActive && currentQuestion ? (
+        <section style={EX.insWrap}>
+          <div style={EX.secCard}>
+            <div style={EX.secStep}>
+              Section {sectionIndex + 1} of {sections.length}
+            </div>
+            <div style={EX.secBadge}>{sectionIndex + 1}</div>
+            <h2 style={EX.secTitle}>{currentQuestion.parameterName}</h2>
+            <p style={EX.secCount}>{sectionQuestionCount} question{sectionQuestionCount === 1 ? "" : "s"} in this section</p>
+            <div style={EX.secQuote}>“{SECTION_QUOTES[Math.max(0, sectionIndex) % SECTION_QUOTES.length]}”</div>
+            <button
+              type="button"
+              style={EX.secStart}
+              onClick={() => setSectionShown((s) => ({ ...s, [currentSectionId]: true }))}
+            >
+              Begin {currentQuestion.parameterName} →
+            </button>
+          </div>
+        </section>
+      ) : null}
+
+      {session && !results && instructionsAccepted && !sectionIntroActive && currentQuestion ? (
         <section style={XS.wrap}>
           {/* header */}
           <div style={XS.header}>
