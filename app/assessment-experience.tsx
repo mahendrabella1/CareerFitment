@@ -824,6 +824,7 @@ export default function AssessmentExperience() {
           return t.includes(d) || d.includes(t);
         })
       : undefined;
+    const p = fitment?.profile;
     const summary: AssessmentSummary = {
       journeyCode: results.journey.code,
       journeyName: results.journey.name,
@@ -834,17 +835,35 @@ export default function AssessmentExperience() {
       desiredCareer: desired || null,
       desiredCareerFitPct: desiredMatch?.fitmentPct ?? null,
       summary: results.fitment?.summary ?? null,
+      outcomeLabel: results.fitment?.outcomeLabel ?? null,
+      confidence: fitment?.validity?.confidence ?? null,
       matches: (fitment?.matches ?? []).slice(0, 5).map((m) => ({
         title: m.title,
         fitmentPct: m.fitmentPct,
         band: m.band,
         blurb: m.blurb,
+        roles: (m.roles ?? []).slice(0, 4),
       })),
       topStrengths: (results.topStrengths ?? []).slice(0, 8).map((s) => ({
         parameterName: s.parameterName,
         subTraitName: s.subTraitName,
         normalizedScore: s.normalizedScore,
       })),
+      riasecCode: p?.riasecCode ?? results.fitment?.primaryCode ?? null,
+      themes: (results.fitment?.themes ?? []).slice(0, 6).map((t) => ({
+        letter: t.letter,
+        title: t.title,
+        score: t.score,
+        meaning: t.meaning,
+      })),
+      topIntelligences: (p?.topIntelligences ?? []).slice(0, 5),
+      topValues: (p?.topValues ?? []).slice(0, 5),
+      topAptitudes: (p?.topAptitudes ?? []).slice(0, 5),
+      ei: p?.ei ?? null,
+      learningStyles: (p?.learningStyles ?? []).slice(0, 4),
+      clusters: (fitment?.clusters ?? []).slice(0, 6),
+      recommendations: (results.fitment?.recommendations ?? []).slice(0, 6),
+      nextStep: results.fitment?.nextStep ?? null,
     };
     try {
       await saveAssessment(summary);

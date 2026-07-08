@@ -23,7 +23,21 @@ import {
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { firebaseReady, getFirebaseAuth, getDb } from "@/lib/firebase/client";
 
-/** Trimmed report saved under the user so the dashboard can render it. */
+export interface CareerMatch {
+  title: string;
+  fitmentPct: number;
+  band: string;
+  blurb: string;
+  roles?: string[];
+}
+export interface ReportTheme {
+  letter: string;
+  title: string;
+  score: number;
+  meaning: string;
+}
+
+/** Report data saved under the user so the dashboard can render it. */
 export interface AssessmentSummary {
   journeyCode: string;
   journeyName: string;
@@ -34,8 +48,20 @@ export interface AssessmentSummary {
   desiredCareer: string | null;
   desiredCareerFitPct: number | null; // fit of the desired career, if matched
   summary: string | null;
-  matches: { title: string; fitmentPct: number; band: string; blurb: string }[];
+  outcomeLabel?: string | null;
+  confidence?: string | null;
+  matches: CareerMatch[];
   topStrengths: { parameterName: string; subTraitName: string; normalizedScore: number }[];
+  riasecCode?: string | null;
+  themes?: ReportTheme[];
+  topIntelligences?: { name: string; score: number }[];
+  topValues?: { tag: string; score: number }[];
+  topAptitudes?: { skill: string; score: number }[];
+  ei?: number | null;
+  learningStyles?: { name: string; score: number }[];
+  clusters?: { cluster: string; score: number }[];
+  recommendations?: string[];
+  nextStep?: string | null;
 }
 
 export interface UserProfile {
