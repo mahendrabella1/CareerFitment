@@ -261,6 +261,31 @@ async function fetchJson<T>(input: RequestInfo, init?: RequestInit): Promise<T> 
   return payload.data;
 }
 
+function fmtTime(totalSeconds: number): string {
+  const s = Math.max(0, Math.floor(totalSeconds));
+  const m = Math.floor(s / 60);
+  const r = s % 60;
+  return `${m}:${r.toString().padStart(2, "0")}`;
+}
+
+// Inline styles for the timers + the pre-exam instructions screen.
+const EX: Record<string, React.CSSProperties> = {
+  timerChip: { display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 999, padding: "6px 12px", fontSize: "0.82rem", fontWeight: 700, color: "#fff" },
+  timerLabel: { fontSize: "0.68rem", fontWeight: 500, color: "rgba(255,255,255,0.7)" },
+  totalTimer: { fontSize: "0.82rem", color: "rgba(255,255,255,0.8)", whiteSpace: "nowrap" },
+
+  insWrap: { minHeight: "70vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "30px 16px" },
+  insCard: { width: "100%", maxWidth: 560, background: "#fff", border: "1px solid var(--line)", borderRadius: 20, padding: "34px 36px", boxShadow: "var(--shadow)", textAlign: "center" },
+  insBadge: { fontSize: 40, marginBottom: 8 },
+  insTitle: { fontSize: 26, fontWeight: 800, margin: "0 0 4px" },
+  insSub: { fontSize: 13.5, color: "var(--muted)", margin: "0 0 22px" },
+  insList: { listStyle: "none", padding: 0, margin: "0 0 20px", display: "flex", flexDirection: "column", gap: 12, textAlign: "left" },
+  insItem: { display: "flex", gap: 10, fontSize: 14, lineHeight: 1.5, color: "var(--ink-2)" },
+  insAgree: { display: "flex", alignItems: "center", gap: 10, justifyContent: "center", fontSize: 13.5, color: "var(--ink)", margin: "0 0 20px", cursor: "pointer" },
+  insStart: { width: "100%", padding: "14px", background: "var(--accent)", color: "#fff", border: "none", borderRadius: 12, fontSize: 15.5, fontWeight: 800, cursor: "pointer", boxShadow: "0 10px 24px rgba(224,36,46,0.28)" },
+  insStartDisabled: { background: "#d7dae0", color: "#8a8f98", cursor: "not-allowed", boxShadow: "none" },
+};
+
 function formatAgeGroup(ageGroup: string): string {
   if (ageGroup === "Class 11-12") return "Class 11-12 (Inter)";
   return ageGroup;
@@ -312,6 +337,10 @@ export default function AssessmentExperience() {
   const [beginHandled, setBeginHandled] = useState(false);
   const [feedbackRating, setFeedbackRating] = useState<number | null>(null);
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
+  const [instructionsAccepted, setInstructionsAccepted] = useState(false);
+  const [agreeChecked, setAgreeChecked] = useState(false);
+  const [qLeft, setQLeft] = useState(60); // seconds left on the current question
+  const [totalLeft, setTotalLeft] = useState(0); // seconds left overall
   const [journeys, setJourneys] = useState<Journey[]>([]);
   const [selectedJourneyCode, setSelectedJourneyCode] = useState<string | null>(null);
   const [blueprint, setBlueprint] = useState<BlueprintData | null>(null);
@@ -525,6 +554,10 @@ export default function AssessmentExperience() {
       setMarked({});
       setVisited({});
       setCurrentIndex(0);
+      setInstructionsAccepted(false);
+      setAgreeChecked(false);
+      setTotalLeft(60 * (data.totalQuestions || 0));
+      setQLeft(60);
       if (leadId) {
         void fetch("/api/leads", {
           method: "PATCH",
@@ -620,6 +653,8 @@ export default function AssessmentExperience() {
     setErrorMessage(null);
     setLeadId(null);
     setFeedbackRating(null);
+    setInstructionsAccepted(false);
+    setAgreeChecked(false);
     setView("landing");
   }
 
@@ -703,6 +738,39 @@ export default function AssessmentExperience() {
       dreamCareer: l.dreamCareer || profile.desiredCareer || "",
     }));
   }, [profile]);
+
+  // --- Exam timers: 1 minute per question + a total budget ---------------
+  const examLive = Boolean(session && !results && instructionsAccepted);
+
+  // Reset the per-question timer whenever the question changes.
+  useEffect(() => {
+    if (examLive) setQLeft(60);
+  }, [currentIndex, examLive]);
+
+  // Tick both timers once per second while the exam is live.
+  useEffect(() => {
+    if (!examLive) return;
+    const id = setInterval(() => {
+      setQLeft((q) => Math.max(0, q - 1));
+      setTotalLeft((t) => Math.max(0, t - 1));
+    }, 1000);
+    return () => clearInterval(id);
+  }, [examLive]);
+
+  // Per-question time up -> move to the next question (last one just waits).
+  useEffect(() => {
+    if (!examLive || qLeft > 0 || !session) return;
+    if (currentIndex < session.totalQuestions - 1) setCurrentIndex((i) => i + 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [qLeft, examLive]);
+
+  // Total time up -> auto-submit.
+  useEffect(() => {
+    if (examLive && totalLeft === 0 && !completing && savingQuestionId === null) {
+      void finishAssessment();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [totalLeft, examLive]);
 
   // After scoring, save a trimmed report under the user + record their rating.
   async function submitFeedback() {
@@ -1332,7 +1400,38 @@ export default function AssessmentExperience() {
         </section>
       ) : null}
 
-      {session && !results && currentQuestion ? (
+      {session && !results && !instructionsAccepted ? (
+        <section style={EX.insWrap}>
+          <div style={EX.insCard}>
+            <div style={EX.insBadge}>📋</div>
+            <h2 style={EX.insTitle}>Before you begin</h2>
+            <p style={EX.insSub}>
+              {selectedJourney?.name ?? "Career assessment"} · {session.totalQuestions} questions
+            </p>
+            <ul style={EX.insList}>
+              <li style={EX.insItem}>⏱️ <span><b>1 minute per question</b> — when the timer runs out, we move you to the next one automatically.</span></li>
+              <li style={EX.insItem}>⌛ <span>Total time is about <b>{Math.round((60 * session.totalQuestions) / 60)} minutes</b>. When it ends, the test submits automatically.</span></li>
+              <li style={EX.insItem}>💡 <span>Answer honestly — there are <b>no wrong answers</b>. Go with your first instinct.</span></li>
+              <li style={EX.insItem}>🚩 <span>You can <b>Mark for review</b> and jump between questions using the palette.</span></li>
+              <li style={EX.insItem}>💾 <span>Your answers are <b>saved as you go</b>.</span></li>
+            </ul>
+            <label style={EX.insAgree}>
+              <input type="checkbox" checked={agreeChecked} onChange={(e) => setAgreeChecked(e.target.checked)} />
+              <span>I have read and agree to the instructions above.</span>
+            </label>
+            <button
+              type="button"
+              style={{ ...EX.insStart, ...(agreeChecked ? {} : EX.insStartDisabled) }}
+              disabled={!agreeChecked}
+              onClick={() => setInstructionsAccepted(true)}
+            >
+              Agree &amp; start the test →
+            </button>
+          </div>
+        </section>
+      ) : null}
+
+      {session && !results && instructionsAccepted && currentQuestion ? (
         <section className="exam2">
           <div className="exam2-main">
             {/* dark header bar */}
@@ -1345,9 +1444,15 @@ export default function AssessmentExperience() {
                   Question {currentIndex + 1} of {session.totalQuestions}
                 </p>
               </div>
-              <span className="exam2-pct">
-                {Math.round(((currentIndex + 1) / session.totalQuestions) * 100)}% complete
-              </span>
+              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                <span style={EX.timerChip}>
+                  ⏱ <b style={{ color: qLeft <= 10 ? "#ffd0d0" : "#fff" }}>{fmtTime(qLeft)}</b>
+                  <span style={EX.timerLabel}>this question</span>
+                </span>
+                <span style={EX.totalTimer}>
+                  Total left <b>{fmtTime(totalLeft)}</b>
+                </span>
+              </div>
             </div>
             <div className="exam2-progress">
               <div

@@ -1,11 +1,9 @@
 "use client";
 
 /**
- * /register — two-panel account page (form left, warm visual right), matching
- * the reference design. Keeps all fields: name, email, phone, school/college/
- * company, desired career, category (class/stage), current status (clarity),
- * password. Creates a Firebase account + Firestore profile, then starts the
- * assessment (/?begin=1) using the chosen category's journey.
+ * /register — concise two-panel account page. Left: compact form (all fields).
+ * Right: a student-writing-the-test illustration + a motivational line.
+ * Creates a Firebase account + Firestore profile, then starts the assessment.
  */
 
 import { useMemo, useState } from "react";
@@ -23,12 +21,12 @@ import {
 } from "@/lib/auth/formOptions";
 
 const CSS = `
-.reg-shell { display: grid; grid-template-columns: 1fr 1fr; }
-@media (max-width: 860px) {
+.reg-shell { display: grid; grid-template-columns: 1.05fr 0.95fr; }
+@media (max-width: 880px) {
   .reg-shell { grid-template-columns: 1fr; }
   .reg-visual { display: none !important; }
 }
-.reg-input:focus { border-color: #c9a227 !important; background: #fff !important; }
+.reg-input:focus { border-color: #e0242e !important; background: #fff !important; }
 `;
 
 export default function RegisterPage() {
@@ -36,15 +34,8 @@ export default function RegisterPage() {
   const { ready, register } = useAuth();
 
   const [f, setF] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    institution: "",
-    desiredCareer: "",
-    category: "",
-    clarity: "",
-    password: "",
-    confirm: "",
+    name: "", email: "", phone: "", institution: "",
+    desiredCareer: "", category: "", clarity: "", password: "", confirm: "",
   });
   const [showPw, setShowPw] = useState(false);
   const [touched, setTouched] = useState(false);
@@ -57,12 +48,8 @@ export default function RegisterPage() {
   const pwOk = passwordIsValid(f.password);
   const canSubmit = useMemo(
     () =>
-      f.name.trim() !== "" &&
-      emailIsValid(f.email) &&
-      phoneIsValid(f.phone) &&
-      f.category !== "" &&
-      pwOk &&
-      f.password === f.confirm,
+      f.name.trim() !== "" && emailIsValid(f.email) && phoneIsValid(f.phone) &&
+      f.category !== "" && pwOk && f.password === f.confirm,
     [f, pwOk]
   );
 
@@ -78,15 +65,9 @@ export default function RegisterPage() {
     setSubmitting(true);
     try {
       await register({
-        name: f.name,
-        email: f.email,
-        phone: f.phone,
-        institution: f.institution,
-        desiredCareer: f.desiredCareer,
-        category: f.category,
-        journeyCode: journeyForCategory(f.category),
-        clarity: f.clarity,
-        password: f.password,
+        name: f.name, email: f.email, phone: f.phone, institution: f.institution,
+        desiredCareer: f.desiredCareer, category: f.category,
+        journeyCode: journeyForCategory(f.category), clarity: f.clarity, password: f.password,
       });
       router.push("/?begin=1");
     } catch (err) {
@@ -102,115 +83,67 @@ export default function RegisterPage() {
     <div style={S.page}>
       <style>{CSS}</style>
       <div style={S.shell} className="reg-shell">
-        {/* ---- Left: form ---- */}
+        {/* Left: form */}
         <div style={S.left}>
-          <span className="og-logo" style={S.logoPill}>One<span>Grasp</span></span>
-
-          <div style={S.formHead}>
-            <h1 style={S.title}>Create an account</h1>
-            <p style={S.subtitle}>Sign up and start your career assessment</p>
-          </div>
+          <span className="og-logo" style={S.logo}>One<span>Grasp</span></span>
+          <h1 style={S.title}>Create your account</h1>
+          <p style={S.subtitle}>Sign up and start your career assessment.</p>
 
           {!ready && (
-            <div style={S.warn}>
-              Sign-up needs the site’s Firebase keys — the form works, but won’t save until configured.
-            </div>
+            <div style={S.warn}>Sign-up needs the site’s Firebase keys — the form works, but won’t save until configured.</div>
           )}
           {error && <div style={S.errorBox}>{error}</div>}
 
           <form onSubmit={onSubmit} noValidate style={S.form}>
-            <Field label="Full name">
-              <input className="reg-input" style={S.input} value={f.name} onChange={set("name")} placeholder="Amélie Laurent" />
+            <div>
+              <input className="reg-input" style={S.input} value={f.name} onChange={set("name")} placeholder="Full name *" />
               {touched && !f.name.trim() && <Err>Name is required.</Err>}
-            </Field>
-
-            <div style={S.row}>
-              <Field label="Email">
-                <input className="reg-input" style={S.input} type="email" value={f.email} onChange={set("email")} placeholder="you@example.com" />
-                {touched && !emailIsValid(f.email) && <Err>Valid email required.</Err>}
-              </Field>
-              <Field label="Phone">
-                <input className="reg-input" style={S.input} value={f.phone} onChange={set("phone")} placeholder="10-digit mobile" />
-                {touched && !phoneIsValid(f.phone) && <Err>Valid phone required.</Err>}
-              </Field>
             </div>
-
-            <Field label="School / College / Company">
-              <input className="reg-input" style={S.input} value={f.institution} onChange={set("institution")} placeholder="Organisation name" />
-            </Field>
-
             <div style={S.row}>
-              <Field label="Desired career">
-                <input className="reg-input" style={S.input} value={f.desiredCareer} onChange={set("desiredCareer")} placeholder="e.g. Doctor" />
-              </Field>
-              <Field label="Category / class">
+              <div>
+                <input className="reg-input" style={S.input} type="email" value={f.email} onChange={set("email")} placeholder="Email *" />
+                {touched && !emailIsValid(f.email) && <Err>Valid email required.</Err>}
+              </div>
+              <div>
+                <input className="reg-input" style={S.input} value={f.phone} onChange={set("phone")} placeholder="Phone *" />
+                {touched && !phoneIsValid(f.phone) && <Err>Valid phone required.</Err>}
+              </div>
+            </div>
+            <input className="reg-input" style={S.input} value={f.institution} onChange={set("institution")} placeholder="School / College / Company" />
+            <div style={S.row}>
+              <input className="reg-input" style={S.input} value={f.desiredCareer} onChange={set("desiredCareer")} placeholder="Desired career (e.g. Doctor)" />
+              <div>
                 <select className="reg-input" style={selStyle(f.category)} value={f.category} onChange={set("category")}>
-                  <option value="">Select…</option>
-                  {CATEGORY_OPTIONS.map((o) => (
-                    <option key={o.value} value={o.value}>{o.label}</option>
-                  ))}
+                  <option value="">Category / class *</option>
+                  {CATEGORY_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
                 </select>
                 {touched && !f.category && <Err>Select a category.</Err>}
-              </Field>
+              </div>
             </div>
-
-            <Field label="Current status">
-              <select className="reg-input" style={selStyle(f.clarity)} value={f.clarity} onChange={set("clarity")}>
-                <option value="">Where are you with your career?</option>
-                {CLARITY_STAGES.map((s) => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
-              </select>
-            </Field>
-
+            <select className="reg-input" style={selStyle(f.clarity)} value={f.clarity} onChange={set("clarity")}>
+              <option value="">Current status — where are you with your career?</option>
+              {CLARITY_STAGES.map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
             <div style={S.row}>
-              <Field label="Password">
-                <div style={S.pwWrap}>
-                  <input
-                    className="reg-input"
-                    style={{ ...S.input, paddingRight: 52 }}
-                    type={showPw ? "text" : "password"}
-                    value={f.password}
-                    onChange={set("password")}
-                    placeholder="••••••••"
-                  />
-                  <button type="button" style={S.pwToggle} onClick={() => setShowPw((s) => !s)}>
-                    {showPw ? "Hide" : "Show"}
-                  </button>
-                </div>
-              </Field>
-              <Field label="Confirm">
-                <input
-                  className="reg-input"
-                  style={S.input}
-                  type={showPw ? "text" : "password"}
-                  value={f.confirm}
-                  onChange={set("confirm")}
-                  placeholder="••••••••"
-                />
+              <div style={S.pwWrap}>
+                <input className="reg-input" style={{ ...S.input, paddingRight: 52 }} type={showPw ? "text" : "password"} value={f.password} onChange={set("password")} placeholder="Password *" />
+                <button type="button" style={S.pwToggle} onClick={() => setShowPw((s) => !s)}>{showPw ? "Hide" : "Show"}</button>
+              </div>
+              <div>
+                <input className="reg-input" style={S.input} type={showPw ? "text" : "password"} value={f.confirm} onChange={set("confirm")} placeholder="Confirm *" />
                 {touched && f.confirm !== "" && f.confirm !== f.password && <Err>Doesn’t match.</Err>}
-              </Field>
+              </div>
             </div>
-
             {f.password.length > 0 && (
               <ul style={S.rules}>
                 {PASSWORD_RULES.map((r) => {
                   const ok = r.test(f.password);
-                  return (
-                    <li key={r.label} style={{ ...S.rule, color: ok ? "#15803d" : "#9aa1ad" }}>
-                      {ok ? "✓" : "○"} {r.label}
-                    </li>
-                  );
+                  return <li key={r.label} style={{ ...S.rule, color: ok ? "#15803d" : "#9aa1ad" }}>{ok ? "✓" : "○"} {r.label}</li>;
                 })}
               </ul>
             )}
-
-            <button
-              type="submit"
-              style={{ ...S.submit, ...(canSubmit && !submitting ? {} : S.submitDisabled) }}
-              disabled={!canSubmit || submitting}
-            >
-              {submitting ? "Creating account…" : "Submit"}
+            <button type="submit" style={{ ...S.submit, ...(canSubmit && !submitting ? {} : S.submitDisabled) }} disabled={!canSubmit || submitting}>
+              {submitting ? "Creating account…" : "Create account & start test"}
             </button>
           </form>
 
@@ -220,116 +153,80 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        {/* ---- Right: warm visual ---- */}
+        {/* Right: student illustration + motivation */}
         <div style={S.visual} className="reg-visual">
-          <FloatingCard style={S.card1}>
-            <div style={S.cardTag}>Your assessment</div>
-            <div style={S.cardTime}>8 dimensions · ~25 min</div>
-          </FloatingCard>
-
-          <Scene />
-
-          <div style={S.calendar}>
-            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d, i) => (
-              <div key={d} style={S.calCol}>
-                <div style={S.calDay}>{d}</div>
-                <div style={{ ...S.calNum, ...(i === 4 ? S.calNumActive : {}) }}>{22 + i}</div>
-              </div>
-            ))}
-          </div>
-
-          <FloatingCard style={S.card2}>
-            <div style={S.cardTag}>Career report</div>
-            <div style={S.cardTime}>Personalised to you</div>
-            <div style={S.avatars}>
-              {["#f2c94c", "#eb5757", "#2d9cdb"].map((c) => (
-                <span key={c} style={{ ...S.miniAvatar, background: c }} />
-              ))}
-            </div>
-          </FloatingCard>
+          <StudentScene />
+          <h2 style={S.motTitle}>You’ve got this! ✨</h2>
+          <p style={S.motText}>
+            Every great career starts with understanding yourself. Take your time,
+            trust your instincts — there are no wrong answers here.
+          </p>
         </div>
       </div>
     </div>
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div style={S.field}>
-      <label style={S.label}>{label}</label>
-      {children}
-    </div>
-  );
-}
-const Err = ({ children }: { children: React.ReactNode }) => <div style={S.fieldErr}>{children}</div>;
-const FloatingCard = ({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) => (
-  <div style={{ ...S.floatCard, ...style }}>{children}</div>
-);
+function Err({ children }: { children: React.ReactNode }) { return <div style={S.fieldErr}>{children}</div>; }
 
-/** Abstract, photo-free scene evoking teamwork/career. */
-function Scene() {
+/** Flat illustration of a student writing a test at a desk. */
+function StudentScene() {
   return (
-    <svg viewBox="0 0 320 260" style={S.scene} role="img" aria-label="Career discovery">
-      <defs>
-        <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#f6d98a" />
-          <stop offset="1" stopColor="#e9b949" />
-        </linearGradient>
-      </defs>
-      <rect x="30" y="70" width="260" height="150" rx="20" fill="url(#g1)" opacity="0.55" />
-      <circle cx="120" cy="120" r="34" fill="#fff" opacity="0.85" />
-      <circle cx="120" cy="110" r="13" fill="#c9a227" />
-      <path d="M96 142 a24 20 0 0 1 48 0 z" fill="#c9a227" />
-      <circle cx="205" cy="135" r="26" fill="#fff" opacity="0.8" />
-      <circle cx="205" cy="127" r="10" fill="#d98f3a" />
-      <path d="M187 152 a18 15 0 0 1 36 0 z" fill="#d98f3a" />
-      <path d="M60 200 l34 -38 26 20 40 -46 40 30 30 -22" fill="none" stroke="#8a6d1f" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" opacity="0.7" />
+    <svg viewBox="0 0 300 220" style={S.scene} role="img" aria-label="Student writing a test">
+      {/* desk */}
+      <rect x="40" y="150" width="220" height="16" rx="4" fill="#e6b8b3" />
+      <rect x="54" y="166" width="10" height="42" rx="3" fill="#d99a94" />
+      <rect x="236" y="166" width="10" height="42" rx="3" fill="#d99a94" />
+      {/* paper + answer lines */}
+      <rect x="150" y="120" width="86" height="34" rx="4" fill="#fff" stroke="#f1d0cd" />
+      <rect x="158" y="128" width="60" height="4" rx="2" fill="#e0242e" opacity="0.5" />
+      <rect x="158" y="137" width="70" height="4" rx="2" fill="#cbd5e1" />
+      <rect x="158" y="146" width="46" height="4" rx="2" fill="#cbd5e1" />
+      {/* books */}
+      <rect x="52" y="138" width="70" height="8" rx="2" fill="#2d9cdb" />
+      <rect x="58" y="130" width="64" height="8" rx="2" fill="#f2c94c" />
+      {/* student body */}
+      <path d="M96 150 q4 -46 40 -46 q34 0 40 46 z" fill="#e0242e" />
+      {/* head */}
+      <circle cx="136" cy="86" r="20" fill="#f4c9a8" />
+      <path d="M116 82 q4 -22 20 -22 q18 0 20 22 q-10 -8 -20 -8 q-12 0 -20 8z" fill="#3a2a22" />
+      {/* arm + pencil toward paper */}
+      <path d="M164 128 l40 -8" stroke="#f4c9a8" strokeWidth="9" strokeLinecap="round" />
+      <path d="M204 120 l16 -6" stroke="#f2c94c" strokeWidth="6" strokeLinecap="round" />
+      <path d="M220 114 l6 -2" stroke="#5b4636" strokeWidth="6" strokeLinecap="round" />
     </svg>
   );
 }
 
-const GOLD = "#f2c94c";
+const RED = "#e0242e";
 const S: Record<string, React.CSSProperties> = {
-  page: { minHeight: "100vh", background: "#e7e8ec", padding: "20px", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: "#1f2430", display: "flex", alignItems: "center", justifyContent: "center" },
-  shell: { width: "100%", maxWidth: 1000, background: "#f6f4ef", borderRadius: 26, overflow: "hidden", boxShadow: "0 30px 80px rgba(31,36,48,.18)", minHeight: 620 },
+  page: { minHeight: "100vh", background: "#eef1f6", padding: "20px", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: "#1f2430", display: "flex", alignItems: "center", justifyContent: "center" },
+  shell: { width: "100%", maxWidth: 960, background: "#fff", borderRadius: 22, overflow: "hidden", boxShadow: "0 28px 70px rgba(31,36,48,.18)", minHeight: 560 },
 
-  left: { padding: "34px 46px 30px", display: "flex", flexDirection: "column", background: "linear-gradient(180deg,#faf9f5,#f4efe4)" },
-  logoPill: { alignSelf: "flex-start", border: "1px solid #d8d3c6", borderRadius: 999, padding: "6px 16px", fontSize: "1.05rem", fontWeight: 800, background: "#fff" },
-  formHead: { textAlign: "center", margin: "26px 0 20px" },
-  title: { fontSize: 28, fontWeight: 800, margin: "0 0 6px" },
-  subtitle: { fontSize: 13.5, color: "#8a8f9a", margin: 0 },
+  left: { padding: "34px 42px 28px", display: "flex", flexDirection: "column" },
+  logo: { alignSelf: "flex-start", fontSize: "1.4rem", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 16 },
+  title: { fontSize: 25, fontWeight: 800, margin: "0 0 4px" },
+  subtitle: { fontSize: 13.5, color: "#8a8f9a", margin: "0 0 18px" },
 
   warn: { background: "#fffbeb", border: "1px solid #fcd34d", color: "#92400e", padding: "9px 12px", borderRadius: 10, fontSize: 12.5, marginBottom: 12 },
   errorBox: { background: "#fee2e2", border: "1px solid #fca5a5", color: "#b91c1c", padding: "9px 12px", borderRadius: 10, fontSize: 13, marginBottom: 12, fontWeight: 600 },
 
-  form: { display: "flex", flexDirection: "column", gap: 12 },
-  row: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 },
-  field: {},
-  label: { display: "block", fontSize: 12, fontWeight: 600, color: "#6b7280", marginBottom: 5 },
-  input: { width: "100%", padding: "12px 14px", borderRadius: 12, border: "1px solid #e6e1d5", fontSize: 14, outline: "none", boxSizing: "border-box", background: "#f3efe6", transition: "border-color .15s, background .15s" },
+  form: { display: "flex", flexDirection: "column", gap: 11 },
+  row: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 11 },
+  input: { width: "100%", padding: "11px 13px", borderRadius: 10, border: "1px solid #dfe3ea", fontSize: 14, outline: "none", boxSizing: "border-box", background: "#f7f8fa", transition: "border-color .15s, background .15s" },
   fieldErr: { color: "#dc2626", fontSize: 11, marginTop: 3 },
   pwWrap: { position: "relative" },
-  pwToggle: { position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: "#b08900", fontWeight: 700, fontSize: 11.5, cursor: "pointer" },
-  rules: { listStyle: "none", padding: "8px 12px", margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3px 10px", background: "#f3efe6", border: "1px solid #e6e1d5", borderRadius: 10 },
+  pwToggle: { position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: RED, fontWeight: 700, fontSize: 11.5, cursor: "pointer" },
+  rules: { listStyle: "none", padding: "8px 12px", margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3px 10px", background: "#f7f8fa", border: "1px solid #eef0f4", borderRadius: 10 },
   rule: { fontSize: 11, fontWeight: 600 },
-  submit: { marginTop: 4, padding: "14px", background: GOLD, color: "#3a2f00", border: "none", borderRadius: 12, fontSize: 15, fontWeight: 800, cursor: "pointer", boxShadow: "0 10px 22px rgba(242,201,76,.4)" },
-  submitDisabled: { background: "#e6e1d5", color: "#9aa1ad", cursor: "not-allowed", boxShadow: "none" },
-  footer: { marginTop: 22, display: "flex", justifyContent: "space-between", fontSize: 12.5, color: "#8a8f9a" },
-  footLink: { color: "#1f2430", fontWeight: 700, textDecoration: "underline" },
+  submit: { marginTop: 4, padding: "13px", background: RED, color: "#fff", border: "none", borderRadius: 11, fontSize: 15, fontWeight: 800, cursor: "pointer", boxShadow: "0 10px 22px rgba(224,36,46,.3)" },
+  submitDisabled: { background: "#e0e3ea", color: "#9aa1ad", cursor: "not-allowed", boxShadow: "none" },
+  footer: { marginTop: 20, display: "flex", justifyContent: "space-between", fontSize: 12.5, color: "#8a8f9a" },
+  footLink: { color: RED, fontWeight: 700, textDecoration: "none" },
   terms: { textDecoration: "underline", cursor: "default" },
 
-  visual: { position: "relative", background: "linear-gradient(160deg,#f6ead0,#f4d98f)", margin: 12, borderRadius: 20, overflow: "hidden", minHeight: 560 },
-  scene: { position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: "82%", height: "auto" },
-  floatCard: { position: "absolute", background: "rgba(255,255,255,.92)", backdropFilter: "blur(6px)", borderRadius: 14, padding: "12px 16px", boxShadow: "0 12px 30px rgba(31,36,48,.16)" },
-  card1: { top: 28, left: 28 },
-  card2: { bottom: 30, left: 26 },
-  cardTag: { fontSize: 13, fontWeight: 800, color: "#1f2430" },
-  cardTime: { fontSize: 11.5, color: "#8a8f9a", marginTop: 3 },
-  avatars: { display: "flex", gap: 5, marginTop: 8 },
-  miniAvatar: { width: 20, height: 20, borderRadius: "50%", display: "inline-block", border: "2px solid #fff" },
-  calendar: { position: "absolute", right: 22, top: "48%", transform: "translateY(-50%)", display: "flex", gap: 8, background: "rgba(255,255,255,.14)", padding: "12px 14px", borderRadius: 14 },
-  calCol: { textAlign: "center" },
-  calDay: { fontSize: 10.5, color: "#7a6528", fontWeight: 700 },
-  calNum: { fontSize: 14, fontWeight: 800, color: "#3a2f00", marginTop: 4 },
-  calNumActive: { background: "#fff", borderRadius: 8, padding: "2px 0" },
+  visual: { background: "linear-gradient(160deg,#fdecec,#fbe3e0)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 34px", textAlign: "center" },
+  scene: { width: "80%", maxWidth: 300, height: "auto", marginBottom: 18 },
+  motTitle: { fontSize: 22, fontWeight: 800, margin: "0 0 10px", color: "#1f2430" },
+  motText: { fontSize: 14, color: "#6b5b5b", lineHeight: 1.6, maxWidth: 300, margin: 0 },
 };
