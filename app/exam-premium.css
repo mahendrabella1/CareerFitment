@@ -146,8 +146,7 @@
   .exam2-question { font-size: 1.25rem; }
 }
 
-/* Revamped exam split (question area + palette) — stack on small screens */
+/* Full-screen exam grid — stack on small screens */
 @media (max-width: 900px) {
-  .xs-split { grid-template-columns: 1fr !important; }
-  .xs-palette { border-left: none !important; border-top: 1px solid var(--line); }
+  .fs-grid { grid-template-columns: 1fr !important; }
 }

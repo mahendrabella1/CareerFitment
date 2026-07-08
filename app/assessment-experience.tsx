@@ -281,13 +281,30 @@ function fmtTime(totalSeconds: number): string {
   return `${m}:${r.toString().padStart(2, "0")}`;
 }
 
+function fmtClock(totalSeconds: number): string {
+  const s = Math.max(0, Math.floor(totalSeconds));
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const r = s % 60;
+  return [h, m, r].map((n) => n.toString().padStart(2, "0")).join(":");
+}
+
+function OvRow({ label, value, color }: { label: string; value: number | string; color?: string }) {
+  return (
+    <div style={FS.ovRow}>
+      <span style={FS.ovLabel}>{label}</span>
+      <span style={{ ...FS.ovValue, ...(color ? { color } : {}) }}>{value}</span>
+    </div>
+  );
+}
+
 // Inline styles for the timers + the pre-exam instructions screen.
 const EX: Record<string, React.CSSProperties> = {
   timerChip: { display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 999, padding: "6px 12px", fontSize: "0.82rem", fontWeight: 700, color: "#fff" },
   timerLabel: { fontSize: "0.68rem", fontWeight: 500, color: "rgba(255,255,255,0.7)" },
   totalTimer: { fontSize: "0.82rem", color: "rgba(255,255,255,0.8)", whiteSpace: "nowrap" },
 
-  insWrap: { minHeight: "70vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "30px 16px" },
+  insWrap: { position: "fixed", inset: 0, zIndex: 1000, background: "#eef1f6", display: "flex", alignItems: "center", justifyContent: "center", padding: "30px 16px", overflow: "auto" },
   insCard: { width: "100%", maxWidth: 560, background: "#fff", border: "1px solid var(--line)", borderRadius: 20, padding: "34px 36px", boxShadow: "var(--shadow)", textAlign: "center" },
   insBadge: { fontSize: 40, marginBottom: 8 },
   insTitle: { fontSize: 26, fontWeight: 800, margin: "0 0 4px" },
@@ -307,59 +324,67 @@ const EX: Record<string, React.CSSProperties> = {
   secStart: { width: "100%", padding: "14px", background: "#3b4a9c", color: "#fff", border: "none", borderRadius: 12, fontSize: 15.5, fontWeight: 800, cursor: "pointer", boxShadow: "0 10px 24px rgba(59,74,156,0.3)" },
 };
 
-// Clean single-column exam UI (mirrors the /testing exam screen).
+// Full-screen exam UI (modelled on the reference MCQ exam mockup).
 const BLUE = "#3b4a9c";
-const XS: Record<string, React.CSSProperties> = {
-  wrap: { minHeight: "82vh", display: "flex", flexDirection: "column", background: "#fff", border: "1px solid var(--line)", borderRadius: 20, overflow: "hidden", boxShadow: "var(--shadow)" },
-  header: { background: BLUE, color: "#fff" },
-  headerInner: { padding: "18px 26px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" },
-  eyebrow: { fontSize: "0.66rem", textTransform: "uppercase", letterSpacing: "0.12em", color: "rgba(255,255,255,0.62)", marginBottom: 3 },
-  counter: { fontSize: "1.05rem", fontWeight: 800 },
-  timers: { display: "flex", alignItems: "center", gap: 12 },
-  timerChip: { display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 999, padding: "6px 12px", fontSize: "0.82rem", fontWeight: 700 },
-  timerLabel: { fontSize: "0.66rem", fontWeight: 500, color: "rgba(255,255,255,0.7)" },
-  totalTimer: { fontSize: "0.8rem", color: "rgba(255,255,255,0.82)", whiteSpace: "nowrap" },
-  progressBar: { height: 7, background: "rgba(255,255,255,0.25)" },
-  progressFill: { height: "100%", background: "#fff", transition: "width 0.35s ease" },
+const FS: Record<string, React.CSSProperties> = {
+  overlay: { position: "fixed", inset: 0, zIndex: 1000, background: "#f1f5f9", display: "flex", flexDirection: "column", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: "#1f2937" },
 
-  split: { display: "grid", gridTemplateColumns: "1fr 300px", flex: 1, minHeight: 0 },
-  mainCol: { display: "flex", flexDirection: "column", minWidth: 0 },
-  palette: { borderLeft: "1px solid var(--line)", background: "#f8fafc", padding: "18px 18px 22px", overflow: "auto" },
-  palTitle: { fontSize: 13, fontWeight: 800, color: "#334155", marginBottom: 12 },
-  legend: { display: "flex", flexDirection: "column", gap: 7, marginBottom: 16 },
-  legItem: { display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#64748b", fontWeight: 600 },
-  dot: { width: 13, height: 13, borderRadius: 4, display: "inline-block", flexShrink: 0 },
-  palGrid: { display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 },
-  cell: { height: 38, borderRadius: 9, border: "1px solid #d7dbe6", background: "#fff", color: "#64748b", fontWeight: 800, fontSize: 13, cursor: "pointer", transition: "transform .1s ease" },
-  cellAnswered: { background: "#16a34a", borderColor: "#16a34a", color: "#fff" },
-  cellMarked: { background: "#f2c94c", borderColor: "#e0b53c", color: "#3a2f00" },
-  cellAnsMark: { background: "#16a34a", borderColor: "#16a34a", color: "#fff", boxShadow: "inset 0 0 0 2px #f2c94c" },
-  cellCurrent: { outline: "3px solid #3b4a9c", outlineOffset: 1 },
-  palHint: { fontSize: 11, color: "#94a3b8", marginTop: 12 },
+  topbar: { background: "#fff", borderBottom: "1px solid #e6e9ef", padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" },
+  brand: { display: "flex", alignItems: "center", gap: 12, minWidth: 0 },
+  brandIcon: { width: 42, height: 42, borderRadius: 12, background: "#eef2ff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 },
+  brandTitle: { fontSize: 18, fontWeight: 800, color: "#0f172a", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+  brandProgress: { height: 4, background: "#e6e9f2", borderRadius: 999, overflow: "hidden", marginTop: 6, maxWidth: 320 },
+  brandProgressFill: { height: "100%", background: BLUE, borderRadius: 999, transition: "width .35s ease" },
+  stats: { display: "flex", gap: 10 },
+  stat: { display: "flex", alignItems: "center", gap: 8, background: "#fff", border: "1px solid #e6e9ef", borderRadius: 12, padding: "8px 14px" },
+  statIcon: { color: BLUE, fontSize: 15 },
+  statLabel: { fontSize: 10.5, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: .4 },
+  statValue: { fontSize: 15, fontWeight: 800, color: "#1e293b" },
+  endBtn: { display: "flex", alignItems: "center", gap: 6, padding: "10px 18px", background: "#fff", color: "#dc2626", border: "1px solid #fca5a5", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer" },
 
-  body: { flex: 1, width: "100%", maxWidth: 720, margin: "0 auto", padding: "34px 28px 22px" },
-  subtrait: { display: "inline-block", fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700, color: BLUE, background: "#eef2ff", padding: "5px 13px", borderRadius: 999, marginBottom: 16 },
-  qLabel: { fontSize: 14, fontWeight: 700, color: BLUE, marginBottom: 8 },
-  question: { fontSize: "1.42rem", lineHeight: 1.45, margin: "0 0 24px", fontWeight: 600, color: "#1f2937" },
-  options: { display: "flex", flexDirection: "column", gap: 10, maxWidth: 620 },
-  option: { display: "flex", alignItems: "center", gap: 14, width: "100%", textAlign: "left", padding: "14px 18px", border: "1px solid #d7dbe6", borderRadius: 12, background: "#fff", fontSize: "1rem", fontWeight: 600, color: "#334155", cursor: "pointer", transition: "all .14s ease" },
-  optionOn: { borderColor: "#4a90d9", background: "#f0f7ff" },
-  radio: { flex: "0 0 auto", width: 20, height: 20, borderRadius: "50%", border: "2px solid #94a3b8", display: "grid", placeItems: "center" },
-  radioOn: { borderColor: "#4a90d9" },
-  radioDot: { width: 10, height: 10, borderRadius: "50%", background: "#4a90d9" },
-  optionText: { fontSize: "1rem" },
-  optionTextOn: { color: "#1d4ed8" },
+  body: { flex: 1, overflow: "auto", padding: "24px" },
+  grid: { maxWidth: 1180, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 360px", gap: 20, alignItems: "start" },
 
-  footer: { background: "#eef1f6", borderTop: "1px solid var(--line)", padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 },
-  footerCenter: { display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center" },
-  exit: { width: 44, background: "none", border: "none", color: "var(--muted)", fontSize: 13, fontWeight: 600, cursor: "pointer", textAlign: "left" },
-  navBtn: { padding: "11px 24px", borderRadius: 10, fontSize: 14.5, fontWeight: 700, cursor: "pointer", border: "none" },
-  prevBtn: { background: "#fff", color: "#475569", border: "1px solid #cbd5e1" },
-  markBtn: { background: "#fff", color: "#b08900", border: "1px solid #e2c15a" },
-  markOn: { background: "#fef3c7", color: "#92400e" },
-  nextBtn: { background: "#4a90d9", color: "#fff" },
-  submitBtn: { background: "#16a34a", color: "#fff" },
-  navDisabled: { opacity: 0.45, cursor: "not-allowed" },
+  qCard: { background: "#fff", border: "1px solid #e6e9ef", borderRadius: 16, padding: "24px 28px", boxShadow: "0 2px 12px rgba(30,41,59,.05)" },
+  qHead: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 14 },
+  qNum: { fontSize: 14, fontWeight: 700, color: "#64748b" },
+  markLink: { display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", color: "#64748b", fontSize: 13.5, fontWeight: 700, cursor: "pointer" },
+  markLinkOn: { color: "#d97706" },
+  qDivider: { height: 1, background: "#eef1f6", marginBottom: 18 },
+  qCat: { fontSize: 11.5, textTransform: "uppercase", letterSpacing: .6, fontWeight: 700, color: BLUE, marginBottom: 10 },
+  qText: { fontSize: "1.35rem", lineHeight: 1.45, fontWeight: 700, color: "#1e293b", margin: "0 0 22px" },
+  opts: { display: "flex", flexDirection: "column", gap: 12 },
+  opt: { display: "flex", alignItems: "center", gap: 14, width: "100%", textAlign: "left", padding: "16px 18px", border: "1px solid #e2e6ee", borderRadius: 14, background: "#fff", cursor: "pointer", transition: "all .14s ease" },
+  optOn: { borderColor: BLUE, background: "#f5f7ff", boxShadow: "0 0 0 1px " + BLUE },
+  letter: { flex: "0 0 auto", width: 34, height: 34, borderRadius: "50%", border: "1px solid #cbd5e1", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 14, color: "#475569" },
+  letterOn: { background: BLUE, borderColor: BLUE, color: "#fff" },
+  optLabel: { flex: 1, fontSize: 15.5, fontWeight: 600, color: "#334155" },
+  selPill: { background: "#dcfce7", color: "#15803d", borderRadius: 999, padding: "3px 12px", fontSize: 12, fontWeight: 700 },
+
+  side: { display: "flex", flexDirection: "column", gap: 20 },
+  navCard: { background: "#fff", border: "1px solid #e6e9ef", borderRadius: 16, padding: "20px 22px", boxShadow: "0 2px 12px rgba(30,41,59,.05)" },
+  navTitle: { fontSize: 16, fontWeight: 800, color: "#0f172a", marginBottom: 14 },
+  legend: { display: "flex", flexWrap: "wrap", gap: "8px 16px", marginBottom: 16 },
+  legItem: { display: "flex", alignItems: "center", gap: 7, fontSize: 12.5, color: "#475569", fontWeight: 600 },
+  legDot: { width: 14, height: 14, borderRadius: 5, display: "inline-block", flexShrink: 0 },
+  navGrid: { display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8, maxHeight: 300, overflow: "auto", paddingRight: 2 },
+  cell: { height: 40, borderRadius: 10, border: "1px solid #e2e6ee", background: "#fff", color: "#64748b", fontWeight: 700, fontSize: 13.5, cursor: "pointer", transition: "transform .1s ease" },
+  cellAnswered: { background: "#dcfce7", borderColor: "#86efac", color: "#15803d" },
+  cellReview: { background: "#f59e0b", borderColor: "#f59e0b", color: "#fff" },
+  cellCurrent: { background: "#eff3ff", borderColor: BLUE, color: BLUE, boxShadow: "0 0 0 1px " + BLUE },
+
+  ovCard: { background: "#fff", border: "1px solid #e6e9ef", borderRadius: 16, padding: "20px 22px", boxShadow: "0 2px 12px rgba(30,41,59,.05)" },
+  ovTitle: { fontSize: 15, fontWeight: 800, color: "#0f172a", marginBottom: 12 },
+  ovRow: { display: "flex", justifyContent: "space-between", padding: "9px 0", borderTop: "1px solid #f1f5f9", fontSize: 13.5 },
+  ovLabel: { color: "#64748b", fontWeight: 600 },
+  ovValue: { fontWeight: 800, color: "#1e293b" },
+
+  footer: { background: "#fff", borderTop: "1px solid #e6e9ef", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 },
+  footCenter: { flex: 1, display: "flex", justifyContent: "center" },
+  prevBtn: { display: "inline-flex", alignItems: "center", gap: 6, padding: "12px 22px", background: "#fff", color: "#475569", border: "1px solid #cbd5e1", borderRadius: 10, fontSize: 14.5, fontWeight: 700, cursor: "pointer" },
+  nextBtn: { padding: "12px 40px", background: BLUE, color: "#fff", border: "none", borderRadius: 10, fontSize: 15, fontWeight: 800, cursor: "pointer", boxShadow: "0 8px 20px rgba(59,74,156,.3)" },
+  submitBtn: { padding: "12px 40px", background: "#16a34a", color: "#fff", border: "none", borderRadius: 10, fontSize: 15, fontWeight: 800, cursor: "pointer", boxShadow: "0 8px 20px rgba(22,163,74,.28)" },
+  disabled: { opacity: 0.45, cursor: "not-allowed", boxShadow: "none" },
 };
 
 function formatAgeGroup(ageGroup: string): string {
@@ -836,27 +861,14 @@ export default function AssessmentExperience() {
     session && !results && instructionsAccepted && !sectionIntroActive
   );
 
-  // Reset the per-question timer whenever the question changes.
-  useEffect(() => {
-    if (examLive) setQLeft(60);
-  }, [currentIndex, examLive]);
-
-  // Tick both timers once per second while the exam is live.
+  // Tick the total timer once per second while the exam is live.
   useEffect(() => {
     if (!examLive) return;
     const id = setInterval(() => {
-      setQLeft((q) => Math.max(0, q - 1));
       setTotalLeft((t) => Math.max(0, t - 1));
     }, 1000);
     return () => clearInterval(id);
   }, [examLive]);
-
-  // Per-question time up -> move to the next question (last one just waits).
-  useEffect(() => {
-    if (!examLive || qLeft > 0 || !session) return;
-    if (currentIndex < session.totalQuestions - 1) setCurrentIndex((i) => i + 1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [qLeft, examLive]);
 
   // Total time up -> auto-submit.
   useEffect(() => {
@@ -1522,11 +1534,11 @@ export default function AssessmentExperience() {
               {selectedJourney?.name ?? "Career assessment"} · {session.totalQuestions} questions
             </p>
             <ul style={EX.insList}>
-              <li style={EX.insItem}>⏱️ <span><b>1 minute per question</b> — when the timer runs out, we move you to the next one automatically.</span></li>
-              <li style={EX.insItem}>⌛ <span>Total time is about <b>{Math.round((60 * session.totalQuestions) / 60)} minutes</b>. When it ends, the test submits automatically.</span></li>
+              <li style={EX.insItem}>⏱️ <span>You have about <b>1 minute per question</b> — roughly <b>{Math.round((60 * session.totalQuestions) / 60)} minutes</b> in total.</span></li>
+              <li style={EX.insItem}>⌛ <span>A timer runs at the top. When it reaches zero, the test <b>submits automatically</b>.</span></li>
               <li style={EX.insItem}>💡 <span>Answer honestly — there are <b>no wrong answers</b>. Go with your first instinct.</span></li>
-              <li style={EX.insItem}>🚩 <span>You can <b>Mark for review</b> and jump between questions using the palette.</span></li>
-              <li style={EX.insItem}>💾 <span>Your answers are <b>saved as you go</b>.</span></li>
+              <li style={EX.insItem}>🚩 <span>You can <b>Mark for review</b> and jump between questions using the navigation panel.</span></li>
+              <li style={EX.insItem}>📚 <span>Questions are grouped into <b>sections</b> — you’ll see a short intro before each.</span></li>
             </ul>
             <label style={EX.insAgree}>
               <input type="checkbox" checked={agreeChecked} onChange={(e) => setAgreeChecked(e.target.checked)} />
@@ -1566,138 +1578,146 @@ export default function AssessmentExperience() {
       ) : null}
 
       {session && !results && instructionsAccepted && !sectionIntroActive && currentQuestion ? (
-        <section style={XS.wrap}>
-          {/* header */}
-          <div style={XS.header}>
-            <div style={XS.headerInner}>
+        <div style={FS.overlay}>
+          {/* top bar */}
+          <div style={FS.topbar}>
+            <div style={FS.brand}>
+              <div style={FS.brandIcon}>📋</div>
               <div style={{ minWidth: 0 }}>
-                <div style={XS.eyebrow}>
-                  {selectedJourney?.name ?? "Assessment"} · {currentQuestion.parameterName}
+                <div style={FS.brandTitle}>
+                  {selectedJourney?.name ?? "Career Assessment"} — {session.totalQuestions} Questions
                 </div>
-                <div style={XS.counter}>
-                  Question {currentIndex + 1} of {session.totalQuestions}
+                <div style={FS.brandProgress}>
+                  <div style={{ ...FS.brandProgressFill, width: `${((currentIndex + 1) / session.totalQuestions) * 100}%` }} />
                 </div>
               </div>
-              <div style={XS.timers}>
-                <span style={XS.timerChip}>
-                  ⏱ <b style={{ color: qLeft <= 10 ? "#ffd0d0" : "#fff" }}>{fmtTime(qLeft)}</b>
-                  <span style={XS.timerLabel}>this question</span>
-                </span>
-                <span style={XS.totalTimer}>Total left <b>{fmtTime(totalLeft)}</b></span>
-              </div>
             </div>
-            <div style={XS.progressBar}>
-              <div style={{ ...XS.progressFill, width: `${((currentIndex + 1) / session.totalQuestions) * 100}%` }} />
+            <div style={FS.stats}>
+              <div style={FS.stat}><span style={FS.statIcon}>⏱</span><div><div style={FS.statLabel}>Time Left</div><div style={FS.statValue}>{fmtClock(totalLeft)}</div></div></div>
+              <div style={FS.stat}><span style={FS.statIcon}>❓</span><div><div style={FS.statLabel}>Questions</div><div style={FS.statValue}>{currentIndex + 1} / {session.totalQuestions}</div></div></div>
+              <div style={FS.stat}><span style={FS.statIcon}>🔖</span><div><div style={FS.statLabel}>Marked</div><div style={FS.statValue}>{Object.values(marked).filter(Boolean).length}</div></div></div>
             </div>
+            <button
+              style={FS.endBtn}
+              type="button"
+              onClick={() => { if (window.confirm("End the exam? Your progress will be lost.")) resetToBlueprint(); }}
+            >
+              ⏻ End Exam
+            </button>
           </div>
 
-          <div className="xs-split" style={XS.split}>
-            <div style={XS.mainCol}>
           {/* body */}
-          <div style={XS.body}>
-            <div style={XS.subtrait}>{currentQuestion.subTraitName}</div>
-            <div style={XS.qLabel}>Question {currentIndex + 1}</div>
-            <h2 style={XS.question}>{currentQuestion.text}</h2>
-
-            <div style={XS.options}>
-              {optionList(currentQuestion).map((option) => {
-                const selected = answers[currentQuestion.id] === option.value;
-                const saving = savingQuestionId === currentQuestion.id;
-                return (
+          <div style={FS.body}>
+            <div className="fs-grid" style={FS.grid}>
+              {/* question card */}
+              <div style={FS.qCard}>
+                <div style={FS.qHead}>
+                  <span style={FS.qNum}>Question {currentIndex + 1} of {session.totalQuestions}</span>
                   <button
-                    key={option.value}
+                    style={{ ...FS.markLink, ...(marked[currentQuestion.id] ? FS.markLinkOn : {}) }}
+                    onClick={() => setMarked((m) => ({ ...m, [currentQuestion.id]: !m[currentQuestion.id] }))}
                     type="button"
-                    disabled={saving}
-                    onClick={() => void saveAnswer(option.value)}
-                    style={{ ...XS.option, ...(selected ? XS.optionOn : {}) }}
                   >
-                    <span style={{ ...XS.radio, ...(selected ? XS.radioOn : {}) }}>
-                      {selected && <span style={XS.radioDot} />}
-                    </span>
-                    <span style={{ ...XS.optionText, ...(selected ? XS.optionTextOn : {}) }}>
-                      {option.label}
-                    </span>
+                    🔖 {marked[currentQuestion.id] ? "Marked for Review" : "Mark for Review"}
                   </button>
-                );
-              })}
+                </div>
+                <div style={FS.qDivider} />
+                <div style={FS.qCat}>{currentQuestion.parameterName} · {currentQuestion.subTraitName}</div>
+                <h2 style={FS.qText}>{currentQuestion.text}</h2>
+                <div style={FS.opts}>
+                  {optionList(currentQuestion).map((option, i) => {
+                    const selected = answers[currentQuestion.id] === option.value;
+                    const saving = savingQuestionId === currentQuestion.id;
+                    const letter = String.fromCharCode(65 + i);
+                    return (
+                      <button
+                        key={option.value}
+                        type="button"
+                        disabled={saving}
+                        onClick={() => void saveAnswer(option.value)}
+                        style={{ ...FS.opt, ...(selected ? FS.optOn : {}) }}
+                      >
+                        <span style={{ ...FS.letter, ...(selected ? FS.letterOn : {}) }}>{letter}</span>
+                        <span style={FS.optLabel}>{option.label}</span>
+                        {selected && <span style={FS.selPill}>Selected</span>}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* navigation panel */}
+              <aside style={FS.side}>
+                <div style={FS.navCard}>
+                  <div style={FS.navTitle}>Question Navigation</div>
+                  <div style={FS.legend}>
+                    <span style={FS.legItem}><i style={{ ...FS.legDot, background: "#dcfce7", border: "1px solid #16a34a" }} /> Answered</span>
+                    <span style={FS.legItem}><i style={{ ...FS.legDot, background: "#3b4a9c" }} /> Current</span>
+                    <span style={FS.legItem}><i style={{ ...FS.legDot, background: "#f59e0b" }} /> Review</span>
+                    <span style={FS.legItem}><i style={{ ...FS.legDot, border: "1px solid #cbd5e1", background: "#fff" }} /> Not Answered</span>
+                  </div>
+                  <div style={FS.navGrid}>
+                    {session.questions.map((q, i) => {
+                      const isCurrent = i === currentIndex;
+                      const isAnswered = answers[q.id] !== undefined;
+                      const isMarked = Boolean(marked[q.id]);
+                      let c: React.CSSProperties = { ...FS.cell };
+                      if (isCurrent) c = { ...c, ...FS.cellCurrent };
+                      else if (isMarked) c = { ...c, ...FS.cellReview };
+                      else if (isAnswered) c = { ...c, ...FS.cellAnswered };
+                      return (
+                        <button key={q.id} type="button" onClick={() => setCurrentIndex(i)} style={c}>
+                          {i + 1}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div style={FS.ovCard}>
+                  <div style={FS.ovTitle}>📊 Exam Overview</div>
+                  <OvRow label="Total Questions" value={session.totalQuestions} />
+                  <OvRow label="Answered" value={Object.keys(answers).length} color="#16a34a" />
+                  <OvRow label="Not Answered" value={session.totalQuestions - Object.keys(answers).length} color="#3b4a9c" />
+                  <OvRow label="Marked for Review" value={Object.values(marked).filter(Boolean).length} color="#f59e0b" />
+                </div>
+              </aside>
             </div>
           </div>
 
-          {/* footer nav */}
-          <div style={XS.footer}>
-            <button style={XS.exit} onClick={resetToBlueprint} type="button">Exit</button>
-            <div style={XS.footerCenter}>
-              <button
-                style={{ ...XS.navBtn, ...XS.prevBtn, ...(currentIndex === 0 ? XS.navDisabled : {}) }}
-                disabled={currentIndex === 0}
-                onClick={() => setCurrentIndex((i) => Math.max(i - 1, 0))}
-                type="button"
-              >
-                Previous
-              </button>
-              <button
-                style={{ ...XS.navBtn, ...XS.markBtn, ...(marked[currentQuestion.id] ? XS.markOn : {}) }}
-                onClick={() => setMarked((m) => ({ ...m, [currentQuestion.id]: !m[currentQuestion.id] }))}
-                type="button"
-              >
-                {marked[currentQuestion.id] ? "★ Marked" : "☆ Mark for review"}
-              </button>
+          {/* footer — Next centered */}
+          <div style={FS.footer}>
+            <button
+              style={{ ...FS.prevBtn, ...(currentIndex === 0 ? FS.disabled : {}) }}
+              disabled={currentIndex === 0}
+              onClick={() => setCurrentIndex((i) => Math.max(i - 1, 0))}
+              type="button"
+            >
+              ← Previous
+            </button>
+            <div style={FS.footCenter}>
               {currentIndex < session.totalQuestions - 1 ? (
                 <button
-                  style={{ ...XS.navBtn, ...XS.nextBtn, ...(answers[currentQuestion.id] ? {} : XS.navDisabled) }}
+                  style={{ ...FS.nextBtn, ...(answers[currentQuestion.id] ? {} : FS.disabled) }}
                   disabled={!answers[currentQuestion.id]}
                   onClick={() => setCurrentIndex((i) => Math.min(i + 1, session.totalQuestions - 1))}
                   type="button"
                 >
-                  Save &amp; Next →
+                  Next →
                 </button>
               ) : (
                 <button
-                  style={{ ...XS.navBtn, ...XS.submitBtn, ...((!answers[currentQuestion.id] || completing || savingQuestionId !== null) ? XS.navDisabled : {}) }}
+                  style={{ ...FS.submitBtn, ...((!answers[currentQuestion.id] || completing || savingQuestionId !== null) ? FS.disabled : {}) }}
                   disabled={!answers[currentQuestion.id] || completing || savingQuestionId !== null}
                   onClick={() => void finishAssessment()}
                   type="button"
                 >
-                  {completing ? "Scoring…" : "Submit test"}
+                  {completing ? "Scoring…" : "Submit test ✓"}
                 </button>
               )}
             </div>
-            <div style={{ width: 44 }} />
+            <div style={{ width: 130 }} />
           </div>
-            </div>
-
-            <aside className="xs-palette" style={XS.palette}>
-              <div style={XS.palTitle}>Question palette</div>
-              <div style={XS.legend}>
-                <span style={XS.legItem}><i style={{ ...XS.dot, background: "#16a34a" }} /> Answered ({Object.keys(answers).length})</span>
-                <span style={XS.legItem}><i style={{ ...XS.dot, background: "#f2c94c" }} /> Marked ({Object.values(marked).filter(Boolean).length})</span>
-                <span style={XS.legItem}><i style={{ ...XS.dot, border: "1px solid #cbd5e1", background: "#fff" }} /> Not answered ({session.totalQuestions - Object.keys(answers).length})</span>
-              </div>
-              <div style={XS.palGrid}>
-                {session.questions.map((q, i) => {
-                  const isCurrent = i === currentIndex;
-                  const isAnswered = answers[q.id] !== undefined;
-                  const isMarked = Boolean(marked[q.id]);
-                  let cell: React.CSSProperties = { ...XS.cell };
-                  if (isAnswered && isMarked) cell = { ...cell, ...XS.cellAnsMark };
-                  else if (isAnswered) cell = { ...cell, ...XS.cellAnswered };
-                  else if (isMarked) cell = { ...cell, ...XS.cellMarked };
-                  return (
-                    <button
-                      key={q.id}
-                      type="button"
-                      onClick={() => setCurrentIndex(i)}
-                      style={{ ...cell, ...(isCurrent ? XS.cellCurrent : {}) }}
-                    >
-                      {i + 1}
-                    </button>
-                  );
-                })}
-              </div>
-              <div style={XS.palHint}>Tap a number to jump to that question.</div>
-            </aside>
-          </div>
-        </section>
+        </div>
       ) : null}
 
       {results && user ? (
