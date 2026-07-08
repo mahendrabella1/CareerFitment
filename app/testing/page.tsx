@@ -35,7 +35,38 @@ const BIG_FIVE_ORDER: BigFiveTrait[] = [
   "Agreeableness",
 ];
 
-const randomSet = () => SET_NAMES[Math.floor(Math.random() * SET_NAMES.length)];
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/**
+ * Pick a set for this user WITHOUT repeating until all 10 have been used.
+ * Each device keeps its own shuffled queue in localStorage, so repeat attempts
+ * cycle through every set before any repeats, and different devices start from
+ * different shuffles. Falls back to plain random if storage is unavailable.
+ */
+function nextSet(format: Format): string {
+  const key = `pa_setqueue_${format}`;
+  try {
+    if (typeof window !== "undefined" && window.localStorage) {
+      let queue: string[] = JSON.parse(localStorage.getItem(key) || "null");
+      if (!Array.isArray(queue) || queue.length === 0) {
+        queue = shuffle(SET_NAMES);
+      }
+      const pick = queue.shift() as string;
+      localStorage.setItem(key, JSON.stringify(queue));
+      return pick;
+    }
+  } catch {
+    /* ignore storage errors and fall through */
+  }
+  return SET_NAMES[Math.floor(Math.random() * SET_NAMES.length)];
+}
 
 export default function TestingPage() {
   const [stage, setStage] = useState<Stage>("start");
@@ -53,7 +84,7 @@ export default function TestingPage() {
 
   function begin(f: Format) {
     setFormat(f);
-    setActiveSet(randomSet());
+    setActiveSet(nextSet(f));
     setAnswers({});
     setCurrent(0);
     setReport(null);
