@@ -1,0 +1,11 @@
+node_modules
+.next
+.env
+.env.local
+*.log
+
+# Firebase service-account credentials — NEVER commit
+serviceAccountKey.json
+firebase-service-account.json
+
+tsconfig.tsbuildinfo

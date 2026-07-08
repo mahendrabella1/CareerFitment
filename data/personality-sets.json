@@ -1,0 +1,4568 @@
+{
+ "10": {
+  "Set 1": [
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I love being the center of attention in a group or classroom.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I get bored easily if I am left alone for too long.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I like to take charge and lead group projects or games.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "I speak up immediately when I disagree with someone.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion / Low Agreeableness",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I get upset or angry quickly if things don't go my way.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I worry a lot about making mistakes or getting bad grades.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I take it very hard if I feel a friend is upset with me.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I prefer spending my free time doing quiet things by myself.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion (Low Extraversion)",
+    "subCategory": "Melancholic / Phlegmatic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I am very patient and almost never get angry at my peers.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Emotional Stability (Low Neuroticism) / Agreeableness",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I prefer to let others make the decisions so there is no conflict.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion / Agreeableness",
+    "subCategory": "Phlegmatic / Low Social Energy"
+   }
+  ],
+  "Set 2": [
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I am usually the loudest or most talkative person at lunch or recess.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I am always looking for new friends to play or chat with.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I love competitive games where I have a chance to win or beat others.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "I like giving directions to other kids during group activities.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I get super annoyed if people work too slowly or don't follow my pace.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I spend a lot of time overthinking what I said to someone earlier in the day.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I get very nervous right before I have to speak in front of the class.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I find big crowds of kids draining and need quiet time to recharge.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion (Low Extraversion)",
+    "subCategory": "Melancholic / Phlegmatic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I am very good at keeping my cool even when everyone else is panicking.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Emotional Stability (Low Neuroticism) / Agreeableness",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I happily go along with whatever game or movie my friends choose.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion / Agreeableness",
+    "subCategory": "Phlegmatic / Low Social Energy"
+   }
+  ],
+  "Set 3": [
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I learn best when I can talk out loud and share ideas with a partner.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I love surprises and sudden changes to my daily school schedule.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I like setting high goals for myself, like getting the highest score on a test.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "I am completely comfortable arguing my point when a teacher or peer is wrong.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I find it hard to hide my frustration when an assignment feels too difficult.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I get stressed if my schoolwork isn't perfectly neat and organized.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I feel down or sad for a long time after getting a poor grade on a quiz.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I prefer working on independent school projects rather than in a large group.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion (Low Extraversion)",
+    "subCategory": "Melancholic / Phlegmatic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I rarely feel rushed or stressed about deadlines or homework.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Emotional Stability (Low Neuroticism) / Agreeableness",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I am perfectly fine sitting back and letting other kids lead a presentation.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion / Agreeableness",
+    "subCategory": "Phlegmatic / Low Social Energy"
+   }
+  ],
+  "Set 4": [
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I enjoy making a crowd laugh by telling jokes or acting silly.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I hate missing out on a social event or hangouts with friends.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I tend to step in and fix problems for my friends without them asking.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "I am very upfront and honest, even if it hurts someone's feelings a little.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I get impatient when my friends cannot make up their minds quickly.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I worry that other kids might be talking about me behind my back.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I take criticism very personally and feel hurt easily.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I only like sharing my true thoughts with one or two trusted best friends.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion (Low Extraversion)",
+    "subCategory": "Melancholic / Phlegmatic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I am usually the peacemaker who helps resolve fights between friends.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Emotional Stability (Low Neuroticism) / Agreeableness",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I prefer to hide in the background during class discussions.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion / Agreeableness",
+    "subCategory": "Phlegmatic / Low Social Energy"
+   }
+  ],
+  "Set 5": [
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "My mood is almost always positive, bright, and cheerful.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I am an open book; everyone always knows exactly what I am feeling.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I get an energy rush when I am faced with a difficult challenge.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "I like to defend my friends aggressively if someone else treats them badly.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I tend to slam doors or stomp my feet when I am angry or frustrated.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I lose sleep or worry the night before a big presentation or exam.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I frequently feel overwhelmed by the amount of things I have to do.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I like spending recess reading, drawing, or daydreaming by myself.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion (Low Extraversion)",
+    "subCategory": "Melancholic / Phlegmatic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I have a relaxed, easy-going attitude toward rules and expectations.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Emotional Stability (Low Neuroticism) / Agreeableness",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I rarely speak unless I am directly called on by a teacher.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion / Agreeableness",
+    "subCategory": "Phlegmatic / Low Social Energy"
+   }
+  ],
+  "Set 6": [
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I love trying new sports, clubs, or activities just to see what they are like.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I love storytelling and making up exciting scenarios for my friends.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I like pushing myself to learn hard skills, like a difficult video game or sport.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "I would rather run the whole game than just play a minor role.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I can't stand it when a game or activity feels unorganized or messy.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I feel anxious if I don't know exactly what to expect when going somewhere new.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I easily feel sympathetic or deeply sad when watching emotional movies.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I prefer creative hobbies I can do completely alone, like writing or coding.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion (Low Extraversion)",
+    "subCategory": "Melancholic / Phlegmatic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I don't hold grudges and can easily forgive a classmate who treats me unfairly.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Emotional Stability (Low Neuroticism) / Agreeableness",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I like hanging out with groups only if I can just listen without talking much.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion / Agreeableness",
+    "subCategory": "Phlegmatic / Low Social Energy"
+   }
+  ],
+  "Set 7": [
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I am quick to start talking to a new kid who just moved to our school.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I get highly enthusiastic and excited about small, everyday events.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I like to take control of the TV remote, game choice, or music when with friends.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "I enjoy debate or arguments, finding them fun rather than stressful.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "My friends would describe me as quick-tempered or passionate.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I hate it when my daily routine is broken or changed unexpectedly.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I often double-check my homework several times to ensure zero mistakes.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I find it hard to open up and show my true personality to new people.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion (Low Extraversion)",
+    "subCategory": "Melancholic / Phlegmatic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "Nothing really gets under my skin; I stay calm most of the time.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Emotional Stability (Low Neuroticism) / Agreeableness",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I am totally fine staying at home on the weekend instead of going out.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion / Agreeableness",
+    "subCategory": "Phlegmatic / Low Social Energy"
+   }
+  ],
+  "Set 8": [
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I raise my hand to answer questions constantly, even if I'm not 100% sure.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I find it incredibly tough to sit quietly without whispering to my neighbors.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I focus completely on the finish line and want to complete tasks as fast as possible.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "I like to challenge rules if they don't make sense to me.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I find myself sighing or rolling my eyes when I am annoyed in class.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I am highly sensitive to loud noises, bright lights, or chaotic classrooms.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I feel intense pressure to perform well for my parents and teachers.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I keep my thoughts and opinions hidden safely inside my own head.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion (Low Extraversion)",
+    "subCategory": "Melancholic / Phlegmatic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I am steady and consistent with my schoolwork, never cramming at the last minute.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Emotional Stability (Low Neuroticism) / Agreeableness",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I prefer to avoid competition altogether and just play for fun.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion / Agreeableness",
+    "subCategory": "Phlegmatic / Low Social Energy"
+   }
+  ],
+  "Set 9": [
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I am great at using hand gestures, expressions, and acting things out when talking.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I consider myself a highly popular or highly social kid at my school.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I don't mind making unpopular decisions if it helps the team win or finish.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "I am very stubborn when I know I am right about something.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I get instantly frustrated when an adult interrupts me mid-sentence.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I get easily embarrassed or blush when attention is suddenly called to me.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I feel down or sad if my daily plan falls through or gets cancelled.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I express myself much better in writing, drawing, or typing than by speaking.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion (Low Extraversion)",
+    "subCategory": "Melancholic / Phlegmatic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I accept people exactly as they are without trying to change them.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Emotional Stability (Low Neuroticism) / Agreeableness",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I am content to sit on the sidelines and watch others have fun.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion / Agreeableness",
+    "subCategory": "Phlegmatic / Low Social Energy"
+   }
+  ],
+  "Set 10": [
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I am great at cheering up people when they are feeling down or sad.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I jump into new games or sports headfirst without needing to learn all the rules first.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I want to be recognized as the smartest, fastest, or best at what I do.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "I am comfortable confronting a classmate face-to-face if they treat me unfairly.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Extraversion",
+    "subCategory": "Choleric / High Social Energy"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I experience very intense highs and very intense lows in my mood.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I feel like I take life much more seriously than most kids my age do.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I am deeply bothered by injustice or unfair behavior in the classroom.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Neuroticism",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I value my privacy highly and don't like people looking over my shoulder.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion (Low Extraversion)",
+    "subCategory": "Melancholic / Phlegmatic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I am incredibly reliable; my friends know they can always count on my steady support.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Emotional Stability (Low Neuroticism) / Agreeableness",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I rarely initiate conversations, preferring to wait for others to speak to me first.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Introversion / Agreeableness",
+    "subCategory": "Phlegmatic / Low Social Energy"
+   }
+  ]
+ },
+ "15": {
+  "Set 1": [
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I can easily get a fun conversation started with a new classmate.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I make decisions quickly without overthinking them.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I often lose my temper or feel annoyed at school.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "My mood changes from happy to sad very quickly for no clear reason.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I am perfectly well-behaved and always do my chores immediately.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I like to try new things, even if they seem a little scary or risky.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I find myself wishing people would leave me alone after a long school day.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I get very nervous or stressed when I have to take a test.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I keep my room, school desk, and notes highly organized.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never said a mean thing or lied to my parents or teachers.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I am comfortable standing up to a bully or speaking my mind in class.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I enjoy imagining wild, creative stories or daydreaming.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I am a very peaceful person who hates fighting or arguing with anyone.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I find it very easy to sit quietly and relax without needing a distraction.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I sometimes think about past embarrassing moments over and over again.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   }
+  ],
+  "Set 2": [
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I love being the life of the party or the center of attention in a game.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I usually blurt things out before completely thinking through them.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I get easily frustrated when things don't happen as fast as I want.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "I experience sudden waves of sadness or excitement without knowing why.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I always listen to adults without ever muttering a complaint under my breath.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I enjoy rapid, thrilling activities like rollercoasters or fast sports.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I often prefer a quiet book or solo game over a loud birthday party.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I constantly worry that I might make a big mistake or fail an assignment.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I strict follow schedules and prefer to plan everything out in advance.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never hidden a bad grade or a mistake from my family.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I naturally step into the leader role during unexpected team tasks.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I am highly fascinated by art, weird abstract ideas, or fantasy concepts.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I place keeping the peace above winning an argument.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I can easily spend hours resting quietly without feeling restless or bored.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I frequently dissect past social interactions wondering if I sounded silly.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   }
+  ],
+  "Set 3": [
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I actively seek out new friendships and love starting fresh chats.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I tend to jump into activities instantly and deal with results later.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I find myself getting highly defensive or snapping quickly when criticized.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "My internal feelings feel like a rollercoaster that goes up and down daily.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I have never broken a single promise or rule in my entire life.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I thrive on unexpected adventures and hate predictable routines.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I quickly run out of social battery and need to retreat to a quiet space.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I feel physically anxious or sick to my stomach when waiting for results.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I am incredibly particular about where my personal items belong.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never shared a secret that I promised to keep safe.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I am perfectly comfortable expressing opinions that differ from the group.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I spend massive chunks of time exploring creative worlds in my head.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I am an excellent listener who consistently stays out of drama.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I prefer a slow-paced, steady environment over a fast and chaotic one.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I routinely re-read old texts or replay old arguments in my thoughts.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   }
+  ],
+  "Set 4": [
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I get an immense burst of physical energy when surrounded by peers.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I buy or select things purely on a whim because they look cool right then.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I lose my cool instantly when peers are moving too slowly or messing up.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "My close friends would say I am moody or highly emotionally reactive.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I share all my treats willingly and never feel a tiny bit greedy.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I love exploring mysterious places or attempting thrilling physical stunts.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I find text-based or quiet interactions much safer than large group hangouts.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I constantly double-check if I've upset people, fearing rejection.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I thrive on neat columns, checkboxes, and clear structured rules.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never felt jealous or envious of anyone else's achievements.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I naturally take the podium or control of a presentation when needed.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I love finding alternative, artistic solutions rather than following old steps.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I am known for being exceptionally gentle, compromising easily with others.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I can easily remain perfectly still and peaceful for a long period of time.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I easily get trapped in loops of negative self-talk about my performance.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   }
+  ],
+  "Set 5": [
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I find it incredibly rewarding to entertain people or put on a show.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I frequently shout answers out in class before checking if they are right.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I can become visibly angry or switch to slamming things when thwarted.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "I wake up cheerful but can become intensely somber just a few hours later.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I am completely honest 100% of the time and have never told even a white lie.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I am always the first person in line to try a wild new experience.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I feel deeply drained if I don't get daily, uninterrupted private time.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I am deeply sensitive to criticism, often feeling like crying if corrected.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I require a perfectly clean workspace before I can concentrate properly.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never left a mess or a chore behind for someone else to clean up.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I am entirely fearless when confronting someone who is being profoundly unfair.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I think about futuristic things, sci-fi concepts, or poetic ideas deeply.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I easily match my desires to what the rest of the group wants to do.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I am fundamentally an easygoing person who takes life at a relaxed pace.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I struggle to drop old grudges or slip away from past hurtful comments.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   }
+  ],
+  "Set 6": [
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I am highly skilled at keeping a large group laughing and engaged.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I routinely sign up for things instantly without checking my schedule first.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I get an aggressive urge to push back immediately when told what to do.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "My emotional climate shifts instantly based on very small environmental cues.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I always clean up immediately and have never procrastinated on a duty.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I love the adrenaline rush of intense gaming or physical speed.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I prefer interacting through writing rather than chatting in person.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I frequently struggle with self-doubt and look for constant reassurance.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I love tracking my progress with highly organized systems or charts.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never felt lazy, sluggish, or complained about waking up early.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I happily accept the responsibility of making final group decisions.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I love finding unique patterns, deep connections, or hidden meanings in things.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I have a soft, calm presence that diffuses heated classroom arguments.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I remain cool, collected, and unfazed even when a deadline is close.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I find myself repeating past errors over and over again in my mind.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   }
+  ],
+  "Set 7": [
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I naturally find myself surrounded by a large crowd during break times.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I tend to spend my pocket money instantly rather than saving it up.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I am prone to sharp outbursts of temper when under pressure.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "My moods feel incredibly deep, moving from joy to sorrow rapidly.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I treat everyone with flawless kindness and never harbor any bad thoughts.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I get incredibly bored by predictable safety and love a bit of risk.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I prefer individual activities like painting, solo sports, or coding.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I experience high stress over what my future or upcoming year looks like.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I cannot tolerate messy, unaligned, or cluttered environments.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never read or looked at something I wasn't explicitly supposed to.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I have no issue correcting an authority figure if they make a clear error.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I possess a highly vivid imagination that keeps me thoroughly entertained.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I am universally seen as a reliable, gentle, and cooperative team player.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I am perfectly content with slow, quiet days where nothing special happens.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I worry intensely about what could have been done differently in past fights.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   }
+  ],
+  "Set 8": [
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I easily make friends anywhere I go, including totally strange places.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I say \"yes\" to fun plans instantly without wondering if I have homework.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I get highly agitated when tech tools or programs don't load instantly.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "I can feel remarkably insecure and then extremely confident an hour later.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I am always perfectly quiet when an adult asks for absolute silence.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I like testing my limits through intense, high-adrenaline adventures.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I function best in cozy, low-stimulus spaces with minimal chatter.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I stress out about my health or safety over very minor symptoms.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I color-code, folder, or rigidly track my academic materials.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never taken something that belonged to a sibling or friend without asking.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I boldly state my intentions and expectations to my team right away.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I am drawn to deep poetry, songwriting, or fiction writing.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I go out of my way to ensure everyone feels included and comfortable.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I possess a steady, unshakeable peace that people often notice.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I suffer from overthinking my flaws or slip-ups for days at a time.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   }
+  ],
+  "Set 9": [
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I find myself talking rapidly and enthusiastically when in a group.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I choose food or games based on pure impulse rather than picking a favorite.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I react with quick irritation if someone stands in my direct path.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "My emotional state swings violently between extreme optimism and gloom.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I have never skipped a single step when completing a task or chore.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I enjoy trying exotic, strange foods or highly unusual activities.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I am highly independent and do not mind missing out on social gatherings.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I constantly fear that bad news is right around the corner.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I maintain a highly clean, organized physical space at all times.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never rolled my eyes or gotten annoyed when given a rule by an adult.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I comfortably manage debates and stand my ground against opposition.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I love exploring deep philosophical or artistic questions.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I find it effortless to forgive, completely dropping past disagreements.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I never feel the urgent need to look at my phone or seek constant entertainment.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I easily trap myself in looping thoughts about why something went wrong.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   }
+  ],
+  "Set 10": [
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I intentionally look for opportunities to be on stage or public speak.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I tend to blurt out answers to text questions without reading to the end.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I can become visibly flustered or sharp with my words when blocked.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "My underlying feelings can shift from zero to one hundred over nothing.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I am always perfectly polite, treating every single person with equal respect.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I prefer unpredictable, wild choices over safe, standard options.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I choose solo playtime over collaborative groups almost every time.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I dwell on potential negative outcomes before an event even starts.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I feel an absolute need to put my things away in a very specific order.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never thought something unkind about a teacher or an authority figure.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I can comfortably lead a team through a high-pressure crisis.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I process my world through creative concepts, sketches, or wild metaphors.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I am highly patient, letting others run their courses without interference.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I thoroughly enjoy long stretches of slow, peaceful, quiet stillness.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I spend significant mental energy reviewing old embarrassing social slips.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   }
+  ]
+ },
+ "20": {
+  "Set 1": [
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I can easily get a fun conversation started with a new classmate.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I make decisions quickly without overthinking them.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I often lose my temper or feel annoyed at school.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "My mood changes from happy to sad very quickly for no clear reason.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I am perfectly well-behaved and always do my chores immediately.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I like to try new things, even if they seem a little scary or risky.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I find myself wishing people would leave me alone after a long school day.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I get very nervous or stressed when I have to take a test.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I keep my room, school desk, and notes highly organized.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never said a mean thing or lied to my parents or teachers.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I am comfortable standing up to a bully or speaking my mind in class.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I enjoy imagining wild, creative stories or daydreaming.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I am a very peaceful person who hates fighting or arguing with anyone.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I find it very easy to sit quietly and relax without needing a distraction.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I sometimes think about past embarrassing moments over and over again.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q16",
+    "index": 16,
+    "question": "I follow through on my schoolwork carefully and try to double-check my answers.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Conscientiousness)",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q17",
+    "index": 17,
+    "question": "I genuinely care about how my friends feel and try to comfort them when sad.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Agreeableness)",
+    "subCategory": "Phlegmatic / High Empathy"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q18",
+    "index": 18,
+    "question": "I naturally take the lead during a group project if no one else speaks up.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Goal-Oriented"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q19",
+    "index": 19,
+    "question": "I prefer sticking to a predictable daily routine over dynamic, unexpected changes.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Routine-Oriented"
+   },
+   {
+    "setName": "Set 1",
+    "questionNumber": "Q20",
+    "index": 20,
+    "question": "I have never borrowed an item from anyone without getting their explicit permission first.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   }
+  ],
+  "Set 2": [
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I love being the life of the party or the center of attention in a game.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I usually blurt things out before completely thinking through them.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I get easily frustrated when things don't happen as fast as I want.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "I experience sudden waves of sadness or excitement without knowing why.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I always listen to adults without ever muttering a complaint under my breath.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I enjoy rapid, thrilling activities like rollercoasters or fast sports.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I often prefer a quiet book or solo game over a loud birthday party.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I constantly worry that I might make a big mistake or fail an assignment.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I strict follow schedules and prefer to plan everything out in advance.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never hidden a bad grade or a mistake from my family.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I naturally step into the leader role during unexpected team tasks.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I am highly fascinated by art, weird abstract ideas, or fantasy concepts.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I place keeping the peace above winning an argument.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I can easily spend hours resting quietly without feeling restless or bored.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I frequently dissect past social interactions wondering if I sounded silly.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q16",
+    "index": 16,
+    "question": "I make sure my notes are always complete and finish homework long before deadlines.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Conscientiousness)",
+    "subCategory": "Melancholic / Plan-Oriented"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q17",
+    "index": 17,
+    "question": "I find it natural to forgive people quickly even if they were mean to me.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Agreeableness)",
+    "subCategory": "Phlegmatic / Forgiveness"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q18",
+    "index": 18,
+    "question": "I work exceptionally hard to win competitive games or be the top of the class.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Competitive"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q19",
+    "index": 19,
+    "question": "I feel highly comfortable in a slow-paced workspace with zero loud disruptions.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Steady Pace"
+   },
+   {
+    "setName": "Set 2",
+    "questionNumber": "Q20",
+    "index": 20,
+    "question": "I always return lost items immediately without ever thinking of keeping them.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   }
+  ],
+  "Set 3": [
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I actively seek out new friendships and love starting fresh chats.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I tend to jump into activities instantly and deal with results later.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I find myself getting highly defensive or snapping quickly when criticized.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "My internal feelings feel like a rollercoaster that goes up and down daily.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I have never broken a single promise or rule in my entire life.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I thrive on unexpected adventures and hate predictable routines.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I quickly run out of social battery and need to retreat to a quiet space.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I feel physically anxious or sick to my stomach when waiting for results.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I am incredibly particular about where my personal items belong.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never shared a secret that I promised to keep safe.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I am perfectly comfortable expressing opinions that differ from the group.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I spend massive chunks of time exploring creative worlds in my head.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I am an excellent listener who consistently stays out of drama.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I prefer a slow-paced, steady environment over a fast and chaotic one.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I routinely re-read old texts or replay old arguments in my thoughts.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q16",
+    "index": 16,
+    "question": "I strictly keep my promises to friends and never cancel plans last minute.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Conscientiousness)",
+    "subCategory": "Melancholic / Reliability"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q17",
+    "index": 17,
+    "question": "I avoid bragging about myself because I prefer staying humble and modest.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Agreeableness)",
+    "subCategory": "Phlegmatic / Modesty"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q18",
+    "index": 18,
+    "question": "I enjoy taking charge of problematic situations to fix them properly.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Problem Solver"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q19",
+    "index": 19,
+    "question": "I would rather observe a lively group game than actively participate in it.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Observer Style"
+   },
+   {
+    "setName": "Set 3",
+    "questionNumber": "Q20",
+    "index": 20,
+    "question": "I have never intentionally ignored an adult when they called my name out.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   }
+  ],
+  "Set 4": [
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I get an immense burst of physical energy when surrounded by peers.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I buy or select things purely on a whim because they look cool right then.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I lose my cool instantly when peers are moving too slowly or messing up.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "My close friends would say I am moody or highly emotionally reactive.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I share all my treats willingly and never feel a tiny bit greedy.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I love exploring mysterious places or attempting thrilling physical stunts.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I find text-based or quiet interactions much safer than large group hangouts.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I constantly double-check if I've upset people, fearing rejection.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I thrive on neat columns, checkboxes, and clear structured rules.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never felt jealous or envious of anyone else's achievements.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I naturally take the podium or control of a presentation when needed.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I love finding alternative, artistic solutions rather than following old steps.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I am known for being exceptionally gentle, compromising easily with others.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I can easily remain perfectly still and peaceful for a long period of time.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I easily get trapped in loops of negative self-talk about my performance.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q16",
+    "index": 16,
+    "question": "I lay out all my clothes and school gear the night before to save time.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Conscientiousness)",
+    "subCategory": "Melancholic / Preparedness"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q17",
+    "index": 17,
+    "question": "I am very patient when teaching classmates something they don't understand.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Agreeableness)",
+    "subCategory": "Phlegmatic / Patient Style"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q18",
+    "index": 18,
+    "question": "I feel driven to challenge rules if I think they lack logical purpose.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Independent"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q19",
+    "index": 19,
+    "question": "I find it easy to stay completely neutral when my friends get into a fight.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Neutrality"
+   },
+   {
+    "setName": "Set 4",
+    "questionNumber": "Q20",
+    "index": 20,
+    "question": "I have never spoken a single harsh word to any member of my family.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   }
+  ],
+  "Set 5": [
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I find it incredibly rewarding to entertain people or put on a show.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I frequently shout answers out in class before checking if they are right.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I can become visibly angry or switch to slamming things when thwarted.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "I wake up cheerful but can become intensely somber just a few hours later.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I am completely honest 100% of the time and have never told even a white lie.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I am always the first person in line to try a wild new experience.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I feel deeply drained if I don't get daily, uninterrupted private time.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I am deeply sensitive to criticism, often feeling like crying if corrected.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I require a perfectly clean workspace before I can concentrate properly.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never left a mess or a chore behind for someone else to clean up.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I am entirely fearless when confronting someone who is being profoundly unfair.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I think about futuristic things, sci-fi concepts, or poetic ideas deeply.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I easily match my desires to what the rest of the group wants to do.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I am fundamentally an easygoing person who takes life at a relaxed pace.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I struggle to drop old grudges or slip away from past hurtful comments.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q16",
+    "index": 16,
+    "question": "I follow system processes step-by-step without skipping sections.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Conscientiousness)",
+    "subCategory": "Melancholic / Methodical"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q17",
+    "index": 17,
+    "question": "I prioritize being helpful and polite over getting my own way.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Agreeableness)",
+    "subCategory": "Phlegmatic / Helpful Nature"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q18",
+    "index": 18,
+    "question": "I naturally give direct orders to peers when an assignment falls behind.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Direct Style"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q19",
+    "index": 19,
+    "question": "I rarely get expressive or overly animated even when celebrating good news.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Expression"
+   },
+   {
+    "setName": "Set 5",
+    "questionNumber": "Q20",
+    "index": 20,
+    "question": "I have never felt angry or upset with a teacher when they gave me feedback.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   }
+  ],
+  "Set 6": [
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I am highly skilled at keeping a large group laughing and engaged.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I routinely sign up for things instantly without checking my schedule first.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I get an aggressive urge to push back immediately when told what to do.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "My emotional climate shifts instantly based on very small environmental cues.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I always clean up immediately and have never procrastinated on a duty.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I love the adrenaline rush of intense gaming or physical speed.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I prefer interacting through writing rather than chatting in person.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I frequently struggle with self-doubt and look for constant reassurance.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I love tracking my progress with highly organized systems or charts.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never felt lazy, sluggish, or complained about waking up early.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I happily accept the responsibility of making final group decisions.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I love finding unique patterns, deep connections, or hidden meanings in things.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I have a soft, calm presence that diffuses heated classroom arguments.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I remain cool, collected, and unfazed even when a deadline is close.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I find myself repeating past errors over and over again in my mind.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q16",
+    "index": 16,
+    "question": "I make detailed lists of daily chores and check items off one by one.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Conscientiousness)",
+    "subCategory": "Melancholic / List-Maker"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q17",
+    "index": 17,
+    "question": "I am always willing to share credit for a success with the whole group.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Agreeableness)",
+    "subCategory": "Phlegmatic / Team player"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q18",
+    "index": 18,
+    "question": "I naturally take control of the conversation during important team meets.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Command Presence"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q19",
+    "index": 19,
+    "question": "I prefer calm, quiet spaces over vibrant, unpredictable social environments.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Environmental Preference"
+   },
+   {
+    "setName": "Set 6",
+    "questionNumber": "Q20",
+    "index": 20,
+    "question": "I have never deliberately broken even a minor rule at my school or home.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   }
+  ],
+  "Set 7": [
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I naturally find myself surrounded by a large crowd during break times.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I tend to spend my pocket money instantly rather than saving it up.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I am prone to sharp outbursts of temper when under pressure.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "My moods feel incredibly deep, moving from joy to sorrow rapidly.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I treat everyone with flawless kindness and never harbor any bad thoughts.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I get incredibly bored by predictable safety and love a bit of risk.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I prefer individual activities like painting, solo sports, or coding.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I experience high stress over what my future or upcoming year looks like.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I cannot tolerate messy, unaligned, or cluttered environments.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never read or looked at something I wasn't explicitly supposed to.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I have no issue correcting an authority figure if they make a clear error.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I possess a highly vivid imagination that keeps me thoroughly entertained.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I am universally seen as a reliable, gentle, and cooperative team player.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I am perfectly content with slow, quiet days where nothing special happens.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I worry intensely about what could have been done differently in past fights.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q16",
+    "index": 16,
+    "question": "I maintain strict study habits and hate leaving work unfinished overnight.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Conscientiousness)",
+    "subCategory": "Melancholic / Study Discipline"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q17",
+    "index": 17,
+    "question": "I am very empathetic, feeling genuinely happy when someone else succeeds.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Agreeableness)",
+    "subCategory": "Phlegmatic / Altruism"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q18",
+    "index": 18,
+    "question": "I focus intensely on executing tasks and achieving high-quality results.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Result-Driven"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q19",
+    "index": 19,
+    "question": "I speak in a moderate, steady tone and rarely shout during an argument.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Controlled Tone"
+   },
+   {
+    "setName": "Set 7",
+    "questionNumber": "Q20",
+    "index": 20,
+    "question": "I have never forgotten to complete a task that an adult assigned to me.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   }
+  ],
+  "Set 8": [
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I easily make friends anywhere I go, including totally strange places.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I say \"yes\" to fun plans instantly without wondering if I have homework.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I get highly agitated when tech tools or programs don't load instantly.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "I can feel remarkably insecure and then extremely confident an hour later.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I am always perfectly quiet when an adult asks for absolute silence.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I like testing my limits through intense, high-adrenaline adventures.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I function best in cozy, low-stimulus spaces with minimal chatter.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I stress out about my health or safety over very minor symptoms.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I color-code, folder, or rigidly track my academic materials.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never taken something that belonged to a sibling or friend without asking.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I boldly state my intentions and expectations to my team right away.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I am drawn to deep poetry, songwriting, or fiction writing.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I go out of my way to ensure everyone feels included and comfortable.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I possess a steady, unshakeable peace that people often notice.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I suffer from overthinking my flaws or slip-ups for days at a time.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q16",
+    "index": 16,
+    "question": "I follow user manual instructions perfectly instead of guessing how things work.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Conscientiousness)",
+    "subCategory": "Melancholic / Rule-Follower"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q17",
+    "index": 17,
+    "question": "I am very generous with my time and resources when anyone asks for help.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Agreeableness)",
+    "subCategory": "Phlegmatic / Generosity"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q18",
+    "index": 18,
+    "question": "I am comfortable working through obstacles without needing emotional support.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Self-Reliant"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q19",
+    "index": 19,
+    "question": "I would rather listen to friends talk for an hour than speak myself.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Active Listener"
+   },
+   {
+    "setName": "Set 8",
+    "questionNumber": "Q20",
+    "index": 20,
+    "question": "I have never lost my patience or snapped back at anyone in my life.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   }
+  ],
+  "Set 9": [
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I find myself talking rapidly and enthusiastically when in a group.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I choose food or games based on pure impulse rather than picking a favorite.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I react with quick irritation if someone stands in my direct path.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "My emotional state swings violently between extreme optimism and gloom.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I have never skipped a single step when completing a task or chore.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I enjoy trying exotic, strange foods or highly unusual activities.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I am highly independent and do not mind missing out on social gatherings.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I constantly fear that bad news is right around the corner.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I maintain a highly clean, organized physical space at all times.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never rolled my eyes or gotten annoyed when given a rule by an adult.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I comfortably manage debates and stand my ground against opposition.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I love exploring deep philosophical or artistic questions.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I find it effortless to forgive, completely dropping past disagreements.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I never feel the urgent need to look at my phone or seek constant entertainment.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phmetatic / High Calm"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I easily trap myself in looping thoughts about why something went wrong.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q16",
+    "index": 16,
+    "question": "I double-check calendars and set multiple reminders to never be late.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Conscientiousness)",
+    "subCategory": "Melancholic / Time Management"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q17",
+    "index": 17,
+    "question": "I would rather concede an argument than cause stress or drama in a group.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Agreeableness)",
+    "subCategory": "Phlegmatic / Harmonizer"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q18",
+    "index": 18,
+    "question": "I make fast, definitive choices and execute them without hesitation.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Decisive"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q19",
+    "index": 19,
+    "question": "I feel calm and collected even when the environment around me gets hectic.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Composure"
+   },
+   {
+    "setName": "Set 9",
+    "questionNumber": "Q20",
+    "index": 20,
+    "question": "I have never felt a trace of jealousy toward a peer's superior talents.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   }
+  ],
+  "Set 10": [
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q1",
+    "index": 1,
+    "question": "I intentionally look for opportunities to be on stage or public speak.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / High Social Energy"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q2",
+    "index": 2,
+    "question": "I tend to blurt out answers to text questions without reading to the end.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Extraversion)",
+    "subCategory": "Sanguine / Impulsivity"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q3",
+    "index": 3,
+    "question": "I can become visibly flustered or sharp with my words when blocked.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q4",
+    "index": 4,
+    "question": "My underlying feelings can shift from zero to one hundred over nothing.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Neuroticism)",
+    "subCategory": "Choleric / Melancholic (Emotional Lability)"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q5",
+    "index": 5,
+    "question": "I am always perfectly polite, treating every single person with equal respect.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q6",
+    "index": 6,
+    "question": "I prefer unpredictable, wild choices over safe, standard options.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Openness)",
+    "subCategory": "Sanguine / Sensation Seeking"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q7",
+    "index": 7,
+    "question": "I choose solo playtime over collaborative groups almost every time.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Introversion)",
+    "subCategory": "Phlegmatic / Melancholic (Low Social Energy)"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q8",
+    "index": 8,
+    "question": "I dwell on potential negative outcomes before an event even starts.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Stress Reactivity"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q9",
+    "index": 9,
+    "question": "I feel an absolute need to put my things away in a very specific order.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Melancholic / High Structure"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q10",
+    "index": 10,
+    "question": "I have never thought something unkind about a teacher or an authority figure.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q11",
+    "index": 11,
+    "question": "I can comfortably lead a team through a high-pressure crisis.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Assertiveness"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q12",
+    "index": 12,
+    "question": "I process my world through creative concepts, sketches, or wild metaphors.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Sanguine / Melancholic (Creativity)"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q13",
+    "index": 13,
+    "question": "I am highly patient, letting others run their courses without interference.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Low Stress Reactivity"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q14",
+    "index": 14,
+    "question": "I thoroughly enjoy long stretches of slow, peaceful, quiet stillness.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / High Calm"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q15",
+    "index": 15,
+    "question": "I spend significant mental energy reviewing old embarrassing social slips.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Melancholic / Rumination"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q16",
+    "index": 16,
+    "question": "I follow structural guidelines and layout specifications exactly as requested.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Conscientiousness)",
+    "subCategory": "Melancholic / Precision"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q17",
+    "index": 17,
+    "question": "I treat everyone with equal warmth, avoiding favoritism or internal cliques.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Big Five (Agreeableness)",
+    "subCategory": "Phlegmatic / Fairness"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q18",
+    "index": 18,
+    "question": "I look for direct ways to overcome obstacles instead of feeling helpless.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Choleric / Task-Oriented"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q19",
+    "index": 19,
+    "question": "I move through life at a relaxed pace and dislike feeling rushed.",
+    "options": "Yes / No",
+    "inputType": "binary",
+    "mainCategory": "Four Temperaments",
+    "subCategory": "Phlegmatic / Relaxed Pace"
+   },
+   {
+    "setName": "Set 10",
+    "questionNumber": "Q20",
+    "index": 20,
+    "question": "I have never broken an office, school, or home rule, even when alone.",
+    "options": "1, 2, 3, 4, 5",
+    "inputType": "scale",
+    "mainCategory": "JEPI Validity Scale",
+    "subCategory": "Lie Check (Over-compliance)"
+   }
+  ]
+ }
+}

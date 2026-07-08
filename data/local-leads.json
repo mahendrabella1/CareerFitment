@@ -1,0 +1,22 @@
+{
+  "leads": [
+    {
+      "id": "lead-e0818434-7992-4521-95ee-05b61b6bf778",
+      "name": "Ruhan Test",
+      "email": "ruhan@example.com",
+      "phone": "+91 900000",
+      "city": "Hyderabad",
+      "age": "15",
+      "journeyCode": "career_planning",
+      "journeyName": "Career Planning",
+      "ageGroup": "Class 11-12",
+      "stage": "I am confused among various options",
+      "dreamCareer": "Designer",
+      "sessionId": "8fa16504-6bfd-40a6-839a-8a524628cde5",
+      "status": "completed",
+      "topCareer": "Home Science",
+      "createdAt": "2026-07-07T11:41:28.662Z",
+      "completedAt": "2026-07-07T11:41:49.066Z"
+    }
+  ]
+}

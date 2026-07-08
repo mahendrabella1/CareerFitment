@@ -1,0 +1,122 @@
+/* ============================================================
+   HOME SECTIONS — stats, test showcase, report preview,
+   age groups, science strip, testimonials
+   ============================================================ */
+
+/* stats strip */
+.statstrip {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  padding: 22px; margin-bottom: 20px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow-sm);
+}
+.statstrip-item { display: flex; align-items: center; gap: 14px; }
+.statstrip-icon { width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; background: var(--green-soft); color: var(--accent); flex: 0 0 auto; }
+.statstrip-item strong { display: block; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
+.statstrip-item > div > span { font-size: 0.82rem; color: var(--muted); }
+.statstrip-item + .statstrip-item { border-left: 1px solid var(--line); padding-left: 16px; }
+
+/* test showcase */
+.test-showcase {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 46px; align-items: center;
+  padding: 60px 0;
+}
+.test-lead { font-size: 1.05rem; color: var(--muted); line-height: 1.6; margin: 12px 0 24px; }
+.test-feats { list-style: none; padding: 0; margin: 0 0 28px; display: grid; gap: 16px; }
+.test-feats li { display: flex; gap: 14px; }
+.test-feat-icon { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--green-soft); color: var(--accent); flex: 0 0 auto; }
+.test-feats strong { display: block; font-size: 0.98rem; }
+.test-feats span { font-size: 0.86rem; color: var(--muted); }
+
+/* exam mock */
+.test-mock {
+  border-radius: 20px; overflow: hidden; background: #fff;
+  border: 1px solid var(--line); box-shadow: var(--shadow-lg);
+}
+.tm-bar { display: flex; align-items: center; gap: 7px; padding: 12px 16px; background: var(--ink); }
+.tm-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.25); }
+.tm-dot:nth-child(1) { background: #ff5f57; } .tm-dot:nth-child(2) { background: #febc2e; } .tm-dot:nth-child(3) { background: #28c840; }
+.tm-title { margin-left: 12px; color: #fff; font-size: 0.82rem; font-weight: 600; }
+.tm-pct { margin-left: auto; color: rgba(255,255,255,0.6); font-size: 0.78rem; }
+.tm-prog { height: 4px; background: #eee; }
+.tm-prog div { height: 100%; background: var(--accent); }
+.tm-body { padding: 24px; }
+.tm-cat { display: inline-block; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: var(--accent); background: var(--green-soft); padding: 4px 11px; border-radius: 999px; margin-bottom: 14px; }
+.tm-q { font-size: 1.12rem; font-weight: 700; margin: 0 0 16px; line-height: 1.4; }
+.tm-opts { display: grid; gap: 8px; }
+.tm-opt { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 2px solid var(--line); border-radius: 12px; font-size: 0.9rem; color: var(--ink-2); }
+.tm-opt.sel { border-color: var(--accent); background: var(--green-soft); color: var(--accent-strong); font-weight: 600; }
+.tm-radio { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--muted); display: grid; place-items: center; }
+.tm-opt.sel .tm-radio { border-color: var(--accent); }
+.tm-radio span { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+.tm-palette { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; padding: 16px 24px 22px; border-top: 1px solid var(--line); }
+.tm-cell { height: 22px; border-radius: 6px; }
+.tm-cell.ans { background: var(--green); }
+.tm-cell.cur { background: var(--ink); outline: 2px solid var(--ink); outline-offset: 1px; }
+.tm-cell.mk { background: var(--sun); }
+.tm-cell.lf { background: #fff; border: 1px solid rgba(113,116,125,0.4); }
+
+/* report showcase */
+.report-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 46px; align-items: center; padding: 60px 0; }
+.rs-mock { border-radius: 22px; overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-lg); }
+.rs-cover { position: relative; padding: 26px; color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent-strong)); }
+.rs-eyebrow { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; opacity: 0.85; }
+.rs-cover strong { display: block; font-size: 1.4rem; margin-top: 6px; }
+.rs-code { position: absolute; right: 26px; top: 22px; font-size: 1.8rem; font-weight: 800; letter-spacing: 0.14em; background: rgba(255,255,255,0.18); padding: 6px 14px; border-radius: 12px; }
+.rs-rows { padding: 20px 24px 24px; display: grid; gap: 14px; }
+.rs-row { display: grid; grid-template-columns: auto 1.3fr 2fr auto; gap: 12px; align-items: center; }
+.rs-rank { width: 24px; height: 24px; border-radius: 50%; background: var(--green-soft); color: var(--accent); font-weight: 800; font-size: 0.8rem; display: grid; place-items: center; }
+.rs-role { font-size: 0.9rem; font-weight: 600; }
+.rs-track { height: 9px; border-radius: 999px; background: #f0f0f4; overflow: hidden; }
+.rs-track span { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--sun)); border-radius: 999px; }
+.rs-row > strong { font-size: 0.86rem; color: var(--accent); }
+.rs-copy h2 { font-size: clamp(1.6rem, 3.2vw, 2.3rem); font-weight: 800; letter-spacing: -0.03em; margin: 10px 0 14px; }
+.rs-copy p { color: var(--muted); line-height: 1.6; margin: 0 0 20px; }
+.rs-checks { list-style: none; padding: 0; margin: 0; display: grid; gap: 11px; }
+.rs-checks li { display: flex; align-items: center; gap: 10px; font-size: 0.92rem; color: var(--ink-2); }
+.rs-checks svg { color: var(--green); flex: 0 0 auto; }
+
+/* age groups */
+.agegrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.agecard {
+  text-align: left; background: var(--panel); border: 1px solid var(--line); border-radius: 18px;
+  padding: 24px 20px; cursor: pointer; box-shadow: var(--shadow-sm);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.agecard:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--og-red-line, #f4d4d6); }
+.agecard-icon { width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center; background: linear-gradient(135deg, var(--accent), var(--accent-strong)); color: #fff; margin-bottom: 16px; }
+.agecard strong { display: block; font-size: 1.05rem; margin-bottom: 5px; }
+.agecard > span { display: block; font-size: 0.84rem; color: var(--muted); line-height: 1.45; margin-bottom: 12px; }
+.agecard-go { font-style: normal; font-size: 0.84rem; font-weight: 700; color: var(--accent); }
+
+/* science strip */
+.science { padding: 20px 0 40px; }
+.science-inner {
+  display: flex; align-items: center; gap: 24px; padding: 30px 34px;
+  background: linear-gradient(135deg, #16171c, #24252d); color: #fff;
+  border-radius: 22px; box-shadow: var(--shadow-lg);
+}
+.science-flask { color: #ff7a3d; flex: 0 0 auto; }
+.science-inner .lx-eyebrow { color: #ff9a7d; }
+.science-inner h3 { font-size: 1.3rem; margin: 4px 0 14px; color: #fff; }
+.science-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.science-tags span { font-size: 0.82rem; padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.16); color: rgba(255,255,255,0.9); }
+
+/* testimonials */
+.tgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.tcard { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-sm); }
+.tcard-quote { color: var(--og-red-line, #f4d4d6); margin-bottom: 10px; }
+.tcard p { font-size: 0.96rem; line-height: 1.6; color: var(--ink-2); margin: 0 0 20px; }
+.tcard-by { display: flex; align-items: center; gap: 12px; }
+.tcard-av { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--accent), var(--accent-strong)); color: #fff; font-weight: 800; }
+.tcard-by strong { display: block; font-size: 0.92rem; }
+.tcard-by span { font-size: 0.8rem; color: var(--muted); }
+
+@media (max-width: 900px) {
+  .statstrip { grid-template-columns: repeat(2, 1fr); }
+  .statstrip-item:nth-child(3) { border-left: none; padding-left: 0; }
+  .test-showcase, .report-showcase { grid-template-columns: 1fr; gap: 30px; }
+  .report-showcase .rs-copy { order: -1; }
+  .agegrid { grid-template-columns: repeat(2, 1fr); }
+  .tgrid { grid-template-columns: 1fr; }
+  .science-inner { flex-direction: column; text-align: center; }
+}
