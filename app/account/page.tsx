@@ -99,14 +99,6 @@ export default function AccountPage() {
               {a.topCareer && (
                 <div style={S.topCareer}>Best-fit direction: <b>{a.topCareer}</b></div>
               )}
-              {a.desiredCareer && (
-                <div style={S.desired}>
-                  🎯 Your desired career: <b>{a.desiredCareer}</b>
-                  {a.desiredCareerFitPct != null
-                    ? ` — assessed fit ${a.desiredCareerFitPct}%`
-                    : " — not among your top matches this time"}
-                </div>
-              )}
             </section>
 
             {a.matches?.length > 0 && (
