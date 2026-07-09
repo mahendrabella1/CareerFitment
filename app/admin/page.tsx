@@ -23,6 +23,7 @@ export default function AdminPage() {
   const [error, setError] = useState("");
   const [q, setQ] = useState("");
   const [sent, setSent] = useState<Record<string, string>>({}); // uid -> sending|sent|error msg
+  const [bulk, setBulk] = useState(false);
 
   async function sendReport(u: UserProfile) {
     if (!u.email || !u.latestAssessment) return;
@@ -39,6 +40,17 @@ export default function AdminPage() {
     } catch (e) {
       setSent((s) => ({ ...s, [u.uid]: `error: ${e instanceof Error ? e.message : "failed"}` }));
     }
+  }
+
+  async function sendAll(list: UserProfile[]) {
+    setBulk(true);
+    for (const u of list) {
+      if (u.email && u.latestAssessment && sent[u.uid] !== "sent") {
+        // eslint-disable-next-line no-await-in-loop
+        await sendReport(u);
+      }
+    }
+    setBulk(false);
   }
 
   useEffect(() => {
@@ -113,7 +125,16 @@ export default function AdminPage() {
         <div style={S.tableCard}>
           <div style={S.tableHead}>
             <div style={S.tableTitle}>Users {rows ? `(${filtered.length})` : ""}</div>
-            <input style={S.search} placeholder="Search name / email / phone…" value={q} onChange={(e) => setQ(e.target.value)} />
+            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+              <input style={S.search} placeholder="Search name / email / phone…" value={q} onChange={(e) => setQ(e.target.value)} />
+              <button
+                style={{ ...S.bulkBtn, ...(bulk ? { opacity: 0.6, cursor: "wait" } : {}) }}
+                disabled={bulk || !filtered.some((u) => u.latestAssessment)}
+                onClick={() => void sendAll(filtered)}
+              >
+                {bulk ? "Emailing…" : "✉ Email all completed"}
+              </button>
+            </div>
           </div>
 
           {error && <div style={S.error}>{error}</div>}
@@ -216,6 +237,7 @@ const S: Record<string, React.CSSProperties> = {
   pillOk: { background: "#dcfce7", color: "#15803d" },
   pillWait: { background: "#fef3c7", color: "#92400e" },
   sendBtn: { padding: "6px 12px", background: "#eef2ff", color: "#3b4a9c", border: "1px solid #c7d2fe", borderRadius: 8, fontSize: 12.5, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" },
+  bulkBtn: { padding: "9px 16px", background: "#3b4a9c", color: "#fff", border: "none", borderRadius: 9, fontSize: 13, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" },
   muted: { color: "#64748b", fontSize: 14, padding: "8px 0" },
   primary: { display: "inline-block", marginTop: 12, padding: "11px 26px", background: BLUE, color: "#fff", borderRadius: 10, fontSize: 14.5, fontWeight: 700, textDecoration: "none" },
   linkBtn: { marginTop: 12, background: "none", border: "none", color: BLUE, fontWeight: 700, fontSize: 14, cursor: "pointer" },

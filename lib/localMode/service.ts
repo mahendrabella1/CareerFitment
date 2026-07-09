@@ -5,7 +5,7 @@ import path from "path";
 import { deriveCareerFit } from "@/lib/engine/careerFitment";
 import { computeFitment } from "@/lib/engine/fitment/computeFitment";
 import { FitmentResult } from "@/lib/engine/fitment/types";
-import { isFirestoreConfigured } from "@/lib/firebase/admin";
+import { isFirestoreConfigured, getFirestore } from "@/lib/firebase/admin";
 import { getFirestoreBank } from "@/lib/firebase/questionBank";
 import {
   fsAttachSession,
@@ -443,6 +443,43 @@ async function saveSessionStore(store: SessionStore): Promise<void> {
   await writeJsonFile(SESSIONS_FILE, store);
 }
 
+// Per-session persistence. Uses Firestore (via firebase-admin) when configured
+// so sessions survive across serverless instances on Vercel; otherwise falls
+// back to the local temp-dir JSON store (fine for local dev).
+const SESSION_COLLECTION = "assessmentSessions";
+
+async function loadSession(sessionId: string): Promise<StoredSession | null> {
+  if (isFirestoreConfigured()) {
+    try {
+      const db = await getFirestore();
+      const snap = await db.collection(SESSION_COLLECTION).doc(sessionId).get();
+      if (snap.exists) return snap.data() as StoredSession;
+      return null;
+    } catch {
+      /* fall through to the local file store */
+    }
+  }
+  const store = await getSessionStore();
+  return store.sessions.find((s) => s.sessionId === sessionId) ?? null;
+}
+
+async function saveSession(session: StoredSession): Promise<void> {
+  if (isFirestoreConfigured()) {
+    try {
+      const db = await getFirestore();
+      await db.collection(SESSION_COLLECTION).doc(session.sessionId).set(session);
+      return;
+    } catch {
+      /* fall through to the local file store */
+    }
+  }
+  const store = await getSessionStore();
+  const idx = store.sessions.findIndex((s) => s.sessionId === session.sessionId);
+  if (idx >= 0) store.sessions[idx] = session;
+  else store.sessions.push(session);
+  await saveSessionStore(store);
+}
+
 function getJourneyOrThrow(journeyCode: string): JourneyRow {
   const journey = JOURNEYS.find((item) => item.code === journeyCode && item.is_active);
   if (!journey) {
@@ -809,8 +846,7 @@ export async function generateLocalSession(
     questions: questionsByParameter.get(draft.parameterId) ?? [],
   }));
 
-  const store = await getSessionStore();
-  store.sessions.push({
+  await saveSession({
     sessionId,
     journeyCode: journey.code,
     journeyName: journey.name,
@@ -823,7 +859,6 @@ export async function generateLocalSession(
     answers: {},
     scoreRows: [],
   });
-  await saveSessionStore(store);
 
   return {
     sessionId,
@@ -839,8 +874,7 @@ export async function saveLocalAnswer(
   questionId: string,
   value: string
 ): Promise<{ sessionId: string; questionId: string; raw_value: string }> {
-  const store = await getSessionStore();
-  const session = store.sessions.find((item) => item.sessionId === sessionId);
+  const session = await loadSession(sessionId);
   if (!session) {
     throw new Error("Session not found");
   }
@@ -851,7 +885,7 @@ export async function saveLocalAnswer(
   }
 
   session.answers[questionId] = value;
-  await saveSessionStore(store);
+  await saveSession(session);
 
   return {
     sessionId,
@@ -863,8 +897,7 @@ export async function saveLocalAnswer(
 export async function completeLocalSession(
   sessionId: string
 ): Promise<{ sessionId: string; scoresComputed: number }> {
-  const store = await getSessionStore();
-  const session = store.sessions.find((item) => item.sessionId === sessionId);
+  const session = await loadSession(sessionId);
   if (!session) {
     throw new Error("Session not found");
   }
@@ -912,7 +945,7 @@ export async function completeLocalSession(
   session.scoreRows = scoreRows;
   session.status = "completed";
   session.completedAt = new Date().toISOString();
-  await saveSessionStore(store);
+  await saveSession(session);
 
   return {
     sessionId,
@@ -923,8 +956,7 @@ export async function completeLocalSession(
 export async function getLocalScore(
   sessionId: string
 ): Promise<LocalScorePayload> {
-  const store = await getSessionStore();
-  const session = store.sessions.find((item) => item.sessionId === sessionId);
+    const session = await loadSession(sessionId);
   if (!session) {
     throw new Error("Session not found");
   }
@@ -1031,8 +1063,7 @@ export async function findLeadBySession(sessionId: string): Promise<Lead | null>
 }
 
 export async function getLocalFitment(sessionId: string): Promise<FitmentResult> {
-  const store = await getSessionStore();
-  const session = store.sessions.find((item) => item.sessionId === sessionId);
+    const session = await loadSession(sessionId);
   if (!session) {
     throw new Error("Session not found");
   }
@@ -1054,8 +1085,7 @@ export async function getLocalFitment(sessionId: string): Promise<FitmentResult>
 }
 
 export async function getLocalReportHtml(sessionId: string): Promise<string> {
-  const store = await getSessionStore();
-  const session = store.sessions.find((item) => item.sessionId === sessionId);
+    const session = await loadSession(sessionId);
   if (!session) {
     throw new Error("Session not found");
   }
