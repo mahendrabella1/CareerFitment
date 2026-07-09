@@ -1131,7 +1131,7 @@ export default function AssessmentExperience() {
                 ))}
               </div>
               <span>
-                Trusted by <strong>14,200+</strong> students &amp; parents
+                Trusted by <strong>students, parents &amp; counsellors</strong>
               </span>
             </div>
           </div>
@@ -1150,10 +1150,10 @@ export default function AssessmentExperience() {
           {/* ---- Stats strip ---- */}
           <section className="statstrip reveal">
             {[
-              { icon: <Users size={20} />, v: "14,200+", l: "Students guided" },
+              { icon: <Users size={20} />, v: "6–12+", l: "Classes & professionals" },
               { icon: <Layers size={20} />, v: "8", l: "Science-backed dimensions" },
               { icon: <Target size={20} />, v: `${CAREER_LIBRARY_SIZE}+`, l: "Careers matched" },
-              { icon: <Award size={20} />, v: "98%", l: "Found it helpful" },
+              { icon: <Award size={20} />, v: "Top-5", l: "Ranked career fit" },
             ].map((s) => (
               <div key={s.l} className="statstrip-item">
                 <span className="statstrip-icon">{s.icon}</span>
@@ -1462,15 +1462,15 @@ export default function AssessmentExperience() {
             </div>
             <div className="tgrid">
               {[
-                { q: "For the first time my daughter could explain why a path suits her — not just what's trending. The report made our stream decision easy.", n: "Meera R.", r: "Parent · Class 10" },
-                { q: "The top-5 matches were spot on. Seeing the strengths and the gaps side by side told me exactly what to work on.", n: "Aditya S.", r: "Class 12 student" },
-                { q: "We use it with every counselling student. It's rigorous, clear, and the report does half our conversation for us.", n: "K. Prasad", r: "Career counsellor" },
+                { q: "For the first time my daughter could explain why a path suits her — not just what's trending. The report made our stream decision easy.", n: "Meera R.", r: "Parent · Class 10", img: "https://i.pravatar.cc/120?img=45" },
+                { q: "The top-5 matches were spot on. Seeing the strengths and the gaps side by side told me exactly what to work on.", n: "Aditya S.", r: "Class 12 student", img: "https://i.pravatar.cc/120?img=13" },
+                { q: "We use it with every counselling student. It's rigorous, clear, and the report does half our conversation for us.", n: "K. Prasad", r: "Career counsellor", img: "https://i.pravatar.cc/120?img=33" },
               ].map((t) => (
                 <article key={t.n} className="tcard">
                   <Quote size={22} className="tcard-quote" />
                   <p>{t.q}</p>
                   <div className="tcard-by">
-                    <span className="tcard-av">{t.n.charAt(0)}</span>
+                    <img className="tcard-av" src={t.img} alt={t.n} loading="lazy" />
                     <div>
                       <strong>{t.n}</strong>
                       <span>{t.r}</span>
@@ -1490,7 +1490,7 @@ export default function AssessmentExperience() {
                 Start Career Assessment <ArrowRight size={18} />
               </button>
               <div className="lx-cta-trust">
-                <Users size={16} /> 14,200+ students · <CheckCircle2 size={16} /> Instant report ·{" "}
+                <Users size={16} /> Students, parents &amp; counsellors · <CheckCircle2 size={16} /> Instant report ·{" "}
                 <ShieldCheck size={16} /> Private
               </div>
             </div>
