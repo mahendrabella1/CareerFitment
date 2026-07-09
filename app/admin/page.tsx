@@ -9,14 +9,32 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { collection, getDocs } from "firebase/firestore";
-import { useAuth, type UserProfile } from "@/lib/auth/AuthProvider";
-import { isAdmin } from "@/lib/auth/admins";
+import { useAuth, authErrorMessage, type UserProfile } from "@/lib/auth/AuthProvider";
+import { isAdmin, ADMIN_LOGIN_EMAIL } from "@/lib/auth/admins";
 import { categoryLabel } from "@/lib/auth/formOptions";
 import { getDb, getFirebaseAuth } from "@/lib/firebase/client";
 
 export default function AdminPage() {
-  const { ready, loading, user, logout } = useAuth();
+  const { ready, loading, user, logout, signIn } = useAuth();
   const admin = isAdmin(user?.email);
+
+  const [email, setEmail] = useState(ADMIN_LOGIN_EMAIL);
+  const [password, setPassword] = useState("");
+  const [signingIn, setSigningIn] = useState(false);
+  const [loginError, setLoginError] = useState("");
+
+  async function adminSignIn(e: React.FormEvent) {
+    e.preventDefault();
+    setLoginError("");
+    setSigningIn(true);
+    try {
+      await signIn(email, password);
+    } catch (err) {
+      setLoginError(authErrorMessage(err));
+    } finally {
+      setSigningIn(false);
+    }
+  }
 
   const [rows, setRows] = useState<UserProfile[] | null>(null);
   const [fetching, setFetching] = useState(false);
@@ -87,10 +105,21 @@ export default function AdminPage() {
   if (loading) return <Center>Loading…</Center>;
   if (!user) {
     return (
-      <Center>
-        <p style={S.muted}>Please sign in with an admin account.</p>
-        <Link href="/signin" style={S.primary}>Sign in</Link>
-      </Center>
+      <div style={{ ...S.page, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+        <form onSubmit={adminSignIn} style={S.loginCard}>
+          <div style={S.loginBadge}>🔐</div>
+          <h1 style={S.loginTitle}>Admin sign in</h1>
+          <p style={S.loginSub}>Restricted to OneGrasp administrators.</p>
+          {loginError && <div style={S.error}>{loginError}</div>}
+          <label style={S.loginLabel}>Email</label>
+          <input style={S.loginInput} type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="admin@onegrasp.com" />
+          <label style={{ ...S.loginLabel, marginTop: 12 }}>Password</label>
+          <input style={S.loginInput} type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+          <button type="submit" style={{ ...S.loginBtn, ...(signingIn ? { opacity: 0.6 } : {}) }} disabled={signingIn}>
+            {signingIn ? "Signing in…" : "Sign in"}
+          </button>
+        </form>
+      </div>
     );
   }
   if (!admin) {
@@ -241,4 +270,11 @@ const S: Record<string, React.CSSProperties> = {
   muted: { color: "#64748b", fontSize: 14, padding: "8px 0" },
   primary: { display: "inline-block", marginTop: 12, padding: "11px 26px", background: BLUE, color: "#fff", borderRadius: 10, fontSize: 14.5, fontWeight: 700, textDecoration: "none" },
   linkBtn: { marginTop: 12, background: "none", border: "none", color: BLUE, fontWeight: 700, fontSize: 14, cursor: "pointer" },
+  loginCard: { width: "100%", maxWidth: 400, background: "#fff", borderRadius: 16, padding: "34px 32px", boxShadow: "0 16px 50px rgba(30,41,59,.16)", textAlign: "center" },
+  loginBadge: { fontSize: 40, marginBottom: 8 },
+  loginTitle: { fontSize: 23, fontWeight: 800, margin: "0 0 4px" },
+  loginSub: { fontSize: 13.5, color: "#64748b", margin: "0 0 22px" },
+  loginLabel: { display: "block", textAlign: "left", fontSize: 12.5, fontWeight: 700, color: "#475569", marginBottom: 6 },
+  loginInput: { width: "100%", padding: "11px 13px", borderRadius: 10, border: "1px solid #cbd5e1", fontSize: 14.5, outline: "none", boxSizing: "border-box" },
+  loginBtn: { width: "100%", marginTop: 20, padding: "13px", background: BLUE, color: "#fff", border: "none", borderRadius: 11, fontSize: 15, fontWeight: 800, cursor: "pointer" },
 };

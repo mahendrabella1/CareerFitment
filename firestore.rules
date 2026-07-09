@@ -9,7 +9,7 @@ service cloud.firestore {
     // Admins (keep in sync with lib/auth/admins.ts) may read every profile.
     function isAdmin() {
       return request.auth != null
-        && request.auth.token.email in ['2022csm.r306@svck.edu.in'];
+        && request.auth.token.email in ['support@onegrasp.com'];
     }
 
     // A user may read/write their OWN profile; admins may read all profiles.
