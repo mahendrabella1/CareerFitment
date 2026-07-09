@@ -901,16 +901,13 @@ export default function AssessmentExperience() {
     }
   }
 
-  // "Start assessment": signed-in users with a category go straight into the
-  // exam; everyone else is sent to register (which returns via ?begin=1).
+  // Every "Start" CTA behaves the same: not signed in -> register; already
+  // signed in -> the dashboard (where they start/retake). No CTA ever jumps
+  // straight into the exam, so registration is never skipped.
   function startFlow() {
     setErrorMessage(null);
-    if (!user) {
-      router.push("/register");
-      return;
-    }
-    if (profile?.journeyCode) void startFromProfile();
-    else setView("details");
+    if (!user) router.push("/register");
+    else router.push("/account");
   }
 
   // Handle the post-register redirect (/?begin=1) once auth has settled.
@@ -1081,7 +1078,7 @@ export default function AssessmentExperience() {
             <div className="cine-cta anim-up d3">
               <button
                 className="cine-btn"
-                onClick={() => router.push("/register")}
+                onClick={startFlow}
                 type="button"
               >
                 <span>Start free assessment</span>

@@ -83,10 +83,17 @@ export default function RegisterPage() {
   return (
     <div style={S.page}>
       <style>{CSS}</style>
+      <header style={S.header}>
+        <Link href="/" style={{ textDecoration: "none" }}><Logo height={30} /></Link>
+        <div style={S.headerRight}>
+          <span style={S.haveAcct}>Have an account?</span>
+          <Link href="/signin" style={S.signInBtn}>Sign in</Link>
+        </div>
+      </header>
+      <main style={S.wrap}>
       <div style={S.shell} className="reg-shell">
         {/* Left: form */}
         <div style={S.left}>
-          <Logo height={30} />
           <h1 style={S.title}>Create your account</h1>
           <p style={S.subtitle}>Sign up and start your career assessment.</p>
 
@@ -164,6 +171,7 @@ export default function RegisterPage() {
           </p>
         </div>
       </div>
+      </main>
     </div>
   );
 }
@@ -201,8 +209,13 @@ function StudentScene() {
 
 const RED = "#e0242e";
 const S: Record<string, React.CSSProperties> = {
-  page: { minHeight: "100vh", background: "#eef1f6", padding: "20px", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: "#1f2430", display: "flex", alignItems: "center", justifyContent: "center" },
-  shell: { width: "100%", maxWidth: 960, background: "#fff", borderRadius: 22, overflow: "hidden", boxShadow: "0 28px 70px rgba(31,36,48,.18)", minHeight: 560 },
+  page: { minHeight: "100vh", background: "#eef1f6", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: "#1f2430", display: "flex", flexDirection: "column" },
+  header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 26px", background: "#fff", borderBottom: "1px solid #e6e9ef" },
+  headerRight: { display: "flex", alignItems: "center", gap: 12 },
+  haveAcct: { fontSize: 13, color: "#64748b" },
+  signInBtn: { padding: "8px 16px", background: "#e0242e", color: "#fff", borderRadius: 9, fontSize: 13.5, fontWeight: 700, textDecoration: "none" },
+  wrap: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "24px 20px" },
+  shell: { width: "100%", maxWidth: 960, background: "#fff", borderRadius: 22, overflow: "hidden", boxShadow: "0 28px 70px rgba(31,36,48,.18)", minHeight: 540 },
 
   left: { padding: "34px 42px 28px", display: "flex", flexDirection: "column" },
   logo: { alignSelf: "flex-start", fontSize: "1.4rem", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 16 },
