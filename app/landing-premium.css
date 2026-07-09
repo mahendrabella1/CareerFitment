@@ -98,7 +98,7 @@ h1, h2, h3, .og-logo {
 /* generic landing section */
 .lx { padding: 56px 0; }
 .lx-head { text-align: center; max-width: 640px; margin: 0 auto 40px; }
-.lx-eyebrow { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 10px; }
+.lx-eyebrow { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--soft-accent); margin-bottom: 10px; }
 .lx-head h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); font-weight: 800; letter-spacing: -0.03em; margin: 0 0 10px; }
 .lx-head p { color: var(--muted); font-size: 1.02rem; margin: 0; line-height: 1.6; }
 
