@@ -12,7 +12,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { useAuth, type UserProfile } from "@/lib/auth/AuthProvider";
 import { isAdmin } from "@/lib/auth/admins";
 import { categoryLabel } from "@/lib/auth/formOptions";
-import { getDb } from "@/lib/firebase/client";
+import { getDb, getFirebaseAuth } from "@/lib/firebase/client";
 
 export default function AdminPage() {
   const { ready, loading, user, logout } = useAuth();
@@ -22,6 +22,24 @@ export default function AdminPage() {
   const [fetching, setFetching] = useState(false);
   const [error, setError] = useState("");
   const [q, setQ] = useState("");
+  const [sent, setSent] = useState<Record<string, string>>({}); // uid -> sending|sent|error msg
+
+  async function sendReport(u: UserProfile) {
+    if (!u.email || !u.latestAssessment) return;
+    setSent((s) => ({ ...s, [u.uid]: "sending" }));
+    try {
+      const idToken = await getFirebaseAuth()?.currentUser?.getIdToken();
+      const res = await fetch("/api/admin/send-report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idToken, to: u.email, name: u.name, report: u.latestAssessment }),
+      });
+      const data = await res.json();
+      setSent((s) => ({ ...s, [u.uid]: res.ok && data.success ? "sent" : `error: ${data.message || "failed"}` }));
+    } catch (e) {
+      setSent((s) => ({ ...s, [u.uid]: `error: ${e instanceof Error ? e.message : "failed"}` }));
+    }
+  }
 
   useEffect(() => {
     if (!admin) return;
@@ -107,7 +125,7 @@ export default function AdminPage() {
               <table style={S.table}>
                 <thead>
                   <tr>
-                    {["Name", "Email", "Phone", "Category", "Status", "Assessment", "Top career", "Fit %"].map((h) => (
+                    {["Name", "Email", "Phone", "Category", "Status", "Assessment", "Top career", "Fit %", "Report"].map((h) => (
                       <th key={h} style={S.th}>{h}</th>
                     ))}
                   </tr>
@@ -127,6 +145,20 @@ export default function AdminPage() {
                         </td>
                         <td style={S.td}>{a?.topCareer || "—"}</td>
                         <td style={S.td}>{a?.overallFitmentPct != null ? `${a.overallFitmentPct}%` : "—"}</td>
+                        <td style={S.td}>
+                          {a ? (
+                            (() => {
+                              const st = sent[u.uid];
+                              if (st === "sent") return <span style={{ ...S.pill, ...S.pillOk }}>✓ Sent</span>;
+                              if (st?.startsWith("error")) return <button style={S.sendBtn} onClick={() => void sendReport(u)} title={st}>Retry</button>;
+                              return (
+                                <button style={S.sendBtn} disabled={st === "sending"} onClick={() => void sendReport(u)}>
+                                  {st === "sending" ? "Sending…" : "✉ Email report"}
+                                </button>
+                              );
+                            })()
+                          ) : "—"}
+                        </td>
                       </tr>
                     );
                   })}
@@ -183,6 +215,7 @@ const S: Record<string, React.CSSProperties> = {
   pill: { padding: "3px 11px", borderRadius: 999, fontSize: 12, fontWeight: 700 },
   pillOk: { background: "#dcfce7", color: "#15803d" },
   pillWait: { background: "#fef3c7", color: "#92400e" },
+  sendBtn: { padding: "6px 12px", background: "#eef2ff", color: "#3b4a9c", border: "1px solid #c7d2fe", borderRadius: 8, fontSize: 12.5, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" },
   muted: { color: "#64748b", fontSize: 14, padding: "8px 0" },
   primary: { display: "inline-block", marginTop: 12, padding: "11px 26px", background: BLUE, color: "#fff", borderRadius: 10, fontSize: 14.5, fontWeight: 700, textDecoration: "none" },
   linkBtn: { marginTop: 12, background: "none", border: "none", color: BLUE, fontWeight: 700, fontSize: 14, cursor: "pointer" },
