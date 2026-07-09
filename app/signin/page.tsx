@@ -5,6 +5,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Logo } from "@/app/Logo";
 import { useAuth, authErrorMessage } from "@/lib/auth/AuthProvider";
 import { emailIsValid } from "@/lib/auth/formOptions";
 
@@ -41,9 +42,7 @@ export default function SignInPage() {
   return (
     <div style={S.page}>
       <header style={S.header}>
-        <Link href="/" className="og-logo" style={S.logo}>
-          One<span>Grasp</span>
-        </Link>
+        <Link href="/" style={{ textDecoration: "none" }}><Logo height={30} /></Link>
         <div style={S.headerRight}>
           <span style={S.haveAcct}>New here?</span>
           <Link href="/register" style={S.ctaBtn}>Create account</Link>
@@ -82,16 +81,16 @@ export default function SignInPage() {
 function Illustration() {
   return (
     <svg viewBox="0 0 96 96" style={S.illus} role="img" aria-label="Sign in">
-      <rect x="2" y="2" width="92" height="92" rx="18" fill="#eef2ff" />
-      <circle cx="48" cy="40" r="16" fill="#c7d2fe" />
-      <circle cx="48" cy="35" r="7" fill="#3b4a9c" />
-      <path d="M35 54 a13 11 0 0 1 26 0 z" fill="#3b4a9c" />
-      <path d="M26 76 l10 -11 9 7 12 -14 12 9" fill="none" stroke="#3b4a9c" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="2" y="2" width="92" height="92" rx="18" fill="#f5f5f5" />
+      <circle cx="48" cy="40" r="16" fill="#e2e2e5" />
+      <circle cx="48" cy="35" r="7" fill="#3f3f46" />
+      <path d="M35 54 a13 11 0 0 1 26 0 z" fill="#3f3f46" />
+      <path d="M26 76 l10 -11 9 7 12 -14 12 9" fill="none" stroke="#3f3f46" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
-const BLUE = "#3b4a9c";
+const BLUE = "#3f3f46";
 const S: Record<string, React.CSSProperties> = {
   page: { minHeight: "100vh", background: "#eef1f6", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: "#1e293b", display: "flex", flexDirection: "column" },
   header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 22px", background: "#fff", borderBottom: "1px solid #e6e9ef" },

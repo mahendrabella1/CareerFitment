@@ -9,6 +9,7 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Logo } from "@/app/Logo";
 import { useAuth, authErrorMessage } from "@/lib/auth/AuthProvider";
 import {
   CATEGORY_OPTIONS,
@@ -85,7 +86,7 @@ export default function RegisterPage() {
       <div style={S.shell} className="reg-shell">
         {/* Left: form */}
         <div style={S.left}>
-          <span className="og-logo" style={S.logo}>One<span>Grasp</span></span>
+          <Logo height={30} />
           <h1 style={S.title}>Create your account</h1>
           <p style={S.subtitle}>Sign up and start your career assessment.</p>
 

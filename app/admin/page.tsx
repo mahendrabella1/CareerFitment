@@ -8,6 +8,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { Logo } from "@/app/Logo";
 import { collection, getDocs } from "firebase/firestore";
 import { useAuth, authErrorMessage, type UserProfile } from "@/lib/auth/AuthProvider";
 import { isAdmin, ADMIN_LOGIN_EMAIL } from "@/lib/auth/admins";
@@ -134,7 +135,7 @@ export default function AdminPage() {
   return (
     <div style={S.page}>
       <header style={S.header}>
-        <Link href="/" className="og-logo" style={S.logo}>One<span>Grasp</span></Link>
+        <Link href="/" style={{ textDecoration: "none" }}><Logo height={30} /></Link>
         <div style={S.headRight}>
           <span style={S.adminTag}>Admin · {user.email}</span>
           <button style={S.logout} onClick={() => void logout()}>Sign out</button>
@@ -148,7 +149,7 @@ export default function AdminPage() {
           <Stat label="Registered users" value={stats.total} />
           <Stat label="Completed assessment" value={stats.completed} color="#16a34a" />
           <Stat label="Not yet taken" value={stats.pending} color="#d97706" />
-          <Stat label="Avg. feedback" value={stats.avg} color="#3b4a9c" />
+          <Stat label="Avg. feedback" value={stats.avg} color="#3f3f46" />
         </div>
 
         <div style={S.tableCard}>
@@ -239,7 +240,7 @@ function Center({ children }: { children: React.ReactNode }) {
   );
 }
 
-const BLUE = "#3b4a9c";
+const BLUE = "#3f3f46";
 const S: Record<string, React.CSSProperties> = {
   page: { minHeight: "100vh", background: "#eef1f6", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: "#1e293b" },
   header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 22px", background: "#fff", borderBottom: "1px solid #e6e9ef" },
@@ -265,8 +266,8 @@ const S: Record<string, React.CSSProperties> = {
   pill: { padding: "3px 11px", borderRadius: 999, fontSize: 12, fontWeight: 700 },
   pillOk: { background: "#dcfce7", color: "#15803d" },
   pillWait: { background: "#fef3c7", color: "#92400e" },
-  sendBtn: { padding: "6px 12px", background: "#eef2ff", color: "#3b4a9c", border: "1px solid #c7d2fe", borderRadius: 8, fontSize: 12.5, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" },
-  bulkBtn: { padding: "9px 16px", background: "#3b4a9c", color: "#fff", border: "none", borderRadius: 9, fontSize: 13, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" },
+  sendBtn: { padding: "6px 12px", background: "#f5f5f5", color: "#3f3f46", border: "1px solid #e2e2e5", borderRadius: 8, fontSize: 12.5, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" },
+  bulkBtn: { padding: "9px 16px", background: "#3f3f46", color: "#fff", border: "none", borderRadius: 9, fontSize: 13, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" },
   muted: { color: "#64748b", fontSize: 14, padding: "8px 0" },
   primary: { display: "inline-block", marginTop: 12, padding: "11px 26px", background: BLUE, color: "#fff", borderRadius: 10, fontSize: 14.5, fontWeight: 700, textDecoration: "none" },
   linkBtn: { marginTop: 12, background: "none", border: "none", color: BLUE, fontWeight: 700, fontSize: 14, cursor: "pointer" },

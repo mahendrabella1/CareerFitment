@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth, type AssessmentSummary } from "@/lib/auth/AuthProvider";
+import { Logo } from "@/app/Logo";
 import {
   Sparkles,
   ArrowRight,
@@ -396,18 +397,18 @@ const EX: Record<string, React.CSSProperties> = {
   insStartDisabled: { background: "#d7dae0", color: "#8a8f98", cursor: "not-allowed", boxShadow: "none" },
 
   secCard: { width: "100%", maxWidth: 520, background: "#fff", border: "1px solid var(--line)", borderRadius: 20, padding: "38px 36px", boxShadow: "var(--shadow)", textAlign: "center" },
-  secStep: { fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: "#3b4a9c" },
-  secBadge: { width: 64, height: 64, borderRadius: "50%", margin: "16px auto 14px", background: "linear-gradient(135deg,#3b4a9c,#5a6fce)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, fontWeight: 800 },
+  secStep: { fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: "#3f3f46" },
+  secBadge: { width: 64, height: 64, borderRadius: "50%", margin: "16px auto 14px", background: "linear-gradient(135deg,#3f3f46,#5a6fce)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, fontWeight: 800 },
   secTitle: { fontSize: 26, fontWeight: 800, margin: "0 0 4px" },
   secCount: { fontSize: 13, color: "var(--muted)", margin: "0 0 22px" },
   secQuote: { fontSize: 16, fontStyle: "italic", color: "#334155", lineHeight: 1.6, background: "#eef2ff", border: "1px solid #dbe2ff", borderRadius: 12, padding: "16px 18px", margin: "0 0 24px" },
-  secStart: { width: "100%", padding: "14px", background: "#3b4a9c", color: "#fff", border: "none", borderRadius: 12, fontSize: 15.5, fontWeight: 800, cursor: "pointer", boxShadow: "0 10px 24px rgba(59,74,156,0.3)" },
+  secStart: { width: "100%", padding: "14px", background: "#3f3f46", color: "#fff", border: "none", borderRadius: 12, fontSize: 15.5, fontWeight: 800, cursor: "pointer", boxShadow: "0 10px 24px rgba(59,74,156,0.3)" },
 };
 
 // Full-screen exam UI (modelled on the reference MCQ exam mockup).
-const BLUE = "#3b4a9c";
-const VIOLET = "#7c5cfc";
-const GRAD = "linear-gradient(90deg, #7c5cfc, #4f7cf6)";
+const BLUE = "#3f3f46";
+const VIOLET = "#e0242e";
+const GRAD = "linear-gradient(90deg, #e0242e, #e0242e)";
 const FS: Record<string, React.CSSProperties> = {
   overlay: { position: "fixed", inset: 0, zIndex: 1000, background: "#f4f5fb", display: "flex", flexDirection: "column", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: "#1f2937" },
   loadWrap: { position: "fixed", inset: 0, zIndex: 1100, background: "#eef1f6", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14, fontFamily: "Inter, system-ui, Segoe UI, sans-serif" },
@@ -415,14 +416,14 @@ const FS: Record<string, React.CSSProperties> = {
   loadSub: { fontSize: 14, color: "#64748b" },
 
   // dark gradient header
-  topbar: { background: "linear-gradient(100deg, #17102e 0%, #241546 55%, #2f1c5c 100%)", color: "#fff", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" },
+  topbar: { background: "linear-gradient(100deg,#33333a,#45454e)", color: "#fff", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" },
   brand: { display: "flex", alignItems: "center", gap: 13, minWidth: 0 },
-  brandIcon: { width: 46, height: 46, borderRadius: 14, background: "linear-gradient(135deg, #7c5cfc, #d16bff)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0, boxShadow: "0 6px 16px rgba(124,92,252,.45)" },
+  brandIcon: { width: 46, height: 46, borderRadius: 14, background: "linear-gradient(135deg, #e0242e, #f0565e)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0, boxShadow: "0 6px 16px rgba(224,36,46,.45)" },
   brandTitle: { fontSize: 19, fontWeight: 800, color: "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
   brandSub: { fontSize: 12.5, color: "rgba(255,255,255,0.6)", marginTop: 2 },
   stats: { display: "flex", gap: 10, flexWrap: "wrap" },
-  stat: { display: "flex", alignItems: "center", gap: 9, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(124,92,252,0.4)", borderRadius: 12, padding: "8px 15px" },
-  statIcon: { color: "#a78bfa", fontSize: 15 },
+  stat: { display: "flex", alignItems: "center", gap: 9, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(224,36,46,0.4)", borderRadius: 12, padding: "8px 15px" },
+  statIcon: { color: "#f3a9ad", fontSize: 15 },
   statLabel: { fontSize: 10, color: "rgba(255,255,255,0.55)", fontWeight: 700, textTransform: "uppercase", letterSpacing: .5 },
   statValue: { fontSize: 15, fontWeight: 800, color: "#fff" },
   endBtn: { display: "flex", alignItems: "center", gap: 6, padding: "10px 18px", background: "rgba(244,63,94,0.12)", color: "#fda4af", border: "1px solid rgba(244,63,94,0.5)", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer" },
@@ -476,7 +477,7 @@ const FS: Record<string, React.CSSProperties> = {
   prevBtn: { display: "inline-flex", alignItems: "center", gap: 6, padding: "12px 22px", background: "#fff", color: "#475569", border: "1px solid #d7dbe6", borderRadius: 12, fontSize: 14.5, fontWeight: 700, cursor: "pointer" },
   clearBtn: { display: "inline-flex", alignItems: "center", gap: 6, padding: "12px 22px", background: "#fff", color: "#dc2626", border: "1px solid #fecaca", borderRadius: 12, fontSize: 14.5, fontWeight: 700, cursor: "pointer" },
   clearDisabled: { opacity: 0.4, cursor: "not-allowed" },
-  nextBtn: { padding: "13px 40px", background: GRAD, color: "#fff", border: "none", borderRadius: 12, fontSize: 15, fontWeight: 800, cursor: "pointer", boxShadow: "0 10px 24px rgba(124,92,252,.4)" },
+  nextBtn: { padding: "13px 40px", background: GRAD, color: "#fff", border: "none", borderRadius: 12, fontSize: 15, fontWeight: 800, cursor: "pointer", boxShadow: "0 10px 24px rgba(224,36,46,.4)" },
   submitBtn: { padding: "13px 40px", background: "linear-gradient(90deg,#16a34a,#22c55e)", color: "#fff", border: "none", borderRadius: 12, fontSize: 15, fontWeight: 800, cursor: "pointer", boxShadow: "0 10px 24px rgba(22,163,74,.35)" },
   disabled: { opacity: 0.45, cursor: "not-allowed", boxShadow: "none" },
 };
@@ -1033,9 +1034,7 @@ export default function AssessmentExperience() {
   return (
     <main className="shell">
       <header className="ognav">
-        <span className="og-logo">
-          One<span>Grasp</span>
-        </span>
+        <Logo height={34} />
         {!session && !results ? (
           <nav className="ognav-links">
             <a href="#how">How it works</a>
@@ -1669,7 +1668,7 @@ export default function AssessmentExperience() {
               </div>
             </div>
             <div style={FS.stats}>
-              <div style={FS.stat}><span style={FS.statIcon}>⏱</span><div><div style={FS.statLabel}>Time Left</div><div style={{ ...FS.statValue, color: "#c4b5fd" }}>{fmtClock(totalLeft)}</div></div></div>
+              <div style={FS.stat}><span style={FS.statIcon}>⏱</span><div><div style={FS.statLabel}>Time Left</div><div style={{ ...FS.statValue, color: "#f3a9ad" }}>{fmtClock(totalLeft)}</div></div></div>
               <div style={FS.stat}><span style={FS.statIcon}>❓</span><div><div style={FS.statLabel}>Question</div><div style={FS.statValue}>{currentIndex + 1} / {session.totalQuestions}</div></div></div>
               <div style={FS.stat}><span style={FS.statIcon}>🔖</span><div><div style={FS.statLabel}>Marked</div><div style={FS.statValue}>{Object.values(marked).filter(Boolean).length}</div></div></div>
             </div>
@@ -1731,7 +1730,7 @@ export default function AssessmentExperience() {
                   <div style={FS.navTitle}>◎ Question Navigator</div>
                   <div style={FS.legend}>
                     <span style={FS.legItem}><i style={{ ...FS.legDot, background: "#16a34a" }} /> Answered</span>
-                    <span style={FS.legItem}><i style={{ ...FS.legDot, background: "#7c5cfc" }} /> Current</span>
+                    <span style={FS.legItem}><i style={{ ...FS.legDot, background: "#e0242e" }} /> Current</span>
                     <span style={FS.legItem}><i style={{ ...FS.legDot, background: "#f59e0b" }} /> Review</span>
                     <span style={FS.legItem}><i style={{ ...FS.legDot, background: "#e2e8f0" }} /> Not Answered</span>
                   </div>
@@ -1758,7 +1757,7 @@ export default function AssessmentExperience() {
                     <Donut pct={(Object.keys(answers).length / Math.max(1, session.totalQuestions)) * 100} />
                     <div style={FS.ovList}>
                       <OvLine dot="#16a34a" label="Answered" value={Object.keys(answers).length} />
-                      <OvLine dot="#7c5cfc" label="Current" value={1} />
+                      <OvLine dot="#e0242e" label="Current" value={1} />
                       <OvLine dot="#f59e0b" label="Review" value={Object.values(marked).filter(Boolean).length} />
                       <OvLine dot="#cbd5e1" label="Not Answered" value={session.totalQuestions - Object.keys(answers).length} />
                       <OvLine label="Total Questions" value={session.totalQuestions} bold />
@@ -1866,8 +1865,8 @@ export default function AssessmentExperience() {
                       width: 42,
                       height: 42,
                       borderRadius: 10,
-                      border: active ? "2px solid #3b4a9c" : "1px solid #cbd5e1",
-                      background: active ? "#3b4a9c" : "#fff",
+                      border: active ? "2px solid #3f3f46" : "1px solid #cbd5e1",
+                      background: active ? "#3f3f46" : "#fff",
                       color: active ? "#fff" : "#334155",
                       fontWeight: 800,
                       fontSize: 15,
@@ -1901,7 +1900,7 @@ export default function AssessmentExperience() {
                 padding: "14px",
                 borderRadius: 12,
                 border: "none",
-                background: feedbackRating == null ? "#cbd5e1" : "#3b4a9c",
+                background: feedbackRating == null ? "#cbd5e1" : "#3f3f46",
                 color: feedbackRating == null ? "#64748b" : "#fff",
                 fontSize: 15.5,
                 fontWeight: 800,

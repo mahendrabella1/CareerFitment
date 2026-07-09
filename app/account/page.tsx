@@ -10,6 +10,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Logo } from "@/app/Logo";
 import { useAuth, type AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { categoryLabel } from "@/lib/auth/formOptions";
 
@@ -48,7 +49,7 @@ export default function AccountPage() {
   return (
     <div style={S.page}>
       <header style={S.header}>
-        <Link href="/" className="og-logo" style={S.logo}>One<span>Grasp</span></Link>
+        <Link href="/" style={{ textDecoration: "none" }}><Logo height={30} /></Link>
         <button style={S.logout} onClick={() => { void logout().then(() => router.push("/signin")); }}>
           Sign out
         </button>
@@ -249,7 +250,7 @@ function Centered({ children }: { children: React.ReactNode }) {
   return <div style={{ ...S.page, display: "flex", alignItems: "center", justifyContent: "center" }}><div style={{ textAlign: "center" }}>{children}</div></div>;
 }
 
-const BLUE = "#3b4a9c";
+const BLUE = "#3f3f46";
 const S: Record<string, React.CSSProperties> = {
   page: { minHeight: "100vh", background: "#eef1f6", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: "#1e293b" },
   header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 22px", background: "#fff", borderBottom: "1px solid #e6e9ef" },
@@ -269,7 +270,7 @@ const S: Record<string, React.CSSProperties> = {
   tk: { fontSize: 13.5, color: "#64748b", fontWeight: 600 },
   tv: { fontSize: 14.5, color: "#0f172a", fontWeight: 600, textAlign: "right" },
 
-  hero: { background: `linear-gradient(135deg, ${BLUE}, #5a6fce)`, color: "#fff", borderRadius: 16, padding: "24px 26px", marginBottom: 16 },
+  hero: { background: `linear-gradient(135deg, ${BLUE}, #5b5b64)`, color: "#fff", borderRadius: 16, padding: "24px 26px", marginBottom: 16 },
   heroTop: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 },
   heroKicker: { fontSize: 12, textTransform: "uppercase", letterSpacing: 1, opacity: .85, fontWeight: 700 },
   heroTitle: { fontSize: 24, fontWeight: 800, margin: "6px 0 2px", lineHeight: 1.2 },
@@ -293,11 +294,11 @@ const S: Record<string, React.CSSProperties> = {
   matchBlurb: { fontSize: 12.5, color: "#64748b", marginTop: 7, lineHeight: 1.5 },
 
   chips: { display: "flex", flexWrap: "wrap", gap: 8 },
-  chip: { background: "#eef2ff", color: "#312e81", borderRadius: 999, padding: "6px 13px", fontSize: 13, fontWeight: 700 },
-  chipSub: { color: "#818cf8", fontWeight: 500 },
+  chip: { background: "#f5f5f5", color: "#3f3f46", borderRadius: 999, padding: "6px 13px", fontSize: 13, fontWeight: 700 },
+  chipSub: { color: "#9ca3af", fontWeight: 500 },
 
   theme: { display: "flex", gap: 12, alignItems: "flex-start", padding: "12px 0", borderTop: "1px solid #f1f5f9" },
-  themeBadge: { width: 34, height: 34, borderRadius: 9, background: "#eef2ff", color: BLUE, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, flexShrink: 0 },
+  themeBadge: { width: 34, height: 34, borderRadius: 9, background: "#f5f5f5", color: BLUE, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, flexShrink: 0 },
   themeTop: { display: "flex", justifyContent: "space-between", gap: 10, marginBottom: 6 },
   themeTitle: { fontSize: 14, fontWeight: 700 },
   themeScore: { fontSize: 13, fontWeight: 700, color: BLUE },
