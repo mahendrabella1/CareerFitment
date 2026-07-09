@@ -318,6 +318,66 @@ function OvRow({ label, value, color }: { label: string; value: number | string;
   );
 }
 
+function OvLine({ dot, label, value, bold }: { dot?: string; label: string; value: number; bold?: boolean }) {
+  return (
+    <div style={FS.ovLine}>
+      <span style={FS.ovLineLeft}>
+        {dot && <i style={{ ...FS.ovDot, background: dot }} />}
+        <span style={{ fontWeight: bold ? 800 : 600, color: bold ? "#0f172a" : "#475569" }}>{label}</span>
+      </span>
+      <span style={{ fontWeight: 800, color: dot ?? "#0f172a" }}>{value}</span>
+    </div>
+  );
+}
+
+function ThankYouScreen({ name }: { name?: string }) {
+  const [phase, setPhase] = useState<"load" | "done">("load");
+  useEffect(() => {
+    const t = setTimeout(() => setPhase("done"), 2600);
+    return () => clearTimeout(t);
+  }, []);
+  return (
+    <div style={TY.wrap}>
+      {phase === "load" ? (
+        <>
+          <div className="exam-spinner" />
+          <div style={TY.text}>Saving your responses…</div>
+          <div style={TY.sub}>Please wait a moment</div>
+        </>
+      ) : (
+        <div className="ty-pop" style={{ textAlign: "center" }}>
+          <div style={TY.check}>✓</div>
+          <div style={TY.thanks}>Thank you{name ? `, ${name}` : ""}! 🎉</div>
+          <div style={TY.sub}>Preparing your report…</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+const TY: Record<string, React.CSSProperties> = {
+  wrap: { position: "fixed", inset: 0, zIndex: 1200, background: "linear-gradient(160deg, #f6f4ff, #eef1fb)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14, fontFamily: "Inter, system-ui, Segoe UI, sans-serif", padding: 24, textAlign: "center" },
+  text: { fontSize: 19, fontWeight: 800, color: "#1e293b" },
+  sub: { fontSize: 14, color: "#64748b" },
+  check: { width: 92, height: 92, borderRadius: "50%", margin: "0 auto 18px", background: "linear-gradient(135deg,#16a34a,#22c55e)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, fontWeight: 800, boxShadow: "0 14px 34px rgba(22,163,74,.4)" },
+  thanks: { fontSize: 28, fontWeight: 800, color: "#0f172a", marginBottom: 8 },
+};
+
+function Donut({ pct }: { pct: number }) {
+  const r = 34;
+  const circ = 2 * Math.PI * r;
+  const off = circ * (1 - Math.max(0, Math.min(100, pct)) / 100);
+  return (
+    <svg width="102" height="102" viewBox="0 0 96 96" style={{ flexShrink: 0 }}>
+      <circle cx="48" cy="48" r={r} fill="none" stroke="#eef2f6" strokeWidth="10" />
+      <circle cx="48" cy="48" r={r} fill="none" stroke="#16a34a" strokeWidth="10" strokeLinecap="round"
+        strokeDasharray={circ} strokeDashoffset={off} transform="rotate(-90 48 48)" />
+      <text x="48" y="46" textAnchor="middle" fontSize="16" fontWeight="800" fill="#0f172a">{pct.toFixed(1)}%</text>
+      <text x="48" y="61" textAnchor="middle" fontSize="8.5" fill="#94a3b8">Completed</text>
+    </svg>
+  );
+}
+
 // Inline styles for the timers + the pre-exam instructions screen.
 const EX: Record<string, React.CSSProperties> = {
   timerChip: { display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 999, padding: "6px 12px", fontSize: "0.82rem", fontWeight: 700, color: "#fff" },
@@ -346,67 +406,78 @@ const EX: Record<string, React.CSSProperties> = {
 
 // Full-screen exam UI (modelled on the reference MCQ exam mockup).
 const BLUE = "#3b4a9c";
+const VIOLET = "#7c5cfc";
+const GRAD = "linear-gradient(90deg, #7c5cfc, #4f7cf6)";
 const FS: Record<string, React.CSSProperties> = {
-  overlay: { position: "fixed", inset: 0, zIndex: 1000, background: "#f1f5f9", display: "flex", flexDirection: "column", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: "#1f2937" },
+  overlay: { position: "fixed", inset: 0, zIndex: 1000, background: "#f4f5fb", display: "flex", flexDirection: "column", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: "#1f2937" },
   loadWrap: { position: "fixed", inset: 0, zIndex: 1100, background: "#eef1f6", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14, fontFamily: "Inter, system-ui, Segoe UI, sans-serif" },
   loadText: { fontSize: 19, fontWeight: 800, color: "#1e293b" },
   loadSub: { fontSize: 14, color: "#64748b" },
 
-  topbar: { background: "#fff", borderBottom: "1px solid #e6e9ef", padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" },
-  brand: { display: "flex", alignItems: "center", gap: 12, minWidth: 0 },
-  brandIcon: { width: 42, height: 42, borderRadius: 12, background: "#eef2ff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 },
-  brandTitle: { fontSize: 18, fontWeight: 800, color: "#0f172a", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
-  brandProgress: { height: 4, background: "#e6e9f2", borderRadius: 999, overflow: "hidden", marginTop: 6, maxWidth: 320 },
-  brandProgressFill: { height: "100%", background: BLUE, borderRadius: 999, transition: "width .35s ease" },
-  stats: { display: "flex", gap: 10 },
-  stat: { display: "flex", alignItems: "center", gap: 8, background: "#fff", border: "1px solid #e6e9ef", borderRadius: 12, padding: "8px 14px" },
-  statIcon: { color: BLUE, fontSize: 15 },
-  statLabel: { fontSize: 10.5, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: .4 },
-  statValue: { fontSize: 15, fontWeight: 800, color: "#1e293b" },
-  endBtn: { display: "flex", alignItems: "center", gap: 6, padding: "10px 18px", background: "#fff", color: "#dc2626", border: "1px solid #fca5a5", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer" },
+  // dark gradient header
+  topbar: { background: "linear-gradient(100deg, #17102e 0%, #241546 55%, #2f1c5c 100%)", color: "#fff", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" },
+  brand: { display: "flex", alignItems: "center", gap: 13, minWidth: 0 },
+  brandIcon: { width: 46, height: 46, borderRadius: 14, background: "linear-gradient(135deg, #7c5cfc, #d16bff)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0, boxShadow: "0 6px 16px rgba(124,92,252,.45)" },
+  brandTitle: { fontSize: 19, fontWeight: 800, color: "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+  brandSub: { fontSize: 12.5, color: "rgba(255,255,255,0.6)", marginTop: 2 },
+  stats: { display: "flex", gap: 10, flexWrap: "wrap" },
+  stat: { display: "flex", alignItems: "center", gap: 9, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(124,92,252,0.4)", borderRadius: 12, padding: "8px 15px" },
+  statIcon: { color: "#a78bfa", fontSize: 15 },
+  statLabel: { fontSize: 10, color: "rgba(255,255,255,0.55)", fontWeight: 700, textTransform: "uppercase", letterSpacing: .5 },
+  statValue: { fontSize: 15, fontWeight: 800, color: "#fff" },
+  endBtn: { display: "flex", alignItems: "center", gap: 6, padding: "10px 18px", background: "rgba(244,63,94,0.12)", color: "#fda4af", border: "1px solid rgba(244,63,94,0.5)", borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: "pointer" },
 
   body: { flex: 1, overflow: "auto", padding: "24px" },
-  grid: { maxWidth: 1180, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 360px", gap: 20, alignItems: "start" },
+  grid: { maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 380px", gap: 22, alignItems: "start" },
 
-  qCard: { background: "#fff", border: "1px solid #e6e9ef", borderRadius: 16, padding: "24px 28px", boxShadow: "0 2px 12px rgba(30,41,59,.05)" },
+  qCard: { background: "#fff", border: "1px solid #eceef5", borderRadius: 18, padding: "26px 30px", boxShadow: "0 4px 20px rgba(30,27,75,.06)" },
   qHead: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 14 },
-  qNum: { fontSize: 14, fontWeight: 700, color: "#64748b" },
-  markLink: { display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", color: "#64748b", fontSize: 13.5, fontWeight: 700, cursor: "pointer" },
+  qNumWrap: { display: "flex", alignItems: "center", gap: 12 },
+  qNumBadge: { width: 34, height: 34, borderRadius: 10, background: VIOLET, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 14 },
+  qNumText: { fontSize: 14.5, fontWeight: 700, color: "#334155" },
+  markLink: { display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", color: VIOLET, fontSize: 13.5, fontWeight: 700, cursor: "pointer" },
   markLinkOn: { color: "#d97706" },
-  qDivider: { height: 1, background: "#eef1f6", marginBottom: 18 },
-  qCat: { fontSize: 11.5, textTransform: "uppercase", letterSpacing: .6, fontWeight: 700, color: BLUE, marginBottom: 10 },
-  qText: { fontSize: "1.35rem", lineHeight: 1.45, fontWeight: 700, color: "#1e293b", margin: "0 0 22px" },
-  opts: { display: "flex", flexDirection: "column", gap: 12 },
-  opt: { display: "flex", alignItems: "center", gap: 14, width: "100%", textAlign: "left", padding: "16px 18px", border: "1px solid #e2e6ee", borderRadius: 14, background: "#fff", cursor: "pointer", transition: "all .14s ease" },
-  optOn: { borderColor: BLUE, background: "#f5f7ff", boxShadow: "0 0 0 1px " + BLUE },
-  letter: { flex: "0 0 auto", width: 34, height: 34, borderRadius: "50%", border: "1px solid #cbd5e1", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 14, color: "#475569" },
-  letterOn: { background: BLUE, borderColor: BLUE, color: "#fff" },
+  qProg: { height: 4, background: "#eef1f6", borderRadius: 999, overflow: "hidden", margin: "0 0 20px", maxWidth: 180 },
+  qProgFill: { height: "100%", background: VIOLET, borderRadius: 999, transition: "width .35s ease" },
+  qCat: { fontSize: 11.5, textTransform: "uppercase", letterSpacing: .6, fontWeight: 700, color: VIOLET, marginBottom: 10 },
+  qText: { fontSize: "1.4rem", lineHeight: 1.45, fontWeight: 800, color: "#1e293b", margin: "0 0 22px" },
+  opts: { display: "flex", flexDirection: "column", gap: 13 },
+  opt: { display: "flex", alignItems: "center", gap: 15, width: "100%", textAlign: "left", padding: "16px 20px", border: "1.5px solid #e6e8f0", borderRadius: 14, background: "#fff", cursor: "pointer", transition: "all .14s ease" },
+  optOn: { borderColor: VIOLET, background: "#f6f4ff" },
+  letter: { flex: "0 0 auto", width: 36, height: 36, borderRadius: "50%", border: "1.5px solid #cbd5e1", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 14, color: "#475569" },
+  letterOn: { background: VIOLET, borderColor: VIOLET, color: "#fff" },
   optLabel: { flex: 1, fontSize: 15.5, fontWeight: 600, color: "#334155" },
-  selPill: { background: "#dcfce7", color: "#15803d", borderRadius: 999, padding: "3px 12px", fontSize: 12, fontWeight: 700 },
+  check: { width: 24, height: 24, borderRadius: "50%", background: VIOLET, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 800 },
 
-  side: { display: "flex", flexDirection: "column", gap: 20 },
-  navCard: { background: "#fff", border: "1px solid #e6e9ef", borderRadius: 16, padding: "20px 22px", boxShadow: "0 2px 12px rgba(30,41,59,.05)" },
+  side: { display: "flex", flexDirection: "column", gap: 22 },
+  navCard: { background: "#fff", border: "1px solid #eceef5", borderRadius: 18, padding: "20px 22px", boxShadow: "0 4px 20px rgba(30,27,75,.06)" },
   navTitle: { fontSize: 16, fontWeight: 800, color: "#0f172a", marginBottom: 14 },
   legend: { display: "flex", flexWrap: "wrap", gap: "8px 16px", marginBottom: 16 },
   legItem: { display: "flex", alignItems: "center", gap: 7, fontSize: 12.5, color: "#475569", fontWeight: 600 },
-  legDot: { width: 14, height: 14, borderRadius: 5, display: "inline-block", flexShrink: 0 },
+  legDot: { width: 13, height: 13, borderRadius: 4, display: "inline-block", flexShrink: 0 },
   navGrid: { display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8, maxHeight: 300, overflow: "auto", paddingRight: 2 },
-  cell: { height: 40, borderRadius: 10, border: "1px solid #e2e6ee", background: "#fff", color: "#64748b", fontWeight: 700, fontSize: 13.5, cursor: "pointer", transition: "transform .1s ease" },
+  cell: { height: 40, borderRadius: 10, border: "1px solid #e6e8f0", background: "#fff", color: "#64748b", fontWeight: 700, fontSize: 13.5, cursor: "pointer", transition: "transform .1s ease" },
   cellAnswered: { background: "#dcfce7", borderColor: "#86efac", color: "#15803d" },
   cellReview: { background: "#f59e0b", borderColor: "#f59e0b", color: "#fff" },
-  cellCurrent: { background: "#eff3ff", borderColor: BLUE, color: BLUE, boxShadow: "0 0 0 1px " + BLUE },
+  cellCurrent: { background: "#efeaff", borderColor: VIOLET, color: VIOLET, boxShadow: "0 0 0 1px " + VIOLET },
 
-  ovCard: { background: "#fff", border: "1px solid #e6e9ef", borderRadius: 16, padding: "20px 22px", boxShadow: "0 2px 12px rgba(30,41,59,.05)" },
-  ovTitle: { fontSize: 15, fontWeight: 800, color: "#0f172a", marginBottom: 12 },
+  ovCard: { background: "#fff", border: "1px solid #eceef5", borderRadius: 18, padding: "20px 22px", boxShadow: "0 4px 20px rgba(30,27,75,.06)" },
+  ovTitle: { fontSize: 16, fontWeight: 800, color: "#0f172a", marginBottom: 14 },
+  ovBody: { display: "flex", alignItems: "center", gap: 18 },
+  ovList: { flex: 1, display: "flex", flexDirection: "column", gap: 2 },
+  ovLine: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "6px 0", fontSize: 13.5, borderTop: "1px solid #f5f6fa" },
+  ovLineLeft: { display: "flex", alignItems: "center", gap: 8 },
+  ovDot: { width: 9, height: 9, borderRadius: "50%", display: "inline-block" },
   ovRow: { display: "flex", justifyContent: "space-between", padding: "9px 0", borderTop: "1px solid #f1f5f9", fontSize: 13.5 },
   ovLabel: { color: "#64748b", fontWeight: 600 },
   ovValue: { fontWeight: 800, color: "#1e293b" },
 
-  footer: { background: "#fff", borderTop: "1px solid #e6e9ef", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 },
-  footCenter: { flex: 1, display: "flex", justifyContent: "center" },
-  prevBtn: { display: "inline-flex", alignItems: "center", gap: 6, padding: "12px 22px", background: "#fff", color: "#475569", border: "1px solid #cbd5e1", borderRadius: 10, fontSize: 14.5, fontWeight: 700, cursor: "pointer" },
-  nextBtn: { padding: "12px 40px", background: BLUE, color: "#fff", border: "none", borderRadius: 10, fontSize: 15, fontWeight: 800, cursor: "pointer", boxShadow: "0 8px 20px rgba(59,74,156,.3)" },
-  submitBtn: { padding: "12px 40px", background: "#16a34a", color: "#fff", border: "none", borderRadius: 10, fontSize: 15, fontWeight: 800, cursor: "pointer", boxShadow: "0 8px 20px rgba(22,163,74,.28)" },
+  footer: { background: "#fff", borderTop: "1px solid #eceef5", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" },
+  prevBtn: { display: "inline-flex", alignItems: "center", gap: 6, padding: "12px 22px", background: "#fff", color: "#475569", border: "1px solid #d7dbe6", borderRadius: 12, fontSize: 14.5, fontWeight: 700, cursor: "pointer" },
+  clearBtn: { display: "inline-flex", alignItems: "center", gap: 6, padding: "12px 22px", background: "#fff", color: "#dc2626", border: "1px solid #fecaca", borderRadius: 12, fontSize: 14.5, fontWeight: 700, cursor: "pointer" },
+  clearDisabled: { opacity: 0.4, cursor: "not-allowed" },
+  nextBtn: { padding: "13px 40px", background: GRAD, color: "#fff", border: "none", borderRadius: 12, fontSize: 15, fontWeight: 800, cursor: "pointer", boxShadow: "0 10px 24px rgba(124,92,252,.4)" },
+  submitBtn: { padding: "13px 40px", background: "linear-gradient(90deg,#16a34a,#22c55e)", color: "#fff", border: "none", borderRadius: 12, fontSize: 15, fontWeight: 800, cursor: "pointer", boxShadow: "0 10px 24px rgba(22,163,74,.35)" },
   disabled: { opacity: 0.45, cursor: "not-allowed", boxShadow: "none" },
 };
 
@@ -461,6 +532,7 @@ export default function AssessmentExperience() {
   const [beginHandled, setBeginHandled] = useState(false);
   const [feedbackRating, setFeedbackRating] = useState<number | null>(null);
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
+  const [thankYou, setThankYou] = useState(false);
   const [instructionsAccepted, setInstructionsAccepted] = useState(false);
   const [agreeChecked, setAgreeChecked] = useState(false);
   const [sectionShown, setSectionShown] = useState<Record<string, boolean>>({});
@@ -874,19 +946,9 @@ export default function AssessmentExperience() {
   const sections = session?.parameters ?? [];
   const currentSectionId = currentQuestion?.parameterId ?? "";
   const sectionIndex = sections.findIndex((p) => p.parameterId === currentSectionId);
-  const sectionQuestionCount = session
-    ? session.questions.filter((q) => q.parameterId === currentSectionId).length
-    : 0;
-  // Show a category intro screen the first time the user enters each section.
-  const sectionIntroActive = Boolean(
-    instructionsAccepted && session && !results && currentQuestion && !sectionShown[currentSectionId]
-  );
 
-  // --- Exam timers: 1 minute per question + a total budget ---------------
-  // Timers pause while a section-intro screen is showing.
-  const examLive = Boolean(
-    session && !results && instructionsAccepted && !sectionIntroActive
-  );
+  // --- Exam timer: total budget (shown in the header) --------------------
+  const examLive = Boolean(session && !results && instructionsAccepted);
 
   // Tick the total timer once per second while the exam is live.
   useEffect(() => {
@@ -963,7 +1025,9 @@ export default function AssessmentExperience() {
     } catch {
       /* best-effort — still send them to the dashboard */
     }
-    router.push("/account");
+    // Show the thank-you screen (loader -> animated thanks), then redirect.
+    setThankYou(true);
+    setTimeout(() => router.push("/account"), 5000);
   }
 
   return (
@@ -1591,45 +1655,22 @@ export default function AssessmentExperience() {
         </section>
       ) : null}
 
-      {session && !results && instructionsAccepted && sectionIntroActive && currentQuestion ? (
-        <section style={EX.insWrap}>
-          <div style={EX.secCard}>
-            <div style={EX.secStep}>
-              Section {sectionIndex + 1} of {sections.length}
-            </div>
-            <div style={EX.secBadge}>{sectionIndex + 1}</div>
-            <h2 style={EX.secTitle}>{currentQuestion.parameterName}</h2>
-            <p style={EX.secCount}>{sectionQuestionCount} question{sectionQuestionCount === 1 ? "" : "s"} in this section</p>
-            <div style={EX.secQuote}>“{SECTION_QUOTES[Math.max(0, sectionIndex) % SECTION_QUOTES.length]}”</div>
-            <button
-              type="button"
-              style={EX.secStart}
-              onClick={() => setSectionShown((s) => ({ ...s, [currentSectionId]: true }))}
-            >
-              Begin {currentQuestion.parameterName} →
-            </button>
-          </div>
-        </section>
-      ) : null}
-
-      {session && !results && instructionsAccepted && !sectionIntroActive && currentQuestion ? (
+      {session && !results && instructionsAccepted && currentQuestion ? (
         <div style={FS.overlay}>
-          {/* top bar */}
+          {/* header */}
           <div style={FS.topbar}>
             <div style={FS.brand}>
               <div style={FS.brandIcon}>📋</div>
               <div style={{ minWidth: 0 }}>
-                <div style={FS.brandTitle}>
-                  {selectedJourney?.name ?? "Career Assessment"} — {session.totalQuestions} Questions
-                </div>
-                <div style={FS.brandProgress}>
-                  <div style={{ ...FS.brandProgressFill, width: `${((currentIndex + 1) / session.totalQuestions) * 100}%` }} />
+                <div style={FS.brandTitle}>{currentQuestion.parameterName}</div>
+                <div style={FS.brandSub}>
+                  {selectedJourney?.name ?? "Career Assessment"} · {session.totalQuestions} Questions
                 </div>
               </div>
             </div>
             <div style={FS.stats}>
-              <div style={FS.stat}><span style={FS.statIcon}>⏱</span><div><div style={FS.statLabel}>Time Left</div><div style={FS.statValue}>{fmtClock(totalLeft)}</div></div></div>
-              <div style={FS.stat}><span style={FS.statIcon}>❓</span><div><div style={FS.statLabel}>Questions</div><div style={FS.statValue}>{currentIndex + 1} / {session.totalQuestions}</div></div></div>
+              <div style={FS.stat}><span style={FS.statIcon}>⏱</span><div><div style={FS.statLabel}>Time Left</div><div style={{ ...FS.statValue, color: "#c4b5fd" }}>{fmtClock(totalLeft)}</div></div></div>
+              <div style={FS.stat}><span style={FS.statIcon}>❓</span><div><div style={FS.statLabel}>Question</div><div style={FS.statValue}>{currentIndex + 1} / {session.totalQuestions}</div></div></div>
               <div style={FS.stat}><span style={FS.statIcon}>🔖</span><div><div style={FS.statLabel}>Marked</div><div style={FS.statValue}>{Object.values(marked).filter(Boolean).length}</div></div></div>
             </div>
             <button
@@ -1647,7 +1688,10 @@ export default function AssessmentExperience() {
               {/* question card */}
               <div style={FS.qCard}>
                 <div style={FS.qHead}>
-                  <span style={FS.qNum}>Question {currentIndex + 1} of {session.totalQuestions}</span>
+                  <div style={FS.qNumWrap}>
+                    <span style={FS.qNumBadge}>{currentIndex + 1}</span>
+                    <span style={FS.qNumText}>Question {currentIndex + 1} of {session.totalQuestions}</span>
+                  </div>
                   <button
                     style={{ ...FS.markLink, ...(marked[currentQuestion.id] ? FS.markLinkOn : {}) }}
                     onClick={() => setMarked((m) => ({ ...m, [currentQuestion.id]: !m[currentQuestion.id] }))}
@@ -1656,8 +1700,8 @@ export default function AssessmentExperience() {
                     🔖 {marked[currentQuestion.id] ? "Marked for Review" : "Mark for Review"}
                   </button>
                 </div>
-                <div style={FS.qDivider} />
-                <div style={FS.qCat}>{currentQuestion.parameterName} · {currentQuestion.subTraitName}</div>
+                <div style={FS.qProg}><div style={{ ...FS.qProgFill, width: `${((currentIndex + 1) / session.totalQuestions) * 100}%` }} /></div>
+                <div style={FS.qCat}>{currentQuestion.subTraitName}</div>
                 <h2 style={FS.qText}>{currentQuestion.text}</h2>
                 <div style={FS.opts}>
                   {optionList(currentQuestion).map((option, i) => {
@@ -1674,22 +1718,22 @@ export default function AssessmentExperience() {
                       >
                         <span style={{ ...FS.letter, ...(selected ? FS.letterOn : {}) }}>{letter}</span>
                         <span style={FS.optLabel}>{option.label}</span>
-                        {selected && <span style={FS.selPill}>Selected</span>}
+                        {selected && <span style={FS.check}>✓</span>}
                       </button>
                     );
                   })}
                 </div>
               </div>
 
-              {/* navigation panel */}
+              {/* right panel */}
               <aside style={FS.side}>
                 <div style={FS.navCard}>
-                  <div style={FS.navTitle}>Question Navigation</div>
+                  <div style={FS.navTitle}>◎ Question Navigator</div>
                   <div style={FS.legend}>
-                    <span style={FS.legItem}><i style={{ ...FS.legDot, background: "#dcfce7", border: "1px solid #16a34a" }} /> Answered</span>
-                    <span style={FS.legItem}><i style={{ ...FS.legDot, background: "#3b4a9c" }} /> Current</span>
+                    <span style={FS.legItem}><i style={{ ...FS.legDot, background: "#16a34a" }} /> Answered</span>
+                    <span style={FS.legItem}><i style={{ ...FS.legDot, background: "#7c5cfc" }} /> Current</span>
                     <span style={FS.legItem}><i style={{ ...FS.legDot, background: "#f59e0b" }} /> Review</span>
-                    <span style={FS.legItem}><i style={{ ...FS.legDot, border: "1px solid #cbd5e1", background: "#fff" }} /> Not Answered</span>
+                    <span style={FS.legItem}><i style={{ ...FS.legDot, background: "#e2e8f0" }} /> Not Answered</span>
                   </div>
                   <div style={FS.navGrid}>
                     {session.questions.map((q, i) => {
@@ -1709,17 +1753,23 @@ export default function AssessmentExperience() {
                   </div>
                 </div>
                 <div style={FS.ovCard}>
-                  <div style={FS.ovTitle}>📊 Exam Overview</div>
-                  <OvRow label="Total Questions" value={session.totalQuestions} />
-                  <OvRow label="Answered" value={Object.keys(answers).length} color="#16a34a" />
-                  <OvRow label="Not Answered" value={session.totalQuestions - Object.keys(answers).length} color="#3b4a9c" />
-                  <OvRow label="Marked for Review" value={Object.values(marked).filter(Boolean).length} color="#f59e0b" />
+                  <div style={FS.ovTitle}>Progress Overview</div>
+                  <div style={FS.ovBody}>
+                    <Donut pct={(Object.keys(answers).length / Math.max(1, session.totalQuestions)) * 100} />
+                    <div style={FS.ovList}>
+                      <OvLine dot="#16a34a" label="Answered" value={Object.keys(answers).length} />
+                      <OvLine dot="#7c5cfc" label="Current" value={1} />
+                      <OvLine dot="#f59e0b" label="Review" value={Object.values(marked).filter(Boolean).length} />
+                      <OvLine dot="#cbd5e1" label="Not Answered" value={session.totalQuestions - Object.keys(answers).length} />
+                      <OvLine label="Total Questions" value={session.totalQuestions} bold />
+                    </div>
+                  </div>
                 </div>
               </aside>
             </div>
           </div>
 
-          {/* footer — Next centered */}
+          {/* footer */}
           <div style={FS.footer}>
             <button
               style={{ ...FS.prevBtn, ...(currentIndex === 0 ? FS.disabled : {}) }}
@@ -1729,33 +1779,44 @@ export default function AssessmentExperience() {
             >
               ← Previous
             </button>
-            <div style={FS.footCenter}>
-              {currentIndex < session.totalQuestions - 1 ? (
-                <button
-                  style={{ ...FS.nextBtn, ...(answers[currentQuestion.id] ? {} : FS.disabled) }}
-                  disabled={!answers[currentQuestion.id]}
-                  onClick={() => setCurrentIndex((i) => Math.min(i + 1, session.totalQuestions - 1))}
-                  type="button"
-                >
-                  Next →
-                </button>
-              ) : (
-                <button
-                  style={{ ...FS.submitBtn, ...((!answers[currentQuestion.id] || completing || savingQuestionId !== null) ? FS.disabled : {}) }}
-                  disabled={!answers[currentQuestion.id] || completing || savingQuestionId !== null}
-                  onClick={() => void finishAssessment()}
-                  type="button"
-                >
-                  {completing ? "Scoring…" : "Submit test ✓"}
-                </button>
-              )}
-            </div>
-            <div style={{ width: 130 }} />
+            <button
+              style={{ ...FS.clearBtn, ...(answers[currentQuestion.id] ? {} : FS.clearDisabled) }}
+              disabled={!answers[currentQuestion.id]}
+              onClick={() => {
+                const id = currentQuestion.id;
+                setAnswers((a) => { const n = { ...a }; delete n[id]; return n; });
+                setSavedAnswers((a) => { const n = { ...a }; delete n[id]; return n; });
+              }}
+              type="button"
+            >
+              🗑 Clear Response
+            </button>
+            {currentIndex < session.totalQuestions - 1 ? (
+              <button
+                style={{ ...FS.nextBtn, ...(answers[currentQuestion.id] ? {} : FS.disabled) }}
+                disabled={!answers[currentQuestion.id]}
+                onClick={() => setCurrentIndex((i) => Math.min(i + 1, session.totalQuestions - 1))}
+                type="button"
+              >
+                Next Question →
+              </button>
+            ) : (
+              <button
+                style={{ ...FS.submitBtn, ...((!answers[currentQuestion.id] || completing || savingQuestionId !== null) ? FS.disabled : {}) }}
+                disabled={!answers[currentQuestion.id] || completing || savingQuestionId !== null}
+                onClick={() => void finishAssessment()}
+                type="button"
+              >
+                {completing ? "Scoring…" : "Submit test ✓"}
+              </button>
+            )}
           </div>
         </div>
       ) : null}
 
-      {results && user ? (
+      {thankYou ? <ThankYouScreen name={(lead.name || profile?.name || "").trim().split(/\s+/)[0]} /> : null}
+
+      {results && user && !thankYou ? (
         <section
           style={{
             minHeight: "100vh",
