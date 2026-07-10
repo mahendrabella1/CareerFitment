@@ -58,13 +58,13 @@ export default function Landing({ onStart }: { onStart: () => void }) {
         <div className="ogl-hero-copy ogl-reveal ogl-from-left">
           <span className="ogl-eyebrow">Career fitment, backed by science</span>
           <h1 className="ogl-h1 ogl-serif">
-            The career you’ll thrive in<br />is written in how you{" "}
-            <span className="ogl-rot-wrap"><Rotator words={["think.", "learn.", "decide.", "connect."]} /></span>
+            Find the career you’re<br />built to{" "}
+            <span className="ogl-rot-wrap"><Rotator words={["love.", "master.", "lead.", "grow in."]} /></span>
           </h1>
           <p className="ogl-lead">
-            What if you could actually <b>see</b> the careers you’re wired for? In about
-            25 minutes, OneGrasp reads <b>eight sides of who you are</b> — how you think,
-            feel, learn and decide — and shows you where you’ll thrive, not just survive.
+            Most people choose a career on a hunch. OneGrasp measures <b>eight sides of
+            how you think, learn and work</b>, then maps you to the paths where you’ll
+            genuinely excel — clear, personal and backed by science.
           </p>
           <div className="ogl-hero-tags">
             {["Personality", "Interests", "Intelligences", "Aptitude", "+4 more"].map((t) => (
@@ -97,15 +97,14 @@ export default function Landing({ onStart }: { onStart: () => void }) {
       {/* why it matters — the story */}
       <section id="why" className="ogl-sec">
         <div className="ogl-why-top">
-          <div className="ogl-why-copy ogl-reveal">
+          <div className="ogl-why-copy ogl-reveal ogl-from-left">
             <span className="ogl-kicker">Why this matters</span>
-            <h2 className="ogl-why-h">Most people pick a path with almost <span className="ogl-hl">no data</span> about themselves.</h2>
+            <h2 className="ogl-why-h">You’re at a crossroads. Which road is actually <span className="ogl-hl">yours</span>?</h2>
             <p className="ogl-sub">
-              Be honest — how was your last big choice made? Usually it’s marks, what
-              friends are doing, or a gut feeling at 16 or 21. But you’ll spend more
-              hours working than on almost anything else in life. <b>OneGrasp</b> hands you
-              something better to decide with: a clear, honest picture of how you
-              actually think, learn and work — so the path you choose truly fits you.
+              Marks, peer pressure, a gut feeling at 16 or 21 — that’s what most big
+              choices come down to. But the right road gets a lot clearer once you can
+              see how you actually think, learn and work. <b>OneGrasp</b> turns that signpost
+              of doubts into one clear direction that genuinely fits you.
             </p>
           </div>
           <div className="ogl-why-art ogl-reveal ogl-from-right"><WhyArt /></div>
@@ -113,7 +112,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
 
         <div className="ogl-facts">
           {FACTS.map((f, i) => (
-            <div key={i} className="ogl-fact ogl-reveal" style={{ transitionDelay: `${i * 80}ms`, borderColor: f.soft }}>
+            <div key={i} className="ogl-fact ogl-reveal ogl-pop" style={{ transitionDelay: `${i * 110}ms`, borderColor: f.soft }}>
               <span className="ogl-fact-wave" style={{ background: f.soft }} />
               <div className="ogl-fact-row">
                 <span className="ogl-fact-ic" style={{ background: f.soft, color: f.color }}><Icon name={f.icon} size={22} /></span>
@@ -137,7 +136,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
         </div>
         <div className="ogl-dims">
           {DIMENSIONS.map((d, i) => (
-            <div key={d.title} className="ogl-dim ogl-reveal" style={{ transitionDelay: `${(i % 4) * 60}ms` }}>
+            <div key={d.title} className="ogl-dim ogl-reveal ogl-pop" style={{ transitionDelay: `${i * 75}ms` }}>
               <div className="ogl-dim-img"><img src={d.img} alt={d.title} loading="lazy" /><span className="ogl-dim-ic"><Icon name={d.icon} size={19} /></span></div>
               <div className="ogl-dim-body">
                 <div className="ogl-dim-t">{d.title}</div>
@@ -160,7 +159,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
         <div className="ogl-steps">
           {STEPS.map((s, i) => (
             <div key={s.t} className="ogl-step-cell">
-              <div className="ogl-step ogl-reveal" style={{ transitionDelay: `${i * 70}ms`, borderBottomColor: s.color }}>
+              <div className="ogl-step ogl-reveal ogl-pop" style={{ transitionDelay: `${i * 90}ms`, borderBottomColor: s.color }}>
                 <span className="ogl-step-n" style={{ background: s.color }}>{i + 1}</span>
                 <span className="ogl-step-ic" style={{ background: s.soft, color: s.color }}><Icon name={s.ic} size={26} /></span>
                 <div className="ogl-step-t">{s.t}</div>
@@ -222,11 +221,11 @@ export default function Landing({ onStart }: { onStart: () => void }) {
       {/* report preview */}
       <section className="ogl-sec">
         <div className="ogl-report-row">
-          <div className="ogl-report-viz ogl-reveal ogl-from-left"><RadarMock /></div>
+          <div className="ogl-report-viz ogl-reveal ogl-from-left"><ReportMock /></div>
           <div className="ogl-report-copy ogl-reveal ogl-from-right">
             <span className="ogl-kicker">Your report</span>
             <h2 className="ogl-h2 ogl-serif">One clear map of all eight areas.</h2>
-            <p className="ogl-sub">Your results come together in a single visual profile, with a plain explanation of each dimension and the careers that fit you best. Sign in any time to revisit it.</p>
+            <p className="ogl-sub">Every answer comes together in a single visual profile — with a plain-English read on each dimension and the careers that fit you best. Sign in any time to revisit it.</p>
             <ul className="ogl-check">
               <li>Ranked career matches with fit scores</li>
               <li>Personality, intelligences, EI, learning style &amp; motivators</li>
@@ -239,15 +238,23 @@ export default function Landing({ onStart }: { onStart: () => void }) {
 
       {/* reviews */}
       <section id="reviews" className="ogl-sec ogl-alt">
-        <div className="ogl-sec-head ogl-reveal">
-          <span className="ogl-kicker">What people say</span>
-          <h2 className="ogl-h2 ogl-serif">Clarity people wish they’d had sooner.</h2>
+        <div className="ogl-rev-head ogl-reveal">
+          <div>
+            <span className="ogl-kicker">What people say</span>
+            <h2 className="ogl-h2 ogl-serif">Clarity people wish they’d had sooner.</h2>
+          </div>
+          <div className="ogl-rev-score">
+            <div className="ogl-rev-score-n">4.9<span>/5</span></div>
+            <div className="ogl-stars">★★★★★</div>
+            <div className="ogl-rev-score-l">from 2,000+ assessments</div>
+          </div>
         </div>
         <div className="ogl-reviews">
           {REVIEWS.map((r, i) => (
-            <figure key={r.name} className="ogl-review ogl-reveal" style={{ transitionDelay: `${i * 80}ms` }}>
+            <figure key={r.name} className={`ogl-review ogl-reveal ogl-pop${i === 1 ? " ogl-review-hot" : ""}`} style={{ transitionDelay: `${i * 110}ms` }}>
+              <span className="ogl-quote">“</span>
               <div className="ogl-stars">★★★★★</div>
-              <blockquote className="ogl-review-q">“{r.quote}”</blockquote>
+              <blockquote className="ogl-review-q">{r.quote}</blockquote>
               <figcaption className="ogl-review-by">
                 <span className="ogl-ava" style={{ background: r.color }}>{r.name.charAt(0)}</span>
                 <span><b>{r.name}</b><span className="ogl-review-role">{r.role}</span></span>
@@ -259,7 +266,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
       </section>
 
       {/* final CTA */}
-      <section className="ogl-cta ogl-reveal">
+      <section className="ogl-cta ogl-reveal ogl-mid">
         <h2 className="ogl-cta-t ogl-serif">Your clearest career decision starts here.</h2>
         <p className="ogl-cta-s">Take 25 minutes today to save years of second-guessing.</p>
         <button className="ogl-btn ogl-btn-light ogl-btn-lg" onClick={onStart}>Start the assessment <Icon name="chevronRight" size={17} /></button>
@@ -307,6 +314,32 @@ const REVIEWS = [
 ];
 
 /* ------------------------------- visuals ------------------------------- */
+/** Polished report-card mockup for the "Your report" section. */
+function ReportMock() {
+  const bars: [string, number][] = [["Aptitude", 78], ["Strengths", 72], ["Emotional Int.", 84], ["Interests", 66]];
+  return (
+    <div className="ogl-repcard">
+      <div className="ogl-repcard-top">
+        <div>
+          <div className="ogl-repcard-kick">Career Report</div>
+          <div className="ogl-repcard-name">Design &amp; Media</div>
+        </div>
+        <div className="ogl-repcard-fit"><b>86%</b><span>top fit</span></div>
+      </div>
+      <div className="ogl-repcard-radar"><RadarMock /></div>
+      <div className="ogl-repcard-bars">
+        {bars.map(([l, v]) => (
+          <div key={l} className="ogl-repcard-bar">
+            <span>{l}</span>
+            <i><b style={{ width: `${v}%` }} /></i>
+            <em>{v}</em>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function RadarMock() {
   const vals = [72, 66, 84, 78, 61, 70, 74, 80];
   const n = vals.length, cx = 110, cy = 110, R = 92;
@@ -448,12 +481,15 @@ const CSS = `
 .ogl-reveal{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
 .ogl-reveal.ogl-from-left{transform:translateX(-52px)}
 .ogl-reveal.ogl-from-right{transform:translateX(52px)}
+.ogl-reveal.ogl-pop{transform:translateY(34px) scale(.92);transition:opacity .42s cubic-bezier(.2,.8,.25,1.05),transform .42s cubic-bezier(.2,.8,.25,1.05)}
+.ogl-reveal.ogl-mid{transform:scale(.9)}
 .ogl-reveal.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.ogl-reveal{transition:opacity .3s;transform:none}}
 
 .ogl-nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid #eef0f4}
-.ogl-nav-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:20px;padding:10px 24px}
-.ogl-logo{height:54px;width:auto;display:block}
+.ogl-nav-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:20px;padding:6px 24px}
+.ogl-logo{height:88px;width:auto;display:block}
+@media(max-width:600px){.ogl-logo{height:64px}}
 .ogl-nav-links{display:flex;gap:24px;margin-left:28px;flex:1}
 .ogl-nav-links a{color:#4b5563;text-decoration:none;font-size:13.5px;font-weight:600}
 .ogl-nav-links a:hover{color:${INK}}
@@ -509,11 +545,11 @@ const CSS = `
 .ogl-h2{font-size:clamp(25px,3.3vw,35px);font-weight:700;margin:12px 0 0;line-height:1.16}
 .ogl-sub{font-size:16px;line-height:1.68;color:#454b57;margin:14px 0 0}
 
-.ogl-why-top{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;margin-bottom:44px}
+.ogl-why-top{display:grid;grid-template-columns:1fr 1.2fr;gap:44px;align-items:center;margin-bottom:46px}
 @media(max-width:880px){.ogl-why-top{grid-template-columns:1fr;gap:24px}}
 .ogl-why-h{font-family:'Poppins',Inter,sans-serif;font-size:clamp(26px,3.4vw,38px);font-weight:700;letter-spacing:-.02em;line-height:1.14;margin:12px 0 0}
 .ogl-why-art{display:flex;justify-content:center}
-.ogl-why-svg{width:100%;max-width:520px;height:auto}
+.ogl-why-svg{width:100%;max-width:680px;height:auto;border-radius:16px}
 
 .ogl-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 @media(max-width:820px){.ogl-facts{grid-template-columns:1fr}}
@@ -579,17 +615,40 @@ const CSS = `
 
 .ogl-report-row{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:center}
 @media(max-width:860px){.ogl-report-row{grid-template-columns:1fr;gap:24px}}
-.ogl-report-viz{display:flex;justify-content:center;background:#f7f8fa;border:1px solid #eceef2;border-radius:20px;padding:26px}
+.ogl-report-viz{display:flex;justify-content:center;background:linear-gradient(140deg,#eaf0fc,#f6f8fd);border-radius:24px;padding:36px 26px}
 .ogl-radar{width:210px;height:210px;display:block}
+.ogl-repcard{background:#fff;border:1px solid #edf0f6;border-radius:20px;padding:20px;box-shadow:0 26px 60px rgba(21,26,36,.14);max-width:390px;width:100%}
+.ogl-repcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px}
+.ogl-repcard-kick{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#94a3b8}
+.ogl-repcard-name{font-size:18px;font-weight:700;color:${INK};margin-top:2px}
+.ogl-repcard-fit{text-align:center;background:#eef2ff;border-radius:12px;padding:7px 13px}
+.ogl-repcard-fit b{display:block;font-size:19px;font-weight:700;color:${PRIMARY}}
+.ogl-repcard-fit span{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:#9aa6c4}
+.ogl-repcard-radar{display:flex;justify-content:center}
+.ogl-repcard-radar svg{width:186px;height:186px}
+.ogl-repcard-bars{display:flex;flex-direction:column;gap:9px;margin-top:6px}
+.ogl-repcard-bar{display:flex;align-items:center;gap:10px;font-size:12px;color:#5b6470;font-weight:600}
+.ogl-repcard-bar span{width:82px;flex-shrink:0}
+.ogl-repcard-bar i{flex:1;height:8px;background:#eef1f5;border-radius:6px;overflow:hidden;display:block}
+.ogl-repcard-bar b{display:block;height:100%;background:${PRIMARY};border-radius:6px}
+.ogl-repcard-bar em{width:24px;text-align:right;font-style:normal;color:${INK};font-weight:700}
 .ogl-check{list-style:none;padding:0;margin:16px 0 24px;display:flex;flex-direction:column;gap:10px}
 .ogl-check li{position:relative;padding-left:28px;font-size:14.5px;color:#374151;line-height:1.5}
 .ogl-check li:before{content:"✓";position:absolute;left:0;top:0;width:19px;height:19px;background:#e9f4ef;color:#2f9e6f;border-radius:50%;font-size:12px;font-weight:700;display:grid;place-items:center}
 
+.ogl-rev-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;max-width:1180px;margin:0 auto 38px;flex-wrap:wrap}
+.ogl-rev-head .ogl-h2{margin-top:10px}
+.ogl-rev-score{text-align:right;flex-shrink:0}
+.ogl-rev-score-n{font-size:36px;font-weight:700;color:${INK};line-height:1;font-family:'Poppins',Inter,sans-serif}
+.ogl-rev-score-n span{font-size:16px;color:#9aa6c4;font-weight:600}
+.ogl-rev-score-l{font-size:12px;color:#8a919c;margin-top:3px}
 .ogl-reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-@media(max-width:860px){.ogl-reviews{grid-template-columns:1fr}}
-.ogl-review{background:#fff;border:1px solid #eceef2;border-radius:16px;padding:24px 22px;margin:0;box-shadow:0 2px 12px rgba(21,26,36,.04)}
+@media(max-width:860px){.ogl-reviews{grid-template-columns:1fr}.ogl-rev-head{text-align:left}.ogl-rev-score{text-align:left}}
+.ogl-review{position:relative;overflow:hidden;background:#fff;border:1px solid #eceef2;border-radius:18px;padding:28px 24px 24px;margin:0;box-shadow:0 6px 20px rgba(21,26,36,.05)}
+.ogl-review-hot{border-color:#c9d6f5;box-shadow:0 20px 46px rgba(59,91,219,.16)}
+.ogl-quote{position:absolute;top:2px;right:20px;font-family:Georgia,serif;font-size:70px;color:#eef1f8;line-height:1;pointer-events:none}
 .ogl-stars{color:#e0a92e;font-size:15px;letter-spacing:2px}
-.ogl-review-q{font-size:14.5px;line-height:1.6;color:#374151;margin:12px 0 18px}
+.ogl-review-q{position:relative;font-size:15px;line-height:1.62;color:#374151;margin:12px 0 18px}
 .ogl-review-by{display:flex;align-items:center;gap:11px}
 .ogl-ava{width:40px;height:40px;border-radius:50%;color:#fff;font-weight:700;display:grid;place-items:center;font-size:16px;flex-shrink:0}
 .ogl-review-by b{font-size:14px;display:block}
