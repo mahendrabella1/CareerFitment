@@ -14,6 +14,7 @@ import { Logo } from "@/app/Logo";
 import { useAuth, type AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { categoryLabel } from "@/lib/auth/formOptions";
 import { Icon, CATEGORY_ABBR } from "@/app/Icons";
+import FullReport from "@/app/account/FullReport";
 
 const PAGE_CSS = `
 @media (max-width: 640px){
@@ -89,7 +90,7 @@ export default function AccountPage() {
           </div>
         </section>
 
-        {a ? <Report a={a} /> : (
+        {a ? <FullReport a={a} name={(profile?.name || "").trim().split(/\s+/)[0]} /> : (
           <section style={S.emptyCard}>
             <div style={{ ...S.emptyIcon, color: BLUE, display: "flex", justifyContent: "center" }}><Icon name="answer" size={40} stroke={1.4} /></div>
             <h3 style={S.emptyTitle}>You haven’t taken the assessment yet</h3>
