@@ -62,9 +62,9 @@ export default function Landing({ onStart }: { onStart: () => void }) {
             <span className="ogl-rot-wrap"><Rotator words={["think.", "learn.", "decide.", "connect."]} /></span>
           </h1>
           <p className="ogl-lead">
-            Your best-fit career isn’t a lucky guess — it’s a pattern. OneGrasp reads
-            <b> eight research-backed dimensions</b> of how you think, learn and decide,
-            then shows you exactly where you’ll do your best work.
+            What if you could actually <b>see</b> the careers you’re wired for? In about
+            25 minutes, OneGrasp reads <b>eight sides of who you are</b> — how you think,
+            feel, learn and decide — and shows you where you’ll thrive, not just survive.
           </p>
           <div className="ogl-hero-tags">
             {["Personality", "Interests", "Intelligences", "Aptitude", "+4 more"].map((t) => (
@@ -101,9 +101,11 @@ export default function Landing({ onStart }: { onStart: () => void }) {
             <span className="ogl-kicker">Why this matters</span>
             <h2 className="ogl-why-h">Most people pick a path with almost <span className="ogl-hl">no data</span> about themselves.</h2>
             <p className="ogl-sub">
-              A career isn’t one decision — it’s tens of thousands of hours. Yet the
-              choice is usually made on marks, peer pressure and guesswork. <b>OneGrasp</b>
-              {" "}replaces the guesswork with a clear, structured read of who you are.
+              Be honest — how was your last big choice made? Usually it’s marks, what
+              friends are doing, or a gut feeling at 16 or 21. But you’ll spend more
+              hours working than on almost anything else in life. <b>OneGrasp</b> hands you
+              something better to decide with: a clear, honest picture of how you
+              actually think, learn and work — so the path you choose truly fits you.
             </p>
           </div>
           <div className="ogl-why-art ogl-reveal ogl-from-right"><WhyArt /></div>
@@ -123,6 +125,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
           ))}
         </div>
         <div className="ogl-facts-note ogl-reveal"><span className="ogl-note-shield"><Icon name="shield" size={16} /></span> Figures reflect widely reported workforce-engagement and career-satisfaction research, shown to illustrate the cost of misalignment.</div>
+        <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>Take the assessment <Icon name="chevronRight" size={16} /></button></div>
       </section>
 
       {/* explore each dimension — with photos */}
@@ -144,6 +147,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
             </div>
           ))}
         </div>
+        <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>Discover your eight dimensions <Icon name="chevronRight" size={16} /></button></div>
       </section>
 
       {/* the science */}
@@ -183,6 +187,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
             </svg>
           </div>
         </div>
+        <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>See it work on you <Icon name="chevronRight" size={16} /></button></div>
       </section>
 
       {/* proof / charts */}
@@ -211,6 +216,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
             <p className="ogl-proof-note">A large share of course and career switches trace back to weak early self-knowledge.</p>
           </div>
         </div>
+        <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>Get on the right side <Icon name="chevronRight" size={16} /></button></div>
       </section>
 
       {/* report preview */}
@@ -249,6 +255,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
             </figure>
           ))}
         </div>
+        <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>Start your assessment <Icon name="chevronRight" size={16} /></button></div>
       </section>
 
       {/* final CTA */}
@@ -369,7 +376,7 @@ function WhyArt() {
   const [failed, setFailed] = useState(false);
   if (failed) return <WhyIllustration />;
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src="/why-this-matters.png" alt="Choosing the right path with clarity" className="ogl-why-svg" onError={() => setFailed(true)} />;
+  return <img src="https://onegrasp.com/wp-content/uploads/2026/07/ChatGPT-Image-Jul-10-2026-06_22_06-PM.png" alt="Choosing the right path with clarity" className="ogl-why-svg" onError={() => setFailed(true)} />;
 }
 
 /** Stylized scene: a traveller at a signpost of doubts, a clear road to the peak. */
@@ -460,6 +467,7 @@ const CSS = `
 .ogl-btn-ghost{display:inline-flex;align-items:center;gap:7px;background:transparent;color:#374151;border:1px solid #dfe3ea;border-radius:11px;padding:11px 16px;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer}
 .ogl-btn-ghost:hover{border-color:#c4cbd6}
 .ogl-btn-lg.ogl-btn-ghost{padding:14px 20px}
+.ogl-sec-cta{display:flex;justify-content:center;margin-top:38px}
 
 /* hero — fills the first screen */
 .ogl-hero{max-width:1160px;margin:0 auto;min-height:calc(100vh - 66px);display:grid;grid-template-columns:1.08fr .92fr;gap:48px;align-items:center;padding:20px 44px 40px}
@@ -478,7 +486,7 @@ const CSS = `
 .ogl-trust b{font-size:12.5px;color:${INK}}
 .ogl-trust small{font-size:11px;color:#8a919c}
 
-.ogl-eyebrow{display:inline-block;background:#eef2ff;color:${PRIMARY};font-size:12px;font-weight:800;padding:6px 13px;border-radius:999px;text-transform:uppercase;letter-spacing:.6px}
+.ogl-eyebrow{display:inline-block;background:#eef2ff;color:${PRIMARY};font-size:12px;font-weight:700;padding:6px 13px;border-radius:999px;text-transform:uppercase;letter-spacing:.6px}
 .ogl-h1{font-size:clamp(28px,3.2vw,42px);line-height:1.14;font-weight:700;margin:14px 0 0;color:${INK}}
 .ogl-rot-wrap{display:inline-block;position:relative}
 .ogl-rot{display:inline-block;color:${PRIMARY};box-shadow:inset 0 -0.16em 0 rgba(59,91,219,.16);animation:oglRot .55s cubic-bezier(.2,.8,.2,1)}
@@ -497,13 +505,13 @@ const CSS = `
 .ogl-alt{max-width:none;background:#f7f8fa;border-top:1px solid #eef0f4;border-bottom:1px solid #eef0f4}
 .ogl-alt>*{max-width:1180px;margin-left:auto;margin-right:auto}
 .ogl-sec-head{max-width:740px;margin:0 auto 40px;text-align:center}
-.ogl-kicker{font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.9px;color:${PRIMARY}}
+.ogl-kicker{font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:${PRIMARY}}
 .ogl-h2{font-size:clamp(25px,3.3vw,35px);font-weight:700;margin:12px 0 0;line-height:1.16}
 .ogl-sub{font-size:16px;line-height:1.68;color:#454b57;margin:14px 0 0}
 
 .ogl-why-top{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;margin-bottom:44px}
 @media(max-width:880px){.ogl-why-top{grid-template-columns:1fr;gap:24px}}
-.ogl-why-h{font-family:'Poppins',Inter,sans-serif;font-size:clamp(26px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.14;margin:12px 0 0}
+.ogl-why-h{font-family:'Poppins',Inter,sans-serif;font-size:clamp(26px,3.4vw,38px);font-weight:700;letter-spacing:-.02em;line-height:1.14;margin:12px 0 0}
 .ogl-why-art{display:flex;justify-content:center}
 .ogl-why-svg{width:100%;max-width:520px;height:auto}
 
@@ -513,7 +521,7 @@ const CSS = `
 .ogl-fact-wave{position:absolute;left:0;right:0;bottom:0;height:38px;border-radius:50% 50% 0 0 / 100% 100% 0 0;opacity:.5}
 .ogl-fact-row{display:flex;align-items:center;gap:14px;position:relative}
 .ogl-fact-ic{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;flex-shrink:0}
-.ogl-fact-stat{font-size:32px;font-weight:800;line-height:1}
+.ogl-fact-stat{font-size:32px;font-weight:700;line-height:1}
 .ogl-fact-bar{width:34px;height:3px;border-radius:2px;margin:14px 0 10px;position:relative}
 .ogl-fact-text{font-size:14px;color:#5b6470;line-height:1.55;position:relative}
 .ogl-facts-note{display:flex;align-items:flex-start;gap:10px;justify-content:center;text-align:left;font-size:12.5px;color:#6b7280;line-height:1.5;background:#eef6f0;border:1px solid #d9ece1;border-radius:12px;padding:12px 16px;margin:22px auto 0;max-width:720px}
@@ -529,7 +537,7 @@ const CSS = `
 .ogl-dim:hover .ogl-dim-img img{transform:scale(1.05)}
 .ogl-dim-ic{position:absolute;left:14px;bottom:-17px;width:40px;height:40px;border-radius:11px;background:#fff;border:1px solid #eceef2;display:grid;place-items:center;color:${PRIMARY};box-shadow:0 6px 14px rgba(21,26,36,.12)}
 .ogl-dim-body{padding:26px 18px 20px}
-.ogl-dim-t{font-size:16px;font-weight:800}
+.ogl-dim-t{font-size:16px;font-weight:700}
 .ogl-dim-f{font-size:12px;font-weight:700;color:${PRIMARY};margin:3px 0 8px}
 .ogl-dim-d{font-size:13.5px;color:#5b6470;line-height:1.55}
 
@@ -538,9 +546,9 @@ const CSS = `
 .ogl-step-cell{flex:1;display:flex;align-items:stretch}
 @media(max-width:900px){.ogl-step-cell{flex:0 0 260px}}
 .ogl-step{position:relative;flex:1;background:#fff;border:1px solid #edf0f5;border-bottom:3px solid;border-radius:16px;padding:34px 18px 22px;text-align:center;margin-top:14px;box-shadow:0 4px 16px rgba(21,26,36,.05)}
-.ogl-step-n{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:30px;height:30px;border-radius:50%;color:#fff;font-size:14px;font-weight:800;display:grid;place-items:center;box-shadow:0 6px 14px rgba(21,26,36,.18)}
+.ogl-step-n{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:30px;height:30px;border-radius:50%;color:#fff;font-size:14px;font-weight:700;display:grid;place-items:center;box-shadow:0 6px 14px rgba(21,26,36,.18)}
 .ogl-step-ic{width:58px;height:58px;border-radius:50%;margin:6px auto 12px;display:grid;place-items:center}
-.ogl-step-t{font-size:16px;font-weight:800}
+.ogl-step-t{font-size:16px;font-weight:700}
 .ogl-step-d{font-size:12.5px;color:#6b7280;line-height:1.5;margin-top:8px}
 .ogl-step-arrow{display:flex;align-items:center;justify-content:center;color:#c3ccda;width:38px;flex-shrink:0}
 @media(max-width:900px){.ogl-step-arrow{display:none}}
@@ -549,21 +557,21 @@ const CSS = `
 @media(max-width:700px){.ogl-sci-banner{flex-direction:column;text-align:center}}
 .ogl-sci-shield{width:52px;height:52px;border-radius:14px;background:#eaf0ff;color:${PRIMARY};display:grid;place-items:center;flex-shrink:0}
 .ogl-sci-text{flex:1}
-.ogl-sci-text b{display:block;font-size:16px;font-weight:800;margin-bottom:3px}
+.ogl-sci-text b{display:block;font-size:16px;font-weight:700;margin-bottom:3px}
 .ogl-sci-text span{font-size:13.5px;color:#6b7280;line-height:1.5}
 .ogl-sci-charts{display:flex;align-items:center;gap:16px;flex-shrink:0}
 
 .ogl-proof{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 @media(max-width:820px){.ogl-proof{grid-template-columns:1fr}}
 .ogl-proof-card{background:#fff;border:1px solid #eceef2;border-radius:18px;padding:26px 24px;box-shadow:0 2px 12px rgba(21,26,36,.04)}
-.ogl-proof-t{font-size:16px;font-weight:800;margin:0 0 18px}
+.ogl-proof-t{font-size:16px;font-weight:700;margin:0 0 18px}
 .ogl-proof-note{font-size:13px;color:#6b7280;line-height:1.55;margin:16px 0 0}
 .ogl-bc{display:flex;flex-direction:column;gap:14px}
 .ogl-bc-row{display:flex;align-items:center;gap:12px}
 .ogl-bc-l{width:112px;font-size:13.5px;color:#374151;font-weight:600;flex-shrink:0}
 .ogl-bc-track{flex:1;height:14px;background:#eef1f5;border-radius:8px;overflow:hidden}
 .ogl-bc-fill{height:100%;border-radius:8px;transition:width 1s ease}
-.ogl-bc-v{width:38px;text-align:right;font-weight:800;font-size:13.5px}
+.ogl-bc-v{width:38px;text-align:right;font-weight:700;font-size:13.5px}
 .ogl-pie{display:flex;gap:20px;align-items:center;flex-wrap:wrap;justify-content:center}
 .ogl-pie-leg{display:flex;flex-direction:column;gap:8px;font-size:13px;color:#374151}
 .ogl-pie-leg span{display:flex;align-items:center;gap:8px}
@@ -575,7 +583,7 @@ const CSS = `
 .ogl-radar{width:210px;height:210px;display:block}
 .ogl-check{list-style:none;padding:0;margin:16px 0 24px;display:flex;flex-direction:column;gap:10px}
 .ogl-check li{position:relative;padding-left:28px;font-size:14.5px;color:#374151;line-height:1.5}
-.ogl-check li:before{content:"✓";position:absolute;left:0;top:0;width:19px;height:19px;background:#e9f4ef;color:#2f9e6f;border-radius:50%;font-size:12px;font-weight:800;display:grid;place-items:center}
+.ogl-check li:before{content:"✓";position:absolute;left:0;top:0;width:19px;height:19px;background:#e9f4ef;color:#2f9e6f;border-radius:50%;font-size:12px;font-weight:700;display:grid;place-items:center}
 
 .ogl-reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 @media(max-width:860px){.ogl-reviews{grid-template-columns:1fr}}
@@ -583,7 +591,7 @@ const CSS = `
 .ogl-stars{color:#e0a92e;font-size:15px;letter-spacing:2px}
 .ogl-review-q{font-size:14.5px;line-height:1.6;color:#374151;margin:12px 0 18px}
 .ogl-review-by{display:flex;align-items:center;gap:11px}
-.ogl-ava{width:40px;height:40px;border-radius:50%;color:#fff;font-weight:800;display:grid;place-items:center;font-size:16px;flex-shrink:0}
+.ogl-ava{width:40px;height:40px;border-radius:50%;color:#fff;font-weight:700;display:grid;place-items:center;font-size:16px;flex-shrink:0}
 .ogl-review-by b{font-size:14px;display:block}
 .ogl-review-role{font-size:12.5px;color:#8a919c}
 

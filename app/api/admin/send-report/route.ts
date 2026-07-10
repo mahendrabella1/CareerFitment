@@ -5,6 +5,7 @@ import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 30; // give the SMTP handshake room on serverless
 
 // Public Firebase web API key (safe to expose) — used to verify the caller's
 // ID token via the Firebase Auth REST API (no admin SDK / service account).
@@ -85,28 +86,52 @@ export async function POST(req: Request) {
   if (!body.to || !body.report) return fail("Missing recipient or report");
 
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
-    return fail("Email is not configured on this deployment (missing SMTP_* env vars).", 500);
+  const missing = [
+    !SMTP_HOST && "SMTP_HOST",
+    !SMTP_USER && "SMTP_USER",
+    !SMTP_PASS && "SMTP_PASS",
+  ].filter(Boolean);
+  if (missing.length) {
+    return fail(
+      `Email not configured on this deployment — missing ${missing.join(", ")}. ` +
+        `Add SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS in Vercel → Settings → Environment Variables, then REDEPLOY.`,
+      500
+    );
+  }
+
+  const port = Number(SMTP_PORT || 465);
+  const transporter = nodemailer.createTransport({
+    host: SMTP_HOST,
+    port,
+    secure: port === 465, // 465 = SSL, 587 = STARTTLS
+    auth: { user: SMTP_USER, pass: SMTP_PASS },
+    connectionTimeout: 12000,
+    greetingTimeout: 12000,
+    socketTimeout: 15000,
+  });
+
+  // Verify connection/credentials first so failures return a clear reason.
+  try {
+    await transporter.verify();
+  } catch (e) {
+    const err = e as { code?: string; message?: string };
+    return fail(
+      `Could not connect to ${SMTP_HOST}:${port} — ${err.code || ""} ${err.message || "connection failed"}. ` +
+        `Check the password is correct and that port ${port} matches (465 = SSL, 587 = TLS).`,
+      502
+    );
   }
 
   try {
-    const port = Number(SMTP_PORT || 465);
-    const transporter = nodemailer.createTransport({
-      host: SMTP_HOST,
-      port,
-      secure: port === 465, // 465 = SSL, 587 = STARTTLS
-      auth: { user: SMTP_USER, pass: SMTP_PASS },
-    });
-
     await transporter.sendMail({
       from: `OneGrasp <${SMTP_USER}>`,
       to: body.to,
       subject: "Your OneGrasp career report",
       html: reportHtml(body.name ?? "", body.report),
     });
-
     return NextResponse.json({ success: true, message: "Report emailed", data: { to: body.to } });
   } catch (e) {
-    return fail(e instanceof Error ? e.message : "Failed to send email", 500);
+    const err = e as { code?: string; message?: string };
+    return fail(`Send failed — ${err.code || ""} ${err.message || "unknown error"}`, 500);
   }
 }

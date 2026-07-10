@@ -201,7 +201,12 @@ export default function AdminPage() {
                             (() => {
                               const st = sent[u.uid];
                               if (st === "sent") return <span style={{ ...S.pill, ...S.pillOk }}>✓ Sent</span>;
-                              if (st?.startsWith("error")) return <button style={S.sendBtn} onClick={() => void sendReport(u)} title={st}>Retry</button>;
+                              if (st?.startsWith("error")) return (
+                                <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "flex-start" }}>
+                                  <button style={S.sendBtn} onClick={() => void sendReport(u)}>Retry</button>
+                                  <span style={{ fontSize: 11, color: "#b91c1c", maxWidth: 240, lineHeight: 1.35 }}>{st.replace(/^error:\s*/, "")}</span>
+                                </div>
+                              );
                               return (
                                 <button style={S.sendBtn} disabled={st === "sending"} onClick={() => void sendReport(u)}>
                                   {st === "sending" ? "Sending…" : "✉ Email report"}
