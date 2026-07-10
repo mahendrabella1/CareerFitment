@@ -99,9 +99,12 @@ export async function POST(req: Request) {
     );
   }
 
+  // Sanitize the host — env vars sometimes get a protocol/path/port pasted in
+  // (e.g. "https://smtp.hostinger.com"), which breaks DNS. Keep the bare host.
+  const host = String(SMTP_HOST).replace(/^[a-z]+:\/\//i, "").replace(/[:/].*$/, "").trim();
   const port = Number(SMTP_PORT || 465);
   const transporter = nodemailer.createTransport({
-    host: SMTP_HOST,
+    host,
     port,
     secure: port === 465, // 465 = SSL, 587 = STARTTLS
     auth: { user: SMTP_USER, pass: SMTP_PASS },
@@ -116,8 +119,8 @@ export async function POST(req: Request) {
   } catch (e) {
     const err = e as { code?: string; message?: string };
     return fail(
-      `Could not connect to ${SMTP_HOST}:${port} — ${err.code || ""} ${err.message || "connection failed"}. ` +
-        `Check the password is correct and that port ${port} matches (465 = SSL, 587 = TLS).`,
+      `Could not connect to ${host}:${port} — ${err.code || ""} ${err.message || "connection failed"}. ` +
+        `SMTP_HOST must be just "smtp.hostinger.com" (no https://). Check the password and that port ${port} matches (465 = SSL, 587 = TLS).`,
       502
     );
   }

@@ -23,13 +23,16 @@ export default function Landing({ onStart }: { onStart: () => void }) {
   useEffect(() => {
     const els = root.current?.querySelectorAll(".ogl-reveal");
     if (!els || !("IntersectionObserver" in window)) { els?.forEach((e) => e.classList.add("in")); return; }
+    // Reveal each element only when it actually scrolls into view (then stop
+    // watching it), so each section animates in as the user reaches it.
     const io = new IntersectionObserver(
-      (entries) => entries.forEach((en) => en.isIntersecting && en.target.classList.add("in")),
-      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+      (entries) => entries.forEach((en) => {
+        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+      }),
+      { threshold: 0.2, rootMargin: "0px 0px -10% 0px" }
     );
     els.forEach((e) => io.observe(e));
-    const failsafe = window.setTimeout(() => els.forEach((e) => e.classList.add("in")), 1700);
-    return () => { io.disconnect(); window.clearTimeout(failsafe); };
+    return () => io.disconnect();
   }, []);
 
   return (
