@@ -9,7 +9,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Logo } from "@/app/Logo";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, addDoc, doc, updateDoc } from "firebase/firestore";
 import { useAuth, authErrorMessage, type UserProfile } from "@/lib/auth/AuthProvider";
 import { isAdmin, ADMIN_LOGIN_EMAIL } from "@/lib/auth/admins";
 import { categoryLabel } from "@/lib/auth/formOptions";
@@ -43,6 +43,38 @@ export default function AdminPage() {
   const [q, setQ] = useState("");
   const [sent, setSent] = useState<Record<string, string>>({}); // uid -> sending|sent|error msg
   const [bulk, setBulk] = useState(false);
+  const [schools, setSchools] = useState<string[]>([]); // admin-managed school list
+  const [schoolFilter, setSchoolFilter] = useState("");
+  const [newSchool, setNewSchool] = useState("");
+  const [assigning, setAssigning] = useState<string | null>(null);
+
+  async function addSchool() {
+    const name = newSchool.trim();
+    if (!name) return;
+    const db = getDb();
+    if (!db) return;
+    try {
+      await addDoc(collection(db, "schools"), { name });
+      setSchools((s) => Array.from(new Set([...s, name])).sort());
+      setNewSchool("");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not add school — check Firestore admin write rules.");
+    }
+  }
+
+  async function assignSchool(u: UserProfile, school: string) {
+    const db = getDb();
+    if (!db) return;
+    setAssigning(u.uid);
+    try {
+      await updateDoc(doc(db, "users", u.uid), { institution: school });
+      setRows((rs) => (rs ?? []).map((r) => (r.uid === u.uid ? { ...r, institution: school } : r)));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not assign school — check Firestore admin write rules.");
+    } finally {
+      setAssigning(null);
+    }
+  }
 
   async function sendReport(u: UserProfile) {
     if (!u.email || !u.latestAssessment) return;
@@ -77,20 +109,34 @@ export default function AdminPage() {
     const db = getDb();
     if (!db) return;
     setFetching(true);
-    getDocs(collection(db, "users"))
-      .then((snap) => setRows(snap.docs.map((d) => d.data() as UserProfile)))
+    Promise.all([
+      getDocs(collection(db, "users")),
+      getDocs(collection(db, "schools")).catch(() => null),
+    ])
+      .then(([usnap, ssnap]) => {
+        setRows(usnap.docs.map((d) => d.data() as UserProfile));
+        if (ssnap) setSchools(ssnap.docs.map((d) => (d.data() as { name?: string }).name || "").filter(Boolean));
+      })
       .catch((e) => setError(e?.message || "Failed to load users."))
       .finally(() => setFetching(false));
   }, [admin]);
 
+  // All selectable schools = admin-added list ∪ schools users typed at registration.
+  const allSchools = useMemo(() => {
+    const set = new Set<string>(schools);
+    (rows ?? []).forEach((u) => { if (u.institution) set.add(u.institution); });
+    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }, [schools, rows]);
+
   const filtered = useMemo(() => {
-    const list = rows ?? [];
+    let list = rows ?? [];
+    if (schoolFilter) list = list.filter((u) => (u.institution || "") === schoolFilter);
     const term = q.trim().toLowerCase();
-    if (!term) return list;
-    return list.filter((u) =>
+    if (term) list = list.filter((u) =>
       [u.name, u.email, u.phone, u.institution].filter(Boolean).some((v) => v!.toLowerCase().includes(term))
     );
-  }, [rows, q]);
+    return list;
+  }, [rows, q, schoolFilter]);
 
   const stats = useMemo(() => {
     const list = rows ?? [];
@@ -155,14 +201,25 @@ export default function AdminPage() {
         <div style={S.tableCard}>
           <div style={S.tableHead}>
             <div style={S.tableTitle}>Users {rows ? `(${filtered.length})` : ""}</div>
-            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", justifyContent: "flex-end" }}>
+              <select style={S.schoolSel} value={schoolFilter} onChange={(e) => setSchoolFilter(e.target.value)}>
+                <option value="">All schools ({rows?.length ?? 0})</option>
+                {allSchools.map((s) => (
+                  <option key={s} value={s}>{s} ({(rows ?? []).filter((u) => u.institution === s).length})</option>
+                ))}
+              </select>
+              <div style={S.addSchoolWrap}>
+                <input style={S.addSchoolInput} placeholder="Add a school…" value={newSchool}
+                  onChange={(e) => setNewSchool(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") void addSchool(); }} />
+                <button style={S.addSchoolBtn} onClick={() => void addSchool()} disabled={!newSchool.trim()}>+ Add</button>
+              </div>
               <input style={S.search} placeholder="Search name / email / phone…" value={q} onChange={(e) => setQ(e.target.value)} />
               <button
                 style={{ ...S.bulkBtn, ...(bulk ? { opacity: 0.6, cursor: "wait" } : {}) }}
                 disabled={bulk || !filtered.some((u) => u.latestAssessment)}
                 onClick={() => void sendAll(filtered)}
               >
-                {bulk ? "Emailing…" : "✉ Email all completed"}
+                {bulk ? "Emailing…" : schoolFilter ? `✉ Email ${schoolFilter}` : "✉ Email all completed"}
               </button>
             </div>
           </div>
@@ -176,7 +233,7 @@ export default function AdminPage() {
               <table style={S.table}>
                 <thead>
                   <tr>
-                    {["Name", "Email", "Phone", "Category", "Status", "Assessment", "Top career", "Fit %", "Report"].map((h) => (
+                    {["Name", "Email", "Phone", "School", "Category", "Status", "Assessment", "Top career", "Fit %", "Report"].map((h) => (
                       <th key={h} style={S.th}>{h}</th>
                     ))}
                   </tr>
@@ -189,6 +246,17 @@ export default function AdminPage() {
                         <td style={S.td}><b>{u.name || "—"}</b></td>
                         <td style={S.td}>{u.email || "—"}</td>
                         <td style={S.td}>{u.phone || "—"}</td>
+                        <td style={S.td}>
+                          <select
+                            style={{ ...S.assignSel, ...(assigning === u.uid ? { opacity: 0.5 } : {}) }}
+                            value={u.institution || ""}
+                            disabled={assigning === u.uid}
+                            onChange={(e) => void assignSchool(u, e.target.value)}
+                          >
+                            <option value="">— unassigned —</option>
+                            {allSchools.map((s) => <option key={s} value={s}>{s}</option>)}
+                          </select>
+                        </td>
                         <td style={S.td}>{u.category ? categoryLabel(u.category) : "—"}</td>
                         <td style={S.td}>{u.clarity || "—"}</td>
                         <td style={S.td}>
@@ -262,7 +330,12 @@ const S: Record<string, React.CSSProperties> = {
   tableCard: { background: "#fff", border: "1px solid #e6e9ef", borderRadius: 14, padding: "18px 20px", boxShadow: "0 2px 10px rgba(30,41,59,.04)" },
   tableHead: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 14, flexWrap: "wrap" },
   tableTitle: { fontSize: 15, fontWeight: 800 },
-  search: { padding: "9px 13px", borderRadius: 9, border: "1px solid #cbd5e1", fontSize: 13.5, outline: "none", minWidth: 240 },
+  search: { padding: "9px 13px", borderRadius: 9, border: "1px solid #cbd5e1", fontSize: 13.5, outline: "none", minWidth: 220 },
+  schoolSel: { padding: "9px 12px", borderRadius: 9, border: "1px solid #cbd5e1", fontSize: 13, outline: "none", background: "#fff", cursor: "pointer", maxWidth: 220 },
+  addSchoolWrap: { display: "flex", gap: 0, alignItems: "center" },
+  addSchoolInput: { padding: "9px 12px", borderRadius: "9px 0 0 9px", border: "1px solid #cbd5e1", borderRight: "none", fontSize: 13, outline: "none", width: 150 },
+  addSchoolBtn: { padding: "9px 14px", borderRadius: "0 9px 9px 0", border: "1px solid #4f6b9e", background: "#4f6b9e", color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" },
+  assignSel: { padding: "5px 8px", borderRadius: 7, border: "1px solid #dfe3ea", fontSize: 12.5, background: "#fff", cursor: "pointer", maxWidth: 150 },
   error: { background: "#fee2e2", border: "1px solid #fca5a5", color: "#b91c1c", padding: "10px 14px", borderRadius: 10, fontSize: 13, marginBottom: 12, fontWeight: 600 },
   scroll: { overflowX: "auto" },
   table: { width: "100%", borderCollapse: "collapse", fontSize: 13.5 },

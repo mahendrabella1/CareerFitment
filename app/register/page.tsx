@@ -85,7 +85,7 @@ export default function RegisterPage() {
     <div style={S.page}>
       <style>{CSS}</style>
       <header style={S.header}>
-        <Link href="/" style={{ textDecoration: "none" }}><Logo height={30} /></Link>
+        <Link href="/" style={{ textDecoration: "none" }}><Logo height={40} /></Link>
         <div style={S.headerRight}>
           <span style={S.haveAcct}>Have an account?</span>
           <Link href="/signin" style={S.signInBtn}>Sign in</Link>
@@ -190,38 +190,38 @@ function Err({ children }: { children: React.ReactNode }) { return <div style={S
 const RED = "#e0242e";
 const S: Record<string, React.CSSProperties> = {
   page: { minHeight: "100vh", background: "#eef1f6", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: "#1f2430", display: "flex", flexDirection: "column" },
-  header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 26px", background: "#fff", borderBottom: "1px solid #e6e9ef" },
+  header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "9px 26px", background: "#fff", borderBottom: "1px solid #e6e9ef" },
   headerRight: { display: "flex", alignItems: "center", gap: 12 },
   haveAcct: { fontSize: 13, color: "#64748b" },
   signInBtn: { padding: "8px 16px", background: "#e0242e", color: "#fff", borderRadius: 9, fontSize: 13.5, fontWeight: 700, textDecoration: "none" },
-  wrap: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "24px 20px" },
-  shell: { width: "100%", maxWidth: 960, background: "#fff", borderRadius: 22, overflow: "hidden", boxShadow: "0 28px 70px rgba(31,36,48,.18)", minHeight: 540 },
+  wrap: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "10px 20px" },
+  shell: { width: "100%", maxWidth: 1140, background: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 28px 70px rgba(31,36,48,.18)" },
 
-  left: { padding: "34px 42px 28px", display: "flex", flexDirection: "column" },
+  left: { padding: "22px 42px 18px", display: "flex", flexDirection: "column" },
   logo: { alignSelf: "flex-start", fontSize: "1.4rem", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 16 },
-  title: { fontSize: 25, fontWeight: 800, margin: "0 0 4px" },
-  subtitle: { fontSize: 13.5, color: "#8a8f9a", margin: "0 0 18px" },
+  title: { fontSize: 22, fontWeight: 800, margin: "0 0 3px" },
+  subtitle: { fontSize: 13, color: "#8a8f9a", margin: "0 0 12px" },
 
-  loginNote: { display: "flex", gap: 9, alignItems: "flex-start", background: "#f1f5f9", border: "1px solid #e2e8f0", color: "#475569", padding: "10px 13px", borderRadius: 11, fontSize: 12.5, lineHeight: 1.5, marginBottom: 16 },
-  loginNoteIcon: { fontSize: 15, lineHeight: 1.4 },
+  loginNote: { display: "flex", gap: 8, alignItems: "flex-start", background: "#f1f5f9", border: "1px solid #e2e8f0", color: "#475569", padding: "8px 12px", borderRadius: 10, fontSize: 12, lineHeight: 1.45, marginBottom: 11 },
+  loginNoteIcon: { fontSize: 15, lineHeight: 1.4, flexShrink: 0, display: "flex" },
   warn: { background: "#fffbeb", border: "1px solid #fcd34d", color: "#92400e", padding: "9px 12px", borderRadius: 10, fontSize: 12.5, marginBottom: 12 },
   errorBox: { background: "#fee2e2", border: "1px solid #fca5a5", color: "#b91c1c", padding: "9px 12px", borderRadius: 10, fontSize: 13, marginBottom: 12, fontWeight: 600 },
 
-  form: { display: "flex", flexDirection: "column", gap: 11 },
-  row: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 11 },
-  input: { width: "100%", padding: "11px 13px", borderRadius: 10, border: "1px solid #dfe3ea", fontSize: 14, outline: "none", boxSizing: "border-box", background: "#f7f8fa", transition: "border-color .15s, background .15s" },
+  form: { display: "flex", flexDirection: "column", gap: 9 },
+  row: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 9 },
+  input: { width: "100%", padding: "9px 12px", borderRadius: 10, border: "1px solid #dfe3ea", fontSize: 13.5, outline: "none", boxSizing: "border-box", background: "#f7f8fa", transition: "border-color .15s, background .15s" },
   fieldErr: { color: "#dc2626", fontSize: 11, marginTop: 3 },
   pwWrap: { position: "relative" },
   pwToggle: { position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: RED, fontWeight: 700, fontSize: 11.5, cursor: "pointer" },
-  rules: { listStyle: "none", padding: "8px 12px", margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3px 10px", background: "#f7f8fa", border: "1px solid #eef0f4", borderRadius: 10 },
-  rule: { fontSize: 11, fontWeight: 600 },
-  submit: { marginTop: 4, padding: "13px", background: RED, color: "#fff", border: "none", borderRadius: 11, fontSize: 15, fontWeight: 800, cursor: "pointer", boxShadow: "0 10px 22px rgba(224,36,46,.3)" },
+  rules: { listStyle: "none", padding: "7px 11px", margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "2px 10px", background: "#f7f8fa", border: "1px solid #eef0f4", borderRadius: 10 },
+  rule: { fontSize: 10.5, fontWeight: 600 },
+  submit: { marginTop: 3, padding: "11px", background: RED, color: "#fff", border: "none", borderRadius: 11, fontSize: 15, fontWeight: 800, cursor: "pointer", boxShadow: "0 10px 22px rgba(224,36,46,.3)" },
   submitDisabled: { background: "#e0e3ea", color: "#9aa1ad", cursor: "not-allowed", boxShadow: "none" },
-  footer: { marginTop: 20, display: "flex", justifyContent: "space-between", fontSize: 12.5, color: "#8a8f9a" },
+  footer: { marginTop: 12, display: "flex", justifyContent: "space-between", fontSize: 12, color: "#8a8f9a" },
   footLink: { color: RED, fontWeight: 700, textDecoration: "none" },
   terms: { textDecoration: "underline", cursor: "default" },
 
-  visual: { position: "relative", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "34px 32px", overflow: "hidden", minHeight: 540 },
+  visual: { position: "relative", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "30px 34px", overflow: "hidden", minHeight: 0 },
   visualImg: { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" },
   visualOverlay: { position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(31,41,63,.12) 0%, rgba(31,41,63,.78) 100%)" },
   visualContent: { position: "relative", color: "#fff" },
