@@ -22,12 +22,18 @@ export async function POST(req: Request) {
 
   const sections = CATEGORY_ORDER.map((cat) => {
     const raw = getSet(cat, stage, chosenSets[cat]);
+    // Only DISPLAY fields go to the client — every answer key (correct, clusters,
+    // scores, domains, mainCategory, subCategory, cluster) stays server-side.
     const questions = raw.map((q, i) => ({
       id: `${cat}:${i}`,
       type: q.type as string,
       text: q.text as string,
       options: (q.options as string[] | undefined) ?? null,
       styles: (q.styles as string[] | undefined) ?? null,
+      format: (q.format as string | undefined) ?? null,
+      svgOptions: Boolean(q.svgOptions),
+      media: (q.media as object | null | undefined) ?? null,
+      optional: q.type === "open",
     }));
     return {
       category: cat,

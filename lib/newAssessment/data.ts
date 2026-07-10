@@ -1,5 +1,7 @@
 // Server-only data layer for the new (set-based) assessment.
 import bank from "@/data/assessment-questions.json";
+import aptitudeBank from "@/data/aptitude-questions.json";
+import strengthsBank from "@/data/strengths-questions.json";
 import clustersData from "@/data/career-clusters.json";
 
 export type Category =
@@ -8,11 +10,15 @@ export type Category =
   | "multiple_intelligence"
   | "emotional_intelligence"
   | "learning_styles"
-  | "motivators";
+  | "motivators"
+  | "strengths"
+  | "aptitude";
 
 
 export type StageKey = "6-8" | "9-10" | "11-12" | "grad" | "early" | "prof";
 
+// Order shown in the exam. Cognitive sections (Aptitude, Strengths) come last so
+// students warm up on self-report first.
 export const CATEGORY_ORDER: Category[] = [
   "personality",
   "career_interest",
@@ -20,6 +26,8 @@ export const CATEGORY_ORDER: Category[] = [
   "emotional_intelligence",
   "learning_styles",
   "motivators",
+  "strengths",
+  "aptitude",
 ];
 
 export const CATEGORY_META: Record<Category, { title: string; blurb: string }> = {
@@ -29,11 +37,18 @@ export const CATEGORY_META: Record<Category, { title: string; blurb: string }> =
   emotional_intelligence: { title: "Emotional Intelligence", blurb: "Choose the response closest to what you'd genuinely do." },
   learning_styles: { title: "Learning Style", blurb: "Pick the option that best matches how you naturally learn." },
   motivators: { title: "Motivators", blurb: "For each situation, choose what feels MOST and LEAST like you." },
+  strengths: { title: "Strengths", blurb: "A mix of quick puzzles and self-report. There ARE right answers here — take your time." },
+  aptitude: { title: "Aptitude", blurb: "Reasoning across words, numbers, logic and shapes. Pick the single best answer." },
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type RawQ = Record<string, any>;
-const BANK = bank as unknown as Record<string, Record<string, Record<string, RawQ[]>>>;
+type Bank = Record<string, Record<string, Record<string, RawQ[]>>>;
+const BANK: Bank = {
+  ...(bank as unknown as Bank),
+  aptitude: aptitudeBank as unknown as Bank[string],
+  strengths: strengthsBank as unknown as Bank[string],
+};
 export const CLUSTERS = clustersData as Record<string, { cluster: string; careers: string[] }>;
 
 /** Register category value -> question-bank life-stage tab. */

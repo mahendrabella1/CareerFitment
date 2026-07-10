@@ -62,6 +62,11 @@ export interface AssessmentSummary {
   clusters?: { cluster: string; score: number }[];
   recommendations?: string[];
   nextStep?: string | null;
+  // 8-category overview used by the single radar chart in the report. Each
+  // score is 0–100. `key` is a stable slug; `label` is the display name.
+  radar?: { key: string; label: string; score: number }[];
+  strengthsBreakdown?: { name: string; score: number }[];
+  aptitudePct?: number | null;
 }
 
 export interface UserProfile {

@@ -7,7 +7,7 @@
  * clusters, recommendations). Otherwise prompts them to take the assessment.
  */
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "@/app/Logo";
@@ -116,9 +116,12 @@ function Report({ a }: { a: AssessmentSummary }) {
         </div>
       </section>
 
+      {/* 8-category profile radar */}
+      {a.radar && a.radar.length > 0 && <ProfileRadar a={a} />}
+
       {/* Career matches */}
       {a.matches?.length > 0 && (
-        <Card title="Top career matches" sub="Careers that best align with your profile.">
+        <Card title="🎯 Top career matches" sub="Careers that best align with your profile.">
           {a.matches.map((m, i) => (
             <div key={i} style={S.match}>
               <div style={S.matchTop}>
@@ -137,7 +140,7 @@ function Report({ a }: { a: AssessmentSummary }) {
 
       {/* Strengths */}
       {a.topStrengths?.length > 0 && (
-        <Card title="Your top strengths">
+        <Card title="🧩 Your top strengths">
           <div style={S.chips}>
             {a.topStrengths.map((s, i) => (
               <span key={i} style={S.chip}>{s.subTraitName}<span style={S.chipSub}> · {s.parameterName}</span></span>
@@ -148,7 +151,7 @@ function Report({ a }: { a: AssessmentSummary }) {
 
       {/* Interests / RIASEC */}
       {a.themes && a.themes.length > 0 && (
-        <Card title="Your interests" sub="How your interests map to the six RIASEC themes.">
+        <Card title="🧭 Your interests" sub="How your interests map across the eight career clusters.">
           {a.themes.map((t) => (
             <div key={t.letter} style={S.theme}>
               <div style={S.themeBadge}>{t.letter}</div>
@@ -167,7 +170,7 @@ function Report({ a }: { a: AssessmentSummary }) {
 
       {/* How you think & work */}
       {(hasList(a.topIntelligences) || hasList(a.topValues) || hasList(a.topAptitudes) || hasList(a.learningStyles) || a.ei != null) && (
-        <Card title="How you think &amp; work">
+        <Card title="🧠 How you think &amp; work">
           <div style={S.grid2}>
             <MiniList title="Multiple intelligences" items={(a.topIntelligences ?? []).map((x) => ({ label: x.name, score: x.score }))} />
             <MiniList title="Aptitudes" items={(a.topAptitudes ?? []).map((x) => ({ label: x.skill, score: x.score }))} />
@@ -186,7 +189,7 @@ function Report({ a }: { a: AssessmentSummary }) {
 
       {/* Clusters */}
       {a.clusters && a.clusters.length > 0 && (
-        <Card title="Career clusters">
+        <Card title="🗂️ Career clusters">
           {a.clusters.map((c) => (
             <div key={c.cluster} style={S.clusterRow}>
               <span style={S.clusterName}>{c.cluster}</span>
@@ -214,6 +217,127 @@ function Report({ a }: { a: AssessmentSummary }) {
       </div>
     </>
   );
+}
+
+/* ---------------------- 8-category profile radar ----------------------- */
+const CAT_ICON: Record<string, string> = {
+  personality: "🧭", career_interest: "🎯", multiple_intelligence: "🧠",
+  emotional_intelligence: "💬", learning_styles: "📚", motivators: "⚡",
+  strengths: "🧩", aptitude: "📐",
+};
+const scoreBand = (p: number) =>
+  p >= 80 ? "a standout area" : p >= 65 ? "a clear strength" : p >= 50 ? "a solid, dependable area" : p >= 35 ? "an emerging area" : "an area to develop";
+
+/** Human, specific per-category explanation built from the saved summary. */
+function explainCategory(key: string, a: AssessmentSummary): string {
+  const r = a.radar?.find((x) => x.key === key);
+  const p = r?.score ?? 0;
+  const band = scoreBand(p);
+  switch (key) {
+    case "personality": {
+      const trait = a.topStrengths?.[0]?.subTraitName;
+      return `Your responses point to a ${a.outcomeLabel || "balanced temperament"}${trait ? `, with ${trait} standing out most` : ""}. This shapes how you engage with people, handle pressure and recharge — ${band}.`;
+    }
+    case "career_interest": {
+      const top = a.themes?.[0];
+      return top
+        ? `Your interests lean strongly toward ${top.title} (${top.meaning}). Interest is the single biggest driver of long-term satisfaction, so this is where to look first.`
+        : `Your interests are spread fairly evenly — worth exploring a few fields hands-on to see what pulls you in.`;
+    }
+    case "multiple_intelligence": {
+      const top = a.topIntelligences?.[0]?.name;
+      return `Across Gardner's eight intelligences, ${top || "your top area"} is most pronounced. This is how you most naturally take in and work with the world — ${band}.`;
+    }
+    case "emotional_intelligence":
+      return `Your emotional intelligence reads at ${a.ei ?? p}% — how well you read situations, manage your own reactions and respond to others. This is ${band} and a strong predictor of teamwork and leadership.`;
+    case "learning_styles": {
+      const top = a.learningStyles?.[0]?.name;
+      return `You learn best through a ${top || "mixed"} approach. Matching study and work methods to this style makes new material noticeably easier to absorb.`;
+    }
+    case "motivators": {
+      const top = a.topValues?.[0]?.tag;
+      return `What drives you most is ${top || "a balance of factors"}. Roles and environments that feed this motivator will keep you engaged; ones that starve it tend to burn people out.`;
+    }
+    case "strengths": {
+      const top = a.strengthsBreakdown?.slice().sort((x, y) => y.score - x.score)[0]?.name;
+      return `On the quick reasoning and self-report tasks you scored ${p}% overall${top ? `, strongest in ${top}` : ""} — ${band}. Combine a few sittings for a steadier read.`;
+    }
+    case "aptitude": {
+      const top = a.topAptitudes?.[0]?.skill;
+      return `Your aptitude across words, numbers, logic and shapes came out at ${a.aptitudePct ?? p}%${top ? `, sharpest in ${top}` : ""} — ${band}. Aptitude shows how quickly you can pick up the skills a field demands.`;
+    }
+    default:
+      return `This area scored ${p}% — ${band}.`;
+  }
+}
+
+function ProfileRadar({ a }: { a: AssessmentSummary }) {
+  const data = a.radar ?? [];
+  const [sel, setSel] = useState(0);
+  const n = data.length;
+  const cx = 150, cy = 150, R = 110;
+  const angle = (i: number) => -Math.PI / 2 + (i * 2 * Math.PI) / n;
+  const pt = (i: number, rad: number) => ({ x: cx + rad * Math.cos(angle(i)), y: cy + rad * Math.sin(angle(i)) });
+  const rings = [0.25, 0.5, 0.75, 1];
+  const ringPath = (frac: number) => data.map((_, i) => { const p = pt(i, R * frac); return `${p.x},${p.y}`; }).join(" ");
+  const dataPath = data.map((d, i) => { const p = pt(i, R * (d.score / 100)); return `${p.x},${p.y}`; }).join(" ");
+  const selPt = pt(sel, R * ((data[sel]?.score ?? 0) / 100));
+
+  return (
+    <section style={S.card}>
+      <div style={S.cardTitle}>📊 Your profile at a glance</div>
+      <p style={S.cardSub}>All eight areas on one map. Tap any area to see what it means for you.</p>
+      <div style={S.radarWrap}>
+        <svg viewBox="0 0 300 300" style={S.radarSvg}>
+          {rings.map((f) => <polygon key={f} points={ringPath(f)} fill="none" stroke="#e7eaf0" strokeWidth="1" />)}
+          {data.map((_, i) => { const p = pt(i, R); return <line key={i} x1={cx} y1={cy} x2={p.x} y2={p.y} stroke="#e7eaf0" strokeWidth="1" />; })}
+          <polygon points={dataPath} fill="rgba(79,107,158,.18)" stroke={BLUE} strokeWidth="2" strokeLinejoin="round" />
+          {data.map((d, i) => { const p = pt(i, R * (d.score / 100)); return <circle key={i} cx={p.x} cy={p.y} r={i === sel ? 6 : 3.5} fill={i === sel ? "#d98324" : BLUE} onClick={() => setSel(i)} style={{ cursor: "pointer" }} />; })}
+          {i_labels(data, pt, R, sel, setSel)}
+          <circle cx={selPt.x} cy={selPt.y} r="9" fill="none" stroke="#d98324" strokeWidth="2" />
+        </svg>
+      </div>
+      {/* selectable category chips */}
+      <div style={S.radarChips}>
+        {data.map((d, i) => (
+          <button key={d.key} onClick={() => setSel(i)} style={{ ...S.radarChip, ...(i === sel ? S.radarChipOn : {}) }}>
+            <span>{CAT_ICON[d.key]} {d.label}</span>
+            <b style={{ color: i === sel ? "#fff" : BLUE }}>{d.score}</b>
+          </button>
+        ))}
+      </div>
+      {/* explanation for the selected category */}
+      <div style={S.radarExplain}>
+        <div style={S.radarExplainHead}>
+          <span style={S.radarExplainIcon}>{CAT_ICON[data[sel]?.key]}</span>
+          <span style={S.radarExplainTitle}>{data[sel]?.label}</span>
+          <span style={S.radarExplainScore}>{data[sel]?.score}<span style={S.radarExplainScoreSm}>/100</span></span>
+        </div>
+        <p style={S.radarExplainText}>{explainCategory(data[sel]?.key ?? "", a)}</p>
+      </div>
+    </section>
+  );
+}
+
+/** Axis labels around the radar (kept small; abbreviated). */
+function i_labels(
+  data: { key: string; label: string; score: number }[],
+  pt: (i: number, rad: number) => { x: number; y: number },
+  R: number,
+  sel: number,
+  setSel: (i: number) => void
+) {
+  return data.map((d, i) => {
+    const p = pt(i, R + 18);
+    const anchor = Math.abs(p.x - 150) < 20 ? "middle" : p.x > 150 ? "start" : "end";
+    return (
+      <text key={d.key} x={p.x} y={p.y + 3} fontSize="9.5" fontWeight={i === sel ? 800 : 600}
+        fill={i === sel ? "#d98324" : "#64748b"} textAnchor={anchor as "middle" | "start" | "end"}
+        onClick={() => setSel(i)} style={{ cursor: "pointer" }}>
+        {CAT_ICON[d.key]}
+      </text>
+    );
+  });
 }
 
 /* --------------------------- small helpers ----------------------------- */
@@ -250,9 +374,9 @@ function Centered({ children }: { children: React.ReactNode }) {
   return <div style={{ ...S.page, display: "flex", alignItems: "center", justifyContent: "center" }}><div style={{ textAlign: "center" }}>{children}</div></div>;
 }
 
-const BLUE = "#3f3f46";
+const BLUE = "#4f6b9e";
 const S: Record<string, React.CSSProperties> = {
-  page: { minHeight: "100vh", background: "#eef1f6", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: "#1e293b" },
+  page: { minHeight: "100vh", background: "#f6f7f9", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: "#1e293b" },
   header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 22px", background: "#fff", borderBottom: "1px solid #e6e9ef" },
   logo: { textDecoration: "none", fontSize: "1.5rem", fontWeight: 800, letterSpacing: "-0.02em" },
   logout: { padding: "8px 16px", background: "#fff", color: "#b91c1c", border: "1px solid #fca5a5", borderRadius: 9, fontSize: 13.5, fontWeight: 700, cursor: "pointer" },
@@ -270,7 +394,7 @@ const S: Record<string, React.CSSProperties> = {
   tk: { fontSize: 13.5, color: "#64748b", fontWeight: 600 },
   tv: { fontSize: 14.5, color: "#0f172a", fontWeight: 600, textAlign: "right" },
 
-  hero: { background: `linear-gradient(135deg, ${BLUE}, #5b5b64)`, color: "#fff", borderRadius: 16, padding: "24px 26px", marginBottom: 16 },
+  hero: { background: `linear-gradient(135deg, #42597f, #5a76a6)`, color: "#fff", borderRadius: 16, padding: "24px 26px", marginBottom: 16 },
   heroTop: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 },
   heroKicker: { fontSize: 12, textTransform: "uppercase", letterSpacing: 1, opacity: .85, fontWeight: 700 },
   heroTitle: { fontSize: 24, fontWeight: 800, margin: "6px 0 2px", lineHeight: 1.2 },
@@ -281,6 +405,19 @@ const S: Record<string, React.CSSProperties> = {
   heroSummary: { fontSize: 14, lineHeight: 1.6, opacity: .95, margin: "14px 0 0" },
   heroMeta: { display: "flex", flexWrap: "wrap", gap: 8, marginTop: 14 },
   pillDark: { background: "rgba(255,255,255,.18)", border: "1px solid rgba(255,255,255,.3)", borderRadius: 999, padding: "5px 12px", fontSize: 12, fontWeight: 700 },
+
+  radarWrap: { display: "flex", justifyContent: "center", margin: "4px 0 10px" },
+  radarSvg: { width: "100%", maxWidth: 340, height: "auto" },
+  radarChips: { display: "flex", flexWrap: "wrap", gap: 7, marginBottom: 14 },
+  radarChip: { display: "flex", alignItems: "center", gap: 8, padding: "7px 12px", borderRadius: 999, border: "1px solid #e2e8f0", background: "#fff", fontSize: 12.5, fontWeight: 600, color: "#475569", cursor: "pointer" },
+  radarChipOn: { background: BLUE, borderColor: BLUE, color: "#fff" },
+  radarExplain: { background: "#f6f8fb", border: "1px solid #e7eaf0", borderRadius: 12, padding: "16px 18px" },
+  radarExplainHead: { display: "flex", alignItems: "center", gap: 10, marginBottom: 8 },
+  radarExplainIcon: { fontSize: 20 },
+  radarExplainTitle: { fontSize: 15.5, fontWeight: 800, color: "#0f172a", flex: 1 },
+  radarExplainScore: { fontSize: 22, fontWeight: 800, color: BLUE },
+  radarExplainScoreSm: { fontSize: 12, color: "#94a3b8", fontWeight: 600 },
+  radarExplainText: { fontSize: 14, lineHeight: 1.65, color: "#475569", margin: 0 },
 
   match: { padding: "12px 0", borderTop: "1px solid #f1f5f9" },
   matchTop: { display: "flex", justifyContent: "space-between", gap: 12, marginBottom: 7 },
