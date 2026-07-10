@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth, type AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { Logo } from "@/app/Logo";
+import Landing from "@/app/Landing";
 import {
   Sparkles,
   ArrowRight,
@@ -531,6 +532,9 @@ export default function AssessmentExperience() {
   const router = useRouter();
   const { user, profile, loading: authLoading, saveAssessment } = useAuth();
   const [beginHandled, setBeginHandled] = useState(false);
+  const [hasBegin] = useState(
+    () => typeof window !== "undefined" && new URLSearchParams(window.location.search).get("begin") === "1"
+  );
   const [feedbackRating, setFeedbackRating] = useState<number | null>(null);
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
   const [thankYou, setThankYou] = useState(false);
@@ -1026,6 +1030,11 @@ export default function AssessmentExperience() {
     // Show the thank-you screen (loader -> animated thanks), then redirect.
     setThankYou(true);
     setTimeout(() => router.push("/account"), 5000);
+  }
+
+  // Marketing landing — shown only when nothing is in progress.
+  if (!session && !results && view === "landing" && !starting && !beginHandled && !hasBegin) {
+    return <Landing onStart={startFlow} />;
   }
 
   return (
