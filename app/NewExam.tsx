@@ -12,7 +12,7 @@
  * choose-one (text or SVG options), 1–10 slider, most/least, and open response.
  */
 
-import { useEffect, useMemo, useState } from "react";
+import { Component, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { Logo } from "@/app/Logo";
@@ -40,7 +40,33 @@ type Section = { category: string; title: string; blurb: string; questions: Q[] 
 type GenData = { stage: string; chosenSets: Record<string, string>; sections: Section[] };
 type Flat = Q & { si: number; cat: string; catTitle: string; catBlurb: string };
 
-export default function NewExam({ category, name, onExit }: { category: string; name?: string; onExit: () => void }) {
+/** Guard: a bad question can never white-screen the whole app. */
+class ExamErrorBoundary extends Component<{ onExit: () => void; children: ReactNode }, { hasError: boolean }> {
+  state = { hasError: false };
+  static getDerivedStateFromError() { return { hasError: true }; }
+  componentDidCatch(err: unknown) { console.error("Assessment render error:", err); }
+  render() {
+    if (this.state.hasError)
+      return (
+        <div style={S.center}>
+          <div style={{ color: "#c0564f" }}><Icon name="info" size={40} /></div>
+          <div style={S.big}>Something went wrong displaying this screen</div>
+          <div style={S.subT}>Your progress may be affected. Please reload to continue.</div>
+          <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
+            <button style={S.primary} onClick={() => window.location.reload()}>Reload</button>
+            <button style={{ ...S.ghost }} onClick={this.props.onExit}>Exit to dashboard</button>
+          </div>
+        </div>
+      );
+    return this.props.children;
+  }
+}
+
+export default function NewExam(props: { category: string; name?: string; onExit: () => void }) {
+  return <ExamErrorBoundary onExit={props.onExit}><NewExamInner {...props} /></ExamErrorBoundary>;
+}
+
+function NewExamInner({ category, name, onExit }: { category: string; name?: string; onExit: () => void }) {
   const router = useRouter();
   const { saveAssessment } = useAuth();
   const [phase, setPhase] = useState<"loading" | "error" | "intro" | "exam" | "thanks">("loading");
@@ -287,16 +313,16 @@ function MediaBlock({ media }: { media: Media }) {
     const cols = media.cols ?? 3;
     return (
       <div style={{ ...S.mGrid, gridTemplateColumns: `repeat(${cols}, 1fr)` }}>
-        {media.cells.map((c, i) => c.startsWith("<svg")
+        {(media.cells ?? []).map((c, i) => typeof c === "string" && c.startsWith("<svg")
           ? <div key={i} style={S.mCell} dangerouslySetInnerHTML={{ __html: c }} />
           : <div key={i} style={{ ...S.mCell, ...S.mQ }}>?</div>)}
       </div>
     );
   }
   if (media.type === "sequence")
-    return <div style={S.mSeq}>{media.items.map((c, i) => <div key={i} style={S.mCell} dangerouslySetInnerHTML={{ __html: c }} />)}<div style={{ ...S.mCell, ...S.mQ }}>?</div></div>;
-  if (media.type === "figure") return <div style={S.mFigure} dangerouslySetInnerHTML={{ __html: media.svg }} />;
-  if (media.type === "html") return <div style={S.mHtml} dangerouslySetInnerHTML={{ __html: media.html }} />;
+    return <div style={S.mSeq}>{(media.items ?? []).filter((c) => typeof c === "string").map((c, i) => <div key={i} style={S.mCell} dangerouslySetInnerHTML={{ __html: c }} />)}<div style={{ ...S.mCell, ...S.mQ }}>?</div></div>;
+  if (media.type === "figure") return <div style={S.mFigure} dangerouslySetInnerHTML={{ __html: media.svg || "" }} />;
+  if (media.type === "html") return <div style={S.mHtml} dangerouslySetInnerHTML={{ __html: media.html || "" }} />;
   if (media.type === "passage") return <blockquote style={S.mPassage}>{media.text}</blockquote>;
   if (media.type === "tts") return <AudioQuestion text={media.text} />;
   // eslint-disable-next-line @next/next/no-img-element
@@ -426,7 +452,7 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
           return (
             <button key={i} style={{ ...S.svgChoice, ...(sel ? S.svgChoiceOn : {}) }} onClick={() => onChange(String(i))}>
               <span style={{ ...S.ab, ...(sel ? S.abOn : {}) }}>{String.fromCharCode(65 + i)}</span>
-              <span style={S.svgHolder} dangerouslySetInnerHTML={{ __html: o }} />
+              <span style={S.svgHolder} dangerouslySetInnerHTML={{ __html: o || "" }} />
             </button>
           );
         })}
@@ -437,7 +463,8 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
     <div style={S.choices}>
       {opts.map((o, i) => {
         const sel = value === String(i);
-        const label = q.type === "vark" && q.styles?.[i] ? o.replace(/^\(?[A-D]\)?\s*/, "") : o.replace(/^\d+\)\s*/, "");
+        const text = o ?? "";
+        const label = q.type === "vark" && q.styles?.[i] ? text.replace(/^\(?[A-D]\)?\s*/, "") : text.replace(/^\d+\)\s*/, "");
         return (
           <button key={i} style={{ ...S.choice, ...(sel ? S.choiceOn : {}) }} onClick={() => onChange(String(i))}>
             <span style={{ ...S.ab, ...(sel ? S.abOn : {}) }}>{String.fromCharCode(65 + i)}</span>
