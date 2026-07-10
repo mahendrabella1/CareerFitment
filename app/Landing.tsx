@@ -96,21 +96,33 @@ export default function Landing({ onStart }: { onStart: () => void }) {
 
       {/* why it matters — the story */}
       <section id="why" className="ogl-sec">
-        <div className="ogl-sec-head ogl-reveal">
-          <span className="ogl-kicker">Why this matters</span>
-          <h2 className="ogl-h2 ogl-serif">A career isn’t one decision. It’s 90,000 hours.</h2>
-          <p className="ogl-sub">Most people choose their path on marks, peer pressure and guesswork — with almost no real data about themselves. That’s the gap OneGrasp closes.</p>
+        <div className="ogl-why-top">
+          <div className="ogl-why-copy ogl-reveal">
+            <span className="ogl-kicker">Why this matters</span>
+            <h2 className="ogl-why-h">Most people pick a path with almost <span className="ogl-hl">no data</span> about themselves.</h2>
+            <p className="ogl-sub">
+              A career isn’t one decision — it’s tens of thousands of hours. Yet the
+              choice is usually made on marks, peer pressure and guesswork. <b>OneGrasp</b>
+              {" "}replaces the guesswork with a clear, structured read of who you are.
+            </p>
+          </div>
+          <div className="ogl-why-art ogl-reveal"><WhyIllustration /></div>
         </div>
+
         <div className="ogl-facts">
           {FACTS.map((f, i) => (
-            <div key={i} className="ogl-fact ogl-reveal" style={{ transitionDelay: `${i * 80}ms` }}>
-              <div className="ogl-fact-viz">{f.viz}</div>
-              <div className="ogl-fact-stat">{f.stat}</div>
+            <div key={i} className="ogl-fact ogl-reveal" style={{ transitionDelay: `${i * 80}ms`, borderColor: f.soft }}>
+              <span className="ogl-fact-wave" style={{ background: f.soft }} />
+              <div className="ogl-fact-row">
+                <span className="ogl-fact-ic" style={{ background: f.soft, color: f.color }}><Icon name={f.icon} size={22} /></span>
+                <div className="ogl-fact-stat" style={{ color: f.color }}>{f.stat}</div>
+              </div>
+              <div className="ogl-fact-bar" style={{ background: f.color }} />
               <div className="ogl-fact-text">{f.text}</div>
             </div>
           ))}
         </div>
-        <p className="ogl-facts-note ogl-reveal">Figures reflect widely reported workforce-engagement and career-satisfaction research, shown to illustrate the cost of misalignment.</p>
+        <div className="ogl-facts-note ogl-reveal"><span className="ogl-note-shield"><Icon name="shield" size={16} /></span> Figures reflect widely reported workforce-engagement and career-satisfaction research, shown to illustrate the cost of misalignment.</div>
       </section>
 
       {/* explore each dimension — with photos */}
@@ -138,18 +150,38 @@ export default function Landing({ onStart }: { onStart: () => void }) {
       <section id="science" className="ogl-sec">
         <div className="ogl-sec-head ogl-reveal">
           <span className="ogl-kicker">How we evaluate</span>
-          <h2 className="ogl-h2 ogl-serif">A scientific method, end to end.</h2>
+          <h2 className="ogl-h2 ogl-serif">A scientific method, <span className="ogl-hl">end to end.</span></h2>
           <p className="ogl-sub">Every answer is scored against a validated model, combined, then translated into plain-English guidance.</p>
         </div>
         <div className="ogl-steps">
           {STEPS.map((s, i) => (
-            <div key={s.t} className="ogl-step ogl-reveal" style={{ transitionDelay: `${i * 80}ms` }}>
-              <div className="ogl-step-n">{i + 1}</div>
-              <div className="ogl-step-ic"><Icon name={s.ic} size={24} /></div>
-              <div className="ogl-step-t">{s.t}</div>
-              <div className="ogl-step-d">{s.d}</div>
+            <div key={s.t} className="ogl-step-cell">
+              <div className="ogl-step ogl-reveal" style={{ transitionDelay: `${i * 70}ms`, borderBottomColor: s.color }}>
+                <span className="ogl-step-n" style={{ background: s.color }}>{i + 1}</span>
+                <span className="ogl-step-ic" style={{ background: s.soft, color: s.color }}><Icon name={s.ic} size={26} /></span>
+                <div className="ogl-step-t">{s.t}</div>
+                <div className="ogl-step-d">{s.d}</div>
+              </div>
+              {i < STEPS.length - 1 && <span className="ogl-step-arrow"><Icon name="chevronRight" size={15} /></span>}
             </div>
           ))}
+        </div>
+        <div className="ogl-sci-banner ogl-reveal">
+          <span className="ogl-sci-shield"><Icon name="shield" size={26} /></span>
+          <div className="ogl-sci-text">
+            <b>Built on science. Made simple.</b>
+            <span>Our framework combines global, validated models with advanced analytics to deliver clarity you can actually use.</span>
+          </div>
+          <div className="ogl-sci-charts">
+            <MiniDonut pct={72} color="#2f6bff" />
+            <svg viewBox="0 0 90 46" width="90" height="46" aria-hidden>
+              <rect x="4" y="26" width="12" height="16" rx="2" fill="#dbe6ff" />
+              <rect x="22" y="18" width="12" height="24" rx="2" fill="#bcd2ff" />
+              <rect x="40" y="10" width="12" height="32" rx="2" fill="#2f6bff" />
+              <polyline points="6,22 28,14 46,6 66,12 86,4" fill="none" stroke="#7c3aed" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              {[[6, 22], [28, 14], [46, 6], [66, 12], [86, 4]].map(([x, y], k) => <circle key={k} cx={x} cy={y} r="2.4" fill="#7c3aed" />)}
+            </svg>
+          </div>
         </div>
       </section>
 
@@ -240,7 +272,7 @@ const DIMENSIONS = [
   { title: "Personality", short: "How you naturally think, feel and behave.", desc: "How you engage, decide, handle pressure and recharge.", framework: "Big Five + Temperament", icon: "user", img: IMG("photo-1522071820081-009f0129c71c") },
   { title: "Career Interest", short: "Work environments that match your interests.", desc: "The fields and activities that genuinely pull you in.", framework: "Interest clustering", icon: "compass", img: IMG("photo-1541339907198-e08756dedf3f") },
   { title: "Multiple Intelligence", short: "Your natural abilities beyond traditional IQ.", desc: "The ways you most naturally think and process the world.", framework: "Gardner’s 8 intelligences", icon: "bulb", img: IMG("photo-1532094349884-543bc11b234d") },
-  { title: "Emotional Intelligence", short: "How you understand and manage emotions.", desc: "Reading situations, managing yourself and relating to others.", framework: "EI scenarios", icon: "heart", img: IMG("photo-1552664730-d307ca884978") },
+  { title: "Emotional Intelligence", short: "How you understand and manage emotions.", desc: "Reading situations, managing yourself and relating to others.", framework: "EI scenarios", icon: "pulse", img: IMG("photo-1552664730-d307ca884978") },
   { title: "Learning Styles", short: "The way you learn best and retain more.", desc: "How you absorb new material fastest — visual, aural, reading, kinesthetic.", framework: "VARK", icon: "learning_styles", img: IMG("photo-1503676260728-1c00da094a0b") },
   { title: "Motivators", short: "What drives you and keeps you going.", desc: "What energises you — and what quietly burns you out.", framework: "Work-values model", icon: "match", img: IMG("photo-1454165804606-c3d57bc86b40") },
   { title: "Strengths", short: "Your core strengths and how to use them.", desc: "Problem-solving, critical thinking, decisions and communication.", framework: "Reasoning + self-report", icon: "star", img: IMG("photo-1503387762-592deb58ef4e") },
@@ -248,17 +280,17 @@ const DIMENSIONS = [
 ];
 
 const STEPS = [
-  { ic: "answer", t: "Answer", d: "Stage-appropriate questions across all eight dimensions, with visuals and audio where it helps." },
-  { ic: "score", t: "Score", d: "Each response is scored against its validated model — Big Five, Gardner, VARK, EI and more." },
-  { ic: "combine", t: "Combine", d: "Dimensions are weighted and cross-checked to build one coherent profile." },
-  { ic: "match", t: "Match", d: "Your interests and aptitudes map to specific career clusters and roles." },
-  { ic: "explain", t: "Explain", d: "You get a clear report — a single visual map plus plain-English guidance." },
+  { ic: "answer", t: "Answer", d: "Stage-appropriate questions across all eight dimensions, with visuals and audio where it helps.", color: "#2f6bff", soft: "#e9f0ff" },
+  { ic: "score", t: "Score", d: "Each response is scored against its validated model — Big Five, Gardner, VARK, EI and more.", color: "#16a34a", soft: "#e6f6ec" },
+  { ic: "combine", t: "Combine", d: "Dimensions are weighted and cross-checked to build one coherent profile.", color: "#7c3aed", soft: "#f1e9fd" },
+  { ic: "match", t: "Match", d: "Your interests and aptitudes map to specific career clusters and roles.", color: "#f59e0b", soft: "#fdf1dd" },
+  { ic: "explain", t: "Explain", d: "You get a clear report — a single visual map plus plain-English guidance.", color: "#14b8a6", soft: "#e0f5f2" },
 ];
 
 const FACTS = [
-  { stat: "~2 in 3", text: "employees feel disengaged at work — most in roles that never fit them.", viz: <MiniDonut pct={66} color="#c0564f" /> },
-  { stat: "50%+", text: "of students reconsider their stream or degree within the first two years.", viz: <MiniDonut pct={52} color="#d99a2b" /> },
-  { stat: "90,000", text: "hours are spent working across an average lifetime — spend them well.", viz: <MiniDonut pct={100} color={PRIMARY} /> },
+  { stat: "~2 in 3", text: "employees feel disengaged at work — most in roles that never fit them.", icon: "user", color: "#dc2626", soft: "#fdecec" },
+  { stat: "50%+", text: "of students reconsider their stream or degree within the first two years.", icon: "cap", color: "#e08a0a", soft: "#fdf1dd" },
+  { stat: "90,000", text: "hours are spent working across an average lifetime — spend them well.", icon: "clock", color: "#2f6bff", soft: "#e9f0ff" },
 ];
 
 const REVIEWS = [
@@ -321,6 +353,55 @@ function PieChart({ data }: { data: { label: string; value: number; color: strin
   );
 }
 
+/** Stylized scene: a traveller at a signpost of doubts, a clear road to the peak. */
+function WhyIllustration() {
+  const signs = ["Marks", "Peer Pressure", "Guesswork", "Uncertainty"];
+  const road = "M96 384 C 150 340, 128 292, 220 274 S 356 250, 402 196";
+  return (
+    <svg viewBox="0 0 520 400" className="ogl-why-svg" role="img" aria-label="Choosing a path with clarity">
+      <rect x="0" y="0" width="520" height="400" rx="22" fill="#f2f6ff" />
+      <circle cx="426" cy="120" r="54" fill="#fff2d6" />
+      {/* mountains */}
+      <path d="M300 262 L360 168 L420 262 Z" fill="#dbe6fb" />
+      <path d="M336 262 L418 108 L500 262 Z" fill="#c7d6f4" />
+      <path d="M418 108 L446 160 L426 170 L406 156 L392 168 Z" fill="#fff" />
+      <line x1="418" y1="108" x2="418" y2="80" stroke="#334155" strokeWidth="3" />
+      <path d="M418 82 L440 89 L418 97 Z" fill="#2f6bff" />
+      {/* grass */}
+      <ellipse cx="80" cy="372" rx="60" ry="16" fill="#dcefe0" />
+      <ellipse cx="470" cy="316" rx="46" ry="13" fill="#dcefe0" />
+      {/* road */}
+      <path d={road} fill="none" stroke="#e5ebf6" strokeWidth="36" strokeLinecap="round" />
+      <path d={road} fill="none" stroke="#fff" strokeWidth="22" strokeLinecap="round" />
+      <path d={road} fill="none" stroke="#c3d2ee" strokeWidth="2.5" strokeDasharray="7 11" strokeLinecap="round" />
+      {/* goal check */}
+      <circle cx="402" cy="196" r="15" fill="#2f6bff" />
+      <path d="M395 196 l5 5 9-10" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="344" y="220" width="150" height="26" rx="13" fill="#fff" stroke="#e3e8f0" />
+      <text x="357" y="237" fontSize="11" fontWeight="800" fill="#2f6bff" fontFamily="Poppins,Inter,sans-serif">Clarity · Purpose · Path</text>
+      {/* signpost */}
+      <rect x="150" y="120" width="8" height="176" rx="4" fill="#b9c2d0" />
+      {signs.map((s, i) => {
+        const y = 132 + i * 38;
+        return (
+          <g key={s}>
+            <path d={`M150 ${y} h -84 l -13 14 l 13 14 h 84 z`} fill="#fff" stroke="#e3e8f0" />
+            <circle cx="58" cy={y + 14} r="3.5" fill="#9aa6b6" />
+            <text x="78" y={y + 18} fontSize="12" fontWeight="700" fill="#5b6470" fontFamily="Poppins,Inter,sans-serif">{s}</text>
+          </g>
+        );
+      })}
+      {/* traveller */}
+      <path d="M196 336 q22 -52 44 0 z" fill="#2f5bd6" />
+      <rect x="204" y="322" width="8" height="24" rx="3" fill="#1f2b4a" />
+      <rect x="224" y="322" width="8" height="24" rx="3" fill="#1f2b4a" />
+      <circle cx="218" cy="266" r="14" fill="#f0c9a8" />
+      <path d="M205 262 q4 -16 13 -16 q11 0 13 15 q-7 -6 -13 -6 q-8 0 -13 7z" fill="#26324d" />
+      <path d="M240 300 l24 -8" stroke="#f0c9a8" strokeWidth="7" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function MiniDonut({ pct, color }: { pct: number; color: string }) {
   const r = 26, c = 2 * Math.PI * r;
   return (
@@ -337,14 +418,15 @@ const CSS = `
 .ogl-land{background:#fff;color:${INK};font-family:'Poppins',Inter,system-ui,Segoe UI,sans-serif;-webkit-font-smoothing:antialiased}
 .ogl-land *{box-sizing:border-box}
 .ogl-serif{font-family:'Poppins',Inter,sans-serif;font-weight:800;letter-spacing:-.02em}
+.ogl-hl{color:${PRIMARY};box-shadow:inset 0 -0.28em 0 rgba(59,91,219,.16)}
 .ogl-reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
 .ogl-reveal.in{opacity:1;transform:none}
 
 .ogl-nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid #eef0f4}
-.ogl-nav-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:20px;padding:14px 24px}
-.ogl-logo{height:30px;width:auto;display:block}
-.ogl-nav-links{display:flex;gap:26px;margin-left:26px;flex:1}
-.ogl-nav-links a{color:#4b5563;text-decoration:none;font-size:14px;font-weight:600}
+.ogl-nav-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:20px;padding:12px 24px}
+.ogl-logo{height:40px;width:auto;display:block}
+.ogl-nav-links{display:flex;gap:24px;margin-left:28px;flex:1}
+.ogl-nav-links a{color:#4b5563;text-decoration:none;font-size:13.5px;font-weight:600}
 .ogl-nav-links a:hover{color:${INK}}
 .ogl-nav-cta{display:flex;align-items:center;gap:10px}
 @media(max-width:880px){.ogl-nav-links{display:none}}
@@ -358,8 +440,8 @@ const CSS = `
 .ogl-btn-lg.ogl-btn-ghost{padding:14px 20px}
 
 /* hero */
-.ogl-hero{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1.06fr .94fr;gap:52px;align-items:center;padding:56px 44px 60px}
-@media(max-width:940px){.ogl-hero{grid-template-columns:1fr;gap:30px;padding:34px 26px}}
+.ogl-hero{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1.08fr .92fr;gap:48px;align-items:center;padding:30px 44px 52px}
+@media(max-width:940px){.ogl-hero{grid-template-columns:1fr;gap:26px;padding:22px 26px 34px}}
 .ogl-hero-photo{position:relative;border-radius:20px;overflow:hidden;box-shadow:0 26px 60px rgba(21,26,36,.16);aspect-ratio:4/3.7;background:#eef1f5}
 .ogl-hero-photo img{width:100%;height:100%;object-fit:cover;display:block}
 .ogl-photo-badge{position:absolute;left:16px;bottom:16px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.96);border-radius:12px;padding:10px 13px;box-shadow:0 12px 26px rgba(21,26,36,.16)}
@@ -372,15 +454,15 @@ const CSS = `
 .ogl-trust b{font-size:12.5px;color:${INK}}
 .ogl-trust small{font-size:11px;color:#8a919c}
 
-.ogl-eyebrow{display:inline-block;background:#eef2ff;color:${PRIMARY};font-size:12.5px;font-weight:800;padding:6px 13px;border-radius:999px}
-.ogl-h1{font-size:clamp(32px,4.4vw,48px);line-height:1.06;font-weight:700;margin:16px 0 0}
-.ogl-lead{font-size:16px;line-height:1.65;color:#5b6470;margin:16px 0 22px;max-width:560px}
-.ogl-hero-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px 18px;margin-bottom:26px}
-@media(max-width:1040px){.ogl-hero-grid{grid-template-columns:repeat(2,1fr)}}
+.ogl-eyebrow{display:inline-block;background:#eef2ff;color:${PRIMARY};font-size:12px;font-weight:800;padding:6px 13px;border-radius:999px;text-transform:uppercase;letter-spacing:.6px}
+.ogl-h1{font-size:clamp(27px,3.2vw,40px);line-height:1.12;font-weight:700;margin:14px 0 0}
+.ogl-lead{font-size:15.5px;line-height:1.65;color:#5b6470;margin:14px 0 22px;max-width:540px}
+.ogl-hero-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px 16px;margin-bottom:24px}
 @media(max-width:420px){.ogl-hero-grid{grid-template-columns:1fr}}
-.ogl-hg-ic{width:38px;height:38px;border-radius:50%;border:1px solid #e4e7ee;color:${INK};display:grid;place-items:center;margin-bottom:9px}
-.ogl-hg-t{font-size:13.5px;font-weight:800}
-.ogl-hg-d{font-size:12px;color:#8a919c;line-height:1.45;margin-top:2px}
+.ogl-hg{display:flex;flex-direction:column;gap:1px;padding-left:2px}
+.ogl-hg-ic{width:34px;height:34px;border-radius:9px;background:#f4f6fb;border:1px solid #e9edf4;color:${PRIMARY};display:grid;place-items:center;margin-bottom:7px}
+.ogl-hg-t{font-size:13.5px;font-weight:700}
+.ogl-hg-d{font-size:11.5px;color:#8a919c;line-height:1.4;margin-top:1px}
 .ogl-hero-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 
 /* sections */
@@ -392,13 +474,23 @@ const CSS = `
 .ogl-h2{font-size:clamp(25px,3.3vw,35px);font-weight:700;margin:12px 0 0;line-height:1.16}
 .ogl-sub{font-size:16px;line-height:1.65;color:#5b6470;margin:14px 0 0}
 
+.ogl-why-top{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;margin-bottom:44px}
+@media(max-width:880px){.ogl-why-top{grid-template-columns:1fr;gap:24px}}
+.ogl-why-h{font-family:'Poppins',Inter,sans-serif;font-size:clamp(26px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.14;margin:12px 0 0}
+.ogl-why-art{display:flex;justify-content:center}
+.ogl-why-svg{width:100%;max-width:520px;height:auto}
+
 .ogl-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 @media(max-width:820px){.ogl-facts{grid-template-columns:1fr}}
-.ogl-fact{background:#fff;border:1px solid #eceef2;border-radius:16px;padding:26px 24px;text-align:center;box-shadow:0 2px 12px rgba(21,26,36,.04)}
-.ogl-fact-viz{display:flex;justify-content:center;margin-bottom:12px}
-.ogl-fact-stat{font-size:30px;font-weight:800}
-.ogl-fact-text{font-size:14.5px;color:#5b6470;line-height:1.55;margin-top:6px}
-.ogl-facts-note{text-align:center;font-size:12.5px;color:#9aa1ad;margin:22px auto 0;max-width:640px}
+.ogl-fact{position:relative;overflow:hidden;background:#fff;border:1px solid #eceef2;border-radius:18px;padding:24px 24px 22px;box-shadow:0 4px 16px rgba(21,26,36,.05)}
+.ogl-fact-wave{position:absolute;left:0;right:0;bottom:0;height:38px;border-radius:50% 50% 0 0 / 100% 100% 0 0;opacity:.5}
+.ogl-fact-row{display:flex;align-items:center;gap:14px;position:relative}
+.ogl-fact-ic{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;flex-shrink:0}
+.ogl-fact-stat{font-size:32px;font-weight:800;line-height:1}
+.ogl-fact-bar{width:34px;height:3px;border-radius:2px;margin:14px 0 10px;position:relative}
+.ogl-fact-text{font-size:14px;color:#5b6470;line-height:1.55;position:relative}
+.ogl-facts-note{display:flex;align-items:flex-start;gap:10px;justify-content:center;text-align:left;font-size:12.5px;color:#6b7280;line-height:1.5;background:#eef6f0;border:1px solid #d9ece1;border-radius:12px;padding:12px 16px;margin:22px auto 0;max-width:720px}
+.ogl-note-shield{color:#2f9e6f;flex-shrink:0;margin-top:1px}
 
 .ogl-dims{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 @media(max-width:980px){.ogl-dims{grid-template-columns:repeat(2,1fr)}}
@@ -414,14 +506,25 @@ const CSS = `
 .ogl-dim-f{font-size:12px;font-weight:700;color:${PRIMARY};margin:3px 0 8px}
 .ogl-dim-d{font-size:13.5px;color:#5b6470;line-height:1.55}
 
-.ogl-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-@media(max-width:900px){.ogl-steps{grid-template-columns:1fr 1fr}}
-@media(max-width:520px){.ogl-steps{grid-template-columns:1fr}}
-.ogl-step{position:relative;background:#fff;border:1px solid #eceef2;border-radius:16px;padding:24px 18px;text-align:center}
-.ogl-step-n{position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:26px;height:26px;border-radius:50%;background:${INK};color:#fff;font-size:13px;font-weight:800;display:grid;place-items:center}
-.ogl-step-ic{color:${PRIMARY};margin:8px 0 10px;display:flex;justify-content:center}
-.ogl-step-t{font-size:15.5px;font-weight:800}
-.ogl-step-d{font-size:13px;color:#5b6470;line-height:1.5;margin-top:6px}
+.ogl-steps{display:flex;align-items:stretch;gap:0;margin-top:24px}
+@media(max-width:900px){.ogl-steps{flex-wrap:wrap;justify-content:center;gap:14px}}
+.ogl-step-cell{flex:1;display:flex;align-items:stretch}
+@media(max-width:900px){.ogl-step-cell{flex:0 0 260px}}
+.ogl-step{position:relative;flex:1;background:#fff;border:1px solid #edf0f5;border-bottom:3px solid;border-radius:16px;padding:34px 18px 22px;text-align:center;margin-top:14px;box-shadow:0 4px 16px rgba(21,26,36,.05)}
+.ogl-step-n{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:30px;height:30px;border-radius:50%;color:#fff;font-size:14px;font-weight:800;display:grid;place-items:center;box-shadow:0 6px 14px rgba(21,26,36,.18)}
+.ogl-step-ic{width:58px;height:58px;border-radius:50%;margin:6px auto 12px;display:grid;place-items:center}
+.ogl-step-t{font-size:16px;font-weight:800}
+.ogl-step-d{font-size:12.5px;color:#6b7280;line-height:1.5;margin-top:8px}
+.ogl-step-arrow{display:flex;align-items:center;justify-content:center;color:#c3ccda;width:38px;flex-shrink:0}
+@media(max-width:900px){.ogl-step-arrow{display:none}}
+
+.ogl-sci-banner{display:flex;align-items:center;gap:18px;background:#f7f9fc;border:1px solid #e9edf3;border-radius:18px;padding:20px 24px;margin-top:34px}
+@media(max-width:700px){.ogl-sci-banner{flex-direction:column;text-align:center}}
+.ogl-sci-shield{width:52px;height:52px;border-radius:14px;background:#eaf0ff;color:${PRIMARY};display:grid;place-items:center;flex-shrink:0}
+.ogl-sci-text{flex:1}
+.ogl-sci-text b{display:block;font-size:16px;font-weight:800;margin-bottom:3px}
+.ogl-sci-text span{font-size:13.5px;color:#6b7280;line-height:1.5}
+.ogl-sci-charts{display:flex;align-items:center;gap:16px;flex-shrink:0}
 
 .ogl-proof{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 @media(max-width:820px){.ogl-proof{grid-template-columns:1fr}}

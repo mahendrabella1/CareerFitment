@@ -45,6 +45,9 @@ const P: Record<string, ReactNode> = {
   power: <><path d="M12 4v8" /><path d="M7 6.3a8 8 0 1 0 10 0" /></>,
   clock: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>,
   help: <><circle cx="12" cy="12" r="9" /><path d="M9.2 9.3a2.8 2.8 0 0 1 5.4 1c0 1.8-2.6 2.5-2.6 2.5" /><path d="M12 17.2v.01" /></>,
+  pulse: <path d="M2.5 12h4l2.2-5.5 3.8 11 2.4-6 1.6 2.5h5" />,
+  shield: <><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z" /><path d="M9 12l2 2 4-4" /></>,
+  cap: <><path d="M2.5 8.5 12 4.5l9.5 4-9.5 4z" /><path d="M6.5 10.3V15c0 1.4 2.5 2.6 5.5 2.6s5.5-1.2 5.5-2.6v-4.7" /><path d="M21.5 8.5v5" /></>,
 };
 
 export function Icon({ name, size = 22, stroke = 1.7, style }: { name: string; size?: number; stroke?: number; style?: React.CSSProperties }) {
