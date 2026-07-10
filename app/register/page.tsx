@@ -10,6 +10,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "@/app/Logo";
+import { Icon } from "@/app/Icons";
 import { useAuth, authErrorMessage } from "@/lib/auth/AuthProvider";
 import {
   CATEGORY_OPTIONS,
@@ -98,7 +99,7 @@ export default function RegisterPage() {
           <p style={S.subtitle}>Sign up and start your career assessment.</p>
 
           <div style={S.loginNote}>
-            <span style={S.loginNoteIcon}>🔐</span>
+            <span style={S.loginNoteIcon}><Icon name="lock" size={17} /></span>
             <span>Your <b>email</b> and <b>password</b> are your login — you’ll use them to sign back in and view your report anytime. Please remember them.</span>
           </div>
 
@@ -166,14 +167,17 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        {/* Right: student illustration + motivation */}
+        {/* Right: real photo + motivation */}
         <div style={S.visual} className="reg-visual">
-          <StudentScene />
-          <h2 style={S.motTitle}>You’ve got this! ✨</h2>
-          <p style={S.motText}>
-            Every great career starts with understanding yourself. Take your time,
-            trust your instincts — there are no wrong answers here.
-          </p>
+          <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=70" alt="" style={S.visualImg} />
+          <div style={S.visualOverlay} />
+          <div style={S.visualContent}>
+            <h2 style={S.motTitle}>You’ve got this.</h2>
+            <p style={S.motText}>
+              Every great career starts with understanding yourself. Take your time
+              and trust your instincts — there are no wrong answers here.
+            </p>
+          </div>
         </div>
       </div>
       </main>
@@ -182,35 +186,6 @@ export default function RegisterPage() {
 }
 
 function Err({ children }: { children: React.ReactNode }) { return <div style={S.fieldErr}>{children}</div>; }
-
-/** Flat illustration of a student writing a test at a desk. */
-function StudentScene() {
-  return (
-    <svg viewBox="0 0 300 220" style={S.scene} role="img" aria-label="Student writing a test">
-      {/* desk */}
-      <rect x="40" y="150" width="220" height="16" rx="4" fill="#e6b8b3" />
-      <rect x="54" y="166" width="10" height="42" rx="3" fill="#d99a94" />
-      <rect x="236" y="166" width="10" height="42" rx="3" fill="#d99a94" />
-      {/* paper + answer lines */}
-      <rect x="150" y="120" width="86" height="34" rx="4" fill="#fff" stroke="#f1d0cd" />
-      <rect x="158" y="128" width="60" height="4" rx="2" fill="#e0242e" opacity="0.5" />
-      <rect x="158" y="137" width="70" height="4" rx="2" fill="#cbd5e1" />
-      <rect x="158" y="146" width="46" height="4" rx="2" fill="#cbd5e1" />
-      {/* books */}
-      <rect x="52" y="138" width="70" height="8" rx="2" fill="#2d9cdb" />
-      <rect x="58" y="130" width="64" height="8" rx="2" fill="#f2c94c" />
-      {/* student body */}
-      <path d="M96 150 q4 -46 40 -46 q34 0 40 46 z" fill="#e0242e" />
-      {/* head */}
-      <circle cx="136" cy="86" r="20" fill="#f4c9a8" />
-      <path d="M116 82 q4 -22 20 -22 q18 0 20 22 q-10 -8 -20 -8 q-12 0 -20 8z" fill="#3a2a22" />
-      {/* arm + pencil toward paper */}
-      <path d="M164 128 l40 -8" stroke="#f4c9a8" strokeWidth="9" strokeLinecap="round" />
-      <path d="M204 120 l16 -6" stroke="#f2c94c" strokeWidth="6" strokeLinecap="round" />
-      <path d="M220 114 l6 -2" stroke="#5b4636" strokeWidth="6" strokeLinecap="round" />
-    </svg>
-  );
-}
 
 const RED = "#e0242e";
 const S: Record<string, React.CSSProperties> = {
@@ -246,8 +221,10 @@ const S: Record<string, React.CSSProperties> = {
   footLink: { color: RED, fontWeight: 700, textDecoration: "none" },
   terms: { textDecoration: "underline", cursor: "default" },
 
-  visual: { background: "linear-gradient(160deg,#fdecec,#fbe3e0)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 34px", textAlign: "center" },
-  scene: { width: "80%", maxWidth: 300, height: "auto", marginBottom: 18 },
-  motTitle: { fontSize: 22, fontWeight: 800, margin: "0 0 10px", color: "#1f2430" },
-  motText: { fontSize: 14, color: "#6b5b5b", lineHeight: 1.6, maxWidth: 300, margin: 0 },
+  visual: { position: "relative", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "34px 32px", overflow: "hidden", minHeight: 540 },
+  visualImg: { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" },
+  visualOverlay: { position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(31,41,63,.12) 0%, rgba(31,41,63,.78) 100%)" },
+  visualContent: { position: "relative", color: "#fff" },
+  motTitle: { fontSize: 24, fontWeight: 800, margin: "0 0 10px", color: "#fff" },
+  motText: { fontSize: 14.5, color: "rgba(255,255,255,.9)", lineHeight: 1.65, maxWidth: 340, margin: 0 },
 };

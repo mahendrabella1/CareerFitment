@@ -13,6 +13,7 @@ import Link from "next/link";
 import { Logo } from "@/app/Logo";
 import { useAuth, type AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { categoryLabel } from "@/lib/auth/formOptions";
+import { Icon, CATEGORY_ABBR } from "@/app/Icons";
 
 export default function AccountPage() {
   const router = useRouter();
@@ -78,7 +79,7 @@ export default function AccountPage() {
 
         {a ? <Report a={a} /> : (
           <section style={S.emptyCard}>
-            <div style={S.emptyIcon}>📝</div>
+            <div style={{ ...S.emptyIcon, color: BLUE, display: "flex", justifyContent: "center" }}><Icon name="answer" size={40} stroke={1.4} /></div>
             <h3 style={S.emptyTitle}>You haven’t taken the assessment yet</h3>
             <p style={S.emptyText}>Complete the career assessment to unlock your personalised report here.</p>
             <Link href="/?begin=1" style={S.primary}>Take the assessment</Link>
@@ -121,7 +122,7 @@ function Report({ a }: { a: AssessmentSummary }) {
 
       {/* Career matches */}
       {a.matches?.length > 0 && (
-        <Card title="🎯 Top career matches" sub="Careers that best align with your profile.">
+        <Card icon="match" title="Top career matches" sub="Careers that best align with your profile.">
           {a.matches.map((m, i) => (
             <div key={i} style={S.match}>
               <div style={S.matchTop}>
@@ -140,7 +141,7 @@ function Report({ a }: { a: AssessmentSummary }) {
 
       {/* Strengths */}
       {a.topStrengths?.length > 0 && (
-        <Card title="🧩 Your top strengths">
+        <Card icon="strengths" title="Your top strengths">
           <div style={S.chips}>
             {a.topStrengths.map((s, i) => (
               <span key={i} style={S.chip}>{s.subTraitName}<span style={S.chipSub}> · {s.parameterName}</span></span>
@@ -151,7 +152,7 @@ function Report({ a }: { a: AssessmentSummary }) {
 
       {/* Interests / RIASEC */}
       {a.themes && a.themes.length > 0 && (
-        <Card title="🧭 Your interests" sub="How your interests map across the eight career clusters.">
+        <Card icon="career_interest" title="Your interests" sub="How your interests map across the eight career clusters.">
           {a.themes.map((t) => (
             <div key={t.letter} style={S.theme}>
               <div style={S.themeBadge}>{t.letter}</div>
@@ -170,7 +171,7 @@ function Report({ a }: { a: AssessmentSummary }) {
 
       {/* How you think & work */}
       {(hasList(a.topIntelligences) || hasList(a.topValues) || hasList(a.topAptitudes) || hasList(a.learningStyles) || a.ei != null) && (
-        <Card title="🧠 How you think &amp; work">
+        <Card icon="multiple_intelligence" title="How you think & work">
           <div style={S.grid2}>
             <MiniList title="Multiple intelligences" items={(a.topIntelligences ?? []).map((x) => ({ label: x.name, score: x.score }))} />
             <MiniList title="Aptitudes" items={(a.topAptitudes ?? []).map((x) => ({ label: x.skill, score: x.score }))} />
@@ -189,7 +190,7 @@ function Report({ a }: { a: AssessmentSummary }) {
 
       {/* Clusters */}
       {a.clusters && a.clusters.length > 0 && (
-        <Card title="🗂️ Career clusters">
+        <Card icon="clusters" title="Career clusters">
           {a.clusters.map((c) => (
             <div key={c.cluster} style={S.clusterRow}>
               <span style={S.clusterName}>{c.cluster}</span>
@@ -202,13 +203,13 @@ function Report({ a }: { a: AssessmentSummary }) {
 
       {/* Recommendations */}
       {((a.recommendations && a.recommendations.length > 0) || a.nextStep) && (
-        <Card title="Recommendations & next steps">
+        <Card icon="explain" title="Recommendations & next steps">
           {a.recommendations && a.recommendations.length > 0 && (
             <ul style={S.recList}>
               {a.recommendations.map((r, i) => <li key={i} style={S.recItem}>{r}</li>)}
             </ul>
           )}
-          {a.nextStep && <div style={S.nextStep}>👉 {a.nextStep}</div>}
+          {a.nextStep && <div style={S.nextStep}>{a.nextStep}</div>}
         </Card>
       )}
 
@@ -220,11 +221,6 @@ function Report({ a }: { a: AssessmentSummary }) {
 }
 
 /* ---------------------- 8-category profile radar ----------------------- */
-const CAT_ICON: Record<string, string> = {
-  personality: "🧭", career_interest: "🎯", multiple_intelligence: "🧠",
-  emotional_intelligence: "💬", learning_styles: "📚", motivators: "⚡",
-  strengths: "🧩", aptitude: "📐",
-};
 const scoreBand = (p: number) =>
   p >= 80 ? "a standout area" : p >= 65 ? "a clear strength" : p >= 50 ? "a solid, dependable area" : p >= 35 ? "an emerging area" : "an area to develop";
 
@@ -285,7 +281,10 @@ function ProfileRadar({ a }: { a: AssessmentSummary }) {
 
   return (
     <section style={S.card}>
-      <div style={S.cardTitle}>📊 Your profile at a glance</div>
+      <div style={S.cardTitleRow}>
+        <span style={S.cardTitleIc}><Icon name="radar" size={18} /></span>
+        <span style={S.cardTitle}>Your profile at a glance</span>
+      </div>
       <p style={S.cardSub}>All eight areas on one map. Tap any area to see what it means for you.</p>
       <div style={S.radarWrap}>
         <svg viewBox="0 0 300 300" style={S.radarSvg}>
@@ -301,7 +300,7 @@ function ProfileRadar({ a }: { a: AssessmentSummary }) {
       <div style={S.radarChips}>
         {data.map((d, i) => (
           <button key={d.key} onClick={() => setSel(i)} style={{ ...S.radarChip, ...(i === sel ? S.radarChipOn : {}) }}>
-            <span>{CAT_ICON[d.key]} {d.label}</span>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}><Icon name={d.key} size={15} /> {d.label}</span>
             <b style={{ color: i === sel ? "#fff" : BLUE }}>{d.score}</b>
           </button>
         ))}
@@ -309,7 +308,7 @@ function ProfileRadar({ a }: { a: AssessmentSummary }) {
       {/* explanation for the selected category */}
       <div style={S.radarExplain}>
         <div style={S.radarExplainHead}>
-          <span style={S.radarExplainIcon}>{CAT_ICON[data[sel]?.key]}</span>
+          <span style={{ ...S.radarExplainIcon, color: BLUE }}><Icon name={data[sel]?.key ?? "match"} size={22} /></span>
           <span style={S.radarExplainTitle}>{data[sel]?.label}</span>
           <span style={S.radarExplainScore}>{data[sel]?.score}<span style={S.radarExplainScoreSm}>/100</span></span>
         </div>
@@ -328,13 +327,13 @@ function i_labels(
   setSel: (i: number) => void
 ) {
   return data.map((d, i) => {
-    const p = pt(i, R + 18);
+    const p = pt(i, R + 16);
     const anchor = Math.abs(p.x - 150) < 20 ? "middle" : p.x > 150 ? "start" : "end";
     return (
-      <text key={d.key} x={p.x} y={p.y + 3} fontSize="9.5" fontWeight={i === sel ? 800 : 600}
-        fill={i === sel ? "#d98324" : "#64748b"} textAnchor={anchor as "middle" | "start" | "end"}
+      <text key={d.key} x={p.x} y={p.y + 3} fontSize="10" fontWeight={i === sel ? 800 : 700}
+        fill={i === sel ? "#d98324" : "#94a3b8"} textAnchor={anchor as "middle" | "start" | "end"}
         onClick={() => setSel(i)} style={{ cursor: "pointer" }}>
-        {CAT_ICON[d.key]}
+        {CATEGORY_ABBR[d.key] ?? ""}
       </text>
     );
   });
@@ -344,10 +343,13 @@ function i_labels(
 const clamp = (n: number) => Math.max(3, Math.min(100, Math.round(n)));
 const hasList = (x?: unknown[]) => Array.isArray(x) && x.length > 0;
 
-function Card({ title, sub, children }: { title: string; sub?: string; children: React.ReactNode }) {
+function Card({ title, sub, icon, children }: { title: string; sub?: string; icon?: string; children: React.ReactNode }) {
   return (
     <section style={S.card}>
-      <div style={S.cardTitle} dangerouslySetInnerHTML={{ __html: title }} />
+      <div style={S.cardTitleRow}>
+        {icon && <span style={S.cardTitleIc}><Icon name={icon} size={18} /></span>}
+        <span style={S.cardTitle}>{title}</span>
+      </div>
       {sub && <p style={S.cardSub}>{sub}</p>}
       {children}
     </section>
@@ -387,7 +389,9 @@ const S: Record<string, React.CSSProperties> = {
   email: { fontSize: 13.5, color: "#64748b", marginTop: 2 },
 
   card: { background: "#fff", border: "1px solid #e2e8f0", borderRadius: 14, padding: "20px 22px", marginBottom: 16, boxShadow: "0 2px 10px rgba(30,41,59,.04)" },
-  cardTitle: { fontSize: 15, fontWeight: 800, color: "#0f172a", marginBottom: 8 },
+  cardTitle: { fontSize: 15, fontWeight: 800, color: "#0f172a" },
+  cardTitleRow: { display: "flex", alignItems: "center", gap: 8, marginBottom: 8 },
+  cardTitleIc: { color: BLUE, display: "inline-flex", alignItems: "center" },
   cardSub: { fontSize: 13, color: "#94a3b8", margin: "0 0 14px" },
   table: { display: "flex", flexDirection: "column" },
   tr: { display: "flex", justifyContent: "space-between", gap: 16, padding: "11px 0", borderBottom: "1px solid #f1f5f9" },

@@ -9,8 +9,10 @@
  */
 
 import { useEffect, useRef } from "react";
+import { Icon } from "@/app/Icons";
 
 const LOGO = "https://onegrasp.com/wp-content/uploads/2026/07/onegrasp-logo.png";
+const IMG = (id: string, w = 640) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=70`;
 
 const PRIMARY = "#4f6b9e";
 
@@ -75,7 +77,14 @@ export default function Landing({ onStart }: { onStart: () => void }) {
           </div>
         </div>
         <div className="og-hero-visual og-reveal">
-          <HeroMock />
+          <div className="og-hero-photo">
+            <img src={IMG("photo-1523240795612-9a054b0db644", 900)} alt="Students planning their future" />
+          </div>
+          <div className="og-hero-float">
+            <div className="og-hero-float-top"><Icon name="radar" size={16} /> Your profile</div>
+            <RadarMock small />
+          </div>
+          <div className="og-hero-chip"><Icon name="match" size={15} /> Best fit: <b>Design &amp; Media</b></div>
         </div>
       </section>
 
@@ -127,10 +136,12 @@ export default function Landing({ onStart }: { onStart: () => void }) {
         <div className="og-dims">
           {DIMENSIONS.map((d, i) => (
             <div key={d.title} className="og-dim og-reveal" style={{ transitionDelay: `${(i % 4) * 70}ms` }}>
-              <div className="og-dim-ic" style={{ background: d.bg }}>{d.icon}</div>
-              <div className="og-dim-t">{d.title}</div>
-              <div className="og-dim-f">{d.framework}</div>
-              <div className="og-dim-d">{d.desc}</div>
+              <div className="og-dim-img"><img src={d.img} alt={d.title} loading="lazy" /><span className="og-dim-ic"><Icon name={d.icon} size={20} /></span></div>
+              <div className="og-dim-body">
+                <div className="og-dim-t">{d.title}</div>
+                <div className="og-dim-f">{d.framework}</div>
+                <div className="og-dim-d">{d.desc}</div>
+              </div>
             </div>
           ))}
         </div>
@@ -147,7 +158,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
           {STEPS.map((s, i) => (
             <div key={s.t} className="og-step og-reveal" style={{ transitionDelay: `${i * 90}ms` }}>
               <div className="og-step-n">{i + 1}</div>
-              <div className="og-step-ic">{s.ic}</div>
+              <div className="og-step-ic"><Icon name={s.ic} size={26} /></div>
               <div className="og-step-t">{s.t}</div>
               <div className="og-step-d">{s.d}</div>
               {i < STEPS.length - 1 && <div className="og-step-arrow">→</div>}
@@ -245,22 +256,22 @@ export default function Landing({ onStart }: { onStart: () => void }) {
 
 /* ------------------------------- content ------------------------------- */
 const DIMENSIONS = [
-  { title: "Personality", framework: "Big Five + Temperament", icon: "🧭", bg: "#eef2f8", desc: "How you engage, decide, handle pressure and recharge." },
-  { title: "Career Interests", framework: "Interest clustering", icon: "🎯", bg: "#e9f4ef", desc: "The fields and activities that genuinely pull you in." },
-  { title: "Multiple Intelligences", framework: "Gardner’s 8 intelligences", icon: "🧠", bg: "#f3eef6", desc: "The ways you most naturally think and process the world." },
-  { title: "Emotional Intelligence", framework: "EI scenarios", icon: "💬", bg: "#fdf3e7", desc: "Reading situations, managing yourself and relating to others." },
-  { title: "Learning Style", framework: "VARK", icon: "📚", bg: "#eef2f8", desc: "How you absorb new material fastest — visual, aural, reading, kinesthetic." },
-  { title: "Motivators", framework: "Work-values model", icon: "⚡", bg: "#e9f4ef", desc: "What energises you — and what quietly burns you out." },
-  { title: "Strengths", framework: "Reasoning + self-report", icon: "🧩", bg: "#f3eef6", desc: "Problem-solving, critical thinking, decisions and communication." },
-  { title: "Aptitude", framework: "Cognitive reasoning", icon: "📐", bg: "#fdf3e7", desc: "Verbal, numerical, logical and spatial reasoning, scored objectively." },
+  { title: "Personality", framework: "Big Five + Temperament", icon: "personality", img: IMG("photo-1522071820081-009f0129c71c"), desc: "How you engage, decide, handle pressure and recharge." },
+  { title: "Career Interests", framework: "Interest clustering", icon: "career_interest", img: IMG("photo-1541339907198-e08756dedf3f"), desc: "The fields and activities that genuinely pull you in." },
+  { title: "Multiple Intelligences", framework: "Gardner’s 8 intelligences", icon: "multiple_intelligence", img: IMG("photo-1532094349884-543bc11b234d"), desc: "The ways you most naturally think and process the world." },
+  { title: "Emotional Intelligence", framework: "EI scenarios", icon: "emotional_intelligence", img: IMG("photo-1552664730-d307ca884978"), desc: "Reading situations, managing yourself and relating to others." },
+  { title: "Learning Style", framework: "VARK", icon: "learning_styles", img: IMG("photo-1503676260728-1c00da094a0b"), desc: "How you absorb new material fastest — visual, aural, reading, kinesthetic." },
+  { title: "Motivators", framework: "Work-values model", icon: "motivators", img: IMG("photo-1454165804606-c3d57bc86b40"), desc: "What energises you — and what quietly burns you out." },
+  { title: "Strengths", framework: "Reasoning + self-report", icon: "strengths", img: IMG("photo-1503387762-592deb58ef4e"), desc: "Problem-solving, critical thinking, decisions and communication." },
+  { title: "Aptitude", framework: "Cognitive reasoning", icon: "aptitude", img: IMG("photo-1461749280684-dccba630e2f6"), desc: "Verbal, numerical, logical and spatial reasoning, scored objectively." },
 ];
 
 const STEPS = [
-  { ic: "📝", t: "Answer", d: "Stage-appropriate questions across all eight dimensions, with visuals and audio where it helps." },
-  { ic: "📊", t: "Score", d: "Each response is scored against its validated model — Big Five, Gardner, VARK, EI and more." },
-  { ic: "🧮", t: "Combine", d: "Dimensions are weighted and cross-checked to build one coherent profile." },
-  { ic: "🎯", t: "Match", d: "Your interests and aptitudes map to specific career clusters and roles." },
-  { ic: "📈", t: "Explain", d: "You get a clear report — a single visual map plus plain-English guidance." },
+  { ic: "answer", t: "Answer", d: "Stage-appropriate questions across all eight dimensions, with visuals and audio where it helps." },
+  { ic: "score", t: "Score", d: "Each response is scored against its validated model — Big Five, Gardner, VARK, EI and more." },
+  { ic: "combine", t: "Combine", d: "Dimensions are weighted and cross-checked to build one coherent profile." },
+  { ic: "match", t: "Match", d: "Your interests and aptitudes map to specific career clusters and roles." },
+  { ic: "explain", t: "Explain", d: "You get a clear report — a single visual map plus plain-English guidance." },
 ];
 
 const FACTS = [
@@ -276,27 +287,6 @@ const REVIEWS = [
 ];
 
 /* ------------------------------- visuals ------------------------------- */
-function HeroMock() {
-  return (
-    <div className="og-mock">
-      <div className="og-mock-phone">
-        <div className="og-mock-top"><span className="og-mock-dot" /><span>OneGrasp · Report</span></div>
-        <RadarMock small />
-        <div className="og-mock-bars">
-          {[["Aptitude", 78], ["Strengths", 72], ["EI", 84], ["Interests", 66]].map(([l, v]) => (
-            <div key={l as string} className="og-mock-bar">
-              <span>{l}</span>
-              <i><b style={{ width: `${v}%` }} /></i>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="og-mock-card og-mock-c1">🎯 Best fit: <b>Design &amp; Media</b></div>
-      <div className="og-mock-card og-mock-c2">🧠 Top: <b>Visual–Spatial</b></div>
-    </div>
-  );
-}
-
 function RadarMock({ small }: { small?: boolean }) {
   const vals = [72, 66, 84, 78, 61, 70, 74, 80];
   const n = vals.length, cx = 110, cy = 110, R = small ? 74 : 92;
@@ -418,9 +408,13 @@ const CSS = `
 .og-dims{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 @media(max-width:980px){.og-dims{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.og-dims{grid-template-columns:1fr}}
-.og-dim{background:#fff;border:1px solid #eceef2;border-radius:16px;padding:22px 20px;transition:transform .18s,box-shadow .2s}
+.og-dim{background:#fff;border:1px solid #eceef2;border-radius:16px;overflow:hidden;transition:transform .18s,box-shadow .2s}
 .og-dim:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(30,41,59,.08)}
-.og-dim-ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:23px;margin-bottom:14px}
+.og-dim-img{position:relative;height:118px;overflow:hidden;background:#f0f2f5}
+.og-dim-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.og-dim:hover .og-dim-img img{transform:scale(1.05)}
+.og-dim-ic{position:absolute;left:14px;bottom:-17px;width:40px;height:40px;border-radius:11px;background:#fff;border:1px solid #eceef2;display:grid;place-items:center;color:${PRIMARY};box-shadow:0 6px 14px rgba(31,41,63,.12)}
+.og-dim-body{padding:26px 18px 20px}
 .og-dim-t{font-size:16px;font-weight:800}
 .og-dim-f{font-size:12px;font-weight:700;color:${PRIMARY};margin:3px 0 8px}
 .og-dim-d{font-size:13.5px;color:#5b6470;line-height:1.55}
@@ -475,20 +469,16 @@ const CSS = `
 .og-foot{max-width:1140px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:26px 24px;color:#8a919c;font-size:13px;flex-wrap:wrap}
 .og-foot a{color:#5b6470;text-decoration:none;font-weight:600}
 
-/* hero mock */
-.og-mock{position:relative;display:flex;justify-content:center;padding:10px}
-.og-mock-phone{width:300px;max-width:100%;background:#fff;border:1px solid #e7eaf0;border-radius:26px;padding:20px 18px;box-shadow:0 30px 70px rgba(31,41,63,.18);animation:ogFloat 6s ease-in-out infinite}
-@keyframes ogFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-.og-mock-top{display:flex;align-items:center;gap:8px;font-size:12px;color:#8a919c;font-weight:700;margin-bottom:6px}
-.og-mock-dot{width:9px;height:9px;border-radius:50%;background:#e0242e}
-.og-radar{width:200px;height:200px;display:block;margin:0 auto}
-.og-mock-bars{display:flex;flex-direction:column;gap:8px;margin-top:8px}
-.og-mock-bar{display:flex;align-items:center;gap:10px;font-size:11.5px;color:#5b6470;font-weight:600}
-.og-mock-bar span{width:58px;flex-shrink:0}
-.og-mock-bar i{flex:1;height:8px;background:#eef1f5;border-radius:6px;overflow:hidden;display:block}
-.og-mock-bar b{display:block;height:100%;background:${PRIMARY};border-radius:6px}
-.og-mock-card{position:absolute;background:#fff;border:1px solid #e7eaf0;border-radius:12px;padding:9px 13px;font-size:12.5px;color:#374151;box-shadow:0 14px 30px rgba(31,41,63,.14);font-weight:600}
-.og-mock-c1{top:26px;left:0;animation:ogFloat 6s ease-in-out infinite;animation-delay:.6s}
-.og-mock-c2{bottom:34px;right:0;animation:ogFloat 6s ease-in-out infinite;animation-delay:1.2s}
-@media(max-width:900px){.og-mock-c1,.og-mock-c2{display:none}}
+/* hero visual */
+.og-hero-visual{position:relative}
+.og-hero-photo{border-radius:22px;overflow:hidden;box-shadow:0 30px 70px rgba(31,41,63,.16);aspect-ratio:4/3.4;background:#eef1f5}
+.og-hero-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.og-radar{width:180px;height:180px;display:block;margin:0 auto}
+.og-hero-float{position:absolute;left:-18px;bottom:-18px;background:#fff;border:1px solid #eceef2;border-radius:16px;padding:12px 14px 8px;box-shadow:0 20px 44px rgba(31,41,63,.16);animation:ogFloat 6s ease-in-out infinite}
+.og-hero-float-top{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#6b7280;margin-bottom:2px}
+@keyframes ogFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.og-hero-chip{position:absolute;top:22px;right:-14px;display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #eceef2;border-radius:12px;padding:9px 13px;font-size:12.5px;color:#374151;font-weight:600;box-shadow:0 16px 34px rgba(31,41,63,.14);animation:ogFloat 6s ease-in-out infinite;animation-delay:1s}
+.og-hero-chip b{color:${PRIMARY}}
+.og-hero-float-top svg,.og-hero-chip svg{color:${PRIMARY}}
+@media(max-width:600px){.og-hero-float{left:0;transform:none}.og-hero-chip{right:0}}
 `;

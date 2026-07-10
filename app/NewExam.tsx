@@ -18,6 +18,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { Logo } from "@/app/Logo";
+import { Icon } from "@/app/Icons";
 
 type Media =
   | { type: "grid"; cells: string[]; cols?: number }
@@ -45,17 +46,6 @@ type Q = {
 };
 type Section = { category: string; title: string; blurb: string; questions: Q[] };
 type GenData = { stage: string; chosenSets: Record<string, string>; sections: Section[] };
-
-const CAT_ICON: Record<string, string> = {
-  personality: "🧭",
-  career_interest: "🎯",
-  multiple_intelligence: "🧠",
-  emotional_intelligence: "💬",
-  learning_styles: "📚",
-  motivators: "⚡",
-  strengths: "🧩",
-  aptitude: "📐",
-};
 
 export default function NewExam({ category, name, onExit }: { category: string; name?: string; onExit: () => void }) {
   const router = useRouter();
@@ -184,10 +174,10 @@ export default function NewExam({ category, name, onExit }: { category: string; 
           <h2 style={S.introTitle}>Before you begin</h2>
           <p style={S.introSub}>{data.sections.length} sections · {totalQ} questions · about 25–30 minutes</p>
           <ul style={S.introList}>
-            <li style={S.introItem}>🗂️ <span>You’ll go one <b>section at a time</b>. Answer every question in a section, then continue.</span></li>
-            <li style={S.introItem}>🎧 <span>Some questions include <b>visuals, data or audio</b> — use the <b>▶ Play</b> button to listen where shown.</span></li>
-            <li style={S.introItem}>💡 <span>For interest and personality there are <b>no wrong answers</b>. Strengths &amp; Aptitude do have correct answers — take your time.</span></li>
-            <li style={S.introItem}>⛶ <span>The test opens in <b>full screen</b> for focus. You can exit any time.</span></li>
+            <li style={S.introItem}><span style={S.introIc}><Icon name="clusters" size={18} /></span><span>You’ll go one <b>section at a time</b>. Answer every question in a section, then continue.</span></li>
+            <li style={S.introItem}><span style={S.introIc}><Icon name="audio" size={18} /></span><span>Some questions include <b>visuals, data or audio</b> — use the <b>Play</b> button to listen where shown.</span></li>
+            <li style={S.introItem}><span style={S.introIc}><Icon name="info" size={18} /></span><span>For interest and personality there are <b>no wrong answers</b>. Strengths &amp; Aptitude do have correct answers — take your time.</span></li>
+            <li style={S.introItem}><span style={S.introIc}><Icon name="expand" size={18} /></span><span>The test opens in <b>full screen</b> for focus. You can exit any time.</span></li>
           </ul>
           <label style={S.agree}><input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} /> I’m ready to begin.</label>
           <button style={{ ...S.primary, width: "100%", ...(agree ? {} : S.disabled) }} disabled={!agree} onClick={() => void startExam()}>Start assessment →</button>
@@ -223,7 +213,7 @@ export default function NewExam({ category, name, onExit }: { category: string; 
               return (
                 <button key={s.category} onClick={() => goSection(i)} disabled={locked}
                   style={{ ...S.secItem, ...(cur ? S.secItemOn : {}), ...(locked ? S.secLocked : {}) }}>
-                  <span style={S.secIcon}>{CAT_ICON[s.category] || "•"}</span>
+                  <span style={{ ...S.secIcon, color: cur ? PRIMARY : "#94a3b8" }}><Icon name={s.category} size={19} /></span>
                   <span style={{ flex: 1, minWidth: 0 }}>
                     <span style={S.secName}>{s.title}</span>
                     <span style={S.secCount}>{done ? "Complete" : `${a} / ${t}`}</span>
@@ -237,7 +227,7 @@ export default function NewExam({ category, name, onExit }: { category: string; 
           {/* centre: questions */}
           <main ref={mainRef} style={S.main}>
             <div style={S.secHead}>
-              <div style={S.secStep}>Section {sec + 1} of {data.sections.length} · {CAT_ICON[section.category]}</div>
+              <div style={S.secStep}>Section {sec + 1} of {data.sections.length}</div>
               <h1 style={S.secTitle}>{section.title}</h1>
               <p style={S.secBlurb}>{section.blurb}</p>
             </div>
@@ -632,7 +622,8 @@ const S: Record<string, React.CSSProperties> = {
   introTitle: { fontSize: 24, fontWeight: 800, margin: "0 0 4px", color: INK },
   introSub: { fontSize: 13.5, color: MUTED, margin: "0 0 20px" },
   introList: { listStyle: "none", padding: 0, margin: "0 0 20px", display: "flex", flexDirection: "column", gap: 12 },
-  introItem: { display: "flex", gap: 10, fontSize: 14.5, lineHeight: 1.5, color: "#475569" },
+  introItem: { display: "flex", gap: 11, fontSize: 14.5, lineHeight: 1.5, color: "#475569", alignItems: "flex-start" },
+  introIc: { color: PRIMARY, flexShrink: 0, marginTop: 1 },
   agree: { display: "flex", alignItems: "center", gap: 9, fontSize: 14, margin: "0 0 18px", cursor: "pointer" },
 
   thanks: { position: "fixed", inset: 0, zIndex: 1200, background: "linear-gradient(160deg,#eef2f8,#f6f7f9)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", textAlign: "center", padding: 24 },
