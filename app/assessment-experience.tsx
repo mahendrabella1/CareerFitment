@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth, type AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { Logo } from "@/app/Logo";
 import Landing from "@/app/Landing";
@@ -533,9 +533,10 @@ export default function AssessmentExperience() {
   const router = useRouter();
   const { user, profile, loading: authLoading, saveAssessment } = useAuth();
   const [beginHandled, setBeginHandled] = useState(false);
-  const [hasBegin] = useState(
-    () => typeof window !== "undefined" && new URLSearchParams(window.location.search).get("begin") === "1"
-  );
+  // Reactive to the URL query so a client-side nav to /?begin=1 (e.g. "Retake"
+  // from the dashboard) always launches the exam instead of a stale landing.
+  const searchParams = useSearchParams();
+  const hasBegin = searchParams.get("begin") === "1";
   const [feedbackRating, setFeedbackRating] = useState<number | null>(null);
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
   const [thankYou, setThankYou] = useState(false);

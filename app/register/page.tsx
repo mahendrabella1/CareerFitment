@@ -97,6 +97,11 @@ export default function RegisterPage() {
           <h1 style={S.title}>Create your account</h1>
           <p style={S.subtitle}>Sign up and start your career assessment.</p>
 
+          <div style={S.loginNote}>
+            <span style={S.loginNoteIcon}>🔐</span>
+            <span>Your <b>email</b> and <b>password</b> are your login — you’ll use them to sign back in and view your report anytime. Please remember them.</span>
+          </div>
+
           {!ready && (
             <div style={S.warn}>Sign-up needs the site’s Firebase keys — the form works, but won’t save until configured.</div>
           )}
@@ -222,6 +227,8 @@ const S: Record<string, React.CSSProperties> = {
   title: { fontSize: 25, fontWeight: 800, margin: "0 0 4px" },
   subtitle: { fontSize: 13.5, color: "#8a8f9a", margin: "0 0 18px" },
 
+  loginNote: { display: "flex", gap: 9, alignItems: "flex-start", background: "#f1f5f9", border: "1px solid #e2e8f0", color: "#475569", padding: "10px 13px", borderRadius: 11, fontSize: 12.5, lineHeight: 1.5, marginBottom: 16 },
+  loginNoteIcon: { fontSize: 15, lineHeight: 1.4 },
   warn: { background: "#fffbeb", border: "1px solid #fcd34d", color: "#92400e", padding: "9px 12px", borderRadius: 10, fontSize: 12.5, marginBottom: 12 },
   errorBox: { background: "#fee2e2", border: "1px solid #fca5a5", color: "#b91c1c", padding: "9px 12px", borderRadius: 10, fontSize: 13, marginBottom: 12, fontWeight: 600 },
 
