@@ -53,24 +53,9 @@ export default function Landing({ onStart }: { onStart: () => void }) {
         </div>
       </header>
 
-      {/* hero */}
+      {/* hero — text left, image right */}
       <section className="ogl-hero">
-        <div className="ogl-hero-left ogl-reveal">
-          <div className="ogl-hero-photo">
-            <img src={IMG("photo-1434030216411-0b793f4b4173", 760)} alt="A student working through the assessment" />
-            <div className="ogl-photo-badge">
-              <span className="ogl-photo-badge-ic"><Icon name="score" size={16} /></span>
-              <span><b>Science-backed</b><small>Trusted by 50K+ students &amp; professionals</small></span>
-            </div>
-          </div>
-          <div className="ogl-trust">
-            <span><Icon name="lock" size={16} /> <b>100% Confidential</b><small>Your data is secure</small></span>
-            <span><Icon name="score" size={16} /> <b>Research-backed</b><small>Validated assessments</small></span>
-            <span><Icon name="user" size={16} /> <b>50K+ Users</b><small>Students &amp; professionals</small></span>
-          </div>
-        </div>
-
-        <div className="ogl-hero-right ogl-reveal">
+        <div className="ogl-hero-copy ogl-reveal">
           <span className="ogl-eyebrow">Career fitment, backed by science</span>
           <h1 className="ogl-h1 ogl-serif">Clarity today.<br />Confidence for life.</h1>
           <p className="ogl-lead">
@@ -90,6 +75,21 @@ export default function Landing({ onStart }: { onStart: () => void }) {
           <div className="ogl-hero-actions">
             <button className="ogl-btn ogl-btn-lg" onClick={onStart}>Take the assessment <Icon name="chevronRight" size={17} /></button>
             <a href="#science" className="ogl-btn-ghost ogl-btn-lg"><Icon name="play" size={14} /> See how it works</a>
+          </div>
+        </div>
+
+        <div className="ogl-hero-media ogl-reveal">
+          <div className="ogl-hero-photo">
+            <img src={IMG("photo-1434030216411-0b793f4b4173", 760)} alt="A student working through the assessment" />
+            <div className="ogl-photo-badge">
+              <span className="ogl-photo-badge-ic"><Icon name="score" size={16} /></span>
+              <span><b>Science-backed</b><small>Trusted by 50K+ students &amp; professionals</small></span>
+            </div>
+          </div>
+          <div className="ogl-trust">
+            <span><Icon name="lock" size={16} /> <b>100% Confidential</b><small>Your data is secure</small></span>
+            <span><Icon name="score" size={16} /> <b>Research-backed</b><small>Validated assessments</small></span>
+            <span><Icon name="user" size={16} /> <b>50K+ Users</b><small>Students &amp; professionals</small></span>
           </div>
         </div>
       </section>
@@ -333,11 +333,10 @@ function MiniDonut({ pct, color }: { pct: number; color: string }) {
 }
 
 /* -------------------------------- styles ------------------------------- */
-const SERIF = "Georgia, 'Iowan Old Style', 'Times New Roman', serif";
 const CSS = `
-.ogl-land{background:#fff;color:${INK};font-family:Inter,system-ui,Segoe UI,sans-serif;-webkit-font-smoothing:antialiased}
+.ogl-land{background:#fff;color:${INK};font-family:'Poppins',Inter,system-ui,Segoe UI,sans-serif;-webkit-font-smoothing:antialiased}
 .ogl-land *{box-sizing:border-box}
-.ogl-serif{font-family:${SERIF};letter-spacing:-.01em}
+.ogl-serif{font-family:'Poppins',Inter,sans-serif;font-weight:800;letter-spacing:-.02em}
 .ogl-reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
 .ogl-reveal.in{opacity:1;transform:none}
 
@@ -359,8 +358,8 @@ const CSS = `
 .ogl-btn-lg.ogl-btn-ghost{padding:14px 20px}
 
 /* hero */
-.ogl-hero{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:.85fr 1.15fr;gap:44px;align-items:center;padding:52px 24px 56px}
-@media(max-width:940px){.ogl-hero{grid-template-columns:1fr;gap:30px;padding:34px 24px}}
+.ogl-hero{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1.06fr .94fr;gap:52px;align-items:center;padding:56px 44px 60px}
+@media(max-width:940px){.ogl-hero{grid-template-columns:1fr;gap:30px;padding:34px 26px}}
 .ogl-hero-photo{position:relative;border-radius:20px;overflow:hidden;box-shadow:0 26px 60px rgba(21,26,36,.16);aspect-ratio:4/3.7;background:#eef1f5}
 .ogl-hero-photo img{width:100%;height:100%;object-fit:cover;display:block}
 .ogl-photo-badge{position:absolute;left:16px;bottom:16px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.96);border-radius:12px;padding:10px 13px;box-shadow:0 12px 26px rgba(21,26,36,.16)}
