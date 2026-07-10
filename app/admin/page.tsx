@@ -135,7 +135,7 @@ export default function AdminPage() {
   return (
     <div style={S.page}>
       <header style={S.header}>
-        <Link href="/" style={{ textDecoration: "none" }}><Logo height={30} /></Link>
+        <Link href="/" style={{ textDecoration: "none" }}><Logo height={40} /></Link>
         <div style={S.headRight}>
           <span style={S.adminTag}>Admin · {user.email}</span>
           <button style={S.logout} onClick={() => void logout()}>Sign out</button>

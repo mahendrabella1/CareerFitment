@@ -15,6 +15,17 @@ import { useAuth, type AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { categoryLabel } from "@/lib/auth/formOptions";
 import { Icon, CATEGORY_ABBR } from "@/app/Icons";
 
+const PAGE_CSS = `
+@media (max-width: 640px){
+  .og-report-hero{grid-template-columns:1fr !important}
+  .og-report-art{display:none !important}
+}
+@media print{
+  .og-noprint{display:none !important}
+  body{background:#fff !important}
+}
+`;
+
 export default function AccountPage() {
   const router = useRouter();
   const { loading, user, profile, logout, ready } = useAuth();
@@ -49,8 +60,9 @@ export default function AccountPage() {
 
   return (
     <div style={S.page}>
-      <header style={S.header}>
-        <Link href="/" style={{ textDecoration: "none" }}><Logo height={30} /></Link>
+      <style>{PAGE_CSS}</style>
+      <header style={S.header} className="og-noprint">
+        <Link href="/" style={{ textDecoration: "none" }}><Logo height={40} /></Link>
         <button style={S.logout} onClick={() => { void logout().then(() => router.push("/signin")); }}>
           Sign out
         </button>
@@ -95,25 +107,29 @@ function Report({ a }: { a: AssessmentSummary }) {
   return (
     <>
       {/* Hero */}
-      <section style={S.hero}>
-        <div style={S.heroTop}>
-          <div>
-            <div style={S.heroKicker}>Career Report · {a.journeyName}</div>
-            <div style={S.heroTitle}>{a.outcomeLabel || a.topCareer || "Your results"}</div>
-            <div style={S.heroDate}>Completed {new Date(a.completedAt).toLocaleDateString()}</div>
+      <section style={S.hero} className="og-report-hero">
+        <div style={S.heroLeft}>
+          <div style={S.heroKicker}>Career Report · {a.journeyName}</div>
+          <div style={S.heroTitle}>{a.outcomeLabel || a.topCareer || "Your results"}</div>
+          <div style={S.heroDate}>Completed {new Date(a.completedAt).toLocaleDateString()}</div>
+          {a.summary && <p style={S.heroSummary}>{a.summary}</p>}
+          <div style={S.heroMeta}>
+            {a.riasecCode && <span style={S.pillDark}>Interest code · {a.riasecCode}</span>}
+            {a.topCareer && <span style={S.pillDark}>Best fit · {a.topCareer}</span>}
           </div>
+          <button style={S.heroDownload} className="og-noprint" onClick={() => window.print()}>
+            <Icon name="explain" size={16} /> Download / print report
+          </button>
+        </div>
+        <div style={S.heroArt} className="og-report-art">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="https://onegrasp.com/wp-content/uploads/2026/07/ChatGPT-Image-Jul-10-2026-05_34_15-PM.png" alt="" style={S.heroImg} />
           {a.overallFitmentPct != null && (
             <div style={S.fitBubble}>
               <div style={S.fitPct}>{a.overallFitmentPct}%</div>
               <div style={S.fitLabel}>top fit</div>
             </div>
           )}
-        </div>
-        {a.summary && <p style={S.heroSummary}>{a.summary}</p>}
-        <div style={S.heroMeta}>
-          {a.riasecCode && <span style={S.pillDark}>Interest code · {a.riasecCode}</span>}
-          {a.confidence && <span style={S.pillDark}>Confidence · {a.confidence}</span>}
-          {a.topCareer && <span style={S.pillDark}>Best fit · {a.topCareer}</span>}
         </div>
       </section>
 
@@ -122,7 +138,7 @@ function Report({ a }: { a: AssessmentSummary }) {
 
       {/* Career matches */}
       {a.matches?.length > 0 && (
-        <Card icon="match" title="Top career matches" sub="Careers that best align with your profile.">
+        <Card icon="match" accent="#4f6b9e" title="Top career matches" sub="Careers that best align with your profile.">
           {a.matches.map((m, i) => (
             <div key={i} style={S.match}>
               <div style={S.matchTop}>
@@ -141,7 +157,7 @@ function Report({ a }: { a: AssessmentSummary }) {
 
       {/* Strengths */}
       {a.topStrengths?.length > 0 && (
-        <Card icon="strengths" title="Your top strengths">
+        <Card icon="strengths" accent="#2f9e6f" title="Your top strengths">
           <div style={S.chips}>
             {a.topStrengths.map((s, i) => (
               <span key={i} style={S.chip}>{s.subTraitName}<span style={S.chipSub}> · {s.parameterName}</span></span>
@@ -152,7 +168,7 @@ function Report({ a }: { a: AssessmentSummary }) {
 
       {/* Interests / RIASEC */}
       {a.themes && a.themes.length > 0 && (
-        <Card icon="career_interest" title="Your interests" sub="How your interests map across the eight career clusters.">
+        <Card icon="career_interest" accent="#7c6bd6" title="Your interests" sub="How your interests map across the eight career clusters.">
           {a.themes.map((t) => (
             <div key={t.letter} style={S.theme}>
               <div style={S.themeBadge}>{t.letter}</div>
@@ -171,7 +187,7 @@ function Report({ a }: { a: AssessmentSummary }) {
 
       {/* How you think & work */}
       {(hasList(a.topIntelligences) || hasList(a.topValues) || hasList(a.topAptitudes) || hasList(a.learningStyles) || a.ei != null) && (
-        <Card icon="multiple_intelligence" title="How you think & work">
+        <Card icon="multiple_intelligence" accent="#d98324" title="How you think & work">
           <div style={S.grid2}>
             <MiniList title="Multiple intelligences" items={(a.topIntelligences ?? []).map((x) => ({ label: x.name, score: x.score }))} />
             <MiniList title="Aptitudes" items={(a.topAptitudes ?? []).map((x) => ({ label: x.skill, score: x.score }))} />
@@ -190,7 +206,7 @@ function Report({ a }: { a: AssessmentSummary }) {
 
       {/* Clusters */}
       {a.clusters && a.clusters.length > 0 && (
-        <Card icon="clusters" title="Career clusters">
+        <Card icon="clusters" accent="#c0564f" title="Career clusters">
           {a.clusters.map((c) => (
             <div key={c.cluster} style={S.clusterRow}>
               <span style={S.clusterName}>{c.cluster}</span>
@@ -213,7 +229,7 @@ function Report({ a }: { a: AssessmentSummary }) {
         </Card>
       )}
 
-      <div style={S.actions}>
+      <div style={S.actions} className="og-noprint">
         <Link href="/?begin=1" style={S.secondary}>Retake assessment</Link>
       </div>
     </>
@@ -343,11 +359,12 @@ function i_labels(
 const clamp = (n: number) => Math.max(3, Math.min(100, Math.round(n)));
 const hasList = (x?: unknown[]) => Array.isArray(x) && x.length > 0;
 
-function Card({ title, sub, icon, children }: { title: string; sub?: string; icon?: string; children: React.ReactNode }) {
+function Card({ title, sub, icon, accent, children }: { title: string; sub?: string; icon?: string; accent?: string; children: React.ReactNode }) {
   return (
     <section style={S.card}>
       <div style={S.cardTitleRow}>
-        {icon && <span style={S.cardTitleIc}><Icon name={icon} size={18} /></span>}
+        <span style={{ ...S.cardAccent, background: accent || BLUE }} />
+        {icon && <span style={{ ...S.cardTitleIc, color: accent || BLUE }}><Icon name={icon} size={18} /></span>}
         <span style={S.cardTitle}>{title}</span>
       </div>
       {sub && <p style={S.cardSub}>{sub}</p>}
@@ -389,8 +406,9 @@ const S: Record<string, React.CSSProperties> = {
   email: { fontSize: 13.5, color: "#64748b", marginTop: 2 },
 
   card: { background: "#fff", border: "1px solid #e2e8f0", borderRadius: 14, padding: "20px 22px", marginBottom: 16, boxShadow: "0 2px 10px rgba(30,41,59,.04)" },
-  cardTitle: { fontSize: 15, fontWeight: 800, color: "#0f172a" },
-  cardTitleRow: { display: "flex", alignItems: "center", gap: 8, marginBottom: 8 },
+  cardTitle: { fontSize: 15.5, fontWeight: 800, color: "#0f172a" },
+  cardTitleRow: { display: "flex", alignItems: "center", gap: 9, marginBottom: 8 },
+  cardAccent: { width: 4, height: 20, borderRadius: 3, flexShrink: 0 },
   cardTitleIc: { color: BLUE, display: "inline-flex", alignItems: "center" },
   cardSub: { fontSize: 13, color: "#94a3b8", margin: "0 0 14px" },
   table: { display: "flex", flexDirection: "column" },
@@ -398,17 +416,20 @@ const S: Record<string, React.CSSProperties> = {
   tk: { fontSize: 13.5, color: "#64748b", fontWeight: 600 },
   tv: { fontSize: 14.5, color: "#0f172a", fontWeight: 600, textAlign: "right" },
 
-  hero: { background: `linear-gradient(135deg, #42597f, #5a76a6)`, color: "#fff", borderRadius: 16, padding: "24px 26px", marginBottom: 16 },
-  heroTop: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 },
+  hero: { background: `linear-gradient(135deg, #3a4f74, #5a76a6)`, color: "#fff", borderRadius: 18, padding: "26px 30px", marginBottom: 16, display: "grid", gridTemplateColumns: "1.25fr .75fr", gap: 22, alignItems: "center", overflow: "hidden" },
+  heroLeft: { minWidth: 0 },
+  heroArt: { position: "relative", display: "flex", justifyContent: "center" },
+  heroImg: { width: "100%", maxWidth: 260, borderRadius: 14, display: "block", boxShadow: "0 16px 40px rgba(0,0,0,.24)" },
   heroKicker: { fontSize: 12, textTransform: "uppercase", letterSpacing: 1, opacity: .85, fontWeight: 700 },
-  heroTitle: { fontSize: 24, fontWeight: 800, margin: "6px 0 2px", lineHeight: 1.2 },
+  heroTitle: { fontSize: 25, fontWeight: 800, margin: "6px 0 2px", lineHeight: 1.2 },
   heroDate: { fontSize: 12.5, opacity: .8 },
-  fitBubble: { textAlign: "center", background: "rgba(255,255,255,.16)", border: "1px solid rgba(255,255,255,.4)", borderRadius: 12, padding: "8px 14px" },
+  fitBubble: { position: "absolute", right: -6, bottom: -6, textAlign: "center", background: "rgba(255,255,255,.95)", color: "#3a4f74", borderRadius: 14, padding: "9px 15px", boxShadow: "0 10px 24px rgba(0,0,0,.2)" },
   fitPct: { fontSize: 24, fontWeight: 800 },
-  fitLabel: { fontSize: 10.5, textTransform: "uppercase", letterSpacing: .5, opacity: .85 },
+  fitLabel: { fontSize: 10, textTransform: "uppercase", letterSpacing: .5, opacity: .7, fontWeight: 700 },
   heroSummary: { fontSize: 14, lineHeight: 1.6, opacity: .95, margin: "14px 0 0" },
   heroMeta: { display: "flex", flexWrap: "wrap", gap: 8, marginTop: 14 },
   pillDark: { background: "rgba(255,255,255,.18)", border: "1px solid rgba(255,255,255,.3)", borderRadius: 999, padding: "5px 12px", fontSize: 12, fontWeight: 700 },
+  heroDownload: { display: "inline-flex", alignItems: "center", gap: 7, marginTop: 18, background: "#fff", color: "#3a4f74", border: "none", borderRadius: 10, padding: "10px 18px", fontSize: 13.5, fontWeight: 700, cursor: "pointer" },
 
   radarWrap: { display: "flex", justifyContent: "center", margin: "4px 0 10px" },
   radarSvg: { width: "100%", maxWidth: 340, height: "auto" },

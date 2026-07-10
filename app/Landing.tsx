@@ -57,11 +57,14 @@ export default function Landing({ onStart }: { onStart: () => void }) {
       <section className="ogl-hero">
         <div className="ogl-hero-copy ogl-reveal ogl-from-left">
           <span className="ogl-eyebrow">Career fitment, backed by science</span>
-          <h1 className="ogl-h1 ogl-serif">Clarity today.<br />Confidence for life.</h1>
+          <h1 className="ogl-h1 ogl-serif">
+            The career you’ll thrive in<br />is written in how you{" "}
+            <span className="ogl-rot-wrap"><Rotator words={["think.", "learn.", "decide.", "connect."]} /></span>
+          </h1>
           <p className="ogl-lead">
-            OneGrasp helps you understand how you think, learn, feel and decide
-            across eight research-backed dimensions — so you can choose a path
-            that’s genuinely right for you, not just the one you’ve heard of.
+            Your best-fit career isn’t a lucky guess — it’s a pattern. OneGrasp reads
+            <b> eight research-backed dimensions</b> of how you think, learn and decide,
+            then shows you exactly where you’ll do your best work.
           </p>
           <div className="ogl-hero-tags">
             {["Personality", "Interests", "Intelligences", "Aptitude", "+4 more"].map((t) => (
@@ -76,7 +79,8 @@ export default function Landing({ onStart }: { onStart: () => void }) {
 
         <div className="ogl-hero-media ogl-reveal ogl-from-right">
           <div className="ogl-hero-photo">
-            <img src={IMG("photo-1434030216411-0b793f4b4173", 760)} alt="A student working through the assessment" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="https://onegrasp.com/wp-content/uploads/2026/07/ChatGPT-Image-Jul-10-2026-05_34_15-PM.png" alt="Discover the career that fits you" />
             <div className="ogl-photo-badge">
               <span className="ogl-photo-badge-ic"><Icon name="score" size={16} /></span>
               <span><b>Science-backed</b><small>Trusted by 50K+ students &amp; professionals</small></span>
@@ -349,6 +353,16 @@ function PieChart({ data }: { data: { label: string; value: number; color: strin
   );
 }
 
+/** Animated rotating word for the hero headline. */
+function Rotator({ words }: { words: string[] }) {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setI((v) => (v + 1) % words.length), 2200);
+    return () => clearInterval(id);
+  }, [words.length]);
+  return <span key={i} className="ogl-rot">{words[i]}</span>;
+}
+
 /** Uses the provided illustration (public/why-this-matters.png); if it isn't
  *  present yet, gracefully falls back to the inline SVG scene below. */
 function WhyArt() {
@@ -431,8 +445,8 @@ const CSS = `
 @media(prefers-reduced-motion:reduce){.ogl-reveal{transition:opacity .3s;transform:none}}
 
 .ogl-nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid #eef0f4}
-.ogl-nav-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:20px;padding:12px 24px}
-.ogl-logo{height:40px;width:auto;display:block}
+.ogl-nav-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:20px;padding:10px 24px}
+.ogl-logo{height:54px;width:auto;display:block}
 .ogl-nav-links{display:flex;gap:24px;margin-left:28px;flex:1}
 .ogl-nav-links a{color:#4b5563;text-decoration:none;font-size:13.5px;font-weight:600}
 .ogl-nav-links a:hover{color:${INK}}
@@ -465,7 +479,10 @@ const CSS = `
 .ogl-trust small{font-size:11px;color:#8a919c}
 
 .ogl-eyebrow{display:inline-block;background:#eef2ff;color:${PRIMARY};font-size:12px;font-weight:800;padding:6px 13px;border-radius:999px;text-transform:uppercase;letter-spacing:.6px}
-.ogl-h1{font-size:clamp(28px,3.2vw,42px);line-height:1.12;font-weight:700;margin:14px 0 0;color:${INK}}
+.ogl-h1{font-size:clamp(28px,3.2vw,42px);line-height:1.14;font-weight:700;margin:14px 0 0;color:${INK}}
+.ogl-rot-wrap{display:inline-block;position:relative}
+.ogl-rot{display:inline-block;color:${PRIMARY};box-shadow:inset 0 -0.16em 0 rgba(59,91,219,.16);animation:oglRot .55s cubic-bezier(.2,.8,.2,1)}
+@keyframes oglRot{0%{opacity:0;transform:translateY(14px) rotateX(-40deg)}100%{opacity:1;transform:none}}
 .ogl-lead{font-size:16px;line-height:1.68;color:#454b57;margin:14px 0 22px;max-width:540px}
 .ogl-hero-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px 16px;margin-bottom:24px}
 @media(max-width:420px){.ogl-hero-grid{grid-template-columns:1fr}}
