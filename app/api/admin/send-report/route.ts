@@ -3,6 +3,7 @@ import nodemailer from "nodemailer";
 import { isAdmin } from "@/lib/auth/admins";
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { DOMAINS, categoryDeepDive, roadmap, stageLabelOf } from "@/lib/report/knowledge";
+import { renderReportPdf } from "@/lib/report/reportPdf";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -152,14 +153,24 @@ export async function POST(req: Request) {
     );
   }
 
+  // Attach a PDF of the report; if PDF generation fails, still send the HTML.
+  let attachments: { filename: string; content: Buffer; contentType: string }[] = [];
+  try {
+    const pdf = await renderReportPdf(body.name ?? "", body.report);
+    attachments = [{ filename: "OneGrasp-Career-Report.pdf", content: pdf, contentType: "application/pdf" }];
+  } catch (e) {
+    console.error("PDF generation failed, sending without attachment:", e);
+  }
+
   try {
     await transporter.sendMail({
       from: `OneGrasp <${SMTP_USER}>`,
       to: body.to,
       subject: "Your OneGrasp career report",
       html: reportHtml(body.name ?? "", body.report),
+      attachments,
     });
-    return NextResponse.json({ success: true, message: "Report emailed", data: { to: body.to } });
+    return NextResponse.json({ success: true, message: attachments.length ? "Report emailed (with PDF)" : "Report emailed (HTML only — PDF failed)", data: { to: body.to } });
   } catch (e) {
     const err = e as { code?: string; message?: string };
     return fail(`Send failed — ${err.code || ""} ${err.message || "unknown error"}`, 500);

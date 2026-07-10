@@ -10,6 +10,7 @@
     "seed:firestore": "node scripts/upload_to_firestore.mjs"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^4.5.1",
     "@supabase/supabase-js": "^2.45.0",
     "firebase": "^12.15.0",
     "firebase-admin": "^14.1.0",
