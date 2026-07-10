@@ -1,0 +1,82 @@
+{
+ "A": {
+  "cluster": "Engineering & Construction",
+  "careers": [
+   "Civil / Structural Engineer",
+   "Construction Manager",
+   "Industrial / Manufacturing Engineer",
+   "Renewable Energy Engineer",
+   "Supply Chain / Logistics Manager"
+  ]
+ },
+ "B": {
+  "cluster": "Information Technology",
+  "careers": [
+   "Software Developer",
+   "Data Scientist / Analyst",
+   "Cybersecurity Analyst",
+   "Cloud / DevOps Engineer",
+   "UI/UX Designer"
+  ]
+ },
+ "C": {
+  "cluster": "Health Science",
+  "careers": [
+   "Doctor / Dentist",
+   "Nurse",
+   "Physiotherapist / Allied Health",
+   "Pharmacist / Biotech Researcher",
+   "Psychologist / Counselor"
+  ]
+ },
+ "D": {
+  "cluster": "Arts, Media & Design",
+  "careers": [
+   "Graphic / UX Designer",
+   "Film & Video Producer",
+   "Animator",
+   "Fashion Designer",
+   "Journalist / Content Creator"
+  ]
+ },
+ "E": {
+  "cluster": "Business & Marketing",
+  "careers": [
+   "Management Consultant",
+   "Digital Marketer",
+   "Sales / Business Development",
+   "Financial Analyst",
+   "Entrepreneur / Founder"
+  ]
+ },
+ "F": {
+  "cluster": "Human & Public Services",
+  "careers": [
+   "Teacher",
+   "Social Worker / Counselor",
+   "Policy Analyst",
+   "Lawyer",
+   "Police / Public Safety Officer"
+  ]
+ },
+ "G": {
+  "cluster": "Science, Nature & Agriculture",
+  "careers": [
+   "Research Scientist",
+   "Agricultural Scientist",
+   "Environmental Engineer",
+   "Biotechnologist",
+   "Robotics / AI Researcher"
+  ]
+ },
+ "H": {
+  "cluster": "Sports, Hospitality & Lifestyle",
+  "careers": [
+   "Hotel / Events Manager",
+   "Sports Coach / Trainer",
+   "Travel Consultant",
+   "Sports Scientist / Physiotherapist",
+   "Chef / Culinary Professional"
+  ]
+ }
+}

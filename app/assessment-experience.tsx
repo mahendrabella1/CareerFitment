@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth, type AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { Logo } from "@/app/Logo";
 import Landing from "@/app/Landing";
+import NewExam from "@/app/NewExam";
 import {
   Sparkles,
   ArrowRight,
@@ -921,15 +922,11 @@ export default function AssessmentExperience() {
     const begin = new URLSearchParams(window.location.search).get("begin");
     if (begin !== "1") return;
     setBeginHandled(true);
-    if (!user) {
-      router.replace("/register");
-    } else if (profile?.journeyCode) {
-      void startFromProfile();
-    } else {
-      setView("details");
-    }
+    // Signed-in users are handled by the NewExam early-return below;
+    // signed-out users go to register (which comes back with ?begin=1).
+    if (!user) router.replace("/register");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authLoading, user, profile, beginHandled, router]);
+  }, [authLoading, user, beginHandled, router]);
 
   // Prefill the lead form from the signed-in profile.
   useEffect(() => {
@@ -1030,6 +1027,24 @@ export default function AssessmentExperience() {
     // Show the thank-you screen (loader -> animated thanks), then redirect.
     setThankYou(true);
     setTimeout(() => router.push("/account"), 5000);
+  }
+
+  // New set-based assessment: entered via /?begin=1 by a signed-in user.
+  if (hasBegin && !results) {
+    if (user && profile) {
+      return (
+        <NewExam
+          category={profile.category || ""}
+          name={(profile.name || "").trim().split(/\s+/)[0]}
+          onExit={() => router.push("/account")}
+        />
+      );
+    }
+    return (
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#eef1f6", color: "#64748b", fontFamily: "Inter, system-ui, sans-serif" }}>
+        Loading…
+      </div>
+    );
   }
 
   // Marketing landing — shown only when nothing is in progress.
