@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { isAdmin } from "@/lib/auth/admins";
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
+import { DOMAINS, categoryDeepDive, roadmap, stageLabelOf } from "@/lib/report/knowledge";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -34,39 +35,65 @@ async function verifyAdminEmail(idToken: string): Promise<string | null> {
   }
 }
 
+function esc(s: string): string {
+  return String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c] || c));
+}
+
 function reportHtml(name: string, a: AssessmentSummary): string {
-  const row = (label: string, value: string) =>
-    `<tr><td style="padding:6px 0;color:#64748b;font-size:13px">${label}</td><td style="padding:6px 0;text-align:right;font-weight:700;color:#0f172a;font-size:13px">${value}</td></tr>`;
-  const matches = (a.matches ?? [])
-    .slice(0, 5)
-    .map(
-      (m, i) =>
-        `<div style="padding:8px 0;border-top:1px solid #f1f5f9"><b>${i + 1}. ${m.title}</b> <span style="color:#3b4a9c;font-weight:700">${m.fitmentPct}% · ${m.band}</span>${m.blurb ? `<div style="color:#64748b;font-size:12px;margin-top:3px">${m.blurb}</div>` : ""}</div>`
-    )
-    .join("");
-  const strengths = (a.topStrengths ?? [])
-    .slice(0, 8)
-    .map((s) => `<span style="display:inline-block;background:#eef2ff;color:#312e81;border-radius:999px;padding:4px 11px;font-size:12px;margin:3px 4px 0 0">${s.subTraitName}</span>`)
+  const domains = (a.themes ?? [])
+    .filter((t) => t.score > 0 && DOMAINS[t.letter])
+    .slice(0, 3)
+    .map((t) => ({ ...DOMAINS[t.letter], fit: Math.round(t.score) }));
+  const top = domains[0] || DOMAINS.B;
+
+  const bar = (label: string, score: number, color = "#4f6b9e") =>
+    `<tr><td style="padding:5px 8px 5px 0;font-size:12.5px;color:#334155;white-space:nowrap">${esc(label)}</td>
+      <td style="padding:5px 0;width:100%"><div style="background:#eef1f5;border-radius:6px;height:9px"><div style="width:${Math.max(4, Math.min(100, Math.round(score)))}%;background:${color};height:9px;border-radius:6px"></div></div></td>
+      <td style="padding:5px 0 5px 8px;font-size:12.5px;font-weight:700;color:#0f172a;text-align:right">${Math.round(score)}</td></tr>`;
+  const scores = (a.radar ?? []).map((r) => bar(r.label, r.score)).join("");
+
+  const domainBlock = domains.map((d, i) => `
+    <div style="border:1px solid #e6e9ef;border-radius:12px;padding:16px;margin-bottom:12px">
+      <div style="font-size:12px;color:#64748b;font-weight:700">#${i + 1} best fit${d.fit ? ` · ${d.fit}%` : ""}</div>
+      <div style="font-size:17px;font-weight:800;color:#0f172a;margin:2px 0 4px">${esc(d.name)}</div>
+      <div style="font-size:13px;color:#475569;line-height:1.55">${esc(d.whatItIs)}</div>
+      <table style="width:100%;border-collapse:collapse;margin-top:10px">
+        <tr><td style="font-size:12px;color:#64748b;padding:3px 0;width:70px">India</td><td style="font-size:12.5px;color:#0f172a;font-weight:600;padding:3px 0">${esc(d.salaryIndia)}</td></tr>
+        <tr><td style="font-size:12px;color:#64748b;padding:3px 0">Abroad</td><td style="font-size:12.5px;color:#0f172a;font-weight:600;padding:3px 0">${esc(d.salaryAbroad)}</td></tr>
+      </table>
+      <div style="margin-top:8px">${d.links.slice(0, 2).map((l) => `<a href="${l.url}" style="font-size:12px;color:#3f5b8b;text-decoration:none;margin-right:12px">${esc(l.label)} &rarr;</a>`).join("")}</div>
+    </div>`).join("");
+
+  const recs = (a.radar ?? []).slice(0, 4).map((r) => {
+    const dd = categoryDeepDive(r.key, a);
+    return dd.next ? `<li style="margin-bottom:6px;font-size:13px;color:#475569;line-height:1.5"><b>${esc(r.label)}:</b> ${esc(dd.next)}</li>` : "";
+  }).join("");
+
+  const phases = roadmap(stageLabelOf(a.journeyCode), top.name)
+    .map((p) => `<tr><td style="padding:8px 12px 8px 0;font-size:12px;font-weight:800;color:#4f6b9e;white-space:nowrap;vertical-align:top">${esc(p.period)}</td><td style="padding:8px 0;font-size:13px;color:#334155"><b>${esc(p.title)}</b><br><span style="color:#64748b;font-size:12.5px">${esc(p.points[0])}</span></td></tr>`)
     .join("");
 
-  return `<div style="font-family:Inter,Arial,sans-serif;max-width:640px;margin:auto;color:#1e293b">
-    <div style="background:linear-gradient(135deg,#3b4a9c,#5a6fce);color:#fff;padding:26px;border-radius:14px 14px 0 0">
-      <div style="font-size:13px;opacity:.85;text-transform:uppercase;letter-spacing:1px">OneGrasp · Career Report</div>
-      <div style="font-size:24px;font-weight:800;margin-top:6px">${name || "Your"} career report</div>
-      <div style="opacity:.9;font-size:13px;margin-top:4px">${a.journeyName}</div>
+  return `<div style="font-family:Inter,Arial,sans-serif;max-width:660px;margin:auto;color:#1e293b;background:#f6f7f9;padding:16px">
+    <div style="background:linear-gradient(135deg,#2f4062,#5a76a6);color:#fff;padding:26px;border-radius:14px 14px 0 0">
+      <div style="font-size:12px;opacity:.85;text-transform:uppercase;letter-spacing:1px">OneGrasp · Career Report</div>
+      <div style="font-size:22px;font-weight:800;margin-top:8px;line-height:1.25">Hi ${esc(name || "there")}, your best-fit direction is ${esc(top.name)}.</div>
+      ${a.overallFitmentPct != null ? `<div style="margin-top:8px;font-size:13px;opacity:.92">${a.overallFitmentPct}% top fit${a.outcomeLabel ? ` · ${esc(a.outcomeLabel)}` : ""}</div>` : ""}
     </div>
-    <div style="border:1px solid #e6e9ef;border-top:none;border-radius:0 0 14px 14px;padding:24px;background:#fff">
-      ${a.outcomeLabel ? `<h3 style="margin:0 0 6px">${a.outcomeLabel}</h3>` : ""}
-      ${a.summary ? `<p style="color:#475569;line-height:1.6;font-size:14px">${a.summary}</p>` : ""}
-      <table style="width:100%;border-collapse:collapse;margin:14px 0">
-        ${row("Top career", a.topCareer ?? "—")}
-        ${row("Overall fit", a.overallFitmentPct != null ? a.overallFitmentPct + "%" : "—")}
-        ${a.riasecCode ? row("Interest code", a.riasecCode) : ""}
-      </table>
-      <h4 style="margin:16px 0 4px">Top career matches</h4>
-      ${matches || "<p style='color:#94a3b8'>—</p>"}
-      ${strengths ? `<h4 style="margin:18px 0 6px">Top strengths</h4>${strengths}` : ""}
-      <p style="margin-top:22px;font-size:12px;color:#94a3b8">This report was generated from your OneGrasp career assessment.</p>
+    <div style="border:1px solid #e6e9ef;border-top:none;background:#fff;padding:24px">
+      ${a.summary ? `<p style="color:#475569;line-height:1.6;font-size:14px;margin:0 0 18px">${esc(a.summary)}</p>` : ""}
+
+      <h3 style="margin:0 0 8px;font-size:15px;color:#0f172a">Your profile at a glance</h3>
+      <table style="width:100%;border-collapse:collapse;margin-bottom:20px">${scores}</table>
+
+      <h3 style="margin:0 0 10px;font-size:15px;color:#0f172a">Best-fit career domains</h3>
+      ${domainBlock || "<p style='color:#94a3b8'>—</p>"}
+
+      ${recs ? `<h3 style="margin:18px 0 8px;font-size:15px;color:#0f172a">Your next steps</h3><ul style="margin:0;padding-left:18px">${recs}</ul>` : ""}
+
+      <h3 style="margin:20px 0 8px;font-size:15px;color:#0f172a">Your next 20 years</h3>
+      <table style="width:100%;border-collapse:collapse">${phases}</table>
+
+      <p style="margin-top:22px;font-size:12px;color:#94a3b8;line-height:1.5">Generated from your OneGrasp career assessment. Sign in to your dashboard for the full interactive report with per-dimension detail, how-to-join guides and salary breakdowns. This report is a guide, not a verdict.</p>
     </div>
   </div>`;
 }
