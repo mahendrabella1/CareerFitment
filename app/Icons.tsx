@@ -29,6 +29,22 @@ const P: Record<string, ReactNode> = {
   info: <><circle cx="12" cy="12" r="9" /><line x1="12" y1="11" x2="12" y2="16.5" /><line x1="12" y1="7.8" x2="12" y2="8" /></>,
   expand: <><polyline points="15 3 21 3 21 9" /><polyline points="9 21 3 21 3 15" /><line x1="21" y1="3" x2="14" y2="10" /><line x1="3" y1="21" x2="10" y2="14" /></>,
   lock: <><rect x="4.5" y="10.5" width="15" height="10" rx="2" /><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5" /></>,
+  // reference-matching category icons for the home hero grid
+  user: <><circle cx="12" cy="8" r="4" /><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0" /></>,
+  compass: <><circle cx="12" cy="12" r="9" /><polygon points="15.5 8.5 13.5 13.5 8.5 15.5 10.5 10.5" /></>,
+  bulb: <><path d="M9.5 17.5h5" /><path d="M10.5 21h3" /><path d="M12 3a6 6 0 0 0-3.7 10.7c.6.5.9 1 1 1.8h5.4c.1-.8.4-1.3 1-1.8A6 6 0 0 0 12 3z" /></>,
+  heart: <path d="M12 20s-7-4.6-9.3-9A5 5 0 0 1 12 5.5 5 5 0 0 1 21.3 11c-2.3 4.4-9.3 9-9.3 9z" />,
+  star: <polygon points="12 3.5 14.7 9 20.5 9.8 16.2 14 17.3 20 12 17.1 6.7 20 7.8 14 3.5 9.8 9.3 9" />,
+  cpu: <><rect x="6" y="6" width="12" height="12" rx="2" /><rect x="9.5" y="9.5" width="5" height="5" rx="1" /><path d="M9 2.5v2M15 2.5v2M9 19.5v2M15 19.5v2M2.5 9h2M2.5 15h2M19.5 9h2M19.5 15h2" /></>,
+  // exam controls
+  flag: <><path d="M5 21V4" /><path d="M5 4h12l-2.5 4L17 12H5" /></>,
+  chevronLeft: <polyline points="15 18 9 12 15 6" />,
+  chevronRight: <polyline points="9 18 15 12 9 6" />,
+  xcircle: <><circle cx="12" cy="12" r="9" /><path d="M15 9l-6 6M9 9l6 6" /></>,
+  play: <polygon points="7 4 20 12 7 20 7 4" />,
+  power: <><path d="M12 4v8" /><path d="M7 6.3a8 8 0 1 0 10 0" /></>,
+  clock: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>,
+  help: <><circle cx="12" cy="12" r="9" /><path d="M9.2 9.3a2.8 2.8 0 0 1 5.4 1c0 1.8-2.6 2.5-2.6 2.5" /><path d="M12 17.2v.01" /></>,
 };
 
 export function Icon({ name, size = 22, stroke = 1.7, style }: { name: string; size?: number; stroke?: number; style?: React.CSSProperties }) {

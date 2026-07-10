@@ -1,37 +1,34 @@
 "use client";
 
 /**
- * Landing — the marketing home page. Clean WHITE canvas, calm palette, and
- * sections that animate in on scroll: hero with a product mockup, the eight
- * dimensions we measure, the science behind it, real-world statistics with
- * charts, a report preview, and reviews. Self-contained (`og-*` classes).
- * `onStart` runs the gated CTA (register, or dashboard if already signed in).
+ * Landing — the marketing home. Clean, editorial, WHITE canvas with a serif
+ * headline, the eight dimensions shown right in the hero (reference layout),
+ * then storytelling sections that animate in on scroll: explore-each-dimension
+ * with photos, the science, real-world stats with charts, a report preview and
+ * reviews. Self-contained (`og-*` classes). `onStart` runs the gated CTA.
  */
 
 import { useEffect, useRef } from "react";
 import { Icon } from "@/app/Icons";
 
 const LOGO = "https://onegrasp.com/wp-content/uploads/2026/07/onegrasp-logo.png";
-const IMG = (id: string, w = 640) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=70`;
+const IMG = (id: string, w = 720) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=72`;
 
-const PRIMARY = "#4f6b9e";
+const PRIMARY = "#3b5bdb";
+const INK = "#151a24";
 
 export default function Landing({ onStart }: { onStart: () => void }) {
   const root = useRef<HTMLDivElement>(null);
 
-  // Scroll-reveal.
   useEffect(() => {
     const els = root.current?.querySelectorAll(".og-reveal");
-    if (!els || !("IntersectionObserver" in window)) {
-      els?.forEach((e) => e.classList.add("in"));
-      return;
-    }
+    if (!els || !("IntersectionObserver" in window)) { els?.forEach((e) => e.classList.add("in")); return; }
     const io = new IntersectionObserver(
       (entries) => entries.forEach((en) => en.isIntersecting && en.target.classList.add("in")),
-      { threshold: 0.14, rootMargin: "0px 0px -6% 0px" }
+      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
     );
     els.forEach((e) => io.observe(e));
-    const failsafe = window.setTimeout(() => els.forEach((e) => e.classList.add("in")), 1600);
+    const failsafe = window.setTimeout(() => els.forEach((e) => e.classList.add("in")), 1700);
     return () => { io.disconnect(); window.clearTimeout(failsafe); };
   }, []);
 
@@ -39,80 +36,70 @@ export default function Landing({ onStart }: { onStart: () => void }) {
     <div ref={root} className="og-land">
       <style>{CSS}</style>
 
-      {/* ---------- nav ---------- */}
+      {/* nav */}
       <header className="og-nav">
         <div className="og-nav-in">
           <img src={LOGO} alt="OneGrasp" className="og-logo" />
           <nav className="og-nav-links">
-            <a href="#dimensions">What we measure</a>
+            <a href="#measure">What we measure</a>
             <a href="#science">The science</a>
-            <a href="#proof">Why it matters</a>
+            <a href="#why">Why it matters</a>
             <a href="#reviews">Reviews</a>
           </nav>
           <div className="og-nav-cta">
             <a href="/signin" className="og-btn-ghost">Sign in</a>
-            <button className="og-btn" onClick={onStart}>Start assessment</button>
+            <button className="og-btn" onClick={onStart}>Start assessment <Icon name="chevronRight" size={16} /></button>
           </div>
         </div>
       </header>
 
-      {/* ---------- hero ---------- */}
+      {/* hero */}
       <section className="og-hero">
-        <div className="og-hero-copy og-reveal">
-          <span className="og-eyebrow">Career fitment, backed by science</span>
-          <h1 className="og-h1">The decision that shapes your <span className="og-hl">next 20 years</span> — made with clarity.</h1>
-          <p className="og-lead">
-            OneGrasp measures how you think, learn, feel and decide across eight
-            research-backed dimensions, then maps you to the careers where you’ll
-            genuinely thrive — not just the ones you’ve heard of.
-          </p>
-          <div className="og-hero-actions">
-            <button className="og-btn og-btn-lg" onClick={onStart}>Take the assessment →</button>
-            <a href="#science" className="og-btn-ghost og-btn-lg">See how it works</a>
-          </div>
-          <div className="og-hero-meta">
-            <span>✓ 25–30 minutes</span>
-            <span>✓ 8 dimensions</span>
-            <span>✓ Personalised report</span>
-          </div>
-        </div>
-        <div className="og-hero-visual og-reveal">
+        <div className="og-hero-left og-reveal">
           <div className="og-hero-photo">
-            <img src={IMG("photo-1523240795612-9a054b0db644", 900)} alt="Students planning their future" />
+            <img src={IMG("photo-1434030216411-0b793f4b4173", 760)} alt="A student working through the assessment" />
+            <div className="og-photo-badge">
+              <span className="og-photo-badge-ic"><Icon name="score" size={16} /></span>
+              <span><b>Science-backed</b><small>Trusted by 50K+ students &amp; professionals</small></span>
+            </div>
           </div>
-          <div className="og-hero-float">
-            <div className="og-hero-float-top"><Icon name="radar" size={16} /> Your profile</div>
-            <RadarMock small />
+          <div className="og-trust">
+            <span><Icon name="lock" size={16} /> <b>100% Confidential</b><small>Your data is secure</small></span>
+            <span><Icon name="score" size={16} /> <b>Research-backed</b><small>Validated assessments</small></span>
+            <span><Icon name="user" size={16} /> <b>50K+ Users</b><small>Students &amp; professionals</small></span>
           </div>
-          <div className="og-hero-chip"><Icon name="match" size={15} /> Best fit: <b>Design &amp; Media</b></div>
+        </div>
+
+        <div className="og-hero-right og-reveal">
+          <span className="og-eyebrow">Career fitment, backed by science</span>
+          <h1 className="og-h1 og-serif">Clarity today.<br />Confidence for life.</h1>
+          <p className="og-lead">
+            OneGrasp helps you understand how you think, learn, feel and decide
+            across eight research-backed dimensions — so you can choose a path
+            that’s genuinely right for you, not just the one you’ve heard of.
+          </p>
+          <div className="og-hero-grid">
+            {DIMENSIONS.map((d) => (
+              <div key={d.title} className="og-hg">
+                <span className="og-hg-ic"><Icon name={d.icon} size={20} /></span>
+                <div className="og-hg-t">{d.title}</div>
+                <div className="og-hg-d">{d.short}</div>
+              </div>
+            ))}
+          </div>
+          <div className="og-hero-actions">
+            <button className="og-btn og-btn-lg" onClick={onStart}>Take the assessment <Icon name="chevronRight" size={17} /></button>
+            <a href="#science" className="og-btn-ghost og-btn-lg"><Icon name="play" size={14} /> See how it works</a>
+          </div>
         </div>
       </section>
 
-      {/* ---------- stats strip ---------- */}
-      <section className="og-strip og-reveal">
-        {[
-          { n: "8", l: "dimensions measured" },
-          { n: "60+", l: "questions, tuned to your stage" },
-          { n: "5", l: "scientific frameworks" },
-          { n: "20 yrs", l: "of impact per choice" },
-        ].map((s) => (
-          <div key={s.l} className="og-strip-item">
-            <div className="og-strip-n">{s.n}</div>
-            <div className="og-strip-l">{s.l}</div>
-          </div>
-        ))}
-      </section>
-
-      {/* ---------- why it matters ---------- */}
-      <section className="og-sec">
+      {/* why it matters — the story */}
+      <section id="why" className="og-sec">
         <div className="og-sec-head og-reveal">
           <span className="og-kicker">Why this matters</span>
-          <h2 className="og-h2">Most people pick a path with almost no data about themselves.</h2>
-          <p className="og-sub">
-            A career isn’t one decision — it’s tens of thousands of hours. Yet the
-            choice is usually made on marks, peer pressure and guesswork. OneGrasp
-            replaces the guesswork with a clear, structured read of who you are.
-          </p>
+          <h2 className="og-h2 og-serif">A career isn’t one decision. It’s 90,000 hours.</h2>
+          <p className="og-sub">Most people choose their path on marks, peer pressure and guesswork — with almost no real data about themselves. That’s the gap OneGrasp closes.</p>
         </div>
         <div className="og-facts">
           {FACTS.map((f, i) => (
@@ -126,17 +113,17 @@ export default function Landing({ onStart }: { onStart: () => void }) {
         <p className="og-facts-note og-reveal">Figures reflect widely reported workforce-engagement and career-satisfaction research, shown to illustrate the cost of misalignment.</p>
       </section>
 
-      {/* ---------- dimensions ---------- */}
-      <section id="dimensions" className="og-sec og-alt">
+      {/* explore each dimension — with photos */}
+      <section id="measure" className="og-sec og-alt">
         <div className="og-sec-head og-reveal">
           <span className="og-kicker">What we measure</span>
-          <h2 className="og-h2">Eight dimensions. One complete picture.</h2>
+          <h2 className="og-h2 og-serif">Eight dimensions. One complete picture.</h2>
           <p className="og-sub">Each dimension uses an established framework, so your report reads like a proper profile — not a personality quiz.</p>
         </div>
         <div className="og-dims">
           {DIMENSIONS.map((d, i) => (
-            <div key={d.title} className="og-dim og-reveal" style={{ transitionDelay: `${(i % 4) * 70}ms` }}>
-              <div className="og-dim-img"><img src={d.img} alt={d.title} loading="lazy" /><span className="og-dim-ic"><Icon name={d.icon} size={20} /></span></div>
+            <div key={d.title} className="og-dim og-reveal" style={{ transitionDelay: `${(i % 4) * 60}ms` }}>
+              <div className="og-dim-img"><img src={d.img} alt={d.title} loading="lazy" /><span className="og-dim-ic"><Icon name={d.icon} size={19} /></span></div>
               <div className="og-dim-body">
                 <div className="og-dim-t">{d.title}</div>
                 <div className="og-dim-f">{d.framework}</div>
@@ -147,31 +134,30 @@ export default function Landing({ onStart }: { onStart: () => void }) {
         </div>
       </section>
 
-      {/* ---------- science / how we evaluate ---------- */}
+      {/* the science */}
       <section id="science" className="og-sec">
         <div className="og-sec-head og-reveal">
           <span className="og-kicker">How we evaluate</span>
-          <h2 className="og-h2">A scientific method, end to end.</h2>
-          <p className="og-sub">Every answer is scored against a validated model, combined, and translated into plain-English guidance.</p>
+          <h2 className="og-h2 og-serif">A scientific method, end to end.</h2>
+          <p className="og-sub">Every answer is scored against a validated model, combined, then translated into plain-English guidance.</p>
         </div>
         <div className="og-steps">
           {STEPS.map((s, i) => (
-            <div key={s.t} className="og-step og-reveal" style={{ transitionDelay: `${i * 90}ms` }}>
+            <div key={s.t} className="og-step og-reveal" style={{ transitionDelay: `${i * 80}ms` }}>
               <div className="og-step-n">{i + 1}</div>
-              <div className="og-step-ic"><Icon name={s.ic} size={26} /></div>
+              <div className="og-step-ic"><Icon name={s.ic} size={24} /></div>
               <div className="og-step-t">{s.t}</div>
               <div className="og-step-d">{s.d}</div>
-              {i < STEPS.length - 1 && <div className="og-step-arrow">→</div>}
             </div>
           ))}
         </div>
       </section>
 
-      {/* ---------- proof / statistics ---------- */}
-      <section id="proof" className="og-sec og-alt">
+      {/* proof / charts */}
+      <section className="og-sec og-alt">
         <div className="og-sec-head og-reveal">
           <span className="og-kicker">The cost of getting it wrong</span>
-          <h2 className="og-h2">Alignment isn’t a luxury — it’s the difference.</h2>
+          <h2 className="og-h2 og-serif">Alignment isn’t a luxury — it’s the difference.</h2>
         </div>
         <div className="og-proof">
           <div className="og-proof-card og-reveal">
@@ -195,33 +181,29 @@ export default function Landing({ onStart }: { onStart: () => void }) {
         </div>
       </section>
 
-      {/* ---------- report preview ---------- */}
+      {/* report preview */}
       <section className="og-sec">
         <div className="og-report-row">
           <div className="og-report-viz og-reveal"><RadarMock /></div>
           <div className="og-report-copy og-reveal">
             <span className="og-kicker">Your report</span>
-            <h2 className="og-h2">One clear map of all eight areas.</h2>
-            <p className="og-sub">
-              Your results come together in a single visual profile, with a plain
-              explanation of each dimension and the careers that fit you best. Sign
-              in any time to revisit it.
-            </p>
+            <h2 className="og-h2 og-serif">One clear map of all eight areas.</h2>
+            <p className="og-sub">Your results come together in a single visual profile, with a plain explanation of each dimension and the careers that fit you best. Sign in any time to revisit it.</p>
             <ul className="og-check">
               <li>Ranked career matches with fit scores</li>
               <li>Personality, intelligences, EI, learning style &amp; motivators</li>
               <li>Strengths &amp; aptitude, scored objectively</li>
             </ul>
-            <button className="og-btn og-btn-lg" onClick={onStart}>Build my report →</button>
+            <button className="og-btn og-btn-lg" onClick={onStart}>Build my report <Icon name="chevronRight" size={17} /></button>
           </div>
         </div>
       </section>
 
-      {/* ---------- reviews ---------- */}
+      {/* reviews */}
       <section id="reviews" className="og-sec og-alt">
         <div className="og-sec-head og-reveal">
           <span className="og-kicker">What people say</span>
-          <h2 className="og-h2">Clarity people wish they’d had sooner.</h2>
+          <h2 className="og-h2 og-serif">Clarity people wish they’d had sooner.</h2>
         </div>
         <div className="og-reviews">
           {REVIEWS.map((r, i) => (
@@ -237,14 +219,13 @@ export default function Landing({ onStart }: { onStart: () => void }) {
         </div>
       </section>
 
-      {/* ---------- final CTA ---------- */}
+      {/* final CTA */}
       <section className="og-cta og-reveal">
-        <h2 className="og-cta-t">Your clearest career decision starts here.</h2>
+        <h2 className="og-cta-t og-serif">Your clearest career decision starts here.</h2>
         <p className="og-cta-s">Take 25 minutes today to save years of second-guessing.</p>
-        <button className="og-btn og-btn-light og-btn-lg" onClick={onStart}>Start the assessment →</button>
+        <button className="og-btn og-btn-light og-btn-lg" onClick={onStart}>Start the assessment <Icon name="chevronRight" size={17} /></button>
       </section>
 
-      {/* ---------- footer ---------- */}
       <footer className="og-foot">
         <img src={LOGO} alt="OneGrasp" className="og-logo" style={{ height: 26 }} />
         <span>© {new Date().getFullYear()} OneGrasp · Career fitment, backed by science</span>
@@ -256,14 +237,14 @@ export default function Landing({ onStart }: { onStart: () => void }) {
 
 /* ------------------------------- content ------------------------------- */
 const DIMENSIONS = [
-  { title: "Personality", framework: "Big Five + Temperament", icon: "personality", img: IMG("photo-1522071820081-009f0129c71c"), desc: "How you engage, decide, handle pressure and recharge." },
-  { title: "Career Interests", framework: "Interest clustering", icon: "career_interest", img: IMG("photo-1541339907198-e08756dedf3f"), desc: "The fields and activities that genuinely pull you in." },
-  { title: "Multiple Intelligences", framework: "Gardner’s 8 intelligences", icon: "multiple_intelligence", img: IMG("photo-1532094349884-543bc11b234d"), desc: "The ways you most naturally think and process the world." },
-  { title: "Emotional Intelligence", framework: "EI scenarios", icon: "emotional_intelligence", img: IMG("photo-1552664730-d307ca884978"), desc: "Reading situations, managing yourself and relating to others." },
-  { title: "Learning Style", framework: "VARK", icon: "learning_styles", img: IMG("photo-1503676260728-1c00da094a0b"), desc: "How you absorb new material fastest — visual, aural, reading, kinesthetic." },
-  { title: "Motivators", framework: "Work-values model", icon: "motivators", img: IMG("photo-1454165804606-c3d57bc86b40"), desc: "What energises you — and what quietly burns you out." },
-  { title: "Strengths", framework: "Reasoning + self-report", icon: "strengths", img: IMG("photo-1503387762-592deb58ef4e"), desc: "Problem-solving, critical thinking, decisions and communication." },
-  { title: "Aptitude", framework: "Cognitive reasoning", icon: "aptitude", img: IMG("photo-1461749280684-dccba630e2f6"), desc: "Verbal, numerical, logical and spatial reasoning, scored objectively." },
+  { title: "Personality", short: "How you naturally think, feel and behave.", desc: "How you engage, decide, handle pressure and recharge.", framework: "Big Five + Temperament", icon: "user", img: IMG("photo-1522071820081-009f0129c71c") },
+  { title: "Career Interest", short: "Work environments that match your interests.", desc: "The fields and activities that genuinely pull you in.", framework: "Interest clustering", icon: "compass", img: IMG("photo-1541339907198-e08756dedf3f") },
+  { title: "Multiple Intelligence", short: "Your natural abilities beyond traditional IQ.", desc: "The ways you most naturally think and process the world.", framework: "Gardner’s 8 intelligences", icon: "bulb", img: IMG("photo-1532094349884-543bc11b234d") },
+  { title: "Emotional Intelligence", short: "How you understand and manage emotions.", desc: "Reading situations, managing yourself and relating to others.", framework: "EI scenarios", icon: "heart", img: IMG("photo-1552664730-d307ca884978") },
+  { title: "Learning Styles", short: "The way you learn best and retain more.", desc: "How you absorb new material fastest — visual, aural, reading, kinesthetic.", framework: "VARK", icon: "learning_styles", img: IMG("photo-1503676260728-1c00da094a0b") },
+  { title: "Motivators", short: "What drives you and keeps you going.", desc: "What energises you — and what quietly burns you out.", framework: "Work-values model", icon: "match", img: IMG("photo-1454165804606-c3d57bc86b40") },
+  { title: "Strengths", short: "Your core strengths and how to use them.", desc: "Problem-solving, critical thinking, decisions and communication.", framework: "Reasoning + self-report", icon: "star", img: IMG("photo-1503387762-592deb58ef4e") },
+  { title: "Aptitude", short: "Your ability to learn and solve problems.", desc: "Verbal, numerical, logical and spatial reasoning, scored objectively.", framework: "Cognitive reasoning", icon: "cpu", img: IMG("photo-1461749280684-dccba630e2f6") },
 ];
 
 const STEPS = [
@@ -281,23 +262,23 @@ const FACTS = [
 ];
 
 const REVIEWS = [
-  { name: "Aarav", role: "Class 11 student", color: "#4f6b9e", quote: "I always assumed engineering. The report showed my strengths pointed to design and communication — it genuinely changed my plan." },
+  { name: "Aarav", role: "Class 11 student", color: "#3b5bdb", quote: "I always assumed engineering. The report showed my strengths pointed to design and communication — it genuinely changed my plan." },
   { name: "Priya", role: "Graduate", color: "#2f9e6f", quote: "The eight-area chart made everything click. For the first time my choices felt based on something real, not just marks." },
   { name: "Rahul", role: "Parent", color: "#a4708a", quote: "As a parent this gave us a calm, structured conversation instead of arguments. Worth every minute." },
 ];
 
 /* ------------------------------- visuals ------------------------------- */
-function RadarMock({ small }: { small?: boolean }) {
+function RadarMock() {
   const vals = [72, 66, 84, 78, 61, 70, 74, 80];
-  const n = vals.length, cx = 110, cy = 110, R = small ? 74 : 92;
+  const n = vals.length, cx = 110, cy = 110, R = 92;
   const ang = (i: number) => -Math.PI / 2 + (i * 2 * Math.PI) / n;
   const poly = (frac: number, arr?: number[]) =>
     vals.map((v, i) => { const r = R * (arr ? arr[i] / 100 : frac); return `${cx + r * Math.cos(ang(i))},${cy + r * Math.sin(ang(i))}`; }).join(" ");
   return (
     <svg viewBox="0 0 220 220" className="og-radar">
-      {[0.25, 0.5, 0.75, 1].map((f) => <polygon key={f} points={poly(f)} fill="none" stroke="#e7eaf0" strokeWidth="1" />)}
-      {vals.map((_, i) => { const r = R; return <line key={i} x1={cx} y1={cy} x2={cx + r * Math.cos(ang(i))} y2={cy + r * Math.sin(ang(i))} stroke="#e7eaf0" strokeWidth="1" />; })}
-      <polygon points={poly(1, vals)} fill="rgba(79,107,158,.2)" stroke={PRIMARY} strokeWidth="2.2" strokeLinejoin="round" />
+      {[0.25, 0.5, 0.75, 1].map((f) => <polygon key={f} points={poly(f)} fill="none" stroke="#e5e8ee" strokeWidth="1" />)}
+      {vals.map((_, i) => <line key={i} x1={cx} y1={cy} x2={cx + R * Math.cos(ang(i))} y2={cy + R * Math.sin(ang(i))} stroke="#e5e8ee" strokeWidth="1" />)}
+      <polygon points={poly(1, vals)} fill="rgba(59,91,219,.16)" stroke={PRIMARY} strokeWidth="2.2" strokeLinejoin="round" />
       {vals.map((v, i) => { const r = R * (v / 100); return <circle key={i} cx={cx + r * Math.cos(ang(i))} cy={cy + r * Math.sin(ang(i))} r="3" fill={PRIMARY} />; })}
     </svg>
   );
@@ -352,86 +333,100 @@ function MiniDonut({ pct, color }: { pct: number; color: string }) {
 }
 
 /* -------------------------------- styles ------------------------------- */
+const SERIF = "Georgia, 'Iowan Old Style', 'Times New Roman', serif";
 const CSS = `
-.og-land{background:#fff;color:#1f2937;font-family:Inter,system-ui,Segoe UI,sans-serif;-webkit-font-smoothing:antialiased}
+.og-land{background:#fff;color:${INK};font-family:Inter,system-ui,Segoe UI,sans-serif;-webkit-font-smoothing:antialiased}
 .og-land *{box-sizing:border-box}
+.og-serif{font-family:${SERIF};letter-spacing:-.01em}
 .og-reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
 .og-reveal.in{opacity:1;transform:none}
 
-.og-nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid #eef0f4}
-.og-nav-in{max-width:1140px;margin:0 auto;display:flex;align-items:center;gap:20px;padding:13px 24px}
+.og-nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid #eef0f4}
+.og-nav-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:20px;padding:14px 24px}
 .og-logo{height:30px;width:auto;display:block}
-.og-nav-links{display:flex;gap:24px;margin-left:22px;flex:1}
+.og-nav-links{display:flex;gap:26px;margin-left:26px;flex:1}
 .og-nav-links a{color:#4b5563;text-decoration:none;font-size:14px;font-weight:600}
-.og-nav-links a:hover{color:${PRIMARY}}
+.og-nav-links a:hover{color:${INK}}
 .og-nav-cta{display:flex;align-items:center;gap:10px}
-@media(max-width:860px){.og-nav-links{display:none}}
+@media(max-width:880px){.og-nav-links{display:none}}
 
-.og-btn{background:${PRIMARY};color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:14px;font-weight:700;cursor:pointer;transition:transform .12s,box-shadow .2s;box-shadow:0 6px 18px rgba(79,107,158,.28)}
-.og-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(79,107,158,.34)}
-.og-btn-lg{padding:14px 26px;font-size:15.5px;border-radius:12px}
-.og-btn-light{background:#fff;color:${PRIMARY};box-shadow:0 10px 30px rgba(0,0,0,.14)}
-.og-btn-ghost{background:transparent;color:#374151;border:1px solid #dfe3ea;border-radius:10px;padding:10px 16px;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center}
+.og-btn{display:inline-flex;align-items:center;gap:6px;background:${INK};color:#fff;border:none;border-radius:11px;padding:11px 18px;font-size:14px;font-weight:700;cursor:pointer;transition:transform .12s,box-shadow .2s;box-shadow:0 8px 20px rgba(21,26,36,.18)}
+.og-btn:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(21,26,36,.24)}
+.og-btn-lg{padding:14px 24px;font-size:15px;border-radius:12px}
+.og-btn-light{background:#fff;color:${INK};box-shadow:0 12px 30px rgba(0,0,0,.16)}
+.og-btn-ghost{display:inline-flex;align-items:center;gap:7px;background:transparent;color:#374151;border:1px solid #dfe3ea;border-radius:11px;padding:11px 16px;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer}
 .og-btn-ghost:hover{border-color:#c4cbd6}
+.og-btn-lg.og-btn-ghost{padding:14px 20px}
 
-.og-hero{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:70px 24px 60px}
-@media(max-width:900px){.og-hero{grid-template-columns:1fr;padding:44px 24px 30px;gap:30px}}
-.og-eyebrow{display:inline-block;background:#eef2f8;color:${PRIMARY};font-size:12.5px;font-weight:800;padding:6px 13px;border-radius:999px;letter-spacing:.2px}
-.og-h1{font-size:clamp(30px,4.6vw,50px);line-height:1.08;font-weight:800;letter-spacing:-.02em;margin:16px 0 0}
-.og-hl{color:${PRIMARY}}
-.og-lead{font-size:17px;line-height:1.65;color:#5b6470;margin:18px 0 26px;max-width:520px}
+/* hero */
+.og-hero{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:.85fr 1.15fr;gap:44px;align-items:center;padding:52px 24px 56px}
+@media(max-width:940px){.og-hero{grid-template-columns:1fr;gap:30px;padding:34px 24px}}
+.og-hero-photo{position:relative;border-radius:20px;overflow:hidden;box-shadow:0 26px 60px rgba(21,26,36,.16);aspect-ratio:4/3.7;background:#eef1f5}
+.og-hero-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.og-photo-badge{position:absolute;left:16px;bottom:16px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.96);border-radius:12px;padding:10px 13px;box-shadow:0 12px 26px rgba(21,26,36,.16)}
+.og-photo-badge-ic{width:30px;height:30px;border-radius:8px;background:#eef2ff;color:${PRIMARY};display:grid;place-items:center;flex-shrink:0}
+.og-photo-badge b{font-size:13px;display:block}
+.og-photo-badge small{font-size:11px;color:#6b7280;display:block}
+.og-trust{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;border:1px solid #eef0f4;border-radius:14px;padding:14px}
+.og-trust span{display:flex;flex-direction:column;gap:2px;font-size:11.5px;color:#6b7280}
+.og-trust span svg{color:${PRIMARY}}
+.og-trust b{font-size:12.5px;color:${INK}}
+.og-trust small{font-size:11px;color:#8a919c}
+
+.og-eyebrow{display:inline-block;background:#eef2ff;color:${PRIMARY};font-size:12.5px;font-weight:800;padding:6px 13px;border-radius:999px}
+.og-h1{font-size:clamp(32px,4.4vw,48px);line-height:1.06;font-weight:700;margin:16px 0 0}
+.og-lead{font-size:16px;line-height:1.65;color:#5b6470;margin:16px 0 22px;max-width:560px}
+.og-hero-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px 18px;margin-bottom:26px}
+@media(max-width:1040px){.og-hero-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.og-hero-grid{grid-template-columns:1fr}}
+.og-hg-ic{width:38px;height:38px;border-radius:50%;border:1px solid #e4e7ee;color:${INK};display:grid;place-items:center;margin-bottom:9px}
+.og-hg-t{font-size:13.5px;font-weight:800}
+.og-hg-d{font-size:12px;color:#8a919c;line-height:1.45;margin-top:2px}
 .og-hero-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.og-hero-meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:22px;color:#6b7280;font-size:13.5px;font-weight:600}
 
-.og-strip{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:22px 24px;border-top:1px solid #eef0f4;border-bottom:1px solid #eef0f4}
-@media(max-width:700px){.og-strip{grid-template-columns:repeat(2,1fr);gap:22px}}
-.og-strip-item{text-align:center}
-.og-strip-n{font-size:30px;font-weight:800;color:${PRIMARY}}
-.og-strip-l{font-size:13px;color:#6b7280;margin-top:2px}
-
-.og-sec{max-width:1140px;margin:0 auto;padding:72px 24px}
-.og-alt{max-width:none;background:#f7f8fb;border-top:1px solid #eef0f4;border-bottom:1px solid #eef0f4}
-.og-alt>*{max-width:1140px;margin-left:auto;margin-right:auto}
-.og-sec-head{max-width:720px;margin:0 auto 40px;text-align:center}
+/* sections */
+.og-sec{max-width:1180px;margin:0 auto;padding:70px 24px}
+.og-alt{max-width:none;background:#f7f8fa;border-top:1px solid #eef0f4;border-bottom:1px solid #eef0f4}
+.og-alt>*{max-width:1180px;margin-left:auto;margin-right:auto}
+.og-sec-head{max-width:740px;margin:0 auto 40px;text-align:center}
 .og-kicker{font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.9px;color:${PRIMARY}}
-.og-h2{font-size:clamp(24px,3.4vw,34px);font-weight:800;letter-spacing:-.015em;margin:10px 0 0;line-height:1.15}
+.og-h2{font-size:clamp(25px,3.3vw,35px);font-weight:700;margin:12px 0 0;line-height:1.16}
 .og-sub{font-size:16px;line-height:1.65;color:#5b6470;margin:14px 0 0}
 
 .og-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 @media(max-width:820px){.og-facts{grid-template-columns:1fr}}
-.og-fact{background:#fff;border:1px solid #eceef2;border-radius:16px;padding:26px 24px;text-align:center;box-shadow:0 2px 12px rgba(30,41,59,.04)}
+.og-fact{background:#fff;border:1px solid #eceef2;border-radius:16px;padding:26px 24px;text-align:center;box-shadow:0 2px 12px rgba(21,26,36,.04)}
 .og-fact-viz{display:flex;justify-content:center;margin-bottom:12px}
-.og-fact-stat{font-size:30px;font-weight:800;color:#1f2937}
+.og-fact-stat{font-size:30px;font-weight:800}
 .og-fact-text{font-size:14.5px;color:#5b6470;line-height:1.55;margin-top:6px}
-.og-facts-note{text-align:center;font-size:12.5px;color:#9aa1ad;margin:22px auto 0;max-width:620px}
+.og-facts-note{text-align:center;font-size:12.5px;color:#9aa1ad;margin:22px auto 0;max-width:640px}
 
 .og-dims{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 @media(max-width:980px){.og-dims{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.og-dims{grid-template-columns:1fr}}
 .og-dim{background:#fff;border:1px solid #eceef2;border-radius:16px;overflow:hidden;transition:transform .18s,box-shadow .2s}
-.og-dim:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(30,41,59,.08)}
-.og-dim-img{position:relative;height:118px;overflow:hidden;background:#f0f2f5}
+.og-dim:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(21,26,36,.08)}
+.og-dim-img{position:relative;height:116px;overflow:hidden;background:#f0f2f5}
 .og-dim-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
 .og-dim:hover .og-dim-img img{transform:scale(1.05)}
-.og-dim-ic{position:absolute;left:14px;bottom:-17px;width:40px;height:40px;border-radius:11px;background:#fff;border:1px solid #eceef2;display:grid;place-items:center;color:${PRIMARY};box-shadow:0 6px 14px rgba(31,41,63,.12)}
+.og-dim-ic{position:absolute;left:14px;bottom:-17px;width:40px;height:40px;border-radius:11px;background:#fff;border:1px solid #eceef2;display:grid;place-items:center;color:${PRIMARY};box-shadow:0 6px 14px rgba(21,26,36,.12)}
 .og-dim-body{padding:26px 18px 20px}
 .og-dim-t{font-size:16px;font-weight:800}
 .og-dim-f{font-size:12px;font-weight:700;color:${PRIMARY};margin:3px 0 8px}
 .og-dim-d{font-size:13.5px;color:#5b6470;line-height:1.55}
 
-.og-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;position:relative}
+.og-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
 @media(max-width:900px){.og-steps{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.og-steps{grid-template-columns:1fr}}
-.og-step{position:relative;background:#fff;border:1px solid #eceef2;border-radius:16px;padding:22px 18px;text-align:center}
-.og-step-n{position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:26px;height:26px;border-radius:50%;background:${PRIMARY};color:#fff;font-size:13px;font-weight:800;display:grid;place-items:center}
-.og-step-ic{font-size:28px;margin:8px 0 8px}
+.og-step{position:relative;background:#fff;border:1px solid #eceef2;border-radius:16px;padding:24px 18px;text-align:center}
+.og-step-n{position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:26px;height:26px;border-radius:50%;background:${INK};color:#fff;font-size:13px;font-weight:800;display:grid;place-items:center}
+.og-step-ic{color:${PRIMARY};margin:8px 0 10px;display:flex;justify-content:center}
 .og-step-t{font-size:15.5px;font-weight:800}
 .og-step-d{font-size:13px;color:#5b6470;line-height:1.5;margin-top:6px}
-.og-step-arrow{display:none}
 
 .og-proof{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 @media(max-width:820px){.og-proof{grid-template-columns:1fr}}
-.og-proof-card{background:#fff;border:1px solid #eceef2;border-radius:18px;padding:26px 24px;box-shadow:0 2px 12px rgba(30,41,59,.04)}
+.og-proof-card{background:#fff;border:1px solid #eceef2;border-radius:18px;padding:26px 24px;box-shadow:0 2px 12px rgba(21,26,36,.04)}
 .og-proof-t{font-size:16px;font-weight:800;margin:0 0 18px}
 .og-proof-note{font-size:13px;color:#6b7280;line-height:1.55;margin:16px 0 0}
 .og-bc{display:flex;flex-direction:column;gap:14px}
@@ -447,14 +442,15 @@ const CSS = `
 
 .og-report-row{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:center}
 @media(max-width:860px){.og-report-row{grid-template-columns:1fr;gap:24px}}
-.og-report-viz{display:flex;justify-content:center;background:#f7f8fb;border:1px solid #eceef2;border-radius:20px;padding:26px}
+.og-report-viz{display:flex;justify-content:center;background:#f7f8fa;border:1px solid #eceef2;border-radius:20px;padding:26px}
+.og-radar{width:210px;height:210px;display:block}
 .og-check{list-style:none;padding:0;margin:16px 0 24px;display:flex;flex-direction:column;gap:10px}
 .og-check li{position:relative;padding-left:28px;font-size:14.5px;color:#374151;line-height:1.5}
 .og-check li:before{content:"✓";position:absolute;left:0;top:0;width:19px;height:19px;background:#e9f4ef;color:#2f9e6f;border-radius:50%;font-size:12px;font-weight:800;display:grid;place-items:center}
 
 .og-reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 @media(max-width:860px){.og-reviews{grid-template-columns:1fr}}
-.og-review{background:#fff;border:1px solid #eceef2;border-radius:16px;padding:24px 22px;margin:0;box-shadow:0 2px 12px rgba(30,41,59,.04)}
+.og-review{background:#fff;border:1px solid #eceef2;border-radius:16px;padding:24px 22px;margin:0;box-shadow:0 2px 12px rgba(21,26,36,.04)}
 .og-stars{color:#e0a92e;font-size:15px;letter-spacing:2px}
 .og-review-q{font-size:14.5px;line-height:1.6;color:#374151;margin:12px 0 18px}
 .og-review-by{display:flex;align-items:center;gap:11px}
@@ -462,23 +458,10 @@ const CSS = `
 .og-review-by b{font-size:14px;display:block}
 .og-review-role{font-size:12.5px;color:#8a919c}
 
-.og-cta{background:linear-gradient(135deg,#42597f,#5a76a6);color:#fff;text-align:center;padding:64px 24px;margin-top:0}
-.og-cta-t{font-size:clamp(24px,3.6vw,34px);font-weight:800;margin:0}
-.og-cta-s{font-size:16px;opacity:.9;margin:12px 0 26px}
+.og-cta{background:${INK};color:#fff;text-align:center;padding:66px 24px}
+.og-cta-t{font-size:clamp(25px,3.6vw,35px);font-weight:700;margin:0}
+.og-cta-s{font-size:16px;opacity:.85;margin:12px 0 26px}
 
-.og-foot{max-width:1140px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:26px 24px;color:#8a919c;font-size:13px;flex-wrap:wrap}
+.og-foot{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:26px 24px;color:#8a919c;font-size:13px;flex-wrap:wrap}
 .og-foot a{color:#5b6470;text-decoration:none;font-weight:600}
-
-/* hero visual */
-.og-hero-visual{position:relative}
-.og-hero-photo{border-radius:22px;overflow:hidden;box-shadow:0 30px 70px rgba(31,41,63,.16);aspect-ratio:4/3.4;background:#eef1f5}
-.og-hero-photo img{width:100%;height:100%;object-fit:cover;display:block}
-.og-radar{width:180px;height:180px;display:block;margin:0 auto}
-.og-hero-float{position:absolute;left:-18px;bottom:-18px;background:#fff;border:1px solid #eceef2;border-radius:16px;padding:12px 14px 8px;box-shadow:0 20px 44px rgba(31,41,63,.16);animation:ogFloat 6s ease-in-out infinite}
-.og-hero-float-top{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#6b7280;margin-bottom:2px}
-@keyframes ogFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-.og-hero-chip{position:absolute;top:22px;right:-14px;display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #eceef2;border-radius:12px;padding:9px 13px;font-size:12.5px;color:#374151;font-weight:600;box-shadow:0 16px 34px rgba(31,41,63,.14);animation:ogFloat 6s ease-in-out infinite;animation-delay:1s}
-.og-hero-chip b{color:${PRIMARY}}
-.og-hero-float-top svg,.og-hero-chip svg{color:${PRIMARY}}
-@media(max-width:600px){.og-hero-float{left:0;transform:none}.og-hero-chip{right:0}}
 `;
