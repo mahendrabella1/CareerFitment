@@ -36,7 +36,7 @@ export const CATEGORY_META: Record<Category, { title: string; blurb: string }> =
   multiple_intelligence: { title: "Multiple Intelligences", blurb: "Slide from 1 (not like me) to 10 (exactly like me)." },
   emotional_intelligence: { title: "Emotional Intelligence", blurb: "Choose the response closest to what you'd genuinely do." },
   learning_styles: { title: "Learning Style", blurb: "Pick the option that best matches how you naturally learn." },
-  motivators: { title: "Motivators", blurb: "For each situation, choose what feels MOST and LEAST like you." },
+  motivators: { title: "Motivators", blurb: "For each situation, choose the option that feels MOST like you." },
   strengths: { title: "Strengths", blurb: "A mix of quick puzzles and self-report. There ARE right answers here — take your time." },
   aptitude: { title: "Aptitude", blurb: "Reasoning across words, numbers, logic and shapes. Pick the single best answer." },
 };

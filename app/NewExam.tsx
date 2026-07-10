@@ -101,9 +101,7 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
 
   const isAnswered = (qq: { id: string; type: string; optional?: boolean }) => {
     const v = answers[qq.id];
-    if (v == null || v === "") return false;
-    if (qq.type === "mostleast") { const [m, l] = v.split(","); return m !== "" && m != null && l !== "" && l != null; }
-    return true;
+    return v != null && v !== "";
   };
   const answeredCount = useMemo(() => flat.filter((x) => !x.optional && isAnswered(x)).length, [answers, flat]); // eslint-disable-line react-hooks/exhaustive-deps
   const markedCount = Object.values(review).filter(Boolean).length;
@@ -418,24 +416,20 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
   }
 
   if (q.type === "mostleast") {
-    const [most, least] = value.split(",");
-    const setPart = (which: 0 | 1, idx: number) => {
-      const cur = value.split(","); cur[0] = cur[0] ?? ""; cur[1] = cur[1] ?? "";
-      cur[which] = cur[which] === String(idx) ? "" : String(idx);
-      if (cur[0] !== "" && cur[0] === cur[1]) cur[which === 0 ? 1 : 0] = "";
-      onChange(`${cur[0] ?? ""},${cur[1] ?? ""}`);
-    };
+    // Simplified to a single choice — pick the option that's MOST like you.
+    const opts = q.options ?? [];
     return (
-      <div style={S.mlWrap}>
-        {(q.options ?? []).map((o, i) => (
-          <div key={i} style={S.mlRow}>
-            <span style={S.mlText}>{o}</span>
-            <div style={S.mlBtns}>
-              <button style={{ ...S.mlBtn, ...(most === String(i) ? S.mlMost : {}) }} onClick={() => setPart(0, i)}>Most</button>
-              <button style={{ ...S.mlBtn, ...(least === String(i) ? S.mlLeast : {}) }} onClick={() => setPart(1, i)}>Least</button>
-            </div>
-          </div>
-        ))}
+      <div style={S.choices}>
+        {opts.map((o, i) => {
+          const sel = value === String(i);
+          return (
+            <button key={i} style={{ ...S.choice, ...(sel ? S.choiceOn : {}) }} onClick={() => onChange(String(i))}>
+              <span style={{ ...S.ab, ...(sel ? S.abOn : {}) }}>{String.fromCharCode(65 + i)}</span>
+              <span style={{ flex: 1 }}>{o ?? ""}</span>
+              {sel && <span style={S.ck}><Icon name="check" size={16} stroke={2.4} /></span>}
+            </button>
+          );
+        })}
       </div>
     );
   }
