@@ -527,7 +527,7 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
         {opts.map((o, i) => {
           const sel = value === String(i);
           return (
-            <button key={i} style={{ ...S.svgChoice, ...(sel ? S.svgChoiceOn : {}) }} onClick={() => onChange(String(i))}>
+            <button key={i} style={{ ...S.svgChoice, ...(sel ? S.svgChoiceOn : {}) }} onMouseDown={(e) => e.preventDefault()} onClick={() => onChange(String(i))}>
               <span style={{ ...S.radio, ...(sel ? S.radioOn : {}) }}>{sel && <span style={S.radioDot} />}</span>
               <span style={S.svgHolder} dangerouslySetInnerHTML={{ __html: o || "" }} />
             </button>
@@ -548,7 +548,7 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
         const raw = o ?? "";
         const label = q.type === "vark" && q.styles?.[i] ? raw.replace(/^\(?[A-D]\)?\s*/, "") : isYesNo ? raw : raw.replace(/^\d+\)\s*/, "");
         return (
-          <button key={i} className="og-opt" style={{ ...S.optRow, ...(sel ? S.optRowOn : {}) }} onClick={() => onChange(val)}>
+          <button key={i} className="og-opt" style={{ ...S.optRow, ...(sel ? S.optRowOn : {}) }} onMouseDown={(e) => e.preventDefault()} onClick={() => onChange(val)}>
             <span style={{ ...S.radio, ...(sel ? S.radioOn : {}) }}>{sel && <span style={S.radioDot} />}</span>
             <span style={{ ...S.optLabel, ...(sel ? S.optLabelOn : {}) }}>{label}</span>
           </button>
@@ -636,7 +636,7 @@ const S: Record<string, React.CSSProperties> = {
   reviewIcon: { width: 36, height: 36, borderRadius: "50%", background: "#f1f5f9", color: "#9aa3b2", border: `1px solid ${LINE}`, display: "grid", placeItems: "center", cursor: "pointer" },
   reviewIconOn: { background: AMBER_SOFT, color: "#d97706", borderColor: "#fadf9a" },
   optList: { display: "flex", flexDirection: "column", borderTop: "1px solid #eef0f4", marginTop: 14 },
-  optRow: { display: "flex", alignItems: "center", gap: 13, width: "100%", textAlign: "left", padding: "13px 16px", background: "transparent", border: "1px solid transparent", borderBottom: "1px solid #eef0f4", cursor: "pointer" },
+  optRow: { display: "flex", alignItems: "center", gap: 13, width: "100%", textAlign: "left", padding: "13px 16px", border: "1px solid transparent", borderBottom: "1px solid #eef0f4", cursor: "pointer", outline: "none" },
   optRowOn: { border: `1px solid ${BLUE}`, borderRadius: 10, background: BLUE_SOFT },
   radio: { flexShrink: 0, width: 18, height: 18, borderRadius: "50%", border: "1.6px solid #c2c8d4", display: "grid", placeItems: "center" },
   radioOn: { borderColor: BLUE },
@@ -760,9 +760,10 @@ const CSS = `
 .og-exam-catbar::-webkit-scrollbar{height:6px}
 .og-exam-catbar::-webkit-scrollbar-thumb{background:#d7dbe3;border-radius:6px}
 /* no black focus ring on click; keep a subtle ring for keyboard users */
-.og-exam-grid button:focus,.og-exam-grid a:focus{outline:none}
-.og-exam-grid button:focus-visible{box-shadow:0 0 0 2px ${ACCENT}55}
-.og-opt{transition:background .12s ease}
+.og-exam-grid button{-webkit-tap-highlight-color:transparent}
+.og-exam-grid button:focus{outline:none}
+.og-exam-grid button:focus-visible{outline:none;box-shadow:0 0 0 2px ${ACCENT}44}
+.og-opt{transition:background .12s ease;background:transparent}
 .og-opt:hover{background:#f7f9fc}
 @media (max-width: 1040px){
   .og-exam-grid{grid-template-columns:1fr !important}
