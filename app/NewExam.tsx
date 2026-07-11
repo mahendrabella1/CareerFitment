@@ -195,31 +195,24 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
           <button style={S.endBtn} onClick={exitExam}><Icon name="power" size={15} /> Exit</button>
         </header>
 
-        <div style={S.grid} className="og-exam-grid">
-          {/* left: categories */}
-          <aside style={S.side} className="og-exam-side">
-            <div style={S.sideLabel}>Categories</div>
-            {data.sections.map((s, si) => {
-              const qs = s.questions.filter((x) => !x.optional);
-              const a = qs.filter(isAnswered).length;
-              const done = a === qs.length;
-              const activeSec = q.si === si;
-              return (
-                <button key={s.category} onClick={() => jumpToSection(si)} style={{ ...S.secItem, ...(activeSec ? S.secItemOn : {}) }}>
-                  <span style={{ ...S.secIcon, color: activeSec ? BLUE : "#94a3b8" }}><Icon name={s.category} size={19} /></span>
-                  <span style={{ flex: 1, minWidth: 0 }}>
-                    <span style={S.secName}>{s.title}</span>
-                  </span>
-                  <span style={{ ...S.secBadge, ...(done ? S.secBadgeDone : {}), ...(activeSec && !done ? S.secBadgeOn : {}) }}>{a}/{qs.length}</span>
-                </button>
-              );
-            })}
-            <div style={S.nowBox}>
-              <span style={S.nowLabel}><Icon name="info" size={13} /> Currently answering</span>
-              <span style={S.nowVal}>{q.catTitle}</span>
-            </div>
-          </aside>
+        {/* horizontal categories bar */}
+        <nav style={S.catBar} className="og-exam-catbar">
+          {data.sections.map((s, si) => {
+            const qs = s.questions.filter((x) => !x.optional);
+            const a = qs.filter(isAnswered).length;
+            const done = a === qs.length;
+            const activeSec = q.si === si;
+            return (
+              <button key={s.category} onClick={() => jumpToSection(si)} style={{ ...S.catChip, ...(activeSec ? S.catChipOn : {}) }}>
+                <span style={{ display: "flex", flexShrink: 0, color: activeSec ? BLUE : done ? GREEN : "#9aa3b2" }}><Icon name={s.category} size={16} /></span>
+                <span style={S.catChipName}>{s.title}</span>
+                <span style={{ ...S.catChipBadge, ...(done ? S.catChipBadgeDone : activeSec ? S.catChipBadgeOn : {}) }}>{done ? "✓" : `${a}/${qs.length}`}</span>
+              </button>
+            );
+          })}
+        </nav>
 
+        <div style={S.grid} className="og-exam-grid">
           {/* centre: current question */}
           <main style={S.main}>
             <div style={S.mainInner}>
@@ -498,7 +491,16 @@ const S: Record<string, React.CSSProperties> = {
   statVal: { fontSize: 14.5, fontWeight: 800, lineHeight: 1.1 },
   endBtn: { display: "flex", alignItems: "center", gap: 6, background: "rgba(224,86,79,.16)", border: "1px solid rgba(224,86,79,.5)", color: "#ffb4ae", fontSize: 13, fontWeight: 700, cursor: "pointer", padding: "8px 15px", borderRadius: 9 },
 
-  grid: { flex: 1, minHeight: 0, display: "grid", gridTemplateColumns: "252px minmax(0,1fr) 248px" },
+  // horizontal categories bar
+  catBar: { flexShrink: 0, display: "flex", gap: 8, padding: "10px 20px", background: "#fff", borderBottom: `1px solid ${LINE}`, overflowX: "auto" },
+  catChip: { display: "flex", alignItems: "center", gap: 8, flexShrink: 0, padding: "8px 13px", border: `1px solid ${LINE}`, borderRadius: 999, background: "#fff", cursor: "pointer", whiteSpace: "nowrap" },
+  catChipOn: { background: BLUE_SOFT, borderColor: "#c7d5f5", boxShadow: `0 0 0 1px ${BLUE}44` },
+  catChipName: { fontSize: 13, fontWeight: 700, color: INK },
+  catChipBadge: { fontSize: 11, fontWeight: 800, color: "#94a3b8", background: "#f1f3f7", borderRadius: 6, padding: "1px 7px", minWidth: 22, textAlign: "center" },
+  catChipBadgeOn: { background: "#dce4fb", color: BLUE },
+  catChipBadgeDone: { background: "#dcfce7", color: "#15803d" },
+
+  grid: { flex: 1, minHeight: 0, display: "grid", gridTemplateColumns: "minmax(0,1fr) 252px" },
   side: { borderRight: `1px solid ${LINE}`, background: "#fff", padding: "16px 12px", overflowY: "auto", display: "flex", flexDirection: "column", gap: 3 },
   sideLabel: { fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: .7, color: "#9aa1ad", margin: "0 6px 10px" },
   secItem: { width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "11px 10px", border: "1px solid transparent", borderLeft: "3px solid transparent", borderRadius: 10, background: "transparent", cursor: "pointer", textAlign: "left" },
@@ -512,8 +514,8 @@ const S: Record<string, React.CSSProperties> = {
   nowLabel: { display: "flex", alignItems: "center", gap: 5, fontSize: 11, fontWeight: 700, color: "#94a3b8" },
   nowVal: { fontSize: 13.5, fontWeight: 800, color: BLUE },
 
-  main: { minWidth: 0, overflowY: "auto", padding: "22px 26px 50px" },
-  mainInner: { maxWidth: 720, margin: "0 auto" },
+  main: { minWidth: 0, overflowY: "auto", padding: "22px 30px 50px" },
+  mainInner: { maxWidth: 800, margin: "0 auto" },
   qTopRow: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 },
   qPill: { background: BLUE, color: "#fff", fontSize: 12.5, fontWeight: 700, padding: "6px 14px", borderRadius: 999 },
   reviewBtn: { display: "flex", alignItems: "center", gap: 6, background: "#fff", border: `1px solid ${LINE}`, color: MUTED, fontSize: 12.5, fontWeight: 700, cursor: "pointer", padding: "6px 12px", borderRadius: 9 },
@@ -521,14 +523,14 @@ const S: Record<string, React.CSSProperties> = {
   progOuter: { height: 5, background: "#e3e7ee", borderRadius: 999, overflow: "hidden", marginBottom: 16 },
   progFill: { height: "100%", background: BLUE, borderRadius: 999, transition: "width .3s" },
 
-  catCard: { display: "flex", gap: 14, alignItems: "center", background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: "16px 18px", marginBottom: 14 },
-  catKicker: { fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: .6, color: BLUE },
-  catTitle: { fontSize: 19, fontWeight: 800, margin: "3px 0 3px", color: INK },
-  catBlurb: { fontSize: 13.5, color: MUTED, lineHeight: 1.45 },
-  catIcon: { flexShrink: 0, width: 58, height: 58, borderRadius: 14, background: BLUE_SOFT, color: BLUE, display: "grid", placeItems: "center" },
+  catCard: { display: "flex", gap: 14, alignItems: "center", background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: "15px 18px", marginBottom: 14 },
+  catKicker: { fontSize: 10.5, fontWeight: 800, textTransform: "uppercase", letterSpacing: .6, color: BLUE },
+  catTitle: { fontSize: 17, fontWeight: 800, margin: "3px 0 2px", color: INK },
+  catBlurb: { fontSize: 13, color: MUTED, lineHeight: 1.5 },
+  catIcon: { flexShrink: 0, width: 52, height: 52, borderRadius: 13, background: BLUE_SOFT, color: BLUE, display: "grid", placeItems: "center" },
 
   qCard: { background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: "22px 24px", boxShadow: "0 1px 3px rgba(20,20,40,.04)" },
-  qText: { fontSize: 17, fontWeight: 700, lineHeight: 1.5, color: INK, marginBottom: 18 },
+  qText: { fontSize: 16, fontWeight: 700, lineHeight: 1.5, color: INK, marginBottom: 18 },
   optTag: { color: "#9aa1ad", fontWeight: 500, fontStyle: "italic" },
 
   mGrid: { display: "grid", gap: 8, maxWidth: 380, margin: "0 0 16px", background: "#fafbfc", padding: 10, borderRadius: 12, border: `1px solid ${LINE}` },
@@ -559,11 +561,11 @@ const S: Record<string, React.CSSProperties> = {
   barVal: { width: 32, textAlign: "right", fontWeight: 700, color: INK },
 
   optRow: { display: "flex", gap: 10 },
-  pill: { flex: 1, padding: "13px", border: `1.5px solid ${LINE}`, borderRadius: 11, background: "#fff", fontWeight: 700, cursor: "pointer", color: "#475569" },
+  pill: { flex: 1, padding: "13px", border: `1.5px solid ${LINE}`, borderRadius: 11, background: "#fff", fontWeight: 700, fontSize: 15, cursor: "pointer", color: "#475569" },
   pillOn: { borderColor: BLUE, background: BLUE_SOFT, color: BLUE },
 
   choices: { display: "flex", flexDirection: "column", gap: 9 },
-  choice: { display: "flex", alignItems: "center", gap: 12, textAlign: "left", padding: "13px 15px", border: `1.5px solid ${LINE}`, borderRadius: 12, background: "#fff", cursor: "pointer", fontSize: 14.5, color: "#334155" },
+  choice: { display: "flex", alignItems: "center", gap: 12, textAlign: "left", padding: "13px 15px", border: `1.5px solid ${LINE}`, borderRadius: 12, background: "#fff", cursor: "pointer", fontSize: 15, lineHeight: 1.45, color: "#334155" },
   choiceOn: { borderColor: BLUE, background: BLUE_SOFT },
   ab: { flexShrink: 0, width: 28, height: 28, borderRadius: "50%", border: "1.5px solid #cdced8", display: "grid", placeItems: "center", fontWeight: 700, fontSize: 12.5, color: MUTED },
   abOn: { background: BLUE, borderColor: BLUE, color: "#fff" },
@@ -582,7 +584,7 @@ const S: Record<string, React.CSSProperties> = {
 
   mlWrap: { display: "flex", flexDirection: "column", gap: 9 },
   mlRow: { display: "flex", alignItems: "center", gap: 12, border: `1px solid ${LINE}`, borderRadius: 12, padding: "10px 14px" },
-  mlText: { flex: 1, fontSize: 14, color: "#334155" },
+  mlText: { flex: 1, fontSize: 15, color: "#334155", lineHeight: 1.45 },
   mlBtns: { display: "flex", gap: 6, flexShrink: 0 },
   mlBtn: { padding: "6px 13px", borderRadius: 8, border: `1px solid ${LINE}`, background: "#fff", fontSize: 12, fontWeight: 700, cursor: "pointer", color: MUTED },
   mlMost: { background: "#dcfce7", borderColor: GREEN, color: "#15803d" },
@@ -638,9 +640,11 @@ const CSS = `
 .datatable th,.datatable td{border:1px solid ${LINE};padding:6px 10px;text-align:center}
 .datatable th{background:${BLUE_SOFT};font-weight:700}
 .og-setup{margin:0 0 8px;font-weight:600}
+.og-exam-catbar::-webkit-scrollbar{height:6px}
+.og-exam-catbar::-webkit-scrollbar-thumb{background:#d7dbe3;border-radius:6px}
 @media (max-width: 1040px){
   .og-exam-grid{grid-template-columns:1fr !important}
-  .og-exam-side,.og-exam-nav{display:none !important}
+  .og-exam-nav{display:none !important}
   .og-exam-grid main{padding:18px 16px 50px !important}
 }
 `;
