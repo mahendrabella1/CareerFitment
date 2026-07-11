@@ -69,6 +69,18 @@ export interface AssessmentSummary {
   aptitudePct?: number | null;
 }
 
+/** In-progress exam, persisted so the user can resume after closing/re-login. */
+export interface ExamSession {
+  stage: string;
+  chosenSets: Record<string, string>;
+  answers: Record<string, string>;
+  review: Record<string, boolean>;
+  cur: number;
+  remainingSec: number;
+  status: "in_progress";
+  savedAt?: string;
+}
+
 export interface UserProfile {
   uid: string;
   name: string;
@@ -81,6 +93,7 @@ export interface UserProfile {
   clarity: string; // "current status" = one of the 4 clarity stages
   city?: string;
   age?: string;
+  examSession?: ExamSession | null;
   createdAt?: unknown;
   latestAssessment?: AssessmentSummary;
 }
@@ -108,6 +121,8 @@ interface AuthState {
   signIn: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   saveAssessment: (summary: AssessmentSummary) => Promise<void>;
+  saveExamSession: (session: ExamSession) => Promise<void>;
+  clearExamSession: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthState | null>(null);
@@ -212,9 +227,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfile((p) => (p ? { ...p, latestAssessment: summary } : p));
   }
 
+  async function saveExamSession(session: ExamSession) {
+    const db = getDb();
+    if (!db || !user) return;
+    await setDoc(doc(db, "users", user.uid), { examSession: session }, { merge: true });
+    setProfile((p) => (p ? { ...p, examSession: session } : p));
+  }
+  async function clearExamSession() {
+    const db = getDb();
+    if (!db || !user) return;
+    await setDoc(doc(db, "users", user.uid), { examSession: null }, { merge: true });
+    setProfile((p) => (p ? { ...p, examSession: null } : p));
+  }
+
   return (
     <AuthContext.Provider
-      value={{ ready: firebaseReady, loading, user, profile, register, signIn, logout, saveAssessment }}
+      value={{ ready: firebaseReady, loading, user, profile, register, signIn, logout, saveAssessment, saveExamSession, clearExamSession }}
     >
       {children}
     </AuthContext.Provider>

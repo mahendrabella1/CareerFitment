@@ -5,20 +5,25 @@ import {
   pickSets,
   getSet,
   stageForCategory,
+  type Category,
+  type StageKey,
 } from "@/lib/newAssessment/data";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
-  let body: { category?: string } = {};
+  let body: { category?: string; stage?: string; chosenSets?: Record<string, string> } = {};
   try {
     body = await req.json();
   } catch {
     /* empty body ok */
   }
-  const stage = stageForCategory(body.category || "");
-  const chosenSets = pickSets(stage);
+  // Resume: if a saved stage + chosenSets is supplied, reuse them so the user
+  // gets the exact same questions. Otherwise pick a fresh random set per category.
+  const stage = (body.stage as StageKey) || stageForCategory(body.category || "");
+  const resume = body.chosenSets && CATEGORY_ORDER.every((c) => body.chosenSets![c]);
+  const chosenSets = resume ? (body.chosenSets as Record<Category, string>) : pickSets(stage);
 
   const sections = CATEGORY_ORDER.map((cat) => {
     const raw = getSet(cat, stage, chosenSets[cat]);

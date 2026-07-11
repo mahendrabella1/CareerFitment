@@ -12,9 +12,16 @@
  * choose-one (text or SVG options), 1–10 slider, most/least, and open response.
  */
 
-import { Component, useEffect, useMemo, useState, type ReactNode } from "react";
+import { Component, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/lib/auth/AuthProvider";
+import { useAuth, type ExamSession } from "@/lib/auth/AuthProvider";
+
+const TOTAL_SEC = 90 * 60; // 90-minute exam
+const fmtTime = (s: number) => {
+  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = Math.max(0, s % 60);
+  const p = (n: number) => String(n).padStart(2, "0");
+  return h > 0 ? `${h}:${p(m)}:${p(sec)}` : `${p(m)}:${p(sec)}`;
+};
 import { Logo } from "@/app/Logo";
 import { Icon } from "@/app/Icons";
 
@@ -68,8 +75,8 @@ export default function NewExam(props: { category: string; name?: string; onExit
 
 function NewExamInner({ category, name, onExit }: { category: string; name?: string; onExit: () => void }) {
   const router = useRouter();
-  const { saveAssessment } = useAuth();
-  const [phase, setPhase] = useState<"loading" | "error" | "intro" | "exam" | "thanks">("loading");
+  const { saveAssessment, saveExamSession, clearExamSession, profile } = useAuth();
+  const [phase, setPhase] = useState<"loading" | "error" | "intro" | "resume" | "exam" | "thanks">("loading");
   const [data, setData] = useState<GenData | null>(null);
   const [cur, setCur] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -77,15 +84,40 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
   const [agree, setAgree] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [err, setErr] = useState("");
+  const [remainingSec, setRemainingSec] = useState(TOTAL_SEC);
+  const [saved, setSaved] = useState(false);
+  const inited = useRef(false);
 
+  // First load: resume a saved in-progress exam (same questions + remaining time)
+  // if one exists, otherwise generate a fresh random set.
   useEffect(() => {
+    if (inited.current) return;
+    inited.current = true;
+    const es = profile?.examSession;
+    const resume = !!(es && es.status === "in_progress" && es.chosenSets && Object.keys(es.chosenSets).length);
+    const body = resume ? { stage: es!.stage, chosenSets: es!.chosenSets } : { category };
     fetch("/api/new-assessment/generate", {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ category }),
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
     })
       .then((r) => r.json())
-      .then((j) => { if (j.success && j.data?.sections?.length) { setData(j.data); setPhase("intro"); } else { setErr(j.message || "Could not load the assessment."); setPhase("error"); } })
+      .then((j) => {
+        if (j.success && j.data?.sections?.length) {
+          setData(j.data);
+          if (resume && es) {
+            setAnswers(es.answers || {});
+            setReview(es.review || {});
+            setCur(es.cur || 0);
+            setRemainingSec(es.remainingSec ?? TOTAL_SEC);
+            setPhase("resume");
+          } else {
+            setRemainingSec(TOTAL_SEC);
+            setPhase("intro");
+          }
+        } else { setErr(j.message || "Could not load the assessment."); setPhase("error"); }
+      })
       .catch((e) => { setErr(String(e?.message || e)); setPhase("error"); });
-  }, [category]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Flatten every section into one ordered list (global question flow).
   const flat: Flat[] = useMemo(() => {
@@ -119,11 +151,64 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
   const go = (i: number) => { if (i >= 0 && i < total) { setCur(i); window.scrollTo(0, 0); } };
   const jumpToSection = (si: number) => { const idx = flat.findIndex((f) => f.si === si); if (idx >= 0) go(idx); };
 
+  // ---- persistence (resume) + 90-min timer ----
+  const stateRef = useRef({ data, answers, review, cur, remainingSec });
+  stateRef.current = { data, answers, review, cur, remainingSec };
+  function buildSession(): ExamSession | null {
+    const st = stateRef.current;
+    if (!st.data) return null;
+    return { stage: st.data.stage, chosenSets: st.data.chosenSets, answers: st.answers, review: st.review, cur: st.cur, remainingSec: st.remainingSec, status: "in_progress", savedAt: new Date().toISOString() };
+  }
+  function saveNow() { const s = buildSession(); if (s) void saveExamSession(s).catch(() => {}); }
+
+  useEffect(() => { // tick the clock while live
+    if (phase !== "exam") return;
+    const id = window.setInterval(() => setRemainingSec((s) => Math.max(0, s - 1)), 1000);
+    return () => window.clearInterval(id);
+  }, [phase]);
+  useEffect(() => { // auto-save every 20s
+    if (phase !== "exam") return;
+    const id = window.setInterval(() => saveNow(), 20000);
+    return () => window.clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
+  useEffect(() => { // save when moving between questions
+    if (phase === "exam") saveNow();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cur]);
+  const finishedRef = useRef(false);
+  useEffect(() => { // time up -> auto-submit
+    if (phase === "exam" && remainingSec <= 0 && !finishedRef.current) { finishedRef.current = true; void finish(); }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [remainingSec, phase]);
+
   async function startExam() {
     try { await document.documentElement.requestFullscreen?.(); } catch { /* best effort */ }
     setPhase("exam");
+    saveNow(); // persist immediately so a resume works even if they close right away
+  }
+  async function resumeExam() {
+    try { await document.documentElement.requestFullscreen?.(); } catch { /* best effort */ }
+    setPhase("exam");
+  }
+  async function restartExam() {
+    try { await clearExamSession(); } catch { /* ignore */ }
+    setPhase("loading");
+    try {
+      const r = await fetch("/api/new-assessment/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ category }) });
+      const j = await r.json();
+      if (j.success && j.data?.sections?.length) {
+        setData(j.data); setAnswers({}); setReview({}); setCur(0); setRemainingSec(TOTAL_SEC); setPhase("intro");
+      } else { setErr(j.message || "Could not load."); setPhase("error"); }
+    } catch (e) { setErr(String((e as Error)?.message || e)); setPhase("error"); }
+  }
+  function saveAndExit() {
+    saveNow();
+    setSaved(true);
+    window.setTimeout(() => setSaved(false), 1800);
   }
   function exitExam() {
+    if (phase === "exam") saveNow();
     try { if (document.fullscreenElement) void document.exitFullscreen(); } catch { /* ignore */ }
     onExit();
   }
@@ -138,6 +223,7 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
       const j = await res.json();
       if (!j.success) throw new Error(j.message || "Scoring failed");
       try { await saveAssessment(j.data); } catch { /* still continue */ }
+      try { await clearExamSession(); } catch { /* ignore */ }
       try { if (document.fullscreenElement) await document.exitFullscreen(); } catch { /* ignore */ }
       setPhase("thanks");
       setTimeout(() => router.push("/account"), 4200);
@@ -162,17 +248,34 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
       </div>
     );
 
+  if (phase === "resume" && data)
+    return (
+      <div style={S.introWrap}><style>{CSS}</style>
+        <div style={S.introCard}>
+          <div style={{ marginBottom: 14 }}><Logo height={30} /></div>
+          <h2 style={S.introTitle}>Welcome back{name ? `, ${name}` : ""} 👋</h2>
+          <p style={S.introSub}>You have an assessment in progress — pick up right where you left off.</p>
+          <div style={S.resumeStats}>
+            <div style={S.resumeStat}><div style={S.resumeStatN}>{answeredCount}/{requiredTotal}</div><div style={S.resumeStatL}>answered</div></div>
+            <div style={S.resumeStat}><div style={{ ...S.resumeStatN, color: remainingSec < 300 ? "#dc2626" : BLUE }}>{fmtTime(remainingSec)}</div><div style={S.resumeStatL}>time left</div></div>
+          </div>
+          <button style={{ ...S.primary, width: "100%" }} onClick={() => void resumeExam()}>Resume assessment →</button>
+          <button style={S.resumeRestart} onClick={() => void restartExam()}>Start over from the beginning</button>
+        </div>
+      </div>
+    );
+
   if (phase === "intro" && data)
     return (
       <div style={S.introWrap}><style>{CSS}</style>
         <div style={S.introCard}>
           <div style={{ marginBottom: 16 }}><Logo height={30} /></div>
           <h2 style={S.introTitle}>Before you begin</h2>
-          <p style={S.introSub}>{data.sections.length} sections · {requiredTotal} questions · about 25–30 minutes</p>
+          <p style={S.introSub}>{data.sections.length} sections · {requiredTotal} questions · up to <b>90 minutes</b></p>
           <ul style={S.introList}>
-            <li style={S.introItem}><span style={S.introIc}><Icon name="clusters" size={18} /></span><span>Questions are grouped into <b>8 categories</b>. Use the left rail or the navigator to move around freely.</span></li>
-            <li style={S.introItem}><span style={S.introIc}><Icon name="audio" size={18} /></span><span>Some questions include <b>visuals, data or audio</b> — use the <b>Play</b> button to listen where shown.</span></li>
-            <li style={S.introItem}><span style={S.introIc}><Icon name="info" size={18} /></span><span>Interest &amp; personality have <b>no wrong answers</b>. Strengths &amp; Aptitude do — take your time.</span></li>
+            <li style={S.introItem}><span style={S.introIc}><Icon name="clock" size={18} /></span><span>You have <b>90 minutes</b>. The timer runs at the top — it auto-submits when it reaches zero.</span></li>
+            <li style={S.introItem}><span style={S.introIc}><Icon name="clusters" size={18} /></span><span>Tap an answer and it <b>moves to the next question</b> automatically. Use the category bar or navigator to jump around.</span></li>
+            <li style={S.introItem}><span style={S.introIc}><Icon name="check" size={18} /></span><span><b>Save progress</b> any time — if you close and sign back in, you’ll resume from here with the same questions and time.</span></li>
             <li style={S.introItem}><span style={S.introIc}><Icon name="expand" size={18} /></span><span>The test opens in <b>full screen</b> for focus. You can exit any time.</span></li>
           </ul>
           <label style={S.agree}><input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} /> I’m ready to begin.</label>
@@ -194,13 +297,18 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
             <div><div style={S.topTitle}>Career Assessment</div><div style={S.topSub}>{requiredTotal} questions</div></div>
           </div>
           <div style={S.topMid}>
+            <Stat icon="clock" label="TIME LEFT" value={fmtTime(remainingSec)} danger={remainingSec < 300} />
+            <div style={S.topDiv} />
             <Stat icon="help" label="QUESTION" value={`${cur + 1} / ${total}`} />
             <div style={S.topDiv} />
             <Stat icon="check" label="ANSWERED" value={`${answeredCount}`} />
             <div style={S.topDiv} />
             <Stat icon="flag" label="MARKED" value={`${markedCount}`} />
           </div>
-          <button style={S.endBtn} onClick={exitExam}><Icon name="power" size={15} /> Exit</button>
+          <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+            <button style={{ ...S.saveBtn, ...(saved ? S.saveBtnOk : {}) }} onClick={saveAndExit}>{saved ? "Saved ✓" : "Save progress"}</button>
+            <button style={S.endBtn} onClick={exitExam}><Icon name="power" size={15} /> Exit</button>
+          </div>
         </header>
 
         {/* horizontal categories bar */}
@@ -298,11 +406,11 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
   return null;
 }
 
-function Stat({ icon, label, value }: { icon: string; label: string; value: string }) {
+function Stat({ icon, label, value, danger }: { icon: string; label: string; value: string; danger?: boolean }) {
   return (
     <div style={S.stat}>
-      <span style={S.statIc}><Icon name={icon} size={16} /></span>
-      <div><div style={S.statLabel}>{label}</div><div style={S.statVal}>{value}</div></div>
+      <span style={{ ...S.statIc, ...(danger ? { color: "#ff9d94" } : {}) }}><Icon name={icon} size={16} /></span>
+      <div><div style={S.statLabel}>{label}</div><div style={{ ...S.statVal, ...(danger ? { color: "#ff8f84" } : {}) }}>{value}</div></div>
     </div>
   );
 }
@@ -500,6 +608,8 @@ const S: Record<string, React.CSSProperties> = {
   statLabel: { fontSize: 9.5, letterSpacing: .6, color: "#9fb0d0", fontWeight: 700 },
   statVal: { fontSize: 14.5, fontWeight: 800, lineHeight: 1.1 },
   endBtn: { display: "flex", alignItems: "center", gap: 6, background: "rgba(224,86,79,.16)", border: "1px solid rgba(224,86,79,.5)", color: "#ffb4ae", fontSize: 13, fontWeight: 700, cursor: "pointer", padding: "8px 15px", borderRadius: 9 },
+  saveBtn: { background: "rgba(255,255,255,.12)", border: "1px solid rgba(255,255,255,.28)", color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer", padding: "8px 15px", borderRadius: 9, whiteSpace: "nowrap" },
+  saveBtnOk: { background: "rgba(34,197,94,.22)", borderColor: "rgba(34,197,94,.55)", color: "#bbf7d0" },
 
   // horizontal categories bar
   catBar: { flexShrink: 0, display: "flex", gap: 8, padding: "10px 20px", background: "#fff", borderBottom: `1px solid ${LINE}`, overflowX: "auto" },
@@ -635,6 +745,11 @@ const S: Record<string, React.CSSProperties> = {
   introIc: { color: BLUE, flexShrink: 0, marginTop: 1 },
   agree: { display: "flex", alignItems: "center", gap: 9, fontSize: 14, margin: "0 0 18px", cursor: "pointer" },
   primary: { padding: "13px 26px", background: BLUE, color: "#fff", border: "none", borderRadius: 11, fontSize: 15, fontWeight: 800, cursor: "pointer" },
+  resumeStats: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, margin: "0 0 20px" },
+  resumeStat: { background: "#f6f8fc", border: `1px solid ${LINE}`, borderRadius: 12, padding: "14px 16px", textAlign: "center" },
+  resumeStatN: { fontSize: 22, fontWeight: 800, color: INK },
+  resumeStatL: { fontSize: 12, color: MUTED, marginTop: 2 },
+  resumeRestart: { display: "block", width: "100%", background: "none", border: "none", color: MUTED, fontSize: 13, fontWeight: 600, cursor: "pointer", marginTop: 12, textDecoration: "underline" },
 
   thanks: { position: "fixed", inset: 0, zIndex: 1200, background: "linear-gradient(160deg,#eef2fe,#eef1f6)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", textAlign: "center", padding: 24 },
   check: { width: 92, height: 92, borderRadius: "50%", margin: "0 auto 18px", background: "linear-gradient(135deg,#16a34a,#22c55e)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 14px 34px rgba(22,163,74,.35)" },
