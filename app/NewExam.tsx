@@ -416,14 +416,14 @@ function MediaBlock({ media }: { media: Media }) {
     return (
       <div style={{ ...S.mGrid, gridTemplateColumns: `repeat(${cols}, 1fr)` }}>
         {(media.cells ?? []).map((c, i) => typeof c === "string" && c.startsWith("<svg")
-          ? <div key={i} style={S.mCell} dangerouslySetInnerHTML={{ __html: c }} />
+          ? <div key={i} className="og-mcell" style={S.mCell} dangerouslySetInnerHTML={{ __html: c }} />
           : <div key={i} style={{ ...S.mCell, ...S.mQ }}>?</div>)}
       </div>
     );
   }
   if (media.type === "sequence")
-    return <div style={S.mSeq}>{(media.items ?? []).filter((c) => typeof c === "string").map((c, i) => <div key={i} style={S.mCell} dangerouslySetInnerHTML={{ __html: c }} />)}<div style={{ ...S.mCell, ...S.mQ }}>?</div></div>;
-  if (media.type === "figure") return <div style={S.mFigure} dangerouslySetInnerHTML={{ __html: media.svg || "" }} />;
+    return <div style={S.mSeq}>{(media.items ?? []).filter((c) => typeof c === "string").map((c, i) => <div key={i} className="og-mcell" style={S.mCell} dangerouslySetInnerHTML={{ __html: c }} />)}<div style={{ ...S.mCell, ...S.mQ }}>?</div></div>;
+  if (media.type === "figure") return <div className="og-mfig" style={S.mFigure} dangerouslySetInnerHTML={{ __html: media.svg || "" }} />;
   if (media.type === "html") return <div style={S.mHtml} dangerouslySetInnerHTML={{ __html: media.html || "" }} />;
   if (media.type === "passage") return <blockquote style={S.mPassage}>{media.text}</blockquote>;
   if (media.type === "tts") return <AudioQuestion text={media.text} />;
@@ -529,7 +529,7 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
           return (
             <button key={i} style={{ ...S.svgChoice, ...(sel ? S.svgChoiceOn : {}) }} onMouseDown={(e) => e.preventDefault()} onClick={() => onChange(String(i))}>
               <span style={{ ...S.radio, ...(sel ? S.radioOn : {}) }}>{sel && <span style={S.radioDot} />}</span>
-              <span style={S.svgHolder} dangerouslySetInnerHTML={{ __html: o || "" }} />
+              <span className="og-svgh" style={S.svgHolder} dangerouslySetInnerHTML={{ __html: o || "" }} />
             </button>
           );
         })}
@@ -646,11 +646,11 @@ const S: Record<string, React.CSSProperties> = {
   tapHint: { textAlign: "center", fontSize: 13, color: "#94a3b8", marginTop: 16 },
   optTag: { color: "#9aa1ad", fontWeight: 500, fontStyle: "italic" },
 
-  mGrid: { display: "grid", gap: 8, maxWidth: 380, margin: "0 0 16px", background: "#fafbfc", padding: 10, borderRadius: 12, border: `1px solid ${LINE}` },
-  mSeq: { display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", marginBottom: 16, background: "#fafbfc", padding: 10, borderRadius: 12, border: `1px solid ${LINE}` },
-  mCell: { background: "#fff", border: `1px solid ${LINE}`, borderRadius: 8, display: "grid", placeItems: "center", minHeight: 84, overflow: "hidden" },
-  mQ: { fontSize: 30, fontWeight: 800, color: "#c2c7d0" },
-  mFigure: { display: "flex", justifyContent: "center", marginBottom: 16, background: "#fafbfc", padding: 12, borderRadius: 12, border: `1px solid ${LINE}` },
+  mGrid: { display: "grid", gap: 6, maxWidth: 270, margin: "0 0 16px", background: "#fafbfc", padding: 8, borderRadius: 12, border: `1px solid ${LINE}` },
+  mSeq: { display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap", marginBottom: 16, background: "#fafbfc", padding: 8, borderRadius: 12, border: `1px solid ${LINE}` },
+  mCell: { background: "#fff", border: `1px solid ${LINE}`, borderRadius: 6, display: "grid", placeItems: "center", minHeight: 58, overflow: "hidden", padding: 2 },
+  mQ: { fontSize: 22, fontWeight: 800, color: "#c2c7d0" },
+  mFigure: { display: "flex", justifyContent: "center", marginBottom: 16, background: "#fafbfc", padding: 10, borderRadius: 12, border: `1px solid ${LINE}` },
   mHtml: { marginBottom: 16, overflowX: "auto", fontSize: 14 },
   mPassage: { margin: "0 0 16px", padding: "12px 16px", borderLeft: `3px solid ${BLUE}`, background: BLUE_SOFT, borderRadius: "0 10px 10px 0", fontSize: 14.5, lineHeight: 1.6, color: "#334155" },
   mImage: { maxWidth: "100%", borderRadius: 12, marginBottom: 16, border: `1px solid ${LINE}` },
@@ -680,10 +680,10 @@ const S: Record<string, React.CSSProperties> = {
   abOn: { background: BLUE, borderColor: BLUE, color: "#fff" },
   ck: { color: BLUE, display: "grid", placeItems: "center" },
 
-  svgChoices: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: 10 },
-  svgChoice: { display: "flex", flexDirection: "column", alignItems: "center", gap: 6, padding: "12px", border: `1.5px solid ${LINE}`, borderRadius: 12, background: "#fff", cursor: "pointer" },
+  svgChoices: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(84px, 1fr))", gap: 8, maxWidth: 520 },
+  svgChoice: { display: "flex", flexDirection: "column", alignItems: "center", gap: 6, padding: "8px", border: `1.5px solid ${LINE}`, borderRadius: 10, background: "#fff", cursor: "pointer" },
   svgChoiceOn: { borderColor: BLUE, background: BLUE_SOFT },
-  svgHolder: { display: "grid", placeItems: "center" },
+  svgHolder: { display: "grid", placeItems: "center", width: "100%" },
 
   sliderTop: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 },
   sliderEnd: { fontSize: 12, color: "#94a3b8", fontWeight: 600 },
@@ -765,6 +765,9 @@ const CSS = `
 .og-exam-grid button:focus-visible{outline:none;box-shadow:0 0 0 2px ${ACCENT}44}
 .og-opt{transition:background .12s ease;background:transparent}
 .og-opt:hover{background:#f7f9fc}
+/* scale visual (SVG) matrix cells + options to fit — no giant grids / scrolling */
+.og-exam-grid .og-mcell svg,.og-exam-grid .og-svgh svg{width:100% !important;height:auto !important;display:block}
+.og-exam-grid .og-mfig svg{max-width:200px !important;height:auto !important;display:block}
 @media (max-width: 1040px){
   .og-exam-grid{grid-template-columns:1fr !important}
   .og-exam-nav{display:none !important}
