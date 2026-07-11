@@ -383,12 +383,14 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
               <span style={S.legItem}><i style={{ ...S.dot, background: AMBER }} /> Review</span>
               <span style={S.legItem}><i style={{ ...S.dot, background: "#cbd2dd" }} /> Pending</span>
             </div>
-            <div style={S.navGrid}>
-              {flat.map((f, i) => {
-                const ans = isAnswered(f), rev = review[f.id], isCur = i === cur;
-                const st = isCur ? S.navCur : rev ? S.navRev : ans ? S.navAns : S.navPend;
-                return <button key={f.id} onClick={() => go(i)} style={{ ...S.navCell, ...st }}>{i + 1}</button>;
-              })}
+            <div style={S.navScroll} className="og-nav-scroll">
+              <div style={S.navGrid}>
+                {flat.map((f, i) => {
+                  const ans = isAnswered(f), rev = review[f.id], isCur = i === cur;
+                  const st = isCur ? S.navCur : rev ? S.navRev : ans ? S.navAns : S.navPend;
+                  return <button key={f.id} onMouseDown={(e) => e.preventDefault()} onClick={() => go(i)} style={{ ...S.navCell, ...st }}>{i + 1}</button>;
+                })}
+              </div>
             </div>
           </aside>
         </div>
@@ -710,11 +712,12 @@ const S: Record<string, React.CSSProperties> = {
   hint: { fontSize: 12.5, color: "#9aa1ad", textAlign: "right", marginTop: 10 },
   err: { marginTop: 14, background: "#fbeaea", border: "1px solid #e5b3ae", color: "#a83e38", padding: "10px 14px", borderRadius: 10, fontSize: 13.5, fontWeight: 600 },
 
-  nav: { background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: "18px 16px", overflowY: "auto", margin: "22px 22px 22px 6px", boxShadow: "0 2px 12px rgba(20,20,40,.04)", alignSelf: "start" },
-  navTitle: { fontSize: 15, fontWeight: 800, color: INK, marginBottom: 14 },
-  legend: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "9px 10px", marginBottom: 16 },
+  nav: { background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: "18px 16px", margin: "22px 22px 22px 6px", boxShadow: "0 2px 12px rgba(20,20,40,.04)", display: "flex", flexDirection: "column", overflow: "hidden", minHeight: 0 },
+  navTitle: { fontSize: 15, fontWeight: 800, color: INK, marginBottom: 14, flexShrink: 0 },
+  legend: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "9px 10px", marginBottom: 16, flexShrink: 0 },
   legItem: { display: "flex", alignItems: "center", gap: 7, fontSize: 12.5, color: MUTED },
-  navGrid: { display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 },
+  navScroll: { overflowY: "auto", minHeight: 0, flex: 1, margin: "0 -4px", padding: "0 4px" },
+  navGrid: { display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8, paddingBottom: 4 },
   navCell: { aspectRatio: "1", display: "grid", placeItems: "center", borderRadius: 8, fontSize: 13, fontWeight: 700, border: "1px solid transparent", cursor: "pointer", padding: 0 },
   navPend: { background: "#f1f5f9", color: "#94a3b8" },
   navAns: { background: GREEN_SOFT, color: "#15803d", borderColor: "#c9ebd5" },
@@ -759,6 +762,8 @@ const CSS = `
 .og-setup{margin:0 0 8px;font-weight:600}
 .og-exam-catbar::-webkit-scrollbar{height:6px}
 .og-exam-catbar::-webkit-scrollbar-thumb{background:#d7dbe3;border-radius:6px}
+.og-nav-scroll::-webkit-scrollbar{width:6px}
+.og-nav-scroll::-webkit-scrollbar-thumb{background:#d7dbe3;border-radius:6px}
 /* no black focus ring on click; keep a subtle ring for keyboard users */
 .og-exam-grid button{-webkit-tap-highlight-color:transparent}
 .og-exam-grid button:focus{outline:none}
