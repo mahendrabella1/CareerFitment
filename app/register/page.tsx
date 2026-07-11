@@ -114,7 +114,7 @@ export default function RegisterPage() {
               <h2 style={S.h}>Select your milestone.</h2>
               <label style={S.floatLabel}>Your name</label>
               <div style={S.underWrap}>
-                <input style={S.underInput} value={f.name} onChange={(e) => set("name", e.target.value)} placeholder="Type your full name" autoFocus />
+                <input style={S.underInput} value={f.name} onChange={(e) => set("name", e.target.value)} placeholder="Type your full name" />
                 {nameOk && <span style={S.okTick}>✓</span>}
               </div>
               {touched && !nameOk && <div style={S.err}>Please enter your name.</div>}
@@ -124,18 +124,18 @@ export default function RegisterPage() {
                 {MILESTONES.map((m) => {
                   const sel = f.category === m.value;
                   return (
-                    <button key={m.value} onClick={() => set("category", m.value)} style={{ ...S.mCard, ...(sel ? { borderColor: m.color, boxShadow: `0 0 0 3px ${m.soft}` } : {}) }}>
-                      <span style={{ ...S.mIcon, background: m.soft, color: m.color, ...(sel ? { boxShadow: `0 6px 16px ${m.soft}` } : {}) }}><Icon name={m.icon} size={21} stroke={1.6} /></span>
-                      <span style={S.mLabel}>{m.label}</span>
-                      {sel && <span style={{ ...S.mSel, background: m.color }}>✓</span>}
+                    <button key={m.value} onClick={() => set("category", m.value)} style={{ ...S.mCard, ...(sel ? { borderColor: m.color, boxShadow: `0 0 0 3px ${m.color}22`, background: "#fff" } : {}) }}>
+                      <span style={{ ...S.mIcon, ...(sel ? { background: m.soft, color: m.color } : { background: "#f1f3f7", color: "#9aa3b2" }) }}><Icon name={m.icon} size={21} stroke={1.6} /></span>
+                      <span style={{ ...S.mLabel, ...(sel ? { color: m.color } : {}) }}>{m.label}</span>
                     </button>
                   );
                 })}
               </div>
+              {touched && !f.category && <div style={S.err}>Please select one option above.</div>}
 
               <div style={S.footer}>
                 <Link href="/signin" style={S.ghostBtn}>Existing user login</Link>
-                <button style={{ ...S.next, ...(step0Ok ? {} : S.disabled) }} disabled={!step0Ok} onClick={() => setStep(1)}>Next →</button>
+                <button style={S.next} onClick={() => { if (step0Ok) { setTouched(false); setStep(1); } else setTouched(true); }}>Next →</button>
               </div>
             </>
           ) : step === 1 ? (
@@ -149,16 +149,16 @@ export default function RegisterPage() {
                   const sel = f.clarity === c.value;
                   return (
                     <button key={c.value} onClick={() => set("clarity", c.value)} className="rin" style={{ ...S.sCard, animationDelay: `${i * 70}ms`, ...(sel ? { borderColor: c.color, boxShadow: `0 0 0 3px ${c.color}22` } : {}) }}>
-                      <span style={{ ...S.sIcon, color: sel ? c.color : "#94a3b8" }}><Icon name={c.icon} size={21} stroke={1.6} /></span>
-                      <span style={S.sLabel}>{c.label}</span>
-                      {sel && <span style={{ ...S.mSel, background: c.color }}>✓</span>}
+                      <span style={{ ...S.sIcon, color: sel ? c.color : "#9aa3b2", ...(sel ? { borderColor: c.color } : {}) }}><Icon name={c.icon} size={21} stroke={1.6} /></span>
+                      <span style={{ ...S.sLabel, ...(sel ? { color: c.color, fontWeight: 700 } : {}) }}>{c.label}</span>
                     </button>
                   );
                 })}
               </div>
+              {touched && !f.clarity && <div style={S.err}>Please choose one option above.</div>}
               <div style={S.footer}>
-                <button style={S.ghostBtn} onClick={() => setStep(0)}>← Back</button>
-                <button style={{ ...S.next, ...(step1Ok ? {} : S.disabled) }} disabled={!step1Ok} onClick={() => setStep(2)}>Next →</button>
+                <button style={S.ghostBtn} onClick={() => { setTouched(false); setStep(0); }}>← Back</button>
+                <button style={S.next} onClick={() => { if (step1Ok) { setTouched(false); setStep(2); } else setTouched(true); }}>Next →</button>
               </div>
             </>
           ) : (
@@ -169,7 +169,7 @@ export default function RegisterPage() {
               {error && <div style={S.errorBox}>{error}</div>}
 
               <div style={S.grid2} className="og-g2">
-                <Field label="Email" value={f.email} onChange={(v) => set("email", v)} ok={emailOk} touched={touched} type="email" placeholder="you@email.com" autoFocus />
+                <Field label="Email" value={f.email} onChange={(v) => set("email", v)} ok={emailOk} touched={touched} type="email" placeholder="you@email.com" />
               </div>
 
               {emailOk && (
@@ -202,8 +202,8 @@ export default function RegisterPage() {
               )}
 
               <div style={S.footer}>
-                <button style={S.ghostBtn} onClick={() => setStep(1)}>← Back</button>
-                <button style={{ ...S.next, ...(step2Ok && !submitting ? {} : S.disabled) }} disabled={!step2Ok || submitting} onClick={() => void submit()}>
+                <button style={S.ghostBtn} onClick={() => { setTouched(false); setStep(1); }}>← Back</button>
+                <button style={{ ...S.next, ...(submitting ? S.disabled : {}) }} disabled={submitting} onClick={() => void submit()}>
                   {submitting ? "Creating…" : "Start →"}
                 </button>
               </div>
