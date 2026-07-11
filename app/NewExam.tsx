@@ -108,6 +108,14 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
   const allDone = answeredCount >= requiredTotal;
 
   const set = (id: string, v: string) => setAnswers((a) => ({ ...a, [id]: v }));
+  // Single-select answers auto-advance to the next question (fast exam feel).
+  const AUTO_TYPES = ["yesno", "choice5", "choice4", "vark", "mcq", "mostleast"];
+  function answer(qq: { id: string; type: string }, v: string) {
+    set(qq.id, v);
+    if (AUTO_TYPES.includes(qq.type) && cur < total - 1) {
+      window.setTimeout(() => { setCur((c) => Math.min(total - 1, c + 1)); window.scrollTo(0, 0); }, 240);
+    }
+  }
   const go = (i: number) => { if (i >= 0 && i < total) { setCur(i); window.scrollTo(0, 0); } };
   const jumpToSection = (si: number) => { const idx = flat.findIndex((f) => f.si === si); if (idx >= 0) go(idx); };
 
@@ -233,19 +241,21 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
                 <span style={S.catIcon}><Icon name={q.cat} size={30} stroke={1.5} /></span>
               </div>
 
-              <div style={S.qCard}>
+              <div style={S.qCard} className="og-qcard">
                 <div style={S.qText}>{q.text}{q.optional && <em style={S.optTag}> (optional)</em>}</div>
                 {q.media && <MediaBlock media={q.media} />}
-                <QuestionInput q={q} value={answers[q.id] ?? ""} onChange={(v) => set(q.id, v)} />
+                <QuestionInput q={q} value={answers[q.id] ?? ""} onChange={(v) => answer(q, v)} />
               </div>
 
               <div style={S.actions}>
                 <button style={{ ...S.ghost, ...(cur === 0 ? S.disabled : {}) }} disabled={cur === 0} onClick={() => go(cur - 1)}><Icon name="chevronLeft" size={16} /> Previous</button>
-                <button style={S.clearBtn} onClick={() => setAnswers((a) => { const n = { ...a }; delete n[q.id]; return n; })}><Icon name="xcircle" size={15} /> Clear response</button>
-                {cur < total - 1 ? (
-                  <button style={S.next} onClick={() => go(cur + 1)}>Next question <Icon name="chevronRight" size={16} /></button>
-                ) : (
+                <div style={{ flex: 1 }} />
+                {cur === total - 1 ? (
                   <button style={{ ...S.finish, ...(allDone && !submitting ? {} : S.disabled) }} disabled={!allDone || submitting} onClick={() => void finish()}>{submitting ? "Scoring…" : "Finish & see report"}</button>
+                ) : (q.type === "slider" || q.type === "open") ? (
+                  <button style={S.next} onClick={() => go(cur + 1)}>Next <Icon name="chevronRight" size={16} /></button>
+                ) : (
+                  <span style={S.autoHint}>Tap an answer to continue →</span>
                 )}
               </div>
               {!allDone && cur === total - 1 && <div style={S.hint}>Answer all {requiredTotal} questions to finish ({notAnswered} left).</div>}
@@ -514,8 +524,9 @@ const S: Record<string, React.CSSProperties> = {
   nowLabel: { display: "flex", alignItems: "center", gap: 5, fontSize: 11, fontWeight: 700, color: "#94a3b8" },
   nowVal: { fontSize: 13.5, fontWeight: 800, color: BLUE },
 
-  main: { minWidth: 0, overflowY: "auto", padding: "22px 30px 50px" },
-  mainInner: { maxWidth: 800, margin: "0 auto" },
+  main: { minWidth: 0, overflowY: "auto", padding: "22px 34px 50px" },
+  mainInner: { maxWidth: 760, margin: 0 },
+  autoHint: { fontSize: 12.5, color: "#9aa1ad", fontWeight: 600 },
   qTopRow: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 },
   qPill: { background: BLUE, color: "#fff", fontSize: 12.5, fontWeight: 700, padding: "6px 14px", borderRadius: 999 },
   reviewBtn: { display: "flex", alignItems: "center", gap: 6, background: "#fff", border: `1px solid ${LINE}`, color: MUTED, fontSize: 12.5, fontWeight: 700, cursor: "pointer", padding: "6px 12px", borderRadius: 9 },
@@ -529,8 +540,8 @@ const S: Record<string, React.CSSProperties> = {
   catBlurb: { fontSize: 13, color: MUTED, lineHeight: 1.5 },
   catIcon: { flexShrink: 0, width: 52, height: 52, borderRadius: 13, background: BLUE_SOFT, color: BLUE, display: "grid", placeItems: "center" },
 
-  qCard: { background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: "22px 24px", boxShadow: "0 1px 3px rgba(20,20,40,.04)" },
-  qText: { fontSize: 16, fontWeight: 700, lineHeight: 1.5, color: INK, marginBottom: 18 },
+  qCard: { background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: "24px 26px", boxShadow: "0 2px 10px rgba(20,20,40,.05)" },
+  qText: { fontSize: 17.5, fontWeight: 700, lineHeight: 1.5, color: INK, marginBottom: 20 },
   optTag: { color: "#9aa1ad", fontWeight: 500, fontStyle: "italic" },
 
   mGrid: { display: "grid", gap: 8, maxWidth: 380, margin: "0 0 16px", background: "#fafbfc", padding: 10, borderRadius: 12, border: `1px solid ${LINE}` },
@@ -642,6 +653,11 @@ const CSS = `
 .og-setup{margin:0 0 8px;font-weight:600}
 .og-exam-catbar::-webkit-scrollbar{height:6px}
 .og-exam-catbar::-webkit-scrollbar-thumb{background:#d7dbe3;border-radius:6px}
+/* no black focus ring on click; keep a subtle ring for keyboard users */
+.og-exam-catbar button:focus,.og-qcard button:focus,.og-exam-grid a:focus{outline:none}
+.og-qcard button:focus-visible{box-shadow:0 0 0 2px ${BLUE}66}
+.og-qcard button{transition:transform .1s ease,box-shadow .15s ease}
+.og-qcard button:hover:not(:disabled){transform:translateY(-1px)}
 @media (max-width: 1040px){
   .og-exam-grid{grid-template-columns:1fr !important}
   .og-exam-nav{display:none !important}
