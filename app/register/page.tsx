@@ -219,7 +219,7 @@ export default function RegisterPage() {
         )}
       </div>
 
-      <div style={S.brand}><Logo height={30} mono /></div>
+      <div style={S.brand}><span style={S.brandChip}><Logo height={26} /></span></div>
     </div>
   );
 }
@@ -242,7 +242,8 @@ const S: Record<string, React.CSSProperties> = {
   page: { position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px", fontFamily: "'Poppins', Inter, system-ui, sans-serif", background: `url(${BG}) center/cover fixed` },
   overlay: { position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(20,26,44,.62), rgba(20,26,44,.72))" },
   home: { position: "absolute", top: 20, right: 20, zIndex: 3, background: NAVY, color: "#fff", textDecoration: "none", fontSize: 12.5, fontWeight: 700, letterSpacing: .5, padding: "9px 20px", borderRadius: 8, border: "1px solid rgba(255,255,255,.25)" },
-  brand: { position: "absolute", bottom: 16, left: 0, right: 0, display: "flex", justifyContent: "center", zIndex: 2, opacity: .9 },
+  brand: { position: "absolute", bottom: 16, left: 0, right: 0, display: "flex", justifyContent: "center", zIndex: 2 },
+  brandChip: { background: "#fff", borderRadius: 8, padding: "6px 12px", display: "inline-flex", boxShadow: "0 6px 16px rgba(0,0,0,.2)" },
 
   card: { position: "relative", zIndex: 2, width: "100%", maxWidth: 840, background: "#fff", borderRadius: 14, boxShadow: "0 26px 70px rgba(0,0,0,.34)", overflow: "hidden" },
   tabs: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", background: "#f3f4f7" },

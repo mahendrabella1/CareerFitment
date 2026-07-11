@@ -16,6 +16,13 @@ import { Component, useEffect, useMemo, useRef, useState, type ReactNode } from 
 import { useRouter } from "next/navigation";
 import { useAuth, type ExamSession } from "@/lib/auth/AuthProvider";
 
+// Short chip labels so all 8 categories fit the bar without horizontal scroll.
+const SHORT_CAT: Record<string, string> = {
+  personality: "Personality", career_interest: "Interests", multiple_intelligence: "Intelligences",
+  emotional_intelligence: "Emotional", learning_styles: "Learning", motivators: "Motivators",
+  strengths: "Strengths", aptitude: "Aptitude",
+};
+
 const TOTAL_SEC = 90 * 60; // 90-minute exam
 const fmtTime = (s: number) => {
   const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = Math.max(0, s % 60);
@@ -293,7 +300,7 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
         {/* top bar */}
         <header style={S.top}>
           <div style={S.topLeft}>
-            <span style={S.topLogo}><Logo height={24} mono /></span>
+            <span style={S.topLogo}><Logo height={26} /></span>
             <div><div style={S.topTitle}>Career Assessment</div><div style={S.topSub}>{requiredTotal} questions</div></div>
           </div>
           <div style={S.topMid}>
@@ -319,9 +326,9 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
             const done = a === qs.length;
             const activeSec = q.si === si;
             return (
-              <button key={s.category} onClick={() => jumpToSection(si)} style={{ ...S.catChip, ...(activeSec ? S.catChipOn : {}) }}>
-                <span style={{ display: "flex", flexShrink: 0, color: activeSec ? BLUE : done ? GREEN : "#9aa3b2" }}><Icon name={s.category} size={16} /></span>
-                <span style={S.catChipName}>{s.title}</span>
+              <button key={s.category} title={s.title} onClick={() => jumpToSection(si)} style={{ ...S.catChip, ...(activeSec ? S.catChipOn : {}) }}>
+                <span style={{ display: "flex", flexShrink: 0, color: activeSec ? BLUE : done ? GREEN : "#9aa3b2" }}><Icon name={s.category} size={15} /></span>
+                <span style={S.catChipName}>{SHORT_CAT[s.category] || s.title}</span>
                 <span style={{ ...S.catChipBadge, ...(done ? S.catChipBadgeDone : activeSec ? S.catChipBadgeOn : {}) }}>{done ? "✓" : `${a}/${qs.length}`}</span>
               </button>
             );
@@ -340,13 +347,9 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
               </div>
               <div style={S.progOuter}><div style={{ ...S.progFill, width: `${pct}%` }} /></div>
 
-              <div style={S.catCard}>
-                <div style={{ flex: 1 }}>
-                  <div style={S.catKicker}>Current category</div>
-                  <div style={S.catTitle}>{q.catTitle}</div>
-                  <div style={S.catBlurb}>{q.catBlurb}</div>
-                </div>
-                <span style={S.catIcon}><Icon name={q.cat} size={30} stroke={1.5} /></span>
+              <div style={S.qCatLine}>
+                <span style={S.qCatIc}><Icon name={q.cat} size={14} /></span>
+                <span style={S.qCatName}>{q.catTitle}</span>
               </div>
 
               <div style={S.qCard} className="og-qcard">
@@ -598,7 +601,7 @@ const S: Record<string, React.CSSProperties> = {
   // top bar
   top: { flexShrink: 0, background: NAVY, color: "#fff", padding: "10px 18px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 },
   topLeft: { display: "flex", alignItems: "center", gap: 11 },
-  topLogo: { background: "rgba(255,255,255,.1)", borderRadius: 9, padding: "6px 8px", display: "grid", placeItems: "center" },
+  topLogo: { background: "#fff", borderRadius: 8, padding: "6px 10px", display: "grid", placeItems: "center" },
   topTitle: { fontSize: 15, fontWeight: 800 },
   topSub: { fontSize: 11.5, color: "#9fb0d0" },
   topMid: { display: "flex", alignItems: "center", gap: 14, background: "rgba(255,255,255,.07)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 12, padding: "7px 16px" },
@@ -611,12 +614,12 @@ const S: Record<string, React.CSSProperties> = {
   saveBtn: { background: "rgba(255,255,255,.12)", border: "1px solid rgba(255,255,255,.28)", color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer", padding: "8px 15px", borderRadius: 9, whiteSpace: "nowrap" },
   saveBtnOk: { background: "rgba(34,197,94,.22)", borderColor: "rgba(34,197,94,.55)", color: "#bbf7d0" },
 
-  // horizontal categories bar
-  catBar: { flexShrink: 0, display: "flex", gap: 8, padding: "10px 20px", background: "#fff", borderBottom: `1px solid ${LINE}`, overflowX: "auto" },
-  catChip: { display: "flex", alignItems: "center", gap: 8, flexShrink: 0, padding: "8px 13px", border: `1px solid ${LINE}`, borderRadius: 999, background: "#fff", cursor: "pointer", whiteSpace: "nowrap" },
-  catChipOn: { background: BLUE_SOFT, borderColor: "#c7d5f5", boxShadow: `0 0 0 1px ${BLUE}44` },
-  catChipName: { fontSize: 13, fontWeight: 700, color: INK },
-  catChipBadge: { fontSize: 11, fontWeight: 800, color: "#94a3b8", background: "#f1f3f7", borderRadius: 6, padding: "1px 7px", minWidth: 22, textAlign: "center" },
+  // horizontal categories bar — 8 equal chips that fit the width (no scroll)
+  catBar: { flexShrink: 0, display: "flex", gap: 6, padding: "9px 16px", background: "#fff", borderBottom: `1px solid ${LINE}` },
+  catChip: { flex: "1 1 0", minWidth: 0, display: "flex", alignItems: "center", justifyContent: "center", gap: 7, padding: "8px 8px", border: `1px solid ${LINE}`, borderRadius: 10, background: "#fff", cursor: "pointer" },
+  catChipOn: { background: BLUE_SOFT, borderColor: "#c7d5f5", boxShadow: `0 0 0 1px ${BLUE}33` },
+  catChipName: { fontSize: 12.5, fontWeight: 700, color: INK, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" },
+  catChipBadge: { flexShrink: 0, fontSize: 10.5, fontWeight: 800, color: "#94a3b8", background: "#f1f3f7", borderRadius: 6, padding: "1px 6px", minWidth: 20, textAlign: "center" },
   catChipBadgeOn: { background: "#dce4fb", color: BLUE },
   catChipBadgeDone: { background: "#dcfce7", color: "#15803d" },
 
@@ -649,9 +652,12 @@ const S: Record<string, React.CSSProperties> = {
   catTitle: { fontSize: 17, fontWeight: 800, margin: "3px 0 2px", color: INK },
   catBlurb: { fontSize: 13, color: MUTED, lineHeight: 1.5 },
   catIcon: { flexShrink: 0, width: 52, height: 52, borderRadius: 13, background: BLUE_SOFT, color: BLUE, display: "grid", placeItems: "center" },
+  qCatLine: { display: "flex", alignItems: "center", gap: 7, marginBottom: 12 },
+  qCatIc: { color: BLUE, display: "flex" },
+  qCatName: { fontSize: 12, fontWeight: 800, textTransform: "uppercase", letterSpacing: .8, color: BLUE },
 
-  qCard: { background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: "24px 26px", boxShadow: "0 2px 10px rgba(20,20,40,.05)" },
-  qText: { fontSize: 17.5, fontWeight: 700, lineHeight: 1.5, color: INK, marginBottom: 20 },
+  qCard: { background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: "26px 28px", boxShadow: "0 2px 10px rgba(20,20,40,.05)" },
+  qText: { fontSize: 20, fontWeight: 700, lineHeight: 1.45, color: INK, marginBottom: 22 },
   optTag: { color: "#9aa1ad", fontWeight: 500, fontStyle: "italic" },
 
   mGrid: { display: "grid", gap: 8, maxWidth: 380, margin: "0 0 16px", background: "#fafbfc", padding: 10, borderRadius: 12, border: `1px solid ${LINE}` },
@@ -682,13 +688,13 @@ const S: Record<string, React.CSSProperties> = {
   barVal: { width: 32, textAlign: "right", fontWeight: 700, color: INK },
 
   optRow: { display: "flex", gap: 10 },
-  pill: { flex: 1, padding: "13px", border: `1.5px solid ${LINE}`, borderRadius: 11, background: "#fff", fontWeight: 700, fontSize: 15, cursor: "pointer", color: "#475569" },
+  pill: { flex: 1, padding: "11px", border: `1.5px solid ${LINE}`, borderRadius: 10, background: "#fff", fontWeight: 700, fontSize: 14, cursor: "pointer", color: "#475569" },
   pillOn: { borderColor: BLUE, background: BLUE_SOFT, color: BLUE },
 
-  choices: { display: "flex", flexDirection: "column", gap: 9 },
-  choice: { display: "flex", alignItems: "center", gap: 12, textAlign: "left", padding: "13px 15px", border: `1.5px solid ${LINE}`, borderRadius: 12, background: "#fff", cursor: "pointer", fontSize: 15, lineHeight: 1.45, color: "#334155" },
+  choices: { display: "flex", flexDirection: "column", gap: 8 },
+  choice: { display: "flex", alignItems: "center", gap: 11, textAlign: "left", padding: "11px 14px", border: `1.5px solid ${LINE}`, borderRadius: 10, background: "#fff", cursor: "pointer", fontSize: 14, lineHeight: 1.4, color: "#3a4356" },
   choiceOn: { borderColor: BLUE, background: BLUE_SOFT },
-  ab: { flexShrink: 0, width: 28, height: 28, borderRadius: "50%", border: "1.5px solid #cdced8", display: "grid", placeItems: "center", fontWeight: 700, fontSize: 12.5, color: MUTED },
+  ab: { flexShrink: 0, width: 25, height: 25, borderRadius: "50%", border: "1.5px solid #cdced8", display: "grid", placeItems: "center", fontWeight: 700, fontSize: 12, color: MUTED },
   abOn: { background: BLUE, borderColor: BLUE, color: "#fff" },
   ck: { color: BLUE, display: "grid", placeItems: "center" },
 
@@ -705,7 +711,7 @@ const S: Record<string, React.CSSProperties> = {
 
   mlWrap: { display: "flex", flexDirection: "column", gap: 9 },
   mlRow: { display: "flex", alignItems: "center", gap: 12, border: `1px solid ${LINE}`, borderRadius: 12, padding: "10px 14px" },
-  mlText: { flex: 1, fontSize: 15, color: "#334155", lineHeight: 1.45 },
+  mlText: { flex: 1, fontSize: 14, color: "#3a4356", lineHeight: 1.4 },
   mlBtns: { display: "flex", gap: 6, flexShrink: 0 },
   mlBtn: { padding: "6px 13px", borderRadius: 8, border: `1px solid ${LINE}`, background: "#fff", fontSize: 12, fontWeight: 700, cursor: "pointer", color: MUTED },
   mlMost: { background: "#dcfce7", borderColor: GREEN, color: "#15803d" },
@@ -777,5 +783,9 @@ const CSS = `
   .og-exam-grid{grid-template-columns:1fr !important}
   .og-exam-nav{display:none !important}
   .og-exam-grid main{padding:18px 16px 50px !important}
+}
+@media (max-width: 760px){
+  .og-exam-catbar{overflow-x:auto}
+  .og-exam-catbar button{flex:0 0 auto !important;min-width:auto !important}
 }
 `;
