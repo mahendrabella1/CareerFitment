@@ -157,6 +157,9 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
   }
   const go = (i: number) => { if (i >= 0 && i < total) { setCur(i); window.scrollTo(0, 0); } };
   const jumpToSection = (si: number) => { const idx = flat.findIndex((f) => f.si === si); if (idx >= 0) go(idx); };
+  const readAloud = (text: string) => {
+    try { const s = window.speechSynthesis; s.cancel(); const u = new SpeechSynthesisUtterance(text); u.rate = 0.95; s.speak(u); } catch { /* ignore */ }
+  };
 
   // ---- persistence (resume) + 90-min timer ----
   const stateRef = useRef({ data, answers, review, cur, remainingSec });
@@ -339,23 +342,21 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
           {/* centre: current question */}
           <main style={S.main}>
             <div style={S.mainInner}>
-              <div style={S.qTopRow}>
-                <span style={S.qPill}>Question {cur + 1} of {total}</span>
-                <button style={{ ...S.reviewBtn, ...(review[q.id] ? S.reviewOn : {}) }} onClick={() => setReview((r) => ({ ...r, [q.id]: !r[q.id] }))}>
-                  <Icon name="flag" size={14} /> {review[q.id] ? "Marked for review" : "Mark for review"}
-                </button>
-              </div>
               <div style={S.progOuter}><div style={{ ...S.progFill, width: `${pct}%` }} /></div>
 
-              <div style={S.qCatLine}>
-                <span style={S.qCatIc}><Icon name={q.cat} size={14} /></span>
-                <span style={S.qCatName}>{q.catTitle}</span>
-              </div>
-
-              <div style={S.qCard} className="og-qcard">
-                <div style={S.qText}>{q.text}{q.optional && <em style={S.optTag}> (optional)</em>}</div>
-                {q.media && <MediaBlock media={q.media} />}
-                <QuestionInput q={q} value={answers[q.id] ?? ""} onChange={(v) => answer(q, v)} />
+              <div style={S.qBlock}>
+                <span style={S.qNum}>{cur + 1}</span>
+                <div style={S.qCard}>
+                  <div style={S.qHead}>
+                    <div style={S.qText}>{q.text}{q.optional && <em style={S.optTag}> (optional)</em>}</div>
+                    <div style={S.qHeadBtns}>
+                      <button style={S.speakBtn} title="Read aloud" onClick={() => readAloud(q.text)}><Icon name="audio" size={16} /></button>
+                      <button style={{ ...S.reviewIcon, ...(review[q.id] ? S.reviewIconOn : {}) }} title="Mark for review" onClick={() => setReview((r) => ({ ...r, [q.id]: !r[q.id] }))}><Icon name="flag" size={15} /></button>
+                    </div>
+                  </div>
+                  {q.media && <MediaBlock media={q.media} />}
+                  <QuestionInput q={q} value={answers[q.id] ?? ""} onChange={(v) => answer(q, v)} />
+                </div>
               </div>
 
               <div style={S.actions}>
@@ -515,9 +516,6 @@ function Donut({ pct }: { pct: number }) {
 
 /* ------------------------- per-type question input ---------------------- */
 function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: (v: string) => void }) {
-  if (q.type === "yesno")
-    return <div style={S.optRow}>{["Yes", "No"].map((o) => <button key={o} style={{ ...S.pill, ...(value === o ? S.pillOn : {}) }} onClick={() => onChange(o)}>{o}</button>)}</div>;
-
   if (q.type === "slider") {
     const v = value === "" ? 0 : parseInt(value, 10);
     return (
@@ -529,18 +527,20 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
     );
   }
 
-  if (q.type === "mostleast") {
-    // Simplified to a single choice — pick the option that's MOST like you.
+  if (q.type === "open")
+    return <textarea style={S.open} rows={3} placeholder="Type your response (optional)…" value={value} onChange={(e) => onChange(e.target.value)} />;
+
+  // Aptitude visual options (SVG) — clean grid with a radio indicator.
+  if (q.svgOptions) {
     const opts = q.options ?? [];
     return (
-      <div style={S.choices}>
+      <div style={S.svgChoices}>
         {opts.map((o, i) => {
           const sel = value === String(i);
           return (
-            <button key={i} style={{ ...S.choice, ...(sel ? S.choiceOn : {}) }} onClick={() => onChange(String(i))}>
-              <span style={{ ...S.ab, ...(sel ? S.abOn : {}) }}>{String.fromCharCode(65 + i)}</span>
-              <span style={{ flex: 1 }}>{o ?? ""}</span>
-              {sel && <span style={S.ck}><Icon name="check" size={16} stroke={2.4} /></span>}
+            <button key={i} style={{ ...S.svgChoice, ...(sel ? S.svgChoiceOn : {}) }} onClick={() => onChange(String(i))}>
+              <span style={{ ...S.radio, ...(sel ? S.radioOn : {}) }}>{sel && <span style={S.radioDot} />}</span>
+              <span style={S.svgHolder} dangerouslySetInnerHTML={{ __html: o || "" }} />
             </button>
           );
         })}
@@ -548,36 +548,20 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
     );
   }
 
-  if (q.type === "open")
-    return <textarea style={S.open} rows={3} placeholder="Type your response (optional)…" value={value} onChange={(e) => onChange(e.target.value)} />;
-
-  const opts = q.options ?? [];
-  if (q.svgOptions)
-    return (
-      <div style={S.svgChoices}>
-        {opts.map((o, i) => {
-          const sel = value === String(i);
-          return (
-            <button key={i} style={{ ...S.svgChoice, ...(sel ? S.svgChoiceOn : {}) }} onClick={() => onChange(String(i))}>
-              <span style={{ ...S.ab, ...(sel ? S.abOn : {}) }}>{String.fromCharCode(65 + i)}</span>
-              <span style={S.svgHolder} dangerouslySetInnerHTML={{ __html: o || "" }} />
-            </button>
-          );
-        })}
-      </div>
-    );
-
+  // Clean radio rows for every text single-select (Yes/No, choose-one, most-like).
+  const isYesNo = q.type === "yesno";
+  const opts = isYesNo ? ["Yes", "No"] : (q.options ?? []);
   return (
-    <div style={S.choices}>
+    <div style={S.optList}>
       {opts.map((o, i) => {
-        const sel = value === String(i);
-        const text = o ?? "";
-        const label = q.type === "vark" && q.styles?.[i] ? text.replace(/^\(?[A-D]\)?\s*/, "") : text.replace(/^\d+\)\s*/, "");
+        const val = isYesNo ? o : String(i);
+        const sel = value === val;
+        const raw = o ?? "";
+        const label = q.type === "vark" && q.styles?.[i] ? raw.replace(/^\(?[A-D]\)?\s*/, "") : isYesNo ? raw : raw.replace(/^\d+\)\s*/, "");
         return (
-          <button key={i} style={{ ...S.choice, ...(sel ? S.choiceOn : {}) }} onClick={() => onChange(String(i))}>
-            <span style={{ ...S.ab, ...(sel ? S.abOn : {}) }}>{String.fromCharCode(65 + i)}</span>
-            <span style={{ flex: 1 }}>{label}</span>
-            {sel && <span style={S.ck}><Icon name="check" size={16} stroke={2.4} /></span>}
+          <button key={i} className="og-opt" style={S.optRow} onClick={() => onChange(val)}>
+            <span style={{ ...S.radio, ...(sel ? S.radioOn : {}) }}>{sel && <span style={S.radioDot} />}</span>
+            <span style={{ ...S.optLabel, ...(sel ? S.optLabelOn : {}) }}>{label}</span>
           </button>
         );
       })}
@@ -590,7 +574,7 @@ function Center({ children }: { children: React.ReactNode }) {
 }
 
 /* ------------------------------- styling ------------------------------- */
-const NAVY = "#17233f", BLUE = "#2f5bd6", BLUE_SOFT = "#eef2fe", INK = "#1f2937", MUTED = "#64748b";
+const NAVY = "#17233f", BLUE = "#2f5bd6", BLUE_SOFT = "#eef2fe", INK = "#1f2937", MUTED = "#64748b", ACCENT = "#22386b";
 const GREEN = "#16a34a", AMBER = "#f59e0b", LINE = "#e6e8ee", BG = "#eef1f6";
 const S: Record<string, React.CSSProperties> = {
   center: { position: "fixed", inset: 0, zIndex: 1000, background: BG, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12, fontFamily: "Inter, system-ui, Segoe UI, sans-serif", textAlign: "center", padding: 24 },
@@ -652,12 +636,22 @@ const S: Record<string, React.CSSProperties> = {
   catTitle: { fontSize: 17, fontWeight: 800, margin: "3px 0 2px", color: INK },
   catBlurb: { fontSize: 13, color: MUTED, lineHeight: 1.5 },
   catIcon: { flexShrink: 0, width: 52, height: 52, borderRadius: 13, background: BLUE_SOFT, color: BLUE, display: "grid", placeItems: "center" },
-  qCatLine: { display: "flex", alignItems: "center", gap: 7, marginBottom: 12 },
-  qCatIc: { color: BLUE, display: "flex" },
-  qCatName: { fontSize: 12, fontWeight: 800, textTransform: "uppercase", letterSpacing: .8, color: BLUE },
-
-  qCard: { background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: "26px 28px", boxShadow: "0 2px 10px rgba(20,20,40,.05)" },
-  qText: { fontSize: 20, fontWeight: 700, lineHeight: 1.45, color: INK, marginBottom: 22 },
+  qBlock: { position: "relative" },
+  qNum: { display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: 42, background: NAVY, color: "#fff", fontSize: 15, fontWeight: 800, padding: "6px 15px", borderRadius: 7, marginBottom: 10, marginLeft: 2 },
+  qCard: { background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: "24px 28px 12px", boxShadow: "0 2px 10px rgba(20,20,40,.04)" },
+  qHead: { display: "flex", alignItems: "flex-start", gap: 14, marginBottom: 16 },
+  qText: { flex: 1, fontSize: 19, fontWeight: 600, lineHeight: 1.5, color: "#1f2937" },
+  qHeadBtns: { display: "flex", gap: 8, flexShrink: 0 },
+  speakBtn: { width: 34, height: 34, borderRadius: "50%", background: NAVY, color: "#fff", border: "none", display: "grid", placeItems: "center", cursor: "pointer" },
+  reviewIcon: { width: 34, height: 34, borderRadius: "50%", background: "#f1f3f7", color: "#9aa3b2", border: "none", display: "grid", placeItems: "center", cursor: "pointer" },
+  reviewIconOn: { background: "#fef3c7", color: "#d97706" },
+  optList: { display: "flex", flexDirection: "column", borderTop: "1px solid #eef0f4" },
+  optRow: { display: "flex", alignItems: "center", gap: 13, width: "100%", textAlign: "left", padding: "13px 4px", background: "transparent", border: "none", borderBottom: "1px solid #eef0f4", cursor: "pointer" },
+  radio: { flexShrink: 0, width: 18, height: 18, borderRadius: "50%", border: "1.6px solid #c2c8d4", display: "grid", placeItems: "center" },
+  radioOn: { borderColor: ACCENT },
+  radioDot: { width: 9, height: 9, borderRadius: "50%", background: ACCENT },
+  optLabel: { fontSize: 15, color: "#3a4356", lineHeight: 1.4 },
+  optLabelOn: { color: ACCENT, fontWeight: 600 },
   optTag: { color: "#9aa1ad", fontWeight: 500, fontStyle: "italic" },
 
   mGrid: { display: "grid", gap: 8, maxWidth: 380, margin: "0 0 16px", background: "#fafbfc", padding: 10, borderRadius: 12, border: `1px solid ${LINE}` },
@@ -686,10 +680,6 @@ const S: Record<string, React.CSSProperties> = {
   barTrack: { flex: 1, height: 16, background: "#eceef2", borderRadius: 8, overflow: "hidden" },
   barFill: { height: "100%", borderRadius: 8 },
   barVal: { width: 32, textAlign: "right", fontWeight: 700, color: INK },
-
-  optRow: { display: "flex", gap: 10 },
-  pill: { flex: 1, padding: "11px", border: `1.5px solid ${LINE}`, borderRadius: 10, background: "#fff", fontWeight: 700, fontSize: 14, cursor: "pointer", color: "#475569" },
-  pillOn: { borderColor: BLUE, background: BLUE_SOFT, color: BLUE },
 
   choices: { display: "flex", flexDirection: "column", gap: 8 },
   choice: { display: "flex", alignItems: "center", gap: 11, textAlign: "left", padding: "11px 14px", border: `1.5px solid ${LINE}`, borderRadius: 10, background: "#fff", cursor: "pointer", fontSize: 14, lineHeight: 1.4, color: "#3a4356" },
@@ -775,10 +765,10 @@ const CSS = `
 .og-exam-catbar::-webkit-scrollbar{height:6px}
 .og-exam-catbar::-webkit-scrollbar-thumb{background:#d7dbe3;border-radius:6px}
 /* no black focus ring on click; keep a subtle ring for keyboard users */
-.og-exam-catbar button:focus,.og-qcard button:focus,.og-exam-grid a:focus{outline:none}
-.og-qcard button:focus-visible{box-shadow:0 0 0 2px ${BLUE}66}
-.og-qcard button{transition:transform .1s ease,box-shadow .15s ease}
-.og-qcard button:hover:not(:disabled){transform:translateY(-1px)}
+.og-exam-grid button:focus,.og-exam-grid a:focus{outline:none}
+.og-exam-grid button:focus-visible{box-shadow:0 0 0 2px ${ACCENT}55}
+.og-opt{transition:background .12s ease}
+.og-opt:hover{background:#f7f9fc}
 @media (max-width: 1040px){
   .og-exam-grid{grid-template-columns:1fr !important}
   .og-exam-nav{display:none !important}
