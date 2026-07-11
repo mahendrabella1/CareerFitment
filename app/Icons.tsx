@@ -45,6 +45,8 @@ const P: Record<string, ReactNode> = {
   power: <><path d="M12 4v8" /><path d="M7 6.3a8 8 0 1 0 10 0" /></>,
   clock: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>,
   help: <><circle cx="12" cy="12" r="9" /><path d="M9.2 9.3a2.8 2.8 0 0 1 5.4 1c0 1.8-2.6 2.5-2.6 2.5" /><path d="M12 17.2v.01" /></>,
+  bookmark: <path d="M6.5 3.5h11a1 1 0 0 1 1 1v16l-6.5-3.8L5.5 20.5v-16a1 1 0 0 1 1-1z" />,
+  save: <><path d="M5 3.5h11l3 3v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1z" /><path d="M8 3.5v5h7v-5" /><rect x="8" y="13" width="8" height="6.5" rx="1" /></>,
   pulse: <path d="M2.5 12h4l2.2-5.5 3.8 11 2.4-6 1.6 2.5h5" />,
   shield: <><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z" /><path d="M9 12l2 2 4-4" /></>,
   cap: <><path d="M2.5 8.5 12 4.5l9.5 4-9.5 4z" /><path d="M6.5 10.3V15c0 1.4 2.5 2.6 5.5 2.6s5.5-1.2 5.5-2.6v-4.7" /><path d="M21.5 8.5v5" /></>,

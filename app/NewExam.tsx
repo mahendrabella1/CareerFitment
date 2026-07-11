@@ -303,21 +303,21 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
         {/* top bar */}
         <header style={S.top}>
           <div style={S.topLeft}>
-            <span style={S.topLogo}><Logo height={26} /></span>
-            <div><div style={S.topTitle}>Career Assessment</div><div style={S.topSub}>{requiredTotal} questions</div></div>
+            <span style={S.logoBox}><Logo height={28} /></span>
+            <div><div style={S.topTitle}>Career Assessment</div><div style={S.topSub}>{requiredTotal} Questions</div></div>
           </div>
-          <div style={S.topMid}>
-            <Stat icon="clock" label="TIME LEFT" value={fmtTime(remainingSec)} danger={remainingSec < 300} />
+          <div style={S.statsPanel}>
+            <Stat icon="clock" label="TIME LEFT" value={fmtTime(remainingSec)} color={remainingSec < 300 ? "#dc2626" : undefined} />
             <div style={S.topDiv} />
             <Stat icon="help" label="QUESTION" value={`${cur + 1} / ${total}`} />
             <div style={S.topDiv} />
-            <Stat icon="check" label="ANSWERED" value={`${answeredCount}`} />
+            <Stat icon="check" label="ANSWERED" value={`${answeredCount}`} color="#16a34a" />
             <div style={S.topDiv} />
             <Stat icon="flag" label="MARKED" value={`${markedCount}`} />
           </div>
-          <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
-            <button style={{ ...S.saveBtn, ...(saved ? S.saveBtnOk : {}) }} onClick={saveAndExit}>{saved ? "Saved ✓" : "Save progress"}</button>
-            <button style={S.endBtn} onClick={exitExam}><Icon name="power" size={15} /> Exit</button>
+          <div style={S.topRight}>
+            <button style={{ ...S.saveBtn, ...(saved ? S.saveBtnOk : {}) }} onClick={saveAndExit}><Icon name="save" size={16} /> {saved ? "Saved ✓" : "Save Progress"}</button>
+            <button style={S.exitBtn} onClick={exitExam}><Icon name="power" size={15} /> Exit</button>
           </div>
         </header>
 
@@ -351,7 +351,7 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
                     <div style={S.qText}>{q.text}{q.optional && <em style={S.optTag}> (optional)</em>}</div>
                     <div style={S.qHeadBtns}>
                       <button style={S.speakBtn} title="Read aloud" onClick={() => readAloud(q.text)}><Icon name="audio" size={16} /></button>
-                      <button style={{ ...S.reviewIcon, ...(review[q.id] ? S.reviewIconOn : {}) }} title="Mark for review" onClick={() => setReview((r) => ({ ...r, [q.id]: !r[q.id] }))}><Icon name="flag" size={15} /></button>
+                      <button style={{ ...S.reviewIcon, ...(review[q.id] ? S.reviewIconOn : {}) }} title="Mark for review" onClick={() => setReview((r) => ({ ...r, [q.id]: !r[q.id] }))}><Icon name="bookmark" size={16} /></button>
                     </div>
                   </div>
                   {q.media && <MediaBlock media={q.media} />}
@@ -366,10 +366,9 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
                   <button style={{ ...S.finish, ...(allDone && !submitting ? {} : S.disabled) }} disabled={!allDone || submitting} onClick={() => void finish()}>{submitting ? "Scoring…" : "Finish & see report"}</button>
                 ) : (q.type === "slider" || q.type === "open") ? (
                   <button style={S.next} onClick={() => go(cur + 1)}>Next <Icon name="chevronRight" size={16} /></button>
-                ) : (
-                  <span style={S.autoHint}>Tap an answer to continue →</span>
-                )}
+                ) : null}
               </div>
+              {cur < total - 1 && !(q.type === "slider" || q.type === "open") && <div style={S.tapHint}>Tap an answer to continue</div>}
               {!allDone && cur === total - 1 && <div style={S.hint}>Answer all {requiredTotal} questions to finish ({notAnswered} left).</div>}
               {err && <div style={S.err}>{err}</div>}
             </div>
@@ -377,29 +376,19 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
 
           {/* right: navigator */}
           <aside style={S.nav} className="og-exam-nav">
-            <div style={S.sideLabel}>Question navigator</div>
+            <div style={S.navTitle}>Question Navigator</div>
             <div style={S.legend}>
-              <span><i style={{ ...S.dot, background: GREEN }} /> Answered</span>
-              <span><i style={{ ...S.dot, background: BLUE }} /> Current</span>
-              <span><i style={{ ...S.dot, background: AMBER }} /> Review</span>
-              <span><i style={{ ...S.dot, background: "#d7dbe3" }} /> Pending</span>
+              <span style={S.legItem}><i style={{ ...S.dot, background: GREEN }} /> Answered</span>
+              <span style={S.legItem}><i style={{ ...S.dot, background: BLUE }} /> Current</span>
+              <span style={S.legItem}><i style={{ ...S.dot, background: AMBER }} /> Review</span>
+              <span style={S.legItem}><i style={{ ...S.dot, background: "#cbd2dd" }} /> Pending</span>
             </div>
             <div style={S.navGrid}>
               {flat.map((f, i) => {
                 const ans = isAnswered(f), rev = review[f.id], isCur = i === cur;
-                const st = isCur ? S.navCur : rev ? S.navRev : ans ? S.navAns : {};
+                const st = isCur ? S.navCur : rev ? S.navRev : ans ? S.navAns : S.navPend;
                 return <button key={f.id} onClick={() => go(i)} style={{ ...S.navCell, ...st }}>{i + 1}</button>;
               })}
-            </div>
-            <div style={S.overview}>Progress overview</div>
-            <div style={S.donutRow}>
-              <Donut pct={pct} />
-              <div style={S.breakdown}>
-                <span><i style={{ ...S.dot, background: GREEN }} /> Answered <b>{answeredCount}</b></span>
-                <span><i style={{ ...S.dot, background: AMBER }} /> Review <b>{markedCount}</b></span>
-                <span><i style={{ ...S.dot, background: "#d7dbe3" }} /> Pending <b>{notAnswered}</b></span>
-                <span style={S.brTotal}>Total <b>{total}</b></span>
-              </div>
             </div>
           </aside>
         </div>
@@ -410,11 +399,11 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
   return null;
 }
 
-function Stat({ icon, label, value, danger }: { icon: string; label: string; value: string; danger?: boolean }) {
+function Stat({ icon, label, value, color }: { icon: string; label: string; value: string; color?: string }) {
   return (
     <div style={S.stat}>
-      <span style={{ ...S.statIc, ...(danger ? { color: "#ff9d94" } : {}) }}><Icon name={icon} size={16} /></span>
-      <div><div style={S.statLabel}>{label}</div><div style={{ ...S.statVal, ...(danger ? { color: "#ff8f84" } : {}) }}>{value}</div></div>
+      <span style={{ ...S.statIc, ...(color ? { color } : {}) }}><Icon name={icon} size={17} /></span>
+      <div><div style={S.statLabel}>{label}</div><div style={{ ...S.statVal, ...(color ? { color } : {}) }}>{value}</div></div>
     </div>
   );
 }
@@ -559,7 +548,7 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
         const raw = o ?? "";
         const label = q.type === "vark" && q.styles?.[i] ? raw.replace(/^\(?[A-D]\)?\s*/, "") : isYesNo ? raw : raw.replace(/^\d+\)\s*/, "");
         return (
-          <button key={i} className="og-opt" style={S.optRow} onClick={() => onChange(val)}>
+          <button key={i} className="og-opt" style={{ ...S.optRow, ...(sel ? S.optRowOn : {}) }} onClick={() => onChange(val)}>
             <span style={{ ...S.radio, ...(sel ? S.radioOn : {}) }}>{sel && <span style={S.radioDot} />}</span>
             <span style={{ ...S.optLabel, ...(sel ? S.optLabelOn : {}) }}>{label}</span>
           </button>
@@ -574,40 +563,41 @@ function Center({ children }: { children: React.ReactNode }) {
 }
 
 /* ------------------------------- styling ------------------------------- */
-const NAVY = "#17233f", BLUE = "#2f5bd6", BLUE_SOFT = "#eef2fe", INK = "#1f2937", MUTED = "#64748b", ACCENT = "#22386b";
-const GREEN = "#16a34a", AMBER = "#f59e0b", LINE = "#e6e8ee", BG = "#eef1f6";
+const NAVY = "#17233f", BLUE = "#2563eb", BLUE_SOFT = "#eef4ff", INK = "#1e293b", MUTED = "#64748b", ACCENT = "#2563eb";
+const GREEN = "#16a34a", GREEN_SOFT = "#e7f6ec", AMBER = "#f59e0b", AMBER_SOFT = "#fef3c7", LINE = "#e6e9f0", BG = "#f5f7fb";
 const S: Record<string, React.CSSProperties> = {
   center: { position: "fixed", inset: 0, zIndex: 1000, background: BG, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12, fontFamily: "Inter, system-ui, Segoe UI, sans-serif", textAlign: "center", padding: 24 },
   big: { fontSize: 19, fontWeight: 800, color: INK },
   subT: { fontSize: 14, color: MUTED },
 
   page: { position: "fixed", inset: 0, zIndex: 1000, background: BG, fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: INK, display: "flex", flexDirection: "column" },
-  // top bar
-  top: { flexShrink: 0, background: NAVY, color: "#fff", padding: "10px 18px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 },
-  topLeft: { display: "flex", alignItems: "center", gap: 11 },
-  topLogo: { background: "#fff", borderRadius: 8, padding: "6px 10px", display: "grid", placeItems: "center" },
-  topTitle: { fontSize: 15, fontWeight: 800 },
-  topSub: { fontSize: 11.5, color: "#9fb0d0" },
-  topMid: { display: "flex", alignItems: "center", gap: 14, background: "rgba(255,255,255,.07)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 12, padding: "7px 16px" },
-  topDiv: { width: 1, height: 26, background: "rgba(255,255,255,.14)" },
-  stat: { display: "flex", alignItems: "center", gap: 8 },
-  statIc: { color: "#9fb0d0", display: "grid", placeItems: "center" },
-  statLabel: { fontSize: 9.5, letterSpacing: .6, color: "#9fb0d0", fontWeight: 700 },
-  statVal: { fontSize: 14.5, fontWeight: 800, lineHeight: 1.1 },
-  endBtn: { display: "flex", alignItems: "center", gap: 6, background: "rgba(224,86,79,.16)", border: "1px solid rgba(224,86,79,.5)", color: "#ffb4ae", fontSize: 13, fontWeight: 700, cursor: "pointer", padding: "8px 15px", borderRadius: 9 },
-  saveBtn: { background: "rgba(255,255,255,.12)", border: "1px solid rgba(255,255,255,.28)", color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer", padding: "8px 15px", borderRadius: 9, whiteSpace: "nowrap" },
-  saveBtnOk: { background: "rgba(34,197,94,.22)", borderColor: "rgba(34,197,94,.55)", color: "#bbf7d0" },
+  // top bar (white)
+  top: { flexShrink: 0, background: "#fff", borderBottom: `1px solid ${LINE}`, padding: "10px 22px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 },
+  topLeft: { display: "flex", alignItems: "center", gap: 12 },
+  logoBox: { border: `1px solid ${LINE}`, borderRadius: 10, padding: "5px 8px", display: "grid", placeItems: "center", background: "#fff" },
+  topTitle: { fontSize: 17, fontWeight: 800, color: INK },
+  topSub: { fontSize: 12.5, color: MUTED },
+  statsPanel: { display: "flex", alignItems: "center", gap: 16, background: "#f8fafc", border: `1px solid ${LINE}`, borderRadius: 12, padding: "8px 20px" },
+  topDiv: { width: 1, height: 26, background: "#e6e9f0" },
+  stat: { display: "flex", alignItems: "center", gap: 9 },
+  statIc: { color: "#94a3b8", display: "grid", placeItems: "center" },
+  statLabel: { fontSize: 9.5, letterSpacing: .6, color: "#94a3b8", fontWeight: 700, textTransform: "uppercase" },
+  statVal: { fontSize: 15, fontWeight: 800, lineHeight: 1.1, color: INK },
+  topRight: { display: "flex", gap: 10, flexShrink: 0 },
+  saveBtn: { display: "flex", alignItems: "center", gap: 7, background: "#fff", border: `1px solid ${LINE}`, color: "#475569", fontSize: 13.5, fontWeight: 700, cursor: "pointer", padding: "9px 16px", borderRadius: 9, whiteSpace: "nowrap" },
+  saveBtnOk: { background: GREEN_SOFT, borderColor: "#bbe6cc", color: "#15803d" },
+  exitBtn: { display: "flex", alignItems: "center", gap: 7, background: "#fef2f2", border: "1px solid #fecaca", color: "#dc2626", fontSize: 13.5, fontWeight: 700, cursor: "pointer", padding: "9px 16px", borderRadius: 9 },
 
-  // horizontal categories bar — 8 equal chips that fit the width (no scroll)
-  catBar: { flexShrink: 0, display: "flex", gap: 6, padding: "9px 16px", background: "#fff", borderBottom: `1px solid ${LINE}` },
-  catChip: { flex: "1 1 0", minWidth: 0, display: "flex", alignItems: "center", justifyContent: "center", gap: 7, padding: "8px 8px", border: `1px solid ${LINE}`, borderRadius: 10, background: "#fff", cursor: "pointer" },
-  catChipOn: { background: BLUE_SOFT, borderColor: "#c7d5f5", boxShadow: `0 0 0 1px ${BLUE}33` },
-  catChipName: { fontSize: 12.5, fontWeight: 700, color: INK, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" },
-  catChipBadge: { flexShrink: 0, fontSize: 10.5, fontWeight: 800, color: "#94a3b8", background: "#f1f3f7", borderRadius: 6, padding: "1px 6px", minWidth: 20, textAlign: "center" },
-  catChipBadgeOn: { background: "#dce4fb", color: BLUE },
-  catChipBadgeDone: { background: "#dcfce7", color: "#15803d" },
+  // horizontal categories bar — content-sized chips on the light page
+  catBar: { flexShrink: 0, display: "flex", gap: 8, padding: "12px 22px", background: BG, overflowX: "auto" },
+  catChip: { display: "flex", alignItems: "center", gap: 8, flexShrink: 0, padding: "8px 15px", border: `1px solid ${LINE}`, borderRadius: 10, background: "#fff", cursor: "pointer" },
+  catChipOn: { background: BLUE_SOFT, borderColor: "#bcd0fb" },
+  catChipName: { fontSize: 13, fontWeight: 700, color: INK, whiteSpace: "nowrap" },
+  catChipBadge: { flexShrink: 0, fontSize: 11, fontWeight: 800, color: "#94a3b8", background: "#f1f3f7", borderRadius: 6, padding: "1px 7px" },
+  catChipBadgeOn: { background: "#dbe6ff", color: BLUE },
+  catChipBadgeDone: { background: GREEN_SOFT, color: "#15803d" },
 
-  grid: { flex: 1, minHeight: 0, display: "grid", gridTemplateColumns: "minmax(0,1fr) 252px" },
+  grid: { flex: 1, minHeight: 0, display: "grid", gridTemplateColumns: "minmax(0,1fr) 300px", background: BG },
   side: { borderRight: `1px solid ${LINE}`, background: "#fff", padding: "16px 12px", overflowY: "auto", display: "flex", flexDirection: "column", gap: 3 },
   sideLabel: { fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: .7, color: "#9aa1ad", margin: "0 6px 10px" },
   secItem: { width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "11px 10px", border: "1px solid transparent", borderLeft: "3px solid transparent", borderRadius: 10, background: "transparent", cursor: "pointer", textAlign: "left" },
@@ -637,21 +627,23 @@ const S: Record<string, React.CSSProperties> = {
   catBlurb: { fontSize: 13, color: MUTED, lineHeight: 1.5 },
   catIcon: { flexShrink: 0, width: 52, height: 52, borderRadius: 13, background: BLUE_SOFT, color: BLUE, display: "grid", placeItems: "center" },
   qBlock: { position: "relative" },
-  qNum: { display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: 42, background: NAVY, color: "#fff", fontSize: 15, fontWeight: 800, padding: "6px 15px", borderRadius: 7, marginBottom: 10, marginLeft: 2 },
-  qCard: { background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: "24px 28px 12px", boxShadow: "0 2px 10px rgba(20,20,40,.04)" },
-  qHead: { display: "flex", alignItems: "flex-start", gap: 14, marginBottom: 16 },
-  qText: { flex: 1, fontSize: 19, fontWeight: 600, lineHeight: 1.5, color: "#1f2937" },
+  qNum: { display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: 42, background: BLUE, color: "#fff", fontSize: 16, fontWeight: 800, padding: "6px 15px", borderRadius: 8, marginBottom: 10, marginLeft: 2 },
+  qCard: { background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: "24px 28px 14px", boxShadow: "0 2px 12px rgba(20,20,40,.05)" },
+  qHead: { display: "flex", alignItems: "flex-start", gap: 14, marginBottom: 4 },
+  qText: { flex: 1, fontSize: 19, fontWeight: 700, lineHeight: 1.5, color: INK },
   qHeadBtns: { display: "flex", gap: 8, flexShrink: 0 },
-  speakBtn: { width: 34, height: 34, borderRadius: "50%", background: NAVY, color: "#fff", border: "none", display: "grid", placeItems: "center", cursor: "pointer" },
-  reviewIcon: { width: 34, height: 34, borderRadius: "50%", background: "#f1f3f7", color: "#9aa3b2", border: "none", display: "grid", placeItems: "center", cursor: "pointer" },
-  reviewIconOn: { background: "#fef3c7", color: "#d97706" },
-  optList: { display: "flex", flexDirection: "column", borderTop: "1px solid #eef0f4" },
-  optRow: { display: "flex", alignItems: "center", gap: 13, width: "100%", textAlign: "left", padding: "13px 4px", background: "transparent", border: "none", borderBottom: "1px solid #eef0f4", cursor: "pointer" },
+  speakBtn: { width: 36, height: 36, borderRadius: "50%", background: NAVY, color: "#fff", border: "none", display: "grid", placeItems: "center", cursor: "pointer" },
+  reviewIcon: { width: 36, height: 36, borderRadius: "50%", background: "#f1f5f9", color: "#9aa3b2", border: `1px solid ${LINE}`, display: "grid", placeItems: "center", cursor: "pointer" },
+  reviewIconOn: { background: AMBER_SOFT, color: "#d97706", borderColor: "#fadf9a" },
+  optList: { display: "flex", flexDirection: "column", borderTop: "1px solid #eef0f4", marginTop: 14 },
+  optRow: { display: "flex", alignItems: "center", gap: 13, width: "100%", textAlign: "left", padding: "13px 16px", background: "transparent", border: "1px solid transparent", borderBottom: "1px solid #eef0f4", cursor: "pointer" },
+  optRowOn: { border: `1px solid ${BLUE}`, borderRadius: 10, background: BLUE_SOFT },
   radio: { flexShrink: 0, width: 18, height: 18, borderRadius: "50%", border: "1.6px solid #c2c8d4", display: "grid", placeItems: "center" },
-  radioOn: { borderColor: ACCENT },
-  radioDot: { width: 9, height: 9, borderRadius: "50%", background: ACCENT },
+  radioOn: { borderColor: BLUE },
+  radioDot: { width: 9, height: 9, borderRadius: "50%", background: BLUE },
   optLabel: { fontSize: 15, color: "#3a4356", lineHeight: 1.4 },
-  optLabelOn: { color: ACCENT, fontWeight: 600 },
+  optLabelOn: { color: INK, fontWeight: 600 },
+  tapHint: { textAlign: "center", fontSize: 13, color: "#94a3b8", marginTop: 16 },
   optTag: { color: "#9aa1ad", fontWeight: 500, fontStyle: "italic" },
 
   mGrid: { display: "grid", gap: 8, maxWidth: 380, margin: "0 0 16px", background: "#fafbfc", padding: 10, borderRadius: 12, border: `1px solid ${LINE}` },
@@ -718,12 +710,15 @@ const S: Record<string, React.CSSProperties> = {
   hint: { fontSize: 12.5, color: "#9aa1ad", textAlign: "right", marginTop: 10 },
   err: { marginTop: 14, background: "#fbeaea", border: "1px solid #e5b3ae", color: "#a83e38", padding: "10px 14px", borderRadius: 10, fontSize: 13.5, fontWeight: 600 },
 
-  nav: { borderLeft: `1px solid ${LINE}`, background: "#fff", padding: "16px 14px", overflowY: "auto" },
-  legend: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 5, fontSize: 11.5, color: MUTED, marginBottom: 14 },
-  navGrid: { display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 6, marginBottom: 18 },
-  navCell: { aspectRatio: "1", display: "grid", placeItems: "center", borderRadius: 8, background: "#f0f2f5", color: "#64748b", fontSize: 12.5, fontWeight: 700, border: "1px solid transparent", cursor: "pointer", padding: 0 },
-  navAns: { background: "#dcfce7", color: "#15803d", borderColor: "#bbe6cc" },
-  navRev: { background: "#fef3c7", color: "#b45309", borderColor: "#f4d06a" },
+  nav: { background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: "18px 16px", overflowY: "auto", margin: "22px 22px 22px 6px", boxShadow: "0 2px 12px rgba(20,20,40,.04)", alignSelf: "start" },
+  navTitle: { fontSize: 15, fontWeight: 800, color: INK, marginBottom: 14 },
+  legend: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "9px 10px", marginBottom: 16 },
+  legItem: { display: "flex", alignItems: "center", gap: 7, fontSize: 12.5, color: MUTED },
+  navGrid: { display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 },
+  navCell: { aspectRatio: "1", display: "grid", placeItems: "center", borderRadius: 8, fontSize: 13, fontWeight: 700, border: "1px solid transparent", cursor: "pointer", padding: 0 },
+  navPend: { background: "#f1f5f9", color: "#94a3b8" },
+  navAns: { background: GREEN_SOFT, color: "#15803d", borderColor: "#c9ebd5" },
+  navRev: { background: AMBER_SOFT, color: "#b45309", borderColor: "#fadf9a" },
   navCur: { background: BLUE, color: "#fff", borderColor: BLUE },
   overview: { fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: .7, color: "#9aa1ad", margin: "0 2px 10px" },
   donutRow: { display: "flex", gap: 12, alignItems: "center" },
