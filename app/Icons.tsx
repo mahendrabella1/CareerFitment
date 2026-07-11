@@ -48,7 +48,7 @@ const P: Record<string, ReactNode> = {
   pulse: <path d="M2.5 12h4l2.2-5.5 3.8 11 2.4-6 1.6 2.5h5" />,
   shield: <><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z" /><path d="M9 12l2 2 4-4" /></>,
   cap: <><path d="M2.5 8.5 12 4.5l9.5 4-9.5 4z" /><path d="M6.5 10.3V15c0 1.4 2.5 2.6 5.5 2.6s5.5-1.2 5.5-2.6v-4.7" /><path d="M21.5 8.5v5" /></>,
-  school: <><path d="M12 3 3 8v2h18V8z" /><path d="M5 10v8M9 10v8M15 10v8M19 10v8" /><path d="M3 21h18" /><path d="M11 6.5h2" /></>,
+  school: <><path d="M3 21h18" /><path d="M5 21V9l7-4.5L19 9v12" /><path d="M9.5 21v-4.5h5V21" /><path d="M9.5 11.5h1.5M13 11.5h1.5" /></>,
   briefcase: <><rect x="3" y="7.5" width="18" height="12" rx="2" /><path d="M8.5 7.5V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v1.5" /><path d="M3 12.5h18" /></>,
   route: <><circle cx="6" cy="18" r="2.4" /><circle cx="18" cy="6" r="2.4" /><path d="M8 17h6a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h3" /></>,
   signpost: <><path d="M12 3v3M12 20v-6" /><path d="M5 6h11l3 2.5L16 11H5z" /><path d="M19 14H8l-3 2.5L8 19h11z" /></>,

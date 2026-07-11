@@ -125,7 +125,7 @@ export default function RegisterPage() {
                   const sel = f.category === m.value;
                   return (
                     <button key={m.value} onClick={() => set("category", m.value)} style={{ ...S.mCard, ...(sel ? { borderColor: m.color, boxShadow: `0 0 0 3px ${m.soft}` } : {}) }}>
-                      <span style={{ ...S.mIcon, background: m.soft, color: m.color, ...(sel ? { boxShadow: `0 6px 16px ${m.soft}` } : {}) }}><Icon name={m.icon} size={26} /></span>
+                      <span style={{ ...S.mIcon, background: m.soft, color: m.color, ...(sel ? { boxShadow: `0 6px 16px ${m.soft}` } : {}) }}><Icon name={m.icon} size={21} stroke={1.6} /></span>
                       <span style={S.mLabel}>{m.label}</span>
                       {sel && <span style={{ ...S.mSel, background: m.color }}>✓</span>}
                     </button>
@@ -149,7 +149,7 @@ export default function RegisterPage() {
                   const sel = f.clarity === c.value;
                   return (
                     <button key={c.value} onClick={() => set("clarity", c.value)} className="rin" style={{ ...S.sCard, animationDelay: `${i * 70}ms`, ...(sel ? { borderColor: c.color, boxShadow: `0 0 0 3px ${c.color}22` } : {}) }}>
-                      <span style={{ ...S.sIcon, color: sel ? c.color : "#94a3b8" }}><Icon name={c.icon} size={26} /></span>
+                      <span style={{ ...S.sIcon, color: sel ? c.color : "#94a3b8" }}><Icon name={c.icon} size={21} stroke={1.6} /></span>
                       <span style={S.sLabel}>{c.label}</span>
                       {sel && <span style={{ ...S.mSel, background: c.color }}>✓</span>}
                     </button>
@@ -244,42 +244,42 @@ const S: Record<string, React.CSSProperties> = {
   home: { position: "absolute", top: 20, right: 20, zIndex: 3, background: NAVY, color: "#fff", textDecoration: "none", fontSize: 12.5, fontWeight: 700, letterSpacing: .5, padding: "9px 20px", borderRadius: 8, border: "1px solid rgba(255,255,255,.25)" },
   brand: { position: "absolute", bottom: 16, left: 0, right: 0, display: "flex", justifyContent: "center", zIndex: 2, opacity: .9 },
 
-  card: { position: "relative", zIndex: 2, width: "100%", maxWidth: 940, background: "#fff", borderRadius: 16, boxShadow: "0 30px 80px rgba(0,0,0,.35)", overflow: "hidden" },
+  card: { position: "relative", zIndex: 2, width: "100%", maxWidth: 840, background: "#fff", borderRadius: 14, boxShadow: "0 26px 70px rgba(0,0,0,.34)", overflow: "hidden" },
   tabs: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", background: "#f3f4f7" },
-  tab: { position: "relative", padding: "16px 10px", border: "none", background: "transparent", fontSize: 12.5, fontWeight: 800, letterSpacing: .6, color: "#8a90a0", cursor: "pointer", textTransform: "uppercase" },
+  tab: { position: "relative", padding: "13px 8px", border: "none", background: "transparent", fontSize: 11, fontWeight: 800, letterSpacing: .5, color: "#8a90a0", cursor: "pointer", textTransform: "uppercase" },
   tabActive: { background: NAVY, color: "#fff", boxShadow: "0 8px 22px rgba(47,63,158,.4)" },
   tabLocked: { opacity: .55, cursor: "not-allowed" },
-  tabTick: { color: "#16a34a", marginRight: 6, fontWeight: 800 },
+  tabTick: { color: "#16a34a", marginRight: 5, fontWeight: 800 },
 
-  body: { padding: "30px 40px 8px", minHeight: 360 },
-  h: { textAlign: "center", fontSize: 26, fontWeight: 700, color: "#1f2740", margin: "4px 0 22px" },
-  subhint: { textAlign: "center", fontSize: 13, color: "#8a90a0", margin: "-14px 0 18px" },
+  body: { padding: "24px 34px 6px", minHeight: 310 },
+  h: { textAlign: "center", fontSize: 20, fontWeight: 700, color: "#1f2740", margin: "2px 0 18px" },
+  subhint: { textAlign: "center", fontSize: 12.5, color: "#8a90a0", margin: "-10px 0 16px" },
 
-  floatLabel: { display: "block", fontSize: 12.5, color: "#9aa1ad", marginBottom: 2 },
-  underWrap: { position: "relative", marginBottom: 8, maxWidth: 520 },
-  underInput: { width: "100%", border: "none", borderBottom: "1.5px solid #dfe3ea", fontSize: 16, padding: "8px 24px 8px 0", outline: "none", background: "transparent" },
-  okTick: { position: "absolute", right: 0, top: 10, color: "#16a34a", fontWeight: 800 },
+  floatLabel: { display: "block", fontSize: 12, color: "#9aa1ad", marginBottom: 2 },
+  underWrap: { position: "relative", marginBottom: 6, maxWidth: 480 },
+  underInput: { width: "100%", border: "none", borderBottom: "1.5px solid #dfe3ea", fontSize: 14.5, padding: "7px 24px 7px 0", outline: "none", background: "transparent" },
+  okTick: { position: "absolute", right: 0, top: 9, color: "#16a34a", fontWeight: 800, fontSize: 13 },
 
-  sectionLabel: { fontSize: 14, fontWeight: 700, color: "#1f2740", margin: "22px 0 14px" },
+  sectionLabel: { fontSize: 13, fontWeight: 700, color: "#1f2740", margin: "20px 0 12px" },
   muted: { color: "#9aa1ad", fontWeight: 500 },
 
-  milestones: { display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12 },
-  mCard: { position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 10, padding: "18px 8px", background: "#fff", border: "1.5px solid #eceef3", borderRadius: 14, cursor: "pointer", transition: "border-color .15s, box-shadow .15s" },
-  mIcon: { width: 58, height: 58, borderRadius: "50%", display: "grid", placeItems: "center", transition: "box-shadow .15s" },
-  mLabel: { fontSize: 12.5, fontWeight: 700, color: "#334155", textAlign: "center", lineHeight: 1.3 },
-  mSel: { position: "absolute", top: 8, right: 8, width: 18, height: 18, borderRadius: "50%", color: "#fff", fontSize: 11, fontWeight: 800, display: "grid", placeItems: "center" },
+  milestones: { display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10 },
+  mCard: { position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, padding: "14px 6px", background: "#fff", border: "1.5px solid #eceef3", borderRadius: 12, cursor: "pointer", transition: "border-color .15s, box-shadow .15s" },
+  mIcon: { width: 46, height: 46, borderRadius: "50%", display: "grid", placeItems: "center", transition: "box-shadow .15s" },
+  mLabel: { fontSize: 11.5, fontWeight: 700, color: "#334155", textAlign: "center", lineHeight: 1.3 },
+  mSel: { position: "absolute", top: 7, right: 7, width: 16, height: 16, borderRadius: "50%", color: "#fff", fontSize: 10, fontWeight: 800, display: "grid", placeItems: "center" },
 
-  confirmPill: { display: "inline-flex", alignItems: "center", gap: 7, background: "#eef2ff", color: NAVY, fontSize: 12.5, fontWeight: 700, padding: "7px 14px", borderRadius: 999, marginBottom: 4 },
-  stages: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 },
-  sCard: { position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 12, padding: "22px 12px", background: "#fff", border: "1.5px solid #eceef3", borderRadius: 14, cursor: "pointer", textAlign: "center" },
-  sIcon: { width: 56, height: 56, borderRadius: "50%", border: "1.5px solid #e4e7ee", display: "grid", placeItems: "center" },
-  sLabel: { fontSize: 13, fontWeight: 600, color: "#334155", lineHeight: 1.4 },
+  confirmPill: { display: "inline-flex", alignItems: "center", gap: 6, background: "#eef2ff", color: NAVY, fontSize: 12, fontWeight: 700, padding: "6px 13px", borderRadius: 999, marginBottom: 2 },
+  stages: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 },
+  sCard: { position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 10, padding: "18px 10px", background: "#fff", border: "1.5px solid #eceef3", borderRadius: 12, cursor: "pointer", textAlign: "center" },
+  sIcon: { width: 46, height: 46, borderRadius: "50%", border: "1.5px solid #e4e7ee", display: "grid", placeItems: "center" },
+  sLabel: { fontSize: 12, fontWeight: 600, color: "#334155", lineHeight: 1.4 },
 
-  grid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18, marginBottom: 16 },
-  fLabel: { display: "block", fontSize: 12.5, color: "#6b7280", fontWeight: 600, marginBottom: 5 },
+  grid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 14 },
+  fLabel: { display: "block", fontSize: 12, color: "#6b7280", fontWeight: 600, marginBottom: 4 },
   optTag: { color: "#b6bcc7", fontWeight: 500 },
   okInline: { color: "#16a34a", fontWeight: 800 },
-  input: { width: "100%", border: "none", borderBottom: "1.5px solid #dfe3ea", fontSize: 15, padding: "8px 52px 8px 0", outline: "none", background: "transparent", boxSizing: "border-box" },
+  input: { width: "100%", border: "none", borderBottom: "1.5px solid #dfe3ea", fontSize: 14, padding: "7px 52px 7px 0", outline: "none", background: "transparent", boxSizing: "border-box" },
   inputBad: { borderBottomColor: "#dc2626" },
   pwToggle: { position: "absolute", right: 0, top: 26, background: "none", border: "none", color: NAVY, fontWeight: 700, fontSize: 12, cursor: "pointer" },
   rules: { listStyle: "none", padding: "8px 0 0", margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "2px 14px" },
