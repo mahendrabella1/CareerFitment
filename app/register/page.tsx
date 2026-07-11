@@ -1,230 +1,317 @@
 "use client";
 
 /**
- * /register — concise two-panel account page. Left: compact form (all fields).
- * Right: a student-writing-the-test illustration + a motivational line.
- * Creates a Firebase account + Firestore profile, then starts the assessment.
+ * /register — a guided, 3-step account wizard (Milestone → Current stage →
+ * Details). Fields reveal progressively as earlier ones are completed, with
+ * clear validation and "you did it" feedback, so filling the form feels like
+ * making steady progress. Creates a Firebase account + Firestore profile, then
+ * starts the assessment.
  */
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "@/app/Logo";
 import { Icon } from "@/app/Icons";
 import { useAuth, authErrorMessage } from "@/lib/auth/AuthProvider";
-import {
-  CATEGORY_OPTIONS,
-  CLARITY_STAGES,
-  journeyForCategory,
-  PASSWORD_RULES,
-  passwordIsValid,
-  emailIsValid,
-  phoneIsValid,
-} from "@/lib/auth/formOptions";
+import { CLARITY_STAGES, journeyForCategory, PASSWORD_RULES, passwordIsValid, emailIsValid, phoneIsValid } from "@/lib/auth/formOptions";
 
-const CSS = `
-.reg-shell { display: grid; grid-template-columns: 1.05fr 0.95fr; }
-@media (max-width: 880px) {
-  .reg-shell { grid-template-columns: 1fr; }
-  .reg-visual { display: none !important; }
-}
-.reg-input:focus { border-color: #e0242e !important; background: #fff !important; }
-`;
+const NAVY = "#2f3f9e";
+const BG = "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1600&q=70";
+
+const MILESTONES = [
+  { value: "class_6_8", label: "Class 6 – 8", icon: "school", color: "#2f6bff", soft: "#e9f0ff" },
+  { value: "class_9_10", label: "Class 9 – 10", icon: "route", color: "#16a34a", soft: "#e6f6ec" },
+  { value: "class_11_12", label: "Class 11 – 12", icon: "compass", color: "#7c3aed", soft: "#f1e9fd" },
+  { value: "graduate", label: "Graduates", icon: "cap", color: "#e08a0a", soft: "#fdf1dd" },
+  { value: "experienced_professional", label: "Professionals", icon: "briefcase", color: "#0d9488", soft: "#dff5f2" },
+];
+const STAGES = [
+  { value: CLARITY_STAGES[0], label: "I have no idea about my career", icon: "help", color: "#c0564f" },
+  { value: CLARITY_STAGES[1], label: "I’m confused among various career options", icon: "signpost", color: "#e08a0a" },
+  { value: CLARITY_STAGES[2], label: "I’m a bit sure but want to explore more", icon: "compass", color: "#2f6bff" },
+  { value: CLARITY_STAGES[3], label: "I’m sure but need an execution plan", icon: "route", color: "#16a34a" },
+];
+const TABS = ["Set your milestone", "Select your current stage", "Start assessment"];
 
 export default function RegisterPage() {
   const router = useRouter();
   const { ready, register } = useAuth();
 
-  const [f, setF] = useState({
-    name: "", email: "", phone: "", institution: "",
-    desiredCareer: "", category: "", clarity: "", password: "", confirm: "",
-  });
+  const [step, setStep] = useState(0);
+  const [f, setF] = useState({ name: "", category: "", clarity: "", email: "", phone: "", city: "", institution: "", age: "", password: "" });
   const [showPw, setShowPw] = useState(false);
   const [touched, setTouched] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [done, setDone] = useState(false);
 
-  const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
-    setF((prev) => ({ ...prev, [k]: e.target.value }));
+  const set = (k: keyof typeof f, v: string) => setF((p) => ({ ...p, [k]: v }));
 
+  const nameOk = f.name.trim() !== "";
+  const emailOk = emailIsValid(f.email);
+  const phoneOk = phoneIsValid(f.phone);
   const pwOk = passwordIsValid(f.password);
-  const canSubmit = useMemo(
-    () =>
-      f.name.trim() !== "" && emailIsValid(f.email) && phoneIsValid(f.phone) &&
-      f.category !== "" && pwOk && f.password === f.confirm,
-    [f, pwOk]
-  );
+  const step0Ok = nameOk && f.category !== "";
+  const step1Ok = f.clarity !== "";
+  const step2Ok = emailOk && phoneOk && pwOk;
+  const done0 = step0Ok, done1 = step1Ok, done2 = step2Ok;
 
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  const canGoTo = (i: number) => i === 0 || (i === 1 && step0Ok) || (i === 2 && step0Ok && step1Ok);
+
+  async function submit() {
     setTouched(true);
     setError("");
-    if (!canSubmit) return;
-    if (!ready) {
-      setError("Accounts aren’t configured on this deployment yet (missing Firebase keys).");
-      return;
-    }
+    if (!step2Ok) return;
+    if (!ready) { setError("Accounts aren’t configured on this deployment yet (missing Firebase keys)."); return; }
     setSubmitting(true);
     try {
       await register({
         name: f.name, email: f.email, phone: f.phone, institution: f.institution,
-        desiredCareer: f.desiredCareer, category: f.category,
-        journeyCode: journeyForCategory(f.category), clarity: f.clarity, password: f.password,
+        category: f.category, journeyCode: journeyForCategory(f.category), clarity: f.clarity,
+        password: f.password, city: f.city, age: f.age,
       });
-      router.push("/?begin=1");
+      setDone(true);
+      setTimeout(() => router.push("/?begin=1"), 1100);
     } catch (err) {
       setError(authErrorMessage(err));
-    } finally {
       setSubmitting(false);
     }
   }
 
-  const selStyle = (v: string): React.CSSProperties => ({ ...S.input, color: v ? "#1f2430" : "#9aa1ad" });
-
   return (
     <div style={S.page}>
       <style>{CSS}</style>
-      <header style={S.header}>
-        <Link href="/" style={{ textDecoration: "none" }}><Logo height={40} /></Link>
-        <div style={S.headerRight}>
-          <span style={S.haveAcct}>Have an account?</span>
-          <Link href="/signin" style={S.signInBtn}>Sign in</Link>
+      <div style={S.overlay} />
+      <Link href="/" style={S.home}>HOME</Link>
+
+      <div style={S.card}>
+        {/* tabs */}
+        <div style={S.tabs}>
+          {TABS.map((t, i) => {
+            const isActive = step === i;
+            const complete = (i === 0 && done0) || (i === 1 && done1) || (i === 2 && done2);
+            return (
+              <button key={t} onClick={() => canGoTo(i) && setStep(i)} disabled={!canGoTo(i)}
+                style={{ ...S.tab, ...(isActive ? S.tabActive : {}), ...(canGoTo(i) ? {} : S.tabLocked) }}>
+                {complete && !isActive && <span style={S.tabTick}>✓</span>}
+                {t.toUpperCase()}
+              </button>
+            );
+          })}
         </div>
-      </header>
-      <main style={S.wrap}>
-      <div style={S.shell} className="reg-shell">
-        {/* Left: form */}
-        <div style={S.left}>
-          <h1 style={S.title}>Create your account</h1>
-          <p style={S.subtitle}>Sign up and start your career assessment.</p>
 
-          <div style={S.loginNote}>
-            <span style={S.loginNoteIcon}><Icon name="lock" size={17} /></span>
-            <span>Your <b>email</b> and <b>password</b> are your login — you’ll use them to sign back in and view your report anytime. Please remember them.</span>
-          </div>
+        <div style={S.body}>
+          {done ? (
+            <div style={S.doneWrap} className="rin">
+              <div style={S.doneCheck}>✓</div>
+              <h2 style={S.doneTitle}>You’re all set, {f.name.split(" ")[0] || "there"}!</h2>
+              <p style={S.doneSub}>Account created — taking you to your assessment…</p>
+            </div>
+          ) : step === 0 ? (
+            /* ---------------- Step 1: Milestone ---------------- */
+            <>
+              <h2 style={S.h}>Select your milestone.</h2>
+              <label style={S.floatLabel}>Your name</label>
+              <div style={S.underWrap}>
+                <input style={S.underInput} value={f.name} onChange={(e) => set("name", e.target.value)} placeholder="Type your full name" autoFocus />
+                {nameOk && <span style={S.okTick}>✓</span>}
+              </div>
+              {touched && !nameOk && <div style={S.err}>Please enter your name.</div>}
 
-          {!ready && (
-            <div style={S.warn}>Sign-up needs the site’s Firebase keys — the form works, but won’t save until configured.</div>
-          )}
-          {error && <div style={S.errorBox}>{error}</div>}
-
-          <form onSubmit={onSubmit} noValidate style={S.form}>
-            <div>
-              <input className="reg-input" style={S.input} value={f.name} onChange={set("name")} placeholder="Full name *" />
-              {touched && !f.name.trim() && <Err>Name is required.</Err>}
-            </div>
-            <div style={S.row}>
-              <div>
-                <input className="reg-input" style={S.input} type="email" value={f.email} onChange={set("email")} placeholder="Email *" />
-                {touched && !emailIsValid(f.email) && <Err>Valid email required.</Err>}
-              </div>
-              <div>
-                <input className="reg-input" style={S.input} value={f.phone} onChange={set("phone")} placeholder="Phone *" />
-                {touched && !phoneIsValid(f.phone) && <Err>Valid phone required.</Err>}
-              </div>
-            </div>
-            <input className="reg-input" style={S.input} value={f.institution} onChange={set("institution")} placeholder="School / College / Company" />
-            <div style={S.row}>
-              <input className="reg-input" style={S.input} value={f.desiredCareer} onChange={set("desiredCareer")} placeholder="Desired career (e.g. Doctor)" />
-              <div>
-                <select className="reg-input" style={selStyle(f.category)} value={f.category} onChange={set("category")}>
-                  <option value="">Category / class *</option>
-                  {CATEGORY_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-                </select>
-                {touched && !f.category && <Err>Select a category.</Err>}
-              </div>
-            </div>
-            <select className="reg-input" style={selStyle(f.clarity)} value={f.clarity} onChange={set("clarity")}>
-              <option value="">Current status — where are you with your career?</option>
-              {CLARITY_STAGES.map((s) => <option key={s} value={s}>{s}</option>)}
-            </select>
-            <div style={S.row}>
-              <div style={S.pwWrap}>
-                <input className="reg-input" style={{ ...S.input, paddingRight: 52 }} type={showPw ? "text" : "password"} value={f.password} onChange={set("password")} placeholder="Password *" />
-                <button type="button" style={S.pwToggle} onClick={() => setShowPw((s) => !s)}>{showPw ? "Hide" : "Show"}</button>
-              </div>
-              <div>
-                <input className="reg-input" style={S.input} type={showPw ? "text" : "password"} value={f.confirm} onChange={set("confirm")} placeholder="Confirm *" />
-                {touched && f.confirm !== "" && f.confirm !== f.password && <Err>Doesn’t match.</Err>}
-              </div>
-            </div>
-            {f.password.length > 0 && (
-              <ul style={S.rules}>
-                {PASSWORD_RULES.map((r) => {
-                  const ok = r.test(f.password);
-                  return <li key={r.label} style={{ ...S.rule, color: ok ? "#15803d" : "#9aa1ad" }}>{ok ? "✓" : "○"} {r.label}</li>;
+              <div style={S.sectionLabel}>I need guidance for <span style={S.muted}>(select any one)</span></div>
+              <div style={S.milestones} className="og-ms">
+                {MILESTONES.map((m) => {
+                  const sel = f.category === m.value;
+                  return (
+                    <button key={m.value} onClick={() => set("category", m.value)} style={{ ...S.mCard, ...(sel ? { borderColor: m.color, boxShadow: `0 0 0 3px ${m.soft}` } : {}) }}>
+                      <span style={{ ...S.mIcon, background: m.soft, color: m.color, ...(sel ? { boxShadow: `0 6px 16px ${m.soft}` } : {}) }}><Icon name={m.icon} size={26} /></span>
+                      <span style={S.mLabel}>{m.label}</span>
+                      {sel && <span style={{ ...S.mSel, background: m.color }}>✓</span>}
+                    </button>
+                  );
                 })}
-              </ul>
-            )}
-            <button type="submit" style={{ ...S.submit, ...(canSubmit && !submitting ? {} : S.submitDisabled) }} disabled={!canSubmit || submitting}>
-              {submitting ? "Creating account…" : "Create account & start test"}
-            </button>
-          </form>
+              </div>
 
-          <div style={S.footer}>
-            <span>Have an account? <Link href="/signin" style={S.footLink}>Sign in</Link></span>
-            <span style={S.terms}>Terms &amp; Conditions</span>
-          </div>
+              <div style={S.footer}>
+                <Link href="/signin" style={S.ghostBtn}>Existing user login</Link>
+                <button style={{ ...S.next, ...(step0Ok ? {} : S.disabled) }} disabled={!step0Ok} onClick={() => setStep(1)}>Next →</button>
+              </div>
+            </>
+          ) : step === 1 ? (
+            /* ---------------- Step 2: Current stage ---------------- */
+            <>
+              <h2 style={S.h}>Set your current stage.</h2>
+              <div style={S.confirmPill}><Icon name="check" size={14} /> {MILESTONES.find((m) => m.value === f.category)?.label} · career guidance</div>
+              <div style={S.sectionLabel}>Where are you right now?</div>
+              <div style={S.stages} className="og-st">
+                {STAGES.map((c, i) => {
+                  const sel = f.clarity === c.value;
+                  return (
+                    <button key={c.value} onClick={() => set("clarity", c.value)} className="rin" style={{ ...S.sCard, animationDelay: `${i * 70}ms`, ...(sel ? { borderColor: c.color, boxShadow: `0 0 0 3px ${c.color}22` } : {}) }}>
+                      <span style={{ ...S.sIcon, color: sel ? c.color : "#94a3b8" }}><Icon name={c.icon} size={26} /></span>
+                      <span style={S.sLabel}>{c.label}</span>
+                      {sel && <span style={{ ...S.mSel, background: c.color }}>✓</span>}
+                    </button>
+                  );
+                })}
+              </div>
+              <div style={S.footer}>
+                <button style={S.ghostBtn} onClick={() => setStep(0)}>← Back</button>
+                <button style={{ ...S.next, ...(step1Ok ? {} : S.disabled) }} disabled={!step1Ok} onClick={() => setStep(2)}>Next →</button>
+              </div>
+            </>
+          ) : (
+            /* ---------------- Step 3: Details (progressive reveal) ---------------- */
+            <>
+              <h2 style={S.h}>Let’s start.</h2>
+              <p style={S.subhint}>Your email and password are your login — you’ll use them to view your report anytime.</p>
+              {error && <div style={S.errorBox}>{error}</div>}
+
+              <div style={S.grid2} className="og-g2">
+                <Field label="Email" value={f.email} onChange={(v) => set("email", v)} ok={emailOk} touched={touched} type="email" placeholder="you@email.com" autoFocus />
+              </div>
+
+              {emailOk && (
+                <div style={S.grid2} className="rin og-g2">
+                  <Field label="Phone number" value={f.phone} onChange={(v) => set("phone", v)} ok={phoneOk} touched={touched} placeholder="10-digit mobile" />
+                  <Field label="Location (city)" value={f.city} onChange={(v) => set("city", v)} placeholder="Your city" optional />
+                </div>
+              )}
+
+              {emailOk && phoneOk && (
+                <div className="rin">
+                  <div style={S.grid2} className="og-g2">
+                    <Field label="School / College / Company" value={f.institution} onChange={(v) => set("institution", v)} placeholder="Where you study / work" optional />
+                    <Field label="Age" value={f.age} onChange={(v) => set("age", v.replace(/[^\d]/g, "").slice(0, 2))} placeholder="e.g. 17" optional />
+                  </div>
+                  <div style={{ position: "relative", marginTop: 4 }}>
+                    <label style={S.fLabel}>Create your password {pwOk && <span style={S.okInline}>✓</span>}</label>
+                    <input style={S.input} type={showPw ? "text" : "password"} value={f.password} onChange={(e) => set("password", e.target.value)} placeholder="Choose a strong password" />
+                    <button type="button" style={S.pwToggle} onClick={() => setShowPw((s) => !s)}>{showPw ? "Hide" : "Show"}</button>
+                    {f.password.length > 0 && (
+                      <ul style={S.rules}>
+                        {PASSWORD_RULES.map((r) => {
+                          const good = r.test(f.password);
+                          return <li key={r.label} style={{ ...S.rule, color: good ? "#15803d" : "#9aa1ad" }}>{good ? "✓" : "○"} {r.label}</li>;
+                        })}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              <div style={S.footer}>
+                <button style={S.ghostBtn} onClick={() => setStep(1)}>← Back</button>
+                <button style={{ ...S.next, ...(step2Ok && !submitting ? {} : S.disabled) }} disabled={!step2Ok || submitting} onClick={() => void submit()}>
+                  {submitting ? "Creating…" : "Start →"}
+                </button>
+              </div>
+            </>
+          )}
         </div>
 
-        {/* Right: real photo + motivation */}
-        <div style={S.visual} className="reg-visual">
-          <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=70" alt="" style={S.visualImg} />
-          <div style={S.visualOverlay} />
-          <div style={S.visualContent}>
-            <h2 style={S.motTitle}>You’ve got this.</h2>
-            <p style={S.motText}>
-              Every great career starts with understanding yourself. Take your time
-              and trust your instincts — there are no wrong answers here.
-            </p>
+        {/* progress dots */}
+        {!done && (
+          <div style={S.progress}>
+            {[0, 1, 2].map((i) => <span key={i} style={{ ...S.dot, ...(i === step ? S.dotOn : i < step ? S.dotDone : {}) }} />)}
           </div>
-        </div>
+        )}
       </div>
-      </main>
+
+      <div style={S.brand}><Logo height={30} mono /></div>
     </div>
   );
 }
 
-function Err({ children }: { children: React.ReactNode }) { return <div style={S.fieldErr}>{children}</div>; }
+/* --------------------------- reusable field ---------------------------- */
+function Field({ label, value, onChange, ok, touched, type = "text", placeholder, optional, autoFocus }:
+  { label: string; value: string; onChange: (v: string) => void; ok?: boolean; touched?: boolean; type?: string; placeholder?: string; optional?: boolean; autoFocus?: boolean }) {
+  const invalid = touched && !optional && ok === false;
+  return (
+    <div style={{ position: "relative" }}>
+      <label style={S.fLabel}>{label}{optional && <span style={S.optTag}> (optional)</span>} {ok && <span style={S.okInline}>✓</span>}</label>
+      <input style={{ ...S.input, ...(invalid ? S.inputBad : {}) }} type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} autoFocus={autoFocus} />
+      {invalid && <div style={S.err}>Please enter a valid {label.toLowerCase()}.</div>}
+    </div>
+  );
+}
 
-const RED = "#e0242e";
+/* -------------------------------- styles ------------------------------- */
 const S: Record<string, React.CSSProperties> = {
-  page: { minHeight: "100vh", background: "#eef1f6", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: "#1f2430", display: "flex", flexDirection: "column" },
-  header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "9px 26px", background: "#fff", borderBottom: "1px solid #e6e9ef" },
-  headerRight: { display: "flex", alignItems: "center", gap: 12 },
-  haveAcct: { fontSize: 13, color: "#64748b" },
-  signInBtn: { padding: "8px 16px", background: "#e0242e", color: "#fff", borderRadius: 9, fontSize: 13.5, fontWeight: 700, textDecoration: "none" },
-  wrap: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "10px 20px" },
-  shell: { width: "100%", maxWidth: 1140, background: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 28px 70px rgba(31,36,48,.18)" },
+  page: { position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px", fontFamily: "'Poppins', Inter, system-ui, sans-serif", background: `url(${BG}) center/cover fixed` },
+  overlay: { position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(20,26,44,.62), rgba(20,26,44,.72))" },
+  home: { position: "absolute", top: 20, right: 20, zIndex: 3, background: NAVY, color: "#fff", textDecoration: "none", fontSize: 12.5, fontWeight: 700, letterSpacing: .5, padding: "9px 20px", borderRadius: 8, border: "1px solid rgba(255,255,255,.25)" },
+  brand: { position: "absolute", bottom: 16, left: 0, right: 0, display: "flex", justifyContent: "center", zIndex: 2, opacity: .9 },
 
-  left: { padding: "22px 42px 18px", display: "flex", flexDirection: "column" },
-  logo: { alignSelf: "flex-start", fontSize: "1.4rem", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 16 },
-  title: { fontSize: 22, fontWeight: 800, margin: "0 0 3px" },
-  subtitle: { fontSize: 13, color: "#8a8f9a", margin: "0 0 12px" },
+  card: { position: "relative", zIndex: 2, width: "100%", maxWidth: 940, background: "#fff", borderRadius: 16, boxShadow: "0 30px 80px rgba(0,0,0,.35)", overflow: "hidden" },
+  tabs: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", background: "#f3f4f7" },
+  tab: { position: "relative", padding: "16px 10px", border: "none", background: "transparent", fontSize: 12.5, fontWeight: 800, letterSpacing: .6, color: "#8a90a0", cursor: "pointer", textTransform: "uppercase" },
+  tabActive: { background: NAVY, color: "#fff", boxShadow: "0 8px 22px rgba(47,63,158,.4)" },
+  tabLocked: { opacity: .55, cursor: "not-allowed" },
+  tabTick: { color: "#16a34a", marginRight: 6, fontWeight: 800 },
 
-  loginNote: { display: "flex", gap: 8, alignItems: "flex-start", background: "#f1f5f9", border: "1px solid #e2e8f0", color: "#475569", padding: "8px 12px", borderRadius: 10, fontSize: 12, lineHeight: 1.45, marginBottom: 11 },
-  loginNoteIcon: { fontSize: 15, lineHeight: 1.4, flexShrink: 0, display: "flex" },
-  warn: { background: "#fffbeb", border: "1px solid #fcd34d", color: "#92400e", padding: "9px 12px", borderRadius: 10, fontSize: 12.5, marginBottom: 12 },
-  errorBox: { background: "#fee2e2", border: "1px solid #fca5a5", color: "#b91c1c", padding: "9px 12px", borderRadius: 10, fontSize: 13, marginBottom: 12, fontWeight: 600 },
+  body: { padding: "30px 40px 8px", minHeight: 360 },
+  h: { textAlign: "center", fontSize: 26, fontWeight: 700, color: "#1f2740", margin: "4px 0 22px" },
+  subhint: { textAlign: "center", fontSize: 13, color: "#8a90a0", margin: "-14px 0 18px" },
 
-  form: { display: "flex", flexDirection: "column", gap: 9 },
-  row: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 9 },
-  input: { width: "100%", padding: "9px 12px", borderRadius: 10, border: "1px solid #dfe3ea", fontSize: 13.5, outline: "none", boxSizing: "border-box", background: "#f7f8fa", transition: "border-color .15s, background .15s" },
-  fieldErr: { color: "#dc2626", fontSize: 11, marginTop: 3 },
-  pwWrap: { position: "relative" },
-  pwToggle: { position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: RED, fontWeight: 700, fontSize: 11.5, cursor: "pointer" },
-  rules: { listStyle: "none", padding: "7px 11px", margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "2px 10px", background: "#f7f8fa", border: "1px solid #eef0f4", borderRadius: 10 },
+  floatLabel: { display: "block", fontSize: 12.5, color: "#9aa1ad", marginBottom: 2 },
+  underWrap: { position: "relative", marginBottom: 8, maxWidth: 520 },
+  underInput: { width: "100%", border: "none", borderBottom: "1.5px solid #dfe3ea", fontSize: 16, padding: "8px 24px 8px 0", outline: "none", background: "transparent" },
+  okTick: { position: "absolute", right: 0, top: 10, color: "#16a34a", fontWeight: 800 },
+
+  sectionLabel: { fontSize: 14, fontWeight: 700, color: "#1f2740", margin: "22px 0 14px" },
+  muted: { color: "#9aa1ad", fontWeight: 500 },
+
+  milestones: { display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12 },
+  mCard: { position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 10, padding: "18px 8px", background: "#fff", border: "1.5px solid #eceef3", borderRadius: 14, cursor: "pointer", transition: "border-color .15s, box-shadow .15s" },
+  mIcon: { width: 58, height: 58, borderRadius: "50%", display: "grid", placeItems: "center", transition: "box-shadow .15s" },
+  mLabel: { fontSize: 12.5, fontWeight: 700, color: "#334155", textAlign: "center", lineHeight: 1.3 },
+  mSel: { position: "absolute", top: 8, right: 8, width: 18, height: 18, borderRadius: "50%", color: "#fff", fontSize: 11, fontWeight: 800, display: "grid", placeItems: "center" },
+
+  confirmPill: { display: "inline-flex", alignItems: "center", gap: 7, background: "#eef2ff", color: NAVY, fontSize: 12.5, fontWeight: 700, padding: "7px 14px", borderRadius: 999, marginBottom: 4 },
+  stages: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 },
+  sCard: { position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 12, padding: "22px 12px", background: "#fff", border: "1.5px solid #eceef3", borderRadius: 14, cursor: "pointer", textAlign: "center" },
+  sIcon: { width: 56, height: 56, borderRadius: "50%", border: "1.5px solid #e4e7ee", display: "grid", placeItems: "center" },
+  sLabel: { fontSize: 13, fontWeight: 600, color: "#334155", lineHeight: 1.4 },
+
+  grid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18, marginBottom: 16 },
+  fLabel: { display: "block", fontSize: 12.5, color: "#6b7280", fontWeight: 600, marginBottom: 5 },
+  optTag: { color: "#b6bcc7", fontWeight: 500 },
+  okInline: { color: "#16a34a", fontWeight: 800 },
+  input: { width: "100%", border: "none", borderBottom: "1.5px solid #dfe3ea", fontSize: 15, padding: "8px 52px 8px 0", outline: "none", background: "transparent", boxSizing: "border-box" },
+  inputBad: { borderBottomColor: "#dc2626" },
+  pwToggle: { position: "absolute", right: 0, top: 26, background: "none", border: "none", color: NAVY, fontWeight: 700, fontSize: 12, cursor: "pointer" },
+  rules: { listStyle: "none", padding: "8px 0 0", margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "2px 14px" },
   rule: { fontSize: 10.5, fontWeight: 600 },
-  submit: { marginTop: 3, padding: "11px", background: RED, color: "#fff", border: "none", borderRadius: 11, fontSize: 15, fontWeight: 800, cursor: "pointer", boxShadow: "0 10px 22px rgba(224,36,46,.3)" },
-  submitDisabled: { background: "#e0e3ea", color: "#9aa1ad", cursor: "not-allowed", boxShadow: "none" },
-  footer: { marginTop: 12, display: "flex", justifyContent: "space-between", fontSize: 12, color: "#8a8f9a" },
-  footLink: { color: RED, fontWeight: 700, textDecoration: "none" },
-  terms: { textDecoration: "underline", cursor: "default" },
 
-  visual: { position: "relative", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "30px 34px", overflow: "hidden", minHeight: 0 },
-  visualImg: { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" },
-  visualOverlay: { position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(31,41,63,.12) 0%, rgba(31,41,63,.78) 100%)" },
-  visualContent: { position: "relative", color: "#fff" },
-  motTitle: { fontSize: 24, fontWeight: 800, margin: "0 0 10px", color: "#fff" },
-  motText: { fontSize: 14.5, color: "rgba(255,255,255,.9)", lineHeight: 1.65, maxWidth: 340, margin: 0 },
+  footer: { display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 24, paddingTop: 4 },
+  ghostBtn: { background: "#eef0f4", color: "#475569", border: "none", borderRadius: 8, padding: "12px 22px", fontSize: 13, fontWeight: 700, cursor: "pointer", textDecoration: "none", display: "inline-block" },
+  next: { background: NAVY, color: "#fff", border: "none", borderRadius: 8, padding: "12px 30px", fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: "0 10px 22px rgba(47,63,158,.32)" },
+  disabled: { opacity: .45, cursor: "not-allowed", boxShadow: "none" },
+  err: { color: "#dc2626", fontSize: 11.5, marginTop: 4 },
+  errorBox: { background: "#fee2e2", border: "1px solid #fca5a5", color: "#b91c1c", padding: "9px 12px", borderRadius: 9, fontSize: 13, marginBottom: 14, fontWeight: 600 },
+
+  progress: { display: "flex", justifyContent: "center", gap: 8, padding: "10px 0 20px" },
+  dot: { width: 8, height: 8, borderRadius: "50%", background: "#d7dbe3" },
+  dotOn: { background: NAVY, width: 22, borderRadius: 5 },
+  dotDone: { background: "#16a34a" },
+
+  doneWrap: { textAlign: "center", padding: "40px 0 20px" },
+  doneCheck: { width: 76, height: 76, borderRadius: "50%", margin: "0 auto 16px", background: "linear-gradient(135deg,#16a34a,#22c55e)", color: "#fff", fontSize: 40, fontWeight: 800, display: "grid", placeItems: "center", boxShadow: "0 14px 30px rgba(22,163,74,.4)" },
+  doneTitle: { fontSize: 22, fontWeight: 800, color: "#1f2740", margin: "0 0 6px" },
+  doneSub: { fontSize: 14, color: "#64748b" },
 };
+
+const CSS = `
+@keyframes rinKey{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.rin{animation:rinKey .5s cubic-bezier(.2,.8,.25,1) both}
+@media(max-width:760px){
+  .og-ms{grid-template-columns:repeat(2,1fr) !important}
+  .og-st{grid-template-columns:repeat(2,1fr) !important}
+  .og-g2{grid-template-columns:1fr !important}
+}
+@media(max-width:440px){
+  .og-ms{grid-template-columns:1fr 1fr !important}
+}
+`;

@@ -9,8 +9,7 @@ export const CATEGORY_OPTIONS: { value: string; label: string; journey: string }
   { value: "class_9_10", label: "Class 9 – 10", journey: "stream_selection" },
   { value: "class_11_12", label: "Class 11 – 12", journey: "career_planning" },
   { value: "graduate", label: "Graduate (18 – 21)", journey: "graduate_readiness" },
-  { value: "early_professional", label: "Early Professional (21 – 35)", journey: "career_growth" },
-  { value: "experienced_professional", label: "Experienced Professional (35 – 55)", journey: "leadership_excellence" },
+  { value: "experienced_professional", label: "Professional (35 – 55)", journey: "leadership_excellence" },
 ];
 
 export function journeyForCategory(value: string): string {
