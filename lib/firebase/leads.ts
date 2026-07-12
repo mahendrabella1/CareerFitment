@@ -33,7 +33,6 @@ export async function fsCreateLead(
   await db.collection(COLLECTION).doc(id).set(record);
   return record;
 }
-
 export async function fsAttachSession(
   leadId: string,
   sessionId: string

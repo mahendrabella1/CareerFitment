@@ -410,6 +410,14 @@ function Stat({ icon, label, value, color }: { icon: string; label: string; valu
   );
 }
 
+/* Strip the embedded outer frame that every authored SVG option carries
+   (`<rect ... stroke="#D9D9D9" .../>`). Without this each tile draws its own
+   inner box on top of our state-driven tile border, so busier options read as
+   if they were selected/outlined. We keep the white fill, drop the stroke. */
+function cleanSvg(svg: string): string {
+  return svg.replace(/(<rect\b[^>]*?)\sstroke="#D9D9D9"([^>]*?>)/gi, "$1 stroke=\"none\"$2");
+}
+
 /* --------------------------- media rendering --------------------------- */
 function MediaBlock({ media }: { media: Media }) {
   if (!media) return null;
@@ -529,9 +537,9 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
         {opts.map((o, i) => {
           const sel = value === String(i);
           return (
-            <button key={i} style={{ ...S.svgChoice, ...(sel ? S.svgChoiceOn : {}) }} onMouseDown={(e) => e.preventDefault()} onClick={() => onChange(String(i))}>
+            <button key={i} className="og-svgc" style={{ ...S.svgChoice, ...(sel ? S.svgChoiceOn : {}) }} onMouseDown={(e) => e.preventDefault()} onClick={() => onChange(String(i))}>
               <span style={{ ...S.radio, ...(sel ? S.radioOn : {}) }}>{sel && <span style={S.radioDot} />}</span>
-              <span className="og-svgh" style={S.svgHolder} dangerouslySetInnerHTML={{ __html: o || "" }} />
+              <span className="og-svgh" style={S.svgHolder} dangerouslySetInnerHTML={{ __html: cleanSvg(o || "") }} />
             </button>
           );
         })}
@@ -683,7 +691,7 @@ const S: Record<string, React.CSSProperties> = {
   ck: { color: BLUE, display: "grid", placeItems: "center" },
 
   svgChoices: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(84px, 1fr))", gap: 8, maxWidth: 520 },
-  svgChoice: { display: "flex", flexDirection: "column", alignItems: "center", gap: 6, padding: "8px", border: `1.5px solid ${LINE}`, borderRadius: 10, background: "#fff", cursor: "pointer" },
+  svgChoice: { display: "flex", flexDirection: "column", alignItems: "center", gap: 6, padding: "8px", border: `1.5px solid ${LINE}`, borderRadius: 10, background: "#fff", cursor: "pointer", outline: "none", boxShadow: "none", WebkitTapHighlightColor: "transparent" },
   svgChoiceOn: { borderColor: BLUE, background: BLUE_SOFT },
   svgHolder: { display: "grid", placeItems: "center", width: "100%" },
 
@@ -768,6 +776,9 @@ const CSS = `
 .og-exam-grid button{-webkit-tap-highlight-color:transparent}
 .og-exam-grid button:focus{outline:none}
 .og-exam-grid button:focus-visible{outline:none;box-shadow:0 0 0 2px ${ACCENT}44}
+/* SVG option tiles: border is fully state-driven (grey → blue). Never let a
+   focus/keyboard ring make an unselected tile look boxed or selected. */
+.og-exam-grid .og-svgc:focus,.og-exam-grid .og-svgc:focus-visible{outline:none;box-shadow:none}
 .og-opt{transition:background .12s ease;background:transparent}
 .og-opt:hover{background:#f7f9fc}
 /* scale visual (SVG) matrix cells + options to fit — no giant grids / scrolling */
