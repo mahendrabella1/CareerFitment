@@ -486,6 +486,67 @@ export const SCHOLARSHIPS_2026: { name: string; who: string; url: string }[] = [
   { name: "DAAD Scholarships", who: "Study in Germany — strong for engineering & science", url: "https://www.daad.de" },
 ];
 
+/* ------------------------- academic path ------------------------------- */
+const DOMAIN_ACADEMICS: Record<string, { stream: string; subjects: string[]; exams: string[] }> = {
+  A: { stream: "Science (PCM)", subjects: ["Physics", "Chemistry", "Maths"], exams: ["JEE Main / Advanced", "BITSAT", "State CETs"] },
+  B: { stream: "Science (PCM) or Computer Science", subjects: ["Maths", "Computer Science", "Physics"], exams: ["JEE", "CUET", "BCA / BSc-CS entrances"] },
+  C: { stream: "Science (PCB)", subjects: ["Biology", "Chemistry", "Physics"], exams: ["NEET", "AIIMS / allied-health", "State medical"] },
+  D: { stream: "Any stream + a design portfolio", subjects: ["Fine Arts", "English", "any core subjects"], exams: ["NID DAT", "NIFT", "UCEED / CEED"] },
+  E: { stream: "Commerce (or any)", subjects: ["Accountancy", "Economics", "Business Studies", "Maths"], exams: ["CUET", "IPMAT", "CA / CS Foundation"] },
+  F: { stream: "Humanities / Arts (or any)", subjects: ["Political Science", "History", "English", "Sociology"], exams: ["CLAT (law)", "CTET (teaching)", "UPSC / State (civil services)"] },
+  G: { stream: "Science (PCM / PCB)", subjects: ["Biology or Physics", "Chemistry", "Maths"], exams: ["IISER / NEST", "JEE (for tech)", "ICAR (agriculture)"] },
+  H: { stream: "Any stream + skill training", subjects: ["Physical Education", "any core subjects"], exams: ["NCHMCT JEE (hotel mgmt)", "Sports / fitness certifications"] },
+};
+
+export type AcademicPath = { stream: string; subjects: string[]; exams: string[]; skills: string[]; note: string; isSchool: boolean };
+
+export function academicPath(a: AssessmentSummary, journeyCode: string): AcademicPath {
+  const topLetter = (a.themes ?? []).filter((t) => t.score > 0 && DOMAINS[t.letter])[0]?.letter ?? "B";
+  const d = DOMAIN_ACADEMICS[topLetter] ?? DOMAIN_ACADEMICS.B;
+  const dom = DOMAINS[topLetter] ?? DOMAINS.B;
+  const isSchool = ["6-8", "9-10"].includes(journeyCode);
+  const note = journeyCode === "11-12"
+    ? "You’re already in senior school — lock your subjects and start focused exam prep now."
+    : ["6-8", "9-10"].includes(journeyCode)
+      ? "You’ll choose your stream in Class 11 — this is the direction to aim for."
+      : "Here’s the academic route this direction typically follows.";
+  return { stream: d.stream, subjects: d.subjects, exams: d.exams, skills: dom.skills, note, isSchool };
+}
+
+/* ------------------------- work-environment fit ------------------------ */
+export function workEnvironment(a: AssessmentSummary): { fit: string; blurb: string; tags: string[] } {
+  const t = temperamentOf(a).primary;
+  const val = a.topValues?.[0]?.tag;
+  const map: Record<string, { fit: string; tags: string[] }> = {
+    choleric: { fit: "Fast-paced, goal-driven teams", tags: ["Ownership", "Ambitious teams", "Room to lead"] },
+    sanguine: { fit: "Collaborative, people-facing environments", tags: ["Teamwork", "Variety", "Client-facing"] },
+    melancholic: { fit: "Focused, deep-work environments", tags: ["Deep work", "Autonomy", "Craft & quality"] },
+    phlegmatic: { fit: "Stable, supportive organisations", tags: ["Stability", "Clear structure", "Steady growth"] },
+  };
+  const base = map[t.key] ?? map.melancholic;
+  const blurb = `As a ${t.name.toLowerCase()} personality${val ? ` who values ${String(val).toLowerCase()}` : ""}, you’ll do your best work in ${base.fit.toLowerCase()}. Look for that when choosing colleges, teams and first jobs — the environment matters as much as the role.`;
+  return { fit: base.fit, blurb, tags: base.tags };
+}
+
+/* ------------------------- role models --------------------------------- */
+export const ROLE_MODELS: Record<string, { name: string; note: string }[]> = {
+  A: [{ name: "E. Sreedharan", note: "The “Metro Man” — engineering that moved a nation" }, { name: "Sundar Pichai", note: "Engineer → CEO of Google" }],
+  B: [{ name: "Nandan Nilekani", note: "Co-founded Infosys; architect of Aadhaar" }, { name: "Sundar Pichai", note: "Computer science → Google CEO" }],
+  C: [{ name: "Dr. Devi Shetty", note: "Cardiac surgeon who made heart care affordable" }, { name: "Dr. Soumya Swaminathan", note: "Paediatrician → WHO Chief Scientist" }],
+  D: [{ name: "Prasoon Joshi", note: "Lyricist & adman — ideas into feeling" }, { name: "Ilaiyaraaja", note: "Self-taught composer, global influence" }],
+  E: [{ name: "Falguni Nayar", note: "Founder of Nykaa — built a brand from scratch" }, { name: "Nithin Kamath", note: "Founder of Zerodha" }],
+  F: [{ name: "Dr. A.P.J. Abdul Kalam", note: "Scientist, teacher & President" }, { name: "Kiran Bedi", note: "Reforming public service" }],
+  G: [{ name: "Dr. M.S. Swaminathan", note: "Father of India’s Green Revolution" }, { name: "Tessy Thomas", note: "“Missile Woman” of India" }],
+  H: [{ name: "Vikas Khanna", note: "Chef who took Indian food global" }, { name: "P.T. Usha", note: "Athlete → mentor & administrator" }],
+};
+
+export const PARENT_TIPS: string[] = [
+  "Ask open questions (“what did you enjoy most?”) instead of pushing one career.",
+  "Back exploration — a short project or workshop teaches more than advice ever will.",
+  "Fit and genuine interest predict long-term success better than a “safe” label.",
+  "Revisit this report together every 6–12 months — your child is still growing.",
+];
+
 export function stageLabelOf(journeyCode: string): string {
   const m: Record<string, string> = {
     "6-8": "school (classes 6–8)", "9-10": "school (classes 9–10)", "11-12": "senior school (11–12)",

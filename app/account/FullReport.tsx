@@ -18,10 +18,11 @@ import {
   archetype, percentileOf, subTraits, actionPlan, type Domain,
   temperamentOf, resultOf, careerRoles, TEMPERAMENTS,
   FUTURE, LEARNING, JOB_PORTALS, SCHOLARSHIPS_2026,
+  academicPath, workEnvironment, ROLE_MODELS, PARENT_TIPS,
 } from "@/lib/report/knowledge";
 
 const P = "https://onegrasp.com/wp-content/uploads/2026/07/";
-const LOGO = P + "onegrasp-logo.png";
+const LOGO = "/onegrasp-logo-tight.png"; // tightly-cropped local asset (no padding → reads large)
 const DIMS8 = P + "ChatGPT-Image-Jul-10-2026-05_34_15-PM.png";
 
 type Meta = { label: string; dim: string; accent: string; img: string };
@@ -78,6 +79,10 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
   const domAccents = ["#2f6bed", "#8b5cf6", "#1fa97a"];
   const roles = careerRoles(a);
   const temp = temperamentOf(a);
+  const acad = academicPath(a, a.journeyCode);
+  const workEnv = workEnvironment(a);
+  const topLetter = (a.themes ?? []).filter((t) => t.score > 0 && DOMAINS[t.letter])[0]?.letter ?? "B";
+  const models = ROLE_MODELS[topLetter] ?? ROLE_MODELS.B;
 
   const dateStr = (() => { try { return new Date(a.completedAt).toLocaleDateString("en-IN", { month: "short", year: "numeric" }); } catch { return ""; } })();
 
@@ -300,6 +305,49 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
         </div>
       </section>
 
+      {/* ===== ACADEMIC PATH (stream · subjects · exams · skills) ===== */}
+      <section className="sheet rv">
+        <div className="pad">
+          <RH kick="Your academic path" />
+          <SecHead eyebrow="How to get there from where you are" title="Stream, subjects & exams to aim for"
+            sub={acad.note} />
+          <div className="apath">
+            <div className="apcard stream"><div className="aph">📚 Recommended stream</div><div className="apv">{acad.stream}</div></div>
+            <div className="apcard"><div className="aph">✏️ Focus subjects</div><div className="apchips">{acad.subjects.map((x) => <em key={x}>{x}</em>)}</div></div>
+            <div className="apcard"><div className="aph">📝 Exams to target</div><div className="apchips">{acad.exams.map((x) => <em key={x}>{x}</em>)}</div></div>
+          </div>
+          <div className="skills">
+            <div className="subhd">Skills to start building now</div>
+            <div className="skillrow">{acad.skills.map((s) => <span className="skill" key={s}>{s}</span>)}</div>
+          </div>
+          <RF name={name} />
+        </div>
+      </section>
+
+      {/* ===== WHERE YOU'LL THRIVE + ROLE MODELS ===== */}
+      <section className="sheet rv">
+        <div className="pad">
+          <RH kick="Where you’ll thrive" />
+          <SecHead eyebrow="The environment that brings out your best" title="How and where you’ll do great work" />
+          <div className="envbox">
+            <div className="envfit"><span className="envic">🎯</span><div><div className="envt">{workEnv.fit}</div><p>{workEnv.blurb}</p></div></div>
+            <div className="envtags">{workEnv.tags.map((t) => <em key={t}>{t}</em>)}</div>
+          </div>
+          <div className="models">
+            <div className="subhd">People who started where you are</div>
+            <div className="modelrow">
+              {models.map((m) => (
+                <div className="model" key={m.name}>
+                  <div className="mav">{m.name.split(" ").map((w) => w[0]).slice(0, 2).join("")}</div>
+                  <div><div className="mn">{m.name}</div><div className="mnote">{m.note}</div></div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <RF name={name} />
+        </div>
+      </section>
+
       {/* ===== FUTURE OUTLOOK (rising trends + jobs at risk) ===== */}
       <section className="sheet rv">
         <div className="pad">
@@ -399,6 +447,13 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
               <ul>{plan.days90.map((x, i) => <li key={i}>{x}</li>)}</ul>
             </div>
           </div>
+
+          <div className="parents">
+            <div className="ph"><span className="pic">👪</span> For parents &amp; mentors</div>
+            <p className="pintro">The best way to support {name ? name.split(" ")[0] : "your child"} is to guide, not decide. A few things that help:</p>
+            <ul className="plist2">{PARENT_TIPS.map((t, i) => <li key={i}>{t}</li>)}</ul>
+          </div>
+
           <div className="closing">
             <h3>This is a map, not a verdict.</h3>
             <p>Your profile shows where you’ll thrive today — but you’re still growing. Revisit this report as you change, and share it with someone who’s guiding you.</p>
@@ -565,7 +620,7 @@ const CSS = `
 .frx .eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent,var(--brand-2))}
 
 .frx .rh{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px}
-.frx .rh .brandmark img{height:30px;width:auto;display:block}
+.frx .rh .brandmark img{height:34px;width:auto;display:block}
 .frx .rh .ey{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;color:var(--ink-2)}
 .frx .rh .ey .k{width:8px;height:8px;border-radius:50%;background:var(--accent,var(--brand-2))}
 .frx .rf{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:26px;padding-top:14px;
@@ -580,7 +635,7 @@ const CSS = `
 .frx .cover-in{padding:40px 44px 36px}
 @media(max-width:720px){.frx .cover-in{padding:26px 18px}}
 .frx .cover-top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:30px}
-.frx .cover-logo{height:52px;width:auto}
+.frx .cover-logo{height:58px;width:auto}
 .frx .cover .badge{font-size:11px;font-weight:700;color:var(--brand);background:#fff;border:1px solid var(--line);
   padding:7px 13px;border-radius:999px;box-shadow:var(--shadow-sm)}
 .frx .cover .kick{font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--brand-2)}
@@ -814,6 +869,46 @@ const CSS = `
 
 /* journey graphic */
 .frx .journey{border:1px solid var(--line);border-radius:14px;padding:14px 10px;background:linear-gradient(180deg,#f7f9ff,#fff);margin-bottom:18px}
+
+/* academic path */
+.frx .apath{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:640px){.frx .apath{grid-template-columns:1fr}}
+.frx .apcard{border:1px solid var(--line);border-radius:12px;padding:15px 16px;background:#fff}
+.frx .apcard.stream{background:linear-gradient(180deg,#eef3ff,#fff);border-color:#d9e4fb}
+.frx .aph{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.frx .apv{font-size:16px;font-weight:800;color:var(--brand-2)}
+.frx .apchips{display:flex;flex-wrap:wrap;gap:6px}
+.frx .apchips em{font-style:normal;font-size:12px;font-weight:700;color:var(--ink-2);background:var(--line-2);border:1px solid var(--line);padding:5px 10px;border-radius:8px}
+.frx .skills{margin-top:22px}
+.frx .skillrow{display:flex;flex-wrap:wrap;gap:8px}
+.frx .skill{font-size:12.5px;font-weight:700;color:#157a51;background:#eef7f1;border:1px solid #d8ecdf;padding:7px 13px;border-radius:999px}
+
+/* where you'll thrive + role models */
+.frx .envbox{border:1px solid var(--line);border-radius:14px;padding:18px;background:linear-gradient(180deg,#f7f9ff,#fff)}
+.frx .envfit{display:flex;gap:14px;align-items:flex-start}
+.frx .envic{font-size:24px;flex:none}
+.frx .envt{font-size:16px;font-weight:800;margin-bottom:5px}
+.frx .envfit p{font-size:13px;line-height:1.6;color:var(--ink-2)}
+.frx .envtags{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.frx .envtags em{font-style:normal;font-size:12px;font-weight:700;color:var(--brand-2);background:#eef3ff;border:1px solid #dce6fb;padding:6px 12px;border-radius:999px}
+.frx .models{margin-top:26px}
+.frx .modelrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.frx .modelrow{grid-template-columns:1fr}}
+.frx .model{display:flex;gap:13px;align-items:center;border:1px solid var(--line);border-radius:13px;padding:14px 16px;background:#fff}
+.frx .mav{width:44px;height:44px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:800;color:#fff;
+  background:linear-gradient(135deg,#2f6bed,#8b5cf6);font-size:15px}
+.frx .mn{font-size:14.5px;font-weight:800}
+.frx .mnote{font-size:12px;color:var(--ink-3);margin-top:2px;line-height:1.4}
+
+/* for parents */
+.frx .parents{margin-top:16px;border:1px solid #e6ddf6;border-radius:14px;padding:18px 20px;background:linear-gradient(180deg,#f6f3fd,#fff)}
+.frx .ph{font-size:14px;font-weight:800;color:#6b3fd4;display:flex;align-items:center;gap:9px}
+.frx .ph .pic{font-size:18px}
+.frx .pintro{font-size:13px;color:var(--ink-2);margin:9px 0 12px;line-height:1.55}
+.frx .plist2{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:9px}
+@media(max-width:560px){.frx .plist2{grid-template-columns:1fr}}
+.frx .plist2 li{position:relative;padding-left:23px;font-size:12.5px;line-height:1.5;color:var(--ink-2)}
+.frx .plist2 li::before{content:"✦";position:absolute;left:0;top:0;color:#8b5cf6;font-weight:800}
 
 @media print{
   .frx{gap:0}
