@@ -288,6 +288,69 @@ export function roadmap(stageLabel: string, domainName: string): Phase[] {
   ];
 }
 
+/* ------------------------- archetype (Career DNA) ---------------------- */
+export type Archetype = { name: string; tagline: string };
+
+const ARCH: Record<string, Archetype> = {
+  R: { name: "The Hands-On Builder", tagline: "You learn by doing and love turning ideas into something real and working." },
+  I: { name: "The Analytical Investigator", tagline: "You’re driven to understand how things work — logic leads, curiosity never stops." },
+  A: { name: "The Creative Originator", tagline: "You see what could be, and bring new ideas, designs and stories to life." },
+  S: { name: "The People Champion", tagline: "You’re at your best helping, teaching and bringing people together." },
+  E: { name: "The Driven Leader", tagline: "You spot opportunities, take initiative and move people toward a goal." },
+  C: { name: "The Systematic Organiser", tagline: "You bring order, accuracy and reliability to everything you take on." },
+};
+
+/** A memorable identity for the Career DNA page — from the top interest theme,
+ *  with a robust fallback to the strongest dimension. */
+export function archetype(a: AssessmentSummary): Archetype {
+  const top = (a.themes ?? []).slice().sort((x, y) => y.score - x.score)[0];
+  if (top && ARCH[top.letter]) return ARCH[top.letter];
+  const rd = (a.radar ?? []).slice().sort((x, y) => y.score - x.score)[0]?.key ?? "";
+  const map: Record<string, string> = {
+    multiple_intelligence: "I", aptitude: "I", career_interest: "I",
+    strengths: "E", motivators: "E", personality: "C",
+    emotional_intelligence: "S", learning_styles: "A",
+  };
+  return ARCH[map[rd] ?? "I"];
+}
+
+/** Rough, monotonic "higher than X% of students" read from a 0–100 score. */
+export const percentileOf = (score: number) => Math.max(5, Math.min(97, Math.round(score * 0.95)));
+
+/** Per-dimension sub-trait bars, drawn from whatever breakdown data exists. */
+export function subTraits(key: string, a: AssessmentSummary): { label: string; value: number }[] {
+  const clean = (arr: { label: string; value: number }[]) =>
+    arr.filter((x) => x.label && x.value > 0).slice(0, 8);
+  switch (key) {
+    case "career_interest": return clean((a.themes ?? []).map((t) => ({ label: t.title, value: t.score })));
+    case "multiple_intelligence": return clean((a.topIntelligences ?? []).map((x) => ({ label: x.name, value: x.score })));
+    case "learning_styles": return clean((a.learningStyles ?? []).map((x) => ({ label: x.name, value: x.score })));
+    case "motivators": return clean((a.topValues ?? []).map((x) => ({ label: x.tag, value: x.score })));
+    case "strengths": return clean((a.strengthsBreakdown ?? []).map((x) => ({ label: x.name, value: x.score })));
+    case "aptitude": return clean((a.topAptitudes ?? []).map((x) => ({ label: x.skill, value: x.score })));
+    case "personality": return clean((a.topStrengths ?? []).map((x) => ({ label: x.subTraitName, value: x.normalizedScore })));
+    default: return [];
+  }
+}
+
+/* ------------------------- action plan (30 / 90 days) ------------------ */
+export function actionPlan(a: AssessmentSummary, domainName: string): { days30: string[]; days90: string[] } {
+  const strength = a.topIntelligences?.[0]?.name || a.strengthsBreakdown?.[0]?.name || "your strongest skill";
+  const dom = domainName.toLowerCase();
+  return {
+    days30: [
+      `Start one small project in ${dom} to test the fit first-hand.`,
+      `Try a free intro course that builds on ${strength.toLowerCase()}.`,
+      "Each week, explain one thing you learned to a friend or family member.",
+    ],
+    days90: [
+      "Finish and share your first project publicly.",
+      "Join a club, community or group active in this field.",
+      `Shortlist three next steps — streams, courses or mentors — toward ${domainName}.`,
+    ],
+  };
+}
+
 export function stageLabelOf(journeyCode: string): string {
   const m: Record<string, string> = {
     "6-8": "school (classes 6–8)", "9-10": "school (classes 9–10)", "11-12": "senior school (11–12)",

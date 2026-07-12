@@ -3,7 +3,13 @@
 // layout that auto-paginates. Rendered to a Buffer for nodemailer.
 import { Document, Page, View, Text, Link, StyleSheet, renderToBuffer } from "@react-pdf/renderer";
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
-import { DOMAINS, categoryDeepDive, roadmap, stageLabelOf } from "@/lib/report/knowledge";
+import { DOMAINS, categoryDeepDive, roadmap, stageLabelOf, archetype, actionPlan } from "@/lib/report/knowledge";
+
+const CAT_LABEL: Record<string, string> = {
+  personality: "Personality", career_interest: "Career Interest", multiple_intelligence: "Multiple Intelligence",
+  emotional_intelligence: "Emotional Intelligence", learning_styles: "Learning Styles", motivators: "Motivators",
+  strengths: "Strengths", aptitude: "Aptitude",
+};
 
 const NAVY = "#2f4062", ACCENT = "#4f6b9e", INK = "#1f2937", MUTED = "#64748b", LINE = "#e6e9ef";
 const clamp = (n: number) => Math.max(4, Math.min(100, Math.round(n)));
@@ -39,6 +45,19 @@ const s = StyleSheet.create({
   phTitle: { fontSize: 10, fontFamily: "Helvetica-Bold", color: "#0f172a" },
   phPoint: { fontSize: 9, color: MUTED, marginTop: 2, lineHeight: 1.4 },
   foot: { fontSize: 8, color: "#94a3b8", marginTop: 18, lineHeight: 1.5 },
+  archBox: { backgroundColor: "#f4f6fb", borderRadius: 6, padding: "10 12", marginTop: 12 },
+  archKick: { fontSize: 7.5, letterSpacing: 1, color: ACCENT, fontFamily: "Helvetica-Bold" },
+  archName: { fontSize: 13, fontFamily: "Helvetica-Bold", color: "#0f172a", marginTop: 3 },
+  archTag: { fontSize: 9.5, color: "#475569", marginTop: 3, lineHeight: 1.45 },
+  dim: { marginBottom: 9, paddingBottom: 9, borderBottom: `1 solid ${LINE}` },
+  dimTop: { flexDirection: "row", alignItems: "center", marginBottom: 3 },
+  dimName: { flex: 1, fontSize: 10.5, fontFamily: "Helvetica-Bold", color: "#0f172a" },
+  dimScore: { fontSize: 10.5, fontFamily: "Helvetica-Bold", color: ACCENT },
+  dimText: { fontSize: 9, color: "#475569", lineHeight: 1.45 },
+  dimNext: { fontSize: 8.5, color: NAVY, marginTop: 3, fontFamily: "Helvetica-Bold" },
+  twoCol: { flexDirection: "row", gap: 12 },
+  col: { flex: 1 },
+  colHd: { fontSize: 9, fontFamily: "Helvetica-Bold", color: "#0f172a", marginBottom: 4 },
 });
 
 function Bar({ label, score }: { label: string; score: number }) {
@@ -57,29 +76,46 @@ function ReportDoc({ name, a }: { name: string; a: AssessmentSummary }) {
     .slice(0, 3)
     .map((t) => ({ ...DOMAINS[t.letter], fit: Math.round(t.score) }));
   const top = domains[0] || DOMAINS.B;
-  const nextSteps = (a.radar ?? []).slice(0, 4).map((r) => ({ label: r.label, next: categoryDeepDive(r.key, a).next })).filter((x) => x.next);
+  const arch = archetype(a);
+  const plan = actionPlan(a, top.name);
+  const dims = (a.radar ?? []).map((r) => ({ ...r, dd: categoryDeepDive(r.key, a) }));
   const phases = roadmap(stageLabelOf(a.journeyCode), top.name);
 
   return (
     <Document title="OneGrasp Career Report" author="OneGrasp">
       <Page size="A4" style={s.page}>
         <View style={s.header}>
-          <Text style={s.hKick}>ONEGRASP · CAREER REPORT</Text>
-          <Text style={s.hTitle}>Hi {name || "there"}, your best-fit direction is {top.name}.</Text>
+          <Text style={s.hKick}>ONEGRASP · CAREER FITMENT REPORT</Text>
+          <Text style={s.hTitle}>{name || "Your"} career fitment report</Text>
           <Text style={s.hSub}>
-            {a.overallFitmentPct != null ? `${a.overallFitmentPct}% top fit` : ""}
-            {a.outcomeLabel ? `  ·  ${a.outcomeLabel}` : ""}
+            {a.overallFitmentPct != null ? `${a.overallFitmentPct}% overall fit` : ""}
             {`  ·  ${new Date(a.completedAt).toLocaleDateString()}`}
           </Text>
         </View>
 
         <View style={s.body}>
-          {a.summary ? <Text style={s.summary}>{a.summary}</Text> : null}
+          <View style={s.archBox}>
+            <Text style={s.archKick}>YOUR CAREER DNA</Text>
+            <Text style={s.archName}>{arch.name}</Text>
+            <Text style={s.archTag}>{a.summary || arch.tagline}</Text>
+          </View>
 
-          <Text style={s.h3}>Your profile at a glance</Text>
-          {(a.radar ?? []).map((r) => <Bar key={r.key} label={r.label} score={r.score} />)}
+          <Text style={{ ...s.h3, marginTop: 14 }}>Your profile at a glance</Text>
+          {(a.radar ?? []).map((r) => <Bar key={r.key} label={CAT_LABEL[r.key] || r.label} score={r.score} />)}
 
-          <Text style={{ ...s.h3, marginTop: 16 }}>Best-fit career domains</Text>
+          <Text style={{ ...s.h3, marginTop: 16 }}>Your eight dimensions</Text>
+          {dims.map((r) => (
+            <View key={r.key} style={s.dim} wrap={false}>
+              <View style={s.dimTop}>
+                <Text style={s.dimName}>{CAT_LABEL[r.key] || r.label}</Text>
+                <Text style={s.dimScore}>{Math.round(r.score)}%</Text>
+              </View>
+              <Text style={s.dimText}>{r.dd.meaning}</Text>
+              {r.dd.next ? <Text style={s.dimNext}>Next: {r.dd.next}</Text> : null}
+            </View>
+          ))}
+
+          <Text style={{ ...s.h3, marginTop: 8 }}>Best-fit career domains</Text>
           {domains.map((d, i) => (
             <View key={d.key} style={s.card} wrap={false}>
               <Text style={s.cardRank}>#{i + 1} best fit{d.fit ? `  ·  ${d.fit}%` : ""}</Text>
@@ -93,17 +129,21 @@ function ReportDoc({ name, a }: { name: string; a: AssessmentSummary }) {
             </View>
           ))}
 
-          {nextSteps.length ? (
-            <>
-              <Text style={{ ...s.h3, marginTop: 8 }}>Your next steps</Text>
-              {nextSteps.map((x, i) => (
-                <View key={i} style={s.li}>
-                  <Text style={s.liDot}>•</Text>
-                  <Text style={s.liText}><Text style={{ fontFamily: "Helvetica-Bold" }}>{x.label}: </Text>{x.next}</Text>
-                </View>
+          <Text style={{ ...s.h3, marginTop: 8 }}>Your action plan</Text>
+          <View style={s.twoCol}>
+            <View style={s.col}>
+              <Text style={s.colHd}>Next 30 days</Text>
+              {plan.days30.map((x, i) => (
+                <View key={i} style={s.li}><Text style={s.liDot}>•</Text><Text style={s.liText}>{x}</Text></View>
               ))}
-            </>
-          ) : null}
+            </View>
+            <View style={s.col}>
+              <Text style={s.colHd}>Next 90 days</Text>
+              {plan.days90.map((x, i) => (
+                <View key={i} style={s.li}><Text style={s.liDot}>•</Text><Text style={s.liText}>{x}</Text></View>
+              ))}
+            </View>
+          </View>
 
           <Text style={{ ...s.h3, marginTop: 12 }}>Your next 20 years</Text>
           {phases.map((p) => (
