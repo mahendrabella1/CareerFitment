@@ -180,7 +180,8 @@ export default function AdminPage() {
 
   return (
     <div style={S.page}>
-      <header style={S.header}>
+      <style>{ADMIN_CSS}</style>
+      <header style={S.header} className="og-adm-header">
         <Link href="/" style={{ textDecoration: "none" }}><Logo height={40} /></Link>
         <div style={S.headRight}>
           <span style={S.adminTag}>Admin · {user.email}</span>
@@ -188,10 +189,10 @@ export default function AdminPage() {
         </div>
       </header>
 
-      <div style={S.body}>
+      <div style={S.body} className="og-adm-body">
         <h1 style={S.title}>Admin dashboard</h1>
 
-        <div style={S.statGrid}>
+        <div style={S.statGrid} className="og-adm-stats">
           <Stat label="Registered users" value={stats.total} />
           <Stat label="Completed assessment" value={stats.completed} color="#16a34a" />
           <Stat label="Not yet taken" value={stats.pending} color="#d97706" />
@@ -312,6 +313,16 @@ function Center({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
+const ADMIN_CSS = `
+@media (max-width: 720px){
+  .og-adm-stats{grid-template-columns:repeat(2,1fr) !important}
+}
+@media (max-width: 640px){
+  .og-adm-header{padding:12px 14px !important}
+  .og-adm-body{padding:16px 12px !important}
+}
+`;
 
 const BLUE = "#3f3f46";
 const S: Record<string, React.CSSProperties> = {

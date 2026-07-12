@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { AuthProvider } from "@/lib/auth/AuthProvider";
 import "./globals.css";
 import "./landing-premium.css";
@@ -11,6 +11,14 @@ export const metadata: Metadata = {
   title: "OneGrasp Career Fitment",
   description:
     "Category-based career fitment assessments with a 120-question journey and fit summary.",
+};
+
+// Critical for phones: render at device width (not the 980px fallback) so every
+// page's responsive rules actually take effect.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

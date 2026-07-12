@@ -138,6 +138,16 @@
   .rep-snapshot { flex-direction: column; text-align: center; }
   .rep-riasec-track { height: 96px; width: 30px; }
   .rep-cover { padding: 28px 22px; }
+  .rep-section, .rep-panel { padding: 20px 18px; }
+  .rep-cover h1 { font-size: 1.7rem; }
+  .rep-cover-top { margin-bottom: 18px; }
+}
+@media (max-width: 420px) {
+  .rep-riasec { gap: 6px; padding: 12px 8px; }
+  .rep-riasec-track { width: 26px; }
+  .rep-riasec-bar span { font-size: 0.6rem; }
+  .rep-match { padding: 14px; gap: 12px; }
+  .rep-code-badge strong { font-size: 1.7rem; }
 }
 @media print {
   body { background: #fff; }

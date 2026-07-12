@@ -101,7 +101,7 @@ export default function RegisterPage() {
           })}
         </div>
 
-        <div style={S.body}>
+        <div style={S.body} className="og-reg-body">
           {done ? (
             <div style={S.doneWrap} className="rin">
               <div style={S.doneCheck}>✓</div>
@@ -190,7 +190,7 @@ export default function RegisterPage() {
                     <input style={S.input} type={showPw ? "text" : "password"} value={f.password} onChange={(e) => set("password", e.target.value)} placeholder="Choose a strong password" />
                     <button type="button" style={S.pwToggle} onClick={() => setShowPw((s) => !s)}>{showPw ? "Hide" : "Show"}</button>
                     {f.password.length > 0 && (
-                      <ul style={S.rules}>
+                      <ul style={S.rules} className="og-reg-rules">
                         {PASSWORD_RULES.map((r) => {
                           const good = r.test(f.password);
                           return <li key={r.label} style={{ ...S.rule, color: good ? "#15803d" : "#9aa1ad" }}>{good ? "✓" : "○"} {r.label}</li>;
@@ -311,8 +311,10 @@ const CSS = `
   .og-ms{grid-template-columns:repeat(2,1fr) !important}
   .og-st{grid-template-columns:repeat(2,1fr) !important}
   .og-g2{grid-template-columns:1fr !important}
+  .og-reg-body{padding:20px 18px 6px !important}
 }
 @media(max-width:440px){
   .og-ms{grid-template-columns:1fr 1fr !important}
-}
-`;
+  .og-reg-rules{grid-template-columns:1fr 1fr !important}
+  .og-reg-body{padding:18px 14px 6px !important}
+}`;

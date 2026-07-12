@@ -18,8 +18,11 @@ import FullReport from "@/app/account/FullReport";
 
 const PAGE_CSS = `
 @media (max-width: 640px){
-  .og-report-hero{grid-template-columns:1fr !important}
+  .og-report-hero{grid-template-columns:1fr !important; padding:20px 18px !important}
   .og-report-art{display:none !important}
+  .og-grid2{grid-template-columns:1fr !important}
+  .og-acc-body{padding:16px 14px 40px !important}
+  .og-acc-header{padding:14px 16px !important}
 }
 @media print{
   .og-noprint{display:none !important}
@@ -62,14 +65,14 @@ export default function AccountPage() {
   return (
     <div style={S.page}>
       <style>{PAGE_CSS}</style>
-      <header style={S.header} className="og-noprint">
+      <header style={S.header} className="og-noprint og-acc-header">
         <Link href="/" style={{ textDecoration: "none" }}><Logo height={40} /></Link>
         <button style={S.logout} onClick={() => { void logout().then(() => router.push("/signin")); }}>
           Sign out
         </button>
       </header>
 
-      <div style={S.body}>
+      <div style={S.body} className="og-acc-body">
         <div style={S.welcome}>
           <div style={S.avatar}>{initial}</div>
           <div>
@@ -189,7 +192,7 @@ function Report({ a }: { a: AssessmentSummary }) {
       {/* How you think & work */}
       {(hasList(a.topIntelligences) || hasList(a.topValues) || hasList(a.topAptitudes) || hasList(a.learningStyles) || a.ei != null) && (
         <Card icon="multiple_intelligence" accent="#d98324" title="How you think & work">
-          <div style={S.grid2}>
+          <div style={S.grid2} className="og-grid2">
             <MiniList title="Multiple intelligences" items={(a.topIntelligences ?? []).map((x) => ({ label: x.name, score: x.score }))} />
             <MiniList title="Aptitudes" items={(a.topAptitudes ?? []).map((x) => ({ label: x.skill, score: x.score }))} />
             <MiniList title="Values" items={(a.topValues ?? []).map((x) => ({ label: x.tag, score: x.score }))} />

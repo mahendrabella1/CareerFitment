@@ -293,7 +293,7 @@ const CSS = `
 @media(prefers-reduced-motion:reduce){.rv{transition:opacity .3s;transform:none}}
 
 .fr-cover{display:grid;grid-template-columns:1.15fr .85fr;gap:26px;align-items:center;background:linear-gradient(135deg,#2f4062,#5a76a6);color:#fff;border-radius:20px;padding:30px 32px;margin-bottom:18px;overflow:hidden}
-@media(max-width:760px){.fr-cover{grid-template-columns:1fr}.fr-cover-r{display:none}}
+@media(max-width:760px){.fr-cover{grid-template-columns:1fr;padding:22px 18px}.fr-cover-r{display:none}}
 .fr-kick{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:.8}
 .fr-cover-h{font-size:clamp(22px,3.3vw,30px);font-weight:700;line-height:1.18;margin:10px 0 0}
 .fr-cover-p{font-size:14.5px;line-height:1.6;opacity:.92;margin:12px 0 0;max-width:520px}

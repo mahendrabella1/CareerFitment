@@ -261,7 +261,7 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
   if (phase === "resume" && data)
     return (
       <div style={S.introWrap}><style>{CSS}</style>
-        <div style={S.introCard}>
+        <div style={S.introCard} className="og-exam-introcard">
           <div style={{ marginBottom: 14 }}><Logo height={30} /></div>
           <h2 style={S.introTitle}>Welcome back{name ? `, ${name}` : ""} 👋</h2>
           <p style={S.introSub}>You have an assessment in progress — pick up right where you left off.</p>
@@ -278,7 +278,7 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
   if (phase === "intro" && data)
     return (
       <div style={S.introWrap}><style>{CSS}</style>
-        <div style={S.introCard}>
+        <div style={S.introCard} className="og-exam-introcard">
           <div style={{ marginBottom: 16 }}><Logo height={30} /></div>
           <h2 style={S.introTitle}>Before you begin</h2>
           <p style={S.introSub}>{data.sections.length} sections · {requiredTotal} questions · up to <b>90 minutes</b></p>
@@ -301,12 +301,12 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
       <div style={S.page}>
         <style>{CSS}</style>
         {/* top bar */}
-        <header style={S.top}>
+        <header style={S.top} className="og-exam-top">
           <div style={S.topLeft}>
             <span style={S.logoBox}><Logo height={28} /></span>
-            <div><div style={S.topTitle}>Career Assessment</div><div style={S.topSub}>{requiredTotal} Questions</div></div>
+            <div className="og-exam-topmeta"><div style={S.topTitle}>Career Assessment</div><div style={S.topSub}>{requiredTotal} Questions</div></div>
           </div>
-          <div style={S.statsPanel}>
+          <div style={S.statsPanel} className="og-exam-stats">
             <Stat icon="clock" label="TIME LEFT" value={fmtTime(remainingSec)} color={remainingSec < 300 ? "#dc2626" : undefined} />
             <div style={S.topDiv} />
             <Stat icon="help" label="QUESTION" value={`${cur + 1} / ${total}`} />
@@ -315,9 +315,9 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
             <div style={S.topDiv} />
             <Stat icon="flag" label="MARKED" value={`${markedCount}`} />
           </div>
-          <div style={S.topRight}>
-            <button style={{ ...S.saveBtn, ...(saved ? S.saveBtnOk : {}) }} onClick={saveAndExit}><Icon name="save" size={16} /> {saved ? "Saved ✓" : "Save Progress"}</button>
-            <button style={S.exitBtn} onClick={exitExam}><Icon name="power" size={15} /> Exit</button>
+          <div style={S.topRight} className="og-exam-topright">
+            <button style={{ ...S.saveBtn, ...(saved ? S.saveBtnOk : {}) }} onClick={saveAndExit}><Icon name="save" size={16} /> <span className="og-exam-btn-label">{saved ? "Saved ✓" : "Save Progress"}</span></button>
+            <button style={S.exitBtn} onClick={exitExam}><Icon name="power" size={15} /> <span className="og-exam-btn-label">Exit</span></button>
           </div>
         </header>
 
@@ -792,5 +792,16 @@ const CSS = `
 @media (max-width: 760px){
   .og-exam-catbar{overflow-x:auto}
   .og-exam-catbar button{flex:0 0 auto !important;min-width:auto !important}
+  .og-exam-top{padding:8px 12px !important; gap:8px !important; flex-wrap:wrap}
+  .og-exam-topmeta{display:none !important}
+  .og-exam-stats{gap:8px !important; padding:6px 10px !important; order:3; width:100%; justify-content:space-between}
+  /* keep TIME + QUESTION; drop ANSWERED / MARKED (and their dividers) */
+  .og-exam-stats > :nth-child(n+4){display:none !important}
+  .og-exam-btn-label{display:none !important}
+  .og-exam-topright button{padding:9px 11px !important}
+}
+@media (max-width: 420px){
+  .og-exam-grid main{padding:14px 12px 46px !important}
+  .og-exam-introcard{padding:24px 20px !important}
 }
 `;
