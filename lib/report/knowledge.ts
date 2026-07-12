@@ -153,14 +153,12 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
   const lvl = band(p);
   switch (key) {
     case "personality": {
-      const temp = a.outcomeLabel || "balanced temperament";
-      const trait = a.topStrengths?.[0]?.subTraitName || "steadiness";
+      const t = temperamentOf(a);
+      const dual = t.scores[1].score > 45;
       return {
-        meaning: `Your responses map to a ${temp}, with ${trait} standing out. This shapes how you engage with people, handle pressure, make decisions and recharge — the "operating system" behind your day-to-day choices.`,
-        strengths: [`${trait} gives you a dependable edge in the right environment`, "You know your natural default under pressure", "Self-awareness here makes teams and mentors trust you"],
-        grow: lvl === "high"
-          ? ["Watch for over-relying on your dominant trait — flex the opposite when a situation demands it"]
-          : ["Your temperament signals were mixed — a steadier read comes from re-testing calmly", "Notice which situations drain vs. energise you and plan around them"],
+        meaning: `Your natural temperament is ${t.primary.name} — ${t.primary.tagline.toLowerCase()}${dual ? `, with a ${t.secondary.name} side` : ""}. ${t.primary.strength} This is the "operating system" behind how you engage with people, handle pressure, make decisions and recharge.`,
+        strengths: [t.primary.strength, `As a${/^[AEIOU]/.test(t.primary.name) ? "n" : ""} ${t.primary.name}, you bring ${t.primary.traits.slice(0, 2).join(" and ").toLowerCase()} energy to a team`, "Knowing your temperament helps you pick environments that fit you"],
+        grow: [t.primary.watch, `Borrow from your ${t.secondary.name} side when a situation needs it`, "Notice which situations drain vs. energise you, and plan around them"],
         recommend: ["Choose roles and teams that fit your natural style rather than fighting it", "Pair up with people whose strengths cover your blind spots", "Keep a simple journal of what energises and what exhausts you for a month"],
         next: "Shortlist 2–3 work environments that match your temperament and talk to someone already in them.",
       };
@@ -350,6 +348,143 @@ export function actionPlan(a: AssessmentSummary, domainName: string): { days30: 
     ],
   };
 }
+
+/* ------------------------- four temperaments --------------------------- */
+export type Temperament = { key: string; name: string; tagline: string; traits: string[]; strength: string; watch: string; emoji: string };
+
+export const TEMPERAMENTS: Record<string, Temperament> = {
+  sanguine: { key: "sanguine", name: "Sanguine", tagline: "Enthusiastic, social & optimistic", traits: ["Outgoing", "Expressive", "Warm", "Spontaneous"], strength: "You energise people and thrive on connection, variety and new experiences.", watch: "Can lose focus on long, detailed or repetitive tasks.", emoji: "☀", },
+  choleric: { key: "choleric", name: "Choleric", tagline: "Driven, decisive & goal-focused", traits: ["Ambitious", "Confident", "Direct", "Natural leader"], strength: "You take charge, set clear goals and get things done fast.", watch: "Can be impatient with slower people or processes.", emoji: "🔥", },
+  melancholic: { key: "melancholic", name: "Melancholic", tagline: "Analytical, deep & detail-oriented", traits: ["Thoughtful", "Precise", "Loyal", "Reflective"], strength: "You think deeply, plan carefully and hold yourself to high standards.", watch: "Can over-analyse, or be too hard on yourself.", emoji: "🌙", },
+  phlegmatic: { key: "phlegmatic", name: "Phlegmatic", tagline: "Calm, steady & easy-going", traits: ["Patient", "Reliable", "Diplomatic", "Consistent"], strength: "You stay calm under pressure and keep teams balanced and grounded.", watch: "Can avoid conflict, or resist change longer than needed.", emoji: "🍃", },
+};
+
+/** Read Big-Five sub-trait scores from the saved data, matching by name. */
+function bigFive(a: AssessmentSummary) {
+  const find = (needle: string) => (a.topStrengths ?? []).find((x) => x.subTraitName?.toLowerCase().includes(needle))?.normalizedScore;
+  const O = find("open"), C = find("consc"), E = find("extra"), A = find("agree");
+  let S = find("stab"); const neuro = find("neuro"); if (S == null && neuro != null) S = 100 - neuro;
+  const v = (x?: number) => (x == null ? 50 : x);
+  return { O: v(O), C: v(C), E: v(E), A: v(A), S: v(S), has: [O, C, E, A].some((x) => x != null) };
+}
+
+export function temperamentScores(a: AssessmentSummary): { key: string; score: number }[] {
+  const { O, C, E, A, S } = bigFive(a);
+  const raw = {
+    sanguine: E * 0.6 + A * 0.25 + O * 0.15,
+    choleric: E * 0.5 + C * 0.3 + (100 - A) * 0.2,
+    melancholic: (100 - E) * 0.4 + C * 0.35 + O * 0.25,
+    phlegmatic: (100 - E) * 0.35 + A * 0.4 + S * 0.25,
+  };
+  return Object.entries(raw).map(([key, score]) => ({ key, score: Math.round(score) })).sort((x, y) => y.score - x.score);
+}
+
+export function temperamentOf(a: AssessmentSummary): { primary: Temperament; secondary: Temperament; scores: { key: string; score: number }[] } {
+  const scores = temperamentScores(a);
+  return { primary: TEMPERAMENTS[scores[0].key], secondary: TEMPERAMENTS[scores[1].key], scores };
+}
+
+/* ------------------------- clear per-dimension result ------------------ */
+const eiBand = (p: number) => (p >= 75 ? "High EQ" : p >= 55 ? "Solid EQ" : p >= 40 ? "Developing EQ" : "Emerging EQ");
+
+/** A short, unambiguous "here is your result" for each dimension. */
+export function resultOf(key: string, a: AssessmentSummary): { label: string; value: string } | null {
+  const two = (arr?: { n: string }[]) => (arr ?? []).slice(0, 2).map((x) => x.n).join(" · ");
+  switch (key) {
+    case "personality": { const t = temperamentOf(a); return { label: "Your temperament", value: `${t.primary.name}${t.secondary && t.scores[1].score > 45 ? " · " + t.secondary.name : ""}` }; }
+    case "career_interest": { const code = a.riasecCode || (a.themes ?? []).slice(0, 3).map((t) => t.letter).join(""); return code ? { label: "Your Holland code", value: code } : null; }
+    case "multiple_intelligence": return { label: "Top intelligences", value: two((a.topIntelligences ?? []).map((x) => ({ n: x.name }))) };
+    case "emotional_intelligence": return { label: "EQ level", value: eiBand(a.ei ?? 0) };
+    case "learning_styles": { const t = a.learningStyles?.[0]?.name; return t ? { label: "Your learning style", value: t } : null; }
+    case "motivators": { const t = a.topValues?.[0]?.tag; return t ? { label: "Your core driver", value: t } : null; }
+    case "strengths": return { label: "Signature strengths", value: two((a.strengthsBreakdown ?? []).map((x) => ({ n: x.name }))) };
+    case "aptitude": { const t = a.topAptitudes?.[0]?.skill; return t ? { label: "Sharpest reasoning", value: t } : null; }
+    default: return null;
+  }
+}
+
+/* ------------------------- concrete career fits (all parameters) ------- */
+export type RoleFit = { role: string; domain: string; fit: number; why: string; salaryIndia: string; salaryAbroad: string };
+
+/** Specific job roles the whole profile points to — drawn from the best-fit
+ *  domains, but justified with the student's own intelligences/values. */
+export function careerRoles(a: AssessmentSummary): RoleFit[] {
+  const doms = (a.themes ?? [])
+    .filter((t) => t.score > 0 && DOMAINS[t.letter])
+    .slice(0, 3)
+    .map((t) => ({ d: DOMAINS[t.letter], fit: Math.round(t.score) }));
+  const list = doms.length ? doms : [{ d: DOMAINS.B, fit: a.overallFitmentPct ?? 70 }];
+  const intel = a.topIntelligences?.[0]?.name;
+  const apt = a.topAptitudes?.[0]?.skill;
+  const val = a.topValues?.[0]?.tag;
+  const whyFor = (role: string, i: number) => {
+    const bits = [intel && `your ${intel.toLowerCase()} intelligence`, apt && `strong ${apt.toLowerCase()} reasoning`, val && `a drive for ${String(val).toLowerCase()}`].filter(Boolean);
+    return bits.length ? `Fits ${bits[i % bits.length]}.` : "Aligns with your overall profile.";
+  };
+  const out: RoleFit[] = [];
+  list.forEach(({ d, fit }, di) => {
+    d.roles.slice(0, 2).forEach((role, ri) => {
+      out.push({ role, domain: d.name, fit: Math.max(40, Math.min(97, fit - ri * 4 - di * 2)), why: whyFor(role, ri + di), salaryIndia: d.salaryIndia, salaryAbroad: d.salaryAbroad });
+    });
+  });
+  return out.slice(0, 6);
+}
+
+/* ------------------------- future outlook ------------------------------ */
+export const FUTURE = {
+  rising: [
+    { t: "AI & Machine Learning", d: "Reshaping every field — the biggest skill multiplier of the decade." },
+    { t: "Green & Climate Tech", d: "Renewable energy, EVs and sustainability engineering are booming." },
+    { t: "Data & Cybersecurity", d: "As everything goes digital, protecting and reading data is critical." },
+    { t: "Healthcare & Biotech", d: "Ageing populations and genomics keep demand rising worldwide." },
+    { t: "Robotics & Automation", d: "Designing the machines and systems that automate physical work." },
+    { t: "Creative × Tech", d: "UX, product, content and design — human taste plus technology." },
+  ],
+  declining: [
+    "Routine data entry & manual bookkeeping",
+    "Basic, scripted telemarketing & call handling",
+    "Repetitive assembly-line and manual sorting work",
+    "Simple form-processing and clerical filing",
+    "Generic content writing without real expertise",
+  ],
+  note: "Jobs that combine human judgement with technology are the safest. Focus on skills you can keep building — they outlast any single job title.",
+};
+
+/* ------------------------- learn & opportunities ----------------------- */
+export const LEARNING: { label: string; url: string; note: string }[] = [
+  { label: "NPTEL", url: "https://nptel.ac.in", note: "Free courses from the IITs (India)" },
+  { label: "Coursera", url: "https://www.coursera.org", note: "University courses, many free to audit" },
+  { label: "edX", url: "https://www.edx.org", note: "Courses from MIT, Harvard & more" },
+  { label: "freeCodeCamp", url: "https://www.freecodecamp.org", note: "Free, hands-on coding" },
+  { label: "Khan Academy", url: "https://www.khanacademy.org", note: "Strong for maths & science basics" },
+  { label: "YouTube", url: "https://www.youtube.com", note: "Free channels for almost any skill" },
+];
+
+export const JOB_PORTALS: { region: string; sites: { label: string; url: string }[] }[] = [
+  { region: "India", sites: [
+    { label: "LinkedIn Jobs", url: "https://www.linkedin.com/jobs" },
+    { label: "Naukri", url: "https://www.naukri.com" },
+    { label: "Indeed India", url: "https://in.indeed.com" },
+    { label: "Internshala (internships)", url: "https://internshala.com" },
+    { label: "Wellfound (startups)", url: "https://wellfound.com" },
+  ] },
+  { region: "Abroad", sites: [
+    { label: "LinkedIn", url: "https://www.linkedin.com/jobs" },
+    { label: "Indeed", url: "https://www.indeed.com" },
+    { label: "Glassdoor", url: "https://www.glassdoor.com" },
+    { label: "We Work Remotely", url: "https://weworkremotely.com" },
+  ] },
+];
+
+export const SCHOLARSHIPS_2026: { name: string; who: string; url: string }[] = [
+  { name: "National Scholarship Portal (NSP)", who: "Indian students — the single window for central & state scholarships", url: "https://scholarships.gov.in" },
+  { name: "INSPIRE (SHE) Scholarship", who: "Top science students pursuing BSc / BS — ₹80,000/year", url: "https://online-inspire.gov.in" },
+  { name: "Reliance Foundation Scholarships", who: "UG & PG students, strong support for STEM", url: "https://www.reliancefoundation.org" },
+  { name: "Tata Trusts / Tata Scholarships", who: "Merit-cum-means across fields", url: "https://www.tatatrusts.org" },
+  { name: "Fulbright-Nehru Fellowships", who: "Postgraduate study & research in the USA", url: "https://www.usief.org.in" },
+  { name: "Chevening Scholarships", who: "Fully-funded Master's in the UK", url: "https://www.chevening.org" },
+  { name: "DAAD Scholarships", who: "Study in Germany — strong for engineering & science", url: "https://www.daad.de" },
+];
 
 export function stageLabelOf(journeyCode: string): string {
   const m: Record<string, string> = {

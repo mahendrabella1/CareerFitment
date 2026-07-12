@@ -16,6 +16,8 @@ import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 import {
   DOMAINS, categoryDeepDive, roadmap, stageLabelOf,
   archetype, percentileOf, subTraits, actionPlan, type Domain,
+  temperamentOf, resultOf, careerRoles, TEMPERAMENTS,
+  FUTURE, LEARNING, JOB_PORTALS, SCHOLARSHIPS_2026,
 } from "@/lib/report/knowledge";
 
 const P = "https://onegrasp.com/wp-content/uploads/2026/07/";
@@ -44,15 +46,18 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
 
   useEffect(() => {
     const revs = root.current?.querySelectorAll(".rv");
-    if (revs && "IntersectionObserver" in window) {
+    if (!revs) return;
+    if ("IntersectionObserver" in window) {
       const io = new IntersectionObserver(
         (es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }),
-        { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+        { threshold: 0.08, rootMargin: "0px 0px -4% 0px" }
       );
       revs.forEach((e) => io.observe(e));
-      return () => io.disconnect();
+      // Failsafe: never leave a page hidden if the observer misses it.
+      const t = window.setTimeout(() => revs.forEach((e) => e.classList.add("in")), 2200);
+      return () => { io.disconnect(); window.clearTimeout(t); };
     }
-    revs?.forEach((e) => e.classList.add("in"));
+    revs.forEach((e) => e.classList.add("in"));
   }, []);
 
   const radar = (a.radar ?? []).length ? a.radar! : CANON.map((k) => ({ key: k, label: CAT[k].label, score: 0 }));
@@ -71,6 +76,8 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
   const dnaDomains = domainList.slice(0, 3);
   const fit = a.overallFitmentPct ?? Math.round(dims.reduce((s, d) => s + d.score, 0) / (dims.length || 1));
   const domAccents = ["#2f6bed", "#8b5cf6", "#1fa97a"];
+  const roles = careerRoles(a);
+  const temp = temperamentOf(a);
 
   const dateStr = (() => { try { return new Date(a.completedAt).toLocaleDateString("en-IN", { month: "short", year: "numeric" }); } catch { return ""; } })();
 
@@ -163,6 +170,7 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
         const dd = categoryDeepDive(d.key, a);
         const subs = subTraits(d.key, a);
         const pct = percentileOf(d.score);
+        const res = resultOf(d.key, a);
         const off = (RC * (1 - clamp(d.score) / 100)).toFixed(1);
         const soft = m.accent + "14", line = m.accent + "33";
         return (
@@ -185,11 +193,31 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
                   <text x="52" y="66" textAnchor="middle" fontSize="10.5" fontWeight="700" fill="#8a92a6">/ 100</text>
                 </svg>
                 <div className="score-meta">
+                  {res ? <div className="resultchip"><span>{res.label}</span><b>{res.value}</b></div> : null}
                   <div className="verdict">{VERDICT[d.key] ?? m.label}</div>
                   <p>{dd.meaning}</p>
                   {d.score > 0 ? <span className="pct">Higher than {pct}% of students at your stage</span> : null}
                 </div>
               </div>
+
+              {d.key === "personality" ? (
+                <div className="temps">
+                  <div className="subhd">The four temperaments — yours is highlighted</div>
+                  <div className="temp-grid">
+                    {temp.scores.map((ts) => {
+                      const T = TEMPERAMENTS[ts.key]; const on = ts.key === temp.primary.key;
+                      return (
+                        <div className={`tcard${on ? " on" : ""}`} key={ts.key}>
+                          <div className="th"><span className="te">{T.emoji}</span><span className="tn">{T.name}</span><span className="tsc">{ts.score}</span></div>
+                          <div className="tt">{T.tagline}</div>
+                          <div className="ttr">{T.traits.map((x) => <em key={x}>{x}</em>)}</div>
+                          {on ? <div className="tw"><b>Your edge:</b> {T.strength}</div> : null}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
               <div className="cols">
                 {subs.length ? (
                   <div>
@@ -247,12 +275,100 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
         </div>
       </section>
 
+      {/* ===== 14 · CAREERS WHERE YOU FIT (concrete roles + salary compare) ===== */}
+      <section className="sheet rv">
+        <div className="pad">
+          <RH kick="Careers where you fit" />
+          <SecHead eyebrow="Specific roles your whole profile points to" title="Jobs that match you — and what they pay"
+            sub="These roles blend your interests, intelligences and drivers. The pay compares a typical India salary with the same role abroad." />
+          <div className="rolelist">
+            {roles.map((r, i) => (
+              <div className="role" key={r.role + i}>
+                <div className="role-top">
+                  <span className="role-rk">{i + 1}</span>
+                  <div className="role-main"><div className="role-nm">{r.role}</div><div className="role-dm">{r.domain} · {r.why}</div></div>
+                  <div className="role-fit"><b>{r.fit}%</b><span>fit</span></div>
+                </div>
+                <div className="role-sal">
+                  <div className="rs"><span className="fl fl-in">🇮🇳 India</span> {r.salaryIndia}</div>
+                  <div className="rs"><span className="fl fl-ab">🌍 Abroad</span> {r.salaryAbroad}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <RF name={name} />
+        </div>
+      </section>
+
+      {/* ===== FUTURE OUTLOOK (rising trends + jobs at risk) ===== */}
+      <section className="sheet rv">
+        <div className="pad">
+          <RH kick="The next decade" />
+          <SecHead eyebrow="Choose a direction that grows with the future" title="What’s rising — and what’s fading"
+            sub="A quick map of where the world of work is heading, so your choices stay future-proof." />
+          <div className="future">
+            <div className="fcol rise">
+              <div className="fh"><span className="fi">📈</span> Rising & future-proof</div>
+              <div className="fgrid">
+                {FUTURE.rising.map((x) => (
+                  <div className="fitem" key={x.t}><div className="ft">{x.t}</div><div className="fd">{x.d}</div></div>
+                ))}
+              </div>
+            </div>
+            <div className="fcol fall">
+              <div className="fh"><span className="fi">📉</span> Fading or automating</div>
+              <ul className="flist">{FUTURE.declining.map((x) => <li key={x}>{x}</li>)}</ul>
+              <div className="fnote">{FUTURE.note}</div>
+            </div>
+          </div>
+          <RF name={name} />
+        </div>
+      </section>
+
+      {/* ===== RESOURCES & OPPORTUNITIES (learn · jobs · scholarships) ===== */}
+      <section className="sheet rv">
+        <div className="pad">
+          <RH kick="Resources & opportunities" />
+          <SecHead eyebrow="Everything you need to take the next step" title="Where to learn, find work & get funded"
+            sub={`Hand-picked starting points relevant to ${topDomain.name} and your stage.`} />
+          <div className="res">
+            <div className="rgrp">
+              <div className="rgh"><span className="ri">🎓</span> Learn these skills — free & paid</div>
+              <div className="rchips">{LEARNING.map((l) => <a className="rchip" key={l.url} href={l.url} target="_blank" rel="noreferrer"><b>{l.label}</b><span>{l.note}</span></a>)}</div>
+            </div>
+            <div className="rgrp">
+              <div className="rgh"><span className="ri">💼</span> Where to find jobs & internships</div>
+              <div className="portals">
+                {JOB_PORTALS.map((p) => (
+                  <div className="pcol" key={p.region}>
+                    <div className="pr">{p.region}</div>
+                    <div className="plist">{p.sites.map((s) => <a key={s.url} href={s.url} target="_blank" rel="noreferrer">{s.label}</a>)}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rgrp">
+              <div className="rgh"><span className="ri">🏆</span> Scholarships to apply for (2026)</div>
+              <div className="schol">
+                {SCHOLARSHIPS_2026.map((s) => (
+                  <a className="scard" key={s.name} href={s.url} target="_blank" rel="noreferrer">
+                    <div className="sn">{s.name}</div><div className="sw">{s.who}</div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+          <RF name={name} />
+        </div>
+      </section>
+
       {/* ===== 15 · ROADMAP ===== */}
       <section className="sheet rv">
         <div className="pad">
           <RH kick="Your 20-year roadmap" />
           <SecHead eyebrow="From today to a career you’re built for" title="The path ahead, phase by phase"
             sub={`A realistic timeline tuned to your profile and your best-fit domain, ${topDomain.name}.`} />
+          <JourneyGraphic phases={phases} />
           <div className="road">
             {phases.map((p, i) => (
               <div className="rstep" key={p.period} style={{ ["--rc" as string]: ["#2f6bed", "#4560e0", "#5b7cf0", "#8b5cf6"][i % 4] } as React.CSSProperties}>
@@ -369,6 +485,41 @@ function DomainCard({ d, rank, accent }: { d: Domain & { fit: number }; rank: nu
   );
 }
 
+/** A conceptual "career journey" graphic — a winding path with milestone stops. */
+function JourneyGraphic({ phases }: { phases: { period: string; title: string }[] }) {
+  const cols = ["#2f6bed", "#4560e0", "#5b7cf0", "#8b5cf6"];
+  const icons = ["🌱", "🚀", "⭐", "🏔"];
+  const n = Math.min(4, phases.length) || 4;
+  const W = 760, H = 150, pad = 60;
+  const xs = Array.from({ length: n }, (_, i) => pad + (i * (W - 2 * pad)) / (n - 1));
+  const ys = (i: number) => (i % 2 === 0 ? 92 : 58);
+  const d = xs.map((x, i) => {
+    const y = ys(i);
+    if (i === 0) return `M ${x} ${y}`;
+    const px = xs[i - 1], py = ys(i - 1), mx = (px + x) / 2;
+    return `C ${mx} ${py} ${mx} ${y} ${x} ${y}`;
+  }).join(" ");
+  return (
+    <div className="journey">
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Your career journey" style={{ width: "100%", height: "auto" }}>
+        <defs><linearGradient id="jpath" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#2f6bed" /><stop offset="1" stopColor="#8b5cf6" /></linearGradient></defs>
+        <path d={d} fill="none" stroke="url(#jpath)" strokeWidth="3" strokeDasharray="2 7" strokeLinecap="round" />
+        {xs.map((x, i) => {
+          const y = ys(i);
+          return (
+            <g key={i}>
+              <circle cx={x} cy={y} r="17" fill="#fff" stroke={cols[i % 4]} strokeWidth="3" />
+              <text x={x} y={y + 6} textAnchor="middle" fontSize="16">{icons[i % 4]}</text>
+              <text x={x} y={i % 2 === 0 ? y + 34 : y - 26} textAnchor="middle" fontSize="10.5" fontWeight="800" fill={cols[i % 4]}>{phases[i]?.period.split("·")[0].trim()}</text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
 /** Single-series radar across the eight dimensions (CVD-safe by construction). */
 function Radar({ data }: { data: { key: string; label: string; score: number }[] }) {
   const cx = 170, cy = 158, R = 118, n = data.length || 8;
@@ -414,7 +565,7 @@ const CSS = `
 .frx .eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent,var(--brand-2))}
 
 .frx .rh{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px}
-.frx .rh .brandmark img{height:20px;width:auto;display:block}
+.frx .rh .brandmark img{height:30px;width:auto;display:block}
 .frx .rh .ey{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;color:var(--ink-2)}
 .frx .rh .ey .k{width:8px;height:8px;border-radius:50%;background:var(--accent,var(--brand-2))}
 .frx .rf{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:26px;padding-top:14px;
@@ -429,7 +580,7 @@ const CSS = `
 .frx .cover-in{padding:40px 44px 36px}
 @media(max-width:720px){.frx .cover-in{padding:26px 18px}}
 .frx .cover-top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:30px}
-.frx .cover-logo{height:32px;width:auto}
+.frx .cover-logo{height:52px;width:auto}
 .frx .cover .badge{font-size:11px;font-weight:700;color:var(--brand);background:#fff;border:1px solid var(--line);
   padding:7px 13px;border-radius:999px;box-shadow:var(--shadow-sm)}
 .frx .cover .kick{font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--brand-2)}
@@ -581,6 +732,88 @@ const CSS = `
 .frx .closing p{color:#c3ccec;font-size:14px;line-height:1.6;max-width:52ch;margin:11px auto 0}
 .frx .closing .b{margin-top:20px;font-size:13px;font-weight:700;padding:12px 22px;border-radius:11px;border:none;cursor:pointer}
 .frx .closing .b1{background:#fff;color:#20305f}
+
+/* result chip */
+.frx .resultchip{display:inline-flex;align-items:center;gap:8px;margin-bottom:8px;padding:5px 12px;border-radius:999px;
+  background:var(--soft,#eef3ff);border:1px solid var(--line2,#d7e3fb)}
+.frx .resultchip span{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.frx .resultchip b{font-size:13px;font-weight:800;color:var(--accent,#2f6bed)}
+
+/* temperaments */
+.frx .temps{margin-top:26px}
+.frx .temp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+@media(max-width:720px){.frx .temp-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:440px){.frx .temp-grid{grid-template-columns:1fr}}
+.frx .tcard{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff}
+.frx .tcard.on{border-color:var(--accent,#2f6bed);background:var(--soft,#eef3ff);box-shadow:0 6px 18px rgba(47,107,237,.12)}
+.frx .th{display:flex;align-items:center;gap:8px}
+.frx .th .te{font-size:17px}
+.frx .th .tn{font-size:14px;font-weight:800;flex:1}
+.frx .th .tsc{font-size:12px;font-weight:800;color:var(--muted)}
+.frx .tcard.on .th .tsc{color:var(--accent,#2f6bed)}
+.frx .tt{font-size:11.5px;color:var(--ink-3);margin-top:5px;line-height:1.4}
+.frx .ttr{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.frx .ttr em{font-style:normal;font-size:10.5px;font-weight:600;color:var(--ink-2);background:var(--line-2);border-radius:999px;padding:3px 8px}
+.frx .tw{margin-top:10px;font-size:11.5px;line-height:1.45;color:var(--ink-2)}
+.frx .tw b{color:var(--accent,#2f6bed);font-weight:800}
+
+/* careers / roles */
+.frx .rolelist{display:flex;flex-direction:column;gap:11px}
+.frx .role{border:1px solid var(--line);border-radius:13px;overflow:hidden;background:#fff}
+.frx .role-top{display:flex;align-items:center;gap:13px;padding:14px 16px}
+.frx .role-rk{width:28px;height:28px;border-radius:8px;flex:none;display:grid;place-items:center;font-weight:800;color:#fff;background:#2f6bed;font-size:13px}
+.frx .role-main{flex:1;min-width:0}
+.frx .role-nm{font-size:15px;font-weight:800}
+.frx .role-dm{font-size:11.5px;color:var(--ink-3);margin-top:2px}
+.frx .role-fit{text-align:right;flex:none}
+.frx .role-fit b{font-size:18px;font-weight:800;color:#2f6bed}
+.frx .role-fit span{display:block;font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.frx .role-sal{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-top:1px solid var(--line)}
+@media(max-width:560px){.frx .role-sal{grid-template-columns:1fr}}
+.frx .role-sal .rs{background:#fafbff;padding:10px 16px;font-size:11.5px;color:var(--ink-2);line-height:1.4}
+.frx .role-sal .fl{display:inline-block;font-weight:800;font-size:10px;margin-right:6px;padding:2px 7px;border-radius:5px}
+.frx .fl-in{background:#eef7f1;color:#157a51}.frx .fl-ab{background:#eef3ff;color:#2f6bed}
+
+/* future outlook */
+.frx .future{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
+@media(max-width:720px){.frx .future{grid-template-columns:1fr}}
+.frx .fcol{border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.frx .fcol.rise{background:linear-gradient(180deg,#f1f9f4,#fff);border-color:#d8ecdf}
+.frx .fcol.fall{background:linear-gradient(180deg,#fbf3f3,#fff);border-color:#f0dcdc}
+.frx .fh{font-size:13.5px;font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:13px}
+.frx .fcol.rise .fh{color:#157a51}.frx .fcol.fall .fh{color:#b4443f}
+.frx .fgrid{display:flex;flex-direction:column;gap:10px}
+.frx .fitem .ft{font-size:13px;font-weight:800;color:var(--ink)}
+.frx .fitem .fd{font-size:11.5px;color:var(--ink-3);margin-top:2px;line-height:1.45}
+.frx .flist{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.frx .flist li{position:relative;padding-left:22px;font-size:12.5px;color:var(--ink-2);line-height:1.4}
+.frx .flist li::before{content:"↓";position:absolute;left:0;top:0;color:#b4443f;font-weight:800}
+.frx .fnote{margin-top:13px;padding-top:12px;border-top:1px dashed var(--line);font-size:11.5px;color:var(--ink-2);line-height:1.5;font-style:italic}
+
+/* resources */
+.frx .res{display:flex;flex-direction:column;gap:20px}
+.frx .rgh{font-size:13.5px;font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:11px}
+.frx .rgh .ri{font-size:16px}
+.frx .rchips{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+@media(max-width:640px){.frx .rchips{grid-template-columns:1fr 1fr}}
+@media(max-width:440px){.frx .rchips{grid-template-columns:1fr}}
+.frx .rchip{display:block;border:1px solid var(--line);border-radius:11px;padding:11px 13px;text-decoration:none;background:#fff}
+.frx .rchip b{display:block;font-size:13px;font-weight:800;color:var(--brand-2)}
+.frx .rchip span{display:block;font-size:11px;color:var(--ink-3);margin-top:2px}
+.frx .portals{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.frx .portals{grid-template-columns:1fr}}
+.frx .pcol{border:1px solid var(--line);border-radius:12px;padding:13px 15px;background:#fff}
+.frx .pr{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.frx .plist{display:flex;flex-wrap:wrap;gap:7px}
+.frx .plist a{font-size:12px;font-weight:700;color:var(--brand-2);text-decoration:none;background:#eef3ff;border:1px solid #dce6fb;padding:6px 11px;border-radius:8px}
+.frx .schol{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.frx .schol{grid-template-columns:1fr}}
+.frx .scard{display:block;border:1px solid var(--line);border-left:3px solid #c2922b;border-radius:11px;padding:12px 14px;text-decoration:none;background:linear-gradient(180deg,#fffdf6,#fff)}
+.frx .scard .sn{font-size:13px;font-weight:800;color:var(--ink)}
+.frx .scard .sw{font-size:11px;color:var(--ink-3);margin-top:3px;line-height:1.45}
+
+/* journey graphic */
+.frx .journey{border:1px solid var(--line);border-radius:14px;padding:14px 10px;background:linear-gradient(180deg,#f7f9ff,#fff);margin-bottom:18px}
 
 @media print{
   .frx{gap:0}
