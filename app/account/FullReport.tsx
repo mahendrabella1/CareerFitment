@@ -31,7 +31,7 @@ const CAT: Record<string, Meta> = {
   emotional_intelligence: { label: "Emotional Intelligence", dim: "04", accent: "#ec4f7a", img: P + "Emotional-inteliigence.png" },
   learning_styles: { label: "Learning Styles", dim: "05", accent: "#4560e0", img: P + "Learning-stykes.png" },
   motivators: { label: "Motivators", dim: "06", accent: "#f97316", img: P + "Motivators.png" },
-  strengths: { label: "Strengths", dim: "07", accent: "#5b7cf0", img: P + "personality.png" /* TODO real strengths image */ },
+  strengths: { label: "Strengths", dim: "07", accent: "#5b7cf0", img: P + "strenghts.png" },
   aptitude: { label: "Aptitude", dim: "08", accent: "#8b5cf6", img: P + "aptitude.png" },
 };
 const CANON = ["personality", "career_interest", "multiple_intelligence", "emotional_intelligence", "learning_styles", "motivators", "strengths", "aptitude"];
