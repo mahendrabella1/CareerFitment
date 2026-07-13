@@ -776,9 +776,12 @@ const CSS = `
 .og-exam-grid button{-webkit-tap-highlight-color:transparent}
 .og-exam-grid button:focus{outline:none}
 .og-exam-grid button:focus-visible{outline:none;box-shadow:0 0 0 2px ${ACCENT}44}
-/* SVG option tiles: border is fully state-driven (grey → blue). Never let a
-   focus/keyboard ring make an unselected tile look boxed or selected. */
-.og-exam-grid .og-svgc:focus,.og-exam-grid .og-svgc:focus-visible{outline:none;box-shadow:none}
+/* Options (text rows + SVG tiles): border/highlight is FULLY state-driven —
+   grey/plain when unselected, blue only when actually chosen. Never let a
+   focus/keyboard/tap ring make an unselected option look boxed or selected. */
+.og-exam-grid .og-svgc:focus,.og-exam-grid .og-svgc:focus-visible,
+.og-exam-grid .og-opt:focus,.og-exam-grid .og-opt:focus-visible,
+.og-exam-grid .og-opt:active,.og-exam-grid .og-svgc:active{outline:none !important;box-shadow:none !important}
 .og-opt{transition:background .12s ease;background:transparent}
 .og-opt:hover{background:#f7f9fc}
 /* scale visual (SVG) matrix cells + options to fit — no giant grids / scrolling */

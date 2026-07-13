@@ -19,12 +19,13 @@ import { CLARITY_STAGES, journeyForCategory, PASSWORD_RULES, passwordIsValid, em
 const NAVY = "#2f3f9e";
 const BG = "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1600&q=70";
 
+// Only Class 9–10 is open for now; the rest are shown but disabled ("Soon").
 const MILESTONES = [
-  { value: "class_6_8", label: "Class 6 – 8", icon: "school", color: "#2f6bff", soft: "#e9f0ff" },
-  { value: "class_9_10", label: "Class 9 – 10", icon: "route", color: "#16a34a", soft: "#e6f6ec" },
-  { value: "class_11_12", label: "Class 11 – 12", icon: "compass", color: "#7c3aed", soft: "#f1e9fd" },
-  { value: "graduate", label: "Graduates", icon: "cap", color: "#e08a0a", soft: "#fdf1dd" },
-  { value: "experienced_professional", label: "Professionals", icon: "briefcase", color: "#0d9488", soft: "#dff5f2" },
+  { value: "class_6_8", label: "Class 6 – 8", icon: "school", color: "#2f6bff", soft: "#e9f0ff", enabled: false },
+  { value: "class_9_10", label: "Class 9 – 10", icon: "route", color: "#16a34a", soft: "#e6f6ec", enabled: true },
+  { value: "class_11_12", label: "Class 11 – 12", icon: "compass", color: "#7c3aed", soft: "#f1e9fd", enabled: false },
+  { value: "graduate", label: "Graduates", icon: "cap", color: "#e08a0a", soft: "#fdf1dd", enabled: false },
+  { value: "experienced_professional", label: "Professionals", icon: "briefcase", color: "#0d9488", soft: "#dff5f2", enabled: false },
 ];
 const STAGES = [
   { value: CLARITY_STAGES[0], label: "I have no idea about my career", icon: "help", color: "#c0564f" },
@@ -123,8 +124,12 @@ export default function RegisterPage() {
               <div style={S.milestones} className="og-ms">
                 {MILESTONES.map((m) => {
                   const sel = f.category === m.value;
+                  const off = !m.enabled;
                   return (
-                    <button key={m.value} onClick={() => set("category", m.value)} style={{ ...S.mCard, ...(sel ? { borderColor: m.color, boxShadow: `0 0 0 3px ${m.color}22`, background: "#fff" } : {}) }}>
+                    <button key={m.value} disabled={off} onClick={() => { if (!off) set("category", m.value); }}
+                      title={off ? "Coming soon" : m.label}
+                      style={{ ...S.mCard, ...(off ? { opacity: 0.5, cursor: "not-allowed", background: "#f7f8fb" } : {}), ...(sel ? { borderColor: m.color, boxShadow: `0 0 0 3px ${m.color}22`, background: "#fff" } : {}) }}>
+                      {off && <span style={S.soon}>Soon</span>}
                       <span style={{ ...S.mIcon, ...(sel ? { background: m.soft, color: m.color } : { background: "#f1f3f7", color: "#9aa3b2" }) }}><Icon name={m.icon} size={21} stroke={1.6} /></span>
                       <span style={{ ...S.mLabel, ...(sel ? { color: m.color } : {}) }}>{m.label}</span>
                     </button>
@@ -266,6 +271,7 @@ const S: Record<string, React.CSSProperties> = {
 
   milestones: { display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10 },
   mCard: { position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, padding: "14px 6px", background: "#fff", border: "1.5px solid #eceef3", borderRadius: 12, cursor: "pointer", transition: "border-color .15s, box-shadow .15s" },
+  soon: { position: "absolute", top: 6, right: 6, fontSize: 8.5, fontWeight: 800, letterSpacing: .4, textTransform: "uppercase", color: "#94a3b8", background: "#eef1f6", border: "1px solid #e2e6ee", borderRadius: 5, padding: "2px 5px" },
   mIcon: { width: 46, height: 46, borderRadius: "50%", display: "grid", placeItems: "center", transition: "box-shadow .15s" },
   mLabel: { fontSize: 11.5, fontWeight: 700, color: "#334155", textAlign: "center", lineHeight: 1.3 },
   mSel: { position: "absolute", top: 7, right: 7, width: 16, height: 16, borderRadius: "50%", color: "#fff", fontSize: 10, fontWeight: 800, display: "grid", placeItems: "center" },
