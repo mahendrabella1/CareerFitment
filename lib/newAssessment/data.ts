@@ -31,9 +31,9 @@ export const CATEGORY_ORDER: Category[] = [
 ];
 
 export const CATEGORY_META: Record<Category, { title: string; blurb: string }> = {
-  personality: { title: "Personality", blurb: "How you engage, decide, and recharge. Answer Yes or No — go with your instinct." },
+  personality: { title: "Personality", blurb: "For each situation, pick the option that feels most like you." },
   career_interest: { title: "Career Interests", blurb: "Pick the one option that most appeals to you in each situation." },
-  multiple_intelligence: { title: "Multiple Intelligences", blurb: "Slide from 1 (not like me) to 10 (exactly like me)." },
+  multiple_intelligence: { title: "Multiple Intelligences", blurb: "For each statement, choose how much it sounds like you." },
   emotional_intelligence: { title: "Emotional Intelligence", blurb: "Choose the response closest to what you'd genuinely do." },
   learning_styles: { title: "Learning Style", blurb: "Pick the option that best matches how you naturally learn." },
   motivators: { title: "Motivators", blurb: "For each situation, choose the option that feels MOST like you." },

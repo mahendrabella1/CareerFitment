@@ -31,33 +31,61 @@ export function scoreAssessment(
 ): AssessmentSummary {
   // ---------- Personality: Big Five + temperament ----------
   const pers = getSet("personality", stage, chosenSets.personality);
-  const big: Record<string, number> = { Extraversion: 0, Neuroticism: 0, Openness: 0, Conscientiousness: 0, Agreeableness: 0 };
-  const temp: Record<string, number> = { Sanguine: 0, Choleric: 0, Melancholic: 0, Phlegmatic: 0 };
-  let persAnswered = 0;
-  pers.forEach((q, i) => {
-    const a = answers[`personality:${i}`];
-    if (a === "Yes" || a === "No") persAnswered += 1;
-    const yes = a === "Yes";
-    const m = String(q.mainCategory || "").toLowerCase();
-    const intro = m.includes("introversion");
-    if (m.includes("extraversion") && !intro) big.Extraversion += yes ? 1 : 0;
-    else if (intro) big.Extraversion += a === "No" ? 1 : 0;
-    if (m.includes("neuroticism")) big.Neuroticism += yes ? 1 : 0;
-    if (m.includes("openness")) big.Openness += yes ? 1 : 0;
-    if (m.includes("conscientiousness")) big.Conscientiousness += yes ? 1 : 0;
-    if (m.includes("agreeableness") && !m.includes("low agreeableness")) big.Agreeableness += yes ? 1 : 0;
-    if (yes) {
-      const s = String(q.subCategory || "").toLowerCase();
-      for (const t of ["sanguine", "choleric", "melancholic", "phlegmatic"]) if (s.startsWith(t)) temp[cap(t)] += 1;
-    }
-  });
-  const tempRanked = Object.entries(temp).sort((a, b) => b[1] - a[1]);
-  const dominantTemp = tempRanked[0]?.[1] ? tempRanked[0][0] : null;
-  const topStrengths = Object.entries(big)
-    .filter(([, v]) => v > 0)
-    .sort((a, b) => b[1] - a[1])
-    .map(([k]) => ({ parameterName: "Personality", subTraitName: k, normalizedScore: 0 }));
-  const personalityScore = persAnswered ? clamp(Math.round((tempRanked[0][1] / persAnswered) * 100 + 20)) : 50;
+  let topStrengths: AssessmentSummary["topStrengths"];
+  let personalityScore: number;
+  let dominantTemp: string | null;
+  const usesPoints = pers.some((q) => Array.isArray(q.points) && q.trait);
+  if (usesPoints) {
+    // New 9-10 format: 4 situational options, each worth points toward a Big-Five trait.
+    const raw: Record<string, number> = {}, mx: Record<string, number> = {};
+    pers.forEach((q, i) => {
+      const trait = String(q.trait || ""); if (!trait || !Array.isArray(q.points)) return;
+      raw[trait] = raw[trait] || 0; mx[trait] = mx[trait] || 0;
+      mx[trait] += Math.max(...(q.points as number[]));
+      const idx = parseInt(answers[`personality:${i}`] ?? "", 10);
+      if (!Number.isNaN(idx) && typeof q.points[idx] === "number") raw[trait] += q.points[idx];
+    });
+    const ts = (t: string) => (mx[t] ? clamp(Math.round((raw[t] / mx[t]) * 100)) : 50);
+    const TRAITS = ["Openness", "Conscientiousness", "Extraversion", "Agreeableness", "Emotional Stability"];
+    topStrengths = TRAITS.filter((t) => mx[t]).map((t) => ({ parameterName: "Personality", subTraitName: t, normalizedScore: ts(t) }))
+      .sort((a, b) => b.normalizedScore - a.normalizedScore);
+    const E = ts("Extraversion"), A = ts("Agreeableness"), C = ts("Conscientiousness"), O = ts("Openness"), S = ts("Emotional Stability");
+    const tScore: Record<string, number> = {
+      Sanguine: E * 0.6 + A * 0.25 + O * 0.15,
+      Choleric: E * 0.5 + C * 0.3 + (100 - A) * 0.2,
+      Melancholic: (100 - E) * 0.4 + C * 0.35 + O * 0.25,
+      Phlegmatic: (100 - E) * 0.35 + A * 0.4 + S * 0.25,
+    };
+    dominantTemp = Object.entries(tScore).sort((a, b) => b[1] - a[1])[0][0];
+    personalityScore = Math.round(TRAITS.reduce((s, t) => s + ts(t), 0) / TRAITS.length);
+  } else {
+    // Legacy Yes/No format.
+    const big: Record<string, number> = { Extraversion: 0, Neuroticism: 0, Openness: 0, Conscientiousness: 0, Agreeableness: 0 };
+    const temp: Record<string, number> = { Sanguine: 0, Choleric: 0, Melancholic: 0, Phlegmatic: 0 };
+    let persAnswered = 0;
+    pers.forEach((q, i) => {
+      const a = answers[`personality:${i}`];
+      if (a === "Yes" || a === "No") persAnswered += 1;
+      const yes = a === "Yes";
+      const m = String(q.mainCategory || "").toLowerCase();
+      const intro = m.includes("introversion");
+      if (m.includes("extraversion") && !intro) big.Extraversion += yes ? 1 : 0;
+      else if (intro) big.Extraversion += a === "No" ? 1 : 0;
+      if (m.includes("neuroticism")) big.Neuroticism += yes ? 1 : 0;
+      if (m.includes("openness")) big.Openness += yes ? 1 : 0;
+      if (m.includes("conscientiousness")) big.Conscientiousness += yes ? 1 : 0;
+      if (m.includes("agreeableness") && !m.includes("low agreeableness")) big.Agreeableness += yes ? 1 : 0;
+      if (yes) {
+        const s = String(q.subCategory || "").toLowerCase();
+        for (const t of ["sanguine", "choleric", "melancholic", "phlegmatic"]) if (s.startsWith(t)) temp[cap(t)] += 1;
+      }
+    });
+    const tempRanked = Object.entries(temp).sort((a, b) => b[1] - a[1]);
+    dominantTemp = tempRanked[0]?.[1] ? tempRanked[0][0] : null;
+    topStrengths = Object.entries(big).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1])
+      .map(([k]) => ({ parameterName: "Personality", subTraitName: k, normalizedScore: 0 }));
+    personalityScore = persAnswered ? clamp(Math.round((tempRanked[0][1] / persAnswered) * 100 + 20)) : 50;
+  }
 
   // ---------- Career interest: cluster tally -> careers ----------
   const ci = getSet("career_interest", stage, chosenSets.career_interest);
@@ -87,25 +115,39 @@ export function scoreAssessment(
   // inv() is the inverse controller. Weights follow the algorithm sheet
   // (1.0 direct maps; ~0.75/0.25 splits with modifiers). See MI algorithm tab.
   const mi = getSet("multiple_intelligence", stage, chosenSets.multiple_intelligence);
-  const q = (i: number) => {
-    const v = parseInt(answers[`multiple_intelligence:${i}`] ?? "", 10);
-    return Number.isNaN(v) ? 1 : Math.min(10, Math.max(1, v));
-  };
-  const f = (i: number) => ((q(i) - 1) / 9) * 100;
-  const inv = (i: number) => 100 - f(i);
-  const Q1 = 0, Q2 = 1, Q3 = 2, Q4 = 3, Q5 = 4; // Communicator, Logic, Hands-on, Social, Creative
-  const gardner: { name: string; score: number }[] = [
-    { name: "Linguistic (Words & Language)", score: f(Q1) },
-    { name: "Logical–Mathematical", score: 0.75 * f(Q2) + 0.25 * inv(Q1) },
-    { name: "Visual–Spatial", score: 0.75 * f(Q2) + 0.25 * f(Q3) },
-    { name: "Bodily–Kinesthetic", score: f(Q3) },
-    { name: "Musical", score: 0.75 * f(Q5) + 0.25 * f(Q3) },
-    { name: "Interpersonal (People)", score: 0.75 * f(Q4) + 0.25 * f(Q1) },
-    { name: "Intrapersonal (Self)", score: 0.75 * f(Q4) + 0.25 * inv(Q1) },
-    { name: "Naturalistic (Nature)", score: 0.75 * f(Q5) + 0.25 * f(Q2) },
-  ].map((g) => ({ name: g.name, score: clamp(Math.round(g.score)) }));
-  const topIntelligences = [...gardner].sort((a, b) => b.score - a.score);
-  const miScore = mi.length ? topIntelligences[0].score : 0;
+  const usesStatements = mi.some((qq) => qq.intelligence);
+  let topIntelligences: { name: string; score: number }[];
+  if (usesStatements) {
+    // New 9-10 format: agree/disagree statements grouped by intelligence.
+    const agg: Record<string, { s: number; n: number }> = {};
+    mi.forEach((qq, i) => {
+      const name = String(qq.intelligence || ""); if (!name) return;
+      const opts = Array.isArray(qq.options) ? qq.options.length : 5;
+      const idx = parseInt(answers[`multiple_intelligence:${i}`] ?? "", 10);
+      const val = Number.isNaN(idx) ? 50 : (idx / Math.max(1, opts - 1)) * 100;
+      agg[name] = agg[name] || { s: 0, n: 0 };
+      agg[name].s += val; agg[name].n += 1;
+    });
+    topIntelligences = Object.entries(agg)
+      .map(([name, { s, n }]) => ({ name, score: clamp(Math.round(s / n)) }))
+      .sort((a, b) => b.score - a.score);
+  } else {
+    const qf = (i: number) => { const v = parseInt(answers[`multiple_intelligence:${i}`] ?? "", 10); return Number.isNaN(v) ? 1 : Math.min(10, Math.max(1, v)); };
+    const f = (i: number) => ((qf(i) - 1) / 9) * 100;
+    const inv = (i: number) => 100 - f(i);
+    const Q1 = 0, Q2 = 1, Q3 = 2, Q4 = 3, Q5 = 4;
+    topIntelligences = [
+      { name: "Linguistic (Words & Language)", score: f(Q1) },
+      { name: "Logical–Mathematical", score: 0.75 * f(Q2) + 0.25 * inv(Q1) },
+      { name: "Visual–Spatial", score: 0.75 * f(Q2) + 0.25 * f(Q3) },
+      { name: "Bodily–Kinesthetic", score: f(Q3) },
+      { name: "Musical", score: 0.75 * f(Q5) + 0.25 * f(Q3) },
+      { name: "Interpersonal (People)", score: 0.75 * f(Q4) + 0.25 * f(Q1) },
+      { name: "Intrapersonal (Self)", score: 0.75 * f(Q4) + 0.25 * inv(Q1) },
+      { name: "Naturalistic (Nature)", score: 0.75 * f(Q5) + 0.25 * f(Q2) },
+    ].map((g) => ({ name: g.name, score: clamp(Math.round(g.score)) })).sort((a, b) => b.score - a.score);
+  }
+  const miScore = mi.length ? (topIntelligences[0]?.score ?? 0) : 0;
 
   // ---------- Emotional intelligence: quality scores ----------
   const eiQ = getSet("emotional_intelligence", stage, chosenSets.emotional_intelligence);
@@ -137,18 +179,28 @@ export function scoreAssessment(
   // ---------- Motivators: most(+2) / least(-1) -> domains ----------
   const mo = getSet("motivators", stage, chosenSets.motivators);
   const moTally: Record<string, number> = {};
+  let moSingle = 0;
   mo.forEach((qq, i) => {
-    const [mostS, leastS] = (answers[`motivators:${i}`] ?? "").split(",");
+    const ans = answers[`motivators:${i}`] ?? "";
     const dom = (idx: number) => (Array.isArray(qq.domains) ? String(qq.domains[idx] || "").trim().toUpperCase() : "");
-    const most = parseInt(mostS, 10), least = parseInt(leastS, 10);
-    if (!Number.isNaN(most)) { const d = dom(most); if (d) moTally[d] = (moTally[d] || 0) + 2; }
-    if (!Number.isNaN(least)) { const d = dom(least); if (d) moTally[d] = (moTally[d] || 0) - 1; }
+    if (ans.includes(",")) {
+      const [mostS, leastS] = ans.split(",");
+      const most = parseInt(mostS, 10), least = parseInt(leastS, 10);
+      if (!Number.isNaN(most)) { const d = dom(most); if (d) moTally[d] = (moTally[d] || 0) + 2; }
+      if (!Number.isNaN(least)) { const d = dom(least); if (d) moTally[d] = (moTally[d] || 0) - 1; }
+    } else {
+      // New 9-10 format: single "most like me" pick.
+      const idx = parseInt(ans, 10);
+      if (!Number.isNaN(idx)) { const d = dom(idx); if (d) { moTally[d] = (moTally[d] || 0) + 1; moSingle += 1; } }
+    }
   });
   const topValues = Object.entries(moTally)
     .map(([k, v]) => ({ tag: DOMAIN_NAMES[k] || k, score: v }))
     .sort((a, b) => b.score - a.score);
   const moTop = topValues[0]?.score ?? 0;
-  const motivatorScore = clamp(Math.round(((moTop + mo.length) / (3 * (mo.length || 1))) * 100));
+  const motivatorScore = moSingle
+    ? clamp(Math.round(((moTop / moSingle) - 0.15) / 0.85 * 100))
+    : clamp(Math.round(((moTop + mo.length) / (3 * (mo.length || 1))) * 100));
 
   // ---------- Strengths: cognitive (scored) + self-report ipsative ----------
   const str = getSet("strengths", stage, chosenSets.strengths);
