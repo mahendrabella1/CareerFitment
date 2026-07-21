@@ -37,7 +37,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
 
   return (
     <div ref={root} className="ogl-land">
-      <style>{CSS}</style>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
       {/* nav */}
       <header className="ogl-nav">

@@ -568,6 +568,71 @@ export function careerRoles(a: AssessmentSummary): RoleFit[] {
   return out.slice(0, 6);
 }
 
+/* ------------------------- coherent domain fit ------------------------- */
+/**
+ * Blends ALL measured dimensions — not just self-reported interest — into one
+ * fit score per broad domain. A domain has to be reinforced by interest AND the
+ * relevant abilities/intelligences/values to rank high, so the top matches are
+ * coherent (an interest with no supporting ability drops down) and the numbers
+ * read sensibly. This is the "map more data, clearly" step over the raw tally.
+ */
+export type DomainFit = Domain & { fit: number; why: string };
+
+// Which abilities/intelligences/values reinforce each domain (keyword match,
+// robust to exact wording differences in the question banks).
+const AFFINITY: Record<string, { apt: string[]; mi: string[]; val: string[]; label: string }> = {
+  A: { label: "hands-on problem-solving", apt: ["spatial", "mechanical", "logical", "numerical"], mi: ["spatial", "bodily", "kinesth", "logical"], val: ["achievement", "independence", "structured"] },
+  B: { label: "logical & analytical thinking", apt: ["logical", "numerical", "abstract", "quantitative"], mi: ["logical", "mathemat"], val: ["achievement", "independence", "continuous", "learning"] },
+  C: { label: "care and people-focus", apt: ["verbal", "memory", "perceptual"], mi: ["interpersonal", "natural", "intrapersonal", "logical"], val: ["social", "service", "relationship", "help"] },
+  D: { label: "creativity & visual thinking", apt: ["spatial", "verbal", "perceptual"], mi: ["spatial", "visual", "music", "linguist"], val: ["creativ", "independence", "adventure"] },
+  E: { label: "communication & drive", apt: ["verbal", "numerical", "quantitative"], mi: ["interpersonal", "linguist", "logical"], val: ["achievement", "recognition", "leader", "independence"] },
+  F: { label: "empathy & communication", apt: ["verbal", "memory"], mi: ["interpersonal", "intrapersonal", "linguist"], val: ["social", "service", "relationship", "support", "help"] },
+  G: { label: "curiosity & analysis", apt: ["logical", "numerical", "quantitative"], mi: ["natural", "logical", "mathemat"], val: ["independence", "continuous", "learning"] },
+  H: { label: "energy & people-skills", apt: ["psychomotor", "spatial", "perceptual"], mi: ["bodily", "kinesth", "interpersonal"], val: ["adventure", "recognition", "social"] },
+};
+
+export function domainFit(a: AssessmentSummary): DomainFit[] {
+  const apt = (a.topAptitudes ?? []).map((x) => ({ n: String(x.skill || "").toLowerCase(), s: x.score }));
+  const mi = (a.topIntelligences ?? []).map((x) => ({ n: String(x.name || "").toLowerCase(), s: x.score }));
+  const val = (a.topValues ?? []).map((x) => ({ n: String(x.tag || "").toLowerCase(), s: x.score }));
+  const interestOf: Record<string, number> = {};
+  (a.themes ?? []).forEach((t) => { interestOf[t.letter] = t.score; });
+
+  // Average score of the user's items whose name matches any keyword (0–100).
+  const matchScore = (items: { n: string; s: number }[], keys: string[]) => {
+    const hits = items.filter((it) => keys.some((k) => it.n.includes(k)));
+    if (!hits.length) return 0;
+    return hits.reduce((s, h) => s + h.s, 0) / hits.length;
+  };
+
+  const raw = Object.keys(DOMAINS).map((key) => {
+    const aff = AFFINITY[key];
+    const interest = interestOf[key] ?? 0;
+    const aScore = aff ? matchScore(apt, aff.apt) : 0;
+    const mScore = aff ? matchScore(mi, aff.mi) : 0;
+    const vScore = aff ? matchScore(val, aff.val) : 0;
+    // Interest leads; abilities/intelligences reinforce; values nudge.
+    const r = 0.42 * interest + 0.26 * aScore + 0.22 * mScore + 0.10 * vScore;
+    const reinforcedBy = [
+      aScore >= 55 && apt.find((x) => aff?.apt.some((k) => x.n.includes(k)))?.n,
+      mScore >= 55 && mi.find((x) => aff?.mi.some((k) => x.n.includes(k)))?.n,
+    ].filter(Boolean) as string[];
+    return { key, r, reinforcedBy };
+  });
+
+  const maxR = Math.max(1, ...raw.map((x) => x.r));
+  return raw
+    .map(({ key, r, reinforcedBy }) => {
+      // Scale so the strongest reads ~88 and the field spreads sensibly (min 42).
+      const fit = Math.max(42, Math.min(92, Math.round(40 + (r / maxR) * 48)));
+      const why = reinforcedBy.length
+        ? `Backed by your ${reinforcedBy.slice(0, 2).join(" and ")}.`
+        : `Aligned with your ${AFFINITY[key]?.label ?? "overall profile"}.`;
+      return { ...DOMAINS[key], fit, why };
+    })
+    .sort((x, y) => y.fit - x.fit);
+}
+
 /* ------------------------- future outlook ------------------------------ */
 export const FUTURE = {
   rising: [
