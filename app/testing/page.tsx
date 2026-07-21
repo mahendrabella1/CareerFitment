@@ -330,7 +330,7 @@ function ReportScreen({
   return (
     <div style={S.reportWrap} className="pa-report">
       {/* Print-only stylesheet: renders just the report cleanly as a PDF. */}
-      <style>{PRINT_CSS}</style>
+      <style dangerouslySetInnerHTML={{ __html: PRINT_CSS }} />
       {/* Banner */}
       <div style={S.reportBanner} className="pa-banner">
         <div style={S.reportBannerInner}>

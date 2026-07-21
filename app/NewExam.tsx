@@ -249,7 +249,7 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
 
   if (phase === "thanks")
     return (
-      <div style={S.thanks}><style>{CSS}</style>
+      <div style={S.thanks}><style dangerouslySetInnerHTML={{ __html: CSS }} />
         <div className="og-pop" style={{ textAlign: "center" }}>
           <div style={S.check}><Icon name="check" size={46} stroke={2.4} /></div>
           <div style={S.thanksT}>Thank you{name ? `, ${name}` : ""}!</div>
@@ -260,7 +260,7 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
 
   if (phase === "resume" && data)
     return (
-      <div style={S.introWrap}><style>{CSS}</style>
+      <div style={S.introWrap}><style dangerouslySetInnerHTML={{ __html: CSS }} />
         <div style={S.introCard} className="og-exam-introcard">
           <div style={{ marginBottom: 14 }}><Logo height={30} /></div>
           <h2 style={S.introTitle}>Welcome back{name ? `, ${name}` : ""} 👋</h2>
@@ -277,7 +277,7 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
 
   if (phase === "intro" && data)
     return (
-      <div style={S.introWrap}><style>{CSS}</style>
+      <div style={S.introWrap}><style dangerouslySetInnerHTML={{ __html: CSS }} />
         <div style={S.introCard} className="og-exam-introcard">
           <div style={{ marginBottom: 16 }}><Logo height={30} /></div>
           <h2 style={S.introTitle}>Before you begin</h2>
@@ -299,7 +299,7 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
     const notAnswered = requiredTotal - answeredCount;
     return (
       <div style={S.page}>
-        <style>{CSS}</style>
+        <style dangerouslySetInnerHTML={{ __html: CSS }} />
         {/* top bar */}
         <header style={S.top} className="og-exam-top">
           <div style={S.topLeft}>
@@ -569,7 +569,7 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
 }
 
 function Center({ children }: { children: React.ReactNode }) {
-  return <div style={S.center}><style>{CSS}</style>{children}</div>;
+  return <div style={S.center}><style dangerouslySetInnerHTML={{ __html: CSS }} />{children}</div>;
 }
 
 /* ------------------------------- styling ------------------------------- */

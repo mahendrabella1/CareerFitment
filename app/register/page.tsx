@@ -82,7 +82,7 @@ export default function RegisterPage() {
 
   return (
     <div style={S.page}>
-      <style>{CSS}</style>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div style={S.overlay} />
       <Link href="/" style={S.home}>HOME</Link>
 

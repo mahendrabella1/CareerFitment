@@ -155,3 +155,55 @@
   .rep-cover { box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .rep-section, .rep-panel, .rep-snapshot, .rep-match { break-inside: avoid; box-shadow: none; }
 }
+
+/* ============================================================
+   2026 RETHEME — white / near-black / grey / light-red.
+   Scoped to the report only (.rep / .rep-shell); the rest of the
+   app keeps its own theme. Token overrides retint every var()-based
+   rule above; the explicit rules below replace hardcoded colours.
+   ============================================================ */
+body:has(.rep) { background: #f7f7f8; }
+
+.rep, .rep-shell {
+  --accent: #F2555A;
+  --accent-strong: #E23B41;
+  --ink: #141417;
+  --ink-2: #3d3d45;
+  --muted: #9a9aa6;
+  --line: #ececef;
+  --panel: #ffffff;
+  --panel-strong: #ffffff;
+  --green: #2f9e6f;        /* semantic "very high" only */
+  --green-soft: #FDECED;   /* remap tint -> red tint (on-brand) */
+  --sun: #9a9aa6;
+  --sun-soft: #f4f4f6;
+  --shadow-sm: 0 2px 10px rgba(20, 20, 25, 0.05);
+  --shadow: 0 14px 40px rgba(20, 20, 25, 0.08);
+  --shadow-lg: 0 20px 48px rgba(20, 20, 25, 0.10);
+}
+
+/* cover — softer brand red */
+.rep-cover {
+  background:
+    radial-gradient(700px 260px at 90% -20%, rgba(255, 255, 255, 0.14), transparent 60%),
+    linear-gradient(135deg, #F2555A 0%, #E23B41 100%);
+}
+
+/* interest bars — solid red, no orange */
+.rep-riasec { background: #fafafb; }
+.rep-riasec-fill { background: #F8CBCD; }
+.rep-riasec-bar.top .rep-riasec-fill { background: #F2555A; }
+
+/* fit + cluster progress — solid red */
+.rep-fit-fill { background: #F2555A; }
+.rep-cluster-fill { background: #F2555A; }
+
+/* fit bands — red-forward and on-palette */
+.band-VeryHigh { background: #FDECED; color: #E23B41; }
+.band-High { background: #FDECED; color: #F2555A; }
+.band-Good { background: #f4f4f6; color: #3d3d45; }
+.band-Moderate { background: #f4f4f6; color: #9a9aa6; }
+.band-Low { background: #f4f4f6; color: #9a9aa6; }
+
+/* learning-style accent panel */
+.rep-panel.accent { background: linear-gradient(160deg, #fff, #FDECED); }

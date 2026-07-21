@@ -11,15 +11,16 @@ const CAT_LABEL: Record<string, string> = {
   strengths: "Strengths", aptitude: "Aptitude",
 };
 
-const NAVY = "#2f4062", ACCENT = "#4f6b9e", INK = "#1f2937", MUTED = "#64748b", LINE = "#e6e9ef";
+// 2026 palette — near-black ink + single light-red accent (matches dashboard/report).
+const NAVY = "#141417", ACCENT = "#F2555A", INK = "#141417", MUTED = "#8a8a94", LINE = "#ececef";
 const clamp = (n: number) => Math.max(4, Math.min(100, Math.round(n)));
 
 const s = StyleSheet.create({
   page: { paddingTop: 0, paddingBottom: 40, fontFamily: "Helvetica", color: INK, fontSize: 10 },
   header: { backgroundColor: NAVY, color: "#fff", padding: 26 },
-  hKick: { fontSize: 8, letterSpacing: 1, color: "#c8d3ea", fontFamily: "Helvetica-Bold" },
+  hKick: { fontSize: 8, letterSpacing: 1, color: "#f3b7b9", fontFamily: "Helvetica-Bold" },
   hTitle: { fontSize: 18, fontFamily: "Helvetica-Bold", marginTop: 8, lineHeight: 1.25 },
-  hSub: { fontSize: 10, color: "#dfe6f3", marginTop: 6 },
+  hSub: { fontSize: 10, color: "#d9d9df", marginTop: 6 },
   body: { padding: "20 26" },
   summary: { fontSize: 10.5, color: "#475569", lineHeight: 1.55, marginBottom: 16 },
   h3: { fontSize: 12.5, fontFamily: "Helvetica-Bold", color: "#0f172a", marginBottom: 8, marginTop: 6 },
@@ -35,7 +36,7 @@ const s = StyleSheet.create({
   salRow: { flexDirection: "row", marginTop: 6 },
   salK: { width: 46, fontSize: 8.5, color: MUTED },
   salV: { flex: 1, fontSize: 9, color: "#0f172a", fontFamily: "Helvetica-Bold" },
-  link: { fontSize: 8.5, color: "#3f5b8b", textDecoration: "none", marginRight: 12, marginTop: 6 },
+  link: { fontSize: 8.5, color: "#E23B41", textDecoration: "none", marginRight: 12, marginTop: 6 },
   li: { flexDirection: "row", marginBottom: 4 },
   liDot: { width: 10, fontSize: 9, color: ACCENT },
   liText: { flex: 1, fontSize: 9.5, color: "#475569", lineHeight: 1.45 },
@@ -45,7 +46,7 @@ const s = StyleSheet.create({
   phTitle: { fontSize: 10, fontFamily: "Helvetica-Bold", color: "#0f172a" },
   phPoint: { fontSize: 9, color: MUTED, marginTop: 2, lineHeight: 1.4 },
   foot: { fontSize: 8, color: "#94a3b8", marginTop: 18, lineHeight: 1.5 },
-  archBox: { backgroundColor: "#f4f6fb", borderRadius: 6, padding: "10 12", marginTop: 12 },
+  archBox: { backgroundColor: "#FDECED", borderRadius: 6, padding: "10 12", marginTop: 12 },
   archKick: { fontSize: 7.5, letterSpacing: 1, color: ACCENT, fontFamily: "Helvetica-Bold" },
   archName: { fontSize: 13, fontFamily: "Helvetica-Bold", color: "#0f172a", marginTop: 3 },
   archTag: { fontSize: 9.5, color: "#475569", marginTop: 3, lineHeight: 1.45 },
