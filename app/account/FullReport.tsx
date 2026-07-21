@@ -1330,12 +1330,24 @@ const CSS = `
 .frx .closing .b{margin-top:20px;font-size:13px;font-weight:700;padding:12px 22px;border-radius:11px;border:none;cursor:pointer}
 .frx .closing .b1{background:var(--red);color:#fff}
 
+/* Consistent A4 pages — every section prints as the same page size. */
+@page{size:A4 portrait;margin:0}
 @media print{
-  .frx{gap:0}
+  /* Force every background, tint, bar-fill and colour to print (Chrome/Edge honour
+     this even when "Background graphics" is unchecked). */
+  .frx,.frx *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;color-adjust:exact !important}
+  .frx{gap:0;display:block}
   .frx .og-noprint{display:none !important}
-  .frx .sheet{box-shadow:none;border-radius:0;border:none;border-top:3px solid var(--red);page-break-after:always;break-after:page}
+  /* Each sheet = one uniform A4 page (same width + height). */
+  .frx .sheet{box-sizing:border-box;width:210mm;min-height:296mm;margin:0 auto;
+    box-shadow:none;border:none;border-radius:0;border-top:3px solid var(--red);
+    page-break-after:always;break-after:page;overflow:visible}
   .frx .sheet:last-child{page-break-after:auto}
+  /* never leave a scroll-reveal section hidden in the PDF */
   .frx .rv{opacity:1 !important;transform:none !important}
-  .frx .cover-hero,.frx .dimhero-img,.frx .pband,.frx .closing{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  /* keep charts and blocks from being clipped/split awkwardly */
+  .frx svg{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+  .frx .twocard,.frx .dom,.frx .role,.frx .fw,.frx .dcard,.frx .ccard,.frx .apcard,
+  .frx .model,.frx .scard,.frx .rstep,.frx .tcard,.frx .dial,.frx .vrow,.frx .brow2{break-inside:avoid}
 }
 `;

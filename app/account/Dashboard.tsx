@@ -928,5 +928,5 @@ const CSS = `
 .ogd-reportwrap{max-width:980px;margin:0 auto;padding:16px 24px 64px}
 .ogd-reportbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;position:sticky;top:0;
   z-index:5;background:${C.bg};padding:8px 0}
-@media print{.ogd-reportwrap{padding:0}.ogd-reportbar{display:none}}
+@media print{.ogd-reportwrap{padding:0;margin:0;max-width:none}.ogd-reportbar{display:none}}
 `;
