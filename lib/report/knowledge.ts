@@ -21,12 +21,8 @@ export type Domain = {
   links: { label: string; url: string }[];
 };
 
-const COMMON = (specific: { label: string; url: string }): { label: string; url: string }[] => [
-  specific,
-  { label: "Explore courses — Coursera", url: "https://www.coursera.org" },
-  { label: "Live jobs — LinkedIn", url: "https://www.linkedin.com/jobs" },
-  { label: "National Career Service (India)", url: "https://www.ncs.gov.in" },
-];
+// Each domain gets its own links — no shared filler, so consecutive career
+// cards in the report never repeat the same resources.
 
 export const DOMAINS: Record<string, Domain> = {
   A: {
@@ -40,7 +36,11 @@ export const DOMAINS: Record<string, Domain> = {
     salaryIndia: "₹3.5–7 LPA entry · ₹10–22 LPA mid · ₹30 LPA+ as lead / project manager",
     salaryAbroad: "$60k–85k entry · $95k–140k mid (US / EU / Gulf)",
     futureScope: "Infrastructure, clean-energy transition and smart-construction keep demand steady. Green + digital-construction skills earn a clear premium.",
-    links: COMMON({ label: "Free engineering courses — NPTEL", url: "https://nptel.ac.in" }),
+    links: [
+      { label: "Free engineering courses — NPTEL", url: "https://nptel.ac.in" },
+      { label: "JEE Main (official) — NTA", url: "https://jeemain.nta.nic.in" },
+      { label: "Free CAD tools — Autodesk Education", url: "https://www.autodesk.com/education" },
+    ],
   },
   B: {
     key: "B", name: "Information Technology",
@@ -53,7 +53,11 @@ export const DOMAINS: Record<string, Domain> = {
     salaryIndia: "₹4–9 LPA entry · ₹15–35 LPA mid · ₹50 LPA+ senior / lead",
     salaryAbroad: "$75k–110k entry · $130k–200k mid (US) · €50k–90k (EU)",
     futureScope: "AI, data and cloud are reshaping every industry — the highest-paid, most flexible and globally portable of all the domains.",
-    links: COMMON({ label: "Developer roadmaps — roadmap.sh", url: "https://roadmap.sh" }),
+    links: [
+      { label: "Developer roadmaps — roadmap.sh", url: "https://roadmap.sh" },
+      { label: "Free coding certificates — freeCodeCamp", url: "https://www.freecodecamp.org" },
+      { label: "Harvard CS50 (free)", url: "https://cs50.harvard.edu/x/" },
+    ],
   },
   C: {
     key: "C", name: "Health Science",
@@ -66,7 +70,11 @@ export const DOMAINS: Record<string, Domain> = {
     salaryIndia: "₹3–6 LPA (allied / nursing) · ₹8–20 LPA (doctors post-PG) · ₹30 LPA+ specialists",
     salaryAbroad: "$60k–90k (nursing / allied) · $200k+ (licensed physicians, US)",
     futureScope: "Ageing populations, mental-health awareness and biotech guarantee stable, respected and rising demand.",
-    links: COMMON({ label: "NEET (official)", url: "https://neet.nta.nic.in" }),
+    links: [
+      { label: "NEET (official) — NTA", url: "https://neet.nta.nic.in" },
+      { label: "National Medical Commission", url: "https://www.nmc.org.in" },
+      { label: "Free health & medicine lessons — Khan Academy", url: "https://www.khanacademy.org/science/health-and-medicine" },
+    ],
   },
   D: {
     key: "D", name: "Arts, Media & Design",
@@ -79,7 +87,11 @@ export const DOMAINS: Record<string, Domain> = {
     salaryIndia: "₹3–6 LPA entry · ₹8–18 LPA mid · ₹25 LPA+ senior (UX / product especially)",
     salaryAbroad: "$50k–75k entry · $90k–140k mid (UX / product design, US / EU)",
     futureScope: "Digital products, content and brand experience keep creative + tech-savvy talent in high, well-paid demand.",
-    links: COMMON({ label: "Design portfolios — Behance", url: "https://www.behance.net" }),
+    links: [
+      { label: "Design portfolios — Behance", url: "https://www.behance.net" },
+      { label: "Free design courses — Canva Design School", url: "https://www.canva.com/designschool/" },
+      { label: "NID admissions (official)", url: "https://admissions.nid.edu" },
+    ],
   },
   E: {
     key: "E", name: "Business & Marketing",
@@ -92,7 +104,11 @@ export const DOMAINS: Record<string, Domain> = {
     salaryIndia: "₹3.5–7 LPA entry · ₹12–30 LPA mid · ₹40 LPA+ (consulting / leadership)",
     salaryAbroad: "$60k–90k entry · $110k–180k mid (US / EU)",
     futureScope: "Every company needs growth, data-driven marketing and sound finance — one of the most versatile, opportunity-rich domains.",
-    links: COMMON({ label: "MBA & business — mba.com", url: "https://www.mba.com" }),
+    links: [
+      { label: "MBA & business — mba.com", url: "https://www.mba.com" },
+      { label: "Free marketing certifications — HubSpot Academy", url: "https://academy.hubspot.com" },
+      { label: "Free business simulations — Forage", url: "https://www.theforage.com/simulations" },
+    ],
   },
   F: {
     key: "F", name: "Human & Public Services",
@@ -105,7 +121,11 @@ export const DOMAINS: Record<string, Domain> = {
     salaryIndia: "₹3–6 LPA entry · ₹7–15 LPA mid · higher in law & civil services with seniority",
     salaryAbroad: "$45k–70k entry · $80k–130k mid (varies by field & country)",
     futureScope: "Stable, respected and meaningful; ed-tech and legal-tech are adding modern, better-paid pathways.",
-    links: COMMON({ label: "UPSC / civil services", url: "https://www.upsc.gov.in" }),
+    links: [
+      { label: "UPSC / civil services", url: "https://www.upsc.gov.in" },
+      { label: "CLAT (official) — Consortium of NLUs", url: "https://consortiumofnlus.ac.in" },
+      { label: "CTET — teaching eligibility", url: "https://ctet.nic.in" },
+    ],
   },
   G: {
     key: "G", name: "Science, Nature & Agriculture",
@@ -118,7 +138,11 @@ export const DOMAINS: Record<string, Domain> = {
     salaryIndia: "₹3–6 LPA entry · ₹8–18 LPA mid · ₹25 LPA+ (industry R&D, agri-tech)",
     salaryAbroad: "$55k–80k entry · $95k–150k mid (R&D, US / EU)",
     futureScope: "Climate, food and biotech are fast-growing, well-funded fields — deep impact and rising industry demand.",
-    links: COMMON({ label: "Nature Careers", url: "https://www.nature.com/naturecareers" }),
+    links: [
+      { label: "Nature Careers", url: "https://www.nature.com/naturecareers" },
+      { label: "ICAR — agriculture entrance & research", url: "https://icar.org.in" },
+      { label: "Join real research — Zooniverse", url: "https://www.zooniverse.org" },
+    ],
   },
   H: {
     key: "H", name: "Sports, Hospitality & Lifestyle",
@@ -131,7 +155,11 @@ export const DOMAINS: Record<string, Domain> = {
     salaryIndia: "₹2.5–5 LPA entry · ₹6–14 LPA mid · ₹20 LPA+ (management, top chefs / coaches)",
     salaryAbroad: "$40k–65k entry · $75k–120k mid (hospitality mgmt, sports science)",
     futureScope: "The experience economy, wellness and sports are booming globally — strong scope for travel and for building your own venture.",
-    links: COMMON({ label: "Hospitality & lifestyle courses — edX", url: "https://www.edx.org" }),
+    links: [
+      { label: "Hospitality & lifestyle courses — edX", url: "https://www.edx.org" },
+      { label: "NCHM JEE — hotel management (official)", url: "https://nchmjee.nta.nic.in" },
+      { label: "Sports Authority of India", url: "https://sportsauthorityofindia.nic.in" },
+    ],
   },
 };
 
@@ -245,45 +273,64 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
 /* ------------------------- next-20-years roadmap ----------------------- */
 export type Phase = { period: string; title: string; points: string[] };
 
+const keyOfDomain = (domainName: string): string =>
+  Object.values(DOMAINS).find((d) => d.name === domainName)?.key ?? "B";
+
+/** Domain-specific 20-year roadmaps — each domain has its own milestones, so
+ *  no two sections of the report (or two domains) read the same. */
+const ROADMAPS: Record<string, Phase[]> = {
+  A: [
+    { period: "Now → 2 years", title: "Foundations in maths & making", points: ["Get strong in physics and maths — they are the entry ticket to every engineering branch", "Build something physical: a model bridge, a robot kit, an Arduino circuit", "Visit a construction site, factory or metro project to see engineers at work"] },
+    { period: "2 → 5 years", title: "B.Tech / diploma & first site experience", points: ["Clear JEE / CET into a core branch (civil, mechanical, electrical)", "Learn AutoCAD and one analysis tool well before final year", "Do vacation training with a contractor, PSU or manufacturing plant"] },
+    { period: "5 → 10 years", title: "Site engineer → project lead", points: ["Take charge of small sites or production lines early — responsibility compounds", "Add PMP or a green-building (LEED/IGBC) credential", "Consider M.Tech or an infrastructure MBA if you aim at design or management"] },
+    { period: "10 → 20 years", title: "Chief engineer, PMC or your own firm", points: ["Lead large projects or move into project-management consultancy", "Renewables, metro-rail and smart-city work will pay the premium", "Many senior engineers start their own contracting or design practice here"] },
+  ],
+  B: [
+    { period: "Now → 2 years", title: "Learn to code properly", points: ["Pick one language (Python or JavaScript) and get past the basics into real programs", "Publish 2–3 small projects on GitHub — a game, a website, a data script", "Complete one structured course end-to-end (CS50 or freeCodeCamp)"] },
+    { period: "2 → 5 years", title: "Degree + portfolio + first job", points: ["B.Tech/BCA/BSc-CS — but let your portfolio, not marks alone, speak", "Do at least two internships; contribute to one open-source project", "Choose a first specialisation: web, data, cloud, security or mobile"] },
+    { period: "5 → 10 years", title: "Senior engineer or specialist", points: ["Go deep in one area (AI/ML, cloud architecture, security) — depth is what pays", "Mentor juniors and lead a small team or module", "Certify where it counts: AWS/Azure architect, CISSP, or an ML specialisation"] },
+    { period: "10 → 20 years", title: "Architect, leader or founder", points: ["Choose the track: principal engineer, engineering manager, or your own product", "Remote and global roles are normal in IT — your market is the world", "Keep one day a week for learning; the stack will change twice more"] },
+  ],
+  C: [
+    { period: "Now → 2 years", title: "Biology first, NEET in sight", points: ["Master biology and chemistry fundamentals — NCERT deeply, not just coaching notes", "Volunteer or shadow at a clinic, hospital or pharmacy to test the reality", "Decide early between MBBS, dentistry, nursing, pharmacy and allied health"] },
+    { period: "2 → 5 years", title: "Medical / allied education", points: ["Clear NEET (or allied-health entrances) and commit to the long course", "Treat internships and clinical rotations as the real classroom", "Build patient-communication skills — they matter as much as marks"] },
+    { period: "5 → 10 years", title: "PG specialisation & licensure", points: ["Choose a speciality via NEET-PG (or MSc/certifications for allied paths)", "Consider rural or public-health service — it builds range and reputation", "Research or teaching tracks open here if hospitals aren't your fit"] },
+    { period: "10 → 20 years", title: "Consultant, researcher or founder", points: ["Senior consultant or department head in your speciality", "Health-tech, telemedicine and hospital management are growing side doors", "Many clinicians open their own practice or diagnostics centre in this window"] },
+  ],
+  D: [
+    { period: "Now → 2 years", title: "Make things, keep everything", points: ["Create weekly — posters, reels, sketches, UI mock-ups — and save it all", "Learn one tool deeply (Figma, Photoshop or Premiere) instead of five shallowly", "Start a public portfolio on Behance or Instagram; feedback is fuel"] },
+    { period: "2 → 5 years", title: "Formal craft & first clients", points: ["B.Des / mass-comm / fine-arts — or a portfolio-first self-taught route", "Freelance small: logos, edits, college fests — real briefs teach fastest", "Intern at a studio, agency or production house at least once"] },
+    { period: "5 → 10 years", title: "Specialist with a name", points: ["Pick a lane — UX, motion, film editing, fashion, brand — and get known for it", "Raise your rates as your portfolio compounds; keep shipping personal work", "UX and product design pay the most consistently if income matters"] },
+    { period: "10 → 20 years", title: "Creative director or studio owner", points: ["Lead creative teams, or run your own studio/channel with a client base", "License, teach or productise your work for income beyond hours", "Your taste and network are the moat now — invest in both"] },
+  ],
+  E: [
+    { period: "Now → 2 years", title: "Sell something, run something", points: ["Run a small venture — a stall, a reselling page, an event — and track the numbers", "Learn Excel/Sheets properly; money fluency starts there", "Follow real businesses: read one annual report or founder story a month"] },
+    { period: "2 → 5 years", title: "Degree + internships that count", points: ["BBA/B.Com (or any degree) + internships in sales, marketing or finance", "Get one measurable win you can talk about: grew X, sold Y, saved Z", "Certify in digital marketing or financial modelling — cheap, high-signal"] },
+    { period: "5 → 10 years", title: "Manager with a P&L", points: ["Move from executing to owning targets — a territory, a brand, a budget", "An MBA (CAT/GMAT) is optional but accelerates consulting and leadership tracks", "Build your network deliberately; deals and roles both travel through people"] },
+    { period: "10 → 20 years", title: "Leadership or your own company", points: ["Head of sales/marketing, consulting partner, or founder — the paths fork here", "Equity and profit-share start mattering more than salary", "Mentor younger operators; the best deal-flow comes from people you helped"] },
+  ],
+  F: [
+    { period: "Now → 2 years", title: "Read widely, serve locally", points: ["Debate, MUN, school leadership and volunteering build the core muscles", "Read the newspaper daily — current affairs is the raw material of this field", "Shadow a teacher, lawyer or local official to see the work up close"] },
+    { period: "2 → 5 years", title: "Degree + qualifying exams", points: ["BA/B.Ed/LLB depending on the track — law needs CLAT, teaching needs B.Ed", "Intern with courts, NGOs, schools or government offices", "Start UPSC/state-services prep only after understanding the commitment"] },
+    { period: "5 → 10 years", title: "Establish in your service", points: ["Clear the qualifying exam (CTET, judiciary, UPSC) or build your practice/classroom", "Specialise: a subject, a branch of law, a policy area", "Reputation compounds slowly here — consistency beats brilliance"] },
+    { period: "10 → 20 years", title: "Senior service & public impact", points: ["Principal, senior advocate/judge, or senior administrative roles", "Policy, ed-tech and legal-tech offer modern, higher-paid branches", "Your work now shapes institutions — mentor the next generation in"] },
+  ],
+  G: [
+    { period: "Now → 2 years", title: "Be a scientist already", points: ["Do real experiments at home or school; document them like a researcher", "Join a citizen-science project (bird counts, star maps, soil tests)", "Strengthen maths — it is the language of every science"] },
+    { period: "2 → 5 years", title: "BSc/BTech & first lab", points: ["IISER/NISER/ICAR or a strong BSc — research needs the right environment", "Get into a lab early; wash the glassware if that's what it takes", "Present at one student conference or science fair"] },
+    { period: "5 → 10 years", title: "MSc/PhD & publications", points: ["Pick the problem you can stay curious about for a decade", "Publish, present, collaborate — your papers are your portfolio", "Industry R&D (biotech, agri-tech, climate) pays well if academia isn't the fit"] },
+    { period: "10 → 20 years", title: "Principal scientist or founder", points: ["Lead a lab, a field station or an R&D team", "Climate, food-security and biotech funding keep growing — ride it", "Deep-tech startups founded by scientists are India's next wave"] },
+  ],
+  H: [
+    { period: "Now → 2 years", title: "Train, host, cook, compete", points: ["Play a sport seriously or cook/host regularly — this field rewards doing", "Volunteer at school events, tournaments or family functions as an organiser", "Basic fitness and people skills are your first certifications"] },
+    { period: "2 → 5 years", title: "Professional training", points: ["Hotel management (NCHM JEE), culinary school, or sports-science degree", "Industrial training in a hotel, academy or kitchen — reputation starts there", "Add certifications: fitness training, event management, food safety"] },
+    { period: "5 → 10 years", title: "Build your name in service", points: ["Move up: sous chef, duty manager, head coach, senior physio", "International postings (cruise, Gulf, hotel chains) accelerate pay here", "Start building a personal brand — this industry runs on reputation"] },
+    { period: "10 → 20 years", title: "Run the show", points: ["GM of a property, own restaurant/academy, or head of sports science", "The experience economy keeps growing — wellness and travel especially", "Your network of guests, clients and athletes becomes your business"] },
+  ],
+};
+
 export function roadmap(stageLabel: string, domainName: string): Phase[] {
-  return [
-    {
-      period: "Now → 2 years",
-      title: "Explore & build foundations",
-      points: [
-        `Confirm your fit for ${domainName} with a real project, internship or job-shadow`,
-        "Build the core skills and get the qualifications your path needs",
-        "Find one mentor and a peer group in the field",
-      ],
-    },
-    {
-      period: "2 → 5 years",
-      title: "Enter & specialise",
-      points: [
-        `Land your first role in ${domainName} and pick a specialisation`,
-        "Ship visible work — a portfolio, results or a track record",
-        "Add one or two respected certifications",
-      ],
-    },
-    {
-      period: "5 → 10 years",
-      title: "Grow into expertise & leadership",
-      points: [
-        "Become a go-to specialist or step into leading people/projects",
-        "Widen your network and consider a bigger platform (or going abroad)",
-        "Keep learning as your field's tools and demands evolve",
-      ],
-    },
-    {
-      period: "10 → 20 years",
-      title: "Lead, mentor or build",
-      points: [
-        "Move into senior leadership, deep expertise, or your own venture",
-        "Mentor the next generation and shape direction, not just tasks",
-        "Design work around the life and impact you want — you'll have the leverage to",
-      ],
-    },
-  ];
+  return ROADMAPS[keyOfDomain(domainName)] ?? ROADMAPS.B;
 }
 
 /* ------------------------- archetype (Career DNA) ---------------------- */
@@ -331,22 +378,97 @@ export function subTraits(key: string, a: AssessmentSummary): { label: string; v
   }
 }
 
+/* ------------------ real free programs, per domain --------------------- */
+export type Opportunity = { label: string; url: string; note: string };
+
+/** Three real, free programs per domain — the same programs listed on the
+ *  OneGrasp dashboard, so the report and the dashboard recommend one truth. */
+export const OPPORTUNITIES: Record<string, Opportunity[]> = {
+  A: [
+    { label: "Tinkercad (Autodesk)", url: "https://www.tinkercad.com", note: "Free 3D design & circuits — build your first model this week" },
+    { label: "NPTEL intro engineering courses", url: "https://nptel.ac.in", note: "Free IIT courses with certificates" },
+    { label: "GE Aerospace job simulation (Forage)", url: "https://www.theforage.com/simulations", note: "Free virtual work experience, ~4 hrs" },
+  ],
+  B: [
+    { label: "freeCodeCamp — Responsive Web Design", url: "https://www.freecodecamp.org/learn/", note: "Free certification; start with one lesson a day" },
+    { label: "Harvard CS50x", url: "https://cs50.harvard.edu/x/", note: "The world's most popular intro to computer science, free" },
+    { label: "JPMorgan Software Engineering simulation (Forage)", url: "https://www.theforage.com/simulations", note: "Free virtual internship with certificate, ~5 hrs" },
+  ],
+  C: [
+    { label: "Khan Academy — Health & Medicine", url: "https://www.khanacademy.org/science/health-and-medicine", note: "Free foundation for biology & medicine" },
+    { label: "Stanford AIMI — AI in medicine", url: "https://aimi.stanford.edu", note: "Free resources at the frontier of health + AI" },
+    { label: "Foldit — protein-folding research game", url: "https://fold.it", note: "Contribute to real biochemistry research" },
+  ],
+  D: [
+    { label: "Canva Design School", url: "https://www.canva.com/designschool/", note: "Free courses; make one poster a week" },
+    { label: "Figma for Education", url: "https://www.figma.com/education/", note: "Free pro tools for students — learn UI design" },
+    { label: "Behance", url: "https://www.behance.net", note: "Start your public portfolio today" },
+  ],
+  E: [
+    { label: "BCG Strategy simulation (Forage)", url: "https://www.theforage.com/simulations", note: "Free consulting work experience, ~6 hrs" },
+    { label: "HubSpot Academy", url: "https://academy.hubspot.com", note: "Free marketing & sales certifications" },
+    { label: "Diamond Challenge", url: "https://diamondchallenge.org", note: "Global entrepreneurship competition for high-schoolers" },
+  ],
+  F: [
+    { label: "Queen's Commonwealth Essay Competition", url: "https://www.royalcwsociety.org", note: "The world's oldest schools writing contest, free entry" },
+    { label: "MyGov quizzes & contests", url: "https://quiz.mygov.in", note: "Free civic & current-affairs challenges" },
+    { label: "OpenLearn — law & society courses", url: "https://www.open.edu/openlearn/", note: "Free Open University short courses" },
+  ],
+  G: [
+    { label: "Zooniverse", url: "https://www.zooniverse.org", note: "Contribute to real research projects today" },
+    { label: "GLOBE Program", url: "https://www.globe.gov", note: "NASA-backed student earth-science research" },
+    { label: "iNaturalist", url: "https://www.inaturalist.org", note: "Document biodiversity like a field biologist" },
+  ],
+  H: [
+    { label: "lululemon marketing simulation (Forage)", url: "https://www.theforage.com/simulations", note: "Free brand & retail work experience" },
+    { label: "edX hospitality & lifestyle courses", url: "https://www.edx.org", note: "Free to audit university courses" },
+    { label: "Khan Academy — Personal Finance", url: "https://www.khanacademy.org/college-careers-more/personal-finance", note: "Money skills every venture needs" },
+  ],
+};
+
+export const opportunitiesFor = (domainName: string): Opportunity[] =>
+  OPPORTUNITIES[keyOfDomain(domainName)] ?? OPPORTUNITIES.B;
+
 /* ------------------------- action plan (30 / 90 days) ------------------ */
+/** Domain-specific 30/90-day plans. Deliberately different wording from the
+ *  roadmap and deep-dives so the report never repeats itself. */
+const PLANS: Record<string, { days30: string[]; days90: string[] }> = {
+  A: {
+    days30: ["Build one physical thing — a cardboard bridge, an Arduino blink circuit, a 3D model in Tinkercad.", "Watch how one everyday machine works (lift, mixer, bike gears) and sketch its parts.", "Check the maths topics your dream branch needs and patch the weakest one."],
+    days90: ["Finish a project you can hold or demo, and photograph the build steps.", "Attend a science exhibition, metro site tour or maker fair.", "Talk to one working engineer about what their week actually looks like."],
+  },
+  B: {
+    days30: ["Write your first 100 lines of code — Python or JavaScript, any editor.", "Finish the first module of freeCodeCamp or CS50.", "Automate one tiny thing you do often (a calculation, a to-do list)."],
+    days90: ["Ship one small app or website and put the code on GitHub.", "Complete a free job simulation (Forage) to see a tech workplace.", "Join one coding community or school club and ask one question a week."],
+  },
+  C: {
+    days30: ["Master one NCERT biology chapter beyond the syllabus — diagrams and all.", "Interview someone who works in healthcare about their daily routine.", "Start a health-science notebook: one condition, cause and treatment a week."],
+    days90: ["Volunteer or observe at a clinic, pharmacy or health camp.", "Finish one free anatomy/physiology course module online.", "Map the NEET (or allied-health) route: subjects, cutoffs, timelines."],
+  },
+  D: {
+    days30: ["Create five finished pieces — posters, edits, sketches — not perfect, finished.", "Recreate one design you admire to learn its tricks.", "Set up a portfolio page on Behance and post your first piece."],
+    days90: ["Take one real brief — a poster for a school event, an edit for a friend.", "Learn the basics of one professional tool (Figma, Photoshop or Premiere).", "Get feedback from one working designer or creator on your portfolio."],
+  },
+  E: {
+    days30: ["Track your pocket money like a CFO for a month — every rupee, in a sheet.", "Pick one brand you love and write down how it makes money.", "Sell something small — old books, snacks at an event — and note what worked."],
+    days90: ["Run a mini-venture with a profit target and report the numbers.", "Finish one free business or marketing certification (HubSpot / Forage).", "Present your venture results to family like a board meeting."],
+  },
+  F: {
+    days30: ["Read the newspaper 15 minutes daily and summarise one story a week.", "Join or start a debate on a real policy issue at school.", "Write one short essay on a problem in your community and a fix."],
+    days90: ["Volunteer with a local NGO, library or civic drive.", "Enter one essay or public-speaking competition.", "Interview a teacher, lawyer or official about how they chose the path."],
+  },
+  G: {
+    days30: ["Run one real experiment at home and record it like a lab notebook.", "Join a citizen-science project and log your first observations.", "Pick one scientist's story and trace how they got there."],
+    days90: ["Complete a mini research project with a question, method and result.", "Present your findings at school or at a science fair.", "Visit a lab, botanical garden, observatory or research farm."],
+  },
+  H: {
+    days30: ["Commit to a daily training or practice block — sport, cooking or fitness.", "Plan and host one small event end-to-end for friends or family.", "Study one great hotel, restaurant or academy and list what makes it work."],
+    days90: ["Take charge of organising a school event, tournament or food stall.", "Finish one free course in fitness, food safety or event management.", "Shadow a chef, coach or hotel manager for a day."],
+  },
+};
+
 export function actionPlan(a: AssessmentSummary, domainName: string): { days30: string[]; days90: string[] } {
-  const strength = a.topIntelligences?.[0]?.name || a.strengthsBreakdown?.[0]?.name || "your strongest skill";
-  const dom = domainName.toLowerCase();
-  return {
-    days30: [
-      `Start one small project in ${dom} to test the fit first-hand.`,
-      `Try a free intro course that builds on ${strength.toLowerCase()}.`,
-      "Each week, explain one thing you learned to a friend or family member.",
-    ],
-    days90: [
-      "Finish and share your first project publicly.",
-      "Join a club, community or group active in this field.",
-      `Shortlist three next steps — streams, courses or mentors — toward ${domainName}.`,
-    ],
-  };
+  return PLANS[keyOfDomain(domainName)] ?? PLANS.B;
 }
 
 /* ------------------------- four temperaments --------------------------- */
@@ -415,16 +537,32 @@ export function careerRoles(a: AssessmentSummary): RoleFit[] {
     .map((t) => ({ d: DOMAINS[t.letter], fit: Math.round(t.score) }));
   const list = doms.length ? doms : [{ d: DOMAINS.B, fit: a.overallFitmentPct ?? 70 }];
   const intel = a.topIntelligences?.[0]?.name;
+  const intel2 = a.topIntelligences?.[1]?.name;
   const apt = a.topAptitudes?.[0]?.skill;
   const val = a.topValues?.[0]?.tag;
-  const whyFor = (role: string, i: number) => {
-    const bits = [intel && `your ${intel.toLowerCase()} intelligence`, apt && `strong ${apt.toLowerCase()} reasoning`, val && `a drive for ${String(val).toLowerCase()}`].filter(Boolean);
-    return bits.length ? `Fits ${bits[i % bits.length]}.` : "Aligns with your overall profile.";
-  };
+  const ls = a.learningStyles?.[0]?.name;
+  const themeTitle = a.themes?.[0]?.title;
+  const bits = [
+    intel && `your ${intel.toLowerCase()} intelligence`,
+    apt && `strong ${apt.toLowerCase()} reasoning`,
+    val && `a drive for ${String(val).toLowerCase()}`,
+    themeTitle && `your ${themeTitle.toLowerCase()} interests`,
+    ls && `a ${ls.toLowerCase()} learning style`,
+    intel2 && `your ${intel2.toLowerCase()} side`,
+  ].filter(Boolean) as string[];
+  const whyFor = (i: number) => (bits.length ? `Fits ${bits[i % bits.length]}.` : "Aligns with your overall profile.");
   const out: RoleFit[] = [];
+  let w = 0;
   list.forEach(({ d, fit }, di) => {
     d.roles.slice(0, 2).forEach((role, ri) => {
-      out.push({ role, domain: d.name, fit: Math.max(40, Math.min(97, fit - ri * 4 - di * 2)), why: whyFor(role, ri + di), salaryIndia: d.salaryIndia, salaryAbroad: d.salaryAbroad });
+      out.push({
+        role, domain: d.name,
+        fit: Math.max(40, Math.min(97, fit - ri * 4 - di * 2)),
+        why: whyFor(w++),
+        // salary is a domain-level range — print it once per domain, not on every role
+        salaryIndia: ri === 0 ? d.salaryIndia : "",
+        salaryAbroad: ri === 0 ? d.salaryAbroad : "",
+      });
     });
   });
   return out.slice(0, 6);

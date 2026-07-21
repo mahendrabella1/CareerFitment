@@ -294,10 +294,12 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
                   <div className="role-main"><div className="role-nm">{r.role}</div><div className="role-dm">{r.domain} · {r.why}</div></div>
                   <div className="role-fit"><b>{r.fit}%</b><span>fit</span></div>
                 </div>
-                <div className="role-sal">
-                  <div className="rs"><span className="fl fl-in">🇮🇳 India</span> {r.salaryIndia}</div>
-                  <div className="rs"><span className="fl fl-ab">🌍 Abroad</span> {r.salaryAbroad}</div>
-                </div>
+                {r.salaryIndia ? (
+                  <div className="role-sal">
+                    <div className="rs"><span className="fl fl-in">🇮🇳 India</span> {r.salaryIndia}</div>
+                    <div className="rs"><span className="fl fl-ab">🌍 Abroad</span> {r.salaryAbroad}</div>
+                  </div>
+                ) : null}
               </div>
             ))}
           </div>

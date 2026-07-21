@@ -3,7 +3,21 @@
 // layout that auto-paginates. Rendered to a Buffer for nodemailer.
 import { Document, Page, View, Text, Link, StyleSheet, renderToBuffer } from "@react-pdf/renderer";
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
-import { DOMAINS, categoryDeepDive, roadmap, stageLabelOf, archetype, actionPlan } from "@/lib/report/knowledge";
+import { DOMAINS, categoryDeepDive, roadmap, stageLabelOf, archetype, actionPlan, opportunitiesFor } from "@/lib/report/knowledge";
+
+/** Render-time de-dup: any bullet whose normalized text already appeared
+ *  earlier in the report is silently dropped, so no advice prints twice. */
+function makeFresh() {
+  const seen = new Set<string>();
+  const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim();
+  return (lines: string[]) =>
+    lines.filter((l) => {
+      const k = norm(l);
+      if (!k || seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    });
+}
 
 const CAT_LABEL: Record<string, string> = {
   personality: "Personality", career_interest: "Career Interest", multiple_intelligence: "Multiple Intelligence",
@@ -77,9 +91,13 @@ function ReportDoc({ name, a }: { name: string; a: AssessmentSummary }) {
     .map((t) => ({ ...DOMAINS[t.letter], fit: Math.round(t.score) }));
   const top = domains[0] || DOMAINS.B;
   const arch = archetype(a);
-  const plan = actionPlan(a, top.name);
+  const fresh = makeFresh();
+  const plan = { days30: fresh(actionPlan(a, top.name).days30), days90: fresh(actionPlan(a, top.name).days90) };
   const dims = (a.radar ?? []).map((r) => ({ ...r, dd: categoryDeepDive(r.key, a) }));
-  const phases = roadmap(stageLabelOf(a.journeyCode), top.name);
+  const phases = roadmap(stageLabelOf(a.journeyCode), top.name)
+    .map((p) => ({ ...p, points: fresh(p.points) }))
+    .filter((p) => p.points.length > 0);
+  const programs = opportunitiesFor(top.name);
 
   return (
     <Document title="OneGrasp Career Report" author="OneGrasp">
@@ -145,6 +163,17 @@ function ReportDoc({ name, a }: { name: string; a: AssessmentSummary }) {
             </View>
           </View>
 
+          <Text style={{ ...s.h3, marginTop: 12 }}>Free programs to start this month</Text>
+          {programs.map((p) => (
+            <View key={p.url + p.label} style={s.li} wrap={false}>
+              <Text style={s.liDot}>•</Text>
+              <Text style={s.liText}>
+                <Link src={p.url} style={{ color: "#3f5b8b", textDecoration: "none" }}>{p.label}</Link>
+                {`  —  ${p.note}`}
+              </Text>
+            </View>
+          ))}
+
           <Text style={{ ...s.h3, marginTop: 12 }}>Your next 20 years</Text>
           {phases.map((p) => (
             <View key={p.period} style={s.phase} wrap={false}>
@@ -158,7 +187,9 @@ function ReportDoc({ name, a }: { name: string; a: AssessmentSummary }) {
 
           <Text style={s.foot}>
             Generated from your OneGrasp career assessment. Sign in to your dashboard for the full interactive report.
-            This report is a guide, not a verdict — salary figures are typical ranges.
+            This report is a guide, not a verdict. Salary figures are indicative 2025–26 ranges compiled from public
+            sources (AmbitionBox, Glassdoor and official pay scales) and vary by city, company and skill level.
+            All recommended programs are free and link to their official pages.
           </Text>
         </View>
       </Page>
