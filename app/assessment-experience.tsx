@@ -6,6 +6,7 @@ import { useAuth, type AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { Logo } from "@/app/Logo";
 import Landing from "@/app/Landing";
 import NewExam from "@/app/NewExam";
+import PaymentGate from "@/app/PaymentGate";
 import {
   Sparkles,
   ArrowRight,
@@ -541,6 +542,7 @@ export default function AssessmentExperience() {
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
   const [thankYou, setThankYou] = useState(false);
   const [instructionsAccepted, setInstructionsAccepted] = useState(false);
+  const [paidNow, setPaidNow] = useState(false); // set true right after a verified payment
   const [agreeChecked, setAgreeChecked] = useState(false);
   const [sectionShown, setSectionShown] = useState<Record<string, boolean>>({});
   const [qLeft, setQLeft] = useState(60); // seconds left on the current question
@@ -1033,6 +1035,10 @@ export default function AssessmentExperience() {
   // New set-based assessment: entered via /?begin=1 by a signed-in user.
   if (hasBegin && !results) {
     if (user && profile) {
+      // Payment gate — the exam only loads once the fee is paid & verified.
+      if (!(profile.paid || paidNow)) {
+        return <PaymentGate profile={profile} onPaid={() => setPaidNow(true)} />;
+      }
       return (
         <NewExam
           category={profile.category || ""}

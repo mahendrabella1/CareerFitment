@@ -96,6 +96,10 @@ export interface UserProfile {
   examSession?: ExamSession | null;
   createdAt?: unknown;
   latestAssessment?: AssessmentSummary;
+  // Payment gate: false/absent = registered but unpaid; true = paid (set
+  // server-side by /api/payment/verify after signature verification).
+  paid?: boolean;
+  paymentStatus?: string;
 }
 
 export type RegisterInput = {
@@ -201,6 +205,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       clarity: input.clarity,
       city: (input.city || "").trim(),
       age: (input.age || "").trim(),
+      paid: false,
+      paymentStatus: "unpaid",
     };
     await setDoc(doc(db, "users", cred.user.uid), {
       ...profileDoc,
