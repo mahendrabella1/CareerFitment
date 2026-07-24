@@ -79,7 +79,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
     }
   }
 
-  const amount = Number(process.env.NEXT_PUBLIC_RAZORPAY_AMOUNT_PAISE || 9900) / 100;
+  const amount = Number(process.env.NEXT_PUBLIC_RAZORPAY_AMOUNT_PAISE || 100) / 100;
 
   return (
     <div style={S.page}>
