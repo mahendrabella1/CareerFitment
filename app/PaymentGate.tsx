@@ -7,7 +7,7 @@
  * success does onPaid() fire (which lets the exam load).
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { UserProfile } from "@/lib/auth/AuthProvider";
 import { getFirebaseAuth } from "@/lib/firebase/client";
 
@@ -30,6 +30,27 @@ function loadScript(src: string): Promise<boolean> {
 export default function PaymentGate({ profile, onPaid }: { profile: UserProfile; onPaid: () => void }) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
+  const [checking, setChecking] = useState(true);
+
+  // If real payment isn't configured on the server (no Razorpay secret), skip the
+  // fee entirely so the app is fully usable with zero setup. It turns on the
+  // moment RAZORPAY_KEY_SECRET is added to the host env.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/payment/status");
+        const data = await res.json();
+        if (!cancelled) {
+          if (!data?.configured) onPaid();
+          else setChecking(false);
+        }
+      } catch {
+        if (!cancelled) onPaid(); // fail open in test/misconfig — never block the exam
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [onPaid]);
 
   async function pay() {
     setErr("");
@@ -80,6 +101,19 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
   }
 
   const amount = Number(process.env.NEXT_PUBLIC_RAZORPAY_AMOUNT_PAISE || 100) / 100;
+
+  if (checking) {
+    return (
+      <div style={{ ...S.page }}>
+        <style dangerouslySetInnerHTML={{ __html: CSS }} />
+        <div className="pg-card" style={{ maxWidth: 340 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="pg-logo" src="/onegrasp-logo-tight.png" alt="OneGrasp" />
+          <p className="pg-sub" style={{ margin: 0 }}>Preparing your assessment…</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={S.page}>
