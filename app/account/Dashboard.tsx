@@ -77,6 +77,10 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
   const [navOpen, setNavOpen] = useState(false);
   const [active, setActive] = useState("overview");
   const [toolkitTab, setToolkitTab] = useState(TOOLKIT_TABS[0].id);
+  const [dimKey, setDimKey] = useState<string>(() => {
+    const top = (a.radar ?? []).slice().sort((x, y) => y.score - x.score)[0];
+    return top?.key || CANON[0];
+  });
   const name = (profile?.name || "").trim();
   const first = name.split(/\s+/)[0] || "there";
 
@@ -321,10 +325,19 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
               <section id="dimensions" className="ash-sec">
                 <div className="ogd-card">
                   <CardHead icon="radar" title="Your eight dimensions"
-                    sub="Tap a dimension to expand. The dark tick marks a typical student at your stage." />
-                  <div className="ogd-dims">
-                    {radar.map((d) => <DimRow key={d.key} d={d} a={a} />)}
+                    sub="Tap a dimension below to see its full breakdown — everything from your report, right here." />
+                  <div className="ogd-dimtabs">
+                    {radar.map((d) => (
+                      <button key={d.key} className={`ogd-dimtab${dimKey === d.key ? " on" : ""}`} onClick={() => setDimKey(d.key)}>
+                        <span className="ogd-dimtab-ic"><Icon name={d.key} size={24} /></span>
+                        <span className="ogd-dimtab-lab">
+                          {d.score > 0 ? <span className="ogd-dimtab-check"><Icon name="check" size={11} stroke={2.4} /></span> : null}
+                          {CAT_LABEL[d.key]}
+                        </span>
+                      </button>
+                    ))}
                   </div>
+                  <DimPanel d={radar.find((r) => r.key === dimKey) ?? radar[0]} a={a} />
                 </div>
               </section>
 
@@ -460,9 +473,10 @@ function Toolkit({ tab, setTab }: { tab: string; setTab: (id: string) => void })
   );
 }
 
-/** One expandable dimension row with a benchmark comparison. */
-function DimRow({ d, a }: { d: RadarDatum; a: AssessmentSummary }) {
-  const [open, setOpen] = useState(false);
+/** The full breakdown for whichever dimension is active in the horizontal
+ *  tab row above — score, benchmark, sub-traits, and the complete deep-dive
+ *  (meaning, strengths, growth areas, recommended actions, next step). */
+function DimPanel({ d, a }: { d: RadarDatum; a: AssessmentSummary }) {
   const dd = categoryDeepDive(d.key, a);
   const res = resultOf(d.key, a);
   const subs = subTraits(d.key, a);
@@ -470,36 +484,59 @@ function DimRow({ d, a }: { d: RadarDatum; a: AssessmentSummary }) {
   const bench = BENCH[d.key];
   const delta = Math.round(d.score - bench);
   return (
-    <div className={`ogd-dim${open ? " open" : ""}`}>
-      <button className="ogd-dim-head" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
-        <span className="ogd-dim-ic"><Icon name={d.key} size={16} /></span>
-        <span className="ogd-dim-name">{CAT_LABEL[d.key]}</span>
-        <span className="ogd-dim-bar"><SkillBar value={d.score} color={IN} benchmark={bench} /></span>
-        <span className="ogd-dim-score">{Math.round(d.score)}</span>
-        <span className={`ogd-dim-delta ${delta >= 0 ? "up" : "down"}`}>{delta >= 0 ? "+" : ""}{delta}</span>
-        <span className="ogd-dim-chev"><Icon name="chevronRight" size={15} /></span>
-      </button>
-      {open && (
-        <div className="ogd-dim-body">
-          <div className="ogd-dim-meta">
+    <div className="ogd-dimpanel">
+      <div className="ogd-dimpanel-top">
+        <div className="ogd-dimpanel-head">
+          <span className="ogd-dim-ic lg"><Icon name={d.key} size={20} /></span>
+          <div>
+            <div className="ogd-dimpanel-name">{CAT_LABEL[d.key]}</div>
             {res ? <span className="ogd-dim-result">{res.label}: <b>{res.value}</b></span> : null}
-            <span className="ogd-dim-pct">Higher than {pct}% of students at your stage</span>
           </div>
-          <p className="ogd-dim-text">{dd.meaning}</p>
-          {subs.length > 0 && (
-            <div className="ogd-dim-subs">
-              {subs.slice(0, 6).map((s) => (
-                <div className="ogd-dim-subrow" key={s.label}>
-                  <span className="ogd-dim-sublab">{s.label}</span>
-                  <SkillBar value={s.value} color={C.faint} height={6} />
-                  <span className="ogd-dim-subval">{Math.round(s.value)}</span>
-                </div>
-              ))}
+        </div>
+        <div className="ogd-dimpanel-score">
+          <div className="ogd-dimpanel-num">{Math.round(d.score)}</div>
+          <div className={`ogd-dim-delta ${delta >= 0 ? "up" : "down"}`}>{delta >= 0 ? "+" : ""}{delta} vs. typical</div>
+        </div>
+      </div>
+      <SkillBar value={d.score} color={IN} benchmark={bench} />
+      <span className="ogd-dim-pct">Higher than {pct}% of students at your stage</span>
+
+      <p className="ogd-dim-text">{dd.meaning}</p>
+
+      {subs.length > 0 && (
+        <div className="ogd-dim-subs">
+          {subs.slice(0, 6).map((s) => (
+            <div className="ogd-dim-subrow" key={s.label}>
+              <span className="ogd-dim-sublab">{s.label}</span>
+              <SkillBar value={s.value} color={C.faint} height={6} />
+              <span className="ogd-dim-subval">{Math.round(s.value)}</span>
             </div>
-          )}
-          {dd.next ? <div className="ogd-dim-next"><b>Next:</b> {dd.next}</div> : null}
+          ))}
         </div>
       )}
+
+      <div className="ogd-dim-lists">
+        {dd.strengths.length > 0 && (
+          <div className="ogd-dim-list">
+            <div className="ogd-dim-list-h good">Strengths</div>
+            {dd.strengths.map((s, i) => <div className="ogd-dim-li" key={i}>{s}</div>)}
+          </div>
+        )}
+        {dd.grow.length > 0 && (
+          <div className="ogd-dim-list">
+            <div className="ogd-dim-list-h">Areas to grow</div>
+            {dd.grow.map((s, i) => <div className="ogd-dim-li" key={i}>{s}</div>)}
+          </div>
+        )}
+        {dd.recommend.length > 0 && (
+          <div className="ogd-dim-list">
+            <div className="ogd-dim-list-h">Recommended actions</div>
+            {dd.recommend.map((s, i) => <div className="ogd-dim-li" key={i}>{s}</div>)}
+          </div>
+        )}
+      </div>
+
+      {dd.next ? <div className="ogd-dim-next"><b>Next:</b> {dd.next}</div> : null}
     </div>
   );
 }
@@ -821,36 +858,47 @@ const CSS = `
 .ogd-ex-d{font-size:11.5px;color:${C.ink3};margin-top:1px}
 .ogd-ex-go{margin-left:auto;color:${C.faint};flex:none}
 
-/* dimensions accordion */
-.ogd-dims{display:flex;flex-direction:column}
-.ogd-dim{border-top:1px solid ${C.line2}}
-.ogd-dim:first-child{border-top:none}
-.ogd-dim-head{width:100%;display:grid;grid-template-columns:30px 1.35fr 1fr auto auto 16px;align-items:center;gap:12px;
-  padding:14px 2px;background:none;border:none;cursor:pointer;text-align:left;font-family:inherit}
-@media(max-width:560px){.ogd-dim-head{grid-template-columns:26px 1fr auto 16px;gap:9px}.ogd-dim-bar,.ogd-dim-delta{display:none}}
+/* dimensions — horizontal tile row (icon + checkmark + label) + single detail panel */
+.ogd-dimtabs{display:flex;overflow-x:auto;margin-bottom:20px;border:1px solid ${C.line};border-radius:14px;background:${C.bg};scrollbar-width:thin}
+.ogd-dimtab{flex:none;width:126px;display:flex;flex-direction:column;align-items:center;gap:11px;padding:20px 10px;
+  background:none;border:none;border-right:1px solid ${C.line};cursor:pointer;font-family:inherit;transition:background .15s}
+.ogd-dimtab:last-child{border-right:none}
+.ogd-dimtab:hover{background:rgba(255,255,255,.6)}
+.ogd-dimtab.on{background:#fff;box-shadow:inset 0 -3px 0 ${IN}}
+.ogd-dimtab-ic{width:54px;height:54px;border-radius:50%;flex:none;display:grid;place-items:center;background:${IN_TINT};color:${IN};transition:background .15s,color .15s}
+.ogd-dimtab.on .ogd-dimtab-ic{background:${IN};color:#fff}
+.ogd-dimtab-lab{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:${C.ink2};white-space:nowrap}
+.ogd-dimtab.on .ogd-dimtab-lab{color:${C.ink}}
+.ogd-dimtab-check{width:15px;height:15px;border-radius:50%;flex:none;display:grid;place-items:center;background:${C.good};color:#fff}
+
+.ogd-dimpanel{border-top:1px solid ${C.line2};padding-top:16px;animation:ogdslide .2s ease}
+@keyframes ogdslide{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.ogd-dimpanel-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}
+.ogd-dimpanel-head{display:flex;align-items:center;gap:12px}
 .ogd-dim-ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:${C.line2};color:${C.ink2}}
-.ogd-dim-name{font-size:13.5px;font-weight:700;color:${C.ink}}
-.ogd-dim-bar{min-width:60px}
-.ogd-dim-score{font-size:14px;font-weight:800;text-align:right;min-width:26px}
-.ogd-dim-delta{font-size:11.5px;font-weight:800;min-width:34px;text-align:right}
+.ogd-dim-ic.lg{width:38px;height:38px;border-radius:11px}
+.ogd-dimpanel-name{font-size:16px;font-weight:800;color:${C.ink};margin-bottom:4px}
+.ogd-dimpanel-score{text-align:right;flex:none}
+.ogd-dimpanel-num{font-size:24px;font-weight:800;color:${C.ink};line-height:1}
+.ogd-dim-delta{font-size:11px;font-weight:700;margin-top:3px}
 .ogd-dim-delta.up{color:${C.good}}
 .ogd-dim-delta.down{color:${C.muted}}
-.ogd-dim-chev{color:${C.faint};display:grid;place-items:center;transition:transform .2s}
-.ogd-dim.open .ogd-dim-chev{transform:rotate(90deg)}
-.ogd-dim-body{padding:2px 2px 18px;animation:ogdslide .25s ease}
-@keyframes ogdslide{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
-.ogd-dim-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-.ogd-dim-result,.ogd-dim-pct{font-size:11.5px;font-weight:600;border-radius:999px;padding:5px 11px}
-.ogd-dim-result{background:${IN_TINT};color:${C.ink2}}
+.ogd-dim-result{display:inline-block;font-size:11.5px;font-weight:600;border-radius:999px;padding:4px 10px;background:${IN_TINT};color:${C.ink2}}
 .ogd-dim-result b{color:${IN};font-weight:800}
-.ogd-dim-pct{background:${C.line2};color:${C.ink3}}
-.ogd-dim-text{font-size:13px;line-height:1.6;color:${C.ink2};max-width:70ch}
-.ogd-dim-subs{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.ogd-dim-pct{display:inline-block;font-size:11.5px;font-weight:600;color:${C.ink3};margin-top:9px}
+.ogd-dim-text{font-size:13.5px;line-height:1.65;color:${C.ink2};max-width:72ch;margin-top:14px}
+.ogd-dim-subs{display:flex;flex-direction:column;gap:8px;margin-top:16px}
 .ogd-dim-subrow{display:grid;grid-template-columns:130px 1fr 28px;align-items:center;gap:10px}
 @media(max-width:560px){.ogd-dim-subrow{grid-template-columns:100px 1fr 26px}}
 .ogd-dim-sublab{font-size:12px;color:${C.ink3};font-weight:600}
 .ogd-dim-subval{font-size:12px;font-weight:700;text-align:right;color:${C.ink2}}
-.ogd-dim-next{margin-top:14px;padding:11px 14px;background:${C.bg};border:1px solid ${C.line};border-radius:11px;font-size:12.5px;color:${C.ink2}}
+.ogd-dim-lists{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+@media(max-width:820px){.ogd-dim-lists{grid-template-columns:1fr}}
+.ogd-dim-list-h{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:${C.muted};margin-bottom:8px}
+.ogd-dim-list-h.good{color:${C.good}}
+.ogd-dim-li{font-size:12.5px;line-height:1.55;color:${C.ink2};padding:6px 0;border-top:1px solid ${C.line2}}
+.ogd-dim-li:first-child{border-top:none;padding-top:0}
+.ogd-dim-next{margin-top:16px;padding:12px 14px;background:${C.bg};border:1px solid ${C.line};border-radius:11px;font-size:12.5px;color:${C.ink2}}
 .ogd-dim-next b{color:${C.ink};font-weight:800}
 
 /* how you think (small multiples) */
