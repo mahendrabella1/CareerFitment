@@ -65,6 +65,15 @@ const CAT_LABEL: Record<string, string> = {
   strengths: "Strengths", aptitude: "Aptitude",
 };
 
+// Short forms for the dimension tile row — keeps all 8 tiles on one row
+// without scrolling on desktop. The full name still shows in the detail
+// panel below (via CAT_LABEL).
+const DIM_TAB_LABEL: Record<string, string> = {
+  personality: "Personality", career_interest: "Interests", multiple_intelligence: "Intelligence",
+  emotional_intelligence: "EQ", learning_styles: "Learning", motivators: "Motivators",
+  strengths: "Strengths", aptitude: "Aptitude",
+};
+
 // "Typical student at your stage" markers — presentational benchmark only,
 // not part of scoring. Lets each dimension show a comparison, not just a value.
 const BENCH: Record<string, number> = {
@@ -196,7 +205,7 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
         <header className="ash-top og-noprint">
           <button className="ash-burger" onClick={() => setNavOpen((o) => !o)} aria-label="Menu"><Icon name="clusters" size={18} /></button>
           <div className="ash-top-t">
-            <div className="ash-top-h">Welcome back, {first}! <span className="ash-wave">👋</span></div>
+            <div className="ash-top-h">Welcome back, {first}</div>
             <div className="ash-top-s">Here&apos;s your career assessment overview</div>
           </div>
           <div className="ash-top-actions">
@@ -330,11 +339,11 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
                     sub="Tap a dimension below to see its full breakdown — everything from your report, right here." />
                   <div className="ogd-dimtabs">
                     {radar.map((d) => (
-                      <button key={d.key} className={`ogd-dimtab${dimKey === d.key ? " on" : ""}`} onClick={() => setDimKey(d.key)}>
-                        <span className="ogd-dimtab-ic"><Icon name={d.key} size={24} /></span>
+                      <button key={d.key} className={`ogd-dimtab${dimKey === d.key ? " on" : ""}`} onClick={() => setDimKey(d.key)} title={CAT_LABEL[d.key]}>
+                        <span className="ogd-dimtab-ic"><Icon name={d.key} size={20} /></span>
                         <span className="ogd-dimtab-lab">
-                          {d.score > 0 ? <span className="ogd-dimtab-check"><Icon name="check" size={11} stroke={2.4} /></span> : null}
-                          {CAT_LABEL[d.key]}
+                          {d.score > 0 ? <span className="ogd-dimtab-check"><Icon name="check" size={10} stroke={2.4} /></span> : null}
+                          {DIM_TAB_LABEL[d.key]}
                         </span>
                       </button>
                     ))}
@@ -785,9 +794,7 @@ const CSS = `
 .ogd-hero.dark .ogd-ring-pct small{color:#b9b7e4}
 .ogd-hero.dark .ogd-ring-lab{color:#a9a6e6}
 
-/* top-bar bell + avatar + wave */
-.ash-wave{display:inline-block;animation:ashwave 2.4s ease-in-out infinite;transform-origin:70% 70%}
-@keyframes ashwave{0%,60%,100%{transform:rotate(0)}20%{transform:rotate(16deg)}40%{transform:rotate(-8deg)}}
+/* top-bar bell + avatar */
 .ash-top-actions{display:flex;align-items:center;gap:14px}
 .ash-bell{position:relative;width:40px;height:40px;border-radius:11px;display:grid;place-items:center;color:${C.ink2};background:#fff;border:1px solid ${C.line};cursor:pointer}
 .ash-bell-dot{position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:${IN};color:#fff;font-size:10px;font-weight:800;font-style:normal;display:grid;place-items:center;border:2px solid #fff}
@@ -895,16 +902,17 @@ const CSS = `
 
 /* dimensions — horizontal tile row (icon + checkmark + label) + single detail panel */
 .ogd-dimtabs{display:flex;overflow-x:auto;margin-bottom:20px;border:1px solid ${C.line};border-radius:14px;background:${C.bg};scrollbar-width:thin}
-.ogd-dimtab{flex:none;width:126px;display:flex;flex-direction:column;align-items:center;gap:11px;padding:20px 10px;
+.ogd-dimtab{flex:1 1 0;min-width:82px;display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 6px;
   background:none;border:none;border-right:1px solid ${C.line};cursor:pointer;font-family:inherit;transition:background .15s}
 .ogd-dimtab:last-child{border-right:none}
 .ogd-dimtab:hover{background:rgba(255,255,255,.6)}
 .ogd-dimtab.on{background:#fff;box-shadow:inset 0 -3px 0 ${IN}}
-.ogd-dimtab-ic{width:54px;height:54px;border-radius:50%;flex:none;display:grid;place-items:center;background:${IN_TINT};color:${IN};transition:background .15s,color .15s}
+.ogd-dimtab-ic{width:46px;height:46px;border-radius:50%;flex:none;display:grid;place-items:center;background:${IN_TINT};color:${IN};transition:background .15s,color .15s}
 .ogd-dimtab.on .ogd-dimtab-ic{background:${IN};color:#fff}
-.ogd-dimtab-lab{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:${C.ink2};white-space:nowrap}
+.ogd-dimtab-lab{display:flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;color:${C.ink2};white-space:nowrap}
 .ogd-dimtab.on .ogd-dimtab-lab{color:${C.ink}}
-.ogd-dimtab-check{width:15px;height:15px;border-radius:50%;flex:none;display:grid;place-items:center;background:${C.good};color:#fff}
+.ogd-dimtab-check{width:14px;height:14px;border-radius:50%;flex:none;display:grid;place-items:center;background:${C.good};color:#fff}
+@media(max-width:700px){.ogd-dimtab{flex:none;min-width:92px}}
 
 .ogd-dimpanel{border-top:1px solid ${C.line2};padding-top:16px;animation:ogdslide .2s ease}
 @keyframes ogdslide{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
@@ -941,9 +949,9 @@ const CSS = `
 @media(max-width:560px){.ogd-mind{grid-template-columns:1fr}}
 .ogd-minilist-h{display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:800;letter-spacing:.06em;
   text-transform:uppercase;color:${C.ink2};margin-bottom:12px}
-.ogd-minirow{display:grid;grid-template-columns:120px 1fr;align-items:center;gap:10px;margin-bottom:9px}
-@media(max-width:560px){.ogd-minirow{grid-template-columns:96px 1fr}}
-.ogd-minilab{font-size:12px;color:${C.ink3};font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ogd-minirow{display:grid;grid-template-columns:148px 1fr;align-items:center;gap:10px;margin-bottom:9px}
+@media(max-width:560px){.ogd-minirow{grid-template-columns:112px 1fr}}
+.ogd-minilab{font-size:11.5px;color:${C.ink3};font-weight:600;line-height:1.3;white-space:normal;word-break:break-word}
 
 /* goal tracker */
 .ogd-goal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
