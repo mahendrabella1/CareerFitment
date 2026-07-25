@@ -6,15 +6,16 @@
 import type { ReactNode } from "react";
 
 const P: Record<string, ReactNode> = {
-  // categories
-  personality: <><circle cx="12" cy="12" r="9" /><polygon points="15.5 8.5 13.5 13.5 8.5 15.5 10.5 10.5" /></>,
-  career_interest: <><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1.4" /></>,
-  multiple_intelligence: <><circle cx="7" cy="8" r="2.2" /><circle cx="17" cy="7" r="2.2" /><circle cx="12" cy="17" r="2.2" /><path d="M8.8 9.2 10.6 15M15.6 8.4 13 15.4M8.9 7.4 15 7.2" /></>,
-  emotional_intelligence: <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 1 1 17 0z" />,
-  learning_styles: <><path d="M2 4h6a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H2z" /><path d="M22 4h-6a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H22z" /></>,
-  motivators: <polygon points="13 2 4 14 11 14 10 22 20 10 13 10 13 2" />,
-  strengths: <><circle cx="12" cy="8" r="5.5" /><path d="M8.5 12.5 7 22l5-3 5 3-1.5-9.5" /></>,
-  aptitude: <><rect x="3.5" y="3.5" width="7" height="7" rx="1" /><rect x="13.5" y="3.5" width="7" height="7" rx="1" /><rect x="3.5" y="13.5" width="7" height="7" rx="1" /><rect x="13.5" y="13.5" width="7" height="7" rx="1" /></>,
+  // categories — thematically distinct, professional icons (fingerprint,
+  // target, brain, heart-pulse, book, summit flag, shield-star, gear).
+  personality: <><path d="M12 20.5c-2-2.3-3.2-4.8-3.2-7.5a3.2 3.2 0 1 1 6.4 0c0 1.6-.4 3-1.1 4.3" /><path d="M8.2 19c-1.4-2.3-2.2-4.6-2.2-7a6 6 0 0 1 12 0c0 .8-.1 1.6-.3 2.4" /><path d="M12 12.7v1.2" /></>,
+  career_interest: <><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5.2" /><path d="M12 3v3M21 12h-3M12 21v-3M3 12h3" /><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none" /></>,
+  multiple_intelligence: <><path d="M9 4.6a2.6 2.6 0 0 0-2.6 2.6c0 .3 0 .6.1.9A2.5 2.5 0 0 0 5 10.6c0 .8.3 1.6.9 2.1-.2.4-.3.8-.3 1.3a2.7 2.7 0 0 0 2.7 2.7c.2 0 .5 0 .7-.1a2.3 2.3 0 0 0 2.1 1.3V6.5A2 2 0 0 0 9 4.6z" /><path d="M15 4.6a2.6 2.6 0 0 1 2.6 2.6c0 .3 0 .6-.1.9a2.5 2.5 0 0 1 1.5 2.5c0 .8-.3 1.6-.9 2.1.2.4.3.8.3 1.3a2.7 2.7 0 0 1-2.7 2.7c-.2 0-.5 0-.7-.1a2.3 2.3 0 0 1-2.1 1.3V6.5a2 2 0 0 1 2.1-1.9z" /></>,
+  emotional_intelligence: <><path d="M12 19.4s-6.4-4-8.4-7.8A4.4 4.4 0 0 1 12 6.6a4.4 4.4 0 0 1 8.4 5c-2 3.8-8.4 7.8-8.4 7.8z" /><path d="M4.8 11.6h2.9l1.2-2.1 2 3.8 1.3-2.3h4.8" /></>,
+  learning_styles: <><path d="M3 5.3C4.7 4.4 6.8 4.1 8.7 4.5c1.1.2 2.1.6 3 1.2v13.7c-.9-.5-1.9-.9-3-1.1-1.9-.4-4-.1-5.7.8z" /><path d="M21 5.3C19.3 4.4 17.2 4.1 15.3 4.5c-1.1.2-2.1.6-3 1.2v13.7c.9-.5 1.9-.9 3-1.1 1.9-.4 4-.1 5.7.8z" /></>,
+  motivators: <><path d="M3 19h18" /><path d="M5 19 10.5 8.5l2.7 4.3L15 9l4 10z" /><path d="M13 6V3" /><path d="M13 3h3l-1.1 1.5L16 6h-3" /></>,
+  strengths: <><path d="M12 3 19 6v5.3c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z" /><path d="m12 8.4 1.1 2.3 2.5.4-1.8 1.8.4 2.5-2.2-1.2-2.2 1.2.4-2.5-1.8-1.8 2.5-.4z" /></>,
+  aptitude: <><circle cx="12" cy="12" r="3.2" /><path d="M12 3v2.3M12 18.7V21M3 12h2.3M18.7 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6" /></>,
   // flow (how we evaluate)
   answer: <><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></>,
   score: <><line x1="12" y1="20" x2="12" y2="10" /><line x1="18" y1="20" x2="18" y2="4" /><line x1="6" y1="20" x2="6" y2="15" /></>,

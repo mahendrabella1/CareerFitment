@@ -33,6 +33,8 @@ import {
 
 // Dashboard accent — indigo/purple (the red brand logo stays as-is).
 const IN = "#6366F1", IN_STRONG = "#4F46E5", IN_TINT = "#EEF0FF", IN_LINE = "#D5D9FB";
+// The same branded "eight dimensions" illustration used on the full report cover.
+const DIMS8 = "https://onegrasp.com/wp-content/uploads/2026/07/ChatGPT-Image-Jul-10-2026-05_34_15-PM.png";
 // KPI tile accent colours (purple / blue / green / orange), matching the design.
 const KPI = [
   { c: "#6366F1", t: "#EEF0FF" },
@@ -43,9 +45,9 @@ const KPI = [
 
 // Left-sidebar navigation → scrolls to the matching section id.
 const NAV = [
+  { id: "dimensions", label: "8 Dimensions", icon: "radar" },
   { id: "overview", label: "Overview", icon: "clusters" },
   { id: "fields", label: "Best-fit Fields", icon: "compass" },
-  { id: "dimensions", label: "8 Dimensions", icon: "radar" },
   { id: "mind", label: "How You Think", icon: "multiple_intelligence" },
   { id: "plan", label: "My Plan", icon: "check" },
 ];
@@ -87,7 +89,7 @@ const bandLabel = (p: number) =>
 export default function Dashboard({ a, profile, email, onSignOut }: { a: AssessmentSummary; profile?: UserProfile | null; email?: string | null; onSignOut?: () => void }) {
   const [view, setView] = useState<"dashboard" | "report">("dashboard");
   const [navOpen, setNavOpen] = useState(false);
-  const [active, setActive] = useState("overview");
+  const [active, setActive] = useState("dimensions");
   const [toolkitTab, setToolkitTab] = useState(TOOLKIT_TABS[0].id);
   const [dimKey, setDimKey] = useState<string>(() => {
     const top = (a.radar ?? []).slice().sort((x, y) => y.score - x.score)[0];
@@ -243,6 +245,30 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
           <div className="ash-grid">
             <div className="ash-content">
 
+              {/* ===== DIMENSIONS ===== */}
+              <section id="dimensions" className="ash-sec">
+                <div className="ogd-card">
+                  <CardHead icon="radar" title="Your eight dimensions"
+                    sub="Tap a dimension below to see its full breakdown — everything from your report, right here." />
+                  <div className="ogd-dims8">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={DIMS8} alt="The eight dimensions of your profile" loading="lazy" />
+                  </div>
+                  <div className="ogd-dimtabs">
+                    {radar.map((d) => (
+                      <button key={d.key} className={`ogd-dimtab${dimKey === d.key ? " on" : ""}`} onClick={() => setDimKey(d.key)} title={CAT_LABEL[d.key]}>
+                        <span className="ogd-dimtab-ic"><Icon name={d.key} size={20} /></span>
+                        <span className="ogd-dimtab-lab">
+                          {d.score > 0 ? <span className="ogd-dimtab-check"><Icon name="check" size={10} stroke={2.4} /></span> : null}
+                          {DIM_TAB_LABEL[d.key]}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                  <DimPanel d={radar.find((r) => r.key === dimKey) ?? radar[0]} a={a} />
+                </div>
+              </section>
+
               {/* ===== OVERVIEW ===== */}
               <section id="overview" className="ash-sec">
                 <div className="ash-banner">
@@ -329,26 +355,6 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
                       </div>
                     ))}
                   </div>
-                </div>
-              </section>
-
-              {/* ===== DIMENSIONS ===== */}
-              <section id="dimensions" className="ash-sec">
-                <div className="ogd-card">
-                  <CardHead icon="radar" title="Your eight dimensions"
-                    sub="Tap a dimension below to see its full breakdown — everything from your report, right here." />
-                  <div className="ogd-dimtabs">
-                    {radar.map((d) => (
-                      <button key={d.key} className={`ogd-dimtab${dimKey === d.key ? " on" : ""}`} onClick={() => setDimKey(d.key)} title={CAT_LABEL[d.key]}>
-                        <span className="ogd-dimtab-ic"><Icon name={d.key} size={20} /></span>
-                        <span className="ogd-dimtab-lab">
-                          {d.score > 0 ? <span className="ogd-dimtab-check"><Icon name="check" size={10} stroke={2.4} /></span> : null}
-                          {DIM_TAB_LABEL[d.key]}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                  <DimPanel d={radar.find((r) => r.key === dimKey) ?? radar[0]} a={a} />
                 </div>
               </section>
 
@@ -901,6 +907,9 @@ const CSS = `
 .ogd-ex-go{margin-left:auto;color:${C.faint};flex:none}
 
 /* dimensions — horizontal tile row (icon + checkmark + label) + single detail panel */
+.ogd-dims8{margin-bottom:18px;border:1px solid ${C.line};border-radius:14px;overflow:hidden;background:${C.bg};max-height:220px}
+.ogd-dims8 img{width:100%;display:block;object-fit:cover;max-height:220px}
+@media(max-width:640px){.ogd-dims8{max-height:150px}.ogd-dims8 img{max-height:150px}}
 .ogd-dimtabs{display:flex;overflow-x:auto;margin-bottom:20px;border:1px solid ${C.line};border-radius:14px;background:${C.bg};scrollbar-width:thin}
 .ogd-dimtab{flex:1 1 0;min-width:82px;display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 6px;
   background:none;border:none;border-right:1px solid ${C.line};cursor:pointer;font-family:inherit;transition:background .15s}
