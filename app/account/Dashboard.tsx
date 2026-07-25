@@ -161,17 +161,19 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
               <Icon name={n.icon} size={18} /><span>{n.label}</span>
             </button>
           ))}
-          {SHOW_TOOLKIT && (
-            <>
-              <div className="ash-nav-lbl">Career Toolkit</div>
-              {TOOLKIT_TABS.map((t) => (
-                <button key={t.id} className={`ash-navi${active === "resources" && toolkitTab === t.id ? " on" : ""}`}
-                  onClick={() => { setToolkitTab(t.id); go("resources"); }}>
-                  <Icon name={t.icon} size={18} /><span>{t.label}</span><span className="ash-navi-c">{t.items.length}</span>
-                </button>
-              ))}
-            </>
-          )}
+          <div className="ash-nav-lbl">Career Toolkit</div>
+          {TOOLKIT_TABS.map((t) => (
+            SHOW_TOOLKIT ? (
+              <button key={t.id} className={`ash-navi${active === "resources" && toolkitTab === t.id ? " on" : ""}`}
+                onClick={() => { setToolkitTab(t.id); go("resources"); }}>
+                <Icon name={t.icon} size={18} /><span>{t.label}</span><span className="ash-navi-c">{t.items.length}</span>
+              </button>
+            ) : (
+              <button key={t.id} className="ash-navi locked" disabled aria-disabled="true" title="Unlocks soon">
+                <Icon name={t.icon} size={18} /><span>{t.label}</span><span className="ash-navi-lock"><Icon name="lock" size={13} /></span>
+              </button>
+            )
+          ))}
           <div className="ash-nav-lbl">Report</div>
           <button className="ash-navi" onClick={() => setView("report")}><Icon name="explain" size={18} /><span>Full report</span></button>
           <Link href="/?begin=1" className="ash-navi"><Icon name="answer" size={18} /><span>Retake assessment</span></Link>
@@ -608,6 +610,10 @@ const CSS = `
 .ash-navi.on svg{color:${IN}}
 .ash-navi-c{margin-left:auto;font-size:10.5px;font-weight:700;color:${C.muted};background:${C.line2};border-radius:999px;padding:1px 7px}
 .ash-navi.on .ash-navi-c{background:#fff;color:${IN}}
+.ash-navi.locked{cursor:not-allowed;color:${C.faint};opacity:.85}
+.ash-navi.locked:hover{background:none}
+.ash-navi.locked svg{color:${C.faint}}
+.ash-navi-lock{margin-left:auto;color:${C.faint};display:grid;place-items:center}
 .rail-toolhint{font-size:11.5px;color:${C.ink3};line-height:1.5;margin-top:8px}
 .ash-side-foot{padding:14px 14px 16px;border-top:1px solid ${C.line}}
 .ash-user{display:flex;align-items:center;gap:10px;margin-bottom:10px}
