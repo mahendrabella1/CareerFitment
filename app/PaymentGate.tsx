@@ -8,8 +8,9 @@
  */
 
 import { useEffect, useState } from "react";
+import { doc, setDoc } from "firebase/firestore";
 import type { UserProfile } from "@/lib/auth/AuthProvider";
-import { getFirebaseAuth } from "@/lib/firebase/client";
+import { getFirebaseAuth, getDb } from "@/lib/firebase/client";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare global {
@@ -77,14 +78,31 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
         theme: { color: "#6366F1" },
         handler: async (resp: any) => {
           try {
+            const details = {
+              name: profile?.name, email: profile?.email, phone: profile?.phone,
+              institution: profile?.institution, category: profile?.category, desiredCareer: profile?.desiredCareer,
+            };
             const v = await fetch("/api/payment/verify", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ ...resp, idToken }),
+              body: JSON.stringify({ ...resp, idToken, profile: details }),
             });
             const vd = await v.json();
-            if (vd.success) onPaid();
-            else { setErr(vd.message || "Payment could not be verified."); setBusy(false); }
+            if (!vd.success) { setErr(vd.message || "Payment could not be verified."); setBusy(false); return; }
+            // Server verified the signature — now record "paid" (the user may
+            // write their own doc per Firestore rules; no admin creds needed).
+            try {
+              const db = getDb();
+              const uid = getFirebaseAuth()?.currentUser?.uid;
+              if (db && uid) {
+                await setDoc(doc(db, "users", uid), {
+                  paid: true, paymentStatus: "paid",
+                  paymentId: vd.paymentId || resp.razorpay_payment_id,
+                  orderId: resp.razorpay_order_id, paidAt: new Date().toISOString(),
+                }, { merge: true });
+              }
+            } catch { /* verified server-side already — proceed regardless */ }
+            onPaid();
           } catch {
             setErr("Payment verification failed. If you were charged, contact support@onegrasp.com.");
             setBusy(false);
