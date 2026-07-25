@@ -149,6 +149,8 @@ export function authErrorMessage(err: unknown): string {
       return "Email/password sign-in isn't enabled in Firebase yet.";
     case "auth/too-many-requests":
       return "Too many attempts. Please wait a moment and try again.";
+    case "auth/network-request-failed":
+      return "Couldn't reach the sign-up server — this is a network block, not your details. Many school/college and office Wi-Fi networks (and ad-blockers) block Google/Firebase. Try mobile data / a hotspot, turn off any ad-blocker or VPN, or use a different browser (or Incognito), then try again.";
     default:
       return (err as { message?: string })?.message || "Something went wrong. Please try again.";
   }
