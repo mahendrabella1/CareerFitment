@@ -491,9 +491,9 @@ const CSS = `
 
 .ogl-nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid #eef0f4}
 .ogl-nav-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:20px;padding:6px 24px}
-.ogl-logo{height:88px;width:auto;display:block}
-@media(max-width:600px){.ogl-logo{height:60px}.ogl-nav-in{gap:10px;padding:6px 14px}}
-@media(max-width:380px){.ogl-logo{height:50px}}
+.ogl-logo{height:116px;width:auto;display:block}
+@media(max-width:600px){.ogl-logo{height:76px}.ogl-nav-in{gap:10px;padding:6px 14px}}
+@media(max-width:380px){.ogl-logo{height:60px}}
 .ogl-nav-links{display:flex;gap:24px;margin-left:28px;flex:1}
 .ogl-nav-links a{color:#4b5563;text-decoration:none;font-size:13.5px;font-weight:600}
 .ogl-nav-links a:hover{color:${INK}}

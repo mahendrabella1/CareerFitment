@@ -44,12 +44,15 @@ const KPI = [
 // Left-sidebar navigation → scrolls to the matching section id.
 const NAV = [
   { id: "overview", label: "Overview", icon: "clusters" },
-  { id: "matches", label: "Career Matches", icon: "match" },
   { id: "fields", label: "Best-fit Fields", icon: "compass" },
   { id: "dimensions", label: "8 Dimensions", icon: "radar" },
   { id: "mind", label: "How You Think", icon: "multiple_intelligence" },
   { id: "plan", label: "My Plan", icon: "check" },
 ];
+
+// Career-toolkit (colleges/exams/internships/scholarships/careers) is
+// temporarily disabled — flip to true to bring it back.
+const SHOW_TOOLKIT = false;
 
 const CANON = [
   "personality", "career_interest", "multiple_intelligence", "emotional_intelligence",
@@ -81,8 +84,10 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
     const top = (a.radar ?? []).slice().sort((x, y) => y.score - x.score)[0];
     return top?.key || CANON[0];
   });
+  const [menuOpen, setMenuOpen] = useState(false);
   const name = (profile?.name || "").trim();
   const first = name.split(/\s+/)[0] || "there";
+  const initial = (name || email || "?").trim().charAt(0).toUpperCase();
 
   // Highlight the sidebar item for whichever section is in view.
   useEffect(() => {
@@ -116,9 +121,6 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
   const code = a.riasecCode || (a.themes ?? []).slice(0, 3).map((t) => t.letter).join("");
   const strongest = radar.slice().sort((x, y) => y.score - x.score)[0];
   const plan = actionPlan(a, topDomainName);
-  const topRole = topField
-    ? { role: (topField.roles ?? [])[0] ?? topField.name, salaryIndia: topField.salaryIndia, salaryAbroad: topField.salaryAbroad }
-    : null;
   const scoreOf = (k: string) => radar.find((r) => r.key === k)?.score ?? 0;
   const pbars = [
     { label: "Personality", score: scoreOf("personality"), c: KPI[0].c },
@@ -165,10 +167,16 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
           ))}
           <div className="ash-nav-lbl">Career Toolkit</div>
           {TOOLKIT_TABS.map((t) => (
-            <button key={t.id} className={`ash-navi${active === "resources" && toolkitTab === t.id ? " on" : ""}`}
-              onClick={() => { setToolkitTab(t.id); go("resources"); }}>
-              <Icon name={t.icon} size={18} /><span>{t.label}</span><span className="ash-navi-c">{t.items.length}</span>
-            </button>
+            SHOW_TOOLKIT ? (
+              <button key={t.id} className={`ash-navi${active === "resources" && toolkitTab === t.id ? " on" : ""}`}
+                onClick={() => { setToolkitTab(t.id); go("resources"); }}>
+                <Icon name={t.icon} size={18} /><span>{t.label}</span><span className="ash-navi-c">{t.items.length}</span>
+              </button>
+            ) : (
+              <button key={t.id} className="ash-navi locked" disabled aria-disabled="true" title="Unlocks soon">
+                <Icon name={t.icon} size={18} /><span>{t.label}</span><span className="ash-navi-lock"><Icon name="lock" size={13} /></span>
+              </button>
+            )
           ))}
           <div className="ash-nav-lbl">Report</div>
           <button className="ash-navi" onClick={() => setView("report")}><Icon name="explain" size={18} /><span>Full report</span></button>
@@ -192,8 +200,33 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
             <div className="ash-top-s">Here&apos;s your career assessment overview</div>
           </div>
           <div className="ash-top-actions">
-            <span className="ash-bell"><Icon name="bell" size={19} /><i className="ash-bell-dot">3</i></span>
-            <span className="ash-top-ava">{(name || email || "?").trim().charAt(0).toUpperCase()}</span>
+            <div className="ash-user-wrap">
+              <button className="ash-top-ava" onClick={() => setMenuOpen((o) => !o)} aria-label="Account">{initial}</button>
+              {menuOpen && (
+                <>
+                  <div className="ash-menu-scrim" onClick={() => setMenuOpen(false)} />
+                  <div className="ash-menu">
+                    <div className="ash-menu-head">
+                      <span className="ash-menu-ava">{initial}</span>
+                      <div className="ash-menu-id">
+                        <div className="ash-menu-n">{name || "You"}</div>
+                        <div className="ash-menu-e">{email || profile?.email || ""}</div>
+                      </div>
+                    </div>
+                    <div className="ash-menu-rows">
+                      <MRow k="Phone" v={profile?.phone} />
+                      <MRow k="School / College" v={profile?.institution} />
+                      <MRow k="Desired career" v={profile?.desiredCareer} />
+                      <MRow k="Category" v={profile?.category} />
+                      <MRow k="Current status" v={profile?.clarity} />
+                    </div>
+                    {onSignOut ? (
+                      <button className="ash-menu-signout" onClick={onSignOut}><Icon name="power" size={14} /> Sign out</button>
+                    ) : null}
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </header>
 
@@ -267,37 +300,6 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
                 </div>
               </section>
 
-              {/* ===== MATCHES ===== */}
-              {(a.matches?.length ? a.matches : []).length > 0 && (
-                <section id="matches" className="ash-sec">
-                  <div className="ogd-card">
-                    <CardHead icon="match" title="Top career matches" sub="Roles your whole profile points to, ranked by fit." />
-                    <div className="ogd-matches">
-                      {a.matches.slice(0, 5).map((m, i) => (
-                        <div className="ogd-match" key={i}>
-                          <div className="ogd-match-rk">{i + 1}</div>
-                          <div className="ogd-match-main">
-                            <div className="ogd-match-top">
-                              <span className="ogd-match-title">{m.title}</span>
-                              <span className="ogd-match-pct">{m.fitmentPct}%<em>{m.band}</em></span>
-                            </div>
-                            <SkillBar value={m.fitmentPct} color={IN} />
-                            {m.roles?.length ? (
-                              <div className="ogd-match-roles">{m.roles.slice(0, 4).map((r) => <span key={r}>{r}</span>)}</div>
-                            ) : null}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    {topRole && (
-                      <div className="ogd-salaryhint">
-                        e.g. <b>{topRole.role}</b> — {topRole.salaryIndia} in India · {topRole.salaryAbroad} abroad
-                      </div>
-                    )}
-                  </div>
-                </section>
-              )}
-
               {/* ===== FIELDS ===== */}
               <section id="fields" className="ash-sec">
                 <div className="ogd-card">
@@ -359,10 +361,12 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
                 <GoalTracker plan={plan} storageKey={`og-goals-${a.completedAt}`} domain={topDomainName} />
               </section>
 
-              {/* ===== CAREER TOOLKIT (in-dashboard listings) ===== */}
-              <section id="resources" className="ash-sec">
-                <Toolkit tab={toolkitTab} setTab={setToolkitTab} />
-              </section>
+              {/* ===== CAREER TOOLKIT (in-dashboard listings) — temporarily disabled ===== */}
+              {SHOW_TOOLKIT && (
+                <section id="resources" className="ash-sec">
+                  <Toolkit tab={toolkitTab} setTab={setToolkitTab} />
+                </section>
+              )}
 
               {/* ===== DETAILS ===== */}
               <section className="ash-sec">
@@ -397,11 +401,13 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
                 <div className="rail-top-fit"><b>{fit}%</b> overall fit</div>
               </div>
 
-              <div className="ogd-card rail-card">
-                <div className="rail-h">Career toolkit</div>
-                <button className="rail-act" onClick={() => go("resources")}><Icon name="route" size={16} /> Open toolkit</button>
-                <div className="rail-toolhint">Colleges · exams · internships · scholarships · careers — in your sidebar.</div>
-              </div>
+              {SHOW_TOOLKIT && (
+                <div className="ogd-card rail-card">
+                  <div className="rail-h">Career toolkit</div>
+                  <button className="rail-act" onClick={() => go("resources")}><Icon name="route" size={16} /> Open toolkit</button>
+                  <div className="rail-toolhint">Colleges · exams · internships · scholarships · careers — in your sidebar.</div>
+                </div>
+              )}
             </aside>
           </div>
         </main>
@@ -441,6 +447,14 @@ function Detail({ k, v }: { k: string; v: string }) {
     <div className="ogd-detail">
       <span className="ogd-detail-k">{k}</span>
       <span className="ogd-detail-v">{v}</span>
+    </div>
+  );
+}
+
+function MRow({ k, v }: { k: string; v?: string | null }) {
+  return (
+    <div className="ash-menu-row">
+      <span>{k}</span><b>{v || "—"}</b>
     </div>
   );
 }
@@ -633,6 +647,10 @@ const CSS = `
 .ash-navi.on svg{color:${IN}}
 .ash-navi-c{margin-left:auto;font-size:10.5px;font-weight:700;color:${C.muted};background:${C.line2};border-radius:999px;padding:1px 7px}
 .ash-navi.on .ash-navi-c{background:#fff;color:${IN}}
+.ash-navi.locked{cursor:not-allowed;color:${C.faint};opacity:.85}
+.ash-navi.locked:hover{background:none}
+.ash-navi.locked svg{color:${C.faint}}
+.ash-navi-lock{margin-left:auto;color:${C.faint};display:grid;place-items:center}
 .rail-toolhint{font-size:11.5px;color:${C.ink3};line-height:1.5;margin-top:8px}
 .ash-side-foot{padding:14px 14px 16px;border-top:1px solid ${C.line}}
 .ash-user{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -773,7 +791,24 @@ const CSS = `
 .ash-top-actions{display:flex;align-items:center;gap:14px}
 .ash-bell{position:relative;width:40px;height:40px;border-radius:11px;display:grid;place-items:center;color:${C.ink2};background:#fff;border:1px solid ${C.line};cursor:pointer}
 .ash-bell-dot{position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:${IN};color:#fff;font-size:10px;font-weight:800;font-style:normal;display:grid;place-items:center;border:2px solid #fff}
-.ash-top-ava{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:${IN};color:#fff;font-weight:800;font-size:16px;cursor:pointer}
+.ash-top-ava{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:${IN};color:#fff;font-weight:800;font-size:16px;cursor:pointer;border:none;font-family:inherit}
+.ash-user-wrap{position:relative}
+.ash-menu-scrim{position:fixed;inset:0;z-index:40}
+.ash-menu{position:absolute;top:calc(100% + 10px);right:0;z-index:41;width:280px;background:#fff;border:1px solid ${C.line};
+  border-radius:14px;box-shadow:0 18px 46px rgba(20,20,25,.16);padding:14px;animation:ashfade .14s ease}
+@keyframes ashfade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.ash-menu-head{display:flex;align-items:center;gap:11px;padding-bottom:12px;border-bottom:1px solid ${C.line2}}
+.ash-menu-ava{width:40px;height:40px;border-radius:50%;flex:none;display:grid;place-items:center;background:${IN};color:#fff;font-weight:800;font-size:16px}
+.ash-menu-id{min-width:0}
+.ash-menu-n{font-size:14px;font-weight:800;color:${C.ink};overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ash-menu-e{font-size:11.5px;color:${C.muted};overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ash-menu-rows{padding:10px 0 4px}
+.ash-menu-row{display:flex;justify-content:space-between;gap:12px;align-items:baseline;padding:7px 2px}
+.ash-menu-row span{font-size:11.5px;color:${C.muted};flex:none}
+.ash-menu-row b{font-size:12.5px;font-weight:700;color:${C.ink};text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ash-menu-signout{width:100%;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:8px;padding:10px;
+  background:#fff;color:${C.redStrong};border:1px solid ${C.line};border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.ash-menu-signout:hover{border-color:${C.redLine};background:${C.redTint}}
 
 /* profile-at-a-glance bars + more link */
 .ogd-pbars{display:flex;flex-direction:column;gap:16px}

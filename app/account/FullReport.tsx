@@ -21,7 +21,7 @@ import { useEffect, useRef } from "react";
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { Icon, CATEGORY_ABBR } from "@/app/Icons";
 import { C, Ring, RadarChart, SkillBar, dimColor, type RadarDatum } from "@/app/account/viz";
-import { StudentHero, Scene } from "@/app/account/illustrations";
+import { Scene } from "@/app/account/illustrations";
 import {
   categoryDeepDive, roadmap, stageLabelOf,
   archetype, percentileOf, subTraits, actionPlan, type Domain,
@@ -121,7 +121,30 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
           <div className="kick">Career Fitment Report</div>
           <h1>Who you are, <span>and where it can take you.</span></h1>
           <p className="lede">A complete map of your strengths, interests and natural wiring — built from your responses across eight validated frameworks.</p>
-          <div className="cover-hero"><StudentHero /></div>
+          <div className="cover-hero">
+            <div className="cover-preview">
+              <div className="cp-head">
+                <span className="cp-kick">Your profile · at a glance</span>
+                <span className="cp-fit"><b>{fit}%</b> overall fit</span>
+              </div>
+              <div className="cp-body">
+                <div className="cp-radar"><RadarChart data={radar} color={C.red} abbr={CATEGORY_ABBR} /></div>
+                <div className="cp-side">
+                  <div className="cp-arch-k">Career archetype</div>
+                  <div className="cp-arch">{arch.name}</div>
+                  <div className="cp-bars">
+                    {radar.slice().sort((x, y) => y.score - x.score).slice(0, 4).map((d) => (
+                      <div className="cp-bar" key={d.key}>
+                        <span className="cp-bar-l">{CAT[d.key]?.label || d.label}</span>
+                        <span className="cp-bar-t"><i style={{ width: `${clamp(d.score)}%` }} /></span>
+                        <b>{Math.round(d.score)}</b>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="cover-foot">
             <div className="cover-name">
               <span className="rl">Prepared for</span>
@@ -943,8 +966,24 @@ const CSS = `
 .frx .cover h1{color:var(--ink);font-size:clamp(28px,5vw,42px);line-height:1.06;font-weight:800;margin:12px 0 0;max-width:17ch}
 .frx .cover h1 span{color:var(--red)}
 .frx .cover .lede{font-size:15px;line-height:1.6;margin-top:14px;max-width:52ch}
-.frx .cover-hero{margin:22px 0 4px;background:${C.bg};border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:0 14px 40px rgba(20,20,25,.08);display:flex;align-items:center;justify-content:center;min-height:260px}
-.frx .cover-hero img,.frx .cover-hero svg{width:100%;max-width:340px;height:230px;object-fit:contain;margin:0 auto;display:block}
+.frx .cover-hero{margin:22px 0 4px}
+.frx .cover-preview{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 40px rgba(20,20,25,.08);overflow:hidden}
+.frx .cp-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;background:${C.bg};border-bottom:1px solid var(--line)}
+.frx .cp-kick{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.frx .cp-fit{font-size:12.5px;font-weight:700;color:var(--ink-2)}
+.frx .cp-fit b{color:var(--red);font-weight:800;font-size:15px}
+.frx .cp-body{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center;padding:16px 20px 18px}
+@media(max-width:560px){.frx .cp-body{grid-template-columns:1fr}}
+.frx .cp-radar{display:flex;justify-content:center}
+.frx .cp-radar svg{max-width:230px}
+.frx .cp-arch-k{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
+.frx .cp-arch{font-size:19px;font-weight:800;color:var(--ink);margin:4px 0 14px;line-height:1.15}
+.frx .cp-bars{display:flex;flex-direction:column;gap:9px}
+.frx .cp-bar{display:grid;grid-template-columns:96px 1fr 24px;align-items:center;gap:9px}
+.frx .cp-bar-l{font-size:11.5px;color:var(--ink-2);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.frx .cp-bar-t{height:7px;border-radius:999px;background:var(--line-2);overflow:hidden}
+.frx .cp-bar-t i{display:block;height:100%;border-radius:999px;background:var(--red)}
+.frx .cp-bar b{font-size:11.5px;font-weight:800;text-align:right}
 .frx .dims8{margin:0 0 18px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:${C.bg}}
 .frx .dims8 img{width:100%;display:block}
 .frx .cover-foot{margin-top:22px;padding-top:20px;border-top:1px solid var(--line);display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap}

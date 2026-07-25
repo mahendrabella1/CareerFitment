@@ -96,6 +96,10 @@ export interface UserProfile {
   examSession?: ExamSession | null;
   createdAt?: unknown;
   latestAssessment?: AssessmentSummary;
+  // Payment gate: false/absent = registered but unpaid; true = paid (set
+  // server-side by /api/payment/verify after signature verification).
+  paid?: boolean;
+  paymentStatus?: string;
 }
 
 export type RegisterInput = {
@@ -145,6 +149,8 @@ export function authErrorMessage(err: unknown): string {
       return "Email/password sign-in isn't enabled in Firebase yet.";
     case "auth/too-many-requests":
       return "Too many attempts. Please wait a moment and try again.";
+    case "auth/network-request-failed":
+      return "Couldn't reach the sign-up server — this is a network block, not your details. Many school/college and office Wi-Fi networks (and ad-blockers) block Google/Firebase. Try mobile data / a hotspot, turn off any ad-blocker or VPN, or use a different browser (or Incognito), then try again.";
     default:
       return (err as { message?: string })?.message || "Something went wrong. Please try again.";
   }
@@ -201,6 +207,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       clarity: input.clarity,
       city: (input.city || "").trim(),
       age: (input.age || "").trim(),
+      paid: false,
+      paymentStatus: "unpaid",
     };
     await setDoc(doc(db, "users", cred.user.uid), {
       ...profileDoc,
