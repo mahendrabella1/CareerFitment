@@ -8,11 +8,11 @@ export const maxDuration = 20;
 // browser can open Checkout. Amount is fixed server-side (never trust the client).
 export async function POST() {
   // Key ID is public (used by the browser checkout) so it's safe to bake in a
-  // fallback; the amount defaults to ₹1 for testing. The SECRET is intentionally
+  // fallback; the amount defaults to ₹99. The SECRET is intentionally
   // env-only — it must NEVER be committed (GitHub would auto-revoke it).
   const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_live_T4fgWI2uotntDG";
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
-  const amount = Number(process.env.RAZORPAY_AMOUNT_PAISE || 100); // paise — ₹1 test default
+  const amount = Number(process.env.RAZORPAY_AMOUNT_PAISE || 9900); // paise — ₹99 default
 
   if (!keyId || !keySecret) {
     return NextResponse.json(
