@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { doc, setDoc } from "firebase/firestore";
 import type { UserProfile } from "@/lib/auth/AuthProvider";
 import { getFirebaseAuth, getDb } from "@/lib/firebase/client";
+import { trackEvent } from "@/lib/metaPixel";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare global {
@@ -89,6 +90,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
             });
             const vd = await v.json();
             if (!vd.success) { setErr(vd.message || "Payment could not be verified."); setBusy(false); return; }
+            trackEvent("Purchase", { value: amount, currency: "INR", content_name: "Career Assessment fee" });
             // Server verified the signature — now record "paid" (the user may
             // write their own doc per Firestore rules; no admin creds needed).
             try {

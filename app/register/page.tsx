@@ -15,6 +15,7 @@ import { Logo } from "@/app/Logo";
 import { Icon } from "@/app/Icons";
 import { useAuth, authErrorMessage } from "@/lib/auth/AuthProvider";
 import { CLARITY_STAGES, journeyForCategory, PASSWORD_RULES, passwordIsValid, emailIsValid, phoneIsValid } from "@/lib/auth/formOptions";
+import { trackEvent } from "@/lib/metaPixel";
 
 const NAVY = "#2f3f9e";
 const BG = "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1600&q=70";
@@ -73,6 +74,7 @@ export default function RegisterPage() {
         password: f.password, city: f.city, age: f.age,
       });
       setDone(true);
+      trackEvent("CompleteRegistration", { content_name: f.category, status: true });
       setTimeout(() => router.push("/?begin=1"), 1100);
     } catch (err) {
       setError(authErrorMessage(err));
@@ -202,6 +204,7 @@ export default function RegisterPage() {
                         })}
                       </ul>
                     )}
+                    {touched && !pwOk && <div style={S.err}>Your password needs to meet every rule above.</div>}
                   </div>
                 </div>
               )}

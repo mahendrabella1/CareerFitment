@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { AuthProvider } from "@/lib/auth/AuthProvider";
+import MetaPixel from "@/app/MetaPixel";
 import "./globals.css";
 import "./landing-premium.css";
 import "./hero-cine.css";
@@ -37,6 +38,7 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <MetaPixel />
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

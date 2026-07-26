@@ -7,6 +7,7 @@ import { Logo } from "@/app/Logo";
 import Landing from "@/app/Landing";
 import NewExam from "@/app/NewExam";
 import PaymentGate from "@/app/PaymentGate";
+import { trackEvent } from "@/lib/metaPixel";
 import {
   Sparkles,
   ArrowRight,
@@ -914,6 +915,7 @@ export default function AssessmentExperience() {
   // straight into the exam, so registration is never skipped.
   function startFlow() {
     setErrorMessage(null);
+    trackEvent("Lead", { content_name: "start_assessment_cta" });
     if (!user) router.push("/register");
     else router.push("/account");
   }
