@@ -14,6 +14,8 @@ export interface CrmLead {
   utmMedium?: string | null;
   utmCampaign?: string | null;
   message?: string | null;
+  /** "unpaid" = registered but hasn't paid yet; "paid" = fee verified. */
+  status?: "unpaid" | "paid";
 }
 
 export async function pushLeadToCRM(lead: CrmLead): Promise<void> {
@@ -36,6 +38,7 @@ export async function pushLeadToCRM(lead: CrmLead): Promise<void> {
         utm_medium: lead.utmMedium ?? null,
         utm_campaign: lead.utmCampaign ?? null,
         message: lead.message ?? null,
+        status: lead.status ?? "unpaid",
       }),
     });
     if (!res.ok) {

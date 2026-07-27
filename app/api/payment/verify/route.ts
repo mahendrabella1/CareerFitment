@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
-import nodemailer from "nodemailer";
+import { pushLeadToCRM } from "@/lib/crm";
+import { sendLeadNotificationEmail } from "@/lib/leadEmail";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -62,47 +63,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: false, message: "Payment verification failed." }, { status: 400 });
   }
 
-  // Best-effort email (never blocks the flow). Uses details the client passed.
+  // Best-effort CRM + email (never blocks the flow). Uses details the client passed.
   const email = (await emailFromToken(idToken)) || String(profile?.email || "");
-  const amount = Number(process.env.RAZORPAY_AMOUNT_PAISE || 100);
-  sendPaidEmail(email, profile || {}, razorpay_payment_id, amount).catch(() => {});
+  const amount = Number(process.env.RAZORPAY_AMOUNT_PAISE || 9900);
+  const p = profile || {};
+  const name = String(p.name || "");
+  void Promise.all([
+    pushLeadToCRM({ name, email, phone: String(p.phone || ""), status: "paid" }),
+    sendLeadNotificationEmail(
+      {
+        name, email: email || String(p.email || ""), phone: String(p.phone || ""),
+        institution: String(p.institution || ""), category: String(p.category || ""), desiredCareer: String(p.desiredCareer || ""),
+      },
+      "paid",
+      { paymentId: razorpay_payment_id, amountRupees: amount / 100 }
+    ),
+  ]);
 
   return NextResponse.json({ success: true, paymentId: razorpay_payment_id });
-}
-
-async function sendPaidEmail(
-  email: string,
-  profile: Record<string, unknown>,
-  paymentId: string,
-  amount: number
-) {
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) return; // optional — skip if not set
-  const host = String(SMTP_HOST).replace(/^[a-z]+:\/\//i, "").replace(/[:/].*$/, "").trim();
-  const port = Number(SMTP_PORT || 465);
-  const transporter = nodemailer.createTransport({ host, port, secure: port === 465, auth: { user: SMTP_USER, pass: SMTP_PASS } });
-  const s = (v: unknown) => (v == null || v === "" ? "—" : String(v));
-  const rows: [string, string][] = [
-    ["Name", s(profile.name)],
-    ["Email", s(email || profile.email)],
-    ["Phone", s(profile.phone)],
-    ["School / College / Company", s(profile.institution)],
-    ["Category", s(profile.category)],
-    ["Desired career", s(profile.desiredCareer)],
-    ["Payment ID", s(paymentId)],
-    ["Amount", `₹${(amount / 100).toFixed(2)}`],
-  ];
-  const html = `<div style="font-family:Inter,Arial,sans-serif;color:#111">
-    <h2 style="margin:0 0 6px">Assessment fee paid ✓</h2>
-    <p style="color:#555;margin:0 0 14px">A student has paid and started the assessment.</p>
-    <table style="border-collapse:collapse">${rows
-      .map(([k, v]) => `<tr><td style="padding:5px 16px 5px 0;color:#64748b">${k}</td><td style="font-weight:600">${v}</td></tr>`)
-      .join("")}</table></div>`;
-  await transporter.sendMail({
-    from: `OneGrasp <${SMTP_USER}>`,
-    to: SMTP_USER,
-    replyTo: email || undefined,
-    subject: `Assessment fee paid — ${s(profile.name) || email}`,
-    html,
-  });
 }

@@ -89,6 +89,7 @@ function RegisterForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: f.name, email: f.email, phone: f.phone,
+          institution: f.institution, category: f.category, city: f.city, age: f.age,
           utmSource: searchParams.get("utm_source") ?? undefined,
           utmMedium: searchParams.get("utm_medium") ?? undefined,
           utmCampaign: searchParams.get("utm_campaign") ?? undefined,
