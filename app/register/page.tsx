@@ -8,8 +8,8 @@
  * starts the assessment.
  */
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "@/app/Logo";
 import { Icon } from "@/app/Icons";
@@ -37,7 +37,16 @@ const STAGES = [
 const TABS = ["Set your milestone", "Select your current stage", "Start assessment"];
 
 export default function RegisterPage() {
+  return (
+    <Suspense fallback={null}>
+      <RegisterForm />
+    </Suspense>
+  );
+}
+
+function RegisterForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { ready, register } = useAuth();
 
   const [step, setStep] = useState(0);
@@ -75,6 +84,16 @@ export default function RegisterPage() {
       });
       setDone(true);
       trackEvent("CompleteRegistration", { content_name: f.category, status: true });
+      void fetch("/api/crm-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: f.name, email: f.email, phone: f.phone,
+          utmSource: searchParams.get("utm_source") ?? undefined,
+          utmMedium: searchParams.get("utm_medium") ?? undefined,
+          utmCampaign: searchParams.get("utm_campaign") ?? undefined,
+        }),
+      }).catch(() => {});
       setTimeout(() => router.push("/?begin=1"), 1100);
     } catch (err) {
       setError(authErrorMessage(err));

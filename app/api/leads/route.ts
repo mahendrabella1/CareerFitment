@@ -7,6 +7,7 @@ import {
   completeLocalLead,
   attachSessionToLead,
 } from "@/lib/localMode/service";
+import { pushLeadToCRM } from "@/lib/crm";
 
 export const dynamic = "force-dynamic";
 
@@ -44,6 +45,9 @@ export async function POST(req: Request) {
     journeyCode?: string;
     stage?: string;
     dreamCareer?: string;
+    utmSource?: string;
+    utmMedium?: string;
+    utmCampaign?: string;
   };
   try {
     body = await req.json();
@@ -89,6 +93,14 @@ export async function POST(req: Request) {
       journeyCode: body.journeyCode,
       stage: body.stage ?? null,
       dreamCareer: body.dreamCareer ?? null,
+    });
+    void pushLeadToCRM({
+      name: lead.name,
+      email: lead.email,
+      phone: lead.phone,
+      utmSource: body.utmSource,
+      utmMedium: body.utmMedium,
+      utmCampaign: body.utmCampaign,
     });
     return NextResponse.json({
       success: true,

@@ -539,6 +539,12 @@ export default function AssessmentExperience() {
   // from the dashboard) always launches the exam instead of a stale landing.
   const searchParams = useSearchParams();
   const hasBegin = searchParams.get("begin") === "1";
+  // Carried through to /api/leads -> CRM so campaigns stay attributable.
+  const utm = {
+    utmSource: searchParams.get("utm_source") ?? undefined,
+    utmMedium: searchParams.get("utm_medium") ?? undefined,
+    utmCampaign: searchParams.get("utm_campaign") ?? undefined,
+  };
   const [feedbackRating, setFeedbackRating] = useState<number | null>(null);
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
   const [thankYou, setThankYou] = useState(false);
@@ -726,6 +732,7 @@ export default function AssessmentExperience() {
           journeyCode: lead.journeyCode,
           stage: lead.stage,
           dreamCareer: lead.dreamCareer,
+          ...utm,
         }),
       });
       setLeadId(created.id);
@@ -899,6 +906,7 @@ export default function AssessmentExperience() {
           journeyCode: profile.journeyCode,
           dreamCareer: profile.desiredCareer,
           stage: profile.clarity,
+          ...utm,
         }),
       });
       setLeadId(created.id);
