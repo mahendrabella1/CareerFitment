@@ -22,6 +22,15 @@ export async function pushLeadToCRM(lead: CrmLead): Promise<void> {
   const token = process.env.ONEGRASP_CRM_WEBHOOK_TOKEN;
   if (!token) return; // not configured on this deployment — skip silently
 
+  // "status" isn't part of the CRM's documented schema — a prior attempt to
+  // send it as its own top-level field got a 500 (FUNCTION_INVOCATION_FAILED)
+  // back from their webhook, most likely because their CRM has its own
+  // internal lead-status enum and choked on an unrecognised value. Folding
+  // the same information into the free-text "message" field instead keeps
+  // the payload exactly on the schema they gave us.
+  const statusNote = lead.status === "paid" ? "Payment status: PAID (₹99 fee verified)." : "Payment status: UNPAID (registered, hasn't paid yet).";
+  const message = [statusNote, lead.message].filter(Boolean).join(" ");
+
   try {
     const res = await fetch(CRM_WEBHOOK_URL, {
       method: "POST",
@@ -37,8 +46,7 @@ export async function pushLeadToCRM(lead: CrmLead): Promise<void> {
         utm_source: lead.utmSource ?? null,
         utm_medium: lead.utmMedium ?? null,
         utm_campaign: lead.utmCampaign ?? null,
-        message: lead.message ?? null,
-        status: lead.status ?? "unpaid",
+        message,
       }),
     });
     if (!res.ok) {
