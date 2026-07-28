@@ -529,7 +529,8 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
   if (q.type === "open")
     return <textarea style={S.open} rows={3} placeholder="Type your response (optional)…" value={value} onChange={(e) => onChange(e.target.value)} />;
 
-  // Aptitude visual options (SVG) — clean grid with a radio indicator.
+  // Aptitude visual options (SVG) — same radio control as the text rows, so
+  // every answerable option in the exam looks and behaves identically.
   if (q.svgOptions) {
     const opts = q.options ?? [];
     return (
@@ -538,6 +539,7 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
           const sel = value === String(i);
           return (
             <button key={i} className="og-svgc" style={{ ...S.svgChoice, ...(sel ? S.svgChoiceOn : {}) }} onMouseDown={(e) => e.preventDefault()} onClick={() => onChange(String(i))}>
+              <Radio on={sel} />
               <span className="og-svgh" style={S.svgHolder} dangerouslySetInnerHTML={{ __html: cleanSvg(o || "") }} />
             </button>
           );
@@ -546,7 +548,7 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
     );
   }
 
-  // Clean radio rows for every text single-select (Yes/No, choose-one, most-like).
+  // Radio rows for every text single-select (Yes/No, choose-one, most-like).
   const isYesNo = q.type === "yesno";
   const opts = isYesNo ? ["Yes", "No"] : (q.options ?? []);
   return (
@@ -558,11 +560,22 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
         const label = q.type === "vark" && q.styles?.[i] ? raw.replace(/^\(?[A-D]\)?\s*/, "") : isYesNo ? raw : raw.replace(/^\d+\)\s*/, "");
         return (
           <button key={i} className="og-opt" style={{ ...S.optRow, ...(sel ? S.optRowOn : {}) }} onMouseDown={(e) => e.preventDefault()} onClick={() => onChange(val)}>
+            <Radio on={sel} />
             <span style={{ ...S.optLabel, ...(sel ? S.optLabelOn : {}) }}>{label}</span>
           </button>
         );
       })}
     </div>
+  );
+}
+
+/** The one radio control used by every option in the exam — text rows and
+ *  SVG tiles alike. Clearly visible when unselected, filled blue when chosen. */
+function Radio({ on }: { on: boolean }) {
+  return (
+    <span style={{ ...S.radio, ...(on ? S.radioOn : {}) }}>
+      {on && <span style={S.radioDot} />}
+    </span>
   );
 }
 
@@ -646,6 +659,12 @@ const S: Record<string, React.CSSProperties> = {
   optList: { display: "flex", flexDirection: "column", borderTop: "1px solid #eef0f4", marginTop: 14 },
   optRow: { display: "flex", alignItems: "center", gap: 13, width: "100%", textAlign: "left", padding: "13px 16px", border: "1px solid transparent", borderBottom: "1px solid #eef0f4", cursor: "pointer", outline: "none" },
   optRowOn: { border: `1px solid ${BLUE}`, borderRadius: 10, background: BLUE_SOFT },
+  // One radio control for every option (text rows and SVG tiles). The ring is
+  // deliberately dark enough to read against both the white card and the blue
+  // selected tint — a faint hairline disappears on screen.
+  radio: { flexShrink: 0, width: 20, height: 20, borderRadius: "50%", border: "2px solid #8d97a8", background: "#fff", display: "grid", placeItems: "center", boxSizing: "border-box" },
+  radioOn: { borderColor: BLUE, boxShadow: `0 0 0 3px ${BLUE}1f` },
+  radioDot: { width: 10, height: 10, borderRadius: "50%", background: BLUE },
   optLabel: { fontSize: 15, color: "#3a4356", lineHeight: 1.4 },
   optLabelOn: { color: INK, fontWeight: 600 },
   tapHint: { textAlign: "center", fontSize: 13, color: "#94a3b8", marginTop: 16 },
