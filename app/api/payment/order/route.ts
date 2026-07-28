@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { razorpayKeyId, razorpayKeySecret, razorpayAmountPaise } from "@/lib/razorpay";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 20;
@@ -7,12 +8,9 @@ export const maxDuration = 20;
 // The KEY_SECRET is used only here (server-side); the KEY_ID is returned so the
 // browser can open Checkout. Amount is fixed server-side (never trust the client).
 export async function POST() {
-  // Key ID is public (used by the browser checkout) so it's safe to bake in a
-  // fallback; the amount defaults to ₹99. The SECRET is intentionally
-  // env-only — it must NEVER be committed (GitHub would auto-revoke it).
-  const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_live_T4fgWI2uotntDG";
-  const keySecret = process.env.RAZORPAY_KEY_SECRET;
-  const amount = Number(process.env.RAZORPAY_AMOUNT_PAISE || 9900); // paise — ₹99 default
+  const keyId = razorpayKeyId();
+  const keySecret = razorpayKeySecret();
+  const amount = razorpayAmountPaise();
 
   if (!keyId || !keySecret) {
     return NextResponse.json(
@@ -37,6 +35,21 @@ export async function POST() {
     });
     const data = await res.json();
     if (!res.ok) {
+      // 401 means the Key ID and Key Secret aren't from the same pair (or one
+      // was rotated). Name the Key ID in play — otherwise Razorpay's bare
+      // "Authentication failed" gives no clue which half of the pair is stale.
+      if (res.status === 401) {
+        console.error(`[payment] Razorpay rejected key ${keyId} — Key ID/Secret pair mismatch or rotated.`);
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Payment is misconfigured on this deployment. Please contact support@onegrasp.com.",
+            keyId,
+            reason: "razorpay_auth_failed",
+          },
+          { status: 502 }
+        );
+      }
       return NextResponse.json(
         { success: false, message: data?.error?.description || "Could not create the order." },
         { status: 502 }

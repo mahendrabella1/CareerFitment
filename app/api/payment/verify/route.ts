@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import { pushLeadToCRM } from "@/lib/crm";
 import { sendLeadNotificationEmail } from "@/lib/leadEmail";
+import { razorpayKeySecret, razorpayAmountPaise } from "@/lib/razorpay";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -29,7 +30,9 @@ async function emailFromToken(idToken?: string): Promise<string> {
 // "paid" in Firestore itself (allowed by the user's own security rule), so this
 // route needs no admin credentials. Email is best-effort.
 export async function POST(req: Request) {
-  const keySecret = process.env.RAZORPAY_KEY_SECRET;
+  // Same trimmed value the order route authenticated with — the signature is an
+  // HMAC keyed on it, so any drift here would reject every genuine payment.
+  const keySecret = razorpayKeySecret();
   if (!keySecret) {
     return NextResponse.json({ success: false, message: "Payment is not configured." }, { status: 500 });
   }
@@ -65,7 +68,7 @@ export async function POST(req: Request) {
 
   // Best-effort CRM + email (never blocks the flow). Uses details the client passed.
   const email = (await emailFromToken(idToken)) || String(profile?.email || "");
-  const amount = Number(process.env.RAZORPAY_AMOUNT_PAISE || 9900);
+  const amount = razorpayAmountPaise();
   const p = profile || {};
   const name = String(p.name || "");
   void Promise.all([

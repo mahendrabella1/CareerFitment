@@ -33,6 +33,11 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const [checking, setChecking] = useState(true);
+  // Fee comes from the server so the price on screen always matches the amount
+  // the order is actually created for (NEXT_PUBLIC_* is frozen at build time).
+  const [amountPaise, setAmountPaise] = useState(
+    Number(process.env.NEXT_PUBLIC_RAZORPAY_AMOUNT_PAISE || 9900)
+  );
 
   // If real payment isn't configured on the server (no Razorpay secret), skip the
   // fee entirely so the app is fully usable with zero setup. It turns on the
@@ -44,6 +49,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
         const res = await fetch("/api/payment/status");
         const data = await res.json();
         if (!cancelled) {
+          if (data?.amountPaise) setAmountPaise(Number(data.amountPaise));
           if (!data?.configured) onPaid();
           else setChecking(false);
         }
@@ -63,7 +69,15 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
 
       const orderRes = await fetch("/api/payment/order", { method: "POST" });
       const order = await orderRes.json();
-      if (!order.success) throw new Error(order.message || "Couldn't start the payment.");
+      if (!order.success) {
+        // Never open Checkout without a valid order — Razorpay would render its
+        // own "The api key provided is invalid" screen, which looks to the user
+        // like a failed payment on a page that can still take their money.
+        if (order.reason === "razorpay_auth_failed") {
+          console.error("[payment] Razorpay rejected key", order.keyId, "— Key ID/Secret pair mismatch.");
+        }
+        throw new Error(order.message || "Couldn't start the payment.");
+      }
 
       const idToken = await getFirebaseAuth()?.currentUser?.getIdToken();
 
@@ -120,7 +134,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
     }
   }
 
-  const amount = Number(process.env.NEXT_PUBLIC_RAZORPAY_AMOUNT_PAISE || 9900) / 100;
+  const amount = amountPaise / 100;
 
   if (checking) {
     return (
