@@ -423,17 +423,35 @@ APTITUDE = [
         "options": ["₹500", "₹600", "₹650", "₹700"], "correct": 1,
     },
     {
-        # REPLACES the workbook's "Book is to Reading as Fork is to ___", which
-        # was a one-step object->use pairing that most students answer without
-        # reasoning. This keeps the analogy format but makes the RELATION the
-        # thing under test: instrument -> the quantity it measures. Each
-        # distractor is a distinct wrong relation rather than filler —
-        # Weather is what a barometer is associated with, Altitude is a real
-        # secondary use of barometric pressure, and Humidity belongs to a
-        # different instrument. Bumped to medium for the difficulty weighting.
-        "q": 15, "domain": "Verbal", "difficulty": "medium",
-        "text": "Thermometer is to Temperature as Barometer is to ______.",
-        "options": ["Weather", "Altitude", "Pressure", "Humidity"], "correct": 2,
+        # REPLACES the workbook's "Book is to Reading as Fork is to ___".
+        # The analogy format is dropped entirely for a number-pattern grid.
+        #
+        # The rule is two-dimensional, which is what makes it analytical: rows
+        # are multiples of the first row (x1, x2, x3) AND each column steps by
+        # its own first entry (+3, +5, +8). Both readings converge on 24, so
+        # the item is unambiguous while still needing a real pattern to be
+        # found — a single left-to-right sequence cannot solve it.
+        #
+        # Distractors are specific reasoning errors, not filler:
+        #   20  16 + 4     (invented step)
+        #   21  15 + 6     (borrowed column 1's step)
+        #   32  16 x 2     (read 8 -> 16 as doubling, ignoring the row rule)
+        "q": 15, "domain": "Numerical", "difficulty": "medium",
+        "text": "Study how the numbers in the grid relate to each other. Which number replaces the question mark?",
+        "media": {
+            "type": "html",
+            "html": (
+                # width:auto overrides .datatable's width:100% — a 3x3 grid
+                # stretched across the card does not read as a matrix
+                '<table class="datatable" style="width:auto;min-width:210px;font-size:16px">'
+                "<tbody>"
+                "<tr><td>3</td><td>5</td><td>8</td></tr>"
+                "<tr><td>6</td><td>10</td><td>16</td></tr>"
+                "<tr><td>9</td><td>15</td><td><b>?</b></td></tr>"
+                "</tbody></table>"
+            ),
+        },
+        "options": ["20", "21", "24", "32"], "correct": 2,
     },
     {
         "q": 16, "domain": "Verbal", "difficulty": "easy",

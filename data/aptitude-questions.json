@@ -3051,18 +3051,21 @@
     "type": "mcq",
     "q": "Q15",
     "format": "text",
-    "domain": "Verbal",
+    "domain": "Numerical",
     "difficulty": "medium",
-    "text": "Thermometer is to Temperature as Barometer is to ______.",
+    "text": "Study how the numbers in the grid relate to each other. Which number replaces the question mark?",
     "options": [
-     "Weather",
-     "Altitude",
-     "Pressure",
-     "Humidity"
+     "20",
+     "21",
+     "24",
+     "32"
     ],
     "svgOptions": false,
     "correct": 2,
-    "media": null
+    "media": {
+     "type": "html",
+     "html": "<table class=\"datatable\" style=\"width:auto;min-width:210px;font-size:16px\"><tbody><tr><td>3</td><td>5</td><td>8</td></tr><tr><td>6</td><td>10</td><td>16</td></tr><tr><td>9</td><td>15</td><td><b>?</b></td></tr></tbody></table>"
+    }
    },
    {
     "type": "mcq",
