@@ -245,7 +245,23 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
       };
     }
     case "strengths": {
-      const topB = a.strengthsBreakdown?.slice().sort((x, y) => y.score - x.score)[0]?.name;
+      const ranked = (a.strengthsBreakdown ?? []).slice().sort((x, y) => y.score - x.score);
+      const topB = ranked[0]?.name, second = ranked[1]?.name, lowB = ranked[ranked.length - 1]?.name;
+      // The 60-question bank measures strengths as forced-choice preferences —
+      // there is no correct answer, so the read is "which show up naturally",
+      // not "how many you got right".
+      const ipsative = !a.aptitudePct || ranked.length >= 6;
+      if (ipsative) {
+        return {
+          meaning: topB
+            ? `Across the situational choices, ${topB}${second ? ` and ${second}` : ""} are the strengths you reach for first. These aren't scores out of 100 — they're a ranking of what shows up naturally when you get to choose how to contribute.`
+            : "Your strengths are spread fairly evenly across the eight domains.",
+          strengths: topB ? [`${topB} is your default mode — the contribution you make without being asked`, second ? `${second} backs it up as a strong second lever` : "You have a clear leading strength to build on", "Careers built on a natural strength feel less like effort"] : ["A balanced spread means you can flex into several kinds of role"],
+          grow: lowB ? [`${lowB} came last — not a weakness, just not where you naturally go first`, "Pick one lower domain your goal genuinely needs and practise it deliberately"] : ["Deliberately practise a domain outside your top two for range"],
+          recommend: [`Volunteer for tasks that use ${topB || "your leading strength"} — that's where you'll stand out`, "Team up with people strong where you're not", "Name your top two strengths in interviews and applications"],
+          next: `Pick one project this month where you lead with ${topB || "your leading strength"}.`,
+        };
+      }
       return {
         meaning: `On the quick reasoning and self-report tasks you scored ${p}% overall${topB ? `, strongest in ${topB}` : ""}. This is a coarse, directional read of your problem-solving, decisions and communication — combine a few sittings for a steadier picture.`,
         strengths: topB ? [`${topB} came through as a clear strength`, "You bring a usable mix of thinking and people skills", "Strengths compound when you build a career around them"] : ["A workable spread of reasoning and self-report strengths"],
@@ -374,6 +390,9 @@ export function subTraits(key: string, a: AssessmentSummary): { label: string; v
     case "strengths": return clean((a.strengthsBreakdown ?? []).map((x) => ({ label: x.name, value: x.score })));
     case "aptitude": return clean((a.topAptitudes ?? []).map((x) => ({ label: x.skill, value: x.score })));
     case "personality": return clean((a.topStrengths ?? []).map((x) => ({ label: x.subTraitName, value: x.normalizedScore })));
+    // The 60-question bank measures EI as five named dimensions; older banks
+    // only produce one composite, which has no sub-bars to draw.
+    case "emotional_intelligence": return clean((a.eiBreakdown ?? []).map((x) => ({ label: x.name, value: x.score })));
     default: return [];
   }
 }
@@ -516,7 +535,10 @@ export function resultOf(key: string, a: AssessmentSummary): { label: string; va
     case "personality": { const t = temperamentOf(a); return { label: "Your temperament", value: `${t.primary.name}${t.secondary && t.scores[1].score > 45 ? " · " + t.secondary.name : ""}` }; }
     case "career_interest": { const code = a.riasecCode || (a.themes ?? []).slice(0, 3).map((t) => t.letter).join(""); return code ? { label: "Your Holland code", value: code } : null; }
     case "multiple_intelligence": return { label: "Top intelligences", value: two((a.topIntelligences ?? []).map((x) => ({ n: x.name }))) };
-    case "emotional_intelligence": return { label: "EQ level", value: eiBand(a.ei ?? 0) };
+    case "emotional_intelligence": {
+      const top = (a.eiBreakdown ?? []).slice().sort((x, y) => y.score - x.score)[0];
+      return { label: "EQ level", value: top ? `${eiBand(a.ei ?? 0)} · strongest in ${top.name}` : eiBand(a.ei ?? 0) };
+    }
     case "learning_styles": { const t = a.learningStyles?.[0]?.name; return t ? { label: "Your learning style", value: t } : null; }
     case "motivators": { const t = a.topValues?.[0]?.tag; return t ? { label: "Your core driver", value: t } : null; }
     case "strengths": return { label: "Signature strengths", value: two((a.strengthsBreakdown ?? []).map((x) => ({ n: x.name }))) };
@@ -580,15 +602,20 @@ export type DomainFit = Domain & { fit: number; why: string };
 
 // Which abilities/intelligences/values reinforce each domain (keyword match,
 // robust to exact wording differences in the question banks).
+// Keyword lists cover BOTH question banks: the older wording ("Auditory",
+// "independence", "Reasoning") and the 60-question workbook's dimension names
+// ("Attention to Detail", "Achievement", "Impact", "Innovation", "Security",
+// "Learning", "Bodily–Kinesthetic", …). Matching is substring + lowercase, so
+// a name only has to contain one of these fragments.
 const AFFINITY: Record<string, { apt: string[]; mi: string[]; val: string[]; label: string }> = {
-  A: { label: "hands-on problem-solving", apt: ["spatial", "mechanical", "logical", "numerical"], mi: ["spatial", "bodily", "kinesth", "logical"], val: ["achievement", "independence", "structured"] },
-  B: { label: "logical & analytical thinking", apt: ["logical", "numerical", "abstract", "quantitative"], mi: ["logical", "mathemat"], val: ["achievement", "independence", "continuous", "learning"] },
-  C: { label: "care and people-focus", apt: ["verbal", "memory", "perceptual"], mi: ["interpersonal", "natural", "intrapersonal", "logical"], val: ["social", "service", "relationship", "help"] },
-  D: { label: "creativity & visual thinking", apt: ["spatial", "verbal", "perceptual"], mi: ["spatial", "visual", "music", "linguist"], val: ["creativ", "independence", "adventure"] },
-  E: { label: "communication & drive", apt: ["verbal", "numerical", "quantitative"], mi: ["interpersonal", "linguist", "logical"], val: ["achievement", "recognition", "leader", "independence"] },
-  F: { label: "empathy & communication", apt: ["verbal", "memory"], mi: ["interpersonal", "intrapersonal", "linguist"], val: ["social", "service", "relationship", "support", "help"] },
-  G: { label: "curiosity & analysis", apt: ["logical", "numerical", "quantitative"], mi: ["natural", "logical", "mathemat"], val: ["independence", "continuous", "learning"] },
-  H: { label: "energy & people-skills", apt: ["psychomotor", "spatial", "perceptual"], mi: ["bodily", "kinesth", "interpersonal"], val: ["adventure", "recognition", "social"] },
+  A: { label: "hands-on problem-solving", apt: ["spatial", "mechanical", "logical", "numerical"], mi: ["spatial", "bodily", "kinesth", "logical"], val: ["achievement", "independence", "structured", "security", "execution"] },
+  B: { label: "logical & analytical thinking", apt: ["logical", "numerical", "abstract", "quantitative"], mi: ["logical", "mathemat"], val: ["achievement", "independence", "continuous", "learning", "innovation"] },
+  C: { label: "care and people-focus", apt: ["verbal", "memory", "perceptual", "detail"], mi: ["interpersonal", "natural", "intrapersonal", "logical"], val: ["social", "service", "relationship", "help", "impact", "contribution"] },
+  D: { label: "creativity & visual thinking", apt: ["spatial", "verbal", "perceptual", "abstract"], mi: ["spatial", "visual", "music", "linguist"], val: ["creativ", "independence", "adventure", "innovation"] },
+  E: { label: "communication & drive", apt: ["verbal", "numerical", "quantitative", "detail"], mi: ["interpersonal", "linguist", "logical"], val: ["achievement", "recognition", "leader", "independence", "influence"] },
+  F: { label: "empathy & communication", apt: ["verbal", "memory"], mi: ["interpersonal", "intrapersonal", "linguist"], val: ["social", "service", "relationship", "support", "help", "impact", "contribution"] },
+  G: { label: "curiosity & analysis", apt: ["logical", "numerical", "quantitative"], mi: ["natural", "logical", "mathemat"], val: ["independence", "continuous", "learning", "growth"] },
+  H: { label: "energy & people-skills", apt: ["psychomotor", "spatial", "perceptual", "mechanical"], mi: ["bodily", "kinesth", "interpersonal"], val: ["adventure", "recognition", "social", "impact"] },
 };
 
 export function domainFit(a: AssessmentSummary): DomainFit[] {

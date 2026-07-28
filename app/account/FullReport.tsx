@@ -23,7 +23,7 @@ import { Icon, CATEGORY_ABBR } from "@/app/Icons";
 import { C, Ring, RadarChart, SkillBar, dimColor, type RadarDatum } from "@/app/account/viz";
 import { Scene } from "@/app/account/illustrations";
 import {
-  categoryDeepDive, roadmap, stageLabelOf,
+  categoryDeepDive, roadmap, stageLabelOf, DOMAINS,
   archetype, percentileOf, subTraits, actionPlan, type Domain,
   temperamentOf, resultOf, TEMPERAMENTS, domainFit, type DomainFit,
   FUTURE, LEARNING, JOB_PORTALS, SCHOLARSHIPS_2026,
@@ -91,7 +91,7 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
   const plan = actionPlan(a, topDomain.name);
   // Overall fit now reflects the whole profile, not just the interest tally.
   const fit = Math.max(a.overallFitmentPct ?? 0, topDomain.fit);
-  const roles = coherentRoles(fits);
+  const roles = coherentRoles(a, fits);
   const temp = temperamentOf(a);
   const acad = academicPath(a, a.journeyCode);
   const workEnv = workEnvironment(a);
@@ -100,6 +100,12 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
   const strongest = radar.slice().sort((x, y) => y.score - x.score)[0];
   const weakest = radar.slice().filter((r) => r.score > 0).sort((x, y) => x.score - y.score)[0];
   const themes = (a.themes ?? []).slice();
+  // Holland themes are their own vector (R/I/A/S/E/C). `themes` holds CAREER
+  // CLUSTER letters (A–H) — feeding those to the hexagon mislabels clusters as
+  // Holland types, so use the real RIASEC scores whenever the engine has them.
+  const riasec = (a.riasecScores ?? []).length
+    ? a.riasecScores!.map((r) => ({ letter: r.letter, title: r.name, score: r.score }))
+    : themes.filter((t) => "RIASEC".includes(t.letter));
   const dateStr = (() => { try { return new Date(a.completedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }); } catch { return ""; } })();
   const first = (name || "").trim().split(/\s+/)[0] || "you";
 
@@ -479,19 +485,19 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
       })}
 
       {/* ===== INTERESTS — RIASEC HEXAGON ===== */}
-      {themes.length > 0 && (
+      {riasec.length > 0 && (
         <section className="sheet rv">
           <div className="pad">
             <RH n={N()} kick="Your interests" />
             <SecHead eyebrow="Holland's RIASEC model" title="What genuinely pulls you"
               sub="Interest is the single biggest driver of long-term satisfaction. Your top themes point to the fields to explore first." />
             <div className="riasec-row">
-              <RiasecHex themes={themes} />
+              <RiasecHex themes={riasec} />
               <div className="riasec-bars">
                 {["R", "I", "A", "S", "E", "C"].map((L) => {
-                  const t = themes.find((x) => x.letter === L);
+                  const t = riasec.find((x) => x.letter === L);
                   const sc = t ? Math.round(t.score) : 0;
-                  const top = (a.riasecCode || themes.slice(0, 3).map((x) => x.letter).join("")).includes(L);
+                  const top = (a.riasecCode || riasec.slice(0, 3).map((x) => x.letter).join("")).includes(L);
                   return (
                     <div className={`rb-row${top ? " top" : ""}`} key={L}>
                       <span className="rb-l">{RIASEC_NAME[L]}</span>
@@ -761,10 +767,37 @@ function roleMetric(name: string) {
 }
 const salaryTone = (s: string) => (s.includes("Very High") || s.includes("Above") ? "good" : s.includes("Below") || s.includes("Very Low") ? "warn" : "mid");
 
-/** Specific roles drawn from the coherent top domains (so careers correlate with
- *  the recommended fields), each carrying that domain's blended fit. */
-function coherentRoles(fits: DomainFit[]) {
-  const out: { role: string; domain: string; fit: number; why: string; salaryIndia: string; salaryAbroad: string }[] = [];
+type ReportRole = { role: string; domain: string; fit: number; why: string; salaryIndia: string; salaryAbroad: string };
+
+/**
+ * Specific roles for the career cards and the ranked table.
+ *
+ * When the engine produced named professions (the 60-question bank matches
+ * against the workbook's own profession tables), use those — they are the real
+ * output of the career-vector matching. Otherwise fall back to representative
+ * roles from the top domains, so older banks still render.
+ */
+function coherentRoles(a: AssessmentSummary, fits: DomainFit[]): ReportRole[] {
+  const byName = Object.fromEntries(Object.values(DOMAINS).map((d) => [d.name, d]));
+  const named = (a.matches ?? []).filter((m) => m.title);
+  if (named.length) {
+    const seenDomain = new Set<string>();
+    return named.slice(0, 6).map((m) => {
+      const dom = byName[m.blurb ?? ""] ?? byName[m.roles?.[0] ?? ""];
+      // salary is a domain-level range — print it once per domain
+      const first = dom ? !seenDomain.has(dom.name) : false;
+      if (dom) seenDomain.add(dom.name);
+      return {
+        role: m.title,
+        domain: dom?.name ?? m.blurb ?? "",
+        fit: Math.max(40, Math.min(96, Math.round(m.fitmentPct ?? 0))),
+        why: fits.find((f) => f.name === dom?.name)?.why ?? "",
+        salaryIndia: first && dom ? dom.salaryIndia : "",
+        salaryAbroad: first && dom ? dom.salaryAbroad : "",
+      };
+    });
+  }
+  const out: ReportRole[] = [];
   fits.slice(0, 3).forEach((d) => {
     (d.roles ?? []).slice(0, 2).forEach((role, ri) => {
       out.push({ role, domain: d.name, fit: Math.max(45, Math.min(95, d.fit - ri * 3)), why: d.why, salaryIndia: d.salaryIndia, salaryAbroad: d.salaryAbroad });

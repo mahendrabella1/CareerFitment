@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import {
-  CATEGORY_ORDER,
+  categoryOrder,
   CATEGORY_META,
   pickSets,
   getSet,
@@ -22,10 +22,17 @@ export async function POST(req: Request) {
   // Resume: if a saved stage + chosenSets is supplied, reuse them so the user
   // gets the exact same questions. Otherwise pick a fresh random set per category.
   const stage = (body.stage as StageKey) || stageForCategory(body.category || "");
-  const resume = body.chosenSets && CATEGORY_ORDER.every((c) => body.chosenSets![c]);
+  const order = categoryOrder(stage);
+  // A saved session may name sets that no longer exist (the class 9-10 bank was
+  // replaced by the single 60-question set). Only honour a resume when every
+  // named set still resolves to questions — otherwise draw fresh ones rather
+  // than serving an empty exam.
+  const resume =
+    !!body.chosenSets &&
+    order.every((c) => body.chosenSets![c] && getSet(c, stage, body.chosenSets![c]).length > 0);
   const chosenSets = resume ? (body.chosenSets as Record<Category, string>) : pickSets(stage);
 
-  const sections = CATEGORY_ORDER.map((cat) => {
+  const sections = order.map((cat) => {
     const raw = getSet(cat, stage, chosenSets[cat]);
     // Only DISPLAY fields go to the client — every answer key (correct, clusters,
     // scores, domains, mainCategory, subCategory, cluster) stays server-side.

@@ -3,6 +3,7 @@
 // profile, plus an 8-category radar. Career matches come from Career-Interest
 // clusters; the other categories become the profile + radar spokes.
 import { getSet, CLUSTERS, type Category, type StageKey } from "./data";
+import { isV2Bank, scoreAssessment60 } from "./scoring60";
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 
 type Answers = Record<string, string>;
@@ -29,6 +30,10 @@ export function scoreAssessment(
   chosenSets: Record<Category, string>,
   answers: Answers
 ): AssessmentSummary {
+  // The 60-question workbook bank (classes 9-10) carries per-option trait
+  // vectors and is scored by its own engine — see scoring60.ts.
+  if (isV2Bank(stage, chosenSets)) return scoreAssessment60(stage, chosenSets, answers);
+
   // ---------- Personality: Big Five + temperament ----------
   const pers = getSet("personality", stage, chosenSets.personality);
   let topStrengths: AssessmentSummary["topStrengths"];

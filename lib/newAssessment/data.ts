@@ -30,14 +30,34 @@ export const CATEGORY_ORDER: Category[] = [
   "aptitude",
 ];
 
+// Classes 9-10 run the 60-question workbook, whose own Q.No column fixes the
+// section order (Interests 1-12 · Aptitude 13-22 · Personality 23-34 ·
+// Strengths 35-42 · Motivators 43-47 · Learning 48-51 · MI 52-55 · EI 56-60).
+// Keeping the on-screen numbering identical to the workbook makes the bank
+// reviewable against the source sheet.
+const ORDER_9_10: Category[] = [
+  "career_interest",
+  "aptitude",
+  "personality",
+  "strengths",
+  "motivators",
+  "learning_styles",
+  "multiple_intelligence",
+  "emotional_intelligence",
+];
+
+export function categoryOrder(stage: StageKey): Category[] {
+  return stage === "9-10" ? ORDER_9_10 : CATEGORY_ORDER;
+}
+
 export const CATEGORY_META: Record<Category, { title: string; blurb: string }> = {
   personality: { title: "Personality", blurb: "For each situation, pick the option that feels most like you." },
   career_interest: { title: "Career Interests", blurb: "Pick the one option that most appeals to you in each situation." },
-  multiple_intelligence: { title: "Multiple Intelligences", blurb: "For each statement, choose how much it sounds like you." },
+  multiple_intelligence: { title: "Multiple Intelligences", blurb: "Pick the activity or role you would naturally enjoy most." },
   emotional_intelligence: { title: "Emotional Intelligence", blurb: "Choose the response closest to what you'd genuinely do." },
   learning_styles: { title: "Learning Style", blurb: "Pick the option that best matches how you naturally learn." },
   motivators: { title: "Motivators", blurb: "For each situation, choose the option that feels MOST like you." },
-  strengths: { title: "Strengths", blurb: "A mix of quick puzzles and self-report. There ARE right answers here — take your time." },
+  strengths: { title: "Strengths", blurb: "Situations that reveal how you naturally work. There are no wrong answers." },
   aptitude: { title: "Aptitude", blurb: "Reasoning across words, numbers, logic and shapes. Pick the single best answer." },
 };
 
@@ -73,7 +93,7 @@ export function stageForCategory(cat: string): StageKey {
 /** Pick a random set (1 of 10) for every category, for the given stage. */
 export function pickSets(stage: StageKey): Record<Category, string> {
   const out = {} as Record<Category, string>;
-  for (const c of CATEGORY_ORDER) {
+  for (const c of categoryOrder(stage)) {
     const names = Object.keys(BANK[c]?.[stage] ?? {});
     out[c] = names.length ? names[Math.floor(Math.random() * names.length)] : "Set 1";
   }

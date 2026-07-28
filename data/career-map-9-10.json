@@ -1,0 +1,368 @@
+{
+ "dimensionWeights": {
+  "career_interest": 0.2,
+  "personality": 0.2,
+  "aptitude": 0.13,
+  "strengths": 0.13,
+  "motivators": 0.1,
+  "emotional_intelligence": 0.1,
+  "learning_styles": 0.07,
+  "multiple_intelligence": 0.07
+ },
+ "miWeights": {
+  "Logical–Mathematical": 0.15,
+  "Linguistic": 0.15,
+  "Spatial": 0.15,
+  "Interpersonal": 0.15,
+  "Intrapersonal": 0.1,
+  "Bodily–Kinesthetic": 0.1,
+  "Naturalistic": 0.1,
+  "Musical": 0.1
+ },
+ "affinity": {
+  "aptitude": {
+   "Numerical": [
+    "Engineer",
+    "Chartered Accountant",
+    "Data Scientist",
+    "Economist",
+    "Financial Analyst",
+    "Banker"
+   ],
+   "Verbal": [
+    "Teacher",
+    "Lawyer",
+    "Journalist",
+    "Psychologist",
+    "Counsellor",
+    "HR Manager"
+   ],
+   "Logical": [
+    "Software Engineer",
+    "AI Engineer",
+    "Research Scientist",
+    "Data Analyst",
+    "Research Scientist"
+   ],
+   "Abstract": [
+    "Architect",
+    "UX Designer",
+    "Product Designer",
+    "AI Engineer"
+   ],
+   "Spatial": [
+    "Architect",
+    "Civil Engineer",
+    "Pilot",
+    "Mechanical Engineer"
+   ],
+   "Attention to Detail": [
+    "Doctor",
+    "Pharmacist",
+    "Auditor",
+    "Chartered Accountant"
+   ],
+   "Mechanical": [
+    "Mechanical Engineer",
+    "Robotics Engineer",
+    "Automation Engineer",
+    "Electronics Engineer"
+   ]
+  },
+  "personality": {
+   "Openness": [
+    "Research Scientist",
+    "Research Scientist",
+    "Product Designer",
+    "Architect",
+    "Entrepreneur",
+    "AI Engineer"
+   ],
+   "Conscientiousness": [
+    "Engineer",
+    "Doctor",
+    "Chartered Accountant",
+    "IAS Officer",
+    "Civil Engineer",
+    "Auditor"
+   ],
+   "Extraversion": [
+    "Entrepreneur",
+    "Teacher",
+    "HR Manager",
+    "Lawyer",
+    "Business Manager",
+    "Digital Marketer"
+   ],
+   "Agreeableness": [
+    "Doctor",
+    "Psychologist",
+    "Counsellor",
+    "Teacher",
+    "Social Worker",
+    "HR Manager"
+   ],
+   "Emotional Stability": [
+    "Doctor",
+    "Pilot",
+    "IAS Officer",
+    "Project Manager",
+    "Operations Manager",
+    "Entrepreneur"
+   ]
+  },
+  "strengths": {
+   "Analytical": [
+    "Data Scientist",
+    "Research Scientist",
+    "Software Engineer",
+    "Research Scientist",
+    "Engineer"
+   ],
+   "Creative": [
+    "Architect",
+    "UX Designer",
+    "Animator",
+    "Graphic Designer",
+    "Product Designer"
+   ],
+   "Leadership": [
+    "Entrepreneur",
+    "IAS Officer",
+    "Project Manager",
+    "Business Manager",
+    "Startup Founder"
+   ],
+   "Relationship": [
+    "Teacher",
+    "Psychologist",
+    "HR Manager",
+    "Counsellor",
+    "Social Worker"
+   ],
+   "Execution": [
+    "Chartered Accountant",
+    "Operations Manager",
+    "Project Manager",
+    "Banker",
+    "Auditor"
+   ],
+   "Communication": [
+    "Lawyer",
+    "Journalist",
+    "Teacher",
+    "Digital Marketer",
+    "Public Speaker"
+   ],
+   "Adaptability": [
+    "Consultant",
+    "Startup Founder",
+    "Product Designer",
+    "Entrepreneur",
+    "Business Analyst"
+   ],
+   "Learning": [
+    "Research Scientist",
+    "Doctor",
+    "Research Scientist",
+    "Research Scientist",
+    "AI Engineer"
+   ]
+  },
+  "motivators": {
+   "Achievement": [
+    "Doctor",
+    "Engineer",
+    "Research Scientist",
+    "Chartered Accountant",
+    "Research Scientist"
+   ],
+   "Innovation": [
+    "Entrepreneur",
+    "Product Designer",
+    "AI Engineer",
+    "Startup Founder",
+    "Architect"
+   ],
+   "Impact": [
+    "Teacher",
+    "Psychologist",
+    "Doctor",
+    "Social Worker",
+    "IAS Officer"
+   ],
+   "Leadership": [
+    "IAS Officer",
+    "Business Manager",
+    "Entrepreneur",
+    "Project Manager",
+    "Operations Manager"
+   ],
+   "Security": [
+    "Banker",
+    "Chartered Accountant",
+    "Auditor",
+    "IAS Officer",
+    "Financial Planner"
+   ],
+   "Learning": [
+    "Research Scientist",
+    "Research Scientist",
+    "Research Scientist",
+    "Doctor",
+    "Data Scientist"
+   ]
+  },
+  "mi": {
+   "Logical–Mathematical": [
+    "Engineer",
+    "Data Scientist",
+    "Software Engineer",
+    "Financial Analyst",
+    "AI Engineer"
+   ],
+   "Linguistic": [
+    "Lawyer",
+    "Journalist",
+    "Teacher",
+    "Content Creator",
+    "Public Speaker"
+   ],
+   "Spatial": [
+    "Architect",
+    "Product Designer",
+    "UX Designer",
+    "Civil Engineer",
+    "Animator"
+   ],
+   "Bodily–Kinesthetic": [
+    "Doctor",
+    "Mechanical Engineer",
+    "Physiotherapist",
+    "Robotics Engineer"
+   ],
+   "Musical": [
+    "Music Producer",
+    "Content Creator",
+    "Media Professional"
+   ],
+   "Interpersonal": [
+    "Business Manager",
+    "Psychologist",
+    "Teacher",
+    "HR Manager",
+    "Counsellor"
+   ],
+   "Intrapersonal": [
+    "Entrepreneur",
+    "Research Scientist",
+    "Research Scientist",
+    "Startup Founder",
+    "Psychologist"
+   ],
+   "Naturalistic": [
+    "Environmental Scientist",
+    "Doctor",
+    "Environmental Engineer",
+    "Research Scientist"
+   ]
+  },
+  "ei": {
+   "Emotional Awareness": [
+    "Entrepreneur",
+    "Research Scientist",
+    "Business Manager",
+    "Startup Founder"
+   ],
+   "Emotional Regulation": [
+    "Doctor",
+    "Pilot",
+    "Project Manager",
+    "Operations Manager"
+   ],
+   "Empathy & Social Awareness": [
+    "Doctor",
+    "Teacher",
+    "Psychologist",
+    "Counsellor",
+    "Social Worker"
+   ],
+   "Relationship Management": [
+    "Business Manager",
+    "Lawyer",
+    "Consultant",
+    "IAS Officer",
+    "HR Manager"
+   ],
+   "Adaptability & Resilience": [
+    "Entrepreneur",
+    "Product Designer",
+    "Consultant",
+    "Startup Founder"
+   ]
+  }
+ },
+ "professionCluster": {
+  "Civil Engineer": "A",
+  "Mechanical Engineer": "A",
+  "Electronics Engineer": "A",
+  "Robotics Engineer": "A",
+  "Automation Engineer": "A",
+  "Product Engineer": "A",
+  "Environmental Engineer": "A",
+  "Research Engineer": "A",
+  "Engineer": "A",
+  "Supply Chain Manager": "A",
+  "Industrial Designer": "A",
+  "Software Engineer": "B",
+  "AI Engineer": "B",
+  "Data Scientist": "B",
+  "Data Analyst": "B",
+  "UX Designer": "D",
+  "Doctor": "C",
+  "Pharmacist": "C",
+  "Physiotherapist": "C",
+  "Architect": "D",
+  "Graphic Designer": "D",
+  "Animator": "D",
+  "Product Designer": "D",
+  "Fashion Designer": "D",
+  "Film Maker": "D",
+  "Content Creator": "D",
+  "Media Professional": "D",
+  "Event Designer": "D",
+  "Interior Designer": "D",
+  "Creative Director": "D",
+  "Science Communicator": "D",
+  "Music Producer": "D",
+  "Entrepreneur": "E",
+  "Startup Founder": "E",
+  "Business Manager": "E",
+  "Business Analyst": "E",
+  "Chartered Accountant": "E",
+  "Financial Analyst": "E",
+  "Financial Planner": "E",
+  "Banker": "E",
+  "Auditor": "E",
+  "Operations Manager": "E",
+  "Project Manager": "E",
+  "Event Manager": "E",
+  "Consultant": "E",
+  "Economist": "E",
+  "Digital Marketer": "E",
+  "Sales Engineer": "E",
+  "Teacher": "F",
+  "Psychologist": "F",
+  "Counsellor": "F",
+  "Social Worker": "F",
+  "IAS Officer": "F",
+  "Lawyer": "F",
+  "HR Manager": "F",
+  "Public Speaker": "F",
+  "Technical Trainer": "F",
+  "Journalist": "F",
+  "Research Scientist": "G",
+  "Environmental Scientist": "G",
+  "Pilot": "H"
+ }
+}

@@ -538,7 +538,6 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
           const sel = value === String(i);
           return (
             <button key={i} className="og-svgc" style={{ ...S.svgChoice, ...(sel ? S.svgChoiceOn : {}) }} onMouseDown={(e) => e.preventDefault()} onClick={() => onChange(String(i))}>
-              <span style={{ ...S.radio, ...(sel ? S.radioOn : {}) }}>{sel && <span style={S.radioDot} />}</span>
               <span className="og-svgh" style={S.svgHolder} dangerouslySetInnerHTML={{ __html: cleanSvg(o || "") }} />
             </button>
           );
@@ -559,7 +558,6 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
         const label = q.type === "vark" && q.styles?.[i] ? raw.replace(/^\(?[A-D]\)?\s*/, "") : isYesNo ? raw : raw.replace(/^\d+\)\s*/, "");
         return (
           <button key={i} className="og-opt" style={{ ...S.optRow, ...(sel ? S.optRowOn : {}) }} onMouseDown={(e) => e.preventDefault()} onClick={() => onChange(val)}>
-            <span style={{ ...S.radio, ...(sel ? S.radioOn : {}) }}>{sel && <span style={S.radioDot} />}</span>
             <span style={{ ...S.optLabel, ...(sel ? S.optLabelOn : {}) }}>{label}</span>
           </button>
         );
@@ -648,9 +646,6 @@ const S: Record<string, React.CSSProperties> = {
   optList: { display: "flex", flexDirection: "column", borderTop: "1px solid #eef0f4", marginTop: 14 },
   optRow: { display: "flex", alignItems: "center", gap: 13, width: "100%", textAlign: "left", padding: "13px 16px", border: "1px solid transparent", borderBottom: "1px solid #eef0f4", cursor: "pointer", outline: "none" },
   optRowOn: { border: `1px solid ${BLUE}`, borderRadius: 10, background: BLUE_SOFT },
-  radio: { flexShrink: 0, width: 18, height: 18, borderRadius: "50%", border: "1.6px solid #c2c8d4", display: "grid", placeItems: "center" },
-  radioOn: { borderColor: BLUE },
-  radioDot: { width: 9, height: 9, borderRadius: "50%", background: BLUE },
   optLabel: { fontSize: 15, color: "#3a4356", lineHeight: 1.4 },
   optLabelOn: { color: INK, fontWeight: 600 },
   tapHint: { textAlign: "center", fontSize: 13, color: "#94a3b8", marginTop: 16 },

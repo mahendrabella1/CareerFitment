@@ -67,6 +67,10 @@ export interface AssessmentSummary {
   radar?: { key: string; label: string; score: number }[];
   strengthsBreakdown?: { name: string; score: number }[];
   aptitudePct?: number | null;
+  // 60-question bank (classes 9-10) only: EI is measured as five named
+  // dimensions and interests as a full RIASEC vector, not just a code.
+  eiBreakdown?: { name: string; score: number }[];
+  riasecScores?: { letter: string; name: string; score: number }[];
 }
 
 /** In-progress exam, persisted so the user can resume after closing/re-login. */
