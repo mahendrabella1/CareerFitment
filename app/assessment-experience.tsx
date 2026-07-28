@@ -6,7 +6,11 @@ import { useAuth, type AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { Logo } from "@/app/Logo";
 import Landing from "@/app/Landing";
 import NewExam from "@/app/NewExam";
-import PaymentGate from "@/app/PaymentGate";
+// PAYMENT-GATE-DISABLED — fee turned off while the Razorpay live keys are being
+// sorted out; users go straight from registration into the exam. Search this
+// file for PAYMENT-GATE-DISABLED to re-enable (3 spots), then set a matching
+// RAZORPAY_KEY_ID / RAZORPAY_KEY_SECRET pair in Vercel.
+// import PaymentGate from "@/app/PaymentGate";
 import { trackEvent } from "@/lib/metaPixel";
 import {
   Sparkles,
@@ -549,7 +553,8 @@ export default function AssessmentExperience() {
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
   const [thankYou, setThankYou] = useState(false);
   const [instructionsAccepted, setInstructionsAccepted] = useState(false);
-  const [paidNow, setPaidNow] = useState(false); // set true right after a verified payment
+  // PAYMENT-GATE-DISABLED — set true right after a verified payment.
+  // const [paidNow, setPaidNow] = useState(false);
   const [agreeChecked, setAgreeChecked] = useState(false);
   const [sectionShown, setSectionShown] = useState<Record<string, boolean>>({});
   const [qLeft, setQLeft] = useState(60); // seconds left on the current question
@@ -1045,10 +1050,12 @@ export default function AssessmentExperience() {
   // New set-based assessment: entered via /?begin=1 by a signed-in user.
   if (hasBegin && !results) {
     if (user && profile) {
-      // Payment gate — the exam only loads once the fee is paid & verified.
-      if (!(profile.paid || paidNow)) {
-        return <PaymentGate profile={profile} onPaid={() => setPaidNow(true)} />;
-      }
+      // PAYMENT-GATE-DISABLED — the exam loads for every registered user for
+      // now. Uncomment to require the fee again (the gate itself, PaymentGate
+      // and the /api/payment routes, is untouched and still works).
+      // if (!(profile.paid || paidNow)) {
+      //   return <PaymentGate profile={profile} onPaid={() => setPaidNow(true)} />;
+      // }
       return (
         <NewExam
           category={profile.category || ""}
