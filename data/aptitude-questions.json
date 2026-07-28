@@ -3052,13 +3052,13 @@
     "q": "Q15",
     "format": "text",
     "domain": "Verbal",
-    "difficulty": "easy",
-    "text": "Book is to Reading as Fork is to ______.",
+    "difficulty": "medium",
+    "text": "Thermometer is to Temperature as Barometer is to ______.",
     "options": [
-     "Kitchen",
-     "Spoon",
-     "Eating",
-     "Plate"
+     "Weather",
+     "Altitude",
+     "Pressure",
+     "Humidity"
     ],
     "svgOptions": false,
     "correct": 2,

@@ -423,9 +423,17 @@ APTITUDE = [
         "options": ["₹500", "₹600", "₹650", "₹700"], "correct": 1,
     },
     {
-        "q": 15, "domain": "Verbal", "difficulty": "easy",
-        "text": "Book is to Reading as Fork is to ______.",
-        "options": ["Kitchen", "Spoon", "Eating", "Plate"], "correct": 2,
+        # REPLACES the workbook's "Book is to Reading as Fork is to ___", which
+        # was a one-step object->use pairing that most students answer without
+        # reasoning. This keeps the analogy format but makes the RELATION the
+        # thing under test: instrument -> the quantity it measures. Each
+        # distractor is a distinct wrong relation rather than filler —
+        # Weather is what a barometer is associated with, Altitude is a real
+        # secondary use of barometric pressure, and Humidity belongs to a
+        # different instrument. Bumped to medium for the difficulty weighting.
+        "q": 15, "domain": "Verbal", "difficulty": "medium",
+        "text": "Thermometer is to Temperature as Barometer is to ______.",
+        "options": ["Weather", "Altitude", "Pressure", "Humidity"], "correct": 2,
     },
     {
         "q": 16, "domain": "Verbal", "difficulty": "easy",
