@@ -8787,27 +8787,27 @@
     {
      "type": "choice5",
      "q": "Q1",
-     "text": "Your school is organizing a District level Community Fair. Which role would you naturally pick?",
+     "text": "Your school is organizing a District-Level Community Fair. Which responsibility would you enjoy the most?",
      "options": [
-      "Diagnose community health issues and suggest remedies",
-      "Build a tech device, software, or mechanical solution.",
-      "Research local laws, policies, and present solutions to officials",
-      "Create posters, films, and branding for the fair",
-      "Manage stall budgets, sponsorship money, and resource logistics."
+      "Understanding the problem before suggesting a solution.",
+      "Finding smarter ways to make things work better.",
+      "Making sure every decision is fair and well considered.",
+      "Communicating ideas that engage and inspire others.",
+      "Planning and coordinating everything to stay on track."
      ],
      "riasec": [
       {
-       "S": 3,
-       "I": 2
+       "I": 3,
+       "S": 1
       },
       {
        "R": 3,
        "I": 2
       },
       {
-       "E": 2,
        "S": 2,
-       "I": 1
+       "E": 2,
+       "C": 1
       },
       {
        "A": 3,
@@ -8820,911 +8820,510 @@
      ],
      "clusterWeights": [
       {
-       "C": 5
+       "C": 3,
+       "G": 2
       },
       {
-       "B": 5
+       "B": 3,
+       "A": 2
       },
       {
-       "F": 5
+       "F": 4,
+       "E": 1
       },
       {
        "D": 5
       },
       {
-       "E": 5
+       "E": 4,
+       "A": 1
       }
      ],
      "careers": [
       [
        "Doctor",
-       "Physiotherapist",
+       "Research Scientist",
+       "Psychologist",
        "Pharmacist"
       ],
       [
        "Software Engineer",
        "Mechanical Engineer",
-       "Robotics Engineer"
+       "Robotics Engineer",
+       "AI Engineer",
+       "Civil Engineer"
       ],
       [
        "Lawyer",
        "IAS Officer",
+       "Social Worker",
        "Counsellor"
       ],
       [
        "Graphic Designer",
-       "Film Maker",
+       "Animator",
        "Journalist",
+       "Architect",
        "Content Creator"
       ],
       [
+       "Operations Manager",
        "Chartered Accountant",
-       "Financial Analyst",
-       "Operations Manager"
+       "Project Manager",
+       "Business Manager",
+       "Financial Analyst"
       ]
      ],
-     "careerMatches": [
-      "Health & Medical / Allied Health: Doctor, Nurse, Physiotherapist, Pharmacist",
-      "Engineering & Tech: Software Developer, Mechanical Engineer, Robotics Engineer",
-      "Law & Public Policy: Lawyer, Civil Servant (IAS), Policy Analyst, Mediator",
-      "Arts, Media & Design: Graphic Designer, Filmmaker, Journalist, Content Creator",
-      "Business, Finance & Mgmt: Chartered Accountant, Financial Analyst, Operations Mgr"
+     "behaviourMeasured": [
+      "Investigative thinking, diagnosis, evidence gathering, analytical observation",
+      "Systems thinking, innovation, optimization, technical reasoning",
+      "Ethical reasoning, governance, policy awareness, structured decision-making",
+      "Creative communication, storytelling, audience awareness, visual thinking",
+      "Planning, resource management, execution, operational coordination"
+     ],
+     "careerSignal": [
+      "Health & Medical Sciences, Psychology, Life Sciences & Research",
+      "Engineering & Technology, Computer Science, Robotics",
+      "Law, Public Policy & Governance, Civil Services",
+      "Media, Design, Mass Communication, Digital Marketing",
+      "Business, Commerce, Management, Entrepreneurship"
      ]
     },
     {
      "type": "choice5",
      "q": "Q2",
-     "text": "If you could shadow an expert for a week during your summer break, who would you choose?",
+     "text": "You can spend a week shadowing anyone at work. What would you most want to watch them do?",
      "options": [
-      "A surgeon performing complex medical procedures or lab research.",
-      "An agronomist working on organic farming and crop genetics.",
-      "A corporate lawyer negotiating major international business deals.",
-      "An animator or creative director producing a feature film.",
-      "A startup founder pitching to investors and building a company."
+      "Shape a rough idea into something people actually notice.",
+      "Keep a complicated operation running exactly to schedule.",
+      "Work out what is really going on before deciding anything.",
+      "Take something that half works and make it work properly.",
+      "Weigh both sides of a difficult call and justify the decision."
      ],
      "riasec": [
       {
+       "A": 3,
+       "E": 1
+      },
+      {
+       "C": 3,
+       "E": 2
+      },
+      {
        "I": 3,
-       "S": 2
+       "S": 1
       },
       {
        "R": 3,
        "I": 2
       },
       {
-       "E": 3,
+       "S": 2,
+       "E": 2,
        "C": 1
-      },
-      {
-       "A": 3
-      },
-      {
-       "E": 3,
-       "A": 1
       }
      ],
      "clusterWeights": [
       {
-       "C": 5
-      },
-      {
-       "G": 5
-      },
-      {
-       "F": 5
-      },
-      {
        "D": 5
       },
       {
-       "E": 5
+       "E": 4,
+       "A": 1
+      },
+      {
+       "C": 3,
+       "G": 2
+      },
+      {
+       "B": 3,
+       "A": 2
+      },
+      {
+       "F": 4,
+       "E": 1
       }
      ],
      "careers": [
       [
-       "Doctor",
-       "Research Scientist"
+       "Graphic Designer",
+       "Animator",
+       "Journalist",
+       "Architect",
+       "Content Creator"
       ],
       [
-       "Environmental Scientist"
+       "Operations Manager",
+       "Chartered Accountant",
+       "Project Manager",
+       "Business Manager",
+       "Financial Analyst"
+      ],
+      [
+       "Doctor",
+       "Research Scientist",
+       "Psychologist",
+       "Pharmacist"
+      ],
+      [
+       "Software Engineer",
+       "Mechanical Engineer",
+       "Robotics Engineer",
+       "AI Engineer",
+       "Civil Engineer"
       ],
       [
        "Lawyer",
-       "Auditor"
-      ],
-      [
-       "Animator",
-       "Product Designer",
-       "Fashion Designer",
-       "Creative Director"
-      ],
-      [
-       "Startup Founder",
-       "Banker",
-       "Project Manager"
+       "IAS Officer",
+       "Social Worker",
+       "Counsellor"
       ]
      ],
-     "careerMatches": [
-      "Health & Medical: Surgeon, Medical Researcher, Pathologist, Biomedical Scientist",
-      "Agriculture & Allied Sciences: Agronomist, Food Technologist, Environmental Scientist",
-      "Law & Commerce: Corporate Lawyer, Legal Consultant, Compliance Officer",
-      "Arts & Design: Animator, Game Designer, Fashion Designer, Art Director",
-      "Business & Entrepreneurship: Founder/CEO, Venture Capitalist, Product Manager"
+     "behaviourMeasured": [
+      "Creative communication, storytelling, audience awareness, visual thinking",
+      "Planning, resource management, execution, operational coordination",
+      "Investigative thinking, diagnosis, evidence gathering, analytical observation",
+      "Systems thinking, innovation, optimization, technical reasoning",
+      "Ethical reasoning, governance, policy awareness, structured decision-making"
+     ],
+     "careerSignal": [
+      "Media, Design, Mass Communication, Digital Marketing",
+      "Business, Commerce, Management, Entrepreneurship",
+      "Health & Medical Sciences, Psychology, Life Sciences & Research",
+      "Engineering & Technology, Computer Science, Robotics",
+      "Law, Public Policy & Governance, Civil Services"
      ]
     },
     {
      "type": "choice5",
      "q": "Q3",
-     "text": "Your town is setting up a new Model Village Project. Where would you make the biggest impact?",
+     "text": "Your town is setting up a new Model Village Project. Where would you want to be involved?",
      "options": [
-      "Set up free health screening camps and wellness awareness.",
-      "Install modern irrigation, soil testing, and sustainable farming systems.",
-      "Construct smart bridges, renewable energy grids, and water systems.",
-      "Archive local history, write village stories, and preserve regional art.",
-      "Set up micro-finance banks and manage project budgets."
+      "Designing how the whole thing should actually function.",
+      "Making sure the rules are fair to everyone affected.",
+      "Turning the plan into a schedule and a budget that holds.",
+      "Finding out what the village actually needs, and why.",
+      "Telling the story so people want to be part of it."
      ],
      "riasec": [
-      {
-       "S": 3,
-       "I": 1
-      },
-      {
-       "R": 3,
-       "I": 1
-      },
       {
        "R": 3,
        "I": 2
       },
       {
-       "A": 3,
-       "I": 1
+       "S": 2,
+       "E": 2,
+       "C": 1
       },
       {
        "C": 3,
        "E": 2
+      },
+      {
+       "I": 3,
+       "S": 1
+      },
+      {
+       "A": 3,
+       "E": 1
       }
      ],
      "clusterWeights": [
       {
-       "C": 5
+       "A": 3,
+       "B": 2
       },
       {
-       "G": 5
+       "F": 4,
+       "E": 1
       },
       {
-       "A": 5
+       "E": 4,
+       "A": 1
+      },
+      {
+       "G": 3,
+       "C": 2
       },
       {
        "D": 5
-      },
-      {
-       "E": 5
       }
      ],
      "careers": [
       [
-       "Doctor",
-       "Physiotherapist",
-       "Operations Manager"
+       "Software Engineer",
+       "Mechanical Engineer",
+       "Robotics Engineer",
+       "AI Engineer",
+       "Civil Engineer"
       ],
       [
-       "Environmental Engineer",
-       "Environmental Scientist"
+       "Lawyer",
+       "IAS Officer",
+       "Social Worker",
+       "Counsellor"
       ],
       [
-       "Civil Engineer",
-       "Environmental Engineer",
-       "Electronics Engineer"
-      ],
-      [
-       "Teacher",
-       "Psychologist",
-       "Content Creator"
-      ],
-      [
-       "Banker",
+       "Operations Manager",
+       "Chartered Accountant",
+       "Project Manager",
+       "Business Manager",
        "Financial Analyst"
+      ],
+      [
+       "Doctor",
+       "Research Scientist",
+       "Psychologist",
+       "Pharmacist"
+      ],
+      [
+       "Graphic Designer",
+       "Animator",
+       "Journalist",
+       "Architect",
+       "Content Creator"
       ]
      ],
-     "careerMatches": [
-      "Health & Allied Health: Community Health Specialist, Nutritionist, Public Health Mgr",
-      "Agriculture & Earth Sciences: Agricultural Engineer, Soil Scientist, Forester",
-      "Engineering: Civil Engineer, Renewable Energy Specialist, Electrical Engineer",
-      "Humanities & Social Sciences: Historian, Anthropologist, Writer, Sociologist",
-      "Finance & Banking: Investment Banker, Microfinance Officer, Risk Analyst"
+     "behaviourMeasured": [
+      "Systems thinking, innovation, optimization, technical reasoning",
+      "Ethical reasoning, governance, policy awareness, structured decision-making",
+      "Planning, resource management, execution, operational coordination",
+      "Investigative thinking, diagnosis, evidence gathering, analytical observation",
+      "Creative communication, storytelling, audience awareness, visual thinking"
+     ],
+     "careerSignal": [
+      "Engineering & Technology, Computer Science, Robotics",
+      "Law, Public Policy & Governance, Civil Services",
+      "Business, Commerce, Management, Entrepreneurship",
+      "Health & Medical Sciences, Psychology, Life Sciences & Research",
+      "Media, Design, Mass Communication, Digital Marketing"
      ]
     },
     {
      "type": "choice5",
      "q": "Q4",
-     "text": "For your Class 10 annual exhibition, which project topic would you be most eager to lead?",
+     "text": "For your Class 10 exhibition you can lead one project. Which appeals to you most?",
      "options": [
-      "Studying human anatomy, genetics, or disease prevention methods.",
-      "Building an automated solar tracker or smart home automation kit.",
-      "Debating constitutional rights, international relations, or student laws.",
-      "Displaying fine arts, photography, digital illustration, or set design.",
-      "Running a live stock-market simulation or business pitch deck."
+      "One with many moving parts that must come together on time.",
+      "One that looks and feels like nothing else on show.",
+      "One where I build something and keep improving how it works.",
+      "One that takes a contested issue and argues it properly.",
+      "One where I test an idea and find out whether it holds up."
      ],
      "riasec": [
       {
-       "I": 3,
-       "S": 1
+       "C": 3,
+       "E": 2
+      },
+      {
+       "A": 3,
+       "E": 1
       },
       {
        "R": 3,
        "I": 2
       },
       {
+       "S": 2,
        "E": 2,
-       "S": 2
+       "C": 1
       },
       {
-       "A": 3
-      },
-      {
-       "E": 3,
-       "C": 2
+       "I": 3,
+       "S": 1
       }
      ],
      "clusterWeights": [
       {
-       "C": 5
-      },
-      {
-       "B": 5
-      },
-      {
-       "F": 5
+       "E": 4,
+       "A": 1
       },
       {
        "D": 5
       },
       {
-       "E": 5
+       "B": 3,
+       "A": 2
+      },
+      {
+       "F": 4,
+       "E": 1
+      },
+      {
+       "C": 3,
+       "G": 2
       }
      ],
      "careers": [
       [
-       "Doctor",
-       "Research Scientist"
-      ],
-      [
-       "AI Engineer",
-       "Electronics Engineer",
-       "Environmental Engineer"
-      ],
-      [
-       "Lawyer",
-       "IAS Officer"
+       "Operations Manager",
+       "Chartered Accountant",
+       "Project Manager",
+       "Business Manager",
+       "Financial Analyst"
       ],
       [
        "Graphic Designer",
-       "Content Creator",
-       "Interior Designer"
+       "Animator",
+       "Journalist",
+       "Architect",
+       "Content Creator"
       ],
       [
-       "Economist",
-       "Financial Analyst",
-       "Digital Marketer",
-       "Business Analyst"
+       "Software Engineer",
+       "Mechanical Engineer",
+       "Robotics Engineer",
+       "AI Engineer",
+       "Civil Engineer"
+      ],
+      [
+       "Lawyer",
+       "IAS Officer",
+       "Social Worker",
+       "Counsellor"
+      ],
+      [
+       "Doctor",
+       "Research Scientist",
+       "Psychologist",
+       "Pharmacist"
       ]
      ],
-     "careerMatches": [
-      "Medical & Life Sciences: Physician, Geneticist, Microbiologist, Biotechnologist",
-      "Engineering & AI: AI Engineer, Electronics Engineer, Energy Systems Engineer",
-      "Law, Politics & Humanities: Criminal Lawyer, Diplomat, Political Analyst, Advocate",
-      "Arts & Creative Fields: Fine Artist, Photographer, Interior Designer, Illustrator",
-      "Business & Economics: Economist, Stock Broker, Marketing Manager, Business Analyst"
+     "behaviourMeasured": [
+      "Planning, resource management, execution, operational coordination",
+      "Creative communication, storytelling, audience awareness, visual thinking",
+      "Systems thinking, innovation, optimization, technical reasoning",
+      "Ethical reasoning, governance, policy awareness, structured decision-making",
+      "Investigative thinking, diagnosis, evidence gathering, analytical observation"
+     ],
+     "careerSignal": [
+      "Business, Commerce, Management, Entrepreneurship",
+      "Media, Design, Mass Communication, Digital Marketing",
+      "Engineering & Technology, Computer Science, Robotics",
+      "Law, Public Policy & Governance, Civil Services",
+      "Health & Medical Sciences, Psychology, Life Sciences & Research"
      ]
     },
     {
      "type": "choice5",
      "q": "Q5",
-     "text": "If you were given ₹10,000 to launch a student-led initiative, what would you fund?",
+     "text": "You are given ₹10,000 for a student-led initiative. What would you put it into?",
      "options": [
-      "Rehabilitation equipment or mental health therapy sessions for peers.",
-      "Vertical hydroponic kits or organic seed beds for your school garden.",
-      "A mobile coding lab or 3D printing setup for young inventors.",
-      "A theatre production, podcast studio, or school newspaper magazine.",
-      "An e-commerce store reselling handmade goods to earn profit."
+      "Something that fixes an unfairness people have stopped noticing.",
+      "Finding out why a problem keeps coming back.",
+      "Something people will still remember long after it ends.",
+      "Something that runs reliably every week without me.",
+      "Building a tool that saves everyone time."
      ],
      "riasec": [
       {
-       "S": 3,
-       "I": 1
-      },
-      {
-       "R": 3,
-       "I": 1
+       "S": 2,
+       "E": 2,
+       "C": 1
       },
       {
        "I": 3,
-       "R": 2
+       "S": 1
       },
       {
        "A": 3,
        "E": 1
       },
       {
-       "E": 3,
-       "C": 2
+       "C": 3,
+       "E": 2
+      },
+      {
+       "R": 3,
+       "I": 2
       }
      ],
      "clusterWeights": [
       {
-       "C": 5
+       "F": 4,
+       "E": 1
       },
       {
-       "G": 5
-      },
-      {
-       "B": 5
+       "G": 3,
+       "C": 2
       },
       {
        "D": 5
       },
       {
-       "E": 5
+       "E": 4,
+       "A": 1
+      },
+      {
+       "B": 3,
+       "A": 2
       }
      ],
      "careers": [
       [
-       "Psychologist",
-       "Physiotherapist",
+       "Lawyer",
+       "IAS Officer",
+       "Social Worker",
        "Counsellor"
       ],
       [
-       "Environmental Scientist",
-       "Entrepreneur"
+       "Doctor",
+       "Research Scientist",
+       "Psychologist",
+       "Pharmacist"
       ],
       [
-       "Electronics Engineer",
-       "Software Engineer",
-       "Robotics Engineer"
-      ],
-      [
+       "Graphic Designer",
+       "Animator",
        "Journalist",
-       "Creative Director",
-       "Media Professional",
+       "Architect",
        "Content Creator"
       ],
       [
-       "Digital Marketer",
-       "Financial Planner"
+       "Operations Manager",
+       "Chartered Accountant",
+       "Project Manager",
+       "Business Manager",
+       "Financial Analyst"
+      ],
+      [
+       "Software Engineer",
+       "Mechanical Engineer",
+       "Robotics Engineer",
+       "AI Engineer",
+       "Civil Engineer"
       ]
      ],
-     "careerMatches": [
-      "Allied Health & Psychology: Clinical Psychologist, Occupational Therapist, Speech Therapist",
-      "Agriculture & Food Tech: Food Scientist, Horticulturist, Agricultural Businessman",
-      "Tech & Hardware: Hardware Engineer, Software Architect, Mechatronics Specialist",
-      "Media, Journalism & Arts: Journalist, Theatre Director, Radio Jockey, Copywriter",
-      "Commerce & Management: E-commerce Manager, Sales Director, Financial Planner"
+     "behaviourMeasured": [
+      "Ethical reasoning, governance, policy awareness, structured decision-making",
+      "Investigative thinking, diagnosis, evidence gathering, analytical observation",
+      "Creative communication, storytelling, audience awareness, visual thinking",
+      "Planning, resource management, execution, operational coordination",
+      "Systems thinking, innovation, optimization, technical reasoning"
+     ],
+     "careerSignal": [
+      "Law, Public Policy & Governance, Civil Services",
+      "Health & Medical Sciences, Psychology, Life Sciences & Research",
+      "Media, Design, Mass Communication, Digital Marketing",
+      "Business, Commerce, Management, Entrepreneurship",
+      "Engineering & Technology, Computer Science, Robotics"
      ]
     },
     {
      "type": "choice5",
      "q": "Q6",
-     "text": "Which type of books, documentary channels, or podcasts capture your attention most?",
+     "text": "Which kind of story keeps you reading or watching the longest?",
      "options": [
-      "Medical breakthroughs, human brain mysteries, or emergency ER stories.",
-      "Wildlife conservation, forest ecosystems, and sustainable agriculture.",
-      "Space exploration, coding tutorials, and advanced robotics breakthroughs.",
-      "Crime thrillers, courtroom dramas, philosophy, and history podcasts.",
-      "Case studies on Fortune 500 companies, stock markets, and economics."
+      "How someone worked out the cause of something puzzling.",
+      "How a huge undertaking was pulled off without falling apart.",
+      "How a difficult decision was argued over and finally settled.",
+      "How something was built to do what nobody thought possible.",
+      "How an idea was made striking enough to change minds."
      ],
      "riasec": [
       {
        "I": 3,
        "S": 1
-      },
-      {
-       "I": 3,
-       "R": 2
-      },
-      {
-       "I": 3,
-       "R": 2
-      },
-      {
-       "A": 2,
-       "S": 1,
-       "E": 1
-      },
-      {
-       "E": 3,
-       "C": 2
-      }
-     ],
-     "clusterWeights": [
-      {
-       "C": 5
-      },
-      {
-       "G": 5
-      },
-      {
-       "B": 5
-      },
-      {
-       "F": 5
-      },
-      {
-       "E": 5
-      }
-     ],
-     "careers": [
-      [
-       "Research Scientist",
-       "Doctor"
-      ],
-      [
-       "Environmental Scientist",
-       "Lawyer"
-      ],
-      [
-       "Research Scientist",
-       "Data Scientist",
-       "Software Engineer"
-      ],
-      [
-       "Psychologist",
-       "Lawyer",
-       "Journalist",
-       "Teacher"
-      ],
-      [
-       "Consultant",
-       "Chartered Accountant",
-       "Financial Analyst",
-       "Auditor"
-      ]
-     ],
-     "careerMatches": [
-      "Health & Medical Sciences: Neuroscientist, Doctor, Radiologist, Anesthetist",
-      "Environment & Agriculture: Wildlife Biologist, Zoologist, Environmental Lawyer",
-      "Science & Technology: Astrophysicist, Data Scientist, Cybersecurity Analyst",
-      "Law, Criminology & Arts: Criminologist, Judge, Legal Journalist, Philosopher",
-      "Business & Finance: Business Consultant, Chartered Accountant (CA), CFA, Auditor"
-     ]
-    },
-    {
-     "type": "choice5",
-     "q": "Q7",
-     "text": "During a crisis like a sudden epidemic in a school hostel, what is your instinct?",
-     "options": [
-      "Administer first aid, isolate the sick, and monitor physical symptoms.",
-      "Comfort anxious students, offer counseling, and boost team morale.",
-      "Study health guidelines, ensure legal protocols, and enforce safety rules.",
-      "Create clear infographics and announcements to keep everyone informed.",
-      "Audit food/water supplies, manage logistics, and secure needed funds."
-     ],
-     "riasec": [
-      {
-       "S": 3,
-       "R": 1
-      },
-      {
-       "S": 3,
-       "A": 1
-      },
-      {
-       "C": 3,
-       "S": 1
-      },
-      {
-       "A": 3,
-       "E": 1
-      },
-      {
-       "C": 3,
-       "E": 2
-      }
-     ],
-     "clusterWeights": [
-      {
-       "C": 5
-      },
-      {
-       "F": 5
-      },
-      {
-       "F": 5
-      },
-      {
-       "D": 5
-      },
-      {
-       "E": 5
-      }
-     ],
-     "careers": [
-      [
-       "Doctor"
-      ],
-      [
-       "Counsellor",
-       "Psychologist",
-       "HR Manager",
-       "Social Worker"
-      ],
-      [
-       "Operations Manager",
-       "Auditor",
-       "IAS Officer"
-      ],
-      [
-       "Media Professional",
-       "Graphic Designer"
-      ],
-      [
-       "Supply Chain Manager"
-      ]
-     ],
-     "careerMatches": [
-      "Medical & Emergency Health: Emergency Doctor, Epidemiologist, Paramedic",
-      "Psychology & Human Resources: Counselor, Psychologist, HR Manager, Social Worker",
-      "Law & Administration: Hospital Administrator, Compliance Officer, Civil Servant",
-      "Design & Communication: PR Specialist, Communications Mgr, Visual Designer",
-      "Operations & Supply Chain: Supply Chain Manager, Procurement Officer, Logistics Head"
-     ]
-    },
-    {
-     "type": "choice5",
-     "q": "Q8",
-     "text": "What kind of practical problem would you feel most proud to solve in your career?",
-     "options": [
-      "Finding affordable cures or treatments for rare diseases.",
-      "Improving crop yields to tackle hunger without harming the soil.",
-      "Designing cleaner engines, faster computers, or automated systems.",
-      "Defending human rights, fighting injustice, or reforming laws.",
-      "Restructuring an struggling business to make it highly profitable."
-     ],
-     "riasec": [
-      {
-       "I": 3,
-       "S": 2
-      },
-      {
-       "R": 3,
-       "I": 2
-      },
-      {
-       "R": 3,
-       "I": 2
-      },
-      {
-       "S": 3,
-       "E": 2
-      },
-      {
-       "E": 3,
-       "C": 2
-      }
-     ],
-     "clusterWeights": [
-      {
-       "C": 5
-      },
-      {
-       "G": 5
-      },
-      {
-       "A": 5
-      },
-      {
-       "F": 5
-      },
-      {
-       "E": 5
-      }
-     ],
-     "careers": [
-      [
-       "Pharmacist",
-       "Doctor",
-       "Research Scientist"
-      ],
-      [
-       "Environmental Scientist",
-       "Economist"
-      ],
-      [
-       "Mechanical Engineer",
-       "Software Engineer",
-       "Engineer"
-      ],
-      [
-       "Lawyer",
-       "Social Worker",
-       "IAS Officer"
-      ],
-      [
-       "Consultant",
-       "Financial Planner"
-      ]
-     ],
-     "careerMatches": [
-      "Medical Research: Pharmacologist, Oncologist, Genetic Researcher",
-      "Agriculture Science: Soil Chemist, Plant Breeder, Agricultural Economist",
-      "Core Engineering: Automobile Engineer, Computer Engineer, Chemical Engineer",
-      "Legal & Social Services: Human Rights Lawyer, Judge, NGO Leader, Policy Maker",
-      "Corporate Management: Management Consultant, Chief Financial Officer (CFO), Strategist"
-     ]
-    },
-    {
-     "type": "choice5",
-     "q": "Q9",
-     "text": "What kind of work environment sounds most appealing to you long-term?",
-     "options": [
-      "A modern hospital, clinical lab, or emergency medical center.",
-      "Outdoor fields, greenhouses, research farms, or natural reserves.",
-      "A modern tech hub, engineering workshop, or R&D lab.",
-      "A courtroom, law firm, media studio, or publishing house.",
-      "A corporate boardroom, stock exchange floor, or financial firm."
-     ],
-     "riasec": [
-      {
-       "S": 3,
-       "I": 2
-      },
-      {
-       "R": 3,
-       "I": 1
-      },
-      {
-       "R": 3,
-       "I": 3
-      },
-      {
-       "A": 2,
-       "E": 2,
-       "S": 1
-      },
-      {
-       "E": 3,
-       "C": 3
-      }
-     ],
-     "clusterWeights": [
-      {
-       "C": 5
-      },
-      {
-       "G": 5
-      },
-      {
-       "B": 5
-      },
-      {
-       "F": 5
-      },
-      {
-       "E": 5
-      }
-     ],
-     "careers": [
-      [
-       "Doctor",
-       "Research Scientist",
-       "Pharmacist"
-      ],
-      [
-       "Environmental Scientist"
-      ],
-      [
-       "Software Engineer",
-       "Mechanical Engineer",
-       "Robotics Engineer"
-      ],
-      [
-       "Lawyer",
-       "Journalist",
-       "Creative Director"
-      ],
-      [
-       "Banker",
-       "Financial Analyst",
-       "Business Manager"
-      ]
-     ],
-     "careerMatches": [
-      "Health Sciences: Physician, Clinical Researcher, Surgeon, Medical Technologist",
-      "Agriculture & Earth: Forester, Environmental Consultant, Agricultural Scientist",
-      "Engineering & Tech: Software Engineer, Mechanical Engineer, Robotics Researcher",
-      "Law & Creative Arts: Advocate, Journalist, Editor, Creative Director",
-      "Business & Finance: Investment Banker, Equity Analyst, Corporate Executive"
-     ]
-    },
-    {
-     "type": "choice5",
-     "q": "Q10",
-     "text": "If you could take a specialized elective course next term, which would you pick?",
-     "options": [
-      "Human Physiology, Nutrition, and Clinical Health Basics.",
-      "Environmental Science, Crop Care, and Biotechnology.",
-      "Python Programming, Electronics, and Applied Mathematics.",
-      "World History, Constitutional Law, and Creative Writing.",
-      "Financial Accounting, Entrepreneurship, and Business Marketing."
-     ],
-     "riasec": [
-      {
-       "I": 3,
-       "S": 2
-      },
-      {
-       "I": 3,
-       "R": 2
-      },
-      {
-       "I": 3,
-       "R": 2
-      },
-      {
-       "A": 3,
-       "S": 1
-      },
-      {
-       "C": 3,
-       "E": 3
-      }
-     ],
-     "clusterWeights": [
-      {
-       "C": 5
-      },
-      {
-       "G": 5
-      },
-      {
-       "B": 5
-      },
-      {
-       "F": 5
-      },
-      {
-       "E": 5
-      }
-     ],
-     "careers": [
-      [
-       "Physiotherapist"
-      ],
-      [
-       "Environmental Scientist",
-       "Research Scientist"
-      ],
-      [
-       "Data Analyst",
-       "Software Engineer",
-       "Electronics Engineer"
-      ],
-      [
-       "Teacher",
-       "IAS Officer",
-       "Journalist",
-       "Lawyer"
-      ],
-      [
-       "Chartered Accountant",
-       "Digital Marketer",
-       "Financial Planner"
-      ]
-     ],
-     "careerMatches": [
-      "Health & Allied Sciences: Dietitian, Physiotherapist, Sports Medicine Specialist",
-      "Life Sciences & Agriculture: Botanist, Biotechnologist, Agronomist",
-      "Engineering & Analytics: Data Analyst, Software Engineer, Electrical Engineer",
-      "Law & Humanities: Historian, Political Scientist, Journalist, Legal Scholar",
-      "Commerce & Management: Accountant, Marketing Strategist, Finance Manager"
-     ]
-    },
-    {
-     "type": "choice5",
-     "q": "Q11",
-     "text": "A company offers ten students a one-month paid internship. Which team would you ask to join?",
-     "options": [
-      "The team working out why the product keeps failing.",
-      "The team redesigning how the product looks and feels.",
-      "The team training new users and answering their questions.",
-      "The team tracking costs, stock and delivery schedules.",
-      "The team testing whether the product is safe for people to use."
-     ],
-     "riasec": [
-      {
-       "I": 3,
-       "R": 2
-      },
-      {
-       "A": 3
-      },
-      {
-       "S": 3,
-       "E": 3
-      },
-      {
-       "C": 3,
-       "E": 3
-      },
-      {
-       "I": 3,
-       "C": 2
-      }
-     ],
-     "clusterWeights": [
-      {
-       "B": 5
-      },
-      {
-       "D": 5
-      },
-      {
-       "F": 5
-      },
-      {
-       "E": 5
-      },
-      {
-       "C": 5
-      }
-     ],
-     "careers": [
-      [
-       "Research Scientist",
-       "AI Engineer",
-       "Software Engineer"
-      ],
-      [
-       "Architect",
-       "Product Designer",
-       "Graphic Designer"
-      ],
-      [
-       "Teacher",
-       "Psychologist",
-       "Lawyer"
-      ],
-      [
-       "Business Manager",
-       "Chartered Accountant",
-       "Operations Manager"
-      ],
-      [
-       "Research Scientist",
-       "Pharmacist",
-       "Auditor"
-      ]
-     ],
-     "careerMatches": [
-      "Research Scientist, AI Engineer, Software Engineer",
-      "Architect, UX Designer, Graphic Designer",
-      "Teacher, Psychologist, Lawyer",
-      "Business Manager, Chartered Accountant, Operations Manager",
-      "Clinical Research Associate, Pharmacologist, Quality & Safety Officer"
-     ]
-    },
-    {
-     "type": "choice5",
-     "q": "Q12",
-     "text": "Your school is starting a student-run magazine and website. Which role would you take?",
-     "options": [
-      "Research the stories, check the facts, and build the website.",
-      "Design the layout, illustrations, photographs, and cover art.",
-      "Interview people, build the writing team, and reply to readers.",
-      "Handle advertising, budgets, and the publishing schedule.",
-      "Cover the health, fitness and wellbeing section for students."
-     ],
-     "riasec": [
-      {
-       "I": 3,
-       "R": 2
-      },
-      {
-       "A": 3
-      },
-      {
-       "S": 3,
-       "E": 2
       },
       {
        "C": 3,
@@ -9732,60 +9331,717 @@
       },
       {
        "S": 2,
-       "A": 2,
-       "I": 1
+       "E": 2,
+       "C": 1
+      },
+      {
+       "R": 3,
+       "I": 2
+      },
+      {
+       "A": 3,
+       "E": 1
       }
      ],
      "clusterWeights": [
       {
-       "B": 5
+       "G": 3,
+       "C": 2
+      },
+      {
+       "E": 4,
+       "A": 1
+      },
+      {
+       "F": 4,
+       "E": 1
+      },
+      {
+       "B": 3,
+       "A": 2
+      },
+      {
+       "D": 5
+      }
+     ],
+     "careers": [
+      [
+       "Doctor",
+       "Research Scientist",
+       "Psychologist",
+       "Pharmacist"
+      ],
+      [
+       "Operations Manager",
+       "Chartered Accountant",
+       "Project Manager",
+       "Business Manager",
+       "Financial Analyst"
+      ],
+      [
+       "Lawyer",
+       "IAS Officer",
+       "Social Worker",
+       "Counsellor"
+      ],
+      [
+       "Software Engineer",
+       "Mechanical Engineer",
+       "Robotics Engineer",
+       "AI Engineer",
+       "Civil Engineer"
+      ],
+      [
+       "Graphic Designer",
+       "Animator",
+       "Journalist",
+       "Architect",
+       "Content Creator"
+      ]
+     ],
+     "behaviourMeasured": [
+      "Investigative thinking, diagnosis, evidence gathering, analytical observation",
+      "Planning, resource management, execution, operational coordination",
+      "Ethical reasoning, governance, policy awareness, structured decision-making",
+      "Systems thinking, innovation, optimization, technical reasoning",
+      "Creative communication, storytelling, audience awareness, visual thinking"
+     ],
+     "careerSignal": [
+      "Health & Medical Sciences, Psychology, Life Sciences & Research",
+      "Business, Commerce, Management, Entrepreneurship",
+      "Law, Public Policy & Governance, Civil Services",
+      "Engineering & Technology, Computer Science, Robotics",
+      "Media, Design, Mass Communication, Digital Marketing"
+     ]
+    },
+    {
+     "type": "choice5",
+     "q": "Q7",
+     "text": "Something goes badly wrong on a school trip. What do you find yourself doing?",
+     "options": [
+      "Fixing whatever has stopped working.",
+      "Getting a clear message out so nobody panics.",
+      "Working out what actually happened before anyone reacts.",
+      "Checking what we are responsible for and what the rules say.",
+      "Getting people, supplies and transport organised."
+     ],
+     "riasec": [
+      {
+       "R": 3,
+       "I": 2
+      },
+      {
+       "A": 3,
+       "E": 1
+      },
+      {
+       "I": 3,
+       "S": 1
+      },
+      {
+       "S": 2,
+       "E": 2,
+       "C": 1
+      },
+      {
+       "C": 3,
+       "E": 2
+      }
+     ],
+     "clusterWeights": [
+      {
+       "A": 3,
+       "B": 2
       },
       {
        "D": 5
       },
       {
-       "F": 5
+       "C": 3,
+       "G": 2
       },
       {
-       "E": 5
+       "F": 4,
+       "E": 1
       },
       {
-       "C": 5
+       "E": 4,
+       "A": 1
       }
      ],
      "careers": [
       [
        "Software Engineer",
-       "Data Analyst",
-       "Research Scientist"
+       "Mechanical Engineer",
+       "Robotics Engineer",
+       "AI Engineer",
+       "Civil Engineer"
       ],
       [
        "Graphic Designer",
        "Animator",
-       "Product Designer"
-      ],
-      [
-       "Teacher",
-       "Lawyer",
-       "Psychologist"
-      ],
-      [
-       "Business Manager",
-       "Financial Analyst",
-       "Digital Marketer"
-      ],
-      [
        "Journalist",
-       "Teacher",
+       "Architect",
+       "Content Creator"
+      ],
+      [
+       "Doctor",
+       "Research Scientist",
+       "Psychologist",
+       "Pharmacist"
+      ],
+      [
+       "Lawyer",
+       "IAS Officer",
+       "Social Worker",
+       "Counsellor"
+      ],
+      [
+       "Operations Manager",
+       "Chartered Accountant",
+       "Project Manager",
+       "Business Manager",
+       "Financial Analyst"
+      ]
+     ],
+     "behaviourMeasured": [
+      "Systems thinking, innovation, optimization, technical reasoning",
+      "Creative communication, storytelling, audience awareness, visual thinking",
+      "Investigative thinking, diagnosis, evidence gathering, analytical observation",
+      "Ethical reasoning, governance, policy awareness, structured decision-making",
+      "Planning, resource management, execution, operational coordination"
+     ],
+     "careerSignal": [
+      "Engineering & Technology, Computer Science, Robotics",
+      "Media, Design, Mass Communication, Digital Marketing",
+      "Health & Medical Sciences, Psychology, Life Sciences & Research",
+      "Law, Public Policy & Governance, Civil Services",
+      "Business, Commerce, Management, Entrepreneurship"
+     ]
+    },
+    {
+     "type": "choice5",
+     "q": "Q8",
+     "text": "Which problem would you be proudest to have solved twenty years from now?",
+     "options": [
+      "One where I changed how people see something.",
+      "One where I left a system fairer than I found it.",
+      "One where I made something work at a scale nobody had managed.",
+      "One where I made a thing dramatically better than it was.",
+      "One where I found the answer nobody else could find."
+     ],
+     "riasec": [
+      {
+       "A": 3,
+       "E": 1
+      },
+      {
+       "S": 2,
+       "E": 2,
+       "C": 1
+      },
+      {
+       "C": 3,
+       "E": 2
+      },
+      {
+       "R": 3,
+       "I": 2
+      },
+      {
+       "I": 3,
+       "S": 1
+      }
+     ],
+     "clusterWeights": [
+      {
+       "D": 5
+      },
+      {
+       "F": 4,
+       "E": 1
+      },
+      {
+       "E": 4,
+       "A": 1
+      },
+      {
+       "B": 3,
+       "A": 2
+      },
+      {
+       "G": 3,
+       "C": 2
+      }
+     ],
+     "careers": [
+      [
+       "Graphic Designer",
+       "Animator",
+       "Journalist",
+       "Architect",
+       "Content Creator"
+      ],
+      [
+       "Lawyer",
+       "IAS Officer",
+       "Social Worker",
+       "Counsellor"
+      ],
+      [
+       "Operations Manager",
+       "Chartered Accountant",
+       "Project Manager",
+       "Business Manager",
+       "Financial Analyst"
+      ],
+      [
+       "Software Engineer",
+       "Mechanical Engineer",
+       "Robotics Engineer",
+       "AI Engineer",
+       "Civil Engineer"
+      ],
+      [
+       "Doctor",
+       "Research Scientist",
+       "Psychologist",
+       "Pharmacist"
+      ]
+     ],
+     "behaviourMeasured": [
+      "Creative communication, storytelling, audience awareness, visual thinking",
+      "Ethical reasoning, governance, policy awareness, structured decision-making",
+      "Planning, resource management, execution, operational coordination",
+      "Systems thinking, innovation, optimization, technical reasoning",
+      "Investigative thinking, diagnosis, evidence gathering, analytical observation"
+     ],
+     "careerSignal": [
+      "Media, Design, Mass Communication, Digital Marketing",
+      "Law, Public Policy & Governance, Civil Services",
+      "Business, Commerce, Management, Entrepreneurship",
+      "Engineering & Technology, Computer Science, Robotics",
+      "Health & Medical Sciences, Psychology, Life Sciences & Research"
+     ]
+    },
+    {
+     "type": "choice5",
+     "q": "Q9",
+     "text": "Picture your work ten years from now. What would make it a good day?",
+     "options": [
+      "Everything I set up ran exactly as it should.",
+      "I finally got a stubborn thing working.",
+      "I made something I was proud to show people.",
+      "I understood something that had been puzzling me for weeks.",
+      "I argued a difficult case and got it right."
+     ],
+     "riasec": [
+      {
+       "C": 3,
+       "E": 2
+      },
+      {
+       "R": 3,
+       "I": 2
+      },
+      {
+       "A": 3,
+       "E": 1
+      },
+      {
+       "I": 3,
+       "S": 1
+      },
+      {
+       "S": 2,
+       "E": 2,
+       "C": 1
+      }
+     ],
+     "clusterWeights": [
+      {
+       "E": 4,
+       "A": 1
+      },
+      {
+       "A": 3,
+       "B": 2
+      },
+      {
+       "D": 5
+      },
+      {
+       "C": 3,
+       "G": 2
+      },
+      {
+       "F": 4,
+       "E": 1
+      }
+     ],
+     "careers": [
+      [
+       "Operations Manager",
+       "Chartered Accountant",
+       "Project Manager",
+       "Business Manager",
+       "Financial Analyst"
+      ],
+      [
+       "Software Engineer",
+       "Mechanical Engineer",
+       "Robotics Engineer",
+       "AI Engineer",
+       "Civil Engineer"
+      ],
+      [
+       "Graphic Designer",
+       "Animator",
+       "Journalist",
+       "Architect",
+       "Content Creator"
+      ],
+      [
+       "Doctor",
+       "Research Scientist",
+       "Psychologist",
+       "Pharmacist"
+      ],
+      [
+       "Lawyer",
+       "IAS Officer",
+       "Social Worker",
+       "Counsellor"
+      ]
+     ],
+     "behaviourMeasured": [
+      "Planning, resource management, execution, operational coordination",
+      "Systems thinking, innovation, optimization, technical reasoning",
+      "Creative communication, storytelling, audience awareness, visual thinking",
+      "Investigative thinking, diagnosis, evidence gathering, analytical observation",
+      "Ethical reasoning, governance, policy awareness, structured decision-making"
+     ],
+     "careerSignal": [
+      "Business, Commerce, Management, Entrepreneurship",
+      "Engineering & Technology, Computer Science, Robotics",
+      "Media, Design, Mass Communication, Digital Marketing",
+      "Health & Medical Sciences, Psychology, Life Sciences & Research",
+      "Law, Public Policy & Governance, Civil Services"
+     ]
+    },
+    {
+     "type": "choice5",
+     "q": "Q10",
+     "text": "You can add one extra subject next term, purely because you want to. What draws you?",
+     "options": [
+      "One that trains you to reason through hard, contested questions.",
+      "One that trains you to express an idea so that it lands.",
+      "One that trains you to test a claim properly.",
+      "One that trains you to run something from end to end.",
+      "One that trains you to design and build."
+     ],
+     "riasec": [
+      {
+       "S": 2,
+       "E": 2,
+       "C": 1
+      },
+      {
+       "A": 3,
+       "E": 1
+      },
+      {
+       "I": 3,
+       "S": 1
+      },
+      {
+       "C": 3,
+       "E": 2
+      },
+      {
+       "R": 3,
+       "I": 2
+      }
+     ],
+     "clusterWeights": [
+      {
+       "F": 4,
+       "E": 1
+      },
+      {
+       "D": 5
+      },
+      {
+       "C": 3,
+       "G": 2
+      },
+      {
+       "E": 4,
+       "A": 1
+      },
+      {
+       "B": 3,
+       "A": 2
+      }
+     ],
+     "careers": [
+      [
+       "Lawyer",
+       "IAS Officer",
+       "Social Worker",
+       "Counsellor"
+      ],
+      [
+       "Graphic Designer",
+       "Animator",
+       "Journalist",
+       "Architect",
+       "Content Creator"
+      ],
+      [
+       "Doctor",
+       "Research Scientist",
+       "Psychologist",
+       "Pharmacist"
+      ],
+      [
+       "Operations Manager",
+       "Chartered Accountant",
+       "Project Manager",
+       "Business Manager",
+       "Financial Analyst"
+      ],
+      [
+       "Software Engineer",
+       "Mechanical Engineer",
+       "Robotics Engineer",
+       "AI Engineer",
+       "Civil Engineer"
+      ]
+     ],
+     "behaviourMeasured": [
+      "Ethical reasoning, governance, policy awareness, structured decision-making",
+      "Creative communication, storytelling, audience awareness, visual thinking",
+      "Investigative thinking, diagnosis, evidence gathering, analytical observation",
+      "Planning, resource management, execution, operational coordination",
+      "Systems thinking, innovation, optimization, technical reasoning"
+     ],
+     "careerSignal": [
+      "Law, Public Policy & Governance, Civil Services",
+      "Media, Design, Mass Communication, Digital Marketing",
+      "Health & Medical Sciences, Psychology, Life Sciences & Research",
+      "Business, Commerce, Management, Entrepreneurship",
+      "Engineering & Technology, Computer Science, Robotics"
+     ]
+    },
+    {
+     "type": "choice5",
+     "q": "Q11",
+     "text": "A company offers you a month with any one of its teams. Which do you ask for?",
+     "options": [
+      "The team working out why the product keeps failing.",
+      "The team rebuilding how the product actually works.",
+      "The team keeping costs, stock and delivery on track.",
+      "The team making sure it is safe and above board.",
+      "The team deciding how it should look and feel."
+     ],
+     "riasec": [
+      {
+       "I": 3,
+       "S": 1
+      },
+      {
+       "R": 3,
+       "I": 2
+      },
+      {
+       "C": 3,
+       "E": 2
+      },
+      {
+       "S": 2,
+       "E": 2,
+       "C": 1
+      },
+      {
+       "A": 3,
+       "E": 1
+      }
+     ],
+     "clusterWeights": [
+      {
+       "C": 3,
+       "G": 2
+      },
+      {
+       "A": 3,
+       "B": 2
+      },
+      {
+       "E": 4,
+       "A": 1
+      },
+      {
+       "F": 4,
+       "E": 1
+      },
+      {
+       "D": 5
+      }
+     ],
+     "careers": [
+      [
+       "Doctor",
+       "Research Scientist",
+       "Psychologist",
+       "Pharmacist"
+      ],
+      [
+       "Software Engineer",
+       "Mechanical Engineer",
+       "Robotics Engineer",
+       "AI Engineer",
+       "Civil Engineer"
+      ],
+      [
+       "Operations Manager",
+       "Chartered Accountant",
+       "Project Manager",
+       "Business Manager",
+       "Financial Analyst"
+      ],
+      [
+       "Lawyer",
+       "IAS Officer",
+       "Social Worker",
+       "Counsellor"
+      ],
+      [
+       "Graphic Designer",
+       "Animator",
+       "Journalist",
+       "Architect",
        "Content Creator"
       ]
      ],
-     "careerMatches": [
-      "Software Engineer, Data Analyst, Research Scientist",
-      "Graphic Designer, Animator, Product Designer",
-      "Teacher, Lawyer, Psychologist",
-      "Business Manager, Financial Analyst, Digital Marketer",
-      "Health Journalist, Public Health Educator, Medical Writer"
+     "behaviourMeasured": [
+      "Investigative thinking, diagnosis, evidence gathering, analytical observation",
+      "Systems thinking, innovation, optimization, technical reasoning",
+      "Planning, resource management, execution, operational coordination",
+      "Ethical reasoning, governance, policy awareness, structured decision-making",
+      "Creative communication, storytelling, audience awareness, visual thinking"
+     ],
+     "careerSignal": [
+      "Health & Medical Sciences, Psychology, Life Sciences & Research",
+      "Engineering & Technology, Computer Science, Robotics",
+      "Business, Commerce, Management, Entrepreneurship",
+      "Law, Public Policy & Governance, Civil Services",
+      "Media, Design, Mass Communication, Digital Marketing"
+     ]
+    },
+    {
+     "type": "choice5",
+     "q": "Q12",
+     "text": "Your school starts a student magazine and website. Which job do you take?",
+     "options": [
+      "Deciding how it looks and how each story gets told.",
+      "Digging out the facts and checking that they hold up.",
+      "Building the site and keeping it fast and working.",
+      "Running the schedule, the budget and the ad slots.",
+      "Deciding what we should and should not publish."
+     ],
+     "riasec": [
+      {
+       "A": 3,
+       "E": 1
+      },
+      {
+       "I": 3,
+       "S": 1
+      },
+      {
+       "R": 3,
+       "I": 2
+      },
+      {
+       "C": 3,
+       "E": 2
+      },
+      {
+       "S": 2,
+       "E": 2,
+       "C": 1
+      }
+     ],
+     "clusterWeights": [
+      {
+       "D": 5
+      },
+      {
+       "C": 3,
+       "G": 2
+      },
+      {
+       "B": 3,
+       "A": 2
+      },
+      {
+       "E": 4,
+       "A": 1
+      },
+      {
+       "F": 4,
+       "E": 1
+      }
+     ],
+     "careers": [
+      [
+       "Graphic Designer",
+       "Animator",
+       "Journalist",
+       "Architect",
+       "Content Creator"
+      ],
+      [
+       "Doctor",
+       "Research Scientist",
+       "Psychologist",
+       "Pharmacist"
+      ],
+      [
+       "Software Engineer",
+       "Mechanical Engineer",
+       "Robotics Engineer",
+       "AI Engineer",
+       "Civil Engineer"
+      ],
+      [
+       "Operations Manager",
+       "Chartered Accountant",
+       "Project Manager",
+       "Business Manager",
+       "Financial Analyst"
+      ],
+      [
+       "Lawyer",
+       "IAS Officer",
+       "Social Worker",
+       "Counsellor"
+      ]
+     ],
+     "behaviourMeasured": [
+      "Creative communication, storytelling, audience awareness, visual thinking",
+      "Investigative thinking, diagnosis, evidence gathering, analytical observation",
+      "Systems thinking, innovation, optimization, technical reasoning",
+      "Planning, resource management, execution, operational coordination",
+      "Ethical reasoning, governance, policy awareness, structured decision-making"
+     ],
+     "careerSignal": [
+      "Media, Design, Mass Communication, Digital Marketing",
+      "Health & Medical Sciences, Psychology, Life Sciences & Research",
+      "Engineering & Technology, Computer Science, Robotics",
+      "Business, Commerce, Management, Entrepreneurship",
+      "Law, Public Policy & Governance, Civil Services"
      ]
     }
    ]

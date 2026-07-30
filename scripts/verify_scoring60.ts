@@ -366,6 +366,74 @@ const oneOut = scoreAssessment60(STAGE, LIVE, oneAbstain);
 check("a single abstention still yields a full profile",
   oneOut.topStrengths.length === 5 && oneOut.outcomeLabel != null);
 
+/* ----------------------------------------------------------------------- 9 */
+// A cluster the student never picked must score 0. "Engineering & Construction"
+// is offered on only 2 of the 12 interest items, and an earlier shareRank
+// blended the expected share into the result, which scored it 38 for students
+// who never chose it — a career recommendation manufactured from nothing.
+console.log("\n[9] no phantom scores for dimensions the student never picked");
+const CI = B.career_interest[STAGE]["Set 1"] as any[];
+const clusterAt = (qi: number, oi: number) =>
+  Object.keys(CI[qi].clusterWeights[oi])[0] as string;
+
+// An option can now credit more than one cluster (systems thinking signals both
+// Engineering and IT), so the invariant is stated in terms of WEIGHT EARNED:
+// a cluster that received no weight at all must score 0.
+const leanA: Record<string, string> = { ...liveAns };
+CI.forEach((_q, i) => { leanA[`career_interest:${i}`] = "0"; });
+const pure = scoreAssessment60(STAGE, LIVE, leanA);
+const earned: Record<string, number> = {};
+CI.forEach((q, i) => {
+  const w = q.clusterWeights[Number(leanA[`career_interest:${i}`])] ?? {};
+  for (const [k, v] of Object.entries(w)) earned[k] = (earned[k] ?? 0) + (v as number);
+});
+const ghosts = (pure.themes ?? []).filter((t) => t.score > 0 && !earned[t.letter]);
+check("a cluster that earned no weight scores 0 — no manufactured themes",
+  ghosts.length === 0, ghosts.map((g) => `${g.title}=${g.score}`).join(", "));
+check("every cluster that did earn weight is reported",
+  Object.keys(earned).every((k) => (pure.themes ?? []).some((t) => t.letter === k)));
+
+// Every cluster must be reachable as an option's leading signal, or students
+// with that interest have no answer that reads as theirs.
+const leads = new Set<string>();
+CI.forEach((q) => q.clusterWeights.forEach((w: any) => {
+  const ks = Object.keys(w);
+  leads.add(ks.reduce((b, k) => (w[k] > w[b] ? k : b), ks[0]));
+}));
+check("all seven career clusters can lead at least one option",
+  ["A", "B", "C", "D", "E", "F", "G"].every((k) => leads.has(k)),
+  `leading: ${[...leads].sort().join("")}`);
+
+// Rarity must not be rewarded: a cluster earned once must not outscore one
+// earned repeatedly.
+const counts = Object.entries(earned).sort((a, b) => a[1] - b[1]);
+if (counts.length >= 2) {
+  const themes = pure.themes ?? [];
+  const low = themes.find((t) => t.letter === counts[0][0])?.score ?? 0;
+  const high = themes.find((t) => t.letter === counts[counts.length - 1][0])?.score ?? 0;
+  check("the least-earned cluster does not outscore the most-earned",
+    low <= high, `${counts[0][0]}=${low} vs ${counts[counts.length - 1][0]}=${high}`);
+}
+
+/* ---------------------------------------------------------------------- 10 */
+console.log("\n[10] aptitude has visual items again");
+const APTQ = (aptitudeBank as any)[STAGE]["Set 1"] as any[];
+const withArt = APTQ.filter((q) => q.media);
+const drawnAnswers = APTQ.filter((q) => q.svgOptions);
+check("at least 4 aptitude items carry artwork", withArt.length >= 4,
+  `${withArt.length}: ${withArt.map((q) => q.q).join(", ")}`);
+check("at least one item has drawn answer options", drawnAnswers.length >= 1,
+  `${drawnAnswers.length}`);
+check("no item flagged 'Required' is missing its artwork",
+  APTQ.filter((q) => q.imageStatus === "Required" && !q.media).length === 0,
+  APTQ.filter((q) => q.imageStatus === "Required" && !q.media).map((q) => q.q).join(", "));
+check("every aptitude domain is a career-map key",
+  APTQ.every((q) => ["Numerical", "Verbal", "Logical", "Abstract", "Spatial",
+                     "Attention to Detail", "Mechanical"].includes(q.domain)),
+  [...new Set(APTQ.map((q) => q.domain))].join(", "));
+check("difficulty is graded, not all one value",
+  new Set(APTQ.map((q) => q.difficulty)).size >= 2);
+
 /* -------------------------------------------------------------------------- */
 console.log(failures === 0
   ? "\nAll checks passed.\n"

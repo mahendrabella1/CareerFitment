@@ -58,167 +58,27 @@ BLUEPRINT_NOTE = {
 }
 
 INTERESTS_SHORTFALL = (
-    "The sheet supplies 10 interests questions; the old count is 12. Q11 and Q12 therefore keep the questions "
-    "already live in the bank, marked 'kept from live bank' in the Source column. Send two more in the sheet's "
-    "5-family format and they will replace those slots."
+    "All 12 interests items are now behaviour-based (see finalised_set_2026_interests_v2.py). The sheet's "
+    "original 10 named their own career field in the option text, which let a student steer the result; the "
+    "rewrite hides the signal and rotates option order."
 )
 
 # =========================================================================== #
-# 1. INTERESTS — Q1-Q12.  Text and options verbatim from the sheet.
-#    (option text, cluster letter, career matches [the sheet's own], RIASEC weights [added])
+# 1. INTERESTS — Q1-Q12, behaviour-based rewrite.
+#
+# The supplied options named their own field ("Diagnose community health
+# issues", "Manage stall budgets"), so a student could simply pick the
+# medical-sounding answer twelve times. Options now describe HOW the student
+# thinks and act; the career signal is derived and never shown. Option order is
+# rotated so habitually picking slot A cannot produce a consistent false
+# profile. See finalised_set_2026_interests_v2.py for the full rationale.
 # =========================================================================== #
-INTERESTS = [
-    ("Q1", "Your school is organizing a District level Community Fair. Which role would you naturally pick?", [
-        ("Diagnose community health issues and suggest remedies", "C",
-         "Health & Medical / Allied Health: Doctor, Nurse, Physiotherapist, Pharmacist", {"S": 3, "I": 2}),
-        ("Build a tech device, software, or mechanical solution.", "B",
-         "Engineering & Tech: Software Developer, Mechanical Engineer, Robotics Engineer", {"R": 3, "I": 2}),
-        ("Research local laws, policies, and present solutions to officials", "F",
-         "Law & Public Policy: Lawyer, Civil Servant (IAS), Policy Analyst, Mediator", {"E": 2, "S": 2, "I": 1}),
-        ("Create posters, films, and branding for the fair", "D",
-         "Arts, Media & Design: Graphic Designer, Filmmaker, Journalist, Content Creator", {"A": 3, "E": 1}),
-        ("Manage stall budgets, sponsorship money, and resource logistics.", "E",
-         "Business, Finance & Mgmt: Chartered Accountant, Financial Analyst, Operations Mgr", {"C": 3, "E": 2}),
-    ], CLIENT, ""),
-    ("Q2", "If you could shadow an expert for a week during your summer break, who would you choose?", [
-        ("A surgeon performing complex medical procedures or lab research.", "C",
-         "Health & Medical: Surgeon, Medical Researcher, Pathologist, Biomedical Scientist", {"I": 3, "S": 2}),
-        ("An agronomist working on organic farming and crop genetics.", "G",
-         "Agriculture & Allied Sciences: Agronomist, Food Technologist, Environmental Scientist", {"R": 3, "I": 2}),
-        ("A corporate lawyer negotiating major international business deals.", "F",
-         "Law & Commerce: Corporate Lawyer, Legal Consultant, Compliance Officer", {"E": 3, "C": 1}),
-        ("An animator or creative director producing a feature film.", "D",
-         "Arts & Design: Animator, Game Designer, Fashion Designer, Art Director", {"A": 3}),
-        ("A startup founder pitching to investors and building a company.", "E",
-         "Business & Entrepreneurship: Founder/CEO, Venture Capitalist, Product Manager", {"E": 3, "A": 1}),
-    ], CLIENT, ""),
-    ("Q3", "Your town is setting up a new Model Village Project. Where would you make the biggest impact?", [
-        ("Set up free health screening camps and wellness awareness.", "C",
-         "Health & Allied Health: Community Health Specialist, Nutritionist, Public Health Mgr", {"S": 3, "I": 1}),
-        ("Install modern irrigation, soil testing, and sustainable farming systems.", "G",
-         "Agriculture & Earth Sciences: Agricultural Engineer, Soil Scientist, Forester", {"R": 3, "I": 1}),
-        ("Construct smart bridges, renewable energy grids, and water systems.", "A",
-         "Engineering: Civil Engineer, Renewable Energy Specialist, Electrical Engineer", {"R": 3, "I": 2}),
-        ("Archive local history, write village stories, and preserve regional art.", "D",
-         "Humanities & Social Sciences: Historian, Anthropologist, Writer, Sociologist", {"A": 3, "I": 1}),
-        ("Set up micro-finance banks and manage project budgets.", "E",
-         "Finance & Banking: Investment Banker, Microfinance Officer, Risk Analyst", {"C": 3, "E": 2}),
-    ], CLIENT, ""),
-    ("Q4", "For your Class 10 annual exhibition, which project topic would you be most eager to lead?", [
-        ("Studying human anatomy, genetics, or disease prevention methods.", "C",
-         "Medical & Life Sciences: Physician, Geneticist, Microbiologist, Biotechnologist", {"I": 3, "S": 1}),
-        ("Building an automated solar tracker or smart home automation kit.", "B",
-         "Engineering & AI: AI Engineer, Electronics Engineer, Energy Systems Engineer", {"R": 3, "I": 2}),
-        ("Debating constitutional rights, international relations, or student laws.", "F",
-         "Law, Politics & Humanities: Criminal Lawyer, Diplomat, Political Analyst, Advocate", {"E": 2, "S": 2}),
-        ("Displaying fine arts, photography, digital illustration, or set design.", "D",
-         "Arts & Creative Fields: Fine Artist, Photographer, Interior Designer, Illustrator", {"A": 3}),
-        ("Running a live stock-market simulation or business pitch deck.", "E",
-         "Business & Economics: Economist, Stock Broker, Marketing Manager, Business Analyst", {"E": 3, "C": 2}),
-    ], CLIENT, ""),
-    ("Q5", "If you were given ₹10,000 to launch a student-led initiative, what would you fund?", [
-        ("Rehabilitation equipment or mental health therapy sessions for peers.", "C",
-         "Allied Health & Psychology: Clinical Psychologist, Occupational Therapist, Speech Therapist", {"S": 3, "I": 1}),
-        ("Vertical hydroponic kits or organic seed beds for your school garden.", "G",
-         "Agriculture & Food Tech: Food Scientist, Horticulturist, Agricultural Businessman", {"R": 3, "I": 1}),
-        ("A mobile coding lab or 3D printing setup for young inventors.", "B",
-         "Tech & Hardware: Hardware Engineer, Software Architect, Mechatronics Specialist", {"I": 3, "R": 2}),
-        ("A theatre production, podcast studio, or school newspaper magazine.", "D",
-         "Media, Journalism & Arts: Journalist, Theatre Director, Radio Jockey, Copywriter", {"A": 3, "E": 1}),
-        ("An e-commerce store reselling handmade goods to earn profit.", "E",
-         "Commerce & Management: E-commerce Manager, Sales Director, Financial Planner", {"E": 3, "C": 2}),
-    ], CLIENT, ""),
-    ("Q6", "Which type of books, documentary channels, or podcasts capture your attention most?", [
-        ("Medical breakthroughs, human brain mysteries, or emergency ER stories.", "C",
-         "Health & Medical Sciences: Neuroscientist, Doctor, Radiologist, Anesthetist", {"I": 3, "S": 1}),
-        ("Wildlife conservation, forest ecosystems, and sustainable agriculture.", "G",
-         "Environment & Agriculture: Wildlife Biologist, Zoologist, Environmental Lawyer", {"I": 3, "R": 2}),
-        ("Space exploration, coding tutorials, and advanced robotics breakthroughs.", "B",
-         "Science & Technology: Astrophysicist, Data Scientist, Cybersecurity Analyst", {"I": 3, "R": 2}),
-        ("Crime thrillers, courtroom dramas, philosophy, and history podcasts.", "F",
-         "Law, Criminology & Arts: Criminologist, Judge, Legal Journalist, Philosopher", {"A": 2, "S": 1, "E": 1}),
-        ("Case studies on Fortune 500 companies, stock markets, and economics.", "E",
-         "Business & Finance: Business Consultant, Chartered Accountant (CA), CFA, Auditor", {"E": 3, "C": 2}),
-    ], CLIENT, ""),
-    ("Q7", "During a crisis like a sudden epidemic in a school hostel, what is your instinct?", [
-        ("Administer first aid, isolate the sick, and monitor physical symptoms.", "C",
-         "Medical & Emergency Health: Emergency Doctor, Epidemiologist, Paramedic", {"S": 3, "R": 1}),
-        ("Comfort anxious students, offer counseling, and boost team morale.", "F",
-         "Psychology & Human Resources: Counselor, Psychologist, HR Manager, Social Worker", {"S": 3, "A": 1}),
-        ("Study health guidelines, ensure legal protocols, and enforce safety rules.", "F",
-         "Law & Administration: Hospital Administrator, Compliance Officer, Civil Servant", {"C": 3, "S": 1}),
-        ("Create clear infographics and announcements to keep everyone informed.", "D",
-         "Design & Communication: PR Specialist, Communications Mgr, Visual Designer", {"A": 3, "E": 1}),
-        ("Audit food/water supplies, manage logistics, and secure needed funds.", "E",
-         "Operations & Supply Chain: Supply Chain Manager, Procurement Officer, Logistics Head", {"C": 3, "E": 2}),
-    ], CLIENT,
-     "Options B and C both map to Human & Public Services, so two of the five choices give the same cluster "
-     "signal and no Science/Agriculture option is offered. Left as supplied — scoring reads the per-option "
-     "cluster tag, so it still works, but this item measures four families rather than five."),
-    ("Q8", "What kind of practical problem would you feel most proud to solve in your career?", [
-        ("Finding affordable cures or treatments for rare diseases.", "C",
-         "Medical Research: Pharmacologist, Oncologist, Genetic Researcher", {"I": 3, "S": 2}),
-        ("Improving crop yields to tackle hunger without harming the soil.", "G",
-         "Agriculture Science: Soil Chemist, Plant Breeder, Agricultural Economist", {"R": 3, "I": 2}),
-        ("Designing cleaner engines, faster computers, or automated systems.", "A",
-         "Core Engineering: Automobile Engineer, Computer Engineer, Chemical Engineer", {"R": 3, "I": 2}),
-        ("Defending human rights, fighting injustice, or reforming laws.", "F",
-         "Legal & Social Services: Human Rights Lawyer, Judge, NGO Leader, Policy Maker", {"S": 3, "E": 2}),
-        ("Restructuring an struggling business to make it highly profitable.", "E",
-         "Corporate Management: Management Consultant, Chief Financial Officer (CFO), Strategist", {"E": 3, "C": 2}),
-    ], CLIENT, "Option E reads 'an struggling business' in the sheet. Left as supplied — a one-word typo fix."),
-    ("Q9", "What kind of work environment sounds most appealing to you long-term?", [
-        ("A modern hospital, clinical lab, or emergency medical center.", "C",
-         "Health Sciences: Physician, Clinical Researcher, Surgeon, Medical Technologist", {"S": 3, "I": 2}),
-        ("Outdoor fields, greenhouses, research farms, or natural reserves.", "G",
-         "Agriculture & Earth: Forester, Environmental Consultant, Agricultural Scientist", {"R": 3, "I": 1}),
-        ("A modern tech hub, engineering workshop, or R&D lab.", "B",
-         "Engineering & Tech: Software Engineer, Mechanical Engineer, Robotics Researcher", {"R": 3, "I": 3}),
-        ("A courtroom, law firm, media studio, or publishing house.", "F",
-         "Law & Creative Arts: Advocate, Journalist, Editor, Creative Director", {"A": 2, "E": 2, "S": 1}),
-        ("A corporate boardroom, stock exchange floor, or financial firm.", "E",
-         "Business & Finance: Investment Banker, Equity Analyst, Corporate Executive", {"E": 3, "C": 3}),
-    ], CLIENT,
-     "Option D names both Law and Creative Arts, so a student picking it is ambiguous between clusters F and D. "
-     "Left as supplied and tagged F; split the option if you want a clean signal."),
-    ("Q10", "If you could take a specialized elective course next term, which would you pick?", [
-        ("Human Physiology, Nutrition, and Clinical Health Basics.", "C",
-         "Health & Allied Sciences: Dietitian, Physiotherapist, Sports Medicine Specialist", {"I": 3, "S": 2}),
-        ("Environmental Science, Crop Care, and Biotechnology.", "G",
-         "Life Sciences & Agriculture: Botanist, Biotechnologist, Agronomist", {"I": 3, "R": 2}),
-        ("Python Programming, Electronics, and Applied Mathematics.", "B",
-         "Engineering & Analytics: Data Analyst, Software Engineer, Electrical Engineer", {"I": 3, "R": 2}),
-        ("World History, Constitutional Law, and Creative Writing.", "F",
-         "Law & Humanities: Historian, Political Scientist, Journalist, Legal Scholar", {"A": 3, "S": 1}),
-        ("Financial Accounting, Entrepreneurship, and Business Marketing.", "E",
-         "Commerce & Management: Accountant, Marketing Strategist, Finance Manager", {"C": 3, "E": 3}),
-    ], CLIENT, ""),
-    # -- Q11 and Q12: no replacement supplied. The live bank's questions stay.
-    ("Q11", "A company offers ten students a one-month paid internship. Which team would you ask to join?", [
-        ("The team working out why the product keeps failing.", "B",
-         "Research Scientist, AI Engineer, Software Engineer", {"I": 3, "R": 2}),
-        ("The team redesigning how the product looks and feels.", "D",
-         "Architect, UX Designer, Graphic Designer", {"A": 3}),
-        ("The team training new users and answering their questions.", "F",
-         "Teacher, Psychologist, Lawyer", {"S": 3, "E": 3}),
-        ("The team tracking costs, stock and delivery schedules.", "E",
-         "Business Manager, Chartered Accountant, Operations Manager", {"C": 3, "E": 3}),
-        ("The team testing whether the product is safe for people to use.", "C",
-         "Clinical Research Associate, Pharmacologist, Quality & Safety Officer", {"I": 3, "C": 2}),
-    ], KEPT, INTERESTS_SHORTFALL),
-    ("Q12", "Your school is starting a student-run magazine and website. Which role would you take?", [
-        ("Research the stories, check the facts, and build the website.", "B",
-         "Software Engineer, Data Analyst, Research Scientist", {"I": 3, "R": 2}),
-        ("Design the layout, illustrations, photographs, and cover art.", "D",
-         "Graphic Designer, Animator, Product Designer", {"A": 3}),
-        ("Interview people, build the writing team, and reply to readers.", "F",
-         "Teacher, Lawyer, Psychologist", {"S": 3, "E": 2}),
-        ("Handle advertising, budgets, and the publishing schedule.", "E",
-         "Business Manager, Financial Analyst, Digital Marketer", {"C": 3, "E": 2}),
-        ("Cover the health, fitness and wellbeing section for students.", "C",
-         "Health Journalist, Public Health Educator, Medical Writer", {"S": 2, "A": 2, "I": 1}),
-    ], KEPT, INTERESTS_SHORTFALL),
-]
+from finalised_set_2026_interests_v2 import (  # noqa: E402
+    INTERESTS, CLUSTER_WEIGHTS as INTERESTS_CLUSTER_WEIGHTS,
+    CAREERS as INTERESTS_CAREERS, MEASURED as INTERESTS_MEASURED,
+    SIGNALS as INTERESTS_SIGNALS, BEHAVIOUR_ORDER as INTERESTS_BEHAVIOUR,
+    NOTE as INTERESTS_NOTE,
+)
 
 # =========================================================================== #
 # 2. APTITUDE — Q13-Q22. 10 of the sheet's 15, one per dimension.
@@ -290,6 +150,30 @@ APTITUDE = [
      "a '?' above B. This artwork already exists as inline SVG in the live bank (9-10 Set 1, Q22) and is reused.",
      CLIENT + " item 15 (second block)", ""),
 ]
+
+# The career map's aptitude affinity table has exactly seven keys. An item whose
+# `domain` is not one of them contributes nothing to career matching, so each of
+# the sheet's finer dimension names is folded onto its engine key. The sheet's
+# own wording is kept in `domainLabel` for display.
+APTITUDE_ENGINE_DOMAIN = {
+    "Numerical Reasoning": "Numerical",
+    "Data Interpretation": "Numerical",
+    "Logical Deduction": "Logical",
+    "Coding-Decoding": "Logical",
+    "Verbal Classification": "Verbal",
+    "Verbal Analogy": "Verbal",
+    "Spatial Reasoning": "Spatial",
+    "Abstract Reasoning": "Abstract",
+    "Attention to Detail": "Attention to Detail",
+    "Mechanical Reasoning": "Mechanical",
+}
+
+# The scorer weights items easy 1 / medium 2 / hard 3, so a flat "medium"
+# throws that away. Graded by what the item actually demands.
+APTITUDE_DIFFICULTY = {
+    "Q13": "easy", "Q14": "easy", "Q15": "easy", "Q16": "medium", "Q17": "hard",
+    "Q18": "easy", "Q19": "hard", "Q20": "hard", "Q21": "medium", "Q22": "medium",
+}
 
 APTITUDE_DROPPED = [
     ("item 16 — bicycle at 12 km/h for 30 minutes", "Applied Math; duplicates the numerical dimension."),
@@ -421,7 +305,7 @@ STRENGTHS = [
      [("Build a smart sensor prototype to monitor drainage flow.", "Engineering", {"Analytical": 3, "Execution": 1}, CLIENT),
       ("Conduct water purity & health risk testing for residents.", "Clinical/Bio-Health", {"Analytical": 3, "Learning": 1}, CLIENT),
       ("Draft a legal petition & campaign to municipal authorities.", "Advocacy/Legal", {"Communication": 3, "Leadership": 1}, CLIENT),
-      ("Launch a local micro-funded recycling business model.", "Financial/Business", {"Leadership": 3, "Execution": 1}, CLIENT),
+      ("Launch a local micro-funded recycling business model.", "Financial/Business", {"Leadership": 3, "Adaptability": 1}, CLIENT),
       ("Run an awareness drive with posters, films and street theatre.", "Creative/Media", {"Creative": 3, "Communication": 1}, ADDED)],
      "Engineering, Clinical/Bio-Health, Advocacy/Legal, Financial/Business",
      "Core Engineering, Public Health, Law & Governance, Commerce & Business",
@@ -456,7 +340,7 @@ STRENGTHS = [
     ("Q40", "If you could shadow a top professional for one week, who would you choose?",
      [("A Lead Developer coding AI applications at a tech giant.", "Analytical/Tech", {"Analytical": 3, "Learning": 2}, CLIENT),
       ("A Surgeon performing precision operations in a hospital.", "Diagnostic/Medical", {"Execution": 3, "Analytical": 2}, CLIENT),
-      ("An Agricultural Scientist developing drought-resistant crops.", "Biological/Agri", {"Learning": 3, "Analytical": 1}, CLIENT),
+      ("An Agricultural Scientist developing drought-resistant crops.", "Biological/Agri", {"Learning": 3, "Adaptability": 1}, CLIENT),
       ("A Corporate Lawyer defending major international clients.", "Logical/Legal", {"Communication": 3, "Analytical": 1}, CLIENT),
       ("A Creative Director running a design and film studio.", "Creative/Media", {"Creative": 3, "Leadership": 1}, ADDED)],
      "Analytical/Tech, Diagnostic/Medical, Biological/Agri, Logical/Legal",
@@ -475,7 +359,7 @@ STRENGTHS = [
      [("Fix malfunctioning communications or transport gear.", "Technical", {"Execution": 3, "Analytical": 1}, CLIENT),
       ("Provide immediate first-aid & assess physical symptoms.", "Medical", {"Execution": 3, "Relationship": 2}, CLIENT),
       ("Consult rules, safety guidelines, & legal protocols.", "Administrative", {"Analytical": 3, "Execution": 1}, CLIENT),
-      ("Manage food/water resources & organize logistics calmly.", "Operations", {"Execution": 3, "Leadership": 1}, CLIENT),
+      ("Manage food/water resources & organize logistics calmly.", "Operations", {"Execution": 3, "Adaptability": 1}, CLIENT),
       ("Keep everyone calm and handle communication with the group.", "Interpersonal", {"Relationship": 3, "Communication": 2}, ADDED)],
      "Technical, Medical, Administrative, Operations",
      "Core Engineering, Emergency Medicine, Law & Compliance, Operations & Supply Chain",

@@ -38,6 +38,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import finalised_set_2026_data as D  # noqa: E402
+import finalised_set_2026_visuals as V  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 PROJECT = HERE.parent
@@ -181,9 +182,14 @@ def build_records(live_apt_set):
             "type": "choice5", "q": qid, "text": text,
             "options": [o[0] for o in opts],
             "riasec": [o[3] for o in opts],
-            "clusterWeights": [{o[1]: 5} for o in opts],
-            "careers": [professions_from(o[2]) for o in opts],
-            "careerMatches": [o[2] for o in opts],
+            # A behaviour can signal more than one cluster — "systems thinking"
+            # points at Engineering AND IT — so the full weight map is used
+            # rather than collapsing each option to a single letter.
+            "clusterWeights": D.INTERESTS_CLUSTER_WEIGHTS[qid],
+            "careers": D.INTERESTS_CAREERS[qid],
+            # Never shown to the student; kept so the mapping stays auditable.
+            "behaviourMeasured": D.INTERESTS_MEASURED[qid],
+            "careerSignal": D.INTERESTS_SIGNALS[qid],
         })
     out["career_interest"] = ci
 
@@ -200,10 +206,25 @@ def build_records(live_apt_set):
         media = live_media.get(key)
         if media is None and "gear" in text.lower():
             media = next((m for k, m in live_media.items() if "gear" in k), None)
+        # Artwork the 2026 set was missing. Two items were flagged "required"
+        # and shipped with nothing to look at, which made them guesses.
+        if media is None and qid in V.MEDIA:
+            media = V.MEDIA[qid]()
+        drawn = qid in V.SVG_OPTIONS
         apt.append({
-            "type": "mcq", "q": qid, "format": "text", "domain": dim.split()[0],
-            "difficulty": "medium", "text": text, "options": list(options),
-            "svgOptions": False, "correct": ord(correct) - 65, "media": media,
+            "type": "mcq", "q": qid, "format": "svg" if drawn else "text",
+            # `domain` MUST be one of the seven keys the career map's aptitude
+            # affinity table uses, or the item contributes nothing to matching.
+            "domain": D.APTITUDE_ENGINE_DOMAIN[dim],
+            "domainLabel": dim,           # the sheet's finer name, for display
+            "difficulty": D.APTITUDE_DIFFICULTY[qid],
+            "text": text,
+            # Where the answers are drawn, the option text becomes the alt/label
+            # and the figures carry the meaning — that is what turns a reading
+            # exercise into a puzzle.
+            "options": V.SVG_OPTIONS[qid]() if drawn else list(options),
+            "optionLabels": list(options) if drawn else None,
+            "svgOptions": drawn, "correct": ord(correct) - 65, "media": media,
             "imageStatus": img,
         })
     out["aptitude"] = apt

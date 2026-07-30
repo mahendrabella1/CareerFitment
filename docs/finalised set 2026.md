@@ -18,137 +18,127 @@
 
 ## 1. Interests — Q1-Q12
 
-> The sheet supplies 10 interests questions; the old count is 12. Q11 and Q12 therefore keep the questions already live in the bank, marked 'kept from live bank' in the Source column. Send two more in the sheet's 5-family format and they will replace those slots.
+> All 12 interests items are now behaviour-based (see finalised_set_2026_interests_v2.py). The sheet's original 10 named their own career field in the option text, which let a student steer the result; the rewrite hides the signal and rotates option order.
 
-### Q1. Your school is organizing a District level Community Fair. Which role would you naturally pick?
+### Q1. Your school is organizing a District-Level Community Fair. Which responsibility would you enjoy the most?
 
-- **A.** Diagnose community health issues and suggest remedies — _C · Health Science · RIASEC S+3, I+2_
-- **B.** Build a tech device, software, or mechanical solution. — _B · Information Technology · RIASEC R+3, I+2_
-- **C.** Research local laws, policies, and present solutions to officials — _F · Human & Public Services · RIASEC E+2, S+2, I+1_
-- **D.** Create posters, films, and branding for the fair — _D · Arts, Media & Design · RIASEC A+3, E+1_
-- **E.** Manage stall budgets, sponsorship money, and resource logistics. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **A.** Understanding the problem before suggesting a solution. — _C · Health Science · RIASEC I+3, S+1_
+- **B.** Finding smarter ways to make things work better. — _B · Information Technology · RIASEC R+3, I+2_
+- **C.** Making sure every decision is fair and well considered. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **D.** Communicating ideas that engage and inspire others. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **E.** Planning and coordinating everything to stay on track. — _E · Business & Marketing · RIASEC C+3, E+2_
 
-_Source: finalised set 2026_
+_Source: behaviour-based rewrite_
 
-### Q2. If you could shadow an expert for a week during your summer break, who would you choose?
+### Q2. You can spend a week shadowing anyone at work. What would you most want to watch them do?
 
-- **A.** A surgeon performing complex medical procedures or lab research. — _C · Health Science · RIASEC I+3, S+2_
-- **B.** An agronomist working on organic farming and crop genetics. — _G · Science, Nature & Agriculture · RIASEC R+3, I+2_
-- **C.** A corporate lawyer negotiating major international business deals. — _F · Human & Public Services · RIASEC E+3, C+1_
-- **D.** An animator or creative director producing a feature film. — _D · Arts, Media & Design · RIASEC A+3_
-- **E.** A startup founder pitching to investors and building a company. — _E · Business & Marketing · RIASEC E+3, A+1_
+- **A.** Shape a rough idea into something people actually notice. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **B.** Keep a complicated operation running exactly to schedule. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **C.** Work out what is really going on before deciding anything. — _C · Health Science · RIASEC I+3, S+1_
+- **D.** Take something that half works and make it work properly. — _B · Information Technology · RIASEC R+3, I+2_
+- **E.** Weigh both sides of a difficult call and justify the decision. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
 
-_Source: finalised set 2026_
+_Source: behaviour-based rewrite_
 
-### Q3. Your town is setting up a new Model Village Project. Where would you make the biggest impact?
+### Q3. Your town is setting up a new Model Village Project. Where would you want to be involved?
 
-- **A.** Set up free health screening camps and wellness awareness. — _C · Health Science · RIASEC S+3, I+1_
-- **B.** Install modern irrigation, soil testing, and sustainable farming systems. — _G · Science, Nature & Agriculture · RIASEC R+3, I+1_
-- **C.** Construct smart bridges, renewable energy grids, and water systems. — _A · Engineering & Construction · RIASEC R+3, I+2_
-- **D.** Archive local history, write village stories, and preserve regional art. — _D · Arts, Media & Design · RIASEC A+3, I+1_
-- **E.** Set up micro-finance banks and manage project budgets. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **A.** Designing how the whole thing should actually function. — _A · Engineering & Construction · RIASEC R+3, I+2_
+- **B.** Making sure the rules are fair to everyone affected. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **C.** Turning the plan into a schedule and a budget that holds. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **D.** Finding out what the village actually needs, and why. — _G · Science, Nature & Agriculture · RIASEC I+3, S+1_
+- **E.** Telling the story so people want to be part of it. — _D · Arts, Media & Design · RIASEC A+3, E+1_
 
-_Source: finalised set 2026_
+_Source: behaviour-based rewrite_
 
-### Q4. For your Class 10 annual exhibition, which project topic would you be most eager to lead?
+### Q4. For your Class 10 exhibition you can lead one project. Which appeals to you most?
 
-- **A.** Studying human anatomy, genetics, or disease prevention methods. — _C · Health Science · RIASEC I+3, S+1_
-- **B.** Building an automated solar tracker or smart home automation kit. — _B · Information Technology · RIASEC R+3, I+2_
-- **C.** Debating constitutional rights, international relations, or student laws. — _F · Human & Public Services · RIASEC E+2, S+2_
-- **D.** Displaying fine arts, photography, digital illustration, or set design. — _D · Arts, Media & Design · RIASEC A+3_
-- **E.** Running a live stock-market simulation or business pitch deck. — _E · Business & Marketing · RIASEC E+3, C+2_
+- **A.** One with many moving parts that must come together on time. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **B.** One that looks and feels like nothing else on show. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **C.** One where I build something and keep improving how it works. — _B · Information Technology · RIASEC R+3, I+2_
+- **D.** One that takes a contested issue and argues it properly. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **E.** One where I test an idea and find out whether it holds up. — _C · Health Science · RIASEC I+3, S+1_
 
-_Source: finalised set 2026_
+_Source: behaviour-based rewrite_
 
-### Q5. If you were given ₹10,000 to launch a student-led initiative, what would you fund?
+### Q5. You are given ₹10,000 for a student-led initiative. What would you put it into?
 
-- **A.** Rehabilitation equipment or mental health therapy sessions for peers. — _C · Health Science · RIASEC S+3, I+1_
-- **B.** Vertical hydroponic kits or organic seed beds for your school garden. — _G · Science, Nature & Agriculture · RIASEC R+3, I+1_
-- **C.** A mobile coding lab or 3D printing setup for young inventors. — _B · Information Technology · RIASEC I+3, R+2_
-- **D.** A theatre production, podcast studio, or school newspaper magazine. — _D · Arts, Media & Design · RIASEC A+3, E+1_
-- **E.** An e-commerce store reselling handmade goods to earn profit. — _E · Business & Marketing · RIASEC E+3, C+2_
+- **A.** Something that fixes an unfairness people have stopped noticing. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **B.** Finding out why a problem keeps coming back. — _G · Science, Nature & Agriculture · RIASEC I+3, S+1_
+- **C.** Something people will still remember long after it ends. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **D.** Something that runs reliably every week without me. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **E.** Building a tool that saves everyone time. — _B · Information Technology · RIASEC R+3, I+2_
 
-_Source: finalised set 2026_
+_Source: behaviour-based rewrite_
 
-### Q6. Which type of books, documentary channels, or podcasts capture your attention most?
+### Q6. Which kind of story keeps you reading or watching the longest?
 
-- **A.** Medical breakthroughs, human brain mysteries, or emergency ER stories. — _C · Health Science · RIASEC I+3, S+1_
-- **B.** Wildlife conservation, forest ecosystems, and sustainable agriculture. — _G · Science, Nature & Agriculture · RIASEC I+3, R+2_
-- **C.** Space exploration, coding tutorials, and advanced robotics breakthroughs. — _B · Information Technology · RIASEC I+3, R+2_
-- **D.** Crime thrillers, courtroom dramas, philosophy, and history podcasts. — _F · Human & Public Services · RIASEC A+2, S+1, E+1_
-- **E.** Case studies on Fortune 500 companies, stock markets, and economics. — _E · Business & Marketing · RIASEC E+3, C+2_
+- **A.** How someone worked out the cause of something puzzling. — _G · Science, Nature & Agriculture · RIASEC I+3, S+1_
+- **B.** How a huge undertaking was pulled off without falling apart. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **C.** How a difficult decision was argued over and finally settled. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **D.** How something was built to do what nobody thought possible. — _B · Information Technology · RIASEC R+3, I+2_
+- **E.** How an idea was made striking enough to change minds. — _D · Arts, Media & Design · RIASEC A+3, E+1_
 
-_Source: finalised set 2026_
+_Source: behaviour-based rewrite_
 
-### Q7. During a crisis like a sudden epidemic in a school hostel, what is your instinct?
+### Q7. Something goes badly wrong on a school trip. What do you find yourself doing?
 
-- **A.** Administer first aid, isolate the sick, and monitor physical symptoms. — _C · Health Science · RIASEC S+3, R+1_
-- **B.** Comfort anxious students, offer counseling, and boost team morale. — _F · Human & Public Services · RIASEC S+3, A+1_
-- **C.** Study health guidelines, ensure legal protocols, and enforce safety rules. — _F · Human & Public Services · RIASEC C+3, S+1_
-- **D.** Create clear infographics and announcements to keep everyone informed. — _D · Arts, Media & Design · RIASEC A+3, E+1_
-- **E.** Audit food/water supplies, manage logistics, and secure needed funds. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **A.** Fixing whatever has stopped working. — _A · Engineering & Construction · RIASEC R+3, I+2_
+- **B.** Getting a clear message out so nobody panics. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **C.** Working out what actually happened before anyone reacts. — _C · Health Science · RIASEC I+3, S+1_
+- **D.** Checking what we are responsible for and what the rules say. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **E.** Getting people, supplies and transport organised. — _E · Business & Marketing · RIASEC C+3, E+2_
 
-_Source: finalised set 2026_
+_Source: behaviour-based rewrite_
 
-> **Note.** Options B and C both map to Human & Public Services, so two of the five choices give the same cluster signal and no Science/Agriculture option is offered. Left as supplied — scoring reads the per-option cluster tag, so it still works, but this item measures four families rather than five.
+### Q8. Which problem would you be proudest to have solved twenty years from now?
 
-### Q8. What kind of practical problem would you feel most proud to solve in your career?
+- **A.** One where I changed how people see something. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **B.** One where I left a system fairer than I found it. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **C.** One where I made something work at a scale nobody had managed. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **D.** One where I made a thing dramatically better than it was. — _B · Information Technology · RIASEC R+3, I+2_
+- **E.** One where I found the answer nobody else could find. — _G · Science, Nature & Agriculture · RIASEC I+3, S+1_
 
-- **A.** Finding affordable cures or treatments for rare diseases. — _C · Health Science · RIASEC I+3, S+2_
-- **B.** Improving crop yields to tackle hunger without harming the soil. — _G · Science, Nature & Agriculture · RIASEC R+3, I+2_
-- **C.** Designing cleaner engines, faster computers, or automated systems. — _A · Engineering & Construction · RIASEC R+3, I+2_
-- **D.** Defending human rights, fighting injustice, or reforming laws. — _F · Human & Public Services · RIASEC S+3, E+2_
-- **E.** Restructuring an struggling business to make it highly profitable. — _E · Business & Marketing · RIASEC E+3, C+2_
+_Source: behaviour-based rewrite_
 
-_Source: finalised set 2026_
+### Q9. Picture your work ten years from now. What would make it a good day?
 
-> **Note.** Option E reads 'an struggling business' in the sheet. Left as supplied — a one-word typo fix.
+- **A.** Everything I set up ran exactly as it should. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **B.** I finally got a stubborn thing working. — _A · Engineering & Construction · RIASEC R+3, I+2_
+- **C.** I made something I was proud to show people. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **D.** I understood something that had been puzzling me for weeks. — _C · Health Science · RIASEC I+3, S+1_
+- **E.** I argued a difficult case and got it right. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
 
-### Q9. What kind of work environment sounds most appealing to you long-term?
+_Source: behaviour-based rewrite_
 
-- **A.** A modern hospital, clinical lab, or emergency medical center. — _C · Health Science · RIASEC S+3, I+2_
-- **B.** Outdoor fields, greenhouses, research farms, or natural reserves. — _G · Science, Nature & Agriculture · RIASEC R+3, I+1_
-- **C.** A modern tech hub, engineering workshop, or R&D lab. — _B · Information Technology · RIASEC R+3, I+3_
-- **D.** A courtroom, law firm, media studio, or publishing house. — _F · Human & Public Services · RIASEC A+2, E+2, S+1_
-- **E.** A corporate boardroom, stock exchange floor, or financial firm. — _E · Business & Marketing · RIASEC E+3, C+3_
+### Q10. You can add one extra subject next term, purely because you want to. What draws you?
 
-_Source: finalised set 2026_
+- **A.** One that trains you to reason through hard, contested questions. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **B.** One that trains you to express an idea so that it lands. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **C.** One that trains you to test a claim properly. — _C · Health Science · RIASEC I+3, S+1_
+- **D.** One that trains you to run something from end to end. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **E.** One that trains you to design and build. — _B · Information Technology · RIASEC R+3, I+2_
 
-> **Note.** Option D names both Law and Creative Arts, so a student picking it is ambiguous between clusters F and D. Left as supplied and tagged F; split the option if you want a clean signal.
+_Source: behaviour-based rewrite_
 
-### Q10. If you could take a specialized elective course next term, which would you pick?
+### Q11. A company offers you a month with any one of its teams. Which do you ask for?
 
-- **A.** Human Physiology, Nutrition, and Clinical Health Basics. — _C · Health Science · RIASEC I+3, S+2_
-- **B.** Environmental Science, Crop Care, and Biotechnology. — _G · Science, Nature & Agriculture · RIASEC I+3, R+2_
-- **C.** Python Programming, Electronics, and Applied Mathematics. — _B · Information Technology · RIASEC I+3, R+2_
-- **D.** World History, Constitutional Law, and Creative Writing. — _F · Human & Public Services · RIASEC A+3, S+1_
-- **E.** Financial Accounting, Entrepreneurship, and Business Marketing. — _E · Business & Marketing · RIASEC C+3, E+3_
+- **A.** The team working out why the product keeps failing. — _C · Health Science · RIASEC I+3, S+1_
+- **B.** The team rebuilding how the product actually works. — _A · Engineering & Construction · RIASEC R+3, I+2_
+- **C.** The team keeping costs, stock and delivery on track. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **D.** The team making sure it is safe and above board. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **E.** The team deciding how it should look and feel. — _D · Arts, Media & Design · RIASEC A+3, E+1_
 
-_Source: finalised set 2026_
+_Source: behaviour-based rewrite_
 
-### Q11. A company offers ten students a one-month paid internship. Which team would you ask to join?
+### Q12. Your school starts a student magazine and website. Which job do you take?
 
-- **A.** The team working out why the product keeps failing. — _B · Information Technology · RIASEC I+3, R+2_
-- **B.** The team redesigning how the product looks and feels. — _D · Arts, Media & Design · RIASEC A+3_
-- **C.** The team training new users and answering their questions. — _F · Human & Public Services · RIASEC S+3, E+3_
-- **D.** The team tracking costs, stock and delivery schedules. — _E · Business & Marketing · RIASEC C+3, E+3_
-- **E.** The team testing whether the product is safe for people to use. — _C · Health Science · RIASEC I+3, C+2_
+- **A.** Deciding how it looks and how each story gets told. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **B.** Digging out the facts and checking that they hold up. — _C · Health Science · RIASEC I+3, S+1_
+- **C.** Building the site and keeping it fast and working. — _B · Information Technology · RIASEC R+3, I+2_
+- **D.** Running the schedule, the budget and the ad slots. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **E.** Deciding what we should and should not publish. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
 
-_Source: kept from live bank — sheet supplies only 10 interests questions_
-
-> **Note.** The sheet supplies 10 interests questions; the old count is 12. Q11 and Q12 therefore keep the questions already live in the bank, marked 'kept from live bank' in the Source column. Send two more in the sheet's 5-family format and they will replace those slots.
-
-### Q12. Your school is starting a student-run magazine and website. Which role would you take?
-
-- **A.** Research the stories, check the facts, and build the website. — _B · Information Technology · RIASEC I+3, R+2_
-- **B.** Design the layout, illustrations, photographs, and cover art. — _D · Arts, Media & Design · RIASEC A+3_
-- **C.** Interview people, build the writing team, and reply to readers. — _F · Human & Public Services · RIASEC S+3, E+2_
-- **D.** Handle advertising, budgets, and the publishing schedule. — _E · Business & Marketing · RIASEC C+3, E+2_
-- **E.** Cover the health, fitness and wellbeing section for students. — _C · Health Science · RIASEC S+2, A+2, I+1_
-
-_Source: kept from live bank — sheet supplies only 10 interests questions_
-
-> **Note.** The sheet supplies 10 interests questions; the old count is 12. Q11 and Q12 therefore keep the questions already live in the bank, marked 'kept from live bank' in the Source column. Send two more in the sheet's 5-family format and they will replace those slots.
+_Source: behaviour-based rewrite_
 
 ---
 
@@ -475,7 +465,7 @@ _Source: kept from live bank — sheet supplies only 10 interests questions_
 - **A.** Build a smart sensor prototype to monitor drainage flow. — _Engineering · engine Analytical+3, Execution+1 · finalised set 2026_
 - **B.** Conduct water purity & health risk testing for residents. — _Clinical/Bio-Health · engine Analytical+3, Learning+1 · finalised set 2026_
 - **C.** Draft a legal petition & campaign to municipal authorities. — _Advocacy/Legal · engine Communication+3, Leadership+1 · finalised set 2026_
-- **D.** Launch a local micro-funded recycling business model. — _Financial/Business · engine Leadership+3, Execution+1 · finalised set 2026_
+- **D.** Launch a local micro-funded recycling business model. — _Financial/Business · engine Leadership+3, Adaptability+1 · finalised set 2026_
 - **E.** Run an awareness drive with posters, films and street theatre. — _Creative/Media · engine Creative+3, Communication+1 · 5th option added_
 
 - **Sheet domains:** Engineering, Clinical/Bio-Health, Advocacy/Legal, Financial/Business
@@ -522,7 +512,7 @@ _Source: kept from live bank — sheet supplies only 10 interests questions_
 
 - **A.** A Lead Developer coding AI applications at a tech giant. — _Analytical/Tech · engine Analytical+3, Learning+2 · finalised set 2026_
 - **B.** A Surgeon performing precision operations in a hospital. — _Diagnostic/Medical · engine Execution+3, Analytical+2 · finalised set 2026_
-- **C.** An Agricultural Scientist developing drought-resistant crops. — _Biological/Agri · engine Learning+3, Analytical+1 · finalised set 2026_
+- **C.** An Agricultural Scientist developing drought-resistant crops. — _Biological/Agri · engine Learning+3, Adaptability+1 · finalised set 2026_
 - **D.** A Corporate Lawyer defending major international clients. — _Logical/Legal · engine Communication+3, Analytical+1 · finalised set 2026_
 - **E.** A Creative Director running a design and film studio. — _Creative/Media · engine Creative+3, Leadership+1 · 5th option added_
 
@@ -547,7 +537,7 @@ _Source: kept from live bank — sheet supplies only 10 interests questions_
 - **A.** Fix malfunctioning communications or transport gear. — _Technical · engine Execution+3, Analytical+1 · finalised set 2026_
 - **B.** Provide immediate first-aid & assess physical symptoms. — _Medical · engine Execution+3, Relationship+2 · finalised set 2026_
 - **C.** Consult rules, safety guidelines, & legal protocols. — _Administrative · engine Analytical+3, Execution+1 · finalised set 2026_
-- **D.** Manage food/water resources & organize logistics calmly. — _Operations · engine Execution+3, Leadership+1 · finalised set 2026_
+- **D.** Manage food/water resources & organize logistics calmly. — _Operations · engine Execution+3, Adaptability+1 · finalised set 2026_
 - **E.** Keep everyone calm and handle communication with the group. — _Interpersonal · engine Relationship+3, Communication+2 · 5th option added_
 
 - **Sheet domains:** Technical, Medical, Administrative, Operations

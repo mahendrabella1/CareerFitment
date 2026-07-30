@@ -111,15 +111,25 @@ const pct = (raw: Vec, max: Vec, k: string) =>
  * not against a theoretical maximum — with one pick per question, a dimension
  * that only appears twice would otherwise hit 100% off a single answer.
  *
- * The baseline each share is judged against is the RANDOM-RESPONDER share
- * (`avg[k] / Σavg`), not an equal 1/n. The eight career clusters, for example,
- * are not offered equally often, so holding a rarely-offered cluster to the
- * same 12.5% bar as a common one would make a neutral profile look focused.
- * Scoring `stretch`× your expected share reads as 100.
+ * The share is judged against an EVEN split (1/n), floored by the dimension's
+ * own expected share. Scoring `stretch`× that bar reads as 100.
  *
- * Dimensions the bank barely measures are then shrunk toward the baseline in
- * proportion to how much evidence there is for them — two mentions cannot
- * produce the same confident 100 as twelve.
+ * Two properties matter here, and an earlier version had neither:
+ *
+ *  - A dimension the student never picked must score 0. Blending the expected
+ *    share into the result gave every unpicked dimension a floor — with the
+ *    2026 interests set, "Engineering & Construction" is offered on only 2 of
+ *    12 items, and that floor alone scored it 38 for a student who never once
+ *    chose it. That is a recommendation manufactured out of nothing.
+ *
+ *  - Rarity must not be rewarded. Dividing by a rare dimension's own tiny
+ *    expected share multiplied it: one pick of a 2-of-12 cluster scored 68
+ *    while one pick of a 12-of-12 cluster scored 21. A single stray click
+ *    outranked three deliberate ones.
+ *
+ * Flooring the denominator at the even split fixes both. The cost is that a
+ * rarely-offered dimension can no longer reach 100 — which is honest, since the
+ * bank never gave the student enough chances to demonstrate it.
  */
 function shareRank(
   t: { raw: Vec; avg: Vec }, label: (k: string) => string = (k) => k, stretch = 2
@@ -127,20 +137,15 @@ function shareRank(
   const keys = Object.keys(t.avg);
   const total = keys.reduce((s, k) => s + (t.raw[k] ?? 0), 0);
   const avgTotal = keys.reduce((s, k) => s + (t.avg[k] ?? 0), 0);
-  const meanAvg = avgTotal / Math.max(1, keys.length);
-  // Nothing answered in this section — report nothing rather than letting the
-  // shrink term below manufacture a mid-range profile out of no responses.
+  const even = 1 / Math.max(1, keys.length);
   if (total <= 0) return keys.map((k) => ({ key: k, name: label(k), score: 0 }));
   return keys
     .map((k) => {
       const expected = avgTotal ? (t.avg[k] ?? 0) / avgTotal : 0;
-      const actual = total ? (t.raw[k] ?? 0) / total : 0;
+      const actual = (t.raw[k] ?? 0) / total;
       if (expected <= 0) return { key: k, name: label(k), score: 0 };
-      // evidence: 1 when the bank measures this dimension at least as much as
-      // the average one, less when it barely appears
-      const ev = Math.min(1, (t.avg[k] ?? 0) / (meanAvg || 1));
-      const shrunk = actual * ev + expected * (1 - ev);
-      return { key: k, name: label(k), score: clamp(Math.round((shrunk / (stretch * expected)) * 100)) };
+      const denom = stretch * Math.max(expected, even);
+      return { key: k, name: label(k), score: clamp(Math.round((actual / denom) * 100)) };
     })
     .sort((a, b) => b.score - a.score);
 }

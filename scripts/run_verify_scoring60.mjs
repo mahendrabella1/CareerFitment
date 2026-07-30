@@ -44,7 +44,8 @@ Module._resolveFilename = function (request, ...rest) {
 };
 `);
 
-const entry = resolve(OUT, "scripts", "verify_scoring60.js");
+const name = process.argv[2] ?? "verify_scoring60";
+const entry = resolve(OUT, "scripts", `${name}.js`);
 if (!existsSync(entry)) { console.error(`missing ${entry}`); process.exit(1); }
 
 const run = spawnSync(process.execPath, ["-r", HOOK, entry], { cwd: PROJECT, stdio: "inherit" });
