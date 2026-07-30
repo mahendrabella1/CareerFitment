@@ -7,3 +7,7 @@ node_modules
 serviceAccountKey.json
 firebase-service-account.json
 tsconfig.tsbuildinfo
+# Temp output of scripts/run_verify_scoring60.mjs
+.verify-out
+# Lock files Excel leaves behind while a workbook is open
+~$*.xlsx

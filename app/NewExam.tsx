@@ -563,8 +563,9 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
         const raw = o ?? "";
         // Strips an imported "A) " / "(A) " label. The closing bracket is
         // REQUIRED: without it the pattern also ate the first letter of any
-        // option that simply starts with A-D ("Attend ..." -> "ttend ...").
-        const label = q.type === "vark" && q.styles?.[i] ? raw.replace(/^\(?[A-D][).]\s*/, "") : isYesNo ? raw : raw.replace(/^\d+\)\s*/, "");
+        // option that simply starts with A-E ("Attend ..." -> "ttend ...").
+        // Range covers E for the five-option 2026 set (Multimodal).
+        const label = q.type === "vark" && q.styles?.[i] ? raw.replace(/^\(?[A-E][).]\s*/, "") : isYesNo ? raw : raw.replace(/^\d+\)\s*/, "");
         return (
           <button key={i} className="og-opt" style={{ ...S.optRow, ...(sel ? S.optRowOn : {}) }} onMouseDown={(e) => e.preventDefault()} onClick={() => onChange(val)}>
             <Radio on={sel} />

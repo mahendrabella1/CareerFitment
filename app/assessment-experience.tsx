@@ -50,7 +50,6 @@ type Journey = {
   age_group: string;
   total_questions: number;
 };
-
 type BlueprintParameter = {
   name: string;
   weightPct: number;
@@ -1032,7 +1031,7 @@ export default function AssessmentExperience() {
       topValues: (p?.topValues ?? []).slice(0, 5),
       topAptitudes: (p?.topAptitudes ?? []).slice(0, 5),
       ei: p?.ei ?? null,
-      learningStyles: (p?.learningStyles ?? []).slice(0, 4),
+      learningStyles: (p?.learningStyles ?? []).slice(0, 5),
       clusters: (fitment?.clusters ?? []).slice(0, 6),
       recommendations: (results.fitment?.recommendations ?? []).slice(0, 6),
       nextStep: results.fitment?.nextStep ?? null,
@@ -2228,7 +2227,6 @@ export default function AssessmentExperience() {
     </main>
   );
 }
-
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
     <article className="stat-card">
