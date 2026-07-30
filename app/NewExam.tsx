@@ -362,13 +362,17 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
               <div style={S.actions}>
                 <button style={{ ...S.ghost, ...(cur === 0 ? S.disabled : {}) }} disabled={cur === 0} onClick={() => go(cur - 1)}><Icon name="chevronLeft" size={16} /> Previous</button>
                 <div style={{ flex: 1 }} />
+                {/* Next is always available, on every question type. Selecting
+                    an answer still auto-advances, but a student who wants to
+                    skip, or who just prefers driving it themselves, needs a
+                    button — "Previous" alone on screen reads as a dead end. */}
                 {cur === total - 1 ? (
                   <button style={{ ...S.finish, ...(allDone && !submitting ? {} : S.disabled) }} disabled={!allDone || submitting} onClick={() => void finish()}>{submitting ? "Scoring…" : "Finish & see report"}</button>
-                ) : (q.type === "slider" || q.type === "open") ? (
+                ) : (
                   <button style={S.next} onClick={() => go(cur + 1)}>Next <Icon name="chevronRight" size={16} /></button>
-                ) : null}
+                )}
               </div>
-              {cur < total - 1 && !(q.type === "slider" || q.type === "open") && <div style={S.tapHint}>Tap an answer to continue</div>}
+              {cur < total - 1 && !(q.type === "slider" || q.type === "open") && <div style={S.tapHint}>Tap an answer to continue, or use Next to come back to it later</div>}
               {!allDone && cur === total - 1 && <div style={S.hint}>Answer all {requiredTotal} questions to finish ({notAnswered} left).</div>}
               {err && <div style={S.err}>{err}</div>}
             </div>
@@ -575,8 +579,11 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
 /** The one radio control used by every option in the exam — text rows and
  *  SVG tiles alike. Clearly visible when unselected, filled blue when chosen. */
 function Radio({ on }: { on: boolean }) {
+  // The class is what lets CSS pin the ring colour to the SELECTED state alone
+  // (see .og-radio in CSS). Without a hook, hover/focus styling on the parent
+  // button could darken one unselected ring and read as a hint.
   return (
-    <span style={{ ...S.radio, ...(on ? S.radioOn : {}) }}>
+    <span className={`og-radio${on ? " on" : ""}`} style={{ ...S.radio, ...(on ? S.radioOn : {}) }}>
       {on && <span style={S.radioDot} />}
     </span>
   );
@@ -801,6 +808,19 @@ const CSS = `
 .og-exam-grid .og-opt:active,.og-exam-grid .og-svgc:active{outline:none !important;box-shadow:none !important}
 .og-opt{transition:background .12s ease;background:transparent}
 .og-opt:hover{background:#f7f9fc}
+/* The radio ring answers to the SELECTED state and nothing else. Hover, focus,
+   keyboard focus and the mid-tap active state must never darken one ring —
+   a single dark circle among four reads to a student as the marked answer. */
+.og-exam-grid .og-radio{border-color:#8d97a8 !important;box-shadow:none !important;outline:none !important}
+.og-exam-grid .og-radio.on{border-color:${BLUE} !important;box-shadow:0 0 0 3px ${BLUE}1f !important}
+.og-exam-grid .og-opt:hover .og-radio,.og-exam-grid .og-opt:focus .og-radio,
+.og-exam-grid .og-opt:focus-visible .og-radio,.og-exam-grid .og-opt:active .og-radio,
+.og-exam-grid .og-svgc:hover .og-radio,.og-exam-grid .og-svgc:focus .og-radio,
+.og-exam-grid .og-svgc:focus-visible .og-radio,.og-exam-grid .og-svgc:active .og-radio{border-color:#8d97a8 !important}
+.og-exam-grid .og-opt:hover .og-radio.on,.og-exam-grid .og-opt:focus .og-radio.on,
+.og-exam-grid .og-opt:focus-visible .og-radio.on,.og-exam-grid .og-opt:active .og-radio.on,
+.og-exam-grid .og-svgc:hover .og-radio.on,.og-exam-grid .og-svgc:focus .og-radio.on,
+.og-exam-grid .og-svgc:focus-visible .og-radio.on,.og-exam-grid .og-svgc:active .og-radio.on{border-color:${BLUE} !important}
 /* scale visual (SVG) matrix cells + options to fit — no giant grids / scrolling */
 .og-exam-grid .og-mcell svg,.og-exam-grid .og-svgh svg{width:100% !important;height:auto !important;display:block}
 .og-exam-grid .og-mfig svg{max-width:200px !important;height:auto !important;display:block}
