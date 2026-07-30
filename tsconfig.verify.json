@@ -10,6 +10,6 @@
     "isolatedModules": false,
     "plugins": []
   },
-  "include": ["scripts/verify_scoring60.ts", "scripts/analyse_bank_2026.ts",
+  "include": ["scripts/verify_scoring60.ts", "scripts/analyse_bank_2026.ts", "scripts/check_strengths_independence.ts",
               "lib/newAssessment/**/*.ts", "lib/auth/AuthProvider.tsx"]
 }

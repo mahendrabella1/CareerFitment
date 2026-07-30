@@ -3022,15 +3022,15 @@
     "difficulty": "easy",
     "text": "A student business buys notebooks at ₹40 each and sells them for ₹50 each. What is the profit percentage?",
     "options": [
-     "15%",
-     "20%",
      "25%",
      "30%",
-     "10%"
+     "10%",
+     "15%",
+     "20%"
     ],
     "optionLabels": null,
     "svgOptions": false,
-    "correct": 2,
+    "correct": 0,
     "media": null,
     "imageStatus": "Not needed"
    },
@@ -3043,15 +3043,15 @@
     "difficulty": "easy",
     "text": "All doctors study science. Some science students become researchers. Which conclusion is definitely true?",
     "options": [
-     "All researchers are doctors.",
      "All science students become doctors.",
      "Some people who study science become researchers.",
      "No doctors are researchers.",
-     "All researchers are science teachers."
+     "All researchers are science teachers.",
+     "All researchers are doctors."
     ],
     "optionLabels": null,
     "svgOptions": false,
-    "correct": 2,
+    "correct": 1,
     "media": null,
     "imageStatus": "Not needed"
    },
@@ -3064,15 +3064,15 @@
     "difficulty": "easy",
     "text": "Which of the following items is the odd one out among specialized professional tools?",
     "options": [
-     "Python (Programming)",
-     "Stethoscope",
      "Ledger",
      "Palette",
-     "Tractor"
+     "Tractor",
+     "Python (Programming)",
+     "Stethoscope"
     ],
     "optionLabels": null,
     "svgOptions": false,
-    "correct": 4,
+    "correct": 2,
     "media": null,
     "imageStatus": "Optional"
    },
@@ -3085,15 +3085,15 @@
     "difficulty": "medium",
     "text": "School electricity usage dropped from 1,200 kWh in Jan to 900 kWh in Feb. What is the percentage reduction?",
     "options": [
+     "33.3%",
+     "15%",
      "20%",
      "25%",
-     "30%",
-     "33.3%",
-     "15%"
+     "30%"
     ],
     "optionLabels": null,
     "svgOptions": false,
-    "correct": 1,
+    "correct": 3,
     "media": {
      "type": "figure",
      "svg": "<svg viewBox=\"0 0 360 220\" xmlns=\"http://www.w3.org/2000/svg\" width=\"360\" height=\"220\"><line x1=\"48\" y1=\"190\" x2=\"330\" y2=\"190\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><line x1=\"48\" y1=\"190\" x2=\"48\" y2=\"22\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><line x1=\"42\" y1=\"190.0\" x2=\"48\" y2=\"190.0\" stroke=\"#1f2937\" stroke-width=\"2\"/><text x=\"36\" y=\"195.0\" text-anchor=\"end\" font-family=\"Inter, sans-serif\" font-size=\"15\" fill=\"#1f2937\">0</text><line x1=\"42\" y1=\"144.3\" x2=\"48\" y2=\"144.3\" stroke=\"#1f2937\" stroke-width=\"2\"/><text x=\"36\" y=\"149.3\" text-anchor=\"end\" font-family=\"Inter, sans-serif\" font-size=\"15\" fill=\"#1f2937\">400</text><line x1=\"42\" y1=\"98.6\" x2=\"48\" y2=\"98.6\" stroke=\"#1f2937\" stroke-width=\"2\"/><text x=\"36\" y=\"103.6\" text-anchor=\"end\" font-family=\"Inter, sans-serif\" font-size=\"15\" fill=\"#1f2937\">800</text><line x1=\"42\" y1=\"52.9\" x2=\"48\" y2=\"52.9\" stroke=\"#1f2937\" stroke-width=\"2\"/><text x=\"36\" y=\"57.9\" text-anchor=\"end\" font-family=\"Inter, sans-serif\" font-size=\"15\" fill=\"#1f2937\">1200</text><rect x=\"90\" y=\"52.9\" width=\"76\" height=\"137.1\" fill=\"#2563eb\" rx=\"3\"/><text x=\"128\" y=\"42.9\" text-anchor=\"middle\" font-family=\"Inter, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#1f2937\">1,200</text><text x=\"128\" y=\"214\" text-anchor=\"middle\" font-family=\"Inter, sans-serif\" font-size=\"16\" fill=\"#1f2937\">January</text><rect x=\"210\" y=\"87.1\" width=\"76\" height=\"102.9\" fill=\"#94a3b8\" rx=\"3\"/><text x=\"248\" y=\"77.1\" text-anchor=\"middle\" font-family=\"Inter, sans-serif\" font-size=\"17\" font-weight=\"700\" fill=\"#1f2937\">900</text><text x=\"248\" y=\"214\" text-anchor=\"middle\" font-family=\"Inter, sans-serif\" font-size=\"16\" fill=\"#1f2937\">February</text><text x=\"36\" y=\"16\" text-anchor=\"start\" font-family=\"Inter, sans-serif\" font-size=\"14\" fill=\"#94a3b8\">kWh</text></svg>"
@@ -3109,15 +3109,15 @@
     "difficulty": "hard",
     "text": "A square piece of paper is folded twice and a triangle punch is made. When unfolded, how many punches appear?",
     "options": [
-     "2",
-     "4",
      "6",
      "8",
-     "1"
+     "1",
+     "2",
+     "4"
     ],
     "optionLabels": null,
     "svgOptions": false,
-    "correct": 1,
+    "correct": 4,
     "media": {
      "type": "figure",
      "svg": "<svg viewBox=\"0 0 456 168\" xmlns=\"http://www.w3.org/2000/svg\" width=\"456\" height=\"168\"><rect x=\"16\" y=\"40\" width=\"84\" height=\"84\" fill=\"#ffffff\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><line x1=\"108\" y1=\"103.0\" x2=\"122\" y2=\"103.0\" stroke=\"#94a3b8\" stroke-width=\"2.5\"/><polygon points=\"128,103.0 120,98.0 120,108.0\" fill=\"#94a3b8\"/><text x=\"58.0\" y=\"150\" text-anchor=\"middle\" font-family=\"Inter, sans-serif\" font-size=\"14\" fill=\"#1f2937\">Start</text><rect x=\"124\" y=\"82.0\" width=\"84\" height=\"42.0\" fill=\"#f2f3f5\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><line x1=\"124\" y1=\"82.0\" x2=\"208\" y2=\"82.0\" stroke=\"#1f2937\" stroke-width=\"2.5\" stroke-dasharray=\"5 4\"/><line x1=\"216\" y1=\"103.0\" x2=\"230\" y2=\"103.0\" stroke=\"#94a3b8\" stroke-width=\"2.5\"/><polygon points=\"236,103.0 228,98.0 228,108.0\" fill=\"#94a3b8\"/><text x=\"166.0\" y=\"150\" text-anchor=\"middle\" font-family=\"Inter, sans-serif\" font-size=\"14\" fill=\"#1f2937\">Fold once</text><rect x=\"232\" y=\"82.0\" width=\"42.0\" height=\"42.0\" fill=\"#f2f3f5\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><line x1=\"274.0\" y1=\"82.0\" x2=\"274.0\" y2=\"124\" stroke=\"#1f2937\" stroke-width=\"2.5\" stroke-dasharray=\"5 4\"/><line x1=\"324\" y1=\"103.0\" x2=\"338\" y2=\"103.0\" stroke=\"#94a3b8\" stroke-width=\"2.5\"/><polygon points=\"344,103.0 336,98.0 336,108.0\" fill=\"#94a3b8\"/><text x=\"274.0\" y=\"150\" text-anchor=\"middle\" font-family=\"Inter, sans-serif\" font-size=\"14\" fill=\"#1f2937\">Fold twice</text><rect x=\"340\" y=\"82.0\" width=\"42.0\" height=\"42.0\" fill=\"#f2f3f5\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><line x1=\"382.0\" y1=\"82.0\" x2=\"382.0\" y2=\"124\" stroke=\"#1f2937\" stroke-width=\"2.5\" stroke-dasharray=\"5 4\"/><polygon points=\"361.0,87.47999999999999 373.0,108.47999999999999 349.0,108.47999999999999\" fill=\"#ffffff\" stroke=\"#2563eb\" stroke-width=\"2.5\"/><text x=\"382.0\" y=\"150\" text-anchor=\"middle\" font-family=\"Inter, sans-serif\" font-size=\"14\" fill=\"#1f2937\">Punch</text><text x=\"228\" y=\"26\" text-anchor=\"middle\" font-family=\"Inter, sans-serif\" font-size=\"15\" font-weight=\"700\" fill=\"#94a3b8\">Unfold it — how many holes?</text></svg>"
@@ -3133,15 +3133,15 @@
     "difficulty": "easy",
     "text": "Diagnosis is to Treatment as Evidence is to ______.",
     "options": [
-     "Investigation",
-     "Medicine",
      "Verdict",
      "Crime",
-     "Policy"
+     "Policy",
+     "Investigation",
+     "Medicine"
     ],
     "optionLabels": null,
     "svgOptions": false,
-    "correct": 2,
+    "correct": 0,
     "media": null,
     "imageStatus": "Not needed"
    },
@@ -3205,15 +3205,15 @@
     "difficulty": "medium",
     "text": "Which number is different? 456789, 456798, 456879, 456789",
     "options": [
+     "e",
      "456789",
      "456798",
      "456879",
-     "456789",
-     "e"
+     "456789"
     ],
     "optionLabels": null,
     "svgOptions": false,
-    "correct": 2,
+    "correct": 3,
     "media": null,
     "imageStatus": "Optional"
    },
@@ -3226,15 +3226,15 @@
     "difficulty": "medium",
     "text": "Two gears mesh together. Gear A turns clockwise. Which way does Gear B turn?",
     "options": [
-     "Clockwise",
-     "Counter-clockwise",
      "No movement",
      "Depends on size",
-     "Cannot say"
+     "Cannot say",
+     "Clockwise",
+     "Counter-clockwise"
     ],
     "optionLabels": null,
     "svgOptions": false,
-    "correct": 1,
+    "correct": 4,
     "media": {
      "type": "figure",
      "svg": "<svg viewBox=\"0 0 260 200\" xmlns=\"http://www.w3.org/2000/svg\" width=\"330\" height=\"200\"><circle cx=\"78\" cy=\"112\" r=\"44\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><line x1=\"120.0\" y1=\"112.0\" x2=\"132.0\" y2=\"112.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"114.4\" y1=\"133.0\" x2=\"124.8\" y2=\"139.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"99.0\" y1=\"148.4\" x2=\"105.0\" y2=\"158.8\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"78.0\" y1=\"154.0\" x2=\"78.0\" y2=\"166.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"57.0\" y1=\"148.4\" x2=\"51.0\" y2=\"158.8\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"41.6\" y1=\"133.0\" x2=\"31.2\" y2=\"139.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"36.0\" y1=\"112.0\" x2=\"24.0\" y2=\"112.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"41.6\" y1=\"91.0\" x2=\"31.2\" y2=\"85.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"57.0\" y1=\"75.6\" x2=\"51.0\" y2=\"65.2\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"78.0\" y1=\"70.0\" x2=\"78.0\" y2=\"58.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"99.0\" y1=\"75.6\" x2=\"105.0\" y2=\"65.2\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"114.4\" y1=\"91.0\" x2=\"124.8\" y2=\"85.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><circle cx=\"78\" cy=\"112\" r=\"12\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><text x=\"78\" y=\"196\" text-anchor=\"middle\" font-family=\"Inter, sans-serif\" font-size=\"19\" font-weight=\"700\" fill=\"#1f2937\">Gear A</text><circle cx=\"176\" cy=\"112\" r=\"44\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><line x1=\"216.6\" y1=\"122.9\" x2=\"228.2\" y2=\"126.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"205.7\" y1=\"141.7\" x2=\"214.2\" y2=\"150.2\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"186.9\" y1=\"152.6\" x2=\"190.0\" y2=\"164.2\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"165.1\" y1=\"152.6\" x2=\"162.0\" y2=\"164.2\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"146.3\" y1=\"141.7\" x2=\"137.8\" y2=\"150.2\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"135.4\" y1=\"122.9\" x2=\"123.8\" y2=\"126.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"135.4\" y1=\"101.1\" x2=\"123.8\" y2=\"98.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"146.3\" y1=\"82.3\" x2=\"137.8\" y2=\"73.8\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"165.1\" y1=\"71.4\" x2=\"162.0\" y2=\"59.8\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"186.9\" y1=\"71.4\" x2=\"190.0\" y2=\"59.8\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"205.7\" y1=\"82.3\" x2=\"214.2\" y2=\"73.8\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"216.6\" y1=\"101.1\" x2=\"228.2\" y2=\"98.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><circle cx=\"176\" cy=\"112\" r=\"12\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><text x=\"176\" y=\"196\" text-anchor=\"middle\" font-family=\"Inter, sans-serif\" font-size=\"19\" font-weight=\"700\" fill=\"#1f2937\">Gear B</text><path d=\"M10 112 A68 68 0 0 1 78 44\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"4\"/><polygon points=\"88,44 72,35 72,53\" fill=\"#2563eb\"/><text x=\"78\" y=\"22\" text-anchor=\"middle\" font-family=\"Inter, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#2563eb\">clockwise</text><text x=\"176\" y=\"36\" text-anchor=\"middle\" font-family=\"Inter, sans-serif\" font-size=\"26\" font-weight=\"800\" fill=\"#94a3b8\">?</text></svg>"

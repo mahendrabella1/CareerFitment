@@ -52,7 +52,7 @@ BLUEPRINT_NOTE = {
     "personality": "Big Five — Openness, Conscientiousness, Extraversion, Agreeableness, Emotional Stability",
     "Strenghts": "Client taxonomy per option (Technical / Medical / Environmental / Legal / Financial)",
     "motivators": "Achievement, Innovation, Impact, Leadership, Security",
-    "Learning styles": "VARK — Visual, Auditory, Reading/Writing, Kinesthetic, Multimodal",
+    "Learning styles": "VARK — Visual, Auditory, Reading/Writing, Kinesthetic, Multimodal (a specific two-mode strategy, not 'do everything')",
     "multiple intellligence": "Logical, Visual-Spatial, Linguistic/Interpersonal, Intrapersonal, Bodily-Kinesthetic",
     "emotional intelligence": "Self-Awareness, Self-Regulation, Self-Motivation, Empathy, Relationship Management",
 }
@@ -184,249 +184,51 @@ APTITUDE_DROPPED = [
 ]
 
 # =========================================================================== #
-# 3. PERSONALITY — Q23-Q34, verbatim. Trait/facet and per-option Big Five
-#    weights added (the sheet carries no mapping columns at all).
+# 3. PERSONALITY — Q23-Q34, rewritten as forced choices.
+#
+# Option E was "None of these" on all twelve items: it scored nothing, it was
+# visibly the throwaway, and it left 13 of the 60 options dead. The rest were
+# shorthand notes rather than sentences, and nothing cost anything. Every item
+# now offers five real positions with a downside each.
+# See finalised_set_2026_personality_v2.py for the full rationale.
 # =========================================================================== #
-PERSONALITY = [
-    ("Q23", "One weekend to prep a project on an unfamiliar topic; by Saturday evening still have several directions. What would you most likely do?",
-     [("Most unusual idea, even if risky", {"O": 3}),
-      ("Clearest, idea most reliable approach", {"C": 3}),
-      ("Discuss options with classmates", {"E": 2, "A": 2}),
-      ("Combine ideas from different sources", {"O": 3, "C": 1}),
-      ("None of these", {})],
-     "Openness", "Curiosity", "Option B reads 'Clearest, idea most reliable approach' — a stray word. Left as supplied."),
-    ("Q24", "School exhibition, must choose one project. Which would you most enjoy building?",
-     [("Challenges conventional thinking", {"O": 3}),
-      ("Carefully planned, tested project", {"C": 3}),
-      ("Interactive, participatory project", {"E": 3, "A": 2}),
-      ("Visually creative project", {"O": 3, "A": 1}),
-      ("None of these", {})],
-     "Openness", "Creativity", ""),
-    ("Q25", "Assignment due in two weeks, but an unexpected event cuts your study days. What would you most likely do?",
-     [("Adjust schedule, follow revised plan", {"C": 3, "S": 1}),
-      ("Rethink best approach before restarting", {"O": 2, "C": 1}),
-      ("Work longer hours to catch up", {"C": 2, "S": 1}),
-      ("Study with others to stay on track", {"E": 2, "A": 2}),
-      ("None of these", {})],
-     "Conscientiousness", "Planning", ""),
-    ("Q26", "After an hour studying a hard chapter, still don't understand it. What usually happens next?",
-     [("Try a different study method", {"O": 2, "C": 1}),
-      ("Take a break, return later", {"S": 2}),
-      ("Ask someone to explain", {"E": 2, "A": 1}),
-      ("Keep practicing despite unclear theory", {"C": 3}),
-      ("None of these", {})],
-     "Conscientiousness", "Persistence", ""),
-    ("Q27", "Halfway through organizing a school event, several problems appear at once. Which role do you take?",
-     [("Keep everything organized", {"C": 3}),
-      ("Suggest new ideas/solutions", {"O": 3}),
-      ("Keep everyone coordinated & motivated", {"E": 3, "A": 2}),
-      ("Tackle the most urgent problem first", {"S": 3, "C": 1}),
-      ("None of these", {})],
-     "Conscientiousness", "Responsibility", ""),
-    ("Q28", "Arrive early for a workshop; most students already talking. What would you most likely do?",
-     [("Join conversation naturally", {"E": 3, "A": 1}),
-      ("Observe before joining", {"C": 1, "O": 1}),
-      ("Talk if shared interests noticed", {"E": 2, "A": 1}),
-      ("Wait to be included", {}),
-      ("None of these", {})],
-     "Extraversion", "Initiative",
-     "Facet recorded as Initiative rather than the old set's Confidence: this scenario is about starting a "
-     "conversation, which keeps it distinct from Q29."),
-    ("Q29", "Joined a new class for a semester. By end of first week, what's most likely true?",
-     [("Already introduced myself to many", {"E": 3, "A": 2}),
-      ("Spoke mainly when needed", {"C": 2}),
-      ("Connected with a few similar people", {"E": 2, "A": 2}),
-      ("Focused on settling in first", {"C": 2}),
-      ("None of these", {})],
-     "Extraversion", "Social Interaction", ""),
-    ("Q30", "During a team activity, two members disagree on how to complete work. What would you naturally do?",
-     [("Help both sides understand each other", {"A": 3, "S": 1}),
-      ("Combine strongest parts of both ideas", {"A": 2, "O": 2}),
-      ("Let group decide, focus on own task", {"C": 2}),
-      ("Choose most practical option", {"C": 2, "S": 1}),
-      ("None of these", {})],
-     "Agreeableness", "Cooperation",
-     "Facets are the reverse of the old set here: old Q30 measured Empathy, old Q31 Cooperation. Mapped to match "
-     "the sheet's scenarios."),
-    ("Q31", "A teammate is falling behind, deadline approaching. What feels most natural?",
-     [("Support them, encourage their own effort", {"A": 3, "S": 1}),
-      ("Adjust plan for fair contribution", {"A": 2, "C": 2}),
-      ("Finish part of task to help team", {"A": 2, "C": 2}),
-      ("Focus on own responsibilities first", {"C": 2}),
-      ("None of these", {})],
-     "Agreeableness", "Empathy", "See Q30 — facets swapped relative to the old set."),
-    ("Q32", "Result is much lower than expected after working hard. What would you most likely do next?",
-     [("Review mistakes, adjust approach", {"S": 3, "C": 2}),
-      ("Ask for feedback", {"S": 2, "A": 1, "E": 1}),
-      ("Take a short break, restart", {"S": 2}),
-      ("Accept result, keep working steadily", {"S": 1, "C": 1}),
-      ("None of these", {})],
-     "Emotional Stability", "Emotional Control", ""),
-    ("Q33", "Just before presenting, realize an important part is missing. First reaction?",
-     [("Quickly find another way to explain", {"S": 3, "O": 1}),
-      ("Pause, understand, then continue", {"S": 3, "C": 2}),
-      ("Ask someone nearby for help", {"A": 2, "E": 2, "S": 1}),
-      ("Continue and adapt as needed", {"S": 2, "C": 1}),
-      ("None of these", {})],
-     "Emotional Stability", "Composure", ""),
-    ("Q34", "Four internship offers with same salary/growth. Which would you most enjoy?",
-     [("Learn something completely new", {"O": 3, "C": 2}),
-      ("Create original ideas/designs/solutions", {"O": 3, "E": 1}),
-      ("Work closely with people, help teams", {"E": 3, "A": 3}),
-      ("Improve systems, boost efficiency", {"C": 3, "S": 1}),
-      ("None of these", {})],
-     "Integrated Big Five", "Overall Personality Profile", ""),
-]
-
-PERSONALITY_NOTE = (
-    "Option E is 'None of these' on all 12 items and scores nothing. The engine treats it as an ABSTENTION "
-    "(abstainIndex = 4): the item drops out of that student's denominator instead of deflating every trait, and "
-    "if more than half the items are abstained the Big Five profile is suppressed rather than published as a "
-    "near-zero. Note also that the options are written as shorthand rather than full sentences — they read as "
-    "internal notes and are worth expanding before a Class 9-10 student sees them."
+from finalised_set_2026_personality_v2 import (  # noqa: E402
+    PERSONALITY, NOTE as PERSONALITY_NOTE,
 )
 
 # =========================================================================== #
-# 4. STRENGHTS — Q35-Q42, the sheet's first 8. Options A-D verbatim; E added.
-#    The sheet's own taxonomy is kept; the engine-domain column is derived from
-#    each option's ACTION, and is approximate (see STRENGTHS_NOTE).
+# 4. STRENGHTS — Q35-Q42, rebuilt as a working-style instrument.
+#
+# The supplied section varied the SUBJECT (tech / health / agri / law) while the
+# action stayed constant, so it re-measured career interest and duplicated
+# Q1-Q12; and half its options were prefixed with their own category, which told
+# the student what each one scored. Rebuilt so each item is one scenario and the
+# five options are different ways of responding to it, each carrying a cost.
+# See finalised_set_2026_strengths_v2.py for the full rationale.
 # =========================================================================== #
-STRENGTHS = [
-    ("Q35", "Your school is leading a District Youth Summit. Which track do you choose to direct?",
-     [("Smart Tech & AI: Coding automation tools or robotics exhibits.", "Technical", {"Analytical": 3, "Execution": 1}, CLIENT),
-      ("Health & Bio-Care: Demonstrating medical diagnostic tools & first-aid.", "Medical", {"Relationship": 3, "Analytical": 1}, CLIENT),
-      ("Eco-Agri Solutions: Setting up hydroponic farming & soil tests.", "Environmental", {"Execution": 3, "Learning": 1}, CLIENT),
-      ("Law & Public Policy: Hosting mock parliament & debating policies.", "Legal/Policy", {"Communication": 3, "Leadership": 1}, CLIENT),
-      ("Media & Design: Producing the summit's films, posters and live coverage.", "Creative/Media", {"Creative": 3, "Communication": 1}, ADDED)],
-     "Technical, Medical, Environmental, Legal/Policy",
-     "STEM & AI, Health & Life Sciences, Agriculture & Earth Sciences, Law & Public Service",
-     "Software Engineer, Medical Doctor, Agricultural Engineer, Lawyer / IAS Officer"),
-    ("Q36", "A local neighborhood faces severe water logging and waste management issues. What is your first step?",
-     [("Build a smart sensor prototype to monitor drainage flow.", "Engineering", {"Analytical": 3, "Execution": 1}, CLIENT),
-      ("Conduct water purity & health risk testing for residents.", "Clinical/Bio-Health", {"Analytical": 3, "Learning": 1}, CLIENT),
-      ("Draft a legal petition & campaign to municipal authorities.", "Advocacy/Legal", {"Communication": 3, "Leadership": 1}, CLIENT),
-      ("Launch a local micro-funded recycling business model.", "Financial/Business", {"Leadership": 3, "Adaptability": 1}, CLIENT),
-      ("Run an awareness drive with posters, films and street theatre.", "Creative/Media", {"Creative": 3, "Communication": 1}, ADDED)],
-     "Engineering, Clinical/Bio-Health, Advocacy/Legal, Financial/Business",
-     "Core Engineering, Public Health, Law & Governance, Commerce & Business",
-     "Civil Engineer, Epidemiologist, Environmental Lawyer, Business Manager"),
-    ("Q37", "Your school gets funding for one new modern learning facility. Which proposal do you champion?",
-     [("Computer & Tech R&D Lab: 3D printers, coding kits, & server gear.", "Analytical", {"Analytical": 3, "Learning": 1}, CLIENT),
-      ("Biology & Medical Lab: Advanced microscopes & human anatomy models.", "Diagnostic", {"Analytical": 3, "Learning": 2}, CLIENT),
-      ("Greenhouse & Soil Lab: Eco-gardening, crop genetics, & bio-fertilizers.", "Ecological", {"Execution": 3, "Learning": 1}, CLIENT),
-      ("Debate & Legal Clinic: Courtroom setup for legal & civic studies.", "Civic/Communicative", {"Communication": 3, "Leadership": 1}, CLIENT),
-      ("Media & Design Studio: cameras, editing suites and a design lab.", "Creative/Media", {"Creative": 3, "Execution": 1}, ADDED)],
-     "Analytical, Diagnostic, Ecological, Civic/Communicative",
-     "Technology, Life Sciences & Medicine, Agriculture, Law & Social Sciences",
-     "AI Developer, Biotechnologist, Agronomist, Constitutional Lawyer"),
-    ("Q38", "Your class must create a digital platform for Indian students. What primary feature do you design?",
-     [("An AI algorithm that solves complex study problems.", "Technical", {"Analytical": 3, "Creative": 1}, CLIENT),
-      ("Mental health counselling & wellness tracker tools.", "Psychological", {"Relationship": 3, "Analytical": 1}, CLIENT),
-      ("An interactive portal on civic rights, duties, & legal awareness.", "Civic/Legal", {"Communication": 3, "Learning": 1}, CLIENT),
-      ("A pocket-money management & micro-investing simulator.", "Financial", {"Execution": 3, "Analytical": 1}, CLIENT),
-      ("A creative showcase where students publish art, writing and film.", "Creative/Media", {"Creative": 3, "Communication": 1}, ADDED)],
-     "Technical, Psychological, Civic/Legal, Financial",
-     "Technology, Allied Health & Psychology, Law & Humanities, Finance & Business",
-     "Systems Architect, Clinical Psychologist, Legal Advisor, Financial Planner"),
-    ("Q39", "Your team enters an Inter-School Community Project competition. Which role do you pick?",
-     [("Mechanical/Tech Lead: Building & repairing hardware tools.", "Mechanical", {"Execution": 3, "Analytical": 1}, CLIENT),
-      ("Medical & Wellness Lead: Managing first-aid & health checkups.", "Medical", {"Relationship": 3, "Execution": 1}, CLIENT),
-      ("Environmental Lead: Designing tree plantation & soil care plans.", "Environmental", {"Execution": 3, "Creative": 1}, CLIENT),
-      ("Strategy & Finance Lead: Budgeting, sponsorship, & pitch decks.", "Strategic/Financial", {"Leadership": 3, "Analytical": 1}, CLIENT),
-      ("Communications Lead: documenting the project and presenting it publicly.", "Creative/Media", {"Communication": 3, "Creative": 1}, ADDED)],
-     "Mechanical, Medical, Environmental, Strategic/Financial",
-     "Engineering & Robotics, Healthcare, Agriculture & Ecology, Commerce & Finance",
-     "Mechanical Engineer, Paramedic / Doctor, Forestry Officer, Chartered Accountant (CA)"),
-    ("Q40", "If you could shadow a top professional for one week, who would you choose?",
-     [("A Lead Developer coding AI applications at a tech giant.", "Analytical/Tech", {"Analytical": 3, "Learning": 2}, CLIENT),
-      ("A Surgeon performing precision operations in a hospital.", "Diagnostic/Medical", {"Execution": 3, "Analytical": 2}, CLIENT),
-      ("An Agricultural Scientist developing drought-resistant crops.", "Biological/Agri", {"Learning": 3, "Adaptability": 1}, CLIENT),
-      ("A Corporate Lawyer defending major international clients.", "Logical/Legal", {"Communication": 3, "Analytical": 1}, CLIENT),
-      ("A Creative Director running a design and film studio.", "Creative/Media", {"Creative": 3, "Leadership": 1}, ADDED)],
-     "Analytical/Tech, Diagnostic/Medical, Biological/Agri, Logical/Legal",
-     "STEM & Software, Medical Sciences, Agriculture & Bio-Tech, Law & Corporate Services",
-     "Machine Learning Engineer, Surgeon, Agronomist, Corporate Advocate"),
-    ("Q41", "Your school newsletter needs a special dedicated column. Which section do you write?",
-     [("Tech Byte: Future AI gadgets, coding, & space discoveries.", "Technical", {"Analytical": 3, "Communication": 1}, CLIENT),
-      ("Body & Mind: Disease prevention, health tips, & sports nutrition.", "Health/Biological", {"Relationship": 3, "Communication": 1}, CLIENT),
-      ("Earth Watch: Climate action, sustainable farming, & wildlife.", "Ecological", {"Learning": 3, "Communication": 1}, CLIENT),
-      ("Money & Markets: Stock market basics, saving tips, & startups.", "Financial", {"Analytical": 3, "Leadership": 1}, CLIENT),
-      ("Stage & Screen: film, music, design and student creative work.", "Creative/Media", {"Creative": 3, "Communication": 1}, ADDED)],
-     "Technical, Health/Biological, Ecological, Financial",
-     "Science & Tech, Healthcare, Agriculture & Environment, Business & Economics",
-     "Data Scientist, Nutritionist / Physician, Wildlife Biologist, Investment Banker"),
-    ("Q42", "A sudden emergency occurs during a school trip. What is your immediate instinct?",
-     [("Fix malfunctioning communications or transport gear.", "Technical", {"Execution": 3, "Analytical": 1}, CLIENT),
-      ("Provide immediate first-aid & assess physical symptoms.", "Medical", {"Execution": 3, "Relationship": 2}, CLIENT),
-      ("Consult rules, safety guidelines, & legal protocols.", "Administrative", {"Analytical": 3, "Execution": 1}, CLIENT),
-      ("Manage food/water resources & organize logistics calmly.", "Operations", {"Execution": 3, "Adaptability": 1}, CLIENT),
-      ("Keep everyone calm and handle communication with the group.", "Interpersonal", {"Relationship": 3, "Communication": 2}, ADDED)],
-     "Technical, Medical, Administrative, Operations",
-     "Core Engineering, Emergency Medicine, Law & Compliance, Operations & Supply Chain",
-     "Operations Engineer, Emergency Doctor, Hospital Administrator, Supply Chain Head"),
-]
+from finalised_set_2026_strengths_v2 import (  # noqa: E402
+    STRENGTHS, WEIGHTS as STRENGTHS_WEIGHTS, DOMAINS as STRENGTHS_DOMAINS,
+    GROUPS as STRENGTHS_GROUPS, ROLLUP as STRENGTHS_ROLLUP, NOTE as STRENGTHS_NOTE,
+)
 
 STRENGTHS_DROPPED = [
-    ("₹10,000 social impact project", "Cut only because the count caps at 8."),
-    ("long-term problem giving deepest satisfaction", "Cut only because the count caps at 8."),
-    ("one elective course for next term", "Cut only because the count caps at 8; overlaps interests Q10."),
-    ("48 hours to present a final major project", "Cut only because the count caps at 8."),
+    ("all 8 supplied items", "Replaced wholesale: they varied by subject, not working style, so the section "
+                             "duplicated the Interests scale rather than adding a second signal."),
 ]
 
-STRENGTHS_NOTE = (
-    "Construct warning. Across all 8 items the options differ by SUBJECT (tech / health / agri / law / finance), "
-    "not by working style, and each option is prefixed with its own label, which tells the student what it "
-    "measures. That makes this section a second career-interest scale rather than a strengths scale. The "
-    "'Strength Domain (engine)' column is DERIVED from each option's action verb so the eight-domain scoring "
-    "still runs, but it is approximate — a strengths section normally varies the action (analyse / create / lead "
-    "/ organise / persuade) while holding the subject fixed."
+# =========================================================================== #
+# 5. MOTIVATORS — Q43-Q47, rewritten as trade-offs.
+#
+# "Solve a problem faced by people or society" sat against three neutral
+# alternatives — the answer a 15-year-old knows an adult wants. Option order was
+# also fixed on every item, so answering by position produced a clean false
+# profile, and these were the longest options left in the exam.
+# See finalised_set_2026_motivators_v2.py for the full rationale.
+# =========================================================================== #
+from finalised_set_2026_motivators_v2 import (  # noqa: E402
+    MOTIVATORS, WEIGHTS as MOTIVATOR_WEIGHTS, DOMAINS as MOTIVATOR_DOMAINS,
+    NOTE as MOTIVATORS_NOTE,
 )
-
-# =========================================================================== #
-# 5. MOTIVATORS — Q43-Q47. Options A-D verbatim; E added.
-# =========================================================================== #
-MOTIVATORS = [
-    ("Q43", "School gives opportunity to select one special project for the entire year. Which would excite you most?",
-     [("Challenging project to improve skills and achieve excellent results", {"Achievement": 3, "Innovation": 1, "Learning": 1}, CLIENT),
-      ("Create something completely new nobody has tried", {"Innovation": 3, "Achievement": 1, "Impact": 1}, CLIENT),
-      ("Solve a problem faced by people or society", {"Impact": 3, "Innovation": 1, "Leadership": 1}, CLIENT),
-      ("Lead a team and make key decisions to achieve the goal", {"Leadership": 3, "Achievement": 1, "Impact": 1}, CLIENT),
-      ("A well-defined project with clear steps and a dependable result", {"Security": 3, "Achievement": 1}, ADDED)],
-     "Engineering, Research, Design, Healthcare, Entrepreneurship, Management",
-     "Engineer, Scientist, Doctor, Entrepreneur, Project Manager"),
-    ("Q44", "Extra time after school. Which activity would feel most satisfying?",
-     [("Practicing a skill to get better at it", {"Achievement": 3, "Learning": 2}, CLIENT),
-      ("Exploring new ideas, experimenting creatively", {"Innovation": 3, "Learning": 1}, CLIENT),
-      ("Helping someone learn or solve a problem", {"Impact": 3, "Learning": 1}, CLIENT),
-      ("Organizing a group activity", {"Leadership": 3, "Achievement": 1}, CLIENT),
-      ("Getting ahead on work already scheduled, so nothing piles up", {"Security": 3, "Achievement": 1}, ADDED)],
-     "Technology, Education, Healthcare, Business, Creative Fields",
-     "Software Engineer, Teacher, Doctor, Designer, Business Leader"),
-    ("Q45", "Achieved success in your future career. What would make you most proud?",
-     [("Becoming highly skilled, recognized as an expert", {"Achievement": 3, "Learning": 2}, CLIENT),
-      ("Creating something innovative that changes how people do things", {"Innovation": 3, "Achievement": 1}, CLIENT),
-      ("Making a meaningful difference in people's lives", {"Impact": 3}, CLIENT),
-      ("Becoming a leader who influences important decisions", {"Leadership": 3, "Achievement": 1}, CLIENT),
-      ("Building a secure, stable career that supports my family well", {"Security": 3, "Impact": 1}, ADDED)],
-     "Research, Technology, Healthcare, Social Services, Government",
-     "Research Scientist, AI Engineer, Doctor, IAS Officer, Entrepreneur"),
-    ("Q46", "School competition where students choose their own challenge. Which would you prefer?",
-     [("Difficult challenge to test abilities, compete with others", {"Achievement": 3, "Learning": 1}, CLIENT),
-      ("Creative challenge to design something unique", {"Innovation": 3}, CLIENT),
-      ("Challenge that helps improve school or community", {"Impact": 3}, CLIENT),
-      ("Challenge to coordinate and manage a team", {"Leadership": 3}, CLIENT),
-      ("A challenge with clear rules where I know exactly what is expected", {"Security": 3, "Achievement": 1}, ADDED)],
-     "Sports, Engineering, Design, Social Impact, Management",
-     "Athlete, Engineer, Designer, Social Worker, Manager"),
-    ("Q47", "Choosing your future workplace — which environment would motivate you most?",
-     [("Continuously learn, improve, achieve bigger goals", {"Learning": 3, "Achievement": 2}, CLIENT),
-      ("Freedom to explore ideas and try new approaches", {"Innovation": 3, "Learning": 1}, CLIENT),
-      ("Work that helps people, creates positive change", {"Impact": 3}, CLIENT),
-      ("Stability, clear systems, structured career path", {"Security": 3}, CLIENT),
-      ("A place where I can take charge of a team and be judged on results", {"Leadership": 3, "Achievement": 2}, ADDED)],
-     "Research, Entrepreneurship, Healthcare, Education, Finance, Government",
-     "Scientist, Startup Founder, Doctor, Teacher, Banker, Civil Servant"),
-]
 
 # =========================================================================== #
 # 6. LEARNING STYLES — Q48-Q51: the sheet's items 2, 7, 10 and 11, which are the
@@ -437,24 +239,24 @@ LEARNING_STYLES_ORDER = ["Visual", "Auditory", "Reading/Writing", "Kinesthetic",
 LEARNING = [
     ("Q48", "When learning a hard math formula, I like to",
      ["See charts/shapes", "Listen to explanation", "Write down step by step to understand",
-      "Practice problems until I understand", "Use a mix — see it, talk it through, then practise it"],
+      "Practice problems until I understand", "Work through a solved example first, then try one myself"],
      "Engineering, Research, Healthcare, Education, Design", "Engineer, Scientist, Doctor, Teacher, Designer",
      CLIENT + " item 2"),
     ("Q49", "When studying for a big final exam, I prefer to:",
      ["Look at colorful mind-maps or diagrams.", "Join a study group to discuss topics out loud.",
       "Reread chapters and write summaries", "Use hands-on practice methods",
-      "Mix diagrams, discussion, notes and practice depending on the subject"],
+      "Test myself on past questions and fix whatever I get wrong"],
      "All career clusters — study-approach indicator",
      "Supports learning approach in Engineering, Medicine, Business, Arts, Research", CLIENT + " item 10"),
     ("Q50", "When learning a new hobby, I prefer to:",
      ["Watch video guides", "Have someone explain it", "Read online articles on it", "Try it by doing",
-      "Switch between watching, asking, reading and trying as I go"],
+      "Copy someone doing it step by step until it clicks"],
      "Technology, Creative Fields, Entrepreneurship, Technical Careers",
      "Programmer, Designer, Entrepreneur, Engineer, Technician", CLIENT + " item 7"),
     ("Q51", "You are exploring different career options for your future. How would you prefer to learn about them?",
      ["Watch videos of professionals at work.", "Attend talks and meet counsellors directly.",
       "Read guides and articles about professions.", "Visit workplaces or try internships hands-on.",
-      "Use all of them — videos, talks, reading and a real visit"],
+      "Spend a day shadowing someone and judge it from how it felt"],
      "Career exploration across all domains",
      "Doctor, Engineer, Lawyer, Entrepreneur, Scientist, Designer, Manager", CLIENT + " item 11"),
 ]

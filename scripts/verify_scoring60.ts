@@ -352,19 +352,46 @@ check("aptitude scores from the imported answer keys",
 check("a RIASEC code is produced", (live.riasecCode ?? "").length === 3,
   `got "${live.riasecCode}"`);
 
-// "None of these" is index 4 on every personality item and is declared as the
-// abstention, so answering it throughout must suppress the profile.
-const liveAbstain = { ...liveAns };
-answerAll("personality", 12, 4, liveAbstain);
-const suppressed = scoreAssessment60(STAGE, LIVE, liveAbstain);
-check("answering 'None of these' throughout suppresses the Big Five profile",
-  suppressed.topStrengths.length === 0 && suppressed.outcomeLabel == null,
-  `${suppressed.topStrengths.length} rows, label ${suppressed.outcomeLabel}`);
-// One abstention must not deflate the rest.
-const oneAbstain = { ...liveAns, "personality:0": "4" };
-const oneOut = scoreAssessment60(STAGE, LIVE, oneAbstain);
-check("a single abstention still yields a full profile",
-  oneOut.topStrengths.length === 5 && oneOut.outcomeLabel != null);
+// The live personality section no longer carries a "None of these" opt-out —
+// every option is a real position — so there is no abstainIndex and answering
+// option E throughout must yield a NORMAL profile, not a suppressed one.
+// (The abstention machinery itself is still exercised against synthetic banks
+//  in sections 1-4 above, so removing it here loses no coverage.)
+const P = B.personality[STAGE]["Set 1"] as any[];
+check("no personality item offers an opt-out",
+  !P.some((q) => typeof q.abstainIndex === "number"
+    || q.options.some((o: string) => /none of these/i.test(o))));
+const allE = { ...liveAns };
+answerAll("personality", 12, 4, allE);
+const eProfile = scoreAssessment60(STAGE, LIVE, allE);
+check("answering option E throughout still yields a full profile",
+  eProfile.topStrengths.length === 5 && eProfile.outcomeLabel != null,
+  `${eProfile.topStrengths.length} rows, label ${eProfile.outcomeLabel}`);
+// Different answer patterns must give different profiles, or the section is inert.
+const topA = scoreAssessment60(STAGE, LIVE, liveAns).topStrengths[0]?.subTraitName;
+const topE = eProfile.topStrengths[0]?.subTraitName;
+check("different personality answers give different leading traits",
+  topA !== topE, `both ${topA}`);
+
+/* ---------------------------------------------------------------------- 11 */
+// A student reads 250 options in one sitting. Anything much past ~65 characters
+// runs to a second line on a phone, and they start choosing on shape rather
+// than meaning.
+console.log("\n[11] option text stays short enough to actually read");
+const longest: [string, string, number][] = [];
+for (const [cat] of liveCounts) {
+  if (cat === "aptitude") continue;
+  const qs = (B[cat] ?? {})[STAGE]?.["Set 1"] as any[] | undefined;
+  const set = cat === "strengths" ? (strengthsBank as any)[STAGE]["Set 1"] : qs;
+  for (const q of set ?? []) {
+    for (const o of q.options) longest.push([cat, String(o), String(o).length]);
+  }
+}
+const over = longest.filter(([, , n]) => n > 70);
+check("no option runs past 70 characters", over.length === 0,
+  over.slice(0, 3).map(([c, o]) => `${c}: ${o.slice(0, 40)}…`).join(" | "));
+const mean = longest.reduce((s, [, , n]) => s + n, 0) / longest.length;
+check("mean option length stays under 55 characters", mean < 55, `${mean.toFixed(0)}`);
 
 /* ----------------------------------------------------------------------- 9 */
 // A cluster the student never picked must score 0. "Engineering & Construction"

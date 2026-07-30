@@ -9,7 +9,7 @@
 | 3 | personality | Q23-Q34 | 12 | 5 | Big Five — Openness, Conscientiousness, Extraversion, Agreeableness, Emotional Stability |
 | 4 | Strenghts | Q35-Q42 | 8 | 5 | Client taxonomy per option (Technical / Medical / Environmental / Legal / Financial) |
 | 5 | motivators | Q43-Q47 | 5 | 5 | Achievement, Innovation, Impact, Leadership, Security |
-| 6 | Learning styles | Q48-Q51 | 4 | 5 | VARK — Visual, Auditory, Reading/Writing, Kinesthetic, Multimodal |
+| 6 | Learning styles | Q48-Q51 | 4 | 5 | VARK — Visual, Auditory, Reading/Writing, Kinesthetic, Multimodal (a specific two-mode strategy, not 'do everything') |
 | 7 | multiple intellligence | Q52-Q55 | 4 | 5 | Logical, Visual-Spatial, Linguistic/Interpersonal, Intrapersonal, Bodily-Kinesthetic |
 | 8 | emotional intelligence | Q56-Q60 | 5 | 5 | Self-Awareness, Self-Regulation, Self-Motivation, Empathy, Relationship Management |
 | | **TOTAL** | Q1-Q60 | **60** | 5 | |
@@ -22,121 +22,121 @@
 
 ### Q1. Your school is organizing a District-Level Community Fair. Which responsibility would you enjoy the most?
 
-- **A.** Understanding the problem before suggesting a solution. — _C · Health Science · RIASEC I+3, S+1_
+- **A.** Understand the problem before fixing it. — _C · Health Science · RIASEC I+3, S+1_
 - **B.** Finding smarter ways to make things work better. — _B · Information Technology · RIASEC R+3, I+2_
-- **C.** Making sure every decision is fair and well considered. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
-- **D.** Communicating ideas that engage and inspire others. — _D · Arts, Media & Design · RIASEC A+3, E+1_
-- **E.** Planning and coordinating everything to stay on track. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **C.** Make sure the decision is a fair one. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **D.** Get people interested in the idea. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **E.** Keep the whole thing on schedule. — _E · Business & Marketing · RIASEC C+3, E+2_
 
 _Source: behaviour-based rewrite_
 
 ### Q2. You can spend a week shadowing anyone at work. What would you most want to watch them do?
 
-- **A.** Shape a rough idea into something people actually notice. — _D · Arts, Media & Design · RIASEC A+3, E+1_
-- **B.** Keep a complicated operation running exactly to schedule. — _E · Business & Marketing · RIASEC C+3, E+2_
-- **C.** Work out what is really going on before deciding anything. — _C · Health Science · RIASEC I+3, S+1_
-- **D.** Take something that half works and make it work properly. — _B · Information Technology · RIASEC R+3, I+2_
-- **E.** Weigh both sides of a difficult call and justify the decision. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **A.** Turn a rough idea into something noticed. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **B.** Keep a messy operation on schedule. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **C.** Work out what is really going on. — _C · Health Science · RIASEC I+3, S+1_
+- **D.** Make something half-working work. — _B · Information Technology · RIASEC R+3, I+2_
+- **E.** Weigh a hard call and justify it. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
 
 _Source: behaviour-based rewrite_
 
 ### Q3. Your town is setting up a new Model Village Project. Where would you want to be involved?
 
-- **A.** Designing how the whole thing should actually function. — _A · Engineering & Construction · RIASEC R+3, I+2_
-- **B.** Making sure the rules are fair to everyone affected. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
-- **C.** Turning the plan into a schedule and a budget that holds. — _E · Business & Marketing · RIASEC C+3, E+2_
-- **D.** Finding out what the village actually needs, and why. — _G · Science, Nature & Agriculture · RIASEC I+3, S+1_
-- **E.** Telling the story so people want to be part of it. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **A.** Design how the whole thing works. — _A · Engineering & Construction · RIASEC R+3, I+2_
+- **B.** Set rules that are fair to everyone. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **C.** Turn the plan into a budget that holds. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **D.** Find out what is actually needed, and why. — _G · Science, Nature & Agriculture · RIASEC I+3, S+1_
+- **E.** Tell it so people want to join in. — _D · Arts, Media & Design · RIASEC A+3, E+1_
 
 _Source: behaviour-based rewrite_
 
 ### Q4. For your Class 10 exhibition you can lead one project. Which appeals to you most?
 
-- **A.** One with many moving parts that must come together on time. — _E · Business & Marketing · RIASEC C+3, E+2_
-- **B.** One that looks and feels like nothing else on show. — _D · Arts, Media & Design · RIASEC A+3, E+1_
-- **C.** One where I build something and keep improving how it works. — _B · Information Technology · RIASEC R+3, I+2_
-- **D.** One that takes a contested issue and argues it properly. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
-- **E.** One where I test an idea and find out whether it holds up. — _C · Health Science · RIASEC I+3, S+1_
+- **A.** Many moving parts, all due at once. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **B.** Looks like nothing else on show. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **C.** Build it, then keep improving it. — _B · Information Technology · RIASEC R+3, I+2_
+- **D.** Take a contested issue and argue it. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **E.** Test an idea and see if it holds up. — _C · Health Science · RIASEC I+3, S+1_
 
 _Source: behaviour-based rewrite_
 
 ### Q5. You are given ₹10,000 for a student-led initiative. What would you put it into?
 
-- **A.** Something that fixes an unfairness people have stopped noticing. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
-- **B.** Finding out why a problem keeps coming back. — _G · Science, Nature & Agriculture · RIASEC I+3, S+1_
-- **C.** Something people will still remember long after it ends. — _D · Arts, Media & Design · RIASEC A+3, E+1_
-- **D.** Something that runs reliably every week without me. — _E · Business & Marketing · RIASEC C+3, E+2_
-- **E.** Building a tool that saves everyone time. — _B · Information Technology · RIASEC R+3, I+2_
+- **A.** Fix an unfairness people ignore. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **B.** Find out why it keeps coming back. — _G · Science, Nature & Agriculture · RIASEC I+3, S+1_
+- **C.** Something people remember afterwards. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **D.** Runs every week without me. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **E.** Build a tool that saves time. — _B · Information Technology · RIASEC R+3, I+2_
 
 _Source: behaviour-based rewrite_
 
 ### Q6. Which kind of story keeps you reading or watching the longest?
 
-- **A.** How someone worked out the cause of something puzzling. — _G · Science, Nature & Agriculture · RIASEC I+3, S+1_
-- **B.** How a huge undertaking was pulled off without falling apart. — _E · Business & Marketing · RIASEC C+3, E+2_
-- **C.** How a difficult decision was argued over and finally settled. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
-- **D.** How something was built to do what nobody thought possible. — _B · Information Technology · RIASEC R+3, I+2_
-- **E.** How an idea was made striking enough to change minds. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **A.** How someone found the cause. — _G · Science, Nature & Agriculture · RIASEC I+3, S+1_
+- **B.** How something huge held together. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **C.** How a hard decision got settled. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **D.** How something impossible got built. — _B · Information Technology · RIASEC R+3, I+2_
+- **E.** How an idea changed minds. — _D · Arts, Media & Design · RIASEC A+3, E+1_
 
 _Source: behaviour-based rewrite_
 
 ### Q7. Something goes badly wrong on a school trip. What do you find yourself doing?
 
-- **A.** Fixing whatever has stopped working. — _A · Engineering & Construction · RIASEC R+3, I+2_
-- **B.** Getting a clear message out so nobody panics. — _D · Arts, Media & Design · RIASEC A+3, E+1_
-- **C.** Working out what actually happened before anyone reacts. — _C · Health Science · RIASEC I+3, S+1_
-- **D.** Checking what we are responsible for and what the rules say. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
-- **E.** Getting people, supplies and transport organised. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **A.** Fix whatever has stopped working. — _A · Engineering & Construction · RIASEC R+3, I+2_
+- **B.** Get a clear message out fast. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **C.** Work out what actually happened. — _C · Health Science · RIASEC I+3, S+1_
+- **D.** Check what the rules actually say. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **E.** Get people and supplies organised. — _E · Business & Marketing · RIASEC C+3, E+2_
 
 _Source: behaviour-based rewrite_
 
 ### Q8. Which problem would you be proudest to have solved twenty years from now?
 
-- **A.** One where I changed how people see something. — _D · Arts, Media & Design · RIASEC A+3, E+1_
-- **B.** One where I left a system fairer than I found it. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
-- **C.** One where I made something work at a scale nobody had managed. — _E · Business & Marketing · RIASEC C+3, E+2_
-- **D.** One where I made a thing dramatically better than it was. — _B · Information Technology · RIASEC R+3, I+2_
-- **E.** One where I found the answer nobody else could find. — _G · Science, Nature & Agriculture · RIASEC I+3, S+1_
+- **A.** I changed how people see something. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **B.** I left a system fairer than I found it. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **C.** I made it work at a huge scale. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **D.** I made a thing far better. — _B · Information Technology · RIASEC R+3, I+2_
+- **E.** I found the answer nobody else could. — _G · Science, Nature & Agriculture · RIASEC I+3, S+1_
 
 _Source: behaviour-based rewrite_
 
 ### Q9. Picture your work ten years from now. What would make it a good day?
 
-- **A.** Everything I set up ran exactly as it should. — _E · Business & Marketing · RIASEC C+3, E+2_
-- **B.** I finally got a stubborn thing working. — _A · Engineering & Construction · RIASEC R+3, I+2_
-- **C.** I made something I was proud to show people. — _D · Arts, Media & Design · RIASEC A+3, E+1_
-- **D.** I understood something that had been puzzling me for weeks. — _C · Health Science · RIASEC I+3, S+1_
-- **E.** I argued a difficult case and got it right. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **A.** Everything I set up just worked. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **B.** I got a stubborn thing working. — _A · Engineering & Construction · RIASEC R+3, I+2_
+- **C.** I made something worth showing. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **D.** I understood something long puzzling. — _C · Health Science · RIASEC I+3, S+1_
+- **E.** I argued a hard case and got it right. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
 
 _Source: behaviour-based rewrite_
 
 ### Q10. You can add one extra subject next term, purely because you want to. What draws you?
 
-- **A.** One that trains you to reason through hard, contested questions. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
-- **B.** One that trains you to express an idea so that it lands. — _D · Arts, Media & Design · RIASEC A+3, E+1_
-- **C.** One that trains you to test a claim properly. — _C · Health Science · RIASEC I+3, S+1_
-- **D.** One that trains you to run something from end to end. — _E · Business & Marketing · RIASEC C+3, E+2_
-- **E.** One that trains you to design and build. — _B · Information Technology · RIASEC R+3, I+2_
+- **A.** Reasoning through contested questions. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **B.** Expressing an idea so it lands. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **C.** Testing a claim properly. — _C · Health Science · RIASEC I+3, S+1_
+- **D.** Running something end to end. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **E.** Designing and building things. — _B · Information Technology · RIASEC R+3, I+2_
 
 _Source: behaviour-based rewrite_
 
 ### Q11. A company offers you a month with any one of its teams. Which do you ask for?
 
-- **A.** The team working out why the product keeps failing. — _C · Health Science · RIASEC I+3, S+1_
-- **B.** The team rebuilding how the product actually works. — _A · Engineering & Construction · RIASEC R+3, I+2_
-- **C.** The team keeping costs, stock and delivery on track. — _E · Business & Marketing · RIASEC C+3, E+2_
-- **D.** The team making sure it is safe and above board. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
-- **E.** The team deciding how it should look and feel. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **A.** Working out why it keeps failing. — _C · Health Science · RIASEC I+3, S+1_
+- **B.** Rebuilding how the product works. — _A · Engineering & Construction · RIASEC R+3, I+2_
+- **C.** Keeping costs and delivery on track. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **D.** Making sure it is safe and legal. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **E.** Deciding how it looks and feels. — _D · Arts, Media & Design · RIASEC A+3, E+1_
 
 _Source: behaviour-based rewrite_
 
 ### Q12. Your school starts a student magazine and website. Which job do you take?
 
-- **A.** Deciding how it looks and how each story gets told. — _D · Arts, Media & Design · RIASEC A+3, E+1_
-- **B.** Digging out the facts and checking that they hold up. — _C · Health Science · RIASEC I+3, S+1_
-- **C.** Building the site and keeping it fast and working. — _B · Information Technology · RIASEC R+3, I+2_
-- **D.** Running the schedule, the budget and the ad slots. — _E · Business & Marketing · RIASEC C+3, E+2_
-- **E.** Deciding what we should and should not publish. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
+- **A.** Deciding how each story gets told. — _D · Arts, Media & Design · RIASEC A+3, E+1_
+- **B.** Digging out facts and checking them. — _C · Health Science · RIASEC I+3, S+1_
+- **C.** Building the site and keeping it fast. — _B · Information Technology · RIASEC R+3, I+2_
+- **D.** Running the schedule and the budget. — _E · Business & Marketing · RIASEC C+3, E+2_
+- **E.** Deciding what we should not publish. — _F · Human & Public Services · RIASEC S+2, E+2, C+1_
 
 _Source: behaviour-based rewrite_
 
@@ -312,133 +312,131 @@ _Source: behaviour-based rewrite_
 
 ## 3. Personality — Q23-Q34
 
-> Option E is 'None of these' on all 12 items and scores nothing. The engine treats it as an ABSTENTION (abstainIndex = 4): the item drops out of that student's denominator instead of deflating every trait, and if more than half the items are abstained the Big Five profile is suppressed rather than published as a near-zero. Note also that the options are written as shorthand rather than full sentences — they read as internal notes and are worth expanding before a Class 9-10 student sees them.
+> Every item now offers five real positions with a downside each — the bold idea may not work, the safe one is dull, asking others means depending on them, finishing early means handing in less. The old 'None of these' opt-out is gone, which removes 13 dead options and the risk of a student answering the whole section with it. An option carrying no weights is NOT an abstention: keeping to yourself is real evidence about extraversion, so it stays in the denominator and correctly pulls the trait down.
 
-### Q23. One weekend to prep a project on an unfamiliar topic; by Saturday evening still have several directions. What would you most likely do?
+### Q23. One weekend to prepare a project on a topic you have never touched. By Saturday night you still have several directions. What do you do?
 
-- **A.** Most unusual idea, even if risky — _O+3_
-- **B.** Clearest, idea most reliable approach — _C+3_
-- **C.** Discuss options with classmates — _E+2, A+2_
-- **D.** Combine ideas from different sources — _O+3, C+1_
-- **E.** None of these — _not scored_
+- **A.** Chase the riskiest idea and see. — _O+3_
+- **B.** Take the safest one and finish. — _C+3_
+- **C.** Ask classmates which to pick. — _E+2, A+2_
+- **D.** Blend the best bits of each. — _O+2, C+1_
+- **E.** Stick with my first instinct. — _S+2, C+1_
 
 - **Trait / facet:** Openness · Curiosity
 
-> **Note.** Option B reads 'Clearest, idea most reliable approach' — a stray word. Left as supplied.
+### Q24. Your school exhibition lets you build anything. Which do you go for?
 
-### Q24. School exhibition, must choose one project. Which would you most enjoy building?
-
-- **A.** Challenges conventional thinking — _O+3_
-- **B.** Carefully planned, tested project — _C+3_
-- **C.** Interactive, participatory project — _E+3, A+2_
-- **D.** Visually creative project — _O+3, A+1_
-- **E.** None of these — _not scored_
+- **A.** Something nobody would expect. — _O+3_
+- **B.** Something I have tested and trust. — _C+3_
+- **C.** Something visitors join in with. — _E+3, A+2_
+- **D.** Something that simply looks striking. — _O+2, A+1_
+- **E.** Whatever I can finish in time. — _C+2, S+1_
 
 - **Trait / facet:** Openness · Creativity
 
-### Q25. Assignment due in two weeks, but an unexpected event cuts your study days. What would you most likely do?
+### Q25. An assignment is due in two weeks and something unexpected takes your study days away.
 
-- **A.** Adjust schedule, follow revised plan — _C+3, S+1_
-- **B.** Rethink best approach before restarting — _O+2, C+1_
-- **C.** Work longer hours to catch up — _C+2, S+1_
-- **D.** Study with others to stay on track — _E+2, A+2_
-- **E.** None of these — _not scored_
+- **A.** Redo the schedule and follow it. — _C+3, S+1_
+- **B.** Rethink the whole approach first. — _O+2, C+1_
+- **C.** Work late and push through. — _C+2, S+1_
+- **D.** Work with others to keep up. — _E+2, A+2_
+- **E.** Hand in less, but on time. — _S+2, C+1_
 
 - **Trait / facet:** Conscientiousness · Planning
 
-### Q26. After an hour studying a hard chapter, still don't understand it. What usually happens next?
+### Q26. An hour into a hard chapter and it still will not go in. What happens next?
 
-- **A.** Try a different study method — _O+2, C+1_
-- **B.** Take a break, return later — _S+2_
-- **C.** Ask someone to explain — _E+2, A+1_
-- **D.** Keep practicing despite unclear theory — _C+3_
-- **E.** None of these — _not scored_
+- **A.** Try a completely different method. — _O+2, C+1_
+- **B.** Leave it and come back later. — _S+2_
+- **C.** Get someone to explain it. — _E+2, A+1_
+- **D.** Keep drilling it until it sticks. — _C+3_
+- **E.** Move on and lose those marks. — _S+1_
 
 - **Trait / facet:** Conscientiousness · Persistence
 
-### Q27. Halfway through organizing a school event, several problems appear at once. Which role do you take?
+### Q27. Halfway through organising a school event, several things go wrong at once.
 
-- **A.** Keep everything organized — _C+3_
-- **B.** Suggest new ideas/solutions — _O+3_
-- **C.** Keep everyone coordinated & motivated — _E+3, A+2_
-- **D.** Tackle the most urgent problem first — _S+3, C+1_
-- **E.** None of these — _not scored_
+- **A.** Keep the lists and the order. — _C+3_
+- **B.** Throw new solutions at it. — _O+3_
+- **C.** Keep people calm and moving. — _E+3, A+2_
+- **D.** Fix the worst thing first. — _S+3, C+1_
+- **E.** Do my own bit properly and stop. — _C+2_
 
 - **Trait / facet:** Conscientiousness · Responsibility
 
-### Q28. Arrive early for a workshop; most students already talking. What would you most likely do?
+### Q28. You arrive early at a workshop and everyone is already talking.
 
-- **A.** Join conversation naturally — _E+3, A+1_
-- **B.** Observe before joining — _C+1, O+1_
-- **C.** Talk if shared interests noticed — _E+2, A+1_
-- **D.** Wait to be included — _not scored_
-- **E.** None of these — _not scored_
+- **A.** Walk over and join in. — _E+3, A+1_
+- **B.** Watch for a while first. — _C+1, O+1_
+- **C.** Wait for a topic I know. — _E+2, A+1_
+- **D.** Keep to myself until it starts. — _not scored_
+- **E.** Ask someone a direct question. — _E+2, C+1_
 
 - **Trait / facet:** Extraversion · Initiative
 
-> **Note.** Facet recorded as Initiative rather than the old set's Confidence: this scenario is about starting a conversation, which keeps it distinct from Q29.
+> **Note.** Facet is Initiative rather than Confidence: this is about starting a conversation, which keeps it distinct from Q29.
 
-### Q29. Joined a new class for a semester. By end of first week, what's most likely true?
+### Q29. You joined a new class this term. By the end of week one, what is true?
 
-- **A.** Already introduced myself to many — _E+3, A+2_
-- **B.** Spoke mainly when needed — _C+2_
-- **C.** Connected with a few similar people — _E+2, A+2_
-- **D.** Focused on settling in first — _C+2_
-- **E.** None of these — _not scored_
+- **A.** I have met most of the class. — _E+3, A+2_
+- **B.** I have spoken when needed. — _C+2_
+- **C.** I have found two or three people. — _E+2, A+2_
+- **D.** I have kept my head down. — _C+2_
+- **E.** I have let people come to me. — _S+1_
 
 - **Trait / facet:** Extraversion · Social Interaction
 
-### Q30. During a team activity, two members disagree on how to complete work. What would you naturally do?
+### Q30. Two people in your team disagree about how to do the work.
 
-- **A.** Help both sides understand each other — _A+3, S+1_
-- **B.** Combine strongest parts of both ideas — _A+2, O+2_
-- **C.** Let group decide, focus on own task — _C+2_
-- **D.** Choose most practical option — _C+2, S+1_
-- **E.** None of these — _not scored_
+- **A.** Get them to hear each other. — _A+3, S+1_
+- **B.** Take the best of both ideas. — _A+2, O+2_
+- **C.** Let the group vote and move on. — _C+2_
+- **D.** Pick whichever is more practical. — _C+2, S+1_
+- **E.** Stay out of it entirely. — _S+1_
 
 - **Trait / facet:** Agreeableness · Cooperation
 
-> **Note.** Facets are the reverse of the old set here: old Q30 measured Empathy, old Q31 Cooperation. Mapped to match the sheet's scenarios.
+> **Note.** Facets are the reverse of the old set: old Q30 measured Empathy, old Q31 Cooperation. Mapped to match these scenarios.
 
-### Q31. A teammate is falling behind, deadline approaching. What feels most natural?
+### Q31. A teammate is falling behind and the deadline is close.
 
-- **A.** Support them, encourage their own effort — _A+3, S+1_
-- **B.** Adjust plan for fair contribution — _A+2, C+2_
-- **C.** Finish part of task to help team — _A+2, C+2_
-- **D.** Focus on own responsibilities first — _C+2_
-- **E.** None of these — _not scored_
+- **A.** Back them, but let them do it. — _A+3, S+1_
+- **B.** Redivide the work fairly. — _A+2, C+2_
+- **C.** Take some of their load. — _A+2, C+2_
+- **D.** Finish mine and leave theirs. — _C+2_
+- **E.** Tell the teacher about it. — _C+1, S+1_
 
 - **Trait / facet:** Agreeableness · Empathy
 
 > **Note.** See Q30 — facets swapped relative to the old set.
 
-### Q32. Result is much lower than expected after working hard. What would you most likely do next?
+### Q32. You worked hard and the result came back far lower than you expected.
 
-- **A.** Review mistakes, adjust approach — _S+3, C+2_
-- **B.** Ask for feedback — _S+2, A+1, E+1_
-- **C.** Take a short break, restart — _S+2_
-- **D.** Accept result, keep working steadily — _S+1, C+1_
-- **E.** None of these — _not scored_
+- **A.** Go through my mistakes. — _S+3, C+2_
+- **B.** Ask where I went wrong. — _S+2, A+1, E+1_
+- **C.** Step away, then restart. — _S+2_
+- **D.** Accept it and carry on. — _S+1, C+1_
+- **E.** Let it bother me for a while. — _not scored_
 
 - **Trait / facet:** Emotional Stability · Emotional Control
 
-### Q33. Just before presenting, realize an important part is missing. First reaction?
+### Q33. Minutes before presenting, you realise an important part is missing.
 
-- **A.** Quickly find another way to explain — _S+3, O+1_
-- **B.** Pause, understand, then continue — _S+3, C+2_
-- **C.** Ask someone nearby for help — _A+2, E+2, S+1_
-- **D.** Continue and adapt as needed — _S+2, C+1_
-- **E.** None of these — _not scored_
+- **A.** Explain it another way, fast. — _S+3, O+1_
+- **B.** Pause, think, then continue. — _S+3, C+2_
+- **C.** Ask someone next to me. — _A+2, E+2, S+1_
+- **D.** Carry on and improvise. — _S+2, C+1_
+- **E.** Say it is missing and move on. — _S+2_
 
 - **Trait / facet:** Emotional Stability · Composure
 
-### Q34. Four internship offers with same salary/growth. Which would you most enjoy?
+### Q34. Four internships, same pay, same prospects. Which do you take?
 
-- **A.** Learn something completely new — _O+3, C+2_
-- **B.** Create original ideas/designs/solutions — _O+3, E+1_
-- **C.** Work closely with people, help teams — _E+3, A+3_
-- **D.** Improve systems, boost efficiency — _C+3, S+1_
-- **E.** None of these — _not scored_
+- **A.** One where I learn something new. — _O+3, C+2_
+- **B.** One where I make original things. — _O+3, E+1_
+- **C.** One where I work with people. — _E+3, A+3_
+- **D.** One where I make systems work. — _C+3, S+1_
+- **E.** One with clear hours and rules. — _C+2, S+2_
 
 - **Trait / facet:** Integrated Big Five · Overall Personality Profile
 
@@ -446,162 +444,162 @@ _Source: behaviour-based rewrite_
 
 ## 4. Strengths — Q35-Q42
 
-> Construct warning. Across all 8 items the options differ by SUBJECT (tech / health / agri / law / finance), not by working style, and each option is prefixed with its own label, which tells the student what it measures. That makes this section a second career-interest scale rather than a strengths scale. The 'Strength Domain (engine)' column is DERIVED from each option's action verb so the eight-domain scoring still runs, but it is approximate — a strengths section normally varies the action (analyse / create / lead / organise / persuade) while holding the subject fixed.
+> Each item is one scenario; the five options are different ways of responding to it, so the section measures working style rather than subject preference — the previous version varied the subject and duplicated the Interests scale. Every option carries a cost (covering for a teammate means resenting it; arguing your case means annoying the teacher; asking for help means looking clueless), so there is no flattering answer to pick without thinking. Scored on the eight domains the career map already uses, and rolled up to four reporting groups: Delivering, Persuading, Connecting, Reasoning.
 
-### Q35. Your school is leading a District Youth Summit. Which track do you choose to direct?
+### Q35. Your group presents next week and one member still hasn't done anything. What do you actually do?
 
-- **A.** Smart Tech & AI: Coding automation tools or robotics exhibits. — _Technical · engine Analytical+3, Execution+1 · finalised set 2026_
-- **B.** Health & Bio-Care: Demonstrating medical diagnostic tools & first-aid. — _Medical · engine Relationship+3, Analytical+1 · finalised set 2026_
-- **C.** Eco-Agri Solutions: Setting up hydroponic farming & soil tests. — _Environmental · engine Execution+3, Learning+1 · finalised set 2026_
-- **D.** Law & Public Policy: Hosting mock parliament & debating policies. — _Legal/Policy · engine Communication+3, Leadership+1 · finalised set 2026_
-- **E.** Media & Design: Producing the summit's films, posters and live coverage. — _Creative/Media · engine Creative+3, Communication+1 · 5th option added_
+- **A.** Tell them straight, even if it gets awkward. — _Leadership · engine Leadership+3, Communication+1 · working-style rebuild_
+- **B.** Check whether the plan was ever realistic. — _Analytical · engine Analytical+3, Learning+1 · working-style rebuild_
+- **C.** Ask them privately, and lose a day over it. — _Relationship · engine Relationship+3, Adaptability+1 · working-style rebuild_
+- **D.** Do their part myself and say nothing. — _Execution · engine Execution+3, Analytical+1 · working-style rebuild_
+- **E.** Cut their section out of the presentation. — _Creative · engine Creative+3, Adaptability+1 · working-style rebuild_
 
-- **Sheet domains:** Technical, Medical, Environmental, Legal/Policy
-- **Clusters:** STEM & AI, Health & Life Sciences, Agriculture & Earth Sciences, Law & Public Service
-- **Professions:** Software Engineer, Medical Doctor, Agricultural Engineer, Lawyer / IAS Officer
+- **Sheet domains:** Leadership, Analytical, Relationship, Execution, Creative
+- **Clusters:** Management, Education, Research, Operations
+- **Professions:** Project Manager, Teacher, Research Scientist, Operations Manager
 
-### Q36. A local neighborhood faces severe water logging and waste management issues. What is your first step?
+### Q36. You are handed a task nobody has explained, with no instructions. How do you start?
 
-- **A.** Build a smart sensor prototype to monitor drainage flow. — _Engineering · engine Analytical+3, Execution+1 · finalised set 2026_
-- **B.** Conduct water purity & health risk testing for residents. — _Clinical/Bio-Health · engine Analytical+3, Learning+1 · finalised set 2026_
-- **C.** Draft a legal petition & campaign to municipal authorities. — _Advocacy/Legal · engine Communication+3, Leadership+1 · finalised set 2026_
-- **D.** Launch a local micro-funded recycling business model. — _Financial/Business · engine Leadership+3, Adaptability+1 · finalised set 2026_
-- **E.** Run an awareness drive with posters, films and street theatre. — _Creative/Media · engine Creative+3, Communication+1 · 5th option added_
+- **A.** Read up first, even if it eats my time. — _Learning · engine Learning+3, Analytical+1 · working-style rebuild_
+- **B.** Start now and get some of it wrong. — _Execution · engine Execution+3, Adaptability+1 · working-style rebuild_
+- **C.** Keep asking until someone explains it. — _Communication · engine Communication+3, Relationship+1 · working-style rebuild_
+- **D.** Try something, switch when it fails. — _Adaptability · engine Adaptability+3, Creative+1 · working-style rebuild_
+- **E.** Map it out before touching anything. — _Analytical · engine Analytical+3, Execution+1 · working-style rebuild_
 
-- **Sheet domains:** Engineering, Clinical/Bio-Health, Advocacy/Legal, Financial/Business
-- **Clusters:** Core Engineering, Public Health, Law & Governance, Commerce & Business
-- **Professions:** Civil Engineer, Epidemiologist, Environmental Lawyer, Business Manager
+- **Sheet domains:** Learning, Execution, Communication, Adaptability, Analytical
+- **Clusters:** Research, Technology, Consulting, Operations
+- **Professions:** Research Scientist, Software Engineer, Consultant, Data Analyst
 
-### Q37. Your school gets funding for one new modern learning facility. Which proposal do you champion?
+### Q37. Your school is raising money for a new library and you can pick your role.
 
-- **A.** Computer & Tech R&D Lab: 3D printers, coding kits, & server gear. — _Analytical · engine Analytical+3, Learning+1 · finalised set 2026_
-- **B.** Biology & Medical Lab: Advanced microscopes & human anatomy models. — _Diagnostic · engine Analytical+3, Learning+2 · finalised set 2026_
-- **C.** Greenhouse & Soil Lab: Eco-gardening, crop genetics, & bio-fertilizers. — _Ecological · engine Execution+3, Learning+1 · finalised set 2026_
-- **D.** Debate & Legal Clinic: Courtroom setup for legal & civic studies. — _Civic/Communicative · engine Communication+3, Leadership+1 · finalised set 2026_
-- **E.** Media & Design Studio: cameras, editing suites and a design lab. — _Creative/Media · engine Creative+3, Execution+1 · 5th option added_
+- **A.** Try something new that might flop. — _Creative · engine Creative+3, Adaptability+1 · working-style rebuild_
+- **B.** Stand up and do the asking. — _Communication · engine Communication+3, Leadership+1 · working-style rebuild_
+- **C.** Keep volunteers going when they lose interest. — _Relationship · engine Relationship+3, Execution+1 · working-style rebuild_
+- **D.** Decide, and carry the blame if it fails. — _Leadership · engine Leadership+3, Execution+1 · working-style rebuild_
+- **E.** Copy what worked at other schools. — _Learning · engine Learning+3, Analytical+1 · working-style rebuild_
 
-- **Sheet domains:** Analytical, Diagnostic, Ecological, Civic/Communicative
-- **Clusters:** Technology, Life Sciences & Medicine, Agriculture, Law & Social Sciences
-- **Professions:** AI Developer, Biotechnologist, Agronomist, Constitutional Lawyer
+- **Sheet domains:** Creative, Communication, Relationship, Leadership, Learning
+- **Clusters:** Marketing, Public Service, Education, Entrepreneurship
+- **Professions:** Digital Marketer, Social Worker, Teacher, Entrepreneur
 
-### Q38. Your class must create a digital platform for Indian students. What primary feature do you design?
+### Q38. A teacher rejects the idea you spent a week on. What is your honest next move?
 
-- **A.** An AI algorithm that solves complex study problems. — _Technical · engine Analytical+3, Creative+1 · finalised set 2026_
-- **B.** Mental health counselling & wellness tracker tools. — _Psychological · engine Relationship+3, Analytical+1 · finalised set 2026_
-- **C.** An interactive portal on civic rights, duties, & legal awareness. — _Civic/Legal · engine Communication+3, Learning+1 · finalised set 2026_
-- **D.** A pocket-money management & micro-investing simulator. — _Financial · engine Execution+3, Analytical+1 · finalised set 2026_
-- **E.** A creative showcase where students publish art, writing and film. — _Creative/Media · engine Creative+3, Communication+1 · 5th option added_
+- **A.** Drop it and start something else. — _Adaptability · engine Adaptability+3, Creative+1 · working-style rebuild_
+- **B.** Rebuild it to the brief, duller but safe. — _Execution · engine Execution+3, Analytical+1 · working-style rebuild_
+- **C.** Keep the idea, change how I sell it. — _Creative · engine Creative+3, Communication+1 · working-style rebuild_
+- **D.** Find the exact part that failed. — _Analytical · engine Analytical+3, Learning+1 · working-style rebuild_
+- **E.** Argue back, and risk annoying them. — _Leadership · engine Leadership+3, Communication+1 · working-style rebuild_
 
-- **Sheet domains:** Technical, Psychological, Civic/Legal, Financial
-- **Clusters:** Technology, Allied Health & Psychology, Law & Humanities, Finance & Business
-- **Professions:** Systems Architect, Clinical Psychologist, Legal Advisor, Financial Planner
+- **Sheet domains:** Adaptability, Execution, Creative, Analytical, Leadership
+- **Clusters:** Design, Engineering, Law, Research
+- **Professions:** Product Designer, Engineer, Lawyer, Research Scientist
 
-### Q39. Your team enters an Inter-School Community Project competition. Which role do you pick?
+### Q39. Younger students are joining and someone has to look after them. What appeals to you?
 
-- **A.** Mechanical/Tech Lead: Building & repairing hardware tools. — _Mechanical · engine Execution+3, Analytical+1 · finalised set 2026_
-- **B.** Medical & Wellness Lead: Managing first-aid & health checkups. — _Medical · engine Relationship+3, Execution+1 · finalised set 2026_
-- **C.** Environmental Lead: Designing tree plantation & soil care plans. — _Environmental · engine Execution+3, Creative+1 · finalised set 2026_
-- **D.** Strategy & Finance Lead: Budgeting, sponsorship, & pitch decks. — _Strategic/Financial · engine Leadership+3, Analytical+1 · finalised set 2026_
-- **E.** Communications Lead: documenting the project and presenting it publicly. — _Creative/Media · engine Communication+3, Creative+1 · 5th option added_
+- **A.** Run the sessions and do the talking. — _Communication · engine Communication+3, Leadership+1 · working-style rebuild_
+- **B.** Sit with the one who is struggling. — _Relationship · engine Relationship+3, Adaptability+1 · working-style rebuild_
+- **C.** Work out why they struggle first. — _Analytical · engine Analytical+3, Learning+1 · working-style rebuild_
+- **D.** Get good at it before I start. — _Learning · engine Learning+3, Execution+1 · working-style rebuild_
+- **E.** Turn up and work it out as I go. — _Adaptability · engine Adaptability+3, Relationship+1 · working-style rebuild_
 
-- **Sheet domains:** Mechanical, Medical, Environmental, Strategic/Financial
-- **Clusters:** Engineering & Robotics, Healthcare, Agriculture & Ecology, Commerce & Finance
-- **Professions:** Mechanical Engineer, Paramedic / Doctor, Forestry Officer, Chartered Accountant (CA)
+- **Sheet domains:** Communication, Relationship, Analytical, Learning, Adaptability
+- **Clusters:** Education, Psychology, Human Resources, Public Service
+- **Professions:** Teacher, Psychologist, HR Manager, Counsellor
 
-### Q40. If you could shadow a top professional for one week, who would you choose?
+### Q40. Two weeks into a plan, the situation changes completely. What do you do?
 
-- **A.** A Lead Developer coding AI applications at a tech giant. — _Analytical/Tech · engine Analytical+3, Learning+2 · finalised set 2026_
-- **B.** A Surgeon performing precision operations in a hospital. — _Diagnostic/Medical · engine Execution+3, Analytical+2 · finalised set 2026_
-- **C.** An Agricultural Scientist developing drought-resistant crops. — _Biological/Agri · engine Learning+3, Adaptability+1 · finalised set 2026_
-- **D.** A Corporate Lawyer defending major international clients. — _Logical/Legal · engine Communication+3, Analytical+1 · finalised set 2026_
-- **E.** A Creative Director running a design and film studio. — _Creative/Media · engine Creative+3, Leadership+1 · 5th option added_
+- **A.** Check how everyone is taking it. — _Relationship · engine Relationship+3, Communication+1 · working-style rebuild_
+- **B.** Decide fast, without full agreement. — _Leadership · engine Leadership+3, Execution+1 · working-style rebuild_
+- **C.** Use it to build something better. — _Creative · engine Creative+3, Adaptability+1 · working-style rebuild_
+- **D.** Adjust as we go, no re-planning. — _Adaptability · engine Adaptability+3, Execution+1 · working-style rebuild_
+- **E.** Stop until I understand what changed. — _Learning · engine Learning+3, Analytical+1 · working-style rebuild_
 
-- **Sheet domains:** Analytical/Tech, Diagnostic/Medical, Biological/Agri, Logical/Legal
-- **Clusters:** STEM & Software, Medical Sciences, Agriculture & Bio-Tech, Law & Corporate Services
-- **Professions:** Machine Learning Engineer, Surgeon, Agronomist, Corporate Advocate
+- **Sheet domains:** Relationship, Leadership, Creative, Adaptability, Learning
+- **Clusters:** Management, Operations, Design, Consulting
+- **Professions:** Business Manager, Operations Manager, Creative Director, Consultant
 
-### Q41. Your school newsletter needs a special dedicated column. Which section do you write?
+### Q41. You are asked to check someone's work before it is handed in. How do you do it?
 
-- **A.** Tech Byte: Future AI gadgets, coding, & space discoveries. — _Technical · engine Analytical+3, Communication+1 · finalised set 2026_
-- **B.** Body & Mind: Disease prevention, health tips, & sports nutrition. — _Health/Biological · engine Relationship+3, Communication+1 · finalised set 2026_
-- **C.** Earth Watch: Climate action, sustainable farming, & wildlife. — _Ecological · engine Learning+3, Communication+1 · finalised set 2026_
-- **D.** Money & Markets: Stock market basics, saving tips, & startups. — _Financial · engine Analytical+3, Leadership+1 · finalised set 2026_
-- **E.** Stage & Screen: film, music, design and student creative work. — _Creative/Media · engine Creative+3, Communication+1 · 5th option added_
+- **A.** List every single thing that is wrong. — _Analytical · engine Analytical+3, Execution+1 · working-style rebuild_
+- **B.** Fix what I can so it goes in on time. — _Execution · engine Execution+3, Analytical+1 · working-style rebuild_
+- **C.** Flag the big things, ignore the rest. — _Adaptability · engine Adaptability+3, Analytical+1 · working-style rebuild_
+- **D.** Tell them honestly, even if it stings. — _Communication · engine Communication+3, Leadership+1 · working-style rebuild_
+- **E.** Suggest a different angle entirely. — _Creative · engine Creative+3, Learning+1 · working-style rebuild_
 
-- **Sheet domains:** Technical, Health/Biological, Ecological, Financial
-- **Clusters:** Science & Tech, Healthcare, Agriculture & Environment, Business & Economics
-- **Professions:** Data Scientist, Nutritionist / Physician, Wildlife Biologist, Investment Banker
+- **Sheet domains:** Analytical, Execution, Adaptability, Communication, Creative
+- **Clusters:** Quality, Finance, Media, Education
+- **Professions:** Auditor, Chartered Accountant, Journalist, Teacher
 
-### Q42. A sudden emergency occurs during a school trip. What is your immediate instinct?
+### Q42. Next year you could give up your Saturdays to one thing. Which would you choose?
 
-- **A.** Fix malfunctioning communications or transport gear. — _Technical · engine Execution+3, Analytical+1 · finalised set 2026_
-- **B.** Provide immediate first-aid & assess physical symptoms. — _Medical · engine Execution+3, Relationship+2 · finalised set 2026_
-- **C.** Consult rules, safety guidelines, & legal protocols. — _Administrative · engine Analytical+3, Execution+1 · finalised set 2026_
-- **D.** Manage food/water resources & organize logistics calmly. — _Operations · engine Execution+3, Adaptability+1 · finalised set 2026_
-- **E.** Keep everyone calm and handle communication with the group. — _Interpersonal · engine Relationship+3, Communication+2 · 5th option added_
+- **A.** Finish something big I can point at. — _Execution · engine Execution+3, Analytical+1 · working-style rebuild_
+- **B.** Get properly good at one hard skill. — _Learning · engine Learning+3, Analytical+1 · working-style rebuild_
+- **C.** Run something, and own what goes wrong. — _Leadership · engine Leadership+3, Execution+1 · working-style rebuild_
+- **D.** Help people who need it, unglamorously. — _Relationship · engine Relationship+3, Adaptability+1 · working-style rebuild_
+- **E.** Speak well enough that a room listens. — _Communication · engine Communication+3, Leadership+1 · working-style rebuild_
 
-- **Sheet domains:** Technical, Medical, Administrative, Operations
-- **Clusters:** Core Engineering, Emergency Medicine, Law & Compliance, Operations & Supply Chain
-- **Professions:** Operations Engineer, Emergency Doctor, Hospital Administrator, Supply Chain Head
+- **Sheet domains:** Execution, Learning, Leadership, Relationship, Communication
+- **Clusters:** Integrated validation — all career clusters
+- **Professions:** Engineering, Healthcare, Business, Design, Education, Public Service
 
 ---
 
 ## 5. Motivators — Q43-Q47
 
-### Q43. School gives opportunity to select one special project for the entire year. Which would excite you most?
+### Q43. One thing your next two years are really about. Which?
 
-- **A.** Challenging project to improve skills and achieve excellent results — _Achievement+3, Innovation+1, Learning+1 · finalised set 2026_
-- **B.** Create something completely new nobody has tried — _Innovation+3, Achievement+1, Impact+1 · finalised set 2026_
-- **C.** Solve a problem faced by people or society — _Impact+3, Innovation+1, Leadership+1 · finalised set 2026_
-- **D.** Lead a team and make key decisions to achieve the goal — _Leadership+3, Achievement+1, Impact+1 · finalised set 2026_
-- **E.** A well-defined project with clear steps and a dependable result — _Security+3, Achievement+1 · 5th option added_
+- **A.** Being the best at one thing, and narrow. — _Achievement+3, Learning+1 · trade-off rewrite_
+- **B.** Making something new that may not work. — _Innovation+3, Achievement+1 · trade-off rewrite_
+- **C.** Learning one field properly, slowly. — _Learning+3 · trade-off rewrite_
+- **D.** Running things, and being blamed for them. — _Leadership+3, Achievement+1 · trade-off rewrite_
+- **E.** A steady path with no surprises. — _Security+3 · trade-off rewrite_
 
-- **Clusters:** Engineering, Research, Design, Healthcare, Entrepreneurship, Management
-- **Professions:** Engineer, Scientist, Doctor, Entrepreneur, Project Manager
+- **Clusters:** Engineering, Research, Design, Healthcare, Management
+- **Professions:** Engineer, Research Scientist, Product Designer, Doctor, Project Manager
 
-### Q44. Extra time after school. Which activity would feel most satisfying?
+### Q44. A free hour every day for a year. What do you do with it?
 
-- **A.** Practicing a skill to get better at it — _Achievement+3, Learning+2 · finalised set 2026_
-- **B.** Exploring new ideas, experimenting creatively — _Innovation+3, Learning+1 · finalised set 2026_
-- **C.** Helping someone learn or solve a problem — _Impact+3, Learning+1 · finalised set 2026_
-- **D.** Organizing a group activity — _Leadership+3, Achievement+1 · finalised set 2026_
-- **E.** Getting ahead on work already scheduled, so nothing piles up — _Security+3, Achievement+1 · 5th option added_
+- **A.** Help someone who cannot repay it. — _Impact+3 · trade-off rewrite_
+- **B.** Get ahead so nothing piles up. — _Security+3, Achievement+1 · trade-off rewrite_
+- **C.** Build something nobody asked for. — _Innovation+3, Learning+1 · trade-off rewrite_
+- **D.** Study something hard with no reward. — _Learning+3, Achievement+1 · trade-off rewrite_
+- **E.** Organise people, and handle the fallout. — _Leadership+3 · trade-off rewrite_
 
-- **Clusters:** Technology, Education, Healthcare, Business, Creative Fields
-- **Professions:** Software Engineer, Teacher, Doctor, Designer, Business Leader
+- **Clusters:** Education, Technology, Healthcare, Business, Creative Fields
+- **Professions:** Teacher, Software Engineer, Doctor, Business Manager, Graphic Designer
 
-### Q45. Achieved success in your future career. What would make you most proud?
+### Q45. Twenty years on, what would you want said about your work?
 
-- **A.** Becoming highly skilled, recognized as an expert — _Achievement+3, Learning+2 · finalised set 2026_
-- **B.** Creating something innovative that changes how people do things — _Innovation+3, Achievement+1 · finalised set 2026_
-- **C.** Making a meaningful difference in people's lives — _Impact+3 · finalised set 2026_
-- **D.** Becoming a leader who influences important decisions — _Leadership+3, Achievement+1 · finalised set 2026_
-- **E.** Building a secure, stable career that supports my family well — _Security+3, Impact+1 · 5th option added_
+- **A.** It made life better for people. — _Impact+3 · trade-off rewrite_
+- **B.** It was the best in its field. — _Achievement+3, Learning+1 · trade-off rewrite_
+- **C.** It ran because I held it together. — _Leadership+3 · trade-off rewrite_
+- **D.** It lasted, and never let anyone down. — _Security+3, Achievement+1 · trade-off rewrite_
+- **E.** It did not exist before. — _Innovation+3 · trade-off rewrite_
 
-- **Clusters:** Research, Technology, Healthcare, Social Services, Government
+- **Clusters:** Research, Technology, Healthcare, Public Service, Government
 - **Professions:** Research Scientist, AI Engineer, Doctor, IAS Officer, Entrepreneur
 
-### Q46. School competition where students choose their own challenge. Which would you prefer?
+### Q46. Two offers, same pay. Which do you take?
 
-- **A.** Difficult challenge to test abilities, compete with others — _Achievement+3, Learning+1 · finalised set 2026_
-- **B.** Creative challenge to design something unique — _Innovation+3 · finalised set 2026_
-- **C.** Challenge that helps improve school or community — _Impact+3 · finalised set 2026_
-- **D.** Challenge to coordinate and manage a team — _Leadership+3 · finalised set 2026_
-- **E.** A challenge with clear rules where I know exactly what is expected — _Security+3, Achievement+1 · 5th option added_
+- **A.** Predictable, safe, a bit dull. — _Security+3 · trade-off rewrite_
+- **B.** Hard, and I would be out of my depth. — _Learning+3, Achievement+1 · trade-off rewrite_
+- **C.** In charge, with the pressure that brings. — _Leadership+3 · trade-off rewrite_
+- **D.** Free to experiment, might go nowhere. — _Innovation+3, Learning+1 · trade-off rewrite_
+- **E.** Useful work, barely noticed. — _Impact+3 · trade-off rewrite_
 
-- **Clusters:** Sports, Engineering, Design, Social Impact, Management
-- **Professions:** Athlete, Engineer, Designer, Social Worker, Manager
+- **Clusters:** Finance, Research, Management, Design, Public Service
+- **Professions:** Chartered Accountant, Research Scientist, Operations Manager, Product Designer, Social Worker
 
-### Q47. Choosing your future workplace — which environment would motivate you most?
+### Q47. A year from now, what would make it a year well spent?
 
-- **A.** Continuously learn, improve, achieve bigger goals — _Learning+3, Achievement+2 · finalised set 2026_
-- **B.** Freedom to explore ideas and try new approaches — _Innovation+3, Learning+1 · finalised set 2026_
-- **C.** Work that helps people, creates positive change — _Impact+3 · finalised set 2026_
-- **D.** Stability, clear systems, structured career path — _Security+3 · finalised set 2026_
-- **E.** A place where I can take charge of a team and be judged on results — _Leadership+3, Achievement+2 · 5th option added_
+- **A.** I got much better at something hard. — _Learning+3, Achievement+2 · trade-off rewrite_
+- **B.** People followed a decision I made. — _Leadership+3 · trade-off rewrite_
+- **C.** I beat a target I set myself. — _Achievement+3 · trade-off rewrite_
+- **D.** Someone's life is measurably better. — _Impact+3 · trade-off rewrite_
+- **E.** I built something from nothing. — _Innovation+3 · trade-off rewrite_
 
-- **Clusters:** Research, Entrepreneurship, Healthcare, Education, Finance, Government
-- **Professions:** Scientist, Startup Founder, Doctor, Teacher, Banker, Civil Servant
+- **Clusters:** Research, Entrepreneurship, Healthcare, Education, Government
+- **Professions:** Research Scientist, Startup Founder, Doctor, Teacher, Civil Services Officer
 
 ---
 
@@ -613,7 +611,7 @@ _Source: behaviour-based rewrite_
 - **B.** Listen to explanation — _Auditory_
 - **C.** Write down step by step to understand — _Reading/Writing_
 - **D.** Practice problems until I understand — _Kinesthetic_
-- **E.** Use a mix — see it, talk it through, then practise it — _Multimodal_
+- **E.** Work through a solved example first, then try one myself — _Multimodal_
 
 - **Clusters:** Engineering, Research, Healthcare, Education, Design
 - _Source: finalised set 2026 item 2_
@@ -624,7 +622,7 @@ _Source: behaviour-based rewrite_
 - **B.** Join a study group to discuss topics out loud. — _Auditory_
 - **C.** Reread chapters and write summaries — _Reading/Writing_
 - **D.** Use hands-on practice methods — _Kinesthetic_
-- **E.** Mix diagrams, discussion, notes and practice depending on the subject — _Multimodal_
+- **E.** Test myself on past questions and fix whatever I get wrong — _Multimodal_
 
 - **Clusters:** All career clusters — study-approach indicator
 - _Source: finalised set 2026 item 10_
@@ -635,7 +633,7 @@ _Source: behaviour-based rewrite_
 - **B.** Have someone explain it — _Auditory_
 - **C.** Read online articles on it — _Reading/Writing_
 - **D.** Try it by doing — _Kinesthetic_
-- **E.** Switch between watching, asking, reading and trying as I go — _Multimodal_
+- **E.** Copy someone doing it step by step until it clicks — _Multimodal_
 
 - **Clusters:** Technology, Creative Fields, Entrepreneurship, Technical Careers
 - _Source: finalised set 2026 item 7_
@@ -646,7 +644,7 @@ _Source: behaviour-based rewrite_
 - **B.** Attend talks and meet counsellors directly. — _Auditory_
 - **C.** Read guides and articles about professions. — _Reading/Writing_
 - **D.** Visit workplaces or try internships hands-on. — _Kinesthetic_
-- **E.** Use all of them — videos, talks, reading and a real visit — _Multimodal_
+- **E.** Spend a day shadowing someone and judge it from how it felt — _Multimodal_
 
 - **Clusters:** Career exploration across all domains
 - _Source: finalised set 2026 item 11_

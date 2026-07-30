@@ -157,17 +157,16 @@ def build():
 
     # ---- Strenghts
     ws = wb.create_sheet("Strenghts")
-    rows = [[qid, text, *[o[0] for o in opts], client_dom,
-             per_option([o[1] for o in opts]),
-             per_option([max(o[2], key=o[2].get) for o in opts]),
-             per_option([points_str(o[2]) for o in opts]),
-             cl, pr, per_option([o[3] for o in opts])]
-            for qid, text, opts, client_dom, cl, pr in D.STRENGTHS]
-    write_sheet(ws, ["Q.No", "Question", "Option A", "Option B", "Option C", "Option D", "Option E",
-                     "Strength Domain(s) Measured (sheet)", "Client Domain (per option)",
-                     "Strength Domain — engine (derived)", "Strength Weights (per option)",
-                     "Career Clusters", "Example Professions", "Source (per option)"],
-                [7, 40, 30, 30, 30, 30, 30, 28, 20, 24, 30, 32, 36, 18], rows, row_height=112)
+    rows = [[qid, text, *[o[0] for o in opts], domains,
+             per_option(D.STRENGTHS_DOMAINS[qid]),
+             per_option(D.STRENGTHS_GROUPS[qid]),
+             per_option([points_str(w) for w in D.STRENGTHS_WEIGHTS[qid]]),
+             cl, pr, D.STRENGTHS[0][2][0][3]]
+            for qid, text, opts, domains, cl, pr in D.STRENGTHS]
+    write_sheet(ws, ["Q.No", "Scenario", "Option A", "Option B", "Option C", "Option D", "Option E",
+                     "Domains Measured", "Domain (per option)", "Report Group (per option)",
+                     "Strength Weights (per option)", "Career Clusters", "Example Professions", "Source"],
+                [7, 40, 30, 30, 30, 30, 30, 28, 20, 22, 30, 32, 36, 20], rows, row_height=112)
     footnote(ws, D.STRENGTHS_NOTE, 14)
 
     # ---- motivators

@@ -1079,13 +1079,13 @@
      "q": "Q23",
      "trait": "Openness",
      "facet": "Curiosity",
-     "text": "One weekend to prep a project on an unfamiliar topic; by Saturday evening still have several directions. What would you most likely do?",
+     "text": "One weekend to prepare a project on a topic you have never touched. By Saturday night you still have several directions. What do you do?",
      "options": [
-      "Most unusual idea, even if risky",
-      "Clearest, idea most reliable approach",
-      "Discuss options with classmates",
-      "Combine ideas from different sources",
-      "None of these"
+      "Chase the riskiest idea and see.",
+      "Take the safest one and finish.",
+      "Ask classmates which to pick.",
+      "Blend the best bits of each.",
+      "Stick with my first instinct."
      ],
      "traitPoints": [
       {
@@ -1099,25 +1099,27 @@
        "A": 2
       },
       {
-       "O": 3,
+       "O": 2,
        "C": 1
       },
-      {}
-     ],
-     "abstainIndex": 4
+      {
+       "S": 2,
+       "C": 1
+      }
+     ]
     },
     {
      "type": "choice5",
      "q": "Q24",
      "trait": "Openness",
      "facet": "Creativity",
-     "text": "School exhibition, must choose one project. Which would you most enjoy building?",
+     "text": "Your school exhibition lets you build anything. Which do you go for?",
      "options": [
-      "Challenges conventional thinking",
-      "Carefully planned, tested project",
-      "Interactive, participatory project",
-      "Visually creative project",
-      "None of these"
+      "Something nobody would expect.",
+      "Something I have tested and trust.",
+      "Something visitors join in with.",
+      "Something that simply looks striking.",
+      "Whatever I can finish in time."
      ],
      "traitPoints": [
       {
@@ -1131,25 +1133,27 @@
        "A": 2
       },
       {
-       "O": 3,
+       "O": 2,
        "A": 1
       },
-      {}
-     ],
-     "abstainIndex": 4
+      {
+       "C": 2,
+       "S": 1
+      }
+     ]
     },
     {
      "type": "choice5",
      "q": "Q25",
      "trait": "Conscientiousness",
      "facet": "Planning",
-     "text": "Assignment due in two weeks, but an unexpected event cuts your study days. What would you most likely do?",
+     "text": "An assignment is due in two weeks and something unexpected takes your study days away.",
      "options": [
-      "Adjust schedule, follow revised plan",
-      "Rethink best approach before restarting",
-      "Work longer hours to catch up",
-      "Study with others to stay on track",
-      "None of these"
+      "Redo the schedule and follow it.",
+      "Rethink the whole approach first.",
+      "Work late and push through.",
+      "Work with others to keep up.",
+      "Hand in less, but on time."
      ],
      "traitPoints": [
       {
@@ -1168,22 +1172,24 @@
        "E": 2,
        "A": 2
       },
-      {}
-     ],
-     "abstainIndex": 4
+      {
+       "S": 2,
+       "C": 1
+      }
+     ]
     },
     {
      "type": "choice5",
      "q": "Q26",
      "trait": "Conscientiousness",
      "facet": "Persistence",
-     "text": "After an hour studying a hard chapter, still don't understand it. What usually happens next?",
+     "text": "An hour into a hard chapter and it still will not go in. What happens next?",
      "options": [
-      "Try a different study method",
-      "Take a break, return later",
-      "Ask someone to explain",
-      "Keep practicing despite unclear theory",
-      "None of these"
+      "Try a completely different method.",
+      "Leave it and come back later.",
+      "Get someone to explain it.",
+      "Keep drilling it until it sticks.",
+      "Move on and lose those marks."
      ],
      "traitPoints": [
       {
@@ -1200,22 +1206,23 @@
       {
        "C": 3
       },
-      {}
-     ],
-     "abstainIndex": 4
+      {
+       "S": 1
+      }
+     ]
     },
     {
      "type": "choice5",
      "q": "Q27",
      "trait": "Conscientiousness",
      "facet": "Responsibility",
-     "text": "Halfway through organizing a school event, several problems appear at once. Which role do you take?",
+     "text": "Halfway through organising a school event, several things go wrong at once.",
      "options": [
-      "Keep everything organized",
-      "Suggest new ideas/solutions",
-      "Keep everyone coordinated & motivated",
-      "Tackle the most urgent problem first",
-      "None of these"
+      "Keep the lists and the order.",
+      "Throw new solutions at it.",
+      "Keep people calm and moving.",
+      "Fix the worst thing first.",
+      "Do my own bit properly and stop."
      ],
      "traitPoints": [
       {
@@ -1232,22 +1239,23 @@
        "S": 3,
        "C": 1
       },
-      {}
-     ],
-     "abstainIndex": 4
+      {
+       "C": 2
+      }
+     ]
     },
     {
      "type": "choice5",
      "q": "Q28",
      "trait": "Extraversion",
      "facet": "Initiative",
-     "text": "Arrive early for a workshop; most students already talking. What would you most likely do?",
+     "text": "You arrive early at a workshop and everyone is already talking.",
      "options": [
-      "Join conversation naturally",
-      "Observe before joining",
-      "Talk if shared interests noticed",
-      "Wait to be included",
-      "None of these"
+      "Walk over and join in.",
+      "Watch for a while first.",
+      "Wait for a topic I know.",
+      "Keep to myself until it starts.",
+      "Ask someone a direct question."
      ],
      "traitPoints": [
       {
@@ -1263,22 +1271,24 @@
        "A": 1
       },
       {},
-      {}
-     ],
-     "abstainIndex": 4
+      {
+       "E": 2,
+       "C": 1
+      }
+     ]
     },
     {
      "type": "choice5",
      "q": "Q29",
      "trait": "Extraversion",
      "facet": "Social Interaction",
-     "text": "Joined a new class for a semester. By end of first week, what's most likely true?",
+     "text": "You joined a new class this term. By the end of week one, what is true?",
      "options": [
-      "Already introduced myself to many",
-      "Spoke mainly when needed",
-      "Connected with a few similar people",
-      "Focused on settling in first",
-      "None of these"
+      "I have met most of the class.",
+      "I have spoken when needed.",
+      "I have found two or three people.",
+      "I have kept my head down.",
+      "I have let people come to me."
      ],
      "traitPoints": [
       {
@@ -1295,22 +1305,23 @@
       {
        "C": 2
       },
-      {}
-     ],
-     "abstainIndex": 4
+      {
+       "S": 1
+      }
+     ]
     },
     {
      "type": "choice5",
      "q": "Q30",
      "trait": "Agreeableness",
      "facet": "Cooperation",
-     "text": "During a team activity, two members disagree on how to complete work. What would you naturally do?",
+     "text": "Two people in your team disagree about how to do the work.",
      "options": [
-      "Help both sides understand each other",
-      "Combine strongest parts of both ideas",
-      "Let group decide, focus on own task",
-      "Choose most practical option",
-      "None of these"
+      "Get them to hear each other.",
+      "Take the best of both ideas.",
+      "Let the group vote and move on.",
+      "Pick whichever is more practical.",
+      "Stay out of it entirely."
      ],
      "traitPoints": [
       {
@@ -1328,22 +1339,23 @@
        "C": 2,
        "S": 1
       },
-      {}
-     ],
-     "abstainIndex": 4
+      {
+       "S": 1
+      }
+     ]
     },
     {
      "type": "choice5",
      "q": "Q31",
      "trait": "Agreeableness",
      "facet": "Empathy",
-     "text": "A teammate is falling behind, deadline approaching. What feels most natural?",
+     "text": "A teammate is falling behind and the deadline is close.",
      "options": [
-      "Support them, encourage their own effort",
-      "Adjust plan for fair contribution",
-      "Finish part of task to help team",
-      "Focus on own responsibilities first",
-      "None of these"
+      "Back them, but let them do it.",
+      "Redivide the work fairly.",
+      "Take some of their load.",
+      "Finish mine and leave theirs.",
+      "Tell the teacher about it."
      ],
      "traitPoints": [
       {
@@ -1361,22 +1373,24 @@
       {
        "C": 2
       },
-      {}
-     ],
-     "abstainIndex": 4
+      {
+       "C": 1,
+       "S": 1
+      }
+     ]
     },
     {
      "type": "choice5",
      "q": "Q32",
      "trait": "Emotional Stability",
      "facet": "Emotional Control",
-     "text": "Result is much lower than expected after working hard. What would you most likely do next?",
+     "text": "You worked hard and the result came back far lower than you expected.",
      "options": [
-      "Review mistakes, adjust approach",
-      "Ask for feedback",
-      "Take a short break, restart",
-      "Accept result, keep working steadily",
-      "None of these"
+      "Go through my mistakes.",
+      "Ask where I went wrong.",
+      "Step away, then restart.",
+      "Accept it and carry on.",
+      "Let it bother me for a while."
      ],
      "traitPoints": [
       {
@@ -1396,21 +1410,20 @@
        "C": 1
       },
       {}
-     ],
-     "abstainIndex": 4
+     ]
     },
     {
      "type": "choice5",
      "q": "Q33",
      "trait": "Emotional Stability",
      "facet": "Composure",
-     "text": "Just before presenting, realize an important part is missing. First reaction?",
+     "text": "Minutes before presenting, you realise an important part is missing.",
      "options": [
-      "Quickly find another way to explain",
-      "Pause, understand, then continue",
-      "Ask someone nearby for help",
-      "Continue and adapt as needed",
-      "None of these"
+      "Explain it another way, fast.",
+      "Pause, think, then continue.",
+      "Ask someone next to me.",
+      "Carry on and improvise.",
+      "Say it is missing and move on."
      ],
      "traitPoints": [
       {
@@ -1430,22 +1443,23 @@
        "S": 2,
        "C": 1
       },
-      {}
-     ],
-     "abstainIndex": 4
+      {
+       "S": 2
+      }
+     ]
     },
     {
      "type": "choice5",
      "q": "Q34",
      "trait": "Integrated Big Five",
      "facet": "Overall Personality Profile",
-     "text": "Four internship offers with same salary/growth. Which would you most enjoy?",
+     "text": "Four internships, same pay, same prospects. Which do you take?",
      "options": [
-      "Learn something completely new",
-      "Create original ideas/designs/solutions",
-      "Work closely with people, help teams",
-      "Improve systems, boost efficiency",
-      "None of these"
+      "One where I learn something new.",
+      "One where I make original things.",
+      "One where I work with people.",
+      "One where I make systems work.",
+      "One with clear hours and rules."
      ],
      "traitPoints": [
       {
@@ -1464,9 +1478,11 @@
        "C": 3,
        "S": 1
       },
-      {}
-     ],
-     "abstainIndex": 4
+      {
+       "C": 2,
+       "S": 2
+      }
+     ]
     }
    ]
   },
@@ -8789,11 +8805,11 @@
      "q": "Q1",
      "text": "Your school is organizing a District-Level Community Fair. Which responsibility would you enjoy the most?",
      "options": [
-      "Understanding the problem before suggesting a solution.",
+      "Understand the problem before fixing it.",
       "Finding smarter ways to make things work better.",
-      "Making sure every decision is fair and well considered.",
-      "Communicating ideas that engage and inspire others.",
-      "Planning and coordinating everything to stay on track."
+      "Make sure the decision is a fair one.",
+      "Get people interested in the idea.",
+      "Keep the whole thing on schedule."
      ],
      "riasec": [
       {
@@ -8894,11 +8910,11 @@
      "q": "Q2",
      "text": "You can spend a week shadowing anyone at work. What would you most want to watch them do?",
      "options": [
-      "Shape a rough idea into something people actually notice.",
-      "Keep a complicated operation running exactly to schedule.",
-      "Work out what is really going on before deciding anything.",
-      "Take something that half works and make it work properly.",
-      "Weigh both sides of a difficult call and justify the decision."
+      "Turn a rough idea into something noticed.",
+      "Keep a messy operation on schedule.",
+      "Work out what is really going on.",
+      "Make something half-working work.",
+      "Weigh a hard call and justify it."
      ],
      "riasec": [
       {
@@ -8999,11 +9015,11 @@
      "q": "Q3",
      "text": "Your town is setting up a new Model Village Project. Where would you want to be involved?",
      "options": [
-      "Designing how the whole thing should actually function.",
-      "Making sure the rules are fair to everyone affected.",
-      "Turning the plan into a schedule and a budget that holds.",
-      "Finding out what the village actually needs, and why.",
-      "Telling the story so people want to be part of it."
+      "Design how the whole thing works.",
+      "Set rules that are fair to everyone.",
+      "Turn the plan into a budget that holds.",
+      "Find out what is actually needed, and why.",
+      "Tell it so people want to join in."
      ],
      "riasec": [
       {
@@ -9104,11 +9120,11 @@
      "q": "Q4",
      "text": "For your Class 10 exhibition you can lead one project. Which appeals to you most?",
      "options": [
-      "One with many moving parts that must come together on time.",
-      "One that looks and feels like nothing else on show.",
-      "One where I build something and keep improving how it works.",
-      "One that takes a contested issue and argues it properly.",
-      "One where I test an idea and find out whether it holds up."
+      "Many moving parts, all due at once.",
+      "Looks like nothing else on show.",
+      "Build it, then keep improving it.",
+      "Take a contested issue and argue it.",
+      "Test an idea and see if it holds up."
      ],
      "riasec": [
       {
@@ -9209,11 +9225,11 @@
      "q": "Q5",
      "text": "You are given ₹10,000 for a student-led initiative. What would you put it into?",
      "options": [
-      "Something that fixes an unfairness people have stopped noticing.",
-      "Finding out why a problem keeps coming back.",
-      "Something people will still remember long after it ends.",
-      "Something that runs reliably every week without me.",
-      "Building a tool that saves everyone time."
+      "Fix an unfairness people ignore.",
+      "Find out why it keeps coming back.",
+      "Something people remember afterwards.",
+      "Runs every week without me.",
+      "Build a tool that saves time."
      ],
      "riasec": [
       {
@@ -9314,11 +9330,11 @@
      "q": "Q6",
      "text": "Which kind of story keeps you reading or watching the longest?",
      "options": [
-      "How someone worked out the cause of something puzzling.",
-      "How a huge undertaking was pulled off without falling apart.",
-      "How a difficult decision was argued over and finally settled.",
-      "How something was built to do what nobody thought possible.",
-      "How an idea was made striking enough to change minds."
+      "How someone found the cause.",
+      "How something huge held together.",
+      "How a hard decision got settled.",
+      "How something impossible got built.",
+      "How an idea changed minds."
      ],
      "riasec": [
       {
@@ -9419,11 +9435,11 @@
      "q": "Q7",
      "text": "Something goes badly wrong on a school trip. What do you find yourself doing?",
      "options": [
-      "Fixing whatever has stopped working.",
-      "Getting a clear message out so nobody panics.",
-      "Working out what actually happened before anyone reacts.",
-      "Checking what we are responsible for and what the rules say.",
-      "Getting people, supplies and transport organised."
+      "Fix whatever has stopped working.",
+      "Get a clear message out fast.",
+      "Work out what actually happened.",
+      "Check what the rules actually say.",
+      "Get people and supplies organised."
      ],
      "riasec": [
       {
@@ -9524,11 +9540,11 @@
      "q": "Q8",
      "text": "Which problem would you be proudest to have solved twenty years from now?",
      "options": [
-      "One where I changed how people see something.",
-      "One where I left a system fairer than I found it.",
-      "One where I made something work at a scale nobody had managed.",
-      "One where I made a thing dramatically better than it was.",
-      "One where I found the answer nobody else could find."
+      "I changed how people see something.",
+      "I left a system fairer than I found it.",
+      "I made it work at a huge scale.",
+      "I made a thing far better.",
+      "I found the answer nobody else could."
      ],
      "riasec": [
       {
@@ -9629,11 +9645,11 @@
      "q": "Q9",
      "text": "Picture your work ten years from now. What would make it a good day?",
      "options": [
-      "Everything I set up ran exactly as it should.",
-      "I finally got a stubborn thing working.",
-      "I made something I was proud to show people.",
-      "I understood something that had been puzzling me for weeks.",
-      "I argued a difficult case and got it right."
+      "Everything I set up just worked.",
+      "I got a stubborn thing working.",
+      "I made something worth showing.",
+      "I understood something long puzzling.",
+      "I argued a hard case and got it right."
      ],
      "riasec": [
       {
@@ -9734,11 +9750,11 @@
      "q": "Q10",
      "text": "You can add one extra subject next term, purely because you want to. What draws you?",
      "options": [
-      "One that trains you to reason through hard, contested questions.",
-      "One that trains you to express an idea so that it lands.",
-      "One that trains you to test a claim properly.",
-      "One that trains you to run something from end to end.",
-      "One that trains you to design and build."
+      "Reasoning through contested questions.",
+      "Expressing an idea so it lands.",
+      "Testing a claim properly.",
+      "Running something end to end.",
+      "Designing and building things."
      ],
      "riasec": [
       {
@@ -9839,11 +9855,11 @@
      "q": "Q11",
      "text": "A company offers you a month with any one of its teams. Which do you ask for?",
      "options": [
-      "The team working out why the product keeps failing.",
-      "The team rebuilding how the product actually works.",
-      "The team keeping costs, stock and delivery on track.",
-      "The team making sure it is safe and above board.",
-      "The team deciding how it should look and feel."
+      "Working out why it keeps failing.",
+      "Rebuilding how the product works.",
+      "Keeping costs and delivery on track.",
+      "Making sure it is safe and legal.",
+      "Deciding how it looks and feels."
      ],
      "riasec": [
       {
@@ -9944,11 +9960,11 @@
      "q": "Q12",
      "text": "Your school starts a student magazine and website. Which job do you take?",
      "options": [
-      "Deciding how it looks and how each story gets told.",
-      "Digging out the facts and checking that they hold up.",
-      "Building the site and keeping it fast and working.",
-      "Running the schedule, the budget and the ad slots.",
-      "Deciding what we should and should not publish."
+      "Deciding how each story gets told.",
+      "Digging out facts and checking them.",
+      "Building the site and keeping it fast.",
+      "Running the schedule and the budget.",
+      "Deciding what we should not publish."
      ],
      "riasec": [
       {
@@ -23066,18 +23082,18 @@
      "dimension": "Emotional Awareness",
      "text": "Your teacher says your performance needs improvement. What would you most likely do?",
      "options": [
-      "Identify where I went wrong.",
       "Stay calm and avoid getting discouraged.",
       "Set a goal to improve next time.",
       "Understand the teacher's expectations.",
-      "Ask for detailed feedback and guidance."
+      "Ask for detailed feedback and guidance.",
+      "Identify where I went wrong."
      ],
      "optionDomains": [
-      "Self-Awareness",
       "Self-Regulation",
       "Self-Motivation",
       "Empathy",
-      "Relationship Management"
+      "Relationship Management",
+      "Self-Awareness"
      ]
     },
     {
@@ -23086,18 +23102,18 @@
      "dimension": "Emotional Regulation",
      "text": "Your preparation for an important competition is not going as planned. What would you do?",
      "options": [
-      "Recognize what is slowing me down.",
-      "Stay calm and adjust my routine.",
       "Work harder with a fresh plan.",
       "Learn from teammates' experiences.",
-      "Discuss strategies with mentors or friends."
+      "Discuss strategies with mentors or friends.",
+      "Recognize what is slowing me down.",
+      "Stay calm and adjust my routine."
      ],
      "optionDomains": [
-      "Self-Awareness",
-      "Self-Regulation",
       "Self-Motivation",
       "Empathy",
-      "Relationship Management"
+      "Relationship Management",
+      "Self-Awareness",
+      "Self-Regulation"
      ]
     },
     {
@@ -23106,18 +23122,18 @@
      "dimension": "Empathy & Social Awareness",
      "text": "A close friend performs poorly in an exam and feels upset. What would you do?",
      "options": [
+      "Listen carefully before giving advice.",
+      "Help them prepare for the next exam.",
       "Think about how I would feel in that situation.",
       "Stay patient and avoid judging them.",
-      "Encourage them to keep trying.",
-      "Listen carefully before giving advice.",
-      "Help them prepare for the next exam."
+      "Encourage them to keep trying."
      ],
      "optionDomains": [
+      "Empathy",
+      "Relationship Management",
       "Self-Awareness",
       "Self-Regulation",
-      "Self-Motivation",
-      "Empathy",
-      "Relationship Management"
+      "Self-Motivation"
      ]
     },
     {
@@ -23126,18 +23142,18 @@
      "dimension": "Relationship Management",
      "text": "Two classmates strongly disagree during a group project. What would you naturally do?",
      "options": [
+      "Help the team reach a solution together.",
       "Reflect before sharing my opinion.",
       "Remain calm during the discussion.",
       "Focus on completing the task successfully.",
-      "Listen to both viewpoints fairly.",
-      "Help the team reach a solution together."
+      "Listen to both viewpoints fairly."
      ],
      "optionDomains": [
+      "Relationship Management",
       "Self-Awareness",
       "Self-Regulation",
       "Self-Motivation",
-      "Empathy",
-      "Relationship Management"
+      "Empathy"
      ]
     },
     {
@@ -27731,18 +27747,18 @@
      "q": "Q48",
      "text": "When learning a hard math formula, I like to",
      "options": [
-      "See charts/shapes",
       "Listen to explanation",
       "Write down step by step to understand",
       "Practice problems until I understand",
-      "Use a mix — see it, talk it through, then practise it"
+      "Work through a solved example first, then try one myself",
+      "See charts/shapes"
      ],
      "styles": [
-      "Visual",
       "Auditory",
       "Reading/Writing",
       "Kinesthetic",
-      "Multimodal"
+      "Multimodal",
+      "Visual"
      ]
     },
     {
@@ -27750,18 +27766,18 @@
      "q": "Q49",
      "text": "When studying for a big final exam, I prefer to:",
      "options": [
-      "Look at colorful mind-maps or diagrams.",
-      "Join a study group to discuss topics out loud.",
       "Reread chapters and write summaries",
       "Use hands-on practice methods",
-      "Mix diagrams, discussion, notes and practice depending on the subject"
+      "Test myself on past questions and fix whatever I get wrong",
+      "Look at colorful mind-maps or diagrams.",
+      "Join a study group to discuss topics out loud."
      ],
      "styles": [
-      "Visual",
-      "Auditory",
       "Reading/Writing",
       "Kinesthetic",
-      "Multimodal"
+      "Multimodal",
+      "Visual",
+      "Auditory"
      ]
     },
     {
@@ -27769,18 +27785,18 @@
      "q": "Q50",
      "text": "When learning a new hobby, I prefer to:",
      "options": [
+      "Try it by doing",
+      "Copy someone doing it step by step until it clicks",
       "Watch video guides",
       "Have someone explain it",
-      "Read online articles on it",
-      "Try it by doing",
-      "Switch between watching, asking, reading and trying as I go"
+      "Read online articles on it"
      ],
      "styles": [
+      "Kinesthetic",
+      "Multimodal",
       "Visual",
       "Auditory",
-      "Reading/Writing",
-      "Kinesthetic",
-      "Multimodal"
+      "Reading/Writing"
      ]
     },
     {
@@ -27788,18 +27804,18 @@
      "q": "Q51",
      "text": "You are exploring different career options for your future. How would you prefer to learn about them?",
      "options": [
+      "Spend a day shadowing someone and judge it from how it felt",
       "Watch videos of professionals at work.",
       "Attend talks and meet counsellors directly.",
       "Read guides and articles about professions.",
-      "Visit workplaces or try internships hands-on.",
-      "Use all of them — videos, talks, reading and a real visit"
+      "Visit workplaces or try internships hands-on."
      ],
      "styles": [
+      "Multimodal",
       "Visual",
       "Auditory",
       "Reading/Writing",
-      "Kinesthetic",
-      "Multimodal"
+      "Kinesthetic"
      ]
     }
    ]
@@ -32171,129 +32187,99 @@
     {
      "type": "choice5",
      "q": "Q43",
-     "text": "School gives opportunity to select one special project for the entire year. Which would excite you most?",
+     "text": "One thing your next two years are really about. Which?",
      "options": [
-      "Challenging project to improve skills and achieve excellent results",
-      "Create something completely new nobody has tried",
-      "Solve a problem faced by people or society",
-      "Lead a team and make key decisions to achieve the goal",
-      "A well-defined project with clear steps and a dependable result"
+      "Being the best at one thing, and narrow.",
+      "Making something new that may not work.",
+      "Learning one field properly, slowly.",
+      "Running things, and being blamed for them.",
+      "A steady path with no surprises."
      ],
      "motivatorPoints": [
       {
        "Achievement": 3,
-       "Innovation": 1,
        "Learning": 1
       },
       {
        "Innovation": 3,
-       "Achievement": 1,
-       "Impact": 1
+       "Achievement": 1
       },
       {
-       "Impact": 3,
-       "Innovation": 1,
-       "Leadership": 1
+       "Learning": 3
       },
       {
        "Leadership": 3,
-       "Achievement": 1,
-       "Impact": 1
+       "Achievement": 1
       },
       {
-       "Security": 3,
-       "Achievement": 1
+       "Security": 3
       }
+     ],
+     "domainPerOption": [
+      "Achievement",
+      "Innovation",
+      "Learning",
+      "Leadership",
+      "Security"
      ]
     },
     {
      "type": "choice5",
      "q": "Q44",
-     "text": "Extra time after school. Which activity would feel most satisfying?",
+     "text": "A free hour every day for a year. What do you do with it?",
      "options": [
-      "Practicing a skill to get better at it",
-      "Exploring new ideas, experimenting creatively",
-      "Helping someone learn or solve a problem",
-      "Organizing a group activity",
-      "Getting ahead on work already scheduled, so nothing piles up"
+      "Help someone who cannot repay it.",
+      "Get ahead so nothing piles up.",
+      "Build something nobody asked for.",
+      "Study something hard with no reward.",
+      "Organise people, and handle the fallout."
      ],
      "motivatorPoints": [
       {
-       "Achievement": 3,
-       "Learning": 2
+       "Impact": 3
+      },
+      {
+       "Security": 3,
+       "Achievement": 1
       },
       {
        "Innovation": 3,
        "Learning": 1
       },
       {
-       "Impact": 3,
-       "Learning": 1
-      },
-      {
-       "Leadership": 3,
+       "Learning": 3,
        "Achievement": 1
       },
       {
-       "Security": 3,
-       "Achievement": 1
+       "Leadership": 3
       }
+     ],
+     "domainPerOption": [
+      "Impact",
+      "Security",
+      "Innovation",
+      "Learning",
+      "Leadership"
      ]
     },
     {
      "type": "choice5",
      "q": "Q45",
-     "text": "Achieved success in your future career. What would make you most proud?",
+     "text": "Twenty years on, what would you want said about your work?",
      "options": [
-      "Becoming highly skilled, recognized as an expert",
-      "Creating something innovative that changes how people do things",
-      "Making a meaningful difference in people's lives",
-      "Becoming a leader who influences important decisions",
-      "Building a secure, stable career that supports my family well"
+      "It made life better for people.",
+      "It was the best in its field.",
+      "It ran because I held it together.",
+      "It lasted, and never let anyone down.",
+      "It did not exist before."
      ],
      "motivatorPoints": [
-      {
-       "Achievement": 3,
-       "Learning": 2
-      },
-      {
-       "Innovation": 3,
-       "Achievement": 1
-      },
       {
        "Impact": 3
       },
-      {
-       "Leadership": 3,
-       "Achievement": 1
-      },
-      {
-       "Security": 3,
-       "Impact": 1
-      }
-     ]
-    },
-    {
-     "type": "choice5",
-     "q": "Q46",
-     "text": "School competition where students choose their own challenge. Which would you prefer?",
-     "options": [
-      "Difficult challenge to test abilities, compete with others",
-      "Creative challenge to design something unique",
-      "Challenge that helps improve school or community",
-      "Challenge to coordinate and manage a team",
-      "A challenge with clear rules where I know exactly what is expected"
-     ],
-     "motivatorPoints": [
       {
        "Achievement": 3,
        "Learning": 1
-      },
-      {
-       "Innovation": 3
-      },
-      {
-       "Impact": 3
       },
       {
        "Leadership": 3
@@ -32301,24 +32287,40 @@
       {
        "Security": 3,
        "Achievement": 1
+      },
+      {
+       "Innovation": 3
       }
+     ],
+     "domainPerOption": [
+      "Impact",
+      "Achievement",
+      "Leadership",
+      "Security",
+      "Innovation"
      ]
     },
     {
      "type": "choice5",
-     "q": "Q47",
-     "text": "Choosing your future workplace — which environment would motivate you most?",
+     "q": "Q46",
+     "text": "Two offers, same pay. Which do you take?",
      "options": [
-      "Continuously learn, improve, achieve bigger goals",
-      "Freedom to explore ideas and try new approaches",
-      "Work that helps people, creates positive change",
-      "Stability, clear systems, structured career path",
-      "A place where I can take charge of a team and be judged on results"
+      "Predictable, safe, a bit dull.",
+      "Hard, and I would be out of my depth.",
+      "In charge, with the pressure that brings.",
+      "Free to experiment, might go nowhere.",
+      "Useful work, barely noticed."
      ],
      "motivatorPoints": [
       {
+       "Security": 3
+      },
+      {
        "Learning": 3,
-       "Achievement": 2
+       "Achievement": 1
+      },
+      {
+       "Leadership": 3
       },
       {
        "Innovation": 3,
@@ -32326,14 +32328,51 @@
       },
       {
        "Impact": 3
-      },
-      {
-       "Security": 3
-      },
-      {
-       "Leadership": 3,
-       "Achievement": 2
       }
+     ],
+     "domainPerOption": [
+      "Security",
+      "Learning",
+      "Leadership",
+      "Innovation",
+      "Impact"
+     ]
+    },
+    {
+     "type": "choice5",
+     "q": "Q47",
+     "text": "A year from now, what would make it a year well spent?",
+     "options": [
+      "I got much better at something hard.",
+      "People followed a decision I made.",
+      "I beat a target I set myself.",
+      "Someone's life is measurably better.",
+      "I built something from nothing."
+     ],
+     "motivatorPoints": [
+      {
+       "Learning": 3,
+       "Achievement": 2
+      },
+      {
+       "Leadership": 3
+      },
+      {
+       "Achievement": 3
+      },
+      {
+       "Impact": 3
+      },
+      {
+       "Innovation": 3
+      }
+     ],
+     "domainPerOption": [
+      "Learning",
+      "Leadership",
+      "Achievement",
+      "Impact",
+      "Innovation"
      ]
     }
    ]
@@ -36157,17 +36196,13 @@
      "q": "Q52",
      "text": "Your teacher introduces a completely new topic in class. Which approach helps you understand it the fastest?",
      "options": [
-      "Understand the logic and steps behind it.",
       "Look at diagrams, charts, or visual examples.",
       "Listen carefully and discuss it with others.",
       "Think about it quietly and relate it to what I already know.",
-      "Try a practical activity or experiment myself."
+      "Try a practical activity or experiment myself.",
+      "Understand the logic and steps behind it."
      ],
      "intelPoints": [
-      {
-       "Logical–Mathematical": 3,
-       "Spatial": 1
-      },
       {
        "Spatial": 3,
        "Logical–Mathematical": 1
@@ -36182,6 +36217,10 @@
       },
       {
        "Bodily–Kinesthetic": 3,
+       "Spatial": 1
+      },
+      {
+       "Logical–Mathematical": 3,
        "Spatial": 1
       }
      ]
@@ -36191,21 +36230,13 @@
      "q": "Q53",
      "text": "You have to remember an important lesson for next week's test. What do you naturally rely on?",
      "options": [
-      "Recognize patterns and understand how ideas connect.",
-      "Picture the page, diagram, or image in my mind.",
       "Explain the lesson aloud or discuss it with someone.",
       "Connect the lesson to my own experiences or thoughts.",
-      "Practise or apply what I learned."
+      "Practise or apply what I learned.",
+      "Recognize patterns and understand how ideas connect.",
+      "Picture the page, diagram, or image in my mind."
      ],
      "intelPoints": [
-      {
-       "Logical–Mathematical": 3,
-       "Spatial": 1
-      },
-      {
-       "Spatial": 3,
-       "Logical–Mathematical": 1
-      },
       {
        "Linguistic": 3,
        "Interpersonal": 2
@@ -36217,6 +36248,14 @@
       {
        "Bodily–Kinesthetic": 3,
        "Spatial": 1
+      },
+      {
+       "Logical–Mathematical": 3,
+       "Spatial": 1
+      },
+      {
+       "Spatial": 3,
+       "Logical–Mathematical": 1
       }
      ]
     },
@@ -36225,13 +36264,21 @@
      "q": "Q54",
      "text": "You receive a kit with no demonstration to learn a new activity. How do you begin?",
      "options": [
+      "Think through the process before beginning.",
+      "Start using it and learn through trial and practice.",
       "Read the instructions and understand the sequence.",
       "Look at the illustrations before starting.",
-      "Ask questions or discuss how it works.",
-      "Think through the process before beginning.",
-      "Start using it and learn through trial and practice."
+      "Ask questions or discuss how it works."
      ],
      "intelPoints": [
+      {
+       "Intrapersonal": 3,
+       "Logical–Mathematical": 1
+      },
+      {
+       "Bodily–Kinesthetic": 3,
+       "Spatial": 1
+      },
       {
        "Logical–Mathematical": 3,
        "Spatial": 1
@@ -36243,14 +36290,6 @@
       {
        "Linguistic": 3,
        "Interpersonal": 2
-      },
-      {
-       "Intrapersonal": 3,
-       "Logical–Mathematical": 1
-      },
-      {
-       "Bodily–Kinesthetic": 3,
-       "Spatial": 1
       }
      ]
     },
@@ -36259,13 +36298,17 @@
      "q": "Q55",
      "text": "After learning something difficult, how do you know you've really understood it?",
      "options": [
+      "I can use it correctly in a real task or activity.",
       "I can explain the reasoning behind it.",
       "I can visualize or sketch it clearly.",
       "I can explain it confidently to someone else.",
-      "I can connect it with things I've learned before.",
-      "I can use it correctly in a real task or activity."
+      "I can connect it with things I've learned before."
      ],
      "intelPoints": [
+      {
+       "Bodily–Kinesthetic": 3,
+       "Spatial": 1
+      },
       {
        "Logical–Mathematical": 3,
        "Spatial": 1
@@ -36281,10 +36324,6 @@
       {
        "Intrapersonal": 3,
        "Logical–Mathematical": 1
-      },
-      {
-       "Bodily–Kinesthetic": 3,
-       "Spatial": 1
       }
      ]
     }

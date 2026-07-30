@@ -171,6 +171,50 @@ def professions_from(match_text: str) -> list[str]:
     return out
 
 
+# --------------------------------------------------------------------------- #
+# Option-order rotation.
+#
+# Multiple Intelligence, Learning Styles and Emotional Intelligence each mapped
+# A-E onto the same five constructs on EVERY item. A student who answers by
+# position — and under exam fatigue many do — produced a perfectly consistent,
+# entirely false profile, because slot A was always Logical, always Visual,
+# always Self-Awareness.
+#
+# Rotating the options per question breaks that without touching a single word
+# of the text: the parallel scoring array is permuted with it, so the mapping is
+# unchanged, only where each option sits. The rotation is a fixed offset per
+# question index, not random, so re-running the importer is reproducible and the
+# workbook always matches the bank.
+# --------------------------------------------------------------------------- #
+def rotate(record: dict, parallel: tuple[str, ...], step: int) -> dict:
+    n = len(record["options"])
+    if n < 2 or step % n == 0:
+        return record
+    order = [(i + step) % n for i in range(n)]
+    record["options"] = [record["options"][i] for i in order]
+    for field in parallel:
+        seq = record.get(field)
+        if isinstance(seq, list) and len(seq) == n:
+            record[field] = [seq[i] for i in order]
+    if isinstance(record.get("correct"), int):
+        record["correct"] = order.index(record["correct"])
+    return record
+
+
+def spread_answer_key(records: list[dict]) -> list[dict]:
+    """Aptitude answers were B x4, C x5, E x1 — no A, no D at all, so a student
+    guessing C throughout scored 50% without reading a word. Rotate each item so
+    the key lands as evenly across A-E as ten items allow. Option TEXT is
+    untouched; only the order and the recorded answer index move."""
+    target = [i % 5 for i in range(len(records))]  # 0,1,2,3,4,0,1,2,3,4
+    for rec, want in zip(records, target):
+        # rotate() moves old index c to (c - step) % n, so to land the answer
+        # on `want` the step is (c - want), not (want - c).
+        step = (rec["correct"] - want) % len(rec["options"])
+        rotate(rec, ("optionLabels",), step)
+    return records
+
+
 def build_records(live_apt_set):
     """Return {category: [records]} in the bank's own shape."""
     out: dict[str, list] = {}
@@ -234,22 +278,29 @@ def build_records(live_apt_set):
         "type": "choice5", "q": qid, "trait": trait, "facet": facet, "text": text,
         "options": [t for t, _p in opts],
         "traitPoints": [p for _t, p in opts],
-        "abstainIndex": 4,
+        # No abstainIndex any more: the "None of these" opt-out is gone, and an
+        # option with no weights is a real low-trait position rather than a
+        # non-answer, so it must stay in the denominator.
     } for qid, text, opts, trait, facet, _note in D.PERSONALITY]
 
     # ---- strengths
+    # Scored on the eight domains the career map already uses across all 113
+    # professions; `reportGroups` is the four-way rollup the report shows, so
+    # resolution is kept for matching and simplicity is kept for the student.
     out["strengths"] = [{
         "type": "choice5", "q": qid, "text": text,
         "options": [o[0] for o in opts],
-        "strengthPoints": [o[2] for o in opts],
-        "clientDomains": [o[1] for o in opts],
+        "strengthPoints": D.STRENGTHS_WEIGHTS[qid],
+        "domainPerOption": D.STRENGTHS_DOMAINS[qid],
+        "reportGroups": D.STRENGTHS_GROUPS[qid],
     } for qid, text, opts, _cd, _cl, _pr in D.STRENGTHS]
 
     # ---- motivators
     out["motivators"] = [{
         "type": "choice5", "q": qid, "text": text,
         "options": [o[0] for o in opts],
-        "motivatorPoints": [o[1] for o in opts],
+        "motivatorPoints": D.MOTIVATOR_WEIGHTS[qid],
+        "domainPerOption": D.MOTIVATOR_DOMAINS[qid],
     } for qid, text, opts, _cl, _pr in D.MOTIVATORS]
 
     # ---- learning_styles
@@ -271,6 +322,14 @@ def build_records(live_apt_set):
         "optionDomains": list(D.EI_ORDER),
     } for qid, text, options, dim, _fw, _cl, _pr in D.EI]
 
+    # ---- break the fixed option order on the three positional sections, and
+    #      spread the aptitude answer key. Both are order-only changes.
+    for cat, parallel in (("multiple_intelligence", ("intelPoints",)),
+                          ("learning_styles", ("styles",)),
+                          ("emotional_intelligence", ("optionDomains",))):
+        for i, rec in enumerate(out[cat]):
+            rotate(rec, parallel, i + 1)
+    out["aptitude"] = spread_answer_key(out["aptitude"])
     return out
 
 

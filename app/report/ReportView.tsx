@@ -265,8 +265,21 @@ export default function ReportView({ data }: { data: ReportData }) {
               items={fitment.profile.topIntelligences.map((m) => m.name)}
             />
           ) : null}
+          {/* The 2026 EI section is forced choice across five domains: every
+              option is a healthy response, so it yields a PROFILE, not a level,
+              and `ei` is deliberately null. Showing nothing at all made the
+              whole dimension vanish from the report — fall back to the leading
+              domains instead of hiding it. */}
           {fitment.profile.ei !== null ? (
             <GlanceCard label="Emotional intelligence" items={[`${fitment.profile.ei}/100`]} />
+          ) : (fitment.profile.eiBreakdown ?? []).length > 0 ? (
+            <GlanceCard
+              label="Emotional intelligence"
+              items={(fitment.profile.eiBreakdown ?? [])
+                .filter((d) => d.score > 0)
+                .slice(0, 2)
+                .map((d) => d.name)}
+            />
           ) : null}
         </div>
       </section>
