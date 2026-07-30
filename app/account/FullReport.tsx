@@ -287,7 +287,9 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
                   <span className="vname"><span style={{ color: dimColor(d.key), display: "inline-flex" }}><Icon name={CAT[d.key].icon} size={15} /></span> {CAT[d.key].label}</span>
                   <span className="vbar"><SkillBar value={d.score} color={dimColor(d.key)} benchmark={BENCH[d.key]} /><b>{Math.round(d.score)}</b></span>
                   <span className={`vpill ${b.tone}`}>{b.label}</span>
-                  <span className="vmean vhide2">{res ? `${res.label}: ${res.value}` : (VERDICT[d.key] ?? "")}</span>
+                  {/* Never hidden: on a phone this wraps to its own line rather
+                      than dropping, so all eight dimensions keep their verdict. */}
+                  <span className="vmean">{res ? `${res.label}: ${res.value}` : (VERDICT[d.key] ?? "")}</span>
                 </div>
               );
             })}
@@ -1001,6 +1003,9 @@ const CSS = `
 .frx .vpill.mid{background:var(--red-tint);color:var(--red-strong)}
 .frx .vpill.lo{background:var(--line-2);color:var(--ink-3)}
 .frx .vmean{font-size:12px;color:var(--ink-3)}
+/* Below the 4-column breakpoint the verdict wraps onto its own full-width line
+   instead of being dropped — every dimension keeps its explanation on mobile. */
+@media(max-width:819px){.frx .vmean{grid-column:1/-1;padding-left:23px;margin-top:-2px}}
 .frx .vlegend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-size:11.5px;color:var(--ink-3);align-items:center}
 .frx .vlegend .d{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:middle}
 .frx .vlegend .d.hi{background:var(--good)}.frx .vlegend .d.mid{background:var(--red)}.frx .vlegend .d.lo{background:var(--faint)}
