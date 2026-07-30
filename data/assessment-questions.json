@@ -1110,12 +1110,12 @@
      "q": "Q24",
      "trait": "Openness",
      "facet": "Creativity",
-     "text": "Your school is conducting an exhibition where students can present anything they like. What would you choose?",
+     "text": "A blank wall in your school corridor has been handed to your class. What would you want to do with it?",
      "options": [
-      "A science experiment that solves a real-life problem.",
-      "A creative art, animation, or design project.",
-      "A presentation that teaches visitors something useful.",
-      "A well-organized project with clear planning and documentation."
+      "Map out something useful on it — a timeline, or how something works.",
+      "Paint something nobody at this school has tried before.",
+      "Make it a shared board where everyone adds their own piece.",
+      "Plan it properly first — measurements, materials, permission, dates."
      ],
      "traitPoints": [
       {
@@ -1284,7 +1284,7 @@
      "q": "Q30",
      "trait": "Agreeableness",
      "facet": "Empathy",
-     "text": "During a group activity, one of your teammates is struggling to complete their work. What would you most likely do?",
+     "text": "One of your teammates is quietly falling behind on their part of the work. What would you most likely do?",
      "options": [
       "Help them understand the task while encouraging them to do it themselves.",
       "Complete part of the work to ensure the team succeeds.",
@@ -1314,12 +1314,12 @@
      "q": "Q31",
      "trait": "Agreeableness",
      "facet": "Cooperation",
-     "text": "Two of your close friends disagree during a team project. What would you naturally do?",
+     "text": "A classmate you barely know asks to borrow your notes the night before a test — and you were about to revise from them. What do you do?",
      "options": [
-      "Listen to both sides and help them reach a solution.",
-      "Suggest a practical compromise that benefits the project.",
-      "Stay neutral and continue your assigned work.",
-      "Encourage the team to vote and move forward."
+      "Hand them over and find a way we can both revise tonight.",
+      "Photograph the important pages for them and keep the originals.",
+      "Explain that I need them tonight and offer them first thing tomorrow.",
+      "Suggest we revise together instead."
      ],
      "traitPoints": [
       {
@@ -1408,12 +1408,12 @@
      "q": "Q34",
      "trait": "Integrated Big Five",
      "facet": "Overall Personality Profile",
-     "text": "Imagine your future workplace. Which environment would make you happiest every day?",
+     "text": "A relative asks your parents what you're like when you're at your best. Which answer would fit you most?",
      "options": [
-      "A place where I solve challenging problems and keep learning new things.",
-      "A place where I create new ideas, products, or experiences.",
-      "A place where I work with people, guide others, and make a positive impact.",
-      "A place where I organize work, improve systems, and achieve goals efficiently."
+      "Always digging into something new, and sees it through.",
+      "Full of ideas, and happy to try the ones nobody else would.",
+      "Brings people together and looks out for everyone.",
+      "Organised, dependable, and steady when things go wrong."
      ],
      "traitPoints": [
       {
@@ -8753,12 +8753,12 @@
     {
      "type": "choice4",
      "q": "Q1",
-     "text": "Your school is hosting an Innovation Fair. Which role would you enjoy the most?",
+     "text": "Your family is opening a small food outlet and wants your help. Which part of it would you want to run?",
      "options": [
-      "Build a working prototype and test how it performs.",
-      "Design an attractive and user-friendly model or presentation.",
-      "Lead the team, explain the idea to judges, and coordinate everyone.",
-      "Plan the budget, schedule, and ensure everything is organized."
+      "Set up the kitchen equipment and fix whatever breaks.",
+      "Design the logo, the menu, the packaging and the look of the place.",
+      "Meet customers, take feedback, and bring in new business.",
+      "Handle billing, stock, suppliers and the daily accounts."
      ],
      "riasec": [
       {
@@ -9128,12 +9128,12 @@
     {
      "type": "choice4",
      "q": "Q6",
-     "text": "You have one week of vacation to learn something new. What would you spend most of your time doing?",
+     "text": "A weekend market gives students a free stall for one day. What would yours be?",
      "options": [
-      "Learn coding, robotics, or conduct science experiments.",
-      "Learn drawing, animation, music production, or video editing.",
-      "Volunteer, mentor younger students, or join public speaking workshops.",
-      "Learn investing, business planning, or entrepreneurship."
+      "Live demos of experiments and gadgets I've built.",
+      "My own artwork, prints, or handmade design pieces.",
+      "Free tutoring and study advice for younger students.",
+      "Something I've bought in and resell at a margin, with the books balanced."
      ],
      "riasec": [
       {
@@ -9278,12 +9278,12 @@
     {
      "type": "choice4",
      "q": "Q8",
-     "text": "Your teacher gives your team a difficult challenge. What role would you naturally take?",
+     "text": "A nearby hospital tells your school that patients keep missing appointments, and asks students for help. Which part would you take on?",
      "options": [
-      "Analyze the problem and suggest the best technical solution.",
-      "Think of creative ideas that make the solution unique.",
-      "Motivate everyone and ensure all voices are heard.",
-      "Divide the work, track progress, and ensure deadlines are met."
+      "Dig through the appointment records to find the pattern behind the no-shows.",
+      "Design reminder cards and signs that people actually read.",
+      "Talk to patients and staff to understand what's really stopping them.",
+      "Set up a booking and reminder system, and track whether it works."
      ],
      "riasec": [
       {
@@ -9503,12 +9503,12 @@
     {
      "type": "choice4",
      "q": "Q11",
-     "text": "Imagine your ideal future workplace. What would you like to spend most of your day doing?",
+     "text": "A company offers ten students a one-month paid internship. Which team would you ask to join?",
      "options": [
-      "Solving complex technical problems and inventing new solutions.",
-      "Designing products, creating experiences, or expressing ideas creatively.",
-      "Helping people, leading teams, teaching, or influencing decisions.",
-      "Managing projects, finances, operations, and business growth."
+      "The team working out why the product keeps failing.",
+      "The team redesigning how the product looks and feels.",
+      "The team training new users and answering their questions.",
+      "The team tracking costs, stock and delivery schedules."
      ],
      "riasec": [
       {
@@ -22708,7 +22708,7 @@
      "type": "choice4",
      "q": "Q58",
      "dimension": "Empathy & Social Awareness",
-     "text": "Your classmate is upset because they performed poorly in an exam. What would you most likely do?",
+     "text": "Your classmate is upset because they performed poorly in an exam. How would you respond?",
      "options": [
       "Talk to them, understand their feelings, and encourage them.",
       "Share your own experiences and suggest ways they can improve.",
@@ -31794,12 +31794,12 @@
     {
      "type": "choice4",
      "q": "Q44",
-     "text": "You are given extra time after school. Which activity would make you feel most satisfied?",
+     "text": "You're offered one of these as a reward for a year's hard work. Which would you pick?",
      "options": [
-      "Practicing a skill until I become better at it.",
-      "Exploring new ideas and experimenting with creative possibilities.",
-      "Helping someone learn or solve a problem they are facing.",
-      "Taking responsibility for organizing a group activity."
+      "Advanced training in the thing I'm already best at.",
+      "A budget and total freedom to build whatever I want.",
+      "A chance to work on a cause I actually care about.",
+      "Leading a team on a real project."
      ],
      "motivatorPoints": [
       {
@@ -35720,12 +35720,12 @@
     {
      "type": "choice4",
      "q": "Q52",
-     "text": "Your school asks you to participate in an annual exhibition. Which activity would you enjoy the most?",
+     "text": "Your class is making a short film about your town for a competition. Which job would you take?",
      "options": [
-      "Create a working model, experiment, or solve a technical problem for the exhibition.",
-      "Design the exhibition layout, visuals, posters, or presentation style.",
-      "Explain the project to visitors and answer their questions confidently.",
-      "Create a practical demonstration, performance, or interactive activity for visitors."
+      "Plan the shot list and work out how to fit it all into the time limit.",
+      "Frame the shots, pick the colours, and design the titles.",
+      "Write the script and interview people on camera.",
+      "Act in it, handle the camera, and set up each location."
      ],
      "intelPoints": [
       {
@@ -35807,12 +35807,12 @@
     {
      "type": "choice4",
      "q": "Q55",
-     "text": "Imagine you are choosing your ideal future workplace. Which environment would make you happiest?",
+     "text": "Which compliment would mean the most to you?",
      "options": [
-      "A place where I solve complex problems using logic, numbers, and technology.",
-      "A place where I create designs, ideas, visuals, or innovative solutions.",
-      "A place where I work with people, guide others, and make a positive difference.",
-      "A place where I explore my own ideas, research deeply, and continuously improve myself."
+      "“You work out things logically that leave everyone else stuck.”",
+      "“You can picture and design things the rest of us can't imagine.”",
+      "“You understand people, and you bring out their best.”",
+      "“You know yourself well and keep improving on your own terms.”"
      ],
      "intelPoints": [
       {
