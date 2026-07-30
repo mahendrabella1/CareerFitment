@@ -1494,100 +1494,56 @@
  "9-10": {
   "Set 1": [
    {
-    "type": "choice4",
+    "type": "choice5",
     "q": "Q35",
-    "text": "You and three friends decide to enter a national competition on top of your schoolwork. In the first week, what are you doing?",
+    "text": "Your school is leading a District Youth Summit. Which track do you choose to direct?",
     "options": [
-     "Reading last year's winning entries and working out what the judges reward.",
-     "Sketching ideas nobody else would think of.",
-     "Getting the four of us organised and making sure nobody drops out.",
-     "Working back from the deadline into a calendar, and starting task one."
+     "Smart Tech & AI: Coding automation tools or robotics exhibits.",
+     "Health & Bio-Care: Demonstrating medical diagnostic tools & first-aid.",
+     "Eco-Agri Solutions: Setting up hydroponic farming & soil tests.",
+     "Law & Public Policy: Hosting mock parliament & debating policies.",
+     "Media & Design: Producing the summit's films, posters and live coverage."
     ],
     "strengthPoints": [
      {
       "Analytical": 3,
-      "Learning": 1
+      "Execution": 1
      },
      {
-      "Creative": 3,
+      "Relationship": 3,
       "Analytical": 1
-     },
-     {
-      "Leadership": 3,
-      "Relationship": 1
      },
      {
       "Execution": 3,
-      "Analytical": 1
+      "Learning": 1
+     },
+     {
+      "Communication": 3,
+      "Leadership": 1
+     },
+     {
+      "Creative": 3,
+      "Communication": 1
      }
+    ],
+    "clientDomains": [
+     "Technical",
+     "Medical",
+     "Environmental",
+     "Legal/Policy",
+     "Creative/Media"
     ]
    },
    {
-    "type": "choice4",
+    "type": "choice5",
     "q": "Q36",
-    "text": "A younger student is being left out by their class, and your teacher asks a few of you to help. What would you do?",
+    "text": "A local neighborhood faces severe water logging and waste management issues. What is your first step?",
     "options": [
-     "Talk to the class about it directly.",
-     "Spend time with the student first and get to know them.",
-     "Start an activity they'd shine at, so the others see them differently.",
-     "Set up a buddy system and make sure it actually runs."
-    ],
-    "strengthPoints": [
-     {
-      "Communication": 3,
-      "Leadership": 1
-     },
-     {
-      "Relationship": 3,
-      "Communication": 1
-     },
-     {
-      "Creative": 3
-     },
-     {
-      "Execution": 3,
-      "Leadership": 1
-     }
-    ]
-   },
-   {
-    "type": "choice4",
-    "q": "Q37",
-    "text": "You have the opportunity to join a new club at school. Which one excites you the most?",
-    "options": [
-     "Science and Discovery Club.",
-     "Robotics and Coding Club.",
-     "Student Leadership Council.",
-     "Art, Design, and Innovation Club."
-    ],
-    "strengthPoints": [
-     {
-      "Learning": 3,
-      "Analytical": 1
-     },
-     {
-      "Analytical": 3,
-      "Execution": 1
-     },
-     {
-      "Leadership": 3,
-      "Communication": 1
-     },
-     {
-      "Creative": 3,
-      "Adaptability": 1
-     }
-    ]
-   },
-   {
-    "type": "choice4",
-    "q": "Q38",
-    "text": "Halfway through a project you realise the method you chose isn't working. What's your first move?",
-    "options": [
-     "Work out exactly where it started going wrong.",
-     "Look up how other people have solved something similar.",
-     "Get the team together and rethink it with them.",
-     "Switch to a different method and keep moving."
+     "Build a smart sensor prototype to monitor drainage flow.",
+     "Conduct water purity & health risk testing for residents.",
+     "Draft a legal petition & campaign to municipal authorities.",
+     "Launch a local micro-funded recycling business model.",
+     "Run an awareness drive with posters, films and street theatre."
     ],
     "strengthPoints": [
      {
@@ -1595,115 +1551,163 @@
       "Execution": 1
      },
      {
-      "Learning": 3,
-      "Creative": 1
-     },
-     {
-      "Relationship": 3,
-      "Communication": 1
-     },
-     {
-      "Adaptability": 3,
-      "Execution": 1
-     }
-    ]
-   },
-   {
-    "type": "choice4",
-    "q": "Q39",
-    "text": "Your team presents to the whole school tomorrow and nothing is ready. What do you take charge of?",
-    "options": [
-     "The talking — I'll present it.",
-     "The idea — I'll make it worth watching.",
-     "The slides and the running order — I'll get it built.",
-     "The people — I'll keep everyone going."
-    ],
-    "strengthPoints": [
-     {
-      "Communication": 3,
-      "Leadership": 1
-     },
-     {
-      "Creative": 3,
-      "Analytical": 1
-     },
-     {
-      "Execution": 3,
-      "Analytical": 1
-     },
-     {
-      "Leadership": 3,
-      "Relationship": 1
-     }
-    ]
-   },
-   {
-    "type": "choice4",
-    "q": "Q40",
-    "text": "You're handed something broken — an old radio, a bicycle, a piece of code — and told to make it work. How do you start?",
-    "options": [
-     "Take it apart methodically and find the fault.",
-     "See whether it could become something better than it was.",
-     "Read up on how it's supposed to work first.",
-     "Start trying things and adjust as I learn what breaks."
-    ],
-    "strengthPoints": [
-     {
       "Analytical": 3,
-      "Execution": 1
-     },
-     {
-      "Creative": 3,
       "Learning": 1
      },
      {
-      "Learning": 3,
-      "Analytical": 1
-     },
-     {
-      "Adaptability": 3,
-      "Creative": 1
-     }
-    ]
-   },
-   {
-    "type": "choice4",
-    "q": "Q41",
-    "text": "You've been put in a group with people you've never worked with before. What do you do in the first meeting?",
-    "options": [
-     "Get to know them a bit before we start.",
-     "Lay out what I think the task actually needs.",
-     "Suggest who should do what and get us moving.",
-     "Take the first task myself and start on it."
-    ],
-    "strengthPoints": [
-     {
-      "Relationship": 3,
-      "Communication": 1
-     },
-     {
       "Communication": 3,
-      "Analytical": 1
+      "Leadership": 1
      },
      {
       "Leadership": 3,
       "Execution": 1
      },
      {
-      "Execution": 3,
-      "Relationship": 1
+      "Creative": 3,
+      "Communication": 1
      }
+    ],
+    "clientDomains": [
+     "Engineering",
+     "Clinical/Bio-Health",
+     "Advocacy/Legal",
+     "Financial/Business",
+     "Creative/Media"
     ]
    },
    {
-    "type": "choice4",
-    "q": "Q42",
-    "text": "Looking back at the projects you've enjoyed the most, what usually made them enjoyable?",
+    "type": "choice5",
+    "q": "Q37",
+    "text": "Your school gets funding for one new modern learning facility. Which proposal do you champion?",
     "options": [
-     "Solving challenging problems and discovering answers.",
-     "Creating something original or improving an existing idea.",
-     "Working with people, guiding them, and achieving goals together.",
-     "Organizing work and making sure everything runs smoothly."
+     "Computer & Tech R&D Lab: 3D printers, coding kits, & server gear.",
+     "Biology & Medical Lab: Advanced microscopes & human anatomy models.",
+     "Greenhouse & Soil Lab: Eco-gardening, crop genetics, & bio-fertilizers.",
+     "Debate & Legal Clinic: Courtroom setup for legal & civic studies.",
+     "Media & Design Studio: cameras, editing suites and a design lab."
+    ],
+    "strengthPoints": [
+     {
+      "Analytical": 3,
+      "Learning": 1
+     },
+     {
+      "Analytical": 3,
+      "Learning": 2
+     },
+     {
+      "Execution": 3,
+      "Learning": 1
+     },
+     {
+      "Communication": 3,
+      "Leadership": 1
+     },
+     {
+      "Creative": 3,
+      "Execution": 1
+     }
+    ],
+    "clientDomains": [
+     "Analytical",
+     "Diagnostic",
+     "Ecological",
+     "Civic/Communicative",
+     "Creative/Media"
+    ]
+   },
+   {
+    "type": "choice5",
+    "q": "Q38",
+    "text": "Your class must create a digital platform for Indian students. What primary feature do you design?",
+    "options": [
+     "An AI algorithm that solves complex study problems.",
+     "Mental health counselling & wellness tracker tools.",
+     "An interactive portal on civic rights, duties, & legal awareness.",
+     "A pocket-money management & micro-investing simulator.",
+     "A creative showcase where students publish art, writing and film."
+    ],
+    "strengthPoints": [
+     {
+      "Analytical": 3,
+      "Creative": 1
+     },
+     {
+      "Relationship": 3,
+      "Analytical": 1
+     },
+     {
+      "Communication": 3,
+      "Learning": 1
+     },
+     {
+      "Execution": 3,
+      "Analytical": 1
+     },
+     {
+      "Creative": 3,
+      "Communication": 1
+     }
+    ],
+    "clientDomains": [
+     "Technical",
+     "Psychological",
+     "Civic/Legal",
+     "Financial",
+     "Creative/Media"
+    ]
+   },
+   {
+    "type": "choice5",
+    "q": "Q39",
+    "text": "Your team enters an Inter-School Community Project competition. Which role do you pick?",
+    "options": [
+     "Mechanical/Tech Lead: Building & repairing hardware tools.",
+     "Medical & Wellness Lead: Managing first-aid & health checkups.",
+     "Environmental Lead: Designing tree plantation & soil care plans.",
+     "Strategy & Finance Lead: Budgeting, sponsorship, & pitch decks.",
+     "Communications Lead: documenting the project and presenting it publicly."
+    ],
+    "strengthPoints": [
+     {
+      "Execution": 3,
+      "Analytical": 1
+     },
+     {
+      "Relationship": 3,
+      "Execution": 1
+     },
+     {
+      "Execution": 3,
+      "Creative": 1
+     },
+     {
+      "Leadership": 3,
+      "Analytical": 1
+     },
+     {
+      "Communication": 3,
+      "Creative": 1
+     }
+    ],
+    "clientDomains": [
+     "Mechanical",
+     "Medical",
+     "Environmental",
+     "Strategic/Financial",
+     "Creative/Media"
+    ]
+   },
+   {
+    "type": "choice5",
+    "q": "Q40",
+    "text": "If you could shadow a top professional for one week, who would you choose?",
+    "options": [
+     "A Lead Developer coding AI applications at a tech giant.",
+     "A Surgeon performing precision operations in a hospital.",
+     "An Agricultural Scientist developing drought-resistant crops.",
+     "A Corporate Lawyer defending major international clients.",
+     "A Creative Director running a design and film studio."
     ],
     "strengthPoints": [
      {
@@ -1711,19 +1715,111 @@
       "Learning": 2
      },
      {
-      "Creative": 3,
-      "Adaptability": 1
+      "Execution": 3,
+      "Analytical": 2
      },
      {
-      "Leadership": 3,
-      "Relationship": 2
+      "Learning": 3,
+      "Analytical": 1
      },
+     {
+      "Communication": 3,
+      "Analytical": 1
+     },
+     {
+      "Creative": 3,
+      "Leadership": 1
+     }
+    ],
+    "clientDomains": [
+     "Analytical/Tech",
+     "Diagnostic/Medical",
+     "Biological/Agri",
+     "Logical/Legal",
+     "Creative/Media"
+    ]
+   },
+   {
+    "type": "choice5",
+    "q": "Q41",
+    "text": "Your school newsletter needs a special dedicated column. Which section do you write?",
+    "options": [
+     "Tech Byte: Future AI gadgets, coding, & space discoveries.",
+     "Body & Mind: Disease prevention, health tips, & sports nutrition.",
+     "Earth Watch: Climate action, sustainable farming, & wildlife.",
+     "Money & Markets: Stock market basics, saving tips, & startups.",
+     "Stage & Screen: film, music, design and student creative work."
+    ],
+    "strengthPoints": [
+     {
+      "Analytical": 3,
+      "Communication": 1
+     },
+     {
+      "Relationship": 3,
+      "Communication": 1
+     },
+     {
+      "Learning": 3,
+      "Communication": 1
+     },
+     {
+      "Analytical": 3,
+      "Leadership": 1
+     },
+     {
+      "Creative": 3,
+      "Communication": 1
+     }
+    ],
+    "clientDomains": [
+     "Technical",
+     "Health/Biological",
+     "Ecological",
+     "Financial",
+     "Creative/Media"
+    ]
+   },
+   {
+    "type": "choice5",
+    "q": "Q42",
+    "text": "A sudden emergency occurs during a school trip. What is your immediate instinct?",
+    "options": [
+     "Fix malfunctioning communications or transport gear.",
+     "Provide immediate first-aid & assess physical symptoms.",
+     "Consult rules, safety guidelines, & legal protocols.",
+     "Manage food/water resources & organize logistics calmly.",
+     "Keep everyone calm and handle communication with the group."
+    ],
+    "strengthPoints": [
      {
       "Execution": 3,
       "Analytical": 1
+     },
+     {
+      "Execution": 3,
+      "Relationship": 2
+     },
+     {
+      "Analytical": 3,
+      "Execution": 1
+     },
+     {
+      "Execution": 3,
+      "Leadership": 1
+     },
+     {
+      "Relationship": 3,
+      "Communication": 2
      }
     ],
-    "integrated": true
+    "clientDomains": [
+     "Technical",
+     "Medical",
+     "Administrative",
+     "Operations",
+     "Interpersonal"
+    ]
    }
   ]
  },

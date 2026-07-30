@@ -3018,166 +3018,171 @@
     "q": "Q13",
     "format": "text",
     "domain": "Numerical",
-    "difficulty": "easy",
-    "text": "Which number comes next in the series? 6, 12, 24, 48, ?",
+    "difficulty": "medium",
+    "text": "A student business buys notebooks at ₹40 each and sells them for ₹50 each. What is the profit percentage?",
     "options": [
-     "72",
-     "84",
-     "96",
-     "100"
+     "15%",
+     "20%",
+     "25%",
+     "30%",
+     "10%"
     ],
     "svgOptions": false,
     "correct": 2,
-    "media": null
+    "media": null,
+    "imageStatus": "Not needed"
    },
    {
     "type": "mcq",
     "q": "Q14",
     "format": "text",
-    "domain": "Numerical",
-    "difficulty": "easy",
-    "text": "A school bag costs ₹800. During a sale, you get 25% off. How much will you pay?",
+    "domain": "Logical",
+    "difficulty": "medium",
+    "text": "All doctors study science. Some science students become researchers. Which conclusion is definitely true?",
     "options": [
-     "₹500",
-     "₹600",
-     "₹650",
-     "₹700"
+     "All researchers are doctors.",
+     "All science students become doctors.",
+     "Some people who study science become researchers.",
+     "No doctors are researchers.",
+     "All researchers are science teachers."
     ],
     "svgOptions": false,
-    "correct": 1,
-    "media": null
+    "correct": 2,
+    "media": null,
+    "imageStatus": "Not needed"
    },
    {
     "type": "mcq",
     "q": "Q15",
     "format": "text",
-    "domain": "Numerical",
+    "domain": "Verbal",
     "difficulty": "medium",
-    "text": "Study how the numbers in the grid relate to each other. Which number replaces the question mark?",
+    "text": "Which of the following items is the odd one out among specialized professional tools?",
     "options": [
-     "20",
-     "21",
-     "24",
-     "32"
+     "Python (Programming)",
+     "Stethoscope",
+     "Ledger",
+     "Palette",
+     "Tractor"
     ],
     "svgOptions": false,
-    "correct": 2,
-    "media": {
-     "type": "html",
-     "html": "<table class=\"datatable\" style=\"width:auto;min-width:210px;font-size:16px\"><tbody><tr><td>3</td><td>5</td><td>8</td></tr><tr><td>6</td><td>10</td><td>16</td></tr><tr><td>9</td><td>15</td><td><b>?</b></td></tr></tbody></table>"
-    }
+    "correct": 4,
+    "media": null,
+    "imageStatus": "Optional"
    },
    {
     "type": "mcq",
     "q": "Q16",
     "format": "text",
-    "domain": "Verbal",
-    "difficulty": "easy",
-    "text": "Which word is closest in meaning to Reliable?",
+    "domain": "Data",
+    "difficulty": "medium",
+    "text": "School electricity usage dropped from 1,200 kWh in Jan to 900 kWh in Feb. What is the percentage reduction?",
     "options": [
-     "Lazy",
-     "Careless",
-     "Dependable",
-     "Curious"
+     "20%",
+     "25%",
+     "30%",
+     "33.3%",
+     "15%"
     ],
     "svgOptions": false,
-    "correct": 2,
-    "media": null
+    "correct": 1,
+    "media": null,
+    "imageStatus": "Recommended"
    },
    {
     "type": "mcq",
     "q": "Q17",
     "format": "text",
-    "domain": "Logical",
+    "domain": "Spatial",
     "difficulty": "medium",
-    "text": "Find the next number: 2, 5, 11, 23, ?",
+    "text": "A square piece of paper is folded twice and a triangle punch is made. When unfolded, how many punches appear?",
     "options": [
-     "35",
-     "47",
-     "49",
-     "51"
+     "2",
+     "4",
+     "6",
+     "8",
+     "1"
     ],
     "svgOptions": false,
     "correct": 1,
-    "media": null
+    "media": null,
+    "imageStatus": "Required"
    },
    {
     "type": "mcq",
     "q": "Q18",
     "format": "text",
-    "domain": "Logical",
-    "difficulty": "easy",
-    "text": "Rahul is taller than Mohan. Mohan is taller than Arjun. Who is the tallest?",
+    "domain": "Verbal",
+    "difficulty": "medium",
+    "text": "Diagnosis is to Treatment as Evidence is to ______.",
     "options": [
-     "Mohan",
-     "Arjun",
-     "Cannot be determined",
-     "Rahul"
+     "Investigation",
+     "Medicine",
+     "Verdict",
+     "Crime",
+     "Policy"
     ],
     "svgOptions": false,
-    "correct": 3,
-    "media": null
+    "correct": 2,
+    "media": null,
+    "imageStatus": "Not needed"
    },
    {
     "type": "mcq",
     "q": "Q19",
-    "format": "svg",
-    "domain": "Abstract",
+    "format": "text",
+    "domain": "Coding-Decoding",
     "difficulty": "medium",
-    "text": "The pattern rotates 90° clockwise at each step. Which figure should come next?",
+    "text": "If TECH is written as 3142, and ARTS is written as 5678, how is RATE written?",
     "options": [
-     "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"72\" height=\"72\"><rect x=\"8\" y=\"8\" width=\"84\" height=\"84\" rx=\"6\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><polygon points=\"16,16 46,16 16,46\" fill=\"#1f2937\"/><circle cx=\"73\" cy=\"27\" r=\"8\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"3\"/></svg>",
-     "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"72\" height=\"72\"><rect x=\"8\" y=\"8\" width=\"84\" height=\"84\" rx=\"6\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><polygon points=\"84,16 54,16 84,46\" fill=\"#1f2937\"/><circle cx=\"73\" cy=\"73\" r=\"8\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"3\"/></svg>",
-     "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"72\" height=\"72\"><rect x=\"8\" y=\"8\" width=\"84\" height=\"84\" rx=\"6\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><polygon points=\"16,84 46,84 16,54\" fill=\"#1f2937\"/><circle cx=\"27\" cy=\"27\" r=\"8\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"3\"/></svg>",
-     "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"72\" height=\"72\"><rect x=\"8\" y=\"8\" width=\"84\" height=\"84\" rx=\"6\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><polygon points=\"84,84 54,84 84,54\" fill=\"#1f2937\"/><circle cx=\"27\" cy=\"73\" r=\"8\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"3\"/></svg>"
+     "6841",
+     "6571",
+     "5614",
+     "7841",
+     "8714"
     ],
-    "svgOptions": true,
-    "correct": 2,
-    "media": {
-     "type": "sequence",
-     "items": [
-      "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"72\" height=\"72\"><rect x=\"8\" y=\"8\" width=\"84\" height=\"84\" rx=\"6\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><polygon points=\"16,16 46,16 16,46\" fill=\"#1f2937\"/><circle cx=\"73\" cy=\"27\" r=\"8\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"3\"/></svg>",
-      "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"72\" height=\"72\"><rect x=\"8\" y=\"8\" width=\"84\" height=\"84\" rx=\"6\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><polygon points=\"84,16 54,16 84,46\" fill=\"#1f2937\"/><circle cx=\"73\" cy=\"73\" r=\"8\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"3\"/></svg>",
-      "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"72\" height=\"72\"><rect x=\"8\" y=\"8\" width=\"84\" height=\"84\" rx=\"6\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><polygon points=\"84,84 54,84 84,54\" fill=\"#1f2937\"/><circle cx=\"27\" cy=\"73\" r=\"8\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"3\"/></svg>"
-     ]
-    }
+    "svgOptions": false,
+    "correct": 1,
+    "media": null,
+    "imageStatus": "Not needed"
    },
    {
     "type": "mcq",
     "q": "Q20",
-    "format": "svg",
-    "domain": "Spatial",
-    "difficulty": "hard",
-    "text": "Which cube can be formed by folding the net shown above?",
+    "format": "text",
+    "domain": "Abstract",
+    "difficulty": "medium",
+    "text": "A series shows 3 circles, 5 triangles, 7 squares, ?. What shape and count come next?",
     "options": [
-     "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"76\" height=\"76\"><polygon points=\"50,10 88,32 50,54 12,32\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><polygon points=\"12,32 50,54 50,92 12,70\" fill=\"#fbfbfc\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><polygon points=\"88,32 50,54 50,92 88,70\" fill=\"#f2f3f5\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><circle cx=\"50\" cy=\"32\" r=\"6.82\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"1.8599999999999999\"/><rect x=\"24.18\" y=\"56.18\" width=\"13.64\" height=\"13.64\" fill=\"#1f2937\"/><line x1=\"62.18\" y1=\"56.18\" x2=\"75.82\" y2=\"69.82\" stroke=\"#1f2937\" stroke-width=\"2.108\" stroke-linecap=\"round\"/><line x1=\"75.82\" y1=\"56.18\" x2=\"62.18\" y2=\"69.82\" stroke=\"#1f2937\" stroke-width=\"2.108\" stroke-linecap=\"round\"/></svg>",
-     "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"76\" height=\"76\"><polygon points=\"50,10 88,32 50,54 12,32\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><polygon points=\"12,32 50,54 50,92 12,70\" fill=\"#fbfbfc\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><polygon points=\"88,32 50,54 50,92 88,70\" fill=\"#f2f3f5\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><circle cx=\"50\" cy=\"32\" r=\"6.82\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"1.8599999999999999\"/><polygon points=\"31,56.18 37.82,69.82 24.18,69.82\" fill=\"#1f2937\"/><rect x=\"66.1356\" y=\"56.18\" width=\"5.7288\" height=\"13.64\" fill=\"#1f2937\"/><rect x=\"62.18\" y=\"60.1356\" width=\"13.64\" height=\"5.7288\" fill=\"#1f2937\"/></svg>",
-     "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"76\" height=\"76\"><polygon points=\"50,10 88,32 50,54 12,32\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><polygon points=\"12,32 50,54 50,92 12,70\" fill=\"#fbfbfc\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><polygon points=\"88,32 50,54 50,92 88,70\" fill=\"#f2f3f5\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><polygon points=\"50,25.18 56.82,32 50,38.82 43.18,32\" fill=\"#1f2937\"/><circle cx=\"31\" cy=\"63\" r=\"6.82\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"1.8599999999999999\"/><rect x=\"66.1356\" y=\"56.18\" width=\"5.7288\" height=\"13.64\" fill=\"#1f2937\"/><rect x=\"62.18\" y=\"60.1356\" width=\"13.64\" height=\"5.7288\" fill=\"#1f2937\"/></svg>",
-     "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"76\" height=\"76\"><polygon points=\"50,10 88,32 50,54 12,32\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><polygon points=\"12,32 50,54 50,92 12,70\" fill=\"#fbfbfc\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><polygon points=\"88,32 50,54 50,92 88,70\" fill=\"#f2f3f5\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><circle cx=\"50\" cy=\"32\" r=\"6.82\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"1.8599999999999999\"/><rect x=\"24.18\" y=\"56.18\" width=\"13.64\" height=\"13.64\" fill=\"#1f2937\"/><rect x=\"66.1356\" y=\"56.18\" width=\"5.7288\" height=\"13.64\" fill=\"#1f2937\"/><rect x=\"62.18\" y=\"60.1356\" width=\"13.64\" height=\"5.7288\" fill=\"#1f2937\"/></svg>"
+     "8 Circles",
+     "9 Triangles",
+     "9 Pentagons",
+     "10 Hexagons",
+     "11 Lines"
     ],
-    "svgOptions": true,
-    "correct": 3,
-    "media": {
-     "type": "figure",
-     "svg": "<svg viewBox=\"0 0 240 180\" xmlns=\"http://www.w3.org/2000/svg\" width=\"240\" height=\"180\"><rect x=\"62\" y=\"10\" width=\"52\" height=\"52\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><circle cx=\"88.0\" cy=\"36.0\" r=\"10.120000000000001\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"2.7600000000000002\"/><rect x=\"10\" y=\"62\" width=\"52\" height=\"52\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><polygon points=\"36.0,77.88 46.120000000000005,98.12 25.88,98.12\" fill=\"#1f2937\"/><rect x=\"62\" y=\"62\" width=\"52\" height=\"52\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><rect x=\"77.88\" y=\"77.88\" width=\"20.240000000000002\" height=\"20.240000000000002\" fill=\"#1f2937\"/><rect x=\"114\" y=\"62\" width=\"52\" height=\"52\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><rect x=\"135.7496\" y=\"77.88\" width=\"8.5008\" height=\"20.240000000000002\" fill=\"#1f2937\"/><rect x=\"129.88\" y=\"83.7496\" width=\"20.240000000000002\" height=\"8.5008\" fill=\"#1f2937\"/><rect x=\"166\" y=\"62\" width=\"52\" height=\"52\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><line x1=\"181.88\" y1=\"77.88\" x2=\"202.12\" y2=\"98.12\" stroke=\"#1f2937\" stroke-width=\"3.128\" stroke-linecap=\"round\"/><line x1=\"202.12\" y1=\"77.88\" x2=\"181.88\" y2=\"98.12\" stroke=\"#1f2937\" stroke-width=\"3.128\" stroke-linecap=\"round\"/><rect x=\"62\" y=\"114\" width=\"52\" height=\"52\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"2.5\"/><polygon points=\"88.0,129.88 98.12,140.0 88.0,150.12 77.88,140.0\" fill=\"#1f2937\"/></svg>"
-    }
+    "svgOptions": false,
+    "correct": 2,
+    "media": null,
+    "imageStatus": "Required"
    },
    {
     "type": "mcq",
     "q": "Q21",
     "format": "text",
-    "domain": "Attention to Detail",
+    "domain": "Attention",
     "difficulty": "medium",
-    "text": "Which of the following numbers is different?",
+    "text": "Which number is different? 456789, 456798, 456879, 456789",
     "options": [
-     "987654",
-     "987654",
-     "987564",
-     "987654"
+     "456789",
+     "456798",
+     "456879",
+     "456789",
+     "e"
     ],
     "svgOptions": false,
     "correct": 2,
-    "media": null
+    "media": null,
+    "imageStatus": "Optional"
    },
    {
     "type": "mcq",
@@ -3185,19 +3190,21 @@
     "format": "text",
     "domain": "Mechanical",
     "difficulty": "medium",
-    "text": "Two gears are connected. Gear A rotates clockwise. In which direction will Gear B rotate?",
+    "text": "Two gears mesh together. Gear A turns clockwise. Which way does Gear B turn?",
     "options": [
      "Clockwise",
      "Counter-clockwise",
-     "It will not rotate",
-     "Depends on size"
+     "No movement",
+     "Depends on size",
+     "Cannot say"
     ],
     "svgOptions": false,
     "correct": 1,
     "media": {
      "type": "figure",
      "svg": "<svg viewBox=\"0 0 260 200\" xmlns=\"http://www.w3.org/2000/svg\" width=\"330\" height=\"200\"><circle cx=\"78\" cy=\"112\" r=\"44\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><line x1=\"120.0\" y1=\"112.0\" x2=\"132.0\" y2=\"112.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"114.4\" y1=\"133.0\" x2=\"124.8\" y2=\"139.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"99.0\" y1=\"148.4\" x2=\"105.0\" y2=\"158.8\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"78.0\" y1=\"154.0\" x2=\"78.0\" y2=\"166.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"57.0\" y1=\"148.4\" x2=\"51.0\" y2=\"158.8\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"41.6\" y1=\"133.0\" x2=\"31.2\" y2=\"139.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"36.0\" y1=\"112.0\" x2=\"24.0\" y2=\"112.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"41.6\" y1=\"91.0\" x2=\"31.2\" y2=\"85.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"57.0\" y1=\"75.6\" x2=\"51.0\" y2=\"65.2\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"78.0\" y1=\"70.0\" x2=\"78.0\" y2=\"58.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"99.0\" y1=\"75.6\" x2=\"105.0\" y2=\"65.2\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"114.4\" y1=\"91.0\" x2=\"124.8\" y2=\"85.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><circle cx=\"78\" cy=\"112\" r=\"12\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><text x=\"78\" y=\"196\" text-anchor=\"middle\" font-family=\"Inter, sans-serif\" font-size=\"19\" font-weight=\"700\" fill=\"#1f2937\">Gear A</text><circle cx=\"176\" cy=\"112\" r=\"44\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><line x1=\"216.6\" y1=\"122.9\" x2=\"228.2\" y2=\"126.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"205.7\" y1=\"141.7\" x2=\"214.2\" y2=\"150.2\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"186.9\" y1=\"152.6\" x2=\"190.0\" y2=\"164.2\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"165.1\" y1=\"152.6\" x2=\"162.0\" y2=\"164.2\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"146.3\" y1=\"141.7\" x2=\"137.8\" y2=\"150.2\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"135.4\" y1=\"122.9\" x2=\"123.8\" y2=\"126.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"135.4\" y1=\"101.1\" x2=\"123.8\" y2=\"98.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"146.3\" y1=\"82.3\" x2=\"137.8\" y2=\"73.8\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"165.1\" y1=\"71.4\" x2=\"162.0\" y2=\"59.8\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"186.9\" y1=\"71.4\" x2=\"190.0\" y2=\"59.8\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"205.7\" y1=\"82.3\" x2=\"214.2\" y2=\"73.8\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><line x1=\"216.6\" y1=\"101.1\" x2=\"228.2\" y2=\"98.0\" stroke=\"#1f2937\" stroke-width=\"8\" stroke-linecap=\"round\"/><circle cx=\"176\" cy=\"112\" r=\"12\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><text x=\"176\" y=\"196\" text-anchor=\"middle\" font-family=\"Inter, sans-serif\" font-size=\"19\" font-weight=\"700\" fill=\"#1f2937\">Gear B</text><path d=\"M10 112 A68 68 0 0 1 78 44\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"4\"/><polygon points=\"88,44 72,35 72,53\" fill=\"#2563eb\"/><text x=\"78\" y=\"22\" text-anchor=\"middle\" font-family=\"Inter, sans-serif\" font-size=\"16\" font-weight=\"700\" fill=\"#2563eb\">clockwise</text><text x=\"176\" y=\"36\" text-anchor=\"middle\" font-family=\"Inter, sans-serif\" font-size=\"26\" font-weight=\"800\" fill=\"#94a3b8\">?</text></svg>"
-    }
+    },
+    "imageStatus": "Required"
    }
   ]
  },

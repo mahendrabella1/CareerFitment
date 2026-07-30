@@ -1075,134 +1075,147 @@
   "9-10": {
    "Set 1": [
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q23",
      "trait": "Openness",
      "facet": "Curiosity",
-     "text": "Your teacher announces a project on a completely new topic you've never learned before. What would you most likely do?",
+     "text": "One weekend to prep a project on an unfamiliar topic; by Saturday evening still have several directions. What would you most likely do?",
      "options": [
-      "Start exploring books, videos, and online resources to understand the topic deeply.",
-      "Think of a unique and creative way to present the project.",
-      "Discuss ideas with classmates before deciding your approach.",
-      "Read the teacher's instructions carefully and complete exactly what is expected."
+      "Most unusual idea, even if risky",
+      "Clearest, idea most reliable approach",
+      "Discuss options with classmates",
+      "Combine ideas from different sources",
+      "None of these"
      ],
      "traitPoints": [
       {
-       "O": 3,
-       "C": 1
-      },
-      {
-       "O": 2,
-       "E": 1
-      },
-      {
-       "E": 2,
-       "A": 2,
-       "O": 1
+       "O": 3
       },
       {
        "C": 3
-      }
-     ]
-    },
-    {
-     "type": "choice4",
-     "q": "Q24",
-     "trait": "Openness",
-     "facet": "Creativity",
-     "text": "A blank wall in your school corridor has been handed to your class. What would you want to do with it?",
-     "options": [
-      "Map out something useful on it — a timeline, or how something works.",
-      "Paint something nobody at this school has tried before.",
-      "Make it a shared board where everyone adds their own piece.",
-      "Plan it properly first — measurements, materials, permission, dates."
-     ],
-     "traitPoints": [
-      {
-       "O": 2,
-       "C": 1
-      },
-      {
-       "O": 3
       },
       {
        "E": 2,
        "A": 2
       },
       {
-       "C": 3
-      }
-     ]
-    },
-    {
-     "type": "choice4",
-     "q": "Q25",
-     "trait": "Conscientiousness",
-     "facet": "Planning",
-     "text": "You have two weeks to complete an important assignment. How do you usually approach it?",
-     "options": [
-      "Break it into smaller tasks and finish a little each day.",
-      "Gather different ideas before deciding how to begin.",
-      "Work best when the deadline is close.",
-      "Discuss the plan with friends and work together."
-     ],
-     "traitPoints": [
-      {
-       "C": 3
-      },
-      {
        "O": 3,
        "C": 1
       },
+      {}
+     ],
+     "abstainIndex": 4
+    },
+    {
+     "type": "choice5",
+     "q": "Q24",
+     "trait": "Openness",
+     "facet": "Creativity",
+     "text": "School exhibition, must choose one project. Which would you most enjoy building?",
+     "options": [
+      "Challenges conventional thinking",
+      "Carefully planned, tested project",
+      "Interactive, participatory project",
+      "Visually creative project",
+      "None of these"
+     ],
+     "traitPoints": [
       {
+       "O": 3
+      },
+      {
+       "C": 3
+      },
+      {
+       "E": 3,
+       "A": 2
+      },
+      {
+       "O": 3,
+       "A": 1
+      },
+      {}
+     ],
+     "abstainIndex": 4
+    },
+    {
+     "type": "choice5",
+     "q": "Q25",
+     "trait": "Conscientiousness",
+     "facet": "Planning",
+     "text": "Assignment due in two weeks, but an unexpected event cuts your study days. What would you most likely do?",
+     "options": [
+      "Adjust schedule, follow revised plan",
+      "Rethink best approach before restarting",
+      "Work longer hours to catch up",
+      "Study with others to stay on track",
+      "None of these"
+     ],
+     "traitPoints": [
+      {
+       "C": 3,
+       "S": 1
+      },
+      {
+       "O": 2,
+       "C": 1
+      },
+      {
+       "C": 2,
        "S": 1
       },
       {
        "E": 2,
        "A": 2
-      }
-     ]
+      },
+      {}
+     ],
+     "abstainIndex": 4
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q26",
      "trait": "Conscientiousness",
      "facet": "Persistence",
-     "text": "While preparing for exams, you realize one subject is much harder than the others. What do you usually do?",
+     "text": "After an hour studying a hard chapter, still don't understand it. What usually happens next?",
      "options": [
-      "Create a study schedule and practice regularly.",
-      "Look for different learning methods or videos to understand it better.",
-      "Ask teachers or classmates to explain difficult concepts.",
-      "Focus more on subjects you already enjoy."
+      "Try a different study method",
+      "Take a break, return later",
+      "Ask someone to explain",
+      "Keep practicing despite unclear theory",
+      "None of these"
      ],
      "traitPoints": [
       {
-       "C": 3
-      },
-      {
-       "O": 3,
+       "O": 2,
        "C": 1
       },
       {
-       "E": 2,
-       "A": 2
+       "S": 2
       },
       {
-       "O": 1
-      }
-     ]
+       "E": 2,
+       "A": 1
+      },
+      {
+       "C": 3
+      },
+      {}
+     ],
+     "abstainIndex": 4
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q27",
      "trait": "Conscientiousness",
      "facet": "Responsibility",
-     "text": "Your class is organizing a major event, and your teacher assigns you an important responsibility. How do you usually handle it?",
+     "text": "Halfway through organizing a school event, several problems appear at once. Which role do you take?",
      "options": [
-      "Prepare a detailed checklist and complete every task on time.",
-      "Suggest creative ideas that make the event memorable.",
-      "Coordinate with everyone and keep the team motivated.",
-      "Solve unexpected problems as they arise during the event."
+      "Keep everything organized",
+      "Suggest new ideas/solutions",
+      "Keep everyone coordinated & motivated",
+      "Tackle the most urgent problem first",
+      "None of these"
      ],
      "traitPoints": [
       {
@@ -1218,48 +1231,54 @@
       {
        "S": 3,
        "C": 1
-      }
-     ]
+      },
+      {}
+     ],
+     "abstainIndex": 4
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q28",
      "trait": "Extraversion",
-     "facet": "Confidence",
-     "text": "During a school assembly, volunteers are invited to speak in front of everyone. What are you most likely to do?",
+     "facet": "Initiative",
+     "text": "Arrive early for a workshop; most students already talking. What would you most likely do?",
      "options": [
-      "Volunteer confidently and enjoy addressing the audience.",
-      "Speak only if the topic is something you know well.",
-      "Support the speaker from behind the scenes.",
-      "Prefer to avoid speaking unless necessary."
+      "Join conversation naturally",
+      "Observe before joining",
+      "Talk if shared interests noticed",
+      "Wait to be included",
+      "None of these"
      ],
      "traitPoints": [
       {
        "E": 3,
-       "S": 2
+       "A": 1
       },
       {
-       "E": 1,
-       "C": 2
+       "C": 1,
+       "O": 1
       },
       {
-       "A": 2,
-       "C": 1
+       "E": 2,
+       "A": 1
       },
+      {},
       {}
-     ]
+     ],
+     "abstainIndex": 4
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q29",
      "trait": "Extraversion",
      "facet": "Social Interaction",
-     "text": "You join a new class where you don't know anyone. What do you usually do during the first few days?",
+     "text": "Joined a new class for a semester. By end of first week, what's most likely true?",
      "options": [
-      "Start conversations and make new friends quickly.",
-      "Observe people first before joining groups.",
-      "Connect with classmates through shared interests or activities.",
-      "Focus on your work and let friendships develop naturally."
+      "Already introduced myself to many",
+      "Spoke mainly when needed",
+      "Connected with a few similar people",
+      "Focused on settling in first",
+      "None of these"
      ],
      "traitPoints": [
       {
@@ -1267,8 +1286,7 @@
        "A": 2
       },
       {
-       "O": 1,
-       "C": 1
+       "C": 2
       },
       {
        "E": 2,
@@ -1276,20 +1294,23 @@
       },
       {
        "C": 2
-      }
-     ]
+      },
+      {}
+     ],
+     "abstainIndex": 4
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q30",
      "trait": "Agreeableness",
-     "facet": "Empathy",
-     "text": "One of your teammates is quietly falling behind on their part of the work. What would you most likely do?",
+     "facet": "Cooperation",
+     "text": "During a team activity, two members disagree on how to complete work. What would you naturally do?",
      "options": [
-      "Help them understand the task while encouraging them to do it themselves.",
-      "Complete part of the work to ensure the team succeeds.",
-      "Suggest dividing the work differently so everyone contributes.",
-      "Focus on finishing your own responsibilities first."
+      "Help both sides understand each other",
+      "Combine strongest parts of both ideas",
+      "Let group decide, focus on own task",
+      "Choose most practical option",
+      "None of these"
      ],
      "traitPoints": [
       {
@@ -1298,59 +1319,64 @@
       },
       {
        "A": 2,
-       "C": 2
+       "O": 2
       },
       {
-       "A": 2,
-       "E": 2
-      },
-      {
-       "C": 2
-      }
-     ]
-    },
-    {
-     "type": "choice4",
-     "q": "Q31",
-     "trait": "Agreeableness",
-     "facet": "Cooperation",
-     "text": "A classmate you barely know asks to borrow your notes the night before a test — and you were about to revise from them. What do you do?",
-     "options": [
-      "Hand them over and find a way we can both revise tonight.",
-      "Photograph the important pages for them and keep the originals.",
-      "Explain that I need them tonight and offer them first thing tomorrow.",
-      "Suggest we revise together instead."
-     ],
-     "traitPoints": [
-      {
-       "A": 3,
-       "S": 2
-      },
-      {
-       "A": 2,
        "C": 2
       },
       {
        "C": 2,
        "S": 1
       },
-      {
-       "E": 2,
-       "C": 1
-      }
-     ]
+      {}
+     ],
+     "abstainIndex": 4
     },
     {
-     "type": "choice4",
+     "type": "choice5",
+     "q": "Q31",
+     "trait": "Agreeableness",
+     "facet": "Empathy",
+     "text": "A teammate is falling behind, deadline approaching. What feels most natural?",
+     "options": [
+      "Support them, encourage their own effort",
+      "Adjust plan for fair contribution",
+      "Finish part of task to help team",
+      "Focus on own responsibilities first",
+      "None of these"
+     ],
+     "traitPoints": [
+      {
+       "A": 3,
+       "S": 1
+      },
+      {
+       "A": 2,
+       "C": 2
+      },
+      {
+       "A": 2,
+       "C": 2
+      },
+      {
+       "C": 2
+      },
+      {}
+     ],
+     "abstainIndex": 4
+    },
+    {
+     "type": "choice5",
      "q": "Q32",
      "trait": "Emotional Stability",
      "facet": "Emotional Control",
-     "text": "You receive a lower score than expected in an important exam despite preparing well. What would you most likely do next?",
+     "text": "Result is much lower than expected after working hard. What would you most likely do next?",
      "options": [
-      "Review your mistakes and make a better plan for the next exam.",
-      "Talk to your teacher to understand where you can improve.",
-      "Take some time to relax before starting again.",
-      "Feel disappointed but keep trying with a positive attitude."
+      "Review mistakes, adjust approach",
+      "Ask for feedback",
+      "Take a short break, restart",
+      "Accept result, keep working steadily",
+      "None of these"
      ],
      "traitPoints": [
       {
@@ -1368,25 +1394,32 @@
       {
        "S": 1,
        "C": 1
-      }
-     ]
+      },
+      {}
+     ],
+     "abstainIndex": 4
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q33",
      "trait": "Emotional Stability",
      "facet": "Composure",
-     "text": "During a competition, something unexpected goes wrong at the last moment. What is your first reaction?",
+     "text": "Just before presenting, realize an important part is missing. First reaction?",
      "options": [
-      "Stay calm and quickly look for another solution.",
-      "Discuss possible solutions with your teammates.",
-      "Continue with whatever is still working and adapt if needed.",
-      "Pause briefly, understand the situation, and then decide the next step."
+      "Quickly find another way to explain",
+      "Pause, understand, then continue",
+      "Ask someone nearby for help",
+      "Continue and adapt as needed",
+      "None of these"
      ],
      "traitPoints": [
       {
        "S": 3,
        "O": 1
+      },
+      {
+       "S": 3,
+       "C": 2
       },
       {
        "A": 2,
@@ -1397,23 +1430,22 @@
        "S": 2,
        "C": 1
       },
-      {
-       "S": 3,
-       "C": 2
-      }
-     ]
+      {}
+     ],
+     "abstainIndex": 4
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q34",
      "trait": "Integrated Big Five",
      "facet": "Overall Personality Profile",
-     "text": "A relative asks your parents what you're like when you're at your best. Which answer would fit you most?",
+     "text": "Four internship offers with same salary/growth. Which would you most enjoy?",
      "options": [
-      "Always digging into something new, and sees it through.",
-      "Full of ideas, and happy to try the ones nobody else would.",
-      "Brings people together and looks out for everyone.",
-      "Organised, dependable, and steady when things go wrong."
+      "Learn something completely new",
+      "Create original ideas/designs/solutions",
+      "Work closely with people, help teams",
+      "Improve systems, boost efficiency",
+      "None of these"
      ],
      "traitPoints": [
       {
@@ -1431,8 +1463,10 @@
       {
        "C": 3,
        "S": 1
-      }
-     ]
+      },
+      {}
+     ],
+     "abstainIndex": 4
     }
    ]
   },
@@ -8751,269 +8785,218 @@
   "9-10": {
    "Set 1": [
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q1",
-     "text": "Your family is opening a small food outlet and wants your help. Which part of it would you want to run?",
+     "text": "Your school is organizing a District level Community Fair. Which role would you naturally pick?",
      "options": [
-      "Set up the kitchen equipment and fix whatever breaks.",
-      "Design the logo, the menu, the packaging and the look of the place.",
-      "Meet customers, take feedback, and bring in new business.",
-      "Handle billing, stock, suppliers and the daily accounts."
+      "Diagnose community health issues and suggest remedies",
+      "Build a tech device, software, or mechanical solution.",
+      "Research local laws, policies, and present solutions to officials",
+      "Create posters, films, and branding for the fair",
+      "Manage stall budgets, sponsorship money, and resource logistics."
      ],
      "riasec": [
+      {
+       "S": 3,
+       "I": 2
+      },
+      {
+       "R": 3,
+       "I": 2
+      },
+      {
+       "E": 2,
+       "S": 2,
+       "I": 1
+      },
+      {
+       "A": 3,
+       "E": 1
+      },
+      {
+       "C": 3,
+       "E": 2
+      }
+     ],
+     "clusterWeights": [
+      {
+       "C": 5
+      },
+      {
+       "B": 5
+      },
+      {
+       "F": 5
+      },
+      {
+       "D": 5
+      },
+      {
+       "E": 5
+      }
+     ],
+     "careers": [
+      [
+       "Doctor",
+       "Physiotherapist",
+       "Pharmacist"
+      ],
+      [
+       "Software Engineer",
+       "Mechanical Engineer",
+       "Robotics Engineer"
+      ],
+      [
+       "Lawyer",
+       "IAS Officer",
+       "Counsellor"
+      ],
+      [
+       "Graphic Designer",
+       "Film Maker",
+       "Journalist",
+       "Content Creator"
+      ],
+      [
+       "Chartered Accountant",
+       "Financial Analyst",
+       "Operations Manager"
+      ]
+     ],
+     "careerMatches": [
+      "Health & Medical / Allied Health: Doctor, Nurse, Physiotherapist, Pharmacist",
+      "Engineering & Tech: Software Developer, Mechanical Engineer, Robotics Engineer",
+      "Law & Public Policy: Lawyer, Civil Servant (IAS), Policy Analyst, Mediator",
+      "Arts, Media & Design: Graphic Designer, Filmmaker, Journalist, Content Creator",
+      "Business, Finance & Mgmt: Chartered Accountant, Financial Analyst, Operations Mgr"
+     ]
+    },
+    {
+     "type": "choice5",
+     "q": "Q2",
+     "text": "If you could shadow an expert for a week during your summer break, who would you choose?",
+     "options": [
+      "A surgeon performing complex medical procedures or lab research.",
+      "An agronomist working on organic farming and crop genetics.",
+      "A corporate lawyer negotiating major international business deals.",
+      "An animator or creative director producing a feature film.",
+      "A startup founder pitching to investors and building a company."
+     ],
+     "riasec": [
+      {
+       "I": 3,
+       "S": 2
+      },
+      {
+       "R": 3,
+       "I": 2
+      },
+      {
+       "E": 3,
+       "C": 1
+      },
+      {
+       "A": 3
+      },
+      {
+       "E": 3,
+       "A": 1
+      }
+     ],
+     "clusterWeights": [
+      {
+       "C": 5
+      },
+      {
+       "G": 5
+      },
+      {
+       "F": 5
+      },
+      {
+       "D": 5
+      },
+      {
+       "E": 5
+      }
+     ],
+     "careers": [
+      [
+       "Doctor",
+       "Research Scientist"
+      ],
+      [
+       "Environmental Scientist"
+      ],
+      [
+       "Lawyer",
+       "Auditor"
+      ],
+      [
+       "Animator",
+       "Product Designer",
+       "Fashion Designer",
+       "Creative Director"
+      ],
+      [
+       "Startup Founder",
+       "Banker",
+       "Project Manager"
+      ]
+     ],
+     "careerMatches": [
+      "Health & Medical: Surgeon, Medical Researcher, Pathologist, Biomedical Scientist",
+      "Agriculture & Allied Sciences: Agronomist, Food Technologist, Environmental Scientist",
+      "Law & Commerce: Corporate Lawyer, Legal Consultant, Compliance Officer",
+      "Arts & Design: Animator, Game Designer, Fashion Designer, Art Director",
+      "Business & Entrepreneurship: Founder/CEO, Venture Capitalist, Product Manager"
+     ]
+    },
+    {
+     "type": "choice5",
+     "q": "Q3",
+     "text": "Your town is setting up a new Model Village Project. Where would you make the biggest impact?",
+     "options": [
+      "Set up free health screening camps and wellness awareness.",
+      "Install modern irrigation, soil testing, and sustainable farming systems.",
+      "Construct smart bridges, renewable energy grids, and water systems.",
+      "Archive local history, write village stories, and preserve regional art.",
+      "Set up micro-finance banks and manage project budgets."
+     ],
+     "riasec": [
+      {
+       "S": 3,
+       "I": 1
+      },
+      {
+       "R": 3,
+       "I": 1
+      },
       {
        "R": 3,
        "I": 2
       },
       {
        "A": 3,
-       "R": 1
-      },
-      {
-       "E": 3,
-       "S": 2
-      },
-      {
-       "C": 3,
-       "E": 1
-      }
-     ],
-     "clusterWeights": [
-      {
-       "A": 4,
-       "B": 1
-      },
-      {
-       "D": 5
-      },
-      {
-       "E": 2,
-       "F": 3
-      },
-      {
-       "E": 5
-      }
-     ],
-     "careers": [
-      [
-       "Robotics Engineer",
-       "Mechanical Engineer",
-       "AI Engineer",
-       "Electronics Engineer",
-       "Product Engineer"
-      ],
-      [
-       "Architect",
-       "UX Designer",
-       "Graphic Designer",
-       "Product Designer",
-       "Animator"
-      ],
-      [
-       "Entrepreneur",
-       "Project Manager",
-       "Teacher",
-       "Lawyer",
-       "HR Manager"
-      ],
-      [
-       "Business Manager",
-       "Chartered Accountant",
-       "Financial Analyst",
-       "Operations Manager",
-       "Auditor"
-      ]
-     ]
-    },
-    {
-     "type": "choice4",
-     "q": "Q2",
-     "text": "Your community faces a serious water shortage. What would you do first?",
-     "options": [
-      "Collect data, identify the root cause, and test possible solutions.",
-      "Design an awareness campaign using creative posters and videos.",
-      "Meet local residents and organize volunteers to solve the issue together.",
-      "Prepare a budget and action plan to implement the solution efficiently."
-     ],
-     "riasec": [
-      {
-       "I": 3,
-       "R": 1
-      },
-      {
-       "A": 3,
-       "E": 1
-      },
-      {
-       "S": 3,
-       "E": 2
-      },
-      {
-       "C": 3,
-       "E": 2
-      }
-     ],
-     "clusterWeights": [
-      {
-       "G": 1,
-       "A": 2,
-       "C": 1,
-       "B": 1
-      },
-      {
-       "D": 4,
-       "E": 1
-      },
-      {
-       "F": 5
-      },
-      {
-       "E": 5
-      }
-     ],
-     "careers": [
-      [
-       "Research Scientist",
-       "Environmental Engineer",
-       "Doctor",
-       "Data Scientist",
-       "Civil Engineer"
-      ],
-      [
-       "Graphic Designer",
-       "Digital Marketer",
-       "Content Creator",
-       "Media Professional",
-       "UX Designer"
-      ],
-      [
-       "IAS Officer",
-       "Social Worker",
-       "Psychologist",
-       "Social Worker",
-       "Teacher"
-      ],
-      [
-       "Business Analyst",
-       "Operations Manager",
-       "Financial Planner",
-       "Project Manager",
-       "Banker"
-      ]
-     ]
-    },
-    {
-     "type": "choice4",
-     "q": "Q3",
-     "text": "Your teacher asks you to create something that helps students learn better.",
-     "options": [
-      "Develop a smart study app or simple learning device.",
-      "Design engaging illustrations, animations, or interactive visuals.",
-      "Create a mentoring or peer-learning program for classmates.",
-      "Organize the project timeline, budget, and responsibilities."
-     ],
-     "riasec": [
-      {
-       "I": 3,
-       "R": 2
-      },
-      {
-       "A": 3
-      },
-      {
-       "S": 3,
-       "E": 1
-      },
-      {
-       "C": 3,
-       "E": 1
-      }
-     ],
-     "clusterWeights": [
-      {
-       "B": 2,
-       "A": 3
-      },
-      {
-       "D": 5
-      },
-      {
-       "F": 5
-      },
-      {
-       "E": 5
-      }
-     ],
-     "careers": [
-      [
-       "Software Engineer",
-       "AI Engineer",
-       "Electronics Engineer",
-       "Robotics Engineer",
-       "Research Engineer"
-      ],
-      [
-       "Animator",
-       "Graphic Designer",
-       "Architect",
-       "Product Designer",
-       "UX Designer"
-      ],
-      [
-       "Teacher",
-       "Counsellor",
-       "Psychologist",
-       "HR Manager",
-       "Social Worker"
-      ],
-      [
-       "Project Manager",
-       "Chartered Accountant",
-       "Business Manager",
-       "Operations Manager",
-       "Consultant"
-      ]
-     ]
-    },
-    {
-     "type": "choice4",
-     "q": "Q4",
-     "text": "During a science exhibition, which project would excite you the most?",
-     "options": [
-      "Build an AI model that predicts weather or crop diseases.",
-      "Design an interactive exhibit that makes science easy to understand.",
-      "Explain your project to visitors and answer their questions confidently.",
-      "Plan the exhibition schedule, budget, and logistics."
-     ],
-     "riasec": [
-      {
-       "I": 3,
-       "R": 2
-      },
-      {
-       "A": 3,
        "I": 1
       },
       {
-       "S": 3,
-       "E": 2
-      },
-      {
        "C": 3,
        "E": 2
       }
      ],
      "clusterWeights": [
       {
-       "B": 3,
-       "G": 2
+       "C": 5
+      },
+      {
+       "G": 5
+      },
+      {
+       "A": 5
       },
       {
        "D": 5
-      },
-      {
-       "F": 4,
-       "D": 1
       },
       {
        "E": 5
@@ -9021,130 +9004,146 @@
      ],
      "careers": [
       [
-       "AI Engineer",
-       "Data Scientist",
-       "Research Scientist",
-       "Software Engineer",
+       "Doctor",
+       "Physiotherapist",
+       "Operations Manager"
+      ],
+      [
+       "Environmental Engineer",
        "Environmental Scientist"
       ],
       [
-       "Product Designer",
-       "UX Designer",
-       "Graphic Designer",
-       "Science Communicator",
-       "Animator"
+       "Civil Engineer",
+       "Environmental Engineer",
+       "Electronics Engineer"
       ],
       [
        "Teacher",
-       "Lawyer",
        "Psychologist",
-       "Science Communicator",
-       "Public Speaker"
+       "Content Creator"
       ],
       [
-       "Project Manager",
-       "Operations Manager",
-       "Business Manager",
-       "Event Manager",
-       "Financial Planner"
+       "Banker",
+       "Financial Analyst"
       ]
+     ],
+     "careerMatches": [
+      "Health & Allied Health: Community Health Specialist, Nutritionist, Public Health Mgr",
+      "Agriculture & Earth Sciences: Agricultural Engineer, Soil Scientist, Forester",
+      "Engineering: Civil Engineer, Renewable Energy Specialist, Electrical Engineer",
+      "Humanities & Social Sciences: Historian, Anthropologist, Writer, Sociologist",
+      "Finance & Banking: Investment Banker, Microfinance Officer, Risk Analyst"
      ]
     },
     {
-     "type": "choice4",
-     "q": "Q5",
-     "text": "Your class must organize an event with a limited budget. Which responsibility would you prefer?",
+     "type": "choice5",
+     "q": "Q4",
+     "text": "For your Class 10 annual exhibition, which project topic would you be most eager to lead?",
      "options": [
-      "Calculate expenses and find the most cost-effective solutions.",
-      "Design invitations, posters, and stage decorations.",
-      "Lead the team and coordinate with teachers and students.",
-      "Prepare the schedule, assign tasks, and ensure everything runs on time."
+      "Studying human anatomy, genetics, or disease prevention methods.",
+      "Building an automated solar tracker or smart home automation kit.",
+      "Debating constitutional rights, international relations, or student laws.",
+      "Displaying fine arts, photography, digital illustration, or set design.",
+      "Running a live stock-market simulation or business pitch deck."
      ],
      "riasec": [
       {
-       "C": 3,
+       "I": 3,
+       "S": 1
+      },
+      {
+       "R": 3,
        "I": 2
+      },
+      {
+       "E": 2,
+       "S": 2
       },
       {
        "A": 3
       },
       {
        "E": 3,
-       "S": 2
-      },
-      {
-       "C": 3,
-       "E": 1
+       "C": 2
       }
      ],
      "clusterWeights": [
       {
-       "E": 4,
-       "B": 1
+       "C": 5
+      },
+      {
+       "B": 5
+      },
+      {
+       "F": 5
       },
       {
        "D": 5
       },
       {
-       "E": 2,
-       "F": 3
-      },
-      {
-       "E": 4,
-       "A": 1
+       "E": 5
       }
      ],
      "careers": [
       [
-       "Chartered Accountant",
-       "Financial Analyst",
-       "Data Analyst",
-       "Economist",
-       "Business Analyst"
+       "Doctor",
+       "Research Scientist"
+      ],
+      [
+       "AI Engineer",
+       "Electronics Engineer",
+       "Environmental Engineer"
+      ],
+      [
+       "Lawyer",
+       "IAS Officer"
       ],
       [
        "Graphic Designer",
-       "Event Designer",
-       "Architect",
-       "Interior Designer",
-       "Animator"
+       "Content Creator",
+       "Interior Designer"
       ],
       [
-       "Entrepreneur",
-       "HR Manager",
-       "Project Manager",
-       "Lawyer",
-       "Teacher"
-      ],
-      [
-       "Operations Manager",
-       "Event Manager",
-       "Banker",
-       "Auditor",
-       "Supply Chain Manager"
+       "Economist",
+       "Financial Analyst",
+       "Digital Marketer",
+       "Business Analyst"
       ]
+     ],
+     "careerMatches": [
+      "Medical & Life Sciences: Physician, Geneticist, Microbiologist, Biotechnologist",
+      "Engineering & AI: AI Engineer, Electronics Engineer, Energy Systems Engineer",
+      "Law, Politics & Humanities: Criminal Lawyer, Diplomat, Political Analyst, Advocate",
+      "Arts & Creative Fields: Fine Artist, Photographer, Interior Designer, Illustrator",
+      "Business & Economics: Economist, Stock Broker, Marketing Manager, Business Analyst"
      ]
     },
     {
-     "type": "choice4",
-     "q": "Q6",
-     "text": "A weekend market gives students a free stall for one day. What would yours be?",
+     "type": "choice5",
+     "q": "Q5",
+     "text": "If you were given ₹10,000 to launch a student-led initiative, what would you fund?",
      "options": [
-      "Live demos of experiments and gadgets I've built.",
-      "My own artwork, prints, or handmade design pieces.",
-      "Free tutoring and study advice for younger students.",
-      "Something I've bought in and resell at a margin, with the books balanced."
+      "Rehabilitation equipment or mental health therapy sessions for peers.",
+      "Vertical hydroponic kits or organic seed beds for your school garden.",
+      "A mobile coding lab or 3D printing setup for young inventors.",
+      "A theatre production, podcast studio, or school newspaper magazine.",
+      "An e-commerce store reselling handmade goods to earn profit."
      ],
      "riasec": [
+      {
+       "S": 3,
+       "I": 1
+      },
+      {
+       "R": 3,
+       "I": 1
+      },
       {
        "I": 3,
        "R": 2
       },
       {
-       "A": 3
-      },
-      {
-       "S": 3,
+       "A": 3,
        "E": 1
       },
       {
@@ -9154,12 +9153,98 @@
      ],
      "clusterWeights": [
       {
-       "B": 2,
-       "A": 2,
-       "G": 1
+       "C": 5
+      },
+      {
+       "G": 5
+      },
+      {
+       "B": 5
       },
       {
        "D": 5
+      },
+      {
+       "E": 5
+      }
+     ],
+     "careers": [
+      [
+       "Psychologist",
+       "Physiotherapist",
+       "Counsellor"
+      ],
+      [
+       "Environmental Scientist",
+       "Entrepreneur"
+      ],
+      [
+       "Electronics Engineer",
+       "Software Engineer",
+       "Robotics Engineer"
+      ],
+      [
+       "Journalist",
+       "Creative Director",
+       "Media Professional",
+       "Content Creator"
+      ],
+      [
+       "Digital Marketer",
+       "Financial Planner"
+      ]
+     ],
+     "careerMatches": [
+      "Allied Health & Psychology: Clinical Psychologist, Occupational Therapist, Speech Therapist",
+      "Agriculture & Food Tech: Food Scientist, Horticulturist, Agricultural Businessman",
+      "Tech & Hardware: Hardware Engineer, Software Architect, Mechatronics Specialist",
+      "Media, Journalism & Arts: Journalist, Theatre Director, Radio Jockey, Copywriter",
+      "Commerce & Management: E-commerce Manager, Sales Director, Financial Planner"
+     ]
+    },
+    {
+     "type": "choice5",
+     "q": "Q6",
+     "text": "Which type of books, documentary channels, or podcasts capture your attention most?",
+     "options": [
+      "Medical breakthroughs, human brain mysteries, or emergency ER stories.",
+      "Wildlife conservation, forest ecosystems, and sustainable agriculture.",
+      "Space exploration, coding tutorials, and advanced robotics breakthroughs.",
+      "Crime thrillers, courtroom dramas, philosophy, and history podcasts.",
+      "Case studies on Fortune 500 companies, stock markets, and economics."
+     ],
+     "riasec": [
+      {
+       "I": 3,
+       "S": 1
+      },
+      {
+       "I": 3,
+       "R": 2
+      },
+      {
+       "I": 3,
+       "R": 2
+      },
+      {
+       "A": 2,
+       "S": 1,
+       "E": 1
+      },
+      {
+       "E": 3,
+       "C": 2
+      }
+     ],
+     "clusterWeights": [
+      {
+       "C": 5
+      },
+      {
+       "G": 5
+      },
+      {
+       "B": 5
       },
       {
        "F": 5
@@ -9170,208 +9255,231 @@
      ],
      "careers": [
       [
-       "Software Engineer",
-       "Robotics Engineer",
        "Research Scientist",
-       "AI Engineer",
-       "Electronics Engineer"
+       "Doctor"
       ],
       [
-       "Animator",
-       "Graphic Designer",
-       "Architect",
-       "Film Maker",
-       "Fashion Designer"
-      ],
-      [
-       "Teacher",
-       "Psychologist",
-       "IAS Officer",
-       "Social Worker",
-       "HR Manager"
-      ],
-      [
-       "Entrepreneur",
-       "Chartered Accountant",
-       "Business Manager",
-       "Banker",
-       "Financial Planner"
-      ]
-     ]
-    },
-    {
-     "type": "choice4",
-     "q": "Q7",
-     "text": "Your school is launching a robotics club. Which activity interests you the most?",
-     "options": [
-      "Build and test the robot's hardware and programming.",
-      "Design how the robot looks and interacts with users.",
-      "Demonstrate the robot to visitors and explain how it works.",
-      "Plan the team's timeline, resources, and competition strategy."
-     ],
-     "riasec": [
-      {
-       "R": 3,
-       "I": 3
-      },
-      {
-       "A": 3,
-       "R": 1
-      },
-      {
-       "S": 3,
-       "E": 2
-      },
-      {
-       "C": 3,
-       "E": 2
-      }
-     ],
-     "clusterWeights": [
-      {
-       "A": 4,
-       "B": 1
-      },
-      {
-       "D": 4,
-       "A": 1
-      },
-      {
-       "F": 3,
-       "E": 2
-      },
-      {
-       "E": 5
-      }
-     ],
-     "careers": [
-      [
-       "Robotics Engineer",
-       "Mechanical Engineer",
-       "Electronics Engineer",
-       "Automation Engineer",
-       "AI Engineer"
-      ],
-      [
-       "Product Designer",
-       "Industrial Designer",
-       "UX Designer",
-       "Graphic Designer",
-       "Animator"
-      ],
-      [
-       "Teacher",
-       "Sales Engineer",
-       "Technical Trainer",
-       "Consultant",
+       "Environmental Scientist",
        "Lawyer"
       ],
       [
-       "Project Manager",
-       "Operations Manager",
-       "Entrepreneur",
-       "Business Analyst",
-       "Event Manager"
-      ]
-     ]
-    },
-    {
-     "type": "choice4",
-     "q": "Q8",
-     "text": "A nearby hospital tells your school that patients keep missing appointments, and asks students for help. Which part would you take on?",
-     "options": [
-      "Dig through the appointment records to find the pattern behind the no-shows.",
-      "Design reminder cards and signs that people actually read.",
-      "Talk to patients and staff to understand what's really stopping them.",
-      "Set up a booking and reminder system, and track whether it works."
-     ],
-     "riasec": [
-      {
-       "I": 3,
-       "R": 1
-      },
-      {
-       "A": 3
-      },
-      {
-       "S": 3,
-       "E": 2
-      },
-      {
-       "C": 3,
-       "E": 2
-      }
-     ],
-     "clusterWeights": [
-      {
-       "A": 1,
-       "G": 2,
-       "B": 2
-      },
-      {
-       "D": 5
-      },
-      {
-       "F": 3,
-       "E": 2
-      },
-      {
-       "E": 5
-      }
-     ],
-     "careers": [
-      [
-       "Engineer",
        "Research Scientist",
        "Data Scientist",
-       "Research Scientist",
        "Software Engineer"
       ],
       [
-       "Product Designer",
-       "Architect",
-       "Animator",
-       "Product Designer",
-       "Creative Director"
-      ],
-      [
-       "HR Manager",
-       "Teacher",
        "Psychologist",
-       "Entrepreneur",
-       "Project Manager"
+       "Lawyer",
+       "Journalist",
+       "Teacher"
       ],
       [
-       "Project Manager",
-       "Operations Manager",
+       "Consultant",
        "Chartered Accountant",
-       "Business Manager",
-       "Consultant"
+       "Financial Analyst",
+       "Auditor"
       ]
+     ],
+     "careerMatches": [
+      "Health & Medical Sciences: Neuroscientist, Doctor, Radiologist, Anesthetist",
+      "Environment & Agriculture: Wildlife Biologist, Zoologist, Environmental Lawyer",
+      "Science & Technology: Astrophysicist, Data Scientist, Cybersecurity Analyst",
+      "Law, Criminology & Arts: Criminologist, Judge, Legal Journalist, Philosopher",
+      "Business & Finance: Business Consultant, Chartered Accountant (CA), CFA, Auditor"
      ]
     },
     {
-     "type": "choice4",
-     "q": "Q9",
-     "text": "You receive ₹5,000 to create a useful student project. How would you use it?",
+     "type": "choice5",
+     "q": "Q7",
+     "text": "During a crisis like a sudden epidemic in a school hostel, what is your instinct?",
      "options": [
-      "Build a prototype or develop a technology-based solution.",
-      "Create a creative product, app design, or awareness campaign.",
-      "Organize workshops or mentoring sessions for students.",
-      "Develop a business plan and track the project's finances."
+      "Administer first aid, isolate the sick, and monitor physical symptoms.",
+      "Comfort anxious students, offer counseling, and boost team morale.",
+      "Study health guidelines, ensure legal protocols, and enforce safety rules.",
+      "Create clear infographics and announcements to keep everyone informed.",
+      "Audit food/water supplies, manage logistics, and secure needed funds."
      ],
      "riasec": [
       {
-       "R": 3,
-       "I": 2
+       "S": 3,
+       "R": 1
+      },
+      {
+       "S": 3,
+       "A": 1
+      },
+      {
+       "C": 3,
+       "S": 1
       },
       {
        "A": 3,
        "E": 1
       },
       {
+       "C": 3,
+       "E": 2
+      }
+     ],
+     "clusterWeights": [
+      {
+       "C": 5
+      },
+      {
+       "F": 5
+      },
+      {
+       "F": 5
+      },
+      {
+       "D": 5
+      },
+      {
+       "E": 5
+      }
+     ],
+     "careers": [
+      [
+       "Doctor"
+      ],
+      [
+       "Counsellor",
+       "Psychologist",
+       "HR Manager",
+       "Social Worker"
+      ],
+      [
+       "Operations Manager",
+       "Auditor",
+       "IAS Officer"
+      ],
+      [
+       "Media Professional",
+       "Graphic Designer"
+      ],
+      [
+       "Supply Chain Manager"
+      ]
+     ],
+     "careerMatches": [
+      "Medical & Emergency Health: Emergency Doctor, Epidemiologist, Paramedic",
+      "Psychology & Human Resources: Counselor, Psychologist, HR Manager, Social Worker",
+      "Law & Administration: Hospital Administrator, Compliance Officer, Civil Servant",
+      "Design & Communication: PR Specialist, Communications Mgr, Visual Designer",
+      "Operations & Supply Chain: Supply Chain Manager, Procurement Officer, Logistics Head"
+     ]
+    },
+    {
+     "type": "choice5",
+     "q": "Q8",
+     "text": "What kind of practical problem would you feel most proud to solve in your career?",
+     "options": [
+      "Finding affordable cures or treatments for rare diseases.",
+      "Improving crop yields to tackle hunger without harming the soil.",
+      "Designing cleaner engines, faster computers, or automated systems.",
+      "Defending human rights, fighting injustice, or reforming laws.",
+      "Restructuring an struggling business to make it highly profitable."
+     ],
+     "riasec": [
+      {
+       "I": 3,
+       "S": 2
+      },
+      {
+       "R": 3,
+       "I": 2
+      },
+      {
+       "R": 3,
+       "I": 2
+      },
+      {
        "S": 3,
        "E": 2
+      },
+      {
+       "E": 3,
+       "C": 2
+      }
+     ],
+     "clusterWeights": [
+      {
+       "C": 5
+      },
+      {
+       "G": 5
+      },
+      {
+       "A": 5
+      },
+      {
+       "F": 5
+      },
+      {
+       "E": 5
+      }
+     ],
+     "careers": [
+      [
+       "Pharmacist",
+       "Doctor",
+       "Research Scientist"
+      ],
+      [
+       "Environmental Scientist",
+       "Economist"
+      ],
+      [
+       "Mechanical Engineer",
+       "Software Engineer",
+       "Engineer"
+      ],
+      [
+       "Lawyer",
+       "Social Worker",
+       "IAS Officer"
+      ],
+      [
+       "Consultant",
+       "Financial Planner"
+      ]
+     ],
+     "careerMatches": [
+      "Medical Research: Pharmacologist, Oncologist, Genetic Researcher",
+      "Agriculture Science: Soil Chemist, Plant Breeder, Agricultural Economist",
+      "Core Engineering: Automobile Engineer, Computer Engineer, Chemical Engineer",
+      "Legal & Social Services: Human Rights Lawyer, Judge, NGO Leader, Policy Maker",
+      "Corporate Management: Management Consultant, Chief Financial Officer (CFO), Strategist"
+     ]
+    },
+    {
+     "type": "choice5",
+     "q": "Q9",
+     "text": "What kind of work environment sounds most appealing to you long-term?",
+     "options": [
+      "A modern hospital, clinical lab, or emergency medical center.",
+      "Outdoor fields, greenhouses, research farms, or natural reserves.",
+      "A modern tech hub, engineering workshop, or R&D lab.",
+      "A courtroom, law firm, media studio, or publishing house.",
+      "A corporate boardroom, stock exchange floor, or financial firm."
+     ],
+     "riasec": [
+      {
+       "S": 3,
+       "I": 2
+      },
+      {
+       "R": 3,
+       "I": 1
+      },
+      {
+       "R": 3,
+       "I": 3
+      },
+      {
+       "A": 2,
+       "E": 2,
+       "S": 1
       },
       {
        "E": 3,
@@ -9380,87 +9488,13 @@
      ],
      "clusterWeights": [
       {
-       "A": 2,
-       "B": 2,
-       "G": 1
+       "C": 5
       },
       {
-       "D": 5
+       "G": 5
       },
       {
-       "F": 4,
-       "E": 1
-      },
-      {
-       "E": 5
-      }
-     ],
-     "careers": [
-      [
-       "Engineer",
-       "AI Engineer",
-       "Research Scientist",
-       "Robotics Engineer",
-       "Software Engineer"
-      ],
-      [
-       "UX Designer",
-       "Graphic Designer",
-       "Product Designer",
-       "Architect",
-       "Animator"
-      ],
-      [
-       "Teacher",
-       "Psychologist",
-       "Entrepreneur",
-       "HR Manager",
-       "Counsellor"
-      ],
-      [
-       "Startup Founder",
-       "Chartered Accountant",
-       "Financial Analyst",
-       "Business Manager",
-       "Consultant"
-      ]
-     ]
-    },
-    {
-     "type": "choice4",
-     "q": "Q10",
-     "text": "Which YouTube channel would you watch for two hours without getting bored?",
-     "options": [
-      "Science experiments, coding, engineering, or space exploration.",
-      "Art, animation, filmmaking, architecture, or design tutorials.",
-      "Psychology, public speaking, education, leadership, or social issues.",
-      "Business, finance, startups, investing, and productivity."
-     ],
-     "riasec": [
-      {
-       "I": 3,
-       "R": 2
-      },
-      {
-       "A": 3
-      },
-      {
-       "S": 3,
-       "E": 1
-      },
-      {
-       "E": 3,
-       "C": 2
-      }
-     ],
-     "clusterWeights": [
-      {
-       "G": 2,
-       "B": 2,
-       "A": 1
-      },
-      {
-       "D": 5
+       "B": 5
       },
       {
        "F": 5
@@ -9471,44 +9505,130 @@
      ],
      "careers": [
       [
+       "Doctor",
        "Research Scientist",
+       "Pharmacist"
+      ],
+      [
+       "Environmental Scientist"
+      ],
+      [
        "Software Engineer",
-       "AI Engineer",
        "Mechanical Engineer",
-       "Research Scientist"
+       "Robotics Engineer"
       ],
       [
-       "Architect",
-       "Graphic Designer",
-       "Animator",
-       "Fashion Designer",
-       "Product Designer"
-      ],
-      [
-       "Teacher",
-       "Psychologist",
        "Lawyer",
-       "IAS Officer",
-       "HR Manager"
+       "Journalist",
+       "Creative Director"
       ],
       [
-       "Entrepreneur",
        "Banker",
-       "Chartered Accountant",
        "Financial Analyst",
-       "Consultant"
+       "Business Manager"
       ]
+     ],
+     "careerMatches": [
+      "Health Sciences: Physician, Clinical Researcher, Surgeon, Medical Technologist",
+      "Agriculture & Earth: Forester, Environmental Consultant, Agricultural Scientist",
+      "Engineering & Tech: Software Engineer, Mechanical Engineer, Robotics Researcher",
+      "Law & Creative Arts: Advocate, Journalist, Editor, Creative Director",
+      "Business & Finance: Investment Banker, Equity Analyst, Corporate Executive"
      ]
     },
     {
-     "type": "choice4",
+     "type": "choice5",
+     "q": "Q10",
+     "text": "If you could take a specialized elective course next term, which would you pick?",
+     "options": [
+      "Human Physiology, Nutrition, and Clinical Health Basics.",
+      "Environmental Science, Crop Care, and Biotechnology.",
+      "Python Programming, Electronics, and Applied Mathematics.",
+      "World History, Constitutional Law, and Creative Writing.",
+      "Financial Accounting, Entrepreneurship, and Business Marketing."
+     ],
+     "riasec": [
+      {
+       "I": 3,
+       "S": 2
+      },
+      {
+       "I": 3,
+       "R": 2
+      },
+      {
+       "I": 3,
+       "R": 2
+      },
+      {
+       "A": 3,
+       "S": 1
+      },
+      {
+       "C": 3,
+       "E": 3
+      }
+     ],
+     "clusterWeights": [
+      {
+       "C": 5
+      },
+      {
+       "G": 5
+      },
+      {
+       "B": 5
+      },
+      {
+       "F": 5
+      },
+      {
+       "E": 5
+      }
+     ],
+     "careers": [
+      [
+       "Physiotherapist"
+      ],
+      [
+       "Environmental Scientist",
+       "Research Scientist"
+      ],
+      [
+       "Data Analyst",
+       "Software Engineer",
+       "Electronics Engineer"
+      ],
+      [
+       "Teacher",
+       "IAS Officer",
+       "Journalist",
+       "Lawyer"
+      ],
+      [
+       "Chartered Accountant",
+       "Digital Marketer",
+       "Financial Planner"
+      ]
+     ],
+     "careerMatches": [
+      "Health & Allied Sciences: Dietitian, Physiotherapist, Sports Medicine Specialist",
+      "Life Sciences & Agriculture: Botanist, Biotechnologist, Agronomist",
+      "Engineering & Analytics: Data Analyst, Software Engineer, Electrical Engineer",
+      "Law & Humanities: Historian, Political Scientist, Journalist, Legal Scholar",
+      "Commerce & Management: Accountant, Marketing Strategist, Finance Manager"
+     ]
+    },
+    {
+     "type": "choice5",
      "q": "Q11",
      "text": "A company offers ten students a one-month paid internship. Which team would you ask to join?",
      "options": [
       "The team working out why the product keeps failing.",
       "The team redesigning how the product looks and feels.",
       "The team training new users and answering their questions.",
-      "The team tracking costs, stock and delivery schedules."
+      "The team tracking costs, stock and delivery schedules.",
+      "The team testing whether the product is safe for people to use."
      ],
      "riasec": [
       {
@@ -9525,90 +9645,15 @@
       {
        "C": 3,
        "E": 3
-      }
-     ],
-     "clusterWeights": [
-      {
-       "G": 1,
-       "B": 2,
-       "A": 1,
-       "C": 1
       },
-      {
-       "D": 5
-      },
-      {
-       "F": 4,
-       "E": 1
-      },
-      {
-       "E": 5
-      }
-     ],
-     "careers": [
-      [
-       "Research Scientist",
-       "AI Engineer",
-       "Software Engineer",
-       "Research Engineer",
-       "Doctor"
-      ],
-      [
-       "Architect",
-       "UX Designer",
-       "Graphic Designer",
-       "Animator",
-       "Product Designer"
-      ],
-      [
-       "Teacher",
-       "Psychologist",
-       "Lawyer",
-       "IAS Officer",
-       "Entrepreneur"
-      ],
-      [
-       "Business Manager",
-       "Chartered Accountant",
-       "Operations Manager",
-       "Financial Planner",
-       "Startup Founder"
-      ]
-     ]
-    },
-    {
-     "type": "choice4",
-     "q": "Q12",
-     "text": "Your school is starting a student-run magazine and website. Which role would you take?",
-     "options": [
-      "Research the stories, check the facts, and build the website.",
-      "Design the layout, illustrations, photographs, and cover art.",
-      "Interview people, build the writing team, and reply to readers.",
-      "Handle advertising, budgets, and the publishing schedule."
-     ],
-     "riasec": [
       {
        "I": 3,
-       "R": 2
-      },
-      {
-       "A": 3
-      },
-      {
-       "S": 3,
-       "E": 2
-      },
-      {
-       "C": 3,
-       "E": 2
+       "C": 2
       }
      ],
      "clusterWeights": [
       {
-       "B": 2,
-       "G": 1,
-       "A": 1,
-       "D": 1
+       "B": 5
       },
       {
        "D": 5
@@ -9618,39 +9663,130 @@
       },
       {
        "E": 5
+      },
+      {
+       "C": 5
+      }
+     ],
+     "careers": [
+      [
+       "Research Scientist",
+       "AI Engineer",
+       "Software Engineer"
+      ],
+      [
+       "Architect",
+       "Product Designer",
+       "Graphic Designer"
+      ],
+      [
+       "Teacher",
+       "Psychologist",
+       "Lawyer"
+      ],
+      [
+       "Business Manager",
+       "Chartered Accountant",
+       "Operations Manager"
+      ],
+      [
+       "Research Scientist",
+       "Pharmacist",
+       "Auditor"
+      ]
+     ],
+     "careerMatches": [
+      "Research Scientist, AI Engineer, Software Engineer",
+      "Architect, UX Designer, Graphic Designer",
+      "Teacher, Psychologist, Lawyer",
+      "Business Manager, Chartered Accountant, Operations Manager",
+      "Clinical Research Associate, Pharmacologist, Quality & Safety Officer"
+     ]
+    },
+    {
+     "type": "choice5",
+     "q": "Q12",
+     "text": "Your school is starting a student-run magazine and website. Which role would you take?",
+     "options": [
+      "Research the stories, check the facts, and build the website.",
+      "Design the layout, illustrations, photographs, and cover art.",
+      "Interview people, build the writing team, and reply to readers.",
+      "Handle advertising, budgets, and the publishing schedule.",
+      "Cover the health, fitness and wellbeing section for students."
+     ],
+     "riasec": [
+      {
+       "I": 3,
+       "R": 2
+      },
+      {
+       "A": 3
+      },
+      {
+       "S": 3,
+       "E": 2
+      },
+      {
+       "C": 3,
+       "E": 2
+      },
+      {
+       "S": 2,
+       "A": 2,
+       "I": 1
+      }
+     ],
+     "clusterWeights": [
+      {
+       "B": 5
+      },
+      {
+       "D": 5
+      },
+      {
+       "F": 5
+      },
+      {
+       "E": 5
+      },
+      {
+       "C": 5
       }
      ],
      "careers": [
       [
        "Software Engineer",
        "Data Analyst",
-       "Research Scientist",
-       "Research Engineer",
-       "Science Communicator"
+       "Research Scientist"
       ],
       [
        "Graphic Designer",
        "Animator",
-       "Product Designer",
-       "Architect",
-       "Content Creator"
+       "Product Designer"
       ],
       [
        "Teacher",
        "Lawyer",
-       "Psychologist",
-       "HR Manager",
-       "Public Speaker"
+       "Psychologist"
       ],
       [
        "Business Manager",
        "Financial Analyst",
-       "Digital Marketer",
-       "Operations Manager",
-       "Chartered Accountant"
+       "Digital Marketer"
+      ],
+      [
+       "Journalist",
+       "Teacher",
+       "Content Creator"
       ]
      ],
-     "authored": true
+     "careerMatches": [
+      "Software Engineer, Data Analyst, Research Scientist",
+      "Graphic Designer, Animator, Product Designer",
+      "Teacher, Lawyer, Psychologist",
+      "Business Manager, Financial Analyst, Digital Marketer",
+      "Health Journalist, Public Health Educator, Medical Writer"
+     ]
     }
    ]
   },
@@ -22669,93 +22805,103 @@
   "9-10": {
    "Set 1": [
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q56",
      "dimension": "Emotional Awareness",
-     "text": "Your teacher gives you feedback that your performance needs improvement. What would you most likely do?",
+     "text": "Your teacher says your performance needs improvement. What would you most likely do?",
      "options": [
-      "Think about the feedback carefully and identify what areas you need to improve.",
-      "Feel disappointed initially but use the feedback as motivation to perform better.",
-      "Discuss with your teacher to understand how you can improve further.",
-      "Ignore the feedback because you feel your current approach is already enough."
+      "Identify where I went wrong.",
+      "Stay calm and avoid getting discouraged.",
+      "Set a goal to improve next time.",
+      "Understand the teacher's expectations.",
+      "Ask for detailed feedback and guidance."
      ],
-     "scores": [
-      3,
-      2,
-      2,
-      0
+     "optionDomains": [
+      "Self-Awareness",
+      "Self-Regulation",
+      "Self-Motivation",
+      "Empathy",
+      "Relationship Management"
      ]
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q57",
      "dimension": "Emotional Regulation",
-     "text": "You are preparing for an important competition, but your preparation is not going as planned. How would you respond?",
+     "text": "Your preparation for an important competition is not going as planned. What would you do?",
      "options": [
-      "Stay calm, review the situation, and create a new strategy.",
-      "Take some time to manage your stress and regain focus before continuing.",
-      "Ask teammates, teachers, or mentors for suggestions and support.",
-      "Continue working hard but feel worried until the competition is completed."
+      "Recognize what is slowing me down.",
+      "Stay calm and adjust my routine.",
+      "Work harder with a fresh plan.",
+      "Learn from teammates' experiences.",
+      "Discuss strategies with mentors or friends."
      ],
-     "scores": [
-      3,
-      2,
-      2,
-      1
+     "optionDomains": [
+      "Self-Awareness",
+      "Self-Regulation",
+      "Self-Motivation",
+      "Empathy",
+      "Relationship Management"
      ]
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q58",
      "dimension": "Empathy & Social Awareness",
-     "text": "Your classmate is upset because they performed poorly in an exam. How would you respond?",
+     "text": "A close friend performs poorly in an exam and feels upset. What would you do?",
      "options": [
-      "Talk to them, understand their feelings, and encourage them.",
-      "Share your own experiences and suggest ways they can improve.",
-      "Help them prepare better for the next attempt.",
-      "Give them time and allow them to handle the situation independently."
+      "Think about how I would feel in that situation.",
+      "Stay patient and avoid judging them.",
+      "Encourage them to keep trying.",
+      "Listen carefully before giving advice.",
+      "Help them prepare for the next exam."
      ],
-     "scores": [
-      3,
-      2,
-      2,
-      1
+     "optionDomains": [
+      "Self-Awareness",
+      "Self-Regulation",
+      "Self-Motivation",
+      "Empathy",
+      "Relationship Management"
      ]
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q59",
      "dimension": "Relationship Management",
-     "text": "During a group project, two team members disagree strongly about the best approach. What would you naturally do?",
+     "text": "Two classmates strongly disagree during a group project. What would you naturally do?",
      "options": [
-      "Listen to both sides and help them find a solution everyone can accept.",
-      "Clearly explain your viewpoint while encouraging respectful discussion.",
-      "Suggest dividing responsibilities so everyone can contribute effectively.",
-      "Allow the team leader to decide and focus only on your own task."
+      "Reflect before sharing my opinion.",
+      "Remain calm during the discussion.",
+      "Focus on completing the task successfully.",
+      "Listen to both viewpoints fairly.",
+      "Help the team reach a solution together."
      ],
-     "scores": [
-      3,
-      2,
-      2,
-      1
+     "optionDomains": [
+      "Self-Awareness",
+      "Self-Regulation",
+      "Self-Motivation",
+      "Empathy",
+      "Relationship Management"
      ]
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q60",
      "dimension": "Adaptability & Resilience",
-     "text": "Your plans suddenly change because of an unexpected situation. How do you usually respond?",
+     "text": "Your plans suddenly change because of an unexpected situation. How do you respond?",
      "options": [
-      "Quickly understand the new situation and adjust your approach.",
-      "Look for new opportunities that may come from the change.",
-      "Discuss the situation with others before deciding the next step.",
-      "Take some time to process the change before deciding what to do."
+      "Understand how the change affects me.",
+      "Accept the situation calmly.",
+      "Look for a new opportunity.",
+      "Consider how it affects others too.",
+      "Work with others to adjust the plan."
      ],
-     "scores": [
-      3,
-      3,
-      2,
-      1
+     "optionDomains": [
+      "Self-Awareness",
+      "Self-Regulation",
+      "Self-Motivation",
+      "Empathy",
+      "Relationship Management"
      ]
     }
    ]
@@ -27327,52 +27473,58 @@
     {
      "type": "vark",
      "q": "Q48",
-     "text": "Your teacher introduces a difficult new concept in science. How would you prefer to understand it?",
+     "text": "When learning a hard math formula, I like to",
      "options": [
-      "Watch an animation, diagram, or visual demonstration explaining the concept.",
-      "Discuss the concept with the teacher and classmates to understand different viewpoints.",
-      "Read detailed notes, textbook explanations, and examples about the topic.",
-      "Perform an experiment or practical activity to understand how it works."
+      "See charts/shapes",
+      "Listen to explanation",
+      "Write down step by step to understand",
+      "Practice problems until I understand",
+      "Use a mix — see it, talk it through, then practise it"
      ],
      "styles": [
       "Visual",
-      "Aural",
-      "Read/Write",
-      "Kinesthetic"
+      "Auditory",
+      "Reading/Writing",
+      "Kinesthetic",
+      "Multimodal"
      ]
     },
     {
      "type": "vark",
      "q": "Q49",
-     "text": "You have an important exam coming up. How do you prefer to prepare?",
+     "text": "When studying for a big final exam, I prefer to:",
      "options": [
-      "Create mind maps, charts, diagrams, and visual summaries.",
-      "Explain concepts aloud or discuss topics with friends or teachers.",
-      "Prepare written notes, summaries, and read reference materials.",
-      "Practice questions, solve problems, and learn through activities."
+      "Look at colorful mind-maps or diagrams.",
+      "Join a study group to discuss topics out loud.",
+      "Reread chapters and write summaries",
+      "Use hands-on practice methods",
+      "Mix diagrams, discussion, notes and practice depending on the subject"
      ],
      "styles": [
       "Visual",
-      "Aural",
-      "Read/Write",
-      "Kinesthetic"
+      "Auditory",
+      "Reading/Writing",
+      "Kinesthetic",
+      "Multimodal"
      ]
     },
     {
      "type": "vark",
      "q": "Q50",
-     "text": "You want to learn a new skill outside academics. Which approach would you enjoy most?",
+     "text": "When learning a new hobby, I prefer to:",
      "options": [
-      "Watch tutorials, demonstrations, or step-by-step visual guides.",
-      "Attend discussions, workshops, or learn by listening to experts.",
-      "Read books, articles, manuals, or detailed instructions.",
-      "Try the skill yourself through practice and real-world activities."
+      "Watch video guides",
+      "Have someone explain it",
+      "Read online articles on it",
+      "Try it by doing",
+      "Switch between watching, asking, reading and trying as I go"
      ],
      "styles": [
       "Visual",
-      "Aural",
-      "Read/Write",
-      "Kinesthetic"
+      "Auditory",
+      "Reading/Writing",
+      "Kinesthetic",
+      "Multimodal"
      ]
     },
     {
@@ -27380,16 +27532,18 @@
      "q": "Q51",
      "text": "You are exploring different career options for your future. How would you prefer to learn about them?",
      "options": [
-      "Watch videos showing professionals working in different careers.",
-      "Attend career talks and interact with professionals or counsellors.",
-      "Read career guides, articles, and detailed information about professions.",
-      "Visit workplaces, attend internships, or experience the work practically."
+      "Watch videos of professionals at work.",
+      "Attend talks and meet counsellors directly.",
+      "Read guides and articles about professions.",
+      "Visit workplaces or try internships hands-on.",
+      "Use all of them — videos, talks, reading and a real visit"
      ],
      "styles": [
       "Visual",
-      "Aural",
-      "Read/Write",
-      "Kinesthetic"
+      "Auditory",
+      "Reading/Writing",
+      "Kinesthetic",
+      "Multimodal"
      ]
     }
    ]
@@ -31759,14 +31913,15 @@
   "9-10": {
    "Set 1": [
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q43",
-     "text": "Your school gives you an opportunity to select one special project for the entire year. Which project would excite you the most?",
+     "text": "School gives opportunity to select one special project for the entire year. Which would excite you most?",
      "options": [
-      "Work on a challenging project where I can improve my skills and achieve excellent results.",
-      "Create something completely new that nobody has tried before.",
-      "Work on a project that solves a problem faced by people or society.",
-      "Lead a team and make important decisions to achieve the goal."
+      "Challenging project to improve skills and achieve excellent results",
+      "Create something completely new nobody has tried",
+      "Solve a problem faced by people or society",
+      "Lead a team and make key decisions to achieve the goal",
+      "A well-defined project with clear steps and a dependable result"
      ],
      "motivatorPoints": [
       {
@@ -31788,18 +31943,23 @@
        "Leadership": 3,
        "Achievement": 1,
        "Impact": 1
+      },
+      {
+       "Security": 3,
+       "Achievement": 1
       }
      ]
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q44",
-     "text": "You're offered one of these as a reward for a year's hard work. Which would you pick?",
+     "text": "Extra time after school. Which activity would feel most satisfying?",
      "options": [
-      "Advanced training in the thing I'm already best at.",
-      "A budget and total freedom to build whatever I want.",
-      "A chance to work on a cause I actually care about.",
-      "Leading a team on a real project."
+      "Practicing a skill to get better at it",
+      "Exploring new ideas, experimenting creatively",
+      "Helping someone learn or solve a problem",
+      "Organizing a group activity",
+      "Getting ahead on work already scheduled, so nothing piles up"
      ],
      "motivatorPoints": [
       {
@@ -31817,18 +31977,23 @@
       {
        "Leadership": 3,
        "Achievement": 1
+      },
+      {
+       "Security": 3,
+       "Achievement": 1
       }
      ]
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q45",
-     "text": "Imagine you have achieved success in your future career. What would make you feel most proud?",
+     "text": "Achieved success in your future career. What would make you most proud?",
      "options": [
-      "Becoming highly skilled and recognized as an expert in my field.",
-      "Creating something innovative that changes the way people do things.",
-      "Making a meaningful difference in people's lives.",
-      "Becoming someone who leads teams and influences important decisions."
+      "Becoming highly skilled, recognized as an expert",
+      "Creating something innovative that changes how people do things",
+      "Making a meaningful difference in people's lives",
+      "Becoming a leader who influences important decisions",
+      "Building a secure, stable career that supports my family well"
      ],
      "motivatorPoints": [
       {
@@ -31845,18 +32010,23 @@
       {
        "Leadership": 3,
        "Achievement": 1
+      },
+      {
+       "Security": 3,
+       "Impact": 1
       }
      ]
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q46",
-     "text": "Your school announces a competition where students can choose their own challenge. Which challenge would you prefer?",
+     "text": "School competition where students choose their own challenge. Which would you prefer?",
      "options": [
-      "A difficult challenge where I can test my abilities and compete with others.",
-      "A creative challenge where I can design something unique.",
-      "A challenge that helps improve the school or community.",
-      "A challenge where I can coordinate a team and manage the entire activity."
+      "Difficult challenge to test abilities, compete with others",
+      "Creative challenge to design something unique",
+      "Challenge that helps improve school or community",
+      "Challenge to coordinate and manage a team",
+      "A challenge with clear rules where I know exactly what is expected"
      ],
      "motivatorPoints": [
       {
@@ -31871,18 +32041,23 @@
       },
       {
        "Leadership": 3
+      },
+      {
+       "Security": 3,
+       "Achievement": 1
       }
      ]
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q47",
-     "text": "When choosing your future workplace, which environment would motivate you the most?",
+     "text": "Choosing your future workplace — which environment would motivate you most?",
      "options": [
-      "A place where I can continuously learn, improve, and achieve bigger goals.",
-      "A place where I have freedom to explore ideas and try new approaches.",
-      "A place where my work helps people and creates positive change.",
-      "A place with stability, clear systems, and a structured career path."
+      "Continuously learn, improve, achieve bigger goals",
+      "Freedom to explore ideas and try new approaches",
+      "Work that helps people, creates positive change",
+      "Stability, clear systems, structured career path",
+      "A place where I can take charge of a team and be judged on results"
      ],
      "motivatorPoints": [
       {
@@ -31898,6 +32073,10 @@
       },
       {
        "Security": 3
+      },
+      {
+       "Leadership": 3,
+       "Achievement": 2
       }
      ]
     }
@@ -35718,14 +35897,15 @@
   "9-10": {
    "Set 1": [
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q52",
-     "text": "Your class is making a short film about your town for a competition. Which job would you take?",
+     "text": "Your teacher introduces a completely new topic in class. Which approach helps you understand it the fastest?",
      "options": [
-      "Plan the shot list and work out how to fit it all into the time limit.",
-      "Frame the shots, pick the colours, and design the titles.",
-      "Write the script and interview people on camera.",
-      "Act in it, handle the camera, and set up each location."
+      "Understand the logic and steps behind it.",
+      "Look at diagrams, charts, or visual examples.",
+      "Listen carefully and discuss it with others.",
+      "Think about it quietly and relate it to what I already know.",
+      "Try a practical activity or experiment myself."
      ],
      "intelPoints": [
       {
@@ -35741,20 +35921,25 @@
        "Interpersonal": 2
       },
       {
+       "Intrapersonal": 3,
+       "Logical–Mathematical": 1
+      },
+      {
        "Bodily–Kinesthetic": 3,
-       "Interpersonal": 2
+       "Spatial": 1
       }
      ]
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q53",
-     "text": "Your team is given a difficult problem to solve. Which role would you naturally prefer?",
+     "text": "You have to remember an important lesson for next week's test. What do you naturally rely on?",
      "options": [
-      "Analyze information, identify patterns, and find a logical solution.",
-      "Think about how the solution can be presented creatively or visually.",
-      "Understand everyone's ideas and help the team work together.",
-      "Reflect on your own ideas and suggest improvements based on your experience."
+      "Recognize patterns and understand how ideas connect.",
+      "Picture the page, diagram, or image in my mind.",
+      "Explain the lesson aloud or discuss it with someone.",
+      "Connect the lesson to my own experiences or thoughts.",
+      "Practise or apply what I learned."
      ],
      "intelPoints": [
       {
@@ -35766,37 +35951,12 @@
        "Logical–Mathematical": 1
       },
       {
-       "Interpersonal": 3,
-       "Linguistic": 2
+       "Linguistic": 3,
+       "Interpersonal": 2
       },
       {
        "Intrapersonal": 3,
        "Logical–Mathematical": 1
-      }
-     ]
-    },
-    {
-     "type": "choice4",
-     "q": "Q54",
-     "text": "You have a free weekend and want to learn something new. Which activity would attract you the most?",
-     "options": [
-      "Learn about plants, animals, environment, or how nature works.",
-      "Write stories, create content, learn a language, or practice communication skills.",
-      "Learn music, rhythm, instruments, or create audio content.",
-      "Build something, practice a sport, perform, or learn through hands-on activities."
-     ],
-     "intelPoints": [
-      {
-       "Naturalistic": 3,
-       "Logical–Mathematical": 1
-      },
-      {
-       "Linguistic": 3,
-       "Intrapersonal": 1
-      },
-      {
-       "Musical": 3,
-       "Spatial": 1
       },
       {
        "Bodily–Kinesthetic": 3,
@@ -35805,14 +35965,15 @@
      ]
     },
     {
-     "type": "choice4",
-     "q": "Q55",
-     "text": "Which compliment would mean the most to you?",
+     "type": "choice5",
+     "q": "Q54",
+     "text": "You receive a kit with no demonstration to learn a new activity. How do you begin?",
      "options": [
-      "“You work out things logically that leave everyone else stuck.”",
-      "“You can picture and design things the rest of us can't imagine.”",
-      "“You understand people, and you bring out their best.”",
-      "“You know yourself well and keep improving on your own terms.”"
+      "Read the instructions and understand the sequence.",
+      "Look at the illustrations before starting.",
+      "Ask questions or discuss how it works.",
+      "Think through the process before beginning.",
+      "Start using it and learn through trial and practice."
      ],
      "intelPoints": [
       {
@@ -35821,15 +35982,53 @@
       },
       {
        "Spatial": 3,
-       "Linguistic": 1
+       "Logical–Mathematical": 1
       },
       {
-       "Interpersonal": 3,
-       "Linguistic": 2
+       "Linguistic": 3,
+       "Interpersonal": 2
       },
       {
        "Intrapersonal": 3,
-       "Naturalistic": 1
+       "Logical–Mathematical": 1
+      },
+      {
+       "Bodily–Kinesthetic": 3,
+       "Spatial": 1
+      }
+     ]
+    },
+    {
+     "type": "choice5",
+     "q": "Q55",
+     "text": "After learning something difficult, how do you know you've really understood it?",
+     "options": [
+      "I can explain the reasoning behind it.",
+      "I can visualize or sketch it clearly.",
+      "I can explain it confidently to someone else.",
+      "I can connect it with things I've learned before.",
+      "I can use it correctly in a real task or activity."
+     ],
+     "intelPoints": [
+      {
+       "Logical–Mathematical": 3,
+       "Spatial": 1
+      },
+      {
+       "Spatial": 3,
+       "Logical–Mathematical": 1
+      },
+      {
+       "Linguistic": 3,
+       "Interpersonal": 2
+      },
+      {
+       "Intrapersonal": 3,
+       "Logical–Mathematical": 1
+      },
+      {
+       "Bodily–Kinesthetic": 3,
+       "Spatial": 1
       }
      ]
     }

@@ -292,13 +292,38 @@ check("5 styles: an all-Multimodal respondent reads 100", ls5[0]?.score === 100,
   `got ${ls5[0]?.score}`);
 
 /* ----------------------------------------------------------------------- 8 */
-// Regression guard: the live 9-10 bank has no abstainIndex and no optionDomains,
-// so every changed code path must behave exactly as it did before.
-console.log("\n[8] the live 9-10 bank (4 options, graded EI) is unaffected");
+// The live 9-10 bank now holds the finalised 2026 set. This asserts the real
+// data, not a fixture — it is the check that the import landed correctly and
+// that a full 60-question run scores end to end.
+// (Backward compatibility with the old 4-option graded shape is still covered
+//  above, by the synthetic banks in sections 6 and 7.)
+console.log("\n[8] the live 9-10 bank is the finalised 2026 set and scores end to end");
 const LIVE = Object.fromEntries(
   ["personality", "career_interest", "multiple_intelligence", "emotional_intelligence",
    "learning_styles", "motivators", "strengths", "aptitude"].map((c) => [c, "Set 1"])
 ) as Record<Category, string>;
+
+const liveCounts: [Category, number][] = [
+  ["career_interest", 12], ["aptitude", 10], ["personality", 12], ["strengths", 8],
+  ["motivators", 5], ["learning_styles", 4], ["multiple_intelligence", 4],
+  ["emotional_intelligence", 5],
+];
+let liveTotal = 0;
+let fiveEverywhere = true;
+for (const [cat, want] of liveCounts) {
+  const qs = (B[cat] ?? { [STAGE]: { "Set 1": [] } })[STAGE]["Set 1"] as any[];
+  const set = cat === "aptitude" ? (aptitudeBank as any)[STAGE]["Set 1"]
+            : cat === "strengths" ? (strengthsBank as any)[STAGE]["Set 1"]
+            : qs;
+  liveTotal += set.length;
+  if (set.length !== want) {
+    check(`${cat} holds ${want} questions`, false, `got ${set.length}`);
+  }
+  if (set.some((q: any) => (q.options ?? []).length !== 5)) fiveEverywhere = false;
+}
+check("the bank holds 60 questions", liveTotal === 60, `got ${liveTotal}`);
+check("every live question has 5 options", fiveEverywhere);
+
 const liveAns: Record<string, string> = {};
 answerAll("career_interest", 12, 0, liveAns);
 answerAll("aptitude", 10, 0, liveAns);
@@ -309,24 +334,37 @@ answerAll("multiple_intelligence", 4, 0, liveAns);
 answerAll("emotional_intelligence", 5, 0, liveAns);
 answerAll("personality", 12, 0, liveAns);
 const live = scoreAssessment60(STAGE, LIVE, liveAns);
-check("Big Five still reports all 5 traits", live.topStrengths.length === 5,
+check("Big Five reports all 5 traits", live.topStrengths.length === 5,
   `got ${live.topStrengths.length}`);
-check("a temperament is still named", typeof live.outcomeLabel === "string",
+check("a temperament is named", typeof live.outcomeLabel === "string",
   `got ${live.outcomeLabel}`);
-check("graded EI still returns a number", typeof live.ei === "number", `got ${live.ei}`);
-check("EI radar spoke equals the graded percentage",
-  (live.radar ?? []).find((r) => r.key === "emotional_intelligence")?.score === live.ei);
-check("all-Visual on the 4-style bank still reads 100",
-  (live.learningStyles ?? [])[0]?.score === 100,
-  `got ${JSON.stringify(live.learningStyles)}`);
-check("career matches are still produced", live.matches.length > 0);
-// The low-Extraversion option on live Q28 carries an empty vector but is NOT an
-// abstention, so it must still pull Extraversion down rather than drop out.
-const liveAns2 = { ...liveAns, "personality:5": "3" }; // Q28 option D
-const live2 = scoreAssessment60(STAGE, LIVE, liveAns2);
-const e1 = live.topStrengths.find((s) => s.subTraitName === "Extraversion")?.normalizedScore ?? 0;
-const e2 = live2.topStrengths.find((s) => s.subTraitName === "Extraversion")?.normalizedScore ?? 0;
-check("live Q28's empty-vector option still lowers Extraversion", e2 < e1, `${e1} -> ${e2}`);
+check("EI is a profile, so ei is null", live.ei === null, `got ${live.ei}`);
+check("EI breakdown names all 5 domains", (live.eiBreakdown ?? []).length === 5,
+  `got ${(live.eiBreakdown ?? []).length}`);
+check("EI radar spoke falls back to the profile, not 0",
+  ((live.radar ?? []).find((r) => r.key === "emotional_intelligence")?.score ?? 0) > 0);
+check("career matches are produced", live.matches.length > 0, `got ${live.matches.length}`);
+check("matched careers resolve to a named cluster, not a bare fallback",
+  live.matches.every((m) => m.blurb !== "Career match"),
+  live.matches.map((m) => `${m.title}=${m.blurb}`).join(", "));
+check("aptitude scores from the imported answer keys",
+  typeof live.aptitudePct === "number", `got ${live.aptitudePct}`);
+check("a RIASEC code is produced", (live.riasecCode ?? "").length === 3,
+  `got "${live.riasecCode}"`);
+
+// "None of these" is index 4 on every personality item and is declared as the
+// abstention, so answering it throughout must suppress the profile.
+const liveAbstain = { ...liveAns };
+answerAll("personality", 12, 4, liveAbstain);
+const suppressed = scoreAssessment60(STAGE, LIVE, liveAbstain);
+check("answering 'None of these' throughout suppresses the Big Five profile",
+  suppressed.topStrengths.length === 0 && suppressed.outcomeLabel == null,
+  `${suppressed.topStrengths.length} rows, label ${suppressed.outcomeLabel}`);
+// One abstention must not deflate the rest.
+const oneAbstain = { ...liveAns, "personality:0": "4" };
+const oneOut = scoreAssessment60(STAGE, LIVE, oneAbstain);
+check("a single abstention still yields a full profile",
+  oneOut.topStrengths.length === 5 && oneOut.outcomeLabel != null);
 
 /* -------------------------------------------------------------------------- */
 console.log(failures === 0
