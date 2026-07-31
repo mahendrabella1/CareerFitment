@@ -285,10 +285,30 @@ export function scoreAssessment60(
   Object.keys(interestVotes).forEach((p) => professions.add(p));
 
   const maxVotes = Math.max(1, ...Object.values(interestVotes));
+  // How strongly the student scored each career cluster, so a profession can
+  // inherit interest support from the cluster it belongs to.
+  const clusterScore: Vec = Object.fromEntries(clusterRanked.map((c) => [c.letter, c.score]));
+
   const scored = [...professions].map((p) => {
     let num = 0, den = 0;
-    if (interestVotes[p]) {
-      const aff = interestVotes[p] / maxVotes;
+    // Interest affinity comes from two places, and the second one matters:
+    //
+    //   votes   the profession was named by an option the student actually
+    //           chose. Precise, but only 69 of the 113 professions are named by
+    //           any option at all.
+    //   cluster how strongly the student scored the cluster this profession
+    //           sits in.
+    //
+    // Using votes alone left 44 professions with NO interest signal whatever —
+    // the heaviest dimension simply absent — so they were matched on
+    // personality and aptitude, which are cluster-blind. That is why the top
+    // recommendation agreed with the student's own strongest interest only 43%
+    // of the time, and why raising the interest weight alone plateaued: the
+    // extra weight had nothing to attach to for a third of the catalogue.
+    const votes = interestVotes[p] ? interestVotes[p] / maxVotes : 0;
+    const viaCluster = (clusterScore[MAP.professionCluster[p]] ?? 0) / 100;
+    const aff = Math.max(votes, viaCluster);
+    if (aff > 0) {
       num += DIM_WEIGHT.career_interest * aff; den += DIM_WEIGHT.career_interest;
     }
     for (const [dim, table] of Object.entries(MAP.affinity)) {
