@@ -1494,207 +1494,129 @@
  "9-10": {
   "Set 1": [
    {
-    "type": "choice5",
+    "type": "choice4",
     "q": "Q35",
-    "text": "Your group presents next week and one member still hasn't done anything. What do you actually do?",
+    "text": "Your school announces a month-long innovation challenge where teams must solve a real-life problem. Which role would you naturally choose?",
     "options": [
-     "Tell them straight, even if it gets awkward.",
-     "Check whether the plan was ever realistic.",
-     "Ask them privately, and lose a day over it.",
-     "Do their part myself and say nothing.",
-     "Cut their section out of the presentation."
+     "Study the problem carefully, collect information, and identify the best solution before starting.",
+     "Generate creative ideas and design an innovative solution that stands out.",
+     "Lead the team, motivate everyone, and coordinate responsibilities.",
+     "Prepare a clear action plan, timeline, and ensure every task is completed on schedule."
     ],
     "strengthPoints": [
-     {
-      "Leadership": 3,
-      "Communication": 1
-     },
      {
       "Analytical": 3,
       "Learning": 1
      },
      {
-      "Relationship": 3,
-      "Adaptability": 1
+      "Creative": 3,
+      "Analytical": 1
+     },
+     {
+      "Leadership": 3,
+      "Relationship": 1
      },
      {
       "Execution": 3,
       "Analytical": 1
-     },
-     {
-      "Creative": 3,
-      "Adaptability": 1
      }
-    ],
-    "domainPerOption": [
-     "Leadership",
-     "Analytical",
-     "Relationship",
-     "Execution",
-     "Creative"
-    ],
-    "reportGroups": [
-     "Persuading",
-     "Reasoning",
-     "Connecting",
-     "Delivering",
-     "Reasoning"
     ]
    },
    {
-    "type": "choice5",
+    "type": "choice4",
     "q": "Q36",
-    "text": "You are handed a task nobody has explained, with no instructions. How do you start?",
+    "text": "Your teacher asks your class to organize an awareness campaign. Which responsibility would you enjoy the most?",
     "options": [
-     "Read up first, even if it eats my time.",
-     "Start now and get some of it wrong.",
-     "Keep asking until someone explains it.",
-     "Try something, switch when it fails.",
-     "Map it out before touching anything."
+     "Deliver presentations and explain the campaign to different audiences.",
+     "Work closely with classmates to ensure everyone feels involved.",
+     "Design eye-catching posters, videos, or creative content.",
+     "Organize schedules, permissions, and logistics for the campaign."
     ],
     "strengthPoints": [
      {
-      "Learning": 3,
-      "Analytical": 1
+      "Communication": 3,
+      "Leadership": 1
+     },
+     {
+      "Relationship": 3,
+      "Communication": 1
+     },
+     {
+      "Creative": 3
      },
      {
       "Execution": 3,
-      "Adaptability": 1
-     },
-     {
-      "Communication": 3,
-      "Relationship": 1
-     },
-     {
-      "Adaptability": 3,
-      "Creative": 1
-     },
-     {
-      "Analytical": 3,
-      "Execution": 1
+      "Leadership": 1
      }
-    ],
-    "domainPerOption": [
-     "Learning",
-     "Execution",
-     "Communication",
-     "Adaptability",
-     "Analytical"
-    ],
-    "reportGroups": [
-     "Reasoning",
-     "Delivering",
-     "Persuading",
-     "Connecting",
-     "Reasoning"
     ]
    },
    {
-    "type": "choice5",
+    "type": "choice4",
     "q": "Q37",
-    "text": "Your school is raising money for a new library and you can pick your role.",
+    "text": "You have the opportunity to join a new club at school. Which one excites you the most?",
     "options": [
-     "Try something new that might flop.",
-     "Stand up and do the asking.",
-     "Keep volunteers going when they lose interest.",
-     "Decide, and carry the blame if it fails.",
-     "Copy what worked at other schools."
+     "Science and Discovery Club.",
+     "Robotics and Coding Club.",
+     "Student Leadership Council.",
+     "Art, Design, and Innovation Club."
     ],
     "strengthPoints": [
      {
-      "Creative": 3,
-      "Adaptability": 1
+      "Learning": 3,
+      "Analytical": 1
      },
      {
-      "Communication": 3,
-      "Leadership": 1
-     },
-     {
-      "Relationship": 3,
+      "Analytical": 3,
       "Execution": 1
      },
      {
       "Leadership": 3,
+      "Communication": 1
+     },
+     {
+      "Creative": 3,
+      "Adaptability": 1
+     }
+    ]
+   },
+   {
+    "type": "choice4",
+    "q": "Q38",
+    "text": "Your class receives feedback that your project needs improvement. What would you naturally do first?",
+    "options": [
+     "Analyze the feedback to identify exactly what needs improvement.",
+     "Learn new techniques or ideas that could improve the project.",
+     "Discuss the feedback with teammates and gather everyone's suggestions.",
+     "Quickly adjust the project and try a different approach."
+    ],
+    "strengthPoints": [
+     {
+      "Analytical": 3,
       "Execution": 1
      },
      {
       "Learning": 3,
-      "Analytical": 1
-     }
-    ],
-    "domainPerOption": [
-     "Creative",
-     "Communication",
-     "Relationship",
-     "Leadership",
-     "Learning"
-    ],
-    "reportGroups": [
-     "Reasoning",
-     "Persuading",
-     "Connecting",
-     "Persuading",
-     "Reasoning"
-    ]
-   },
-   {
-    "type": "choice5",
-    "q": "Q38",
-    "text": "A teacher rejects the idea you spent a week on. What is your honest next move?",
-    "options": [
-     "Drop it and start something else.",
-     "Rebuild it to the brief, duller but safe.",
-     "Keep the idea, change how I sell it.",
-     "Find the exact part that failed.",
-     "Argue back, and risk annoying them."
-    ],
-    "strengthPoints": [
-     {
-      "Adaptability": 3,
       "Creative": 1
      },
      {
-      "Execution": 3,
-      "Analytical": 1
-     },
-     {
-      "Creative": 3,
+      "Relationship": 3,
       "Communication": 1
      },
      {
-      "Analytical": 3,
-      "Learning": 1
-     },
-     {
-      "Leadership": 3,
-      "Communication": 1
+      "Adaptability": 3,
+      "Execution": 1
      }
-    ],
-    "domainPerOption": [
-     "Adaptability",
-     "Execution",
-     "Creative",
-     "Analytical",
-     "Leadership"
-    ],
-    "reportGroups": [
-     "Connecting",
-     "Delivering",
-     "Reasoning",
-     "Reasoning",
-     "Persuading"
     ]
    },
    {
-    "type": "choice5",
+    "type": "choice4",
     "q": "Q39",
-    "text": "Younger students are joining and someone has to look after them. What appeals to you?",
+    "text": "Your school is conducting an entrepreneurship competition. Which part interests you the most?",
     "options": [
-     "Run the sessions and do the talking.",
-     "Sit with the one who is struggling.",
-     "Work out why they struggle first.",
-     "Get good at it before I start.",
-     "Turn up and work it out as I go."
+     "Pitch the idea confidently to the judges.",
+     "Develop a unique product or service idea.",
+     "Organize the team's work and ensure deadlines are met.",
+     "Motivate everyone and help the team perform at its best."
     ],
     "strengthPoints": [
      {
@@ -1702,95 +1624,28 @@
       "Leadership": 1
      },
      {
-      "Relationship": 3,
-      "Adaptability": 1
+      "Creative": 3,
+      "Analytical": 1
      },
      {
-      "Analytical": 3,
-      "Learning": 1
+      "Execution": 3,
+      "Analytical": 1
      },
      {
-      "Learning": 3,
-      "Execution": 1
-     },
-     {
-      "Adaptability": 3,
+      "Leadership": 3,
       "Relationship": 1
      }
-    ],
-    "domainPerOption": [
-     "Communication",
-     "Relationship",
-     "Analytical",
-     "Learning",
-     "Adaptability"
-    ],
-    "reportGroups": [
-     "Persuading",
-     "Connecting",
-     "Reasoning",
-     "Reasoning",
-     "Connecting"
     ]
    },
    {
-    "type": "choice5",
+    "type": "choice4",
     "q": "Q40",
-    "text": "Two weeks into a plan, the situation changes completely. What do you do?",
+    "text": "Your teacher gives your class an open-ended challenge with no fixed solution. What would you enjoy most?",
     "options": [
-     "Check how everyone is taking it.",
-     "Decide fast, without full agreement.",
-     "Use it to build something better.",
-     "Adjust as we go, no re-planning.",
-     "Stop until I understand what changed."
-    ],
-    "strengthPoints": [
-     {
-      "Relationship": 3,
-      "Communication": 1
-     },
-     {
-      "Leadership": 3,
-      "Execution": 1
-     },
-     {
-      "Creative": 3,
-      "Adaptability": 1
-     },
-     {
-      "Adaptability": 3,
-      "Execution": 1
-     },
-     {
-      "Learning": 3,
-      "Analytical": 1
-     }
-    ],
-    "domainPerOption": [
-     "Relationship",
-     "Leadership",
-     "Creative",
-     "Adaptability",
-     "Learning"
-    ],
-    "reportGroups": [
-     "Connecting",
-     "Persuading",
-     "Reasoning",
-     "Connecting",
-     "Reasoning"
-    ]
-   },
-   {
-    "type": "choice5",
-    "q": "Q41",
-    "text": "You are asked to check someone's work before it is handed in. How do you do it?",
-    "options": [
-     "List every single thing that is wrong.",
-     "Fix what I can so it goes in on time.",
-     "Flag the big things, ignore the rest.",
-     "Tell them honestly, even if it stings.",
-     "Suggest a different angle entirely."
+     "Analyze different possible solutions before choosing one.",
+     "Think of an original idea that no one else has considered.",
+     "Learn about similar challenges and improve your approach.",
+     "Experiment with different methods until one works well."
     ],
     "strengthPoints": [
      {
@@ -1798,55 +1653,36 @@
       "Execution": 1
      },
      {
-      "Execution": 3,
+      "Creative": 3,
+      "Learning": 1
+     },
+     {
+      "Learning": 3,
       "Analytical": 1
      },
      {
       "Adaptability": 3,
-      "Analytical": 1
-     },
-     {
-      "Communication": 3,
-      "Leadership": 1
-     },
-     {
-      "Creative": 3,
-      "Learning": 1
+      "Creative": 1
      }
-    ],
-    "domainPerOption": [
-     "Analytical",
-     "Execution",
-     "Adaptability",
-     "Communication",
-     "Creative"
-    ],
-    "reportGroups": [
-     "Reasoning",
-     "Delivering",
-     "Connecting",
-     "Persuading",
-     "Reasoning"
     ]
    },
    {
-    "type": "choice5",
-    "q": "Q42",
-    "text": "Next year you could give up your Saturdays to one thing. Which would you choose?",
+    "type": "choice4",
+    "q": "Q41",
+    "text": "During a group activity, everyone has different opinions. What role do you naturally take?",
     "options": [
-     "Finish something big I can point at.",
-     "Get properly good at one hard skill.",
-     "Run something, and own what goes wrong.",
-     "Help people who need it, unglamorously.",
-     "Speak well enough that a room listens."
+     "Help everyone understand each other's viewpoints.",
+     "Clearly explain ideas and keep discussions focused.",
+     "Make decisions and guide the team toward a solution.",
+     "Ensure agreed tasks are completed efficiently."
     ],
     "strengthPoints": [
      {
-      "Execution": 3,
-      "Analytical": 1
+      "Relationship": 3,
+      "Communication": 1
      },
      {
-      "Learning": 3,
+      "Communication": 3,
       "Analytical": 1
      },
      {
@@ -1854,28 +1690,40 @@
       "Execution": 1
      },
      {
-      "Relationship": 3,
+      "Execution": 3,
+      "Relationship": 1
+     }
+    ]
+   },
+   {
+    "type": "choice4",
+    "q": "Q42",
+    "text": "Looking back at the projects you've enjoyed the most, what usually made them enjoyable?",
+    "options": [
+     "Solving challenging problems and discovering answers.",
+     "Creating something original or improving an existing idea.",
+     "Working with people, guiding them, and achieving goals together.",
+     "Organizing work and making sure everything runs smoothly."
+    ],
+    "strengthPoints": [
+     {
+      "Analytical": 3,
+      "Learning": 2
+     },
+     {
+      "Creative": 3,
       "Adaptability": 1
      },
      {
-      "Communication": 3,
-      "Leadership": 1
+      "Leadership": 3,
+      "Relationship": 2
+     },
+     {
+      "Execution": 3,
+      "Analytical": 1
      }
     ],
-    "domainPerOption": [
-     "Execution",
-     "Learning",
-     "Leadership",
-     "Relationship",
-     "Communication"
-    ],
-    "reportGroups": [
-     "Delivering",
-     "Reasoning",
-     "Persuading",
-     "Connecting",
-     "Persuading"
-    ]
+    "integrated": true
    }
   ]
  },

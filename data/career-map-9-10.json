@@ -44,7 +44,7 @@
     "Science Communicator",
     "Software Engineer",
     "Startup Founder",
-    "UI/UX Designer"
+    "UX Designer"
    ],
    "Attention to Detail": [
     "Agricultural Scientist",
@@ -226,7 +226,7 @@
     "Radiologist",
     "Structural Engineer",
     "Surgeon",
-    "UI/UX Designer",
+    "UX Designer",
     "Urban Planner"
    ],
    "Verbal": [
@@ -292,7 +292,7 @@
     "Social Worker",
     "Teacher",
     "Travel Consultant",
-    "UI/UX Designer",
+    "UX Designer",
     "Urban Planner",
     "Veterinarian",
     "Wildlife Biologist"
@@ -495,7 +495,7 @@
     "Software Engineer",
     "Sports Scientist",
     "Startup Founder",
-    "UI/UX Designer",
+    "UX Designer",
     "Urban Planner",
     "Wildlife Biologist"
    ]
@@ -594,7 +594,7 @@
     "Teacher",
     "Technical Trainer",
     "Travel Consultant",
-    "UI/UX Designer",
+    "UX Designer",
     "Urban Planner"
    ],
    "Creative": [
@@ -619,7 +619,7 @@
     "Product Designer",
     "Robotics Engineer",
     "Startup Founder",
-    "UI/UX Designer"
+    "UX Designer"
    ],
    "Execution": [
     "Agricultural Scientist",
@@ -852,7 +852,7 @@
     "Teacher",
     "Technical Trainer",
     "Travel Consultant",
-    "UI/UX Designer",
+    "UX Designer",
     "Urban Planner",
     "Veterinarian",
     "Wildlife Biologist"
@@ -895,7 +895,7 @@
     "Robotics Engineer",
     "Software Engineer",
     "Startup Founder",
-    "UI/UX Designer"
+    "UX Designer"
    ],
    "Leadership": [
     "Business Manager",
@@ -1041,7 +1041,7 @@
     "Teacher",
     "Technical Trainer",
     "Travel Consultant",
-    "UI/UX Designer",
+    "UX Designer",
     "Urban Planner",
     "Veterinarian"
    ],
@@ -1143,11 +1143,83 @@
     "Product Engineer",
     "Radiologist",
     "Structural Engineer",
-    "UI/UX Designer",
+    "UX Designer",
     "Urban Planner"
    ]
   },
   "ei": {
+   "Adaptability & Resilience": [
+    "AI Engineer",
+    "Agricultural Scientist",
+    "Animator",
+    "Athlete",
+    "Biomedical Engineer",
+    "Biotechnologist",
+    "Cloud Engineer",
+    "Electronics Engineer",
+    "Engineer",
+    "Entrepreneur",
+    "Game Developer",
+    "Geologist",
+    "Industrial Designer",
+    "Mechanical Engineer",
+    "Mobile App Developer",
+    "Product Engineer",
+    "Renewable Energy Engineer",
+    "Research Engineer",
+    "Research Scientist",
+    "Robotics Engineer",
+    "Software Engineer",
+    "Sports Scientist",
+    "Startup Founder"
+   ],
+   "Emotional Awareness": [
+    "Architect",
+    "Astrophysicist",
+    "Data Scientist",
+    "Economist",
+    "Fashion Designer",
+    "Graphic Designer",
+    "Music Producer",
+    "Photographer",
+    "Policy Analyst",
+    "Product Designer"
+   ],
+   "Emotional Regulation": [
+    "Aerospace Engineer",
+    "Agronomist",
+    "Auditor",
+    "Automation Engineer",
+    "Chartered Accountant",
+    "Chef",
+    "Chemist",
+    "Civil Engineer",
+    "Civil Services Officer",
+    "Cybersecurity Analyst",
+    "Data Analyst",
+    "Database Administrator",
+    "DevOps Engineer",
+    "Electrical Engineer",
+    "Financial Analyst",
+    "Food Technologist",
+    "Forestry Officer",
+    "Horticulturist",
+    "Investment Banker",
+    "Judge",
+    "Lawyer",
+    "Microbiologist",
+    "Network Engineer",
+    "Operations Manager",
+    "Paramedic",
+    "Pharmacist",
+    "Pilot",
+    "Police Officer",
+    "Quantity Surveyor",
+    "Radiologist",
+    "Structural Engineer",
+    "Supply Chain Manager",
+    "Surgeon"
+   ],
    "Empathy": [
     "Clinical Psychologist",
     "Counsellor",
@@ -1169,7 +1241,32 @@
     "Social Worker",
     "Teacher",
     "Travel Consultant",
-    "UI/UX Designer",
+    "UX Designer",
+    "Veterinarian",
+    "Wildlife Biologist"
+   ],
+   "Empathy & Social Awareness": [
+    "Clinical Psychologist",
+    "Counsellor",
+    "Dentist",
+    "Dietician",
+    "Doctor",
+    "Environmental Engineer",
+    "Environmental Scientist",
+    "Financial Planner",
+    "IT Support Specialist",
+    "Interior Designer",
+    "Marine Biologist",
+    "Nurse",
+    "Nutritionist",
+    "Occupational Therapist",
+    "Physiotherapist",
+    "Psychologist",
+    "Public Health Specialist",
+    "Social Worker",
+    "Teacher",
+    "Travel Consultant",
+    "UX Designer",
     "Veterinarian",
     "Wildlife Biologist"
    ],
@@ -1383,7 +1480,7 @@
   "Teacher": "F",
   "Technical Trainer": "F",
   "Travel Consultant": "H",
-  "UI/UX Designer": "B",
+  "UX Designer": "B",
   "Urban Planner": "A",
   "Veterinarian": "C",
   "Wildlife Biologist": "G"

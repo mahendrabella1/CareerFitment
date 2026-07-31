@@ -50,6 +50,7 @@ type Journey = {
   age_group: string;
   total_questions: number;
 };
+
 type BlueprintParameter = {
   name: string;
   weightPct: number;
@@ -164,8 +165,6 @@ type FitmentResult = {
     topValues: { tag: string; score: number }[];
     topIntelligences: { name: string; score: number }[];
     ei: number | null;
-    // Present when EI is scored as a forced-choice profile rather than a level.
-    eiBreakdown?: { name: string; score: number }[];
     learningStyles: { name: string; score: number }[];
   };
   matches: {
@@ -1033,9 +1032,7 @@ export default function AssessmentExperience() {
       topValues: (p?.topValues ?? []).slice(0, 5),
       topAptitudes: (p?.topAptitudes ?? []).slice(0, 5),
       ei: p?.ei ?? null,
-      // Carried through so the report can still show EI when `ei` is null.
-      eiBreakdown: p?.eiBreakdown ?? [],
-      learningStyles: (p?.learningStyles ?? []).slice(0, 5),
+      learningStyles: (p?.learningStyles ?? []).slice(0, 4),
       clusters: (fitment?.clusters ?? []).slice(0, 6),
       recommendations: (results.fitment?.recommendations ?? []).slice(0, 6),
       nextStep: results.fitment?.nextStep ?? null,
@@ -2231,6 +2228,7 @@ export default function AssessmentExperience() {
     </main>
   );
 }
+
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
     <article className="stat-card">

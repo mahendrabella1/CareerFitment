@@ -81,7 +81,7 @@ C = [
     ("Cloud Engineer", "B", "Logical Abstract", "Conscientiousness Openness", "Execution Learning", "Achievement Learning", "Logical–Mathematical", "Self-Motivation"),
     ("Mobile App Developer", "B", "Logical Spatial", "Openness Conscientiousness", "Creative Execution", "Innovation Achievement", "Spatial Logical–Mathematical", "Self-Motivation"),
     ("Game Developer", "B", "Abstract Spatial", "Openness Extraversion", "Creative Analytical", "Innovation Achievement", "Spatial", "Self-Motivation"),
-    ("UI/UX Designer", "B", "Spatial Abstract", "Openness Agreeableness", "Creative Communication", "Innovation Impact", "Spatial Interpersonal", "Empathy"),
+    ("UX Designer", "B", "Spatial Abstract", "Openness Agreeableness", "Creative Communication", "Innovation Impact", "Spatial Interpersonal", "Empathy"),
     ("Database Administrator", "B", "Logical Attention to Detail", "Conscientiousness Emotional Stability", "Execution Analytical", "Security Achievement", "Logical–Mathematical", "Self-Regulation"),
     ("Network Engineer", "B", "Logical Mechanical", "Conscientiousness Emotional Stability", "Analytical Execution", "Security Learning", "Logical–Mathematical", "Self-Regulation"),
     ("DevOps Engineer", "B", "Logical Abstract", "Conscientiousness Openness", "Execution Adaptability", "Achievement Learning", "Logical–Mathematical", "Self-Regulation"),
@@ -224,6 +224,24 @@ def build(dry_run: bool):
 
     if problems:
         raise SystemExit("VOCAB ERRORS:\n  " + "\n  ".join(problems))
+
+    # The EI affinity table is keyed by whatever the question bank calls its
+    # dimensions, and the two banks name them differently: the pre-2026 set uses
+    # "Emotional Awareness / Emotional Regulation / Empathy & Social Awareness /
+    # Adaptability & Resilience", the 2026 set uses "Self-Awareness /
+    # Self-Regulation / Empathy / Self-Motivation". A key the bank does not emit
+    # is simply never matched, so EI silently contributes nothing. Emitting BOTH
+    # namings against the same profession lists makes the map work with either
+    # bank, and costs nothing when only one is in use.
+    EI_ALSO = {
+        "Self-Awareness": "Emotional Awareness",
+        "Self-Regulation": "Emotional Regulation",
+        "Empathy": "Empathy & Social Awareness",
+        "Self-Motivation": "Adaptability & Resilience",
+    }
+    for new_key, old_key in EI_ALSO.items():
+        if new_key in affinity["ei"]:
+            affinity["ei"][old_key] = list(affinity["ei"][new_key])
 
     out = {
         "dimensionWeights": DIMENSION_WEIGHTS,

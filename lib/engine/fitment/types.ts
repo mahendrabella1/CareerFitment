@@ -135,12 +135,7 @@ export interface FitmentResult {
     topAptitudes: { skill: string; score: number }[];
     topValues: { tag: string; score: number }[];
     topIntelligences: { name: string; score: number }[];
-    /** Null when EI is measured as a forced-choice PROFILE rather than a level
-     *  — see eiBreakdown, which the report falls back to. */
     ei: number | null;
-    /** Per-domain EI profile. Carried through so the report can still show the
-     *  dimension when `ei` is null; without it the section vanished entirely. */
-    eiBreakdown?: { name: string; score: number }[];
     learningStyles: { name: string; score: number }[];
   };
   matches: CareerMatch[]; // ranked, top N

@@ -298,8 +298,7 @@ export function scoreAssessment(
     topValues: topValues.slice(0, 5),
     topAptitudes: topAptitudes.slice(0, 6),
     ei: eiPct,
-    // 5, not 4: the 2026 bank adds Multimodal alongside VARK.
-    learningStyles: learningStyles.slice(0, 5),
+    learningStyles: learningStyles.slice(0, 4),
     clusters: rankedClusters
       .filter(([, s]) => s > 0)
       .map(([l, s]) => ({ cluster: CLUSTERS[l]?.cluster || l, score: Math.round((s / ciTotal) * 100) })),

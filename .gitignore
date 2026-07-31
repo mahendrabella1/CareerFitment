@@ -9,10 +9,8 @@ firebase-service-account.json
 tsconfig.tsbuildinfo
 # Temp output of scripts/run_verify_scoring60.mjs
 .verify-out
+__pycache__/
+# Local rollback copies of the question bank; the same content is in git history
+data/*.pre-2026.json
 # Lock files Excel leaves behind while a workbook is open
 ~$*.xlsx
-__pycache__/
-# Safety copies of the pre-2026 question bank written by
-# scripts/import_finalised_set_2026.py. Local rollback only — the same content
-# is already in git history, so committing 3.5 MB of duplicate is pointless.
-data/*.pre-2026.json
