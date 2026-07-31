@@ -191,7 +191,6 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
           ))}
           <div className="ash-nav-lbl">Report</div>
           <button className="ash-navi" onClick={() => setView("report")}><Icon name="explain" size={18} /><span>Full report</span></button>
-          <Link href="/?begin=1" className="ash-navi"><Icon name="answer" size={18} /><span>Retake assessment</span></Link>
         </nav>
         <div className="ash-side-foot">
           <div className="ash-user">
@@ -405,7 +404,6 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
                 <div className="rail-h">Quick actions</div>
                 <button className="rail-act primary" onClick={() => setView("report")}><Icon name="explain" size={16} /> View full report</button>
                 <button className="rail-act" onClick={() => setView("report")}><Icon name="save" size={16} /> Download PDF</button>
-                <Link href="/?begin=1" className="rail-act"><Icon name="answer" size={16} /> Retake assessment</Link>
               </div>
 
               <div className="ogd-card rail-card">

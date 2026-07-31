@@ -626,6 +626,19 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
             <p>Your profile shows where you’ll thrive today — but you’re still growing. Revisit this report as you change, and share it with someone who’s guiding you.</p>
             <button className="og-noprint b b1" onClick={() => window.print()}>Download / print this report</button>
           </div>
+          {/* Says plainly what this is built from. A report that names a career
+              invites more certainty than the method can carry, so the basis and
+              its limits belong on the page rather than only in the footer. */}
+          <p className="disclaimer">
+            <b>How to read this report.</b> Everything here is derived from the answers you
+            gave, interpreted through established frameworks — RIASEC career interests, the
+            Big Five personality model, Gardner’s multiple intelligences, and emotional
+            intelligence research — and matched against a library of careers. It reflects
+            what you told us on one day, not a measure of your ability or a ceiling on it.
+            Interests and strengths genuinely change through school, so treat this as a
+            starting point for conversations with teachers, parents and counsellors, and
+            revisit it as you grow.
+          </p>
           <RF name={name} />
         </div>
       </section>
@@ -1264,6 +1277,9 @@ const CSS = `
 .frx .closing p{color:#c9c9d2;font-size:14px;line-height:1.6;max-width:52ch;margin:11px auto 0}
 .frx .closing .b{margin-top:20px;font-size:13px;font-weight:700;padding:12px 22px;border-radius:11px;border:none;cursor:pointer}
 .frx .closing .b1{background:var(--red);color:#fff}
+.frx .disclaimer{margin-top:14px;padding:14px 18px;border:1px solid var(--line);border-radius:12px;
+  background:#fafafb;color:#5b5b66;font-size:12.5px;line-height:1.65}
+.frx .disclaimer b{color:${C.ink}}
 
 /* Consistent A4 pages — every section prints as the same page size. */
 @page{size:A4 portrait;margin:0}

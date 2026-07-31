@@ -9204,7 +9204,7 @@
       "Live demos of experiments and gadgets I've built.",
       "My own artwork, prints, or handmade design pieces.",
       "Free tutoring and study advice for younger students.",
-      "Something I've bought in and resell at a margin, with the books balanced.",
+      "Food I've cooked and served, priced to make a margin.",
       "Free health checks — height, weight, eyesight — with simple advice."
      ],
      "riasec": [
@@ -9221,7 +9221,7 @@
       },
       {
        "E": 3,
-       "C": 2
+       "R": 2
       },
       {
        "S": 3,
@@ -9241,8 +9241,8 @@
        "F": 5
       },
       {
-       "E": 4,
-       "H": 1
+       "H": 4,
+       "E": 2
       },
       {
        "C": 5
@@ -9271,11 +9271,9 @@
        "HR Manager"
       ],
       [
-       "Entrepreneur",
-       "Chartered Accountant",
-       "Business Manager",
-       "Banker",
-       "Financial Planner"
+       "Chef",
+       "Hotel Manager",
+       "Entrepreneur"
       ],
       [
        "Nurse",
@@ -9559,7 +9557,7 @@
      "options": [
       "Science experiments, coding, engineering, or space exploration.",
       "Art, animation, filmmaking, architecture, or design tutorials.",
-      "Psychology, public speaking, education, leadership, or social issues.",
+      "Sport, fitness, travel, food, and how people live well.",
       "Business, finance, startups, investing, and productivity.",
       "Medicine, surgery, the human body, nutrition and fitness science."
      ],
@@ -9573,7 +9571,7 @@
       },
       {
        "S": 3,
-       "E": 1
+       "R": 1
       },
       {
        "E": 3,
@@ -9593,7 +9591,8 @@
        "D": 5
       },
       {
-       "F": 5
+       "H": 4,
+       "F": 1
       },
       {
        "E": 5
@@ -9618,11 +9617,9 @@
        "Product Designer"
       ],
       [
-       "Teacher",
-       "Psychologist",
-       "Lawyer",
-       "IAS Officer",
-       "HR Manager"
+       "Sports Coach",
+       "Travel Consultant",
+       "Fitness Trainer"
       ],
       [
        "Entrepreneur",
