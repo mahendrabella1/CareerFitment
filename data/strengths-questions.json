@@ -1498,12 +1498,20 @@
     "q": "Q35",
     "text": "You and three friends decide to enter a national competition on top of your schoolwork. In the first week, what are you doing?",
     "options": [
-     "Working back from the deadline into a calendar, and starting task one.",
-     "Getting the four of us organised and making sure nobody drops out.",
+     "Sketching ideas nobody else would think of.",
      "Reading last year's winning entries and working out what the judges reward.",
-     "Sketching ideas nobody else would think of."
+     "Working back from the deadline into a calendar, and starting task one.",
+     "Getting the four of us organised and making sure nobody drops out."
     ],
     "strengthPoints": [
+     {
+      "Creative": 3,
+      "Analytical": 1
+     },
+     {
+      "Analytical": 3,
+      "Learning": 1
+     },
      {
       "Execution": 3,
       "Analytical": 1
@@ -1511,14 +1519,6 @@
      {
       "Leadership": 3,
       "Relationship": 1
-     },
-     {
-      "Analytical": 3,
-      "Learning": 1
-     },
-     {
-      "Creative": 3,
-      "Analytical": 1
      }
     ]
    },
@@ -1527,22 +1527,22 @@
     "q": "Q36",
     "text": "A younger student is being left out by their class, and your teacher asks a few of you to help. What would you do?",
     "options": [
-     "Start an activity they'd shine at, so the others see them differently.",
-     "Spend time with the student first and get to know them.",
      "Talk to the class about it directly.",
+     "Spend time with the student first and get to know them.",
+     "Start an activity they'd shine at, so the others see them differently.",
      "Set up a buddy system and make sure it actually runs."
     ],
     "strengthPoints": [
      {
-      "Creative": 3
+      "Communication": 3,
+      "Leadership": 1
      },
      {
       "Relationship": 3,
       "Communication": 1
      },
      {
-      "Communication": 3,
-      "Leadership": 1
+      "Creative": 3
      },
      {
       "Execution": 3,
@@ -1555,27 +1555,27 @@
     "q": "Q37",
     "text": "You have the opportunity to join a new club at school. Which one excites you the most?",
     "options": [
-     "Robotics and Coding Club.",
      "Science and Discovery Club.",
-     "Art, Design, and Innovation Club.",
-     "Student Leadership Council."
+     "Student Leadership Council.",
+     "Robotics and Coding Club.",
+     "Art, Design, and Innovation Club."
     ],
     "strengthPoints": [
-     {
-      "Analytical": 3,
-      "Execution": 1
-     },
      {
       "Learning": 3,
       "Analytical": 1
      },
      {
-      "Creative": 3,
-      "Adaptability": 1
-     },
-     {
       "Leadership": 3,
       "Communication": 1
+     },
+     {
+      "Analytical": 3,
+      "Execution": 1
+     },
+     {
+      "Creative": 3,
+      "Adaptability": 1
      }
     ]
    },
@@ -1584,19 +1584,19 @@
     "q": "Q38",
     "text": "Halfway through a project you realise the method you chose isn't working. What's your first move?",
     "options": [
-     "Look up how other people have solved something similar.",
      "Switch to a different method and keep moving.",
+     "Look up how other people have solved something similar.",
      "Get the team together and rethink it with them.",
      "Work out exactly where it started going wrong."
     ],
     "strengthPoints": [
      {
-      "Learning": 3,
-      "Creative": 1
-     },
-     {
       "Adaptability": 3,
       "Execution": 1
+     },
+     {
+      "Learning": 3,
+      "Creative": 1
      },
      {
       "Relationship": 3,
@@ -1613,23 +1613,23 @@
     "q": "Q39",
     "text": "Your team presents to the whole school tomorrow and nothing is ready. What do you take charge of?",
     "options": [
-     "The people — I'll keep everyone going.",
-     "The idea — I'll make it worth watching.",
      "The slides and the running order — I'll get it built.",
+     "The idea — I'll make it worth watching.",
+     "The people — I'll keep everyone going.",
      "The talking — I'll present it."
     ],
     "strengthPoints": [
      {
-      "Leadership": 3,
-      "Relationship": 1
+      "Execution": 3,
+      "Analytical": 1
      },
      {
       "Creative": 3,
       "Analytical": 1
      },
      {
-      "Execution": 3,
-      "Analytical": 1
+      "Leadership": 3,
+      "Relationship": 1
      },
      {
       "Communication": 3,
@@ -1642,27 +1642,27 @@
     "q": "Q40",
     "text": "You're handed something broken — an old radio, a bicycle, a piece of code — and told to make it work. How do you start?",
     "options": [
-     "Start trying things and adjust as I learn what breaks.",
      "Take it apart methodically and find the fault.",
-     "Read up on how it's supposed to work first.",
-     "See whether it could become something better than it was."
+     "See whether it could become something better than it was.",
+     "Start trying things and adjust as I learn what breaks.",
+     "Read up on how it's supposed to work first."
     ],
     "strengthPoints": [
-     {
-      "Adaptability": 3,
-      "Creative": 1
-     },
      {
       "Analytical": 3,
       "Execution": 1
      },
      {
-      "Learning": 3,
-      "Analytical": 1
-     },
-     {
       "Creative": 3,
       "Learning": 1
+     },
+     {
+      "Adaptability": 3,
+      "Creative": 1
+     },
+     {
+      "Learning": 3,
+      "Analytical": 1
      }
     ]
    },
@@ -1671,23 +1671,23 @@
     "q": "Q41",
     "text": "You've been put in a group with people you've never worked with before. What do you do in the first meeting?",
     "options": [
-     "Lay out what I think the task actually needs.",
-     "Take the first task myself and start on it.",
      "Suggest who should do what and get us moving.",
+     "Take the first task myself and start on it.",
+     "Lay out what I think the task actually needs.",
      "Get to know them a bit before we start."
     ],
     "strengthPoints": [
      {
-      "Communication": 3,
-      "Analytical": 1
+      "Leadership": 3,
+      "Execution": 1
      },
      {
       "Execution": 3,
       "Relationship": 1
      },
      {
-      "Leadership": 3,
-      "Execution": 1
+      "Communication": 3,
+      "Analytical": 1
      },
      {
       "Relationship": 3,
@@ -1700,27 +1700,27 @@
     "q": "Q42",
     "text": "Looking back at the projects you've enjoyed the most, what usually made them enjoyable?",
     "options": [
-     "Organizing work and making sure everything runs smoothly.",
-     "Solving challenging problems and discovering answers.",
      "Creating something original or improving an existing idea.",
-     "Working with people, guiding them, and achieving goals together."
+     "Organizing work and making sure everything runs smoothly.",
+     "Working with people, guiding them, and achieving goals together.",
+     "Solving challenging problems and discovering answers."
     ],
     "strengthPoints": [
-     {
-      "Execution": 3,
-      "Analytical": 1
-     },
-     {
-      "Analytical": 3,
-      "Learning": 2
-     },
      {
       "Creative": 3,
       "Adaptability": 1
      },
      {
+      "Execution": 3,
+      "Analytical": 1
+     },
+     {
       "Leadership": 3,
       "Relationship": 2
+     },
+     {
+      "Analytical": 3,
+      "Learning": 2
      }
     ],
     "integrated": true

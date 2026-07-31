@@ -1082,8 +1082,8 @@
      "text": "Your teacher announces a project on a completely new topic you've never learned before. What would you most likely do?",
      "options": [
       "Start exploring books, videos, and online resources to understand the topic deeply.",
-      "Discuss ideas with classmates before deciding your approach.",
       "Think of a unique and creative way to present the project.",
+      "Discuss ideas with classmates before deciding your approach.",
       "Read the teacher's instructions carefully and complete exactly what is expected."
      ],
      "traitPoints": [
@@ -1092,13 +1092,13 @@
        "C": 1
       },
       {
+       "O": 2,
+       "E": 1
+      },
+      {
        "E": 2,
        "A": 2,
        "O": 1
-      },
-      {
-       "O": 2,
-       "E": 1
       },
       {
        "C": 3
@@ -1113,9 +1113,9 @@
      "text": "A blank wall in your school corridor has been handed to your class. What would you want to do with it?",
      "options": [
       "Make it a shared board where everyone adds their own piece.",
-      "Paint something nobody at this school has tried before.",
       "Plan it properly first — measurements, materials, permission, dates.",
-      "Map out something useful on it — a timeline, or how something works."
+      "Map out something useful on it — a timeline, or how something works.",
+      "Paint something nobody at this school has tried before."
      ],
      "traitPoints": [
       {
@@ -1123,14 +1123,14 @@
        "A": 2
       },
       {
-       "O": 3
-      },
-      {
        "C": 3
       },
       {
        "O": 2,
        "C": 1
+      },
+      {
+       "O": 3
       }
      ]
     },
@@ -1141,25 +1141,25 @@
      "facet": "Planning",
      "text": "You have two weeks to complete an important assignment. How do you usually approach it?",
      "options": [
-      "Gather different ideas before deciding how to begin.",
       "Break it into smaller tasks and finish a little each day.",
+      "Discuss the plan with friends and work together.",
       "Work best when the deadline is close.",
-      "Discuss the plan with friends and work together."
+      "Gather different ideas before deciding how to begin."
      ],
      "traitPoints": [
       {
-       "O": 3,
-       "C": 1
+       "C": 3
       },
       {
-       "C": 3
+       "E": 2,
+       "A": 2
       },
       {
        "S": 1
       },
       {
-       "E": 2,
-       "A": 2
+       "O": 3,
+       "C": 1
       }
      ]
     },
@@ -1170,25 +1170,25 @@
      "facet": "Persistence",
      "text": "While preparing for exams, you realize one subject is much harder than the others. What do you usually do?",
      "options": [
-      "Create a study schedule and practice regularly.",
       "Focus more on subjects you already enjoy.",
-      "Ask teachers or classmates to explain difficult concepts.",
-      "Look for different learning methods or videos to understand it better."
+      "Look for different learning methods or videos to understand it better.",
+      "Create a study schedule and practice regularly.",
+      "Ask teachers or classmates to explain difficult concepts."
      ],
      "traitPoints": [
-      {
-       "C": 3
-      },
       {
        "O": 1
       },
       {
-       "E": 2,
-       "A": 2
-      },
-      {
        "O": 3,
        "C": 1
+      },
+      {
+       "C": 3
+      },
+      {
+       "E": 2,
+       "A": 2
       }
      ]
     },
@@ -1199,25 +1199,25 @@
      "facet": "Responsibility",
      "text": "Your class is organizing a major event, and your teacher assigns you an important responsibility. How do you usually handle it?",
      "options": [
+      "Prepare a detailed checklist and complete every task on time.",
       "Solve unexpected problems as they arise during the event.",
-      "Coordinate with everyone and keep the team motivated.",
       "Suggest creative ideas that make the event memorable.",
-      "Prepare a detailed checklist and complete every task on time."
+      "Coordinate with everyone and keep the team motivated."
      ],
      "traitPoints": [
+      {
+       "C": 3
+      },
       {
        "S": 3,
        "C": 1
       },
       {
-       "E": 3,
-       "A": 2
-      },
-      {
        "O": 3
       },
       {
-       "C": 3
+       "E": 3,
+       "A": 2
       }
      ]
     },
@@ -1228,25 +1228,25 @@
      "facet": "Confidence",
      "text": "During a school assembly, volunteers are invited to speak in front of everyone. What are you most likely to do?",
      "options": [
-      "Prefer to avoid speaking unless necessary.",
-      "Support the speaker from behind the scenes.",
+      "Volunteer confidently and enjoy addressing the audience.",
       "Speak only if the topic is something you know well.",
-      "Volunteer confidently and enjoy addressing the audience."
+      "Support the speaker from behind the scenes.",
+      "Prefer to avoid speaking unless necessary."
      ],
      "traitPoints": [
-      {},
       {
-       "A": 2,
-       "C": 1
+       "E": 3,
+       "S": 2
       },
       {
        "E": 1,
        "C": 2
       },
       {
-       "E": 3,
-       "S": 2
-      }
+       "A": 2,
+       "C": 1
+      },
+      {}
      ]
     },
     {
@@ -1256,26 +1256,26 @@
      "facet": "Social Interaction",
      "text": "You join a new class where you don't know anyone. What do you usually do during the first few days?",
      "options": [
-      "Start conversations and make new friends quickly.",
-      "Focus on your work and let friendships develop naturally.",
+      "Observe people first before joining groups.",
       "Connect with classmates through shared interests or activities.",
-      "Observe people first before joining groups."
+      "Start conversations and make new friends quickly.",
+      "Focus on your work and let friendships develop naturally."
      ],
      "traitPoints": [
       {
-       "E": 3,
-       "A": 2
-      },
-      {
-       "C": 2
+       "O": 1,
+       "C": 1
       },
       {
        "E": 2,
        "A": 2
       },
       {
-       "O": 1,
-       "C": 1
+       "E": 3,
+       "A": 2
+      },
+      {
+       "C": 2
       }
      ]
     },
@@ -1286,15 +1286,12 @@
      "facet": "Empathy",
      "text": "One of your teammates is quietly falling behind on their part of the work. What would you most likely do?",
      "options": [
-      "Focus on finishing your own responsibilities first.",
       "Suggest dividing the work differently so everyone contributes.",
       "Help them understand the task while encouraging them to do it themselves.",
+      "Focus on finishing your own responsibilities first.",
       "Complete part of the work to ensure the team succeeds."
      ],
      "traitPoints": [
-      {
-       "C": 2
-      },
       {
        "A": 2,
        "E": 2
@@ -1302,6 +1299,9 @@
       {
        "A": 3,
        "S": 1
+      },
+      {
+       "C": 2
       },
       {
        "A": 2,
@@ -1317,8 +1317,8 @@
      "text": "A classmate you barely know asks to borrow your notes the night before a test — and you were about to revise from them. What do you do?",
      "options": [
       "Hand them over and find a way we can both revise tonight.",
-      "Explain that I need them tonight and offer them first thing tomorrow.",
       "Photograph the important pages for them and keep the originals.",
+      "Explain that I need them tonight and offer them first thing tomorrow.",
       "Suggest we revise together instead."
      ],
      "traitPoints": [
@@ -1327,12 +1327,12 @@
        "S": 2
       },
       {
-       "C": 2,
-       "S": 1
-      },
-      {
        "A": 2,
        "C": 2
+      },
+      {
+       "C": 2,
+       "S": 1
       },
       {
        "E": 2,
@@ -1348,8 +1348,8 @@
      "text": "You receive a lower score than expected in an important exam despite preparing well. What would you most likely do next?",
      "options": [
       "Review your mistakes and make a better plan for the next exam.",
-      "Take some time to relax before starting again.",
       "Talk to your teacher to understand where you can improve.",
+      "Take some time to relax before starting again.",
       "Feel disappointed but keep trying with a positive attitude."
      ],
      "traitPoints": [
@@ -1358,12 +1358,12 @@
        "C": 2
       },
       {
-       "S": 2
-      },
-      {
        "S": 2,
        "A": 1,
        "E": 1
+      },
+      {
+       "S": 2
       },
       {
        "S": 1,
@@ -1378,12 +1378,20 @@
      "facet": "Composure",
      "text": "During a competition, something unexpected goes wrong at the last moment. What is your first reaction?",
      "options": [
-      "Discuss possible solutions with your teammates.",
       "Pause briefly, understand the situation, and then decide the next step.",
-      "Stay calm and quickly look for another solution.",
-      "Continue with whatever is still working and adapt if needed."
+      "Continue with whatever is still working and adapt if needed.",
+      "Discuss possible solutions with your teammates.",
+      "Stay calm and quickly look for another solution."
      ],
      "traitPoints": [
+      {
+       "S": 3,
+       "C": 2
+      },
+      {
+       "S": 2,
+       "C": 1
+      },
       {
        "A": 2,
        "E": 2,
@@ -1391,15 +1399,7 @@
       },
       {
        "S": 3,
-       "C": 2
-      },
-      {
-       "S": 3,
        "O": 1
-      },
-      {
-       "S": 2,
-       "C": 1
       }
      ]
     },
@@ -1410,15 +1410,15 @@
      "facet": "Overall Personality Profile",
      "text": "A relative asks your parents what you're like when you're at your best. Which answer would fit you most?",
      "options": [
-      "Full of ideas, and happy to try the ones nobody else would.",
+      "Organised, dependable, and steady when things go wrong.",
       "Always digging into something new, and sees it through.",
       "Brings people together and looks out for everyone.",
-      "Organised, dependable, and steady when things go wrong."
+      "Full of ideas, and happy to try the ones nobody else would."
      ],
      "traitPoints": [
       {
-       "O": 3,
-       "E": 1
+       "C": 3,
+       "S": 1
       },
       {
        "O": 3,
@@ -1429,8 +1429,8 @@
        "A": 3
       },
       {
-       "C": 3,
-       "S": 1
+       "O": 3,
+       "E": 1
       }
      ]
     }
@@ -8755,16 +8755,24 @@
      "q": "Q1",
      "text": "Your family is opening a small food outlet and wants your help. Which part of it would you want to run?",
      "options": [
-      "Handle billing, stock, suppliers and the daily accounts.",
-      "Set up the kitchen equipment and fix whatever breaks.",
-      "Make sure the food is safe, clean and genuinely good for people.",
       "Design the logo, the menu, the packaging and the look of the place.",
-      "Meet customers, take feedback, and bring in new business."
+      "Handle billing, stock, suppliers and the daily accounts.",
+      "Meet customers, take feedback, and bring in new business.",
+      "Set up the kitchen equipment and fix whatever breaks.",
+      "Make sure the food is safe, clean and genuinely good for people."
      ],
      "riasec": [
       {
+       "A": 3,
+       "R": 1
+      },
+      {
        "C": 3,
        "E": 1
+      },
+      {
+       "E": 3,
+       "S": 2
       },
       {
        "R": 3,
@@ -8773,19 +8781,19 @@
       {
        "S": 3,
        "I": 2
-      },
-      {
-       "A": 3,
-       "R": 1
-      },
-      {
-       "E": 3,
-       "S": 2
       }
      ],
      "clusterWeights": [
       {
+       "D": 5
+      },
+      {
        "E": 5
+      },
+      {
+       "H": 3,
+       "E": 2,
+       "F": 1
       },
       {
        "A": 4,
@@ -8794,23 +8802,29 @@
       {
        "C": 4,
        "G": 1
-      },
-      {
-       "D": 5
-      },
-      {
-       "H": 3,
-       "E": 2,
-       "F": 1
       }
      ],
      "careers": [
+      [
+       "Architect",
+       "UX Designer",
+       "Graphic Designer",
+       "Product Designer",
+       "Animator"
+      ],
       [
        "Business Manager",
        "Chartered Accountant",
        "Financial Analyst",
        "Operations Manager",
        "Auditor"
+      ],
+      [
+       "Entrepreneur",
+       "Project Manager",
+       "Teacher",
+       "Lawyer",
+       "HR Manager"
       ],
       [
        "Robotics Engineer",
@@ -8823,20 +8837,6 @@
        "Nutritionist",
        "Public Health Specialist",
        "Food Technologist"
-      ],
-      [
-       "Architect",
-       "UX Designer",
-       "Graphic Designer",
-       "Product Designer",
-       "Animator"
-      ],
-      [
-       "Entrepreneur",
-       "Project Manager",
-       "Teacher",
-       "Lawyer",
-       "HR Manager"
       ]
      ]
     },
@@ -8845,21 +8845,13 @@
      "q": "Q2",
      "text": "Your community faces a serious water shortage. What would you do first?",
      "options": [
-      "Meet local residents and organize volunteers to solve the issue together.",
-      "Prepare a budget and action plan to implement the solution efficiently.",
       "Collect data, identify the root cause, and test possible solutions.",
       "Test the water for contamination and treat anyone who has fallen ill.",
-      "Design an awareness campaign using creative posters and videos."
+      "Meet local residents and organize volunteers to solve the issue together.",
+      "Design an awareness campaign using creative posters and videos.",
+      "Prepare a budget and action plan to implement the solution efficiently."
      ],
      "riasec": [
-      {
-       "S": 3,
-       "E": 2
-      },
-      {
-       "C": 3,
-       "E": 2
-      },
       {
        "I": 3,
        "R": 1
@@ -8869,17 +8861,19 @@
        "I": 2
       },
       {
+       "S": 3,
+       "E": 2
+      },
+      {
        "A": 3,
        "E": 1
+      },
+      {
+       "C": 3,
+       "E": 2
       }
      ],
      "clusterWeights": [
-      {
-       "F": 5
-      },
-      {
-       "E": 5
-      },
       {
        "G": 3,
        "A": 1,
@@ -8889,25 +8883,17 @@
        "C": 5
       },
       {
+       "F": 5
+      },
+      {
        "D": 4,
        "E": 1
+      },
+      {
+       "E": 5
       }
      ],
      "careers": [
-      [
-       "IAS Officer",
-       "Social Worker",
-       "Psychologist",
-       "Social Worker",
-       "Teacher"
-      ],
-      [
-       "Business Analyst",
-       "Operations Manager",
-       "Financial Planner",
-       "Project Manager",
-       "Banker"
-      ],
       [
        "Research Scientist",
        "Environmental Engineer",
@@ -8921,11 +8907,25 @@
        "Microbiologist"
       ],
       [
+       "IAS Officer",
+       "Social Worker",
+       "Psychologist",
+       "Social Worker",
+       "Teacher"
+      ],
+      [
        "Graphic Designer",
        "Digital Marketer",
        "Content Creator",
        "Media Professional",
        "UX Designer"
+      ],
+      [
+       "Business Analyst",
+       "Operations Manager",
+       "Financial Planner",
+       "Project Manager",
+       "Banker"
       ]
      ]
     },
@@ -8934,13 +8934,21 @@
      "q": "Q3",
      "text": "Your teacher asks you to create something that helps students learn better.",
      "options": [
+      "Organize the project timeline, budget, and responsibilities.",
+      "Develop a smart study app or simple learning device.",
       "Design engaging illustrations, animations, or interactive visuals.",
       "Run sessions on sleep, stress and staying well enough to study.",
-      "Develop a smart study app or simple learning device.",
-      "Create a mentoring or peer-learning program for classmates.",
-      "Organize the project timeline, budget, and responsibilities."
+      "Create a mentoring or peer-learning program for classmates."
      ],
      "riasec": [
+      {
+       "C": 3,
+       "E": 1
+      },
+      {
+       "I": 3,
+       "R": 2
+      },
       {
        "A": 3
       },
@@ -8949,19 +8957,18 @@
        "I": 1
       },
       {
-       "I": 3,
-       "R": 2
-      },
-      {
        "S": 3,
-       "E": 1
-      },
-      {
-       "C": 3,
        "E": 1
       }
      ],
      "clusterWeights": [
+      {
+       "E": 5
+      },
+      {
+       "B": 2,
+       "A": 3
+      },
       {
        "D": 5
       },
@@ -8970,17 +8977,24 @@
        "F": 1
       },
       {
-       "B": 2,
-       "A": 3
-      },
-      {
        "F": 5
-      },
-      {
-       "E": 5
       }
      ],
      "careers": [
+      [
+       "Project Manager",
+       "Chartered Accountant",
+       "Business Manager",
+       "Operations Manager",
+       "Consultant"
+      ],
+      [
+       "Software Engineer",
+       "AI Engineer",
+       "Electronics Engineer",
+       "Robotics Engineer",
+       "Research Engineer"
+      ],
       [
        "Animator",
        "Graphic Designer",
@@ -8994,25 +9008,11 @@
        "Nutritionist"
       ],
       [
-       "Software Engineer",
-       "AI Engineer",
-       "Electronics Engineer",
-       "Robotics Engineer",
-       "Research Engineer"
-      ],
-      [
        "Teacher",
        "Counsellor",
        "Psychologist",
        "HR Manager",
        "Social Worker"
-      ],
-      [
-       "Project Manager",
-       "Chartered Accountant",
-       "Business Manager",
-       "Operations Manager",
-       "Consultant"
       ]
      ]
     },
@@ -9022,10 +9022,10 @@
      "text": "During a science exhibition, which project would excite you the most?",
      "options": [
       "Model how an infection spreads through a school and how to stop it.",
-      "Design an interactive exhibit that makes science easy to understand.",
-      "Plan the exhibition schedule, budget, and logistics.",
       "Build an AI model that predicts weather or crop diseases.",
-      "Explain your project to visitors and answer their questions confidently."
+      "Plan the exhibition schedule, budget, and logistics.",
+      "Explain your project to visitors and answer their questions confidently.",
+      "Design an interactive exhibit that makes science easy to understand."
      ],
      "riasec": [
       {
@@ -9033,20 +9033,20 @@
        "S": 1
       },
       {
-       "A": 3,
-       "I": 1
+       "I": 3,
+       "R": 2
       },
       {
        "C": 3,
        "E": 2
       },
       {
-       "I": 3,
-       "R": 2
-      },
-      {
        "S": 3,
        "E": 2
+      },
+      {
+       "A": 3,
+       "I": 1
       }
      ],
      "clusterWeights": [
@@ -9055,18 +9055,18 @@
        "G": 1
       },
       {
-       "D": 5
+       "G": 3,
+       "B": 2
       },
       {
        "E": 5
       },
       {
-       "G": 3,
-       "B": 2
-      },
-      {
        "F": 4,
        "D": 1
+      },
+      {
+       "D": 5
       }
      ],
      "careers": [
@@ -9076,11 +9076,11 @@
        "Public Health Specialist"
       ],
       [
-       "Product Designer",
-       "UX Designer",
-       "Graphic Designer",
-       "Science Communicator",
-       "Animator"
+       "AI Engineer",
+       "Data Scientist",
+       "Research Scientist",
+       "Software Engineer",
+       "Environmental Scientist"
       ],
       [
        "Project Manager",
@@ -9090,18 +9090,18 @@
        "Financial Planner"
       ],
       [
-       "AI Engineer",
-       "Data Scientist",
-       "Research Scientist",
-       "Software Engineer",
-       "Environmental Scientist"
-      ],
-      [
        "Teacher",
        "Lawyer",
        "Psychologist",
        "Science Communicator",
        "Public Speaker"
+      ],
+      [
+       "Product Designer",
+       "UX Designer",
+       "Graphic Designer",
+       "Science Communicator",
+       "Animator"
       ]
      ]
     },
@@ -9110,17 +9110,13 @@
      "q": "Q5",
      "text": "Your class must organize an event with a limited budget. Which responsibility would you prefer?",
      "options": [
-      "Prepare the schedule, assign tasks, and ensure everything runs on time.",
       "Lead the team and coordinate with teachers and students.",
       "Design invitations, posters, and stage decorations.",
-      "Calculate expenses and find the most cost-effective solutions.",
-      "Take charge of first aid, hygiene and everyone's safety on the day."
+      "Take charge of first aid, hygiene and everyone's safety on the day.",
+      "Prepare the schedule, assign tasks, and ensure everything runs on time.",
+      "Calculate expenses and find the most cost-effective solutions."
      ],
      "riasec": [
-      {
-       "C": 3,
-       "E": 1
-      },
       {
        "E": 3,
        "S": 2
@@ -9129,20 +9125,19 @@
        "A": 3
       },
       {
-       "C": 3,
-       "I": 2
-      },
-      {
        "S": 3,
        "R": 1
+      },
+      {
+       "C": 3,
+       "E": 1
+      },
+      {
+       "C": 3,
+       "I": 2
       }
      ],
      "clusterWeights": [
-      {
-       "E": 3,
-       "H": 2,
-       "A": 1
-      },
       {
        "H": 3,
        "E": 2,
@@ -9152,22 +9147,20 @@
        "D": 5
       },
       {
-       "E": 4,
-       "B": 1
-      },
-      {
        "C": 4,
        "F": 1
+      },
+      {
+       "E": 3,
+       "H": 2,
+       "A": 1
+      },
+      {
+       "E": 4,
+       "B": 1
       }
      ],
      "careers": [
-      [
-       "Operations Manager",
-       "Event Manager",
-       "Banker",
-       "Auditor",
-       "Supply Chain Manager"
-      ],
       [
        "Entrepreneur",
        "HR Manager",
@@ -9183,16 +9176,23 @@
        "Animator"
       ],
       [
+       "Paramedic",
+       "Nurse",
+       "Public Health Specialist"
+      ],
+      [
+       "Operations Manager",
+       "Event Manager",
+       "Banker",
+       "Auditor",
+       "Supply Chain Manager"
+      ],
+      [
        "Chartered Accountant",
        "Financial Analyst",
        "Data Analyst",
        "Economist",
        "Business Analyst"
-      ],
-      [
-       "Paramedic",
-       "Nurse",
-       "Public Health Specialist"
       ]
      ]
     },
@@ -9201,16 +9201,15 @@
      "q": "Q6",
      "text": "A weekend market gives students a free stall for one day. What would yours be?",
      "options": [
-      "Live demos of experiments and gadgets I've built.",
+      "My own artwork, prints, or handmade design pieces.",
       "Free tutoring and study advice for younger students.",
       "Free health checks — height, weight, eyesight — with simple advice.",
       "Food I've cooked and served, priced to make a margin.",
-      "My own artwork, prints, or handmade design pieces."
+      "Live demos of experiments and gadgets I've built."
      ],
      "riasec": [
       {
-       "I": 3,
-       "R": 2
+       "A": 3
       },
       {
        "S": 3,
@@ -9225,14 +9224,13 @@
        "R": 2
       },
       {
-       "A": 3
+       "I": 3,
+       "R": 2
       }
      ],
      "clusterWeights": [
       {
-       "G": 3,
-       "B": 1,
-       "A": 1
+       "D": 5
       },
       {
        "F": 5
@@ -9245,16 +9243,18 @@
        "E": 2
       },
       {
-       "D": 5
+       "G": 3,
+       "B": 1,
+       "A": 1
       }
      ],
      "careers": [
       [
-       "Software Engineer",
-       "Robotics Engineer",
-       "Research Scientist",
-       "AI Engineer",
-       "Electronics Engineer"
+       "Animator",
+       "Graphic Designer",
+       "Architect",
+       "Film Maker",
+       "Fashion Designer"
       ],
       [
        "Teacher",
@@ -9274,11 +9274,11 @@
        "Entrepreneur"
       ],
       [
-       "Animator",
-       "Graphic Designer",
-       "Architect",
-       "Film Maker",
-       "Fashion Designer"
+       "Software Engineer",
+       "Robotics Engineer",
+       "Research Scientist",
+       "AI Engineer",
+       "Electronics Engineer"
       ]
      ]
     },
@@ -9287,13 +9287,21 @@
      "q": "Q7",
      "text": "Your school is launching a robotics club. Which activity interests you the most?",
      "options": [
+      "Demonstrate the robot to visitors and explain how it works.",
+      "Plan the team's timeline, resources, and competition strategy.",
       "Build and test the robot's hardware and programming.",
       "Build an assistive device — a prosthetic hand or a mobility aid.",
-      "Demonstrate the robot to visitors and explain how it works.",
-      "Design how the robot looks and interacts with users.",
-      "Plan the team's timeline, resources, and competition strategy."
+      "Design how the robot looks and interacts with users."
      ],
      "riasec": [
+      {
+       "S": 3,
+       "E": 2
+      },
+      {
+       "C": 3,
+       "E": 2
+      },
       {
        "R": 3,
        "I": 3
@@ -9303,19 +9311,18 @@
        "I": 2
       },
       {
-       "S": 3,
-       "E": 2
-      },
-      {
        "A": 3,
        "R": 1
-      },
-      {
-       "C": 3,
-       "E": 2
       }
      ],
      "clusterWeights": [
+      {
+       "F": 3,
+       "E": 2
+      },
+      {
+       "E": 5
+      },
       {
        "A": 4,
        "B": 1
@@ -9325,18 +9332,25 @@
        "A": 2
       },
       {
-       "F": 3,
-       "E": 2
-      },
-      {
        "D": 4,
        "A": 1
-      },
-      {
-       "E": 5
       }
      ],
      "careers": [
+      [
+       "Teacher",
+       "Sales Engineer",
+       "Technical Trainer",
+       "Consultant",
+       "Lawyer"
+      ],
+      [
+       "Project Manager",
+       "Operations Manager",
+       "Entrepreneur",
+       "Business Analyst",
+       "Event Manager"
+      ],
       [
        "Robotics Engineer",
        "Mechanical Engineer",
@@ -9350,25 +9364,11 @@
        "Occupational Therapist"
       ],
       [
-       "Teacher",
-       "Sales Engineer",
-       "Technical Trainer",
-       "Consultant",
-       "Lawyer"
-      ],
-      [
        "Product Designer",
        "Industrial Designer",
        "UX Designer",
        "Graphic Designer",
        "Animator"
-      ],
-      [
-       "Project Manager",
-       "Operations Manager",
-       "Entrepreneur",
-       "Business Analyst",
-       "Event Manager"
       ]
      ]
     },
@@ -9377,16 +9377,13 @@
      "q": "Q8",
      "text": "A nearby hospital tells your school that patients keep missing appointments, and asks students for help. Which part would you take on?",
      "options": [
-      "Design reminder cards and signs that people actually read.",
       "Set up a booking and reminder system, and track whether it works.",
       "Talk to patients and staff to understand what's really stopping them.",
-      "Sit in with the clinical staff and learn how patient care really works.",
-      "Dig through the appointment records to find the pattern behind the no-shows."
+      "Dig through the appointment records to find the pattern behind the no-shows.",
+      "Design reminder cards and signs that people actually read.",
+      "Sit in with the clinical staff and learn how patient care really works."
      ],
      "riasec": [
-      {
-       "A": 3
-      },
       {
        "C": 3,
        "E": 2
@@ -9396,18 +9393,18 @@
        "E": 2
       },
       {
-       "S": 3,
-       "I": 2
-      },
-      {
        "I": 3,
        "R": 1
+      },
+      {
+       "A": 3
+      },
+      {
+       "S": 3,
+       "I": 2
       }
      ],
      "clusterWeights": [
-      {
-       "D": 5
-      },
       {
        "E": 5
       },
@@ -9416,22 +9413,18 @@
        "E": 2
       },
       {
-       "C": 5
-      },
-      {
        "A": 1,
        "G": 2,
        "B": 2
+      },
+      {
+       "D": 5
+      },
+      {
+       "C": 5
       }
      ],
      "careers": [
-      [
-       "Product Designer",
-       "Architect",
-       "Animator",
-       "Product Designer",
-       "Creative Director"
-      ],
       [
        "Project Manager",
        "Operations Manager",
@@ -9447,16 +9440,23 @@
        "Project Manager"
       ],
       [
-       "Doctor",
-       "Nurse",
-       "Physiotherapist"
-      ],
-      [
        "Engineer",
        "Research Scientist",
        "Data Scientist",
        "Research Scientist",
        "Software Engineer"
+      ],
+      [
+       "Product Designer",
+       "Architect",
+       "Animator",
+       "Product Designer",
+       "Creative Director"
+      ],
+      [
+       "Doctor",
+       "Nurse",
+       "Physiotherapist"
       ]
      ]
     },
@@ -9465,20 +9465,16 @@
      "q": "Q9",
      "text": "You receive ₹5,000 to create a useful student project. How would you use it?",
      "options": [
-      "Organize workshops or mentoring sessions for students.",
-      "Build a prototype or develop a technology-based solution.",
+      "Set up a first-aid point and a health awareness corner for the school.",
       "Create a creative product, app design, or awareness campaign.",
       "Develop a business plan and track the project's finances.",
-      "Set up a first-aid point and a health awareness corner for the school."
+      "Build a prototype or develop a technology-based solution.",
+      "Organize workshops or mentoring sessions for students."
      ],
      "riasec": [
       {
        "S": 3,
-       "E": 2
-      },
-      {
-       "R": 3,
-       "I": 2
+       "R": 1
       },
       {
        "A": 3,
@@ -9489,19 +9485,18 @@
        "C": 3
       },
       {
+       "R": 3,
+       "I": 2
+      },
+      {
        "S": 3,
-       "R": 1
+       "E": 2
       }
      ],
      "clusterWeights": [
       {
-       "F": 4,
-       "E": 1
-      },
-      {
-       "G": 2,
-       "A": 2,
-       "B": 1
+       "C": 4,
+       "F": 1
       },
       {
        "D": 5
@@ -9510,24 +9505,20 @@
        "E": 5
       },
       {
-       "C": 4,
-       "F": 1
+       "G": 2,
+       "A": 2,
+       "B": 1
+      },
+      {
+       "F": 4,
+       "E": 1
       }
      ],
      "careers": [
       [
-       "Teacher",
-       "Psychologist",
-       "Entrepreneur",
-       "HR Manager",
-       "Counsellor"
-      ],
-      [
-       "Engineer",
-       "AI Engineer",
-       "Research Scientist",
-       "Robotics Engineer",
-       "Software Engineer"
+       "Nurse",
+       "Paramedic",
+       "Public Health Specialist"
       ],
       [
        "UX Designer",
@@ -9544,9 +9535,18 @@
        "Consultant"
       ],
       [
-       "Nurse",
-       "Paramedic",
-       "Public Health Specialist"
+       "Engineer",
+       "AI Engineer",
+       "Research Scientist",
+       "Robotics Engineer",
+       "Software Engineer"
+      ],
+      [
+       "Teacher",
+       "Psychologist",
+       "Entrepreneur",
+       "HR Manager",
+       "Counsellor"
       ]
      ]
     },
@@ -9555,13 +9555,17 @@
      "q": "Q10",
      "text": "Which YouTube channel would you watch for two hours without getting bored?",
      "options": [
+      "Science experiments, coding, engineering, or space exploration.",
       "Medicine, surgery, the human body, nutrition and fitness science.",
       "Art, animation, filmmaking, architecture, or design tutorials.",
       "Business, finance, startups, investing, and productivity.",
-      "Science experiments, coding, engineering, or space exploration.",
       "Sport, fitness, travel, food, and how people live well."
      ],
      "riasec": [
+      {
+       "I": 3,
+       "R": 2
+      },
       {
        "I": 3,
        "S": 2
@@ -9574,15 +9578,15 @@
        "C": 2
       },
       {
-       "I": 3,
-       "R": 2
-      },
-      {
        "S": 3,
        "R": 1
       }
      ],
      "clusterWeights": [
+      {
+       "G": 3,
+       "B": 2
+      },
       {
        "C": 5
       },
@@ -9593,15 +9597,18 @@
        "E": 5
       },
       {
-       "G": 3,
-       "B": 2
-      },
-      {
        "H": 4,
        "F": 1
       }
      ],
      "careers": [
+      [
+       "Research Scientist",
+       "Software Engineer",
+       "AI Engineer",
+       "Mechanical Engineer",
+       "Research Scientist"
+      ],
       [
        "Doctor",
        "Surgeon",
@@ -9622,13 +9629,6 @@
        "Consultant"
       ],
       [
-       "Research Scientist",
-       "Software Engineer",
-       "AI Engineer",
-       "Mechanical Engineer",
-       "Research Scientist"
-      ],
-      [
        "Sports Coach",
        "Travel Consultant",
        "Fitness Trainer"
@@ -9640,36 +9640,44 @@
      "q": "Q11",
      "text": "A company offers ten students a one-month paid internship. Which team would you ask to join?",
      "options": [
-      "The team tracking costs, stock and delivery schedules.",
-      "The team working out why the product keeps failing.",
-      "The team redesigning how the product looks and feels.",
+      "The team training new users and answering their questions.",
       "The team testing whether the product is safe for people to use.",
-      "The team training new users and answering their questions."
+      "The team redesigning how the product looks and feels.",
+      "The team working out why the product keeps failing.",
+      "The team tracking costs, stock and delivery schedules."
      ],
      "riasec": [
       {
-       "C": 3,
+       "S": 3,
        "E": 3
-      },
-      {
-       "I": 3,
-       "R": 2
-      },
-      {
-       "A": 3
       },
       {
        "I": 3,
        "C": 2
       },
       {
-       "S": 3,
+       "A": 3
+      },
+      {
+       "I": 3,
+       "R": 2
+      },
+      {
+       "C": 3,
        "E": 3
       }
      ],
      "clusterWeights": [
       {
-       "E": 5
+       "F": 4,
+       "E": 1
+      },
+      {
+       "C": 4,
+       "G": 1
+      },
+      {
+       "D": 5
       },
       {
        "G": 1,
@@ -9678,31 +9686,21 @@
        "C": 1
       },
       {
-       "D": 5
-      },
-      {
-       "C": 4,
-       "G": 1
-      },
-      {
-       "F": 4,
-       "E": 1
+       "E": 5
       }
      ],
      "careers": [
       [
-       "Business Manager",
-       "Chartered Accountant",
-       "Operations Manager",
-       "Financial Planner",
-       "Startup Founder"
+       "Teacher",
+       "Psychologist",
+       "Lawyer",
+       "IAS Officer",
+       "Entrepreneur"
       ],
       [
-       "Research Scientist",
-       "AI Engineer",
-       "Software Engineer",
-       "Research Engineer",
-       "Doctor"
+       "Pharmacist",
+       "Biomedical Engineer",
+       "Public Health Specialist"
       ],
       [
        "Architect",
@@ -9712,16 +9710,18 @@
        "Product Designer"
       ],
       [
-       "Pharmacist",
-       "Biomedical Engineer",
-       "Public Health Specialist"
+       "Research Scientist",
+       "AI Engineer",
+       "Software Engineer",
+       "Research Engineer",
+       "Doctor"
       ],
       [
-       "Teacher",
-       "Psychologist",
-       "Lawyer",
-       "IAS Officer",
-       "Entrepreneur"
+       "Business Manager",
+       "Chartered Accountant",
+       "Operations Manager",
+       "Financial Planner",
+       "Startup Founder"
       ]
      ]
     },
@@ -9732,8 +9732,8 @@
      "options": [
       "Research the stories, check the facts, and build the website.",
       "Design the layout, illustrations, photographs, and cover art.",
-      "Handle advertising, budgets, and the publishing schedule.",
       "Interview people, build the writing team, and reply to readers.",
+      "Handle advertising, budgets, and the publishing schedule.",
       "Cover health, fitness and wellbeing for students."
      ],
      "riasec": [
@@ -9745,11 +9745,11 @@
        "A": 3
       },
       {
-       "C": 3,
+       "S": 3,
        "E": 2
       },
       {
-       "S": 3,
+       "C": 3,
        "E": 2
       },
       {
@@ -9768,10 +9768,10 @@
        "D": 5
       },
       {
-       "E": 5
+       "F": 5
       },
       {
-       "F": 5
+       "E": 5
       },
       {
        "C": 4,
@@ -9794,18 +9794,18 @@
        "Content Creator"
       ],
       [
-       "Business Manager",
-       "Financial Analyst",
-       "Digital Marketer",
-       "Operations Manager",
-       "Chartered Accountant"
-      ],
-      [
        "Teacher",
        "Lawyer",
        "Psychologist",
        "HR Manager",
        "Public Speaker"
+      ],
+      [
+       "Business Manager",
+       "Financial Analyst",
+       "Digital Marketer",
+       "Operations Manager",
+       "Chartered Accountant"
       ],
       [
        "Nutritionist",
@@ -22837,15 +22837,15 @@
      "dimension": "Emotional Awareness",
      "text": "Your teacher gives you feedback that your performance needs improvement. What would you most likely do?",
      "options": [
-      "Discuss with your teacher to understand how you can improve further.",
-      "Feel disappointed initially but use the feedback as motivation to perform better.",
       "Think about the feedback carefully and identify what areas you need to improve.",
+      "Feel disappointed initially but use the feedback as motivation to perform better.",
+      "Discuss with your teacher to understand how you can improve further.",
       "Ignore the feedback because you feel your current approach is already enough."
      ],
      "scores": [
-      2,
-      2,
       3,
+      2,
+      2,
       0
      ]
     },
@@ -22855,15 +22855,15 @@
      "dimension": "Emotional Regulation",
      "text": "You are preparing for an important competition, but your preparation is not going as planned. How would you respond?",
      "options": [
+      "Take some time to manage your stress and regain focus before continuing.",
       "Continue working hard but feel worried until the competition is completed.",
       "Stay calm, review the situation, and create a new strategy.",
-      "Ask teammates, teachers, or mentors for suggestions and support.",
-      "Take some time to manage your stress and regain focus before continuing."
+      "Ask teammates, teachers, or mentors for suggestions and support."
      ],
      "scores": [
+      2,
       1,
       3,
-      2,
       2
      ]
     },
@@ -22873,14 +22873,14 @@
      "dimension": "Empathy & Social Awareness",
      "text": "Your classmate is upset because they performed poorly in an exam. How would you respond?",
      "options": [
-      "Talk to them, understand their feelings, and encourage them.",
       "Give them time and allow them to handle the situation independently.",
-      "Share your own experiences and suggest ways they can improve.",
-      "Help them prepare better for the next attempt."
+      "Talk to them, understand their feelings, and encourage them.",
+      "Help them prepare better for the next attempt.",
+      "Share your own experiences and suggest ways they can improve."
      ],
      "scores": [
-      3,
       1,
+      3,
       2,
       2
      ]
@@ -22891,8 +22891,8 @@
      "dimension": "Relationship Management",
      "text": "During a group project, two team members disagree strongly about the best approach. What would you naturally do?",
      "options": [
-      "Suggest dividing responsibilities so everyone can contribute effectively.",
       "Clearly explain your viewpoint while encouraging respectful discussion.",
+      "Suggest dividing responsibilities so everyone can contribute effectively.",
       "Allow the team leader to decide and focus only on your own task.",
       "Listen to both sides and help them find a solution everyone can accept."
      ],
@@ -22909,15 +22909,15 @@
      "dimension": "Adaptability & Resilience",
      "text": "Your plans suddenly change because of an unexpected situation. How do you usually respond?",
      "options": [
-      "Discuss the situation with others before deciding the next step.",
-      "Look for new opportunities that may come from the change.",
       "Quickly understand the new situation and adjust your approach.",
+      "Look for new opportunities that may come from the change.",
+      "Discuss the situation with others before deciding the next step.",
       "Take some time to process the change before deciding what to do."
      ],
      "scores": [
+      3,
+      3,
       2,
-      3,
-      3,
       1
      ]
     }
@@ -27492,16 +27492,16 @@
      "q": "Q48",
      "text": "Your teacher introduces a difficult new concept in science. How would you prefer to understand it?",
      "options": [
-      "Discuss the concept with the teacher and classmates to understand different viewpoints.",
       "Read detailed notes, textbook explanations, and examples about the topic.",
       "Perform an experiment or practical activity to understand how it works.",
-      "Watch an animation, diagram, or visual demonstration explaining the concept."
+      "Watch an animation, diagram, or visual demonstration explaining the concept.",
+      "Discuss the concept with the teacher and classmates to understand different viewpoints."
      ],
      "styles": [
-      "Aural",
       "Read/Write",
       "Kinesthetic",
-      "Visual"
+      "Visual",
+      "Aural"
      ]
     },
     {
@@ -27526,16 +27526,16 @@
      "q": "Q50",
      "text": "You want to learn a new skill outside academics. Which approach would you enjoy most?",
      "options": [
-      "Try the skill yourself through practice and real-world activities.",
-      "Watch tutorials, demonstrations, or step-by-step visual guides.",
       "Attend discussions, workshops, or learn by listening to experts.",
-      "Read books, articles, manuals, or detailed instructions."
+      "Read books, articles, manuals, or detailed instructions.",
+      "Try the skill yourself through practice and real-world activities.",
+      "Watch tutorials, demonstrations, or step-by-step visual guides."
      ],
      "styles": [
-      "Kinesthetic",
-      "Visual",
       "Aural",
-      "Read/Write"
+      "Read/Write",
+      "Kinesthetic",
+      "Visual"
      ]
     },
     {
@@ -27543,16 +27543,16 @@
      "q": "Q51",
      "text": "You are exploring different career options for your future. How would you prefer to learn about them?",
      "options": [
-      "Read career guides, articles, and detailed information about professions.",
       "Visit workplaces, attend internships, or experience the work practically.",
       "Watch videos showing professionals working in different careers.",
-      "Attend career talks and interact with professionals or counsellors."
+      "Attend career talks and interact with professionals or counsellors.",
+      "Read career guides, articles, and detailed information about professions."
      ],
      "styles": [
-      "Read/Write",
       "Kinesthetic",
       "Visual",
-      "Aural"
+      "Aural",
+      "Read/Write"
      ]
     }
    ]
@@ -31922,18 +31922,24 @@
   "9-10": {
    "Set 1": [
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q43",
      "text": "Your school gives you an opportunity to select one special project for the entire year. Which project would excite you the most?",
      "options": [
-      "Lead a team and make important decisions to achieve the goal.",
-      "Work on a project that solves a problem faced by people or society.",
       "Work on a challenging project where I can improve my skills and achieve excellent results.",
-      "Create something completely new that nobody has tried before."
+      "Create something completely new that nobody has tried before.",
+      "Work on a project that solves a problem faced by people or society.",
+      "Lead a team and make important decisions to achieve the goal.",
+      "Work on something well-defined where I know exactly what is expected."
      ],
      "motivatorPoints": [
       {
-       "Leadership": 3,
+       "Achievement": 3,
+       "Innovation": 1,
+       "Learning": 1
+      },
+      {
+       "Innovation": 3,
        "Achievement": 1,
        "Impact": 1
       },
@@ -31943,28 +31949,32 @@
        "Leadership": 1
       },
       {
-       "Achievement": 3,
-       "Innovation": 1,
-       "Learning": 1
-      },
-      {
-       "Innovation": 3,
+       "Leadership": 3,
        "Achievement": 1,
        "Impact": 1
+      },
+      {
+       "Security": 3,
+       "Achievement": 1
       }
      ]
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q44",
      "text": "You're offered one of these as a reward for a year's hard work. Which would you pick?",
      "options": [
+      "Advanced training in the thing I'm already best at.",
       "A chance to work on a cause I actually care about.",
       "Leading a team on a real project.",
       "A budget and total freedom to build whatever I want.",
-      "Advanced training in the thing I'm already best at."
+      "Time and space to learn something well outside my own subject."
      ],
      "motivatorPoints": [
+      {
+       "Learning": 3,
+       "Achievement": 2
+      },
       {
        "Impact": 3,
        "Learning": 1
@@ -31978,33 +31988,38 @@
        "Learning": 1
       },
       {
-       "Achievement": 3,
-       "Learning": 2
+       "Learning": 3,
+       "Innovation": 1
       }
      ]
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q45",
      "text": "Imagine you have achieved success in your future career. What would make you feel most proud?",
      "options": [
-      "Creating something innovative that changes the way people do things.",
-      "Becoming highly skilled and recognized as an expert in my field.",
       "Becoming someone who leads teams and influences important decisions.",
+      "Becoming highly skilled and recognized as an expert in my field.",
+      "Creating something innovative that changes the way people do things.",
+      "Building something steady that supports my family for life.",
       "Making a meaningful difference in people's lives."
      ],
      "motivatorPoints": [
+      {
+       "Leadership": 3,
+       "Achievement": 1
+      },
+      {
+       "Achievement": 3,
+       "Learning": 2
+      },
       {
        "Innovation": 3,
        "Achievement": 1
       },
       {
-       "Achievement": 3,
-       "Learning": 2
-      },
-      {
-       "Leadership": 3,
-       "Achievement": 1
+       "Security": 3,
+       "Impact": 1
       },
       {
        "Impact": 3
@@ -32012,54 +32027,64 @@
      ]
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q46",
      "text": "Your school announces a competition where students can choose their own challenge. Which challenge would you prefer?",
      "options": [
-      "A difficult challenge where I can test my abilities and compete with others.",
-      "A creative challenge where I can design something unique.",
       "A challenge that helps improve the school or community.",
-      "A challenge where I can coordinate a team and manage the entire activity."
+      "A challenge where I can coordinate a team and manage the entire activity.",
+      "A challenge with clear rules, where I know what counts as done.",
+      "A difficult challenge where I can test my abilities and compete with others.",
+      "A creative challenge where I can design something unique."
      ],
      "motivatorPoints": [
+      {
+       "Impact": 3
+      },
+      {
+       "Leadership": 3
+      },
+      {
+       "Security": 3,
+       "Achievement": 1
+      },
       {
        "Achievement": 3,
        "Learning": 1
       },
       {
        "Innovation": 3
-      },
-      {
-       "Impact": 3
-      },
-      {
-       "Leadership": 3
       }
      ]
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q47",
      "text": "When choosing your future workplace, which environment would motivate you the most?",
      "options": [
-      "A place where my work helps people and creates positive change.",
-      "A place with stability, clear systems, and a structured career path.",
       "A place where I have freedom to explore ideas and try new approaches.",
-      "A place where I can continuously learn, improve, and achieve bigger goals."
+      "A place with stability, clear systems, and a structured career path.",
+      "A place where I can continuously learn, improve, and achieve bigger goals.",
+      "A place where my work helps people and creates positive change.",
+      "A place where I take charge and am judged on the results."
      ],
      "motivatorPoints": [
-      {
-       "Impact": 3
-      },
-      {
-       "Security": 3
-      },
       {
        "Innovation": 3,
        "Learning": 1
       },
       {
+       "Security": 3
+      },
+      {
        "Learning": 3,
+       "Achievement": 2
+      },
+      {
+       "Impact": 3
+      },
+      {
+       "Leadership": 3,
        "Achievement": 2
       }
      ]
@@ -35881,14 +35906,49 @@
   "9-10": {
    "Set 1": [
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q52",
      "text": "Your class is making a short film about your town for a competition. Which job would you take?",
      "options": [
-      "Plan the shot list and work out how to fit it all into the time limit.",
       "Write the script and interview people on camera.",
-      "Frame the shots, pick the colours, and design the titles.",
-      "Act in it, handle the camera, and set up each location."
+      "Choose the music and mix the sound.",
+      "Plan the shot list and work out how to fit it all into the time limit.",
+      "Act in it, handle the camera, and set up each location.",
+      "Frame the shots, pick the colours, and design the titles."
+     ],
+     "intelPoints": [
+      {
+       "Linguistic": 3,
+       "Interpersonal": 2
+      },
+      {
+       "Musical": 3,
+       "Spatial": 1
+      },
+      {
+       "Logical–Mathematical": 3,
+       "Spatial": 1
+      },
+      {
+       "Bodily–Kinesthetic": 3,
+       "Interpersonal": 2
+      },
+      {
+       "Spatial": 3,
+       "Logical–Mathematical": 1
+      }
+     ]
+    },
+    {
+     "type": "choice5",
+     "q": "Q53",
+     "text": "Your team is given a difficult problem to solve. Which role would you naturally prefer?",
+     "options": [
+      "Analyze information, identify patterns, and find a logical solution.",
+      "Think about how the solution can be presented creatively or visually.",
+      "Reflect on your own ideas and suggest improvements based on your experience.",
+      "Understand everyone's ideas and help the team work together.",
+      "Build a rough model and test the idea by hand."
      ],
      "intelPoints": [
       {
@@ -35896,30 +35956,9 @@
        "Spatial": 1
       },
       {
-       "Linguistic": 3,
-       "Interpersonal": 2
-      },
-      {
        "Spatial": 3,
        "Logical–Mathematical": 1
       },
-      {
-       "Bodily–Kinesthetic": 3,
-       "Interpersonal": 2
-      }
-     ]
-    },
-    {
-     "type": "choice4",
-     "q": "Q53",
-     "text": "Your team is given a difficult problem to solve. Which role would you naturally prefer?",
-     "options": [
-      "Reflect on your own ideas and suggest improvements based on your experience.",
-      "Understand everyone's ideas and help the team work together.",
-      "Analyze information, identify patterns, and find a logical solution.",
-      "Think about how the solution can be presented creatively or visually."
-     ],
-     "intelPoints": [
       {
        "Intrapersonal": 3,
        "Logical–Mathematical": 1
@@ -35929,37 +35968,38 @@
        "Linguistic": 2
       },
       {
-       "Logical–Mathematical": 3,
-       "Spatial": 1
-      },
-      {
-       "Spatial": 3,
+       "Bodily–Kinesthetic": 3,
        "Logical–Mathematical": 1
       }
      ]
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q54",
      "text": "You have a free weekend and want to learn something new. Which activity would attract you the most?",
      "options": [
-      "Build something, practice a sport, perform, or learn through hands-on activities.",
-      "Learn music, rhythm, instruments, or create audio content.",
       "Learn about plants, animals, environment, or how nature works.",
+      "Build something, practice a sport, perform, or learn through hands-on activities.",
+      "Spend it with people, organising something together.",
+      "Learn music, rhythm, instruments, or create audio content.",
       "Write stories, create content, learn a language, or practice communication skills."
      ],
      "intelPoints": [
+      {
+       "Naturalistic": 3,
+       "Logical–Mathematical": 1
+      },
       {
        "Bodily–Kinesthetic": 3,
        "Spatial": 1
       },
       {
-       "Musical": 3,
-       "Spatial": 1
+       "Interpersonal": 3,
+       "Linguistic": 1
       },
       {
-       "Naturalistic": 3,
-       "Logical–Mathematical": 1
+       "Musical": 3,
+       "Spatial": 1
       },
       {
        "Linguistic": 3,
@@ -35968,20 +36008,17 @@
      ]
     },
     {
-     "type": "choice4",
+     "type": "choice5",
      "q": "Q55",
      "text": "Which compliment would mean the most to you?",
      "options": [
-      "“You can picture and design things the rest of us can't imagine.”",
       "“You know yourself well and keep improving on your own terms.”",
       "“You understand people, and you bring out their best.”",
+      "“You notice things about the natural world the rest of us miss.”",
+      "“You can picture and design things the rest of us can't imagine.”",
       "“You work out things logically that leave everyone else stuck.”"
      ],
      "intelPoints": [
-      {
-       "Spatial": 3,
-       "Linguistic": 1
-      },
       {
        "Intrapersonal": 3,
        "Naturalistic": 1
@@ -35989,6 +36026,14 @@
       {
        "Interpersonal": 3,
        "Linguistic": 2
+      },
+      {
+       "Naturalistic": 3,
+       "Logical–Mathematical": 1
+      },
+      {
+       "Spatial": 3,
+       "Linguistic": 1
       },
       {
        "Logical–Mathematical": 3,
