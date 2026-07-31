@@ -3168,12 +3168,12 @@
     "format": "text",
     "domain": "Attention to Detail",
     "difficulty": "medium",
-    "text": "Which of the following numbers is different?",
+    "text": "Which pair does NOT match?",
     "options": [
-     "987564",
-     "987654",
-     "987654",
-     "987654"
+     "987654  /  987564",
+     "456789  /  456789",
+     "123456  /  123456",
+     "987654  /  987654"
     ],
     "svgOptions": false,
     "correct": 0,
