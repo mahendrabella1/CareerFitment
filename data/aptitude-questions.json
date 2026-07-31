@@ -3021,13 +3021,13 @@
     "difficulty": "easy",
     "text": "Which number comes next in the series? 6, 12, 24, 48, ?",
     "options": [
-     "72",
-     "84",
      "96",
-     "100"
+     "72",
+     "100",
+     "84"
     ],
     "svgOptions": false,
-    "correct": 2,
+    "correct": 0,
     "media": null
    },
    {
@@ -3038,10 +3038,10 @@
     "difficulty": "easy",
     "text": "A school bag costs ₹800. During a sale, you get 25% off. How much will you pay?",
     "options": [
-     "₹500",
-     "₹600",
      "₹650",
-     "₹700"
+     "₹600",
+     "₹700",
+     "₹500"
     ],
     "svgOptions": false,
     "correct": 1,
@@ -3055,10 +3055,10 @@
     "difficulty": "medium",
     "text": "Study how the numbers in the grid relate to each other. Which number replaces the question mark?",
     "options": [
+     "32",
      "20",
-     "21",
      "24",
-     "32"
+     "21"
     ],
     "svgOptions": false,
     "correct": 2,
@@ -3076,12 +3076,12 @@
     "text": "Which word is closest in meaning to Reliable?",
     "options": [
      "Lazy",
+     "Curious",
      "Careless",
-     "Dependable",
-     "Curious"
+     "Dependable"
     ],
     "svgOptions": false,
-    "correct": 2,
+    "correct": 3,
     "media": null
    },
    {
@@ -3092,13 +3092,13 @@
     "difficulty": "medium",
     "text": "Find the next number: 2, 5, 11, 23, ?",
     "options": [
-     "35",
      "47",
-     "49",
-     "51"
+     "51",
+     "35",
+     "49"
     ],
     "svgOptions": false,
-    "correct": 1,
+    "correct": 0,
     "media": null
    },
    {
@@ -3110,12 +3110,12 @@
     "text": "Rahul is taller than Mohan. Mohan is taller than Arjun. Who is the tallest?",
     "options": [
      "Mohan",
-     "Arjun",
+     "Rahul",
      "Cannot be determined",
-     "Rahul"
+     "Arjun"
     ],
     "svgOptions": false,
-    "correct": 3,
+    "correct": 1,
     "media": null
    },
    {
@@ -3126,10 +3126,10 @@
     "difficulty": "medium",
     "text": "The pattern rotates 90° clockwise at each step. Which figure should come next?",
     "options": [
-     "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"72\" height=\"72\"><rect x=\"8\" y=\"8\" width=\"84\" height=\"84\" rx=\"6\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><polygon points=\"16,16 46,16 16,46\" fill=\"#1f2937\"/><circle cx=\"73\" cy=\"27\" r=\"8\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"3\"/></svg>",
+     "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"72\" height=\"72\"><rect x=\"8\" y=\"8\" width=\"84\" height=\"84\" rx=\"6\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><polygon points=\"84,84 54,84 84,54\" fill=\"#1f2937\"/><circle cx=\"27\" cy=\"73\" r=\"8\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"3\"/></svg>",
      "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"72\" height=\"72\"><rect x=\"8\" y=\"8\" width=\"84\" height=\"84\" rx=\"6\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><polygon points=\"84,16 54,16 84,46\" fill=\"#1f2937\"/><circle cx=\"73\" cy=\"73\" r=\"8\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"3\"/></svg>",
      "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"72\" height=\"72\"><rect x=\"8\" y=\"8\" width=\"84\" height=\"84\" rx=\"6\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><polygon points=\"16,84 46,84 16,54\" fill=\"#1f2937\"/><circle cx=\"27\" cy=\"27\" r=\"8\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"3\"/></svg>",
-     "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"72\" height=\"72\"><rect x=\"8\" y=\"8\" width=\"84\" height=\"84\" rx=\"6\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><polygon points=\"84,84 54,84 84,54\" fill=\"#1f2937\"/><circle cx=\"27\" cy=\"73\" r=\"8\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"3\"/></svg>"
+     "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" width=\"72\" height=\"72\"><rect x=\"8\" y=\"8\" width=\"84\" height=\"84\" rx=\"6\" fill=\"#fff\" stroke=\"#1f2937\" stroke-width=\"3\"/><polygon points=\"16,16 46,16 16,46\" fill=\"#1f2937\"/><circle cx=\"73\" cy=\"27\" r=\"8\" fill=\"none\" stroke=\"#1f2937\" stroke-width=\"3\"/></svg>"
     ],
     "svgOptions": true,
     "correct": 2,
@@ -3170,13 +3170,13 @@
     "difficulty": "medium",
     "text": "Which of the following numbers is different?",
     "options": [
-     "987654",
-     "987654",
      "987564",
+     "987654",
+     "987654",
      "987654"
     ],
     "svgOptions": false,
-    "correct": 2,
+    "correct": 0,
     "media": null
    },
    {
@@ -3187,10 +3187,10 @@
     "difficulty": "medium",
     "text": "Two gears are connected. Gear A rotates clockwise. In which direction will Gear B rotate?",
     "options": [
-     "Clockwise",
-     "Counter-clockwise",
      "It will not rotate",
-     "Depends on size"
+     "Counter-clockwise",
+     "Depends on size",
+     "Clockwise"
     ],
     "svgOptions": false,
     "correct": 1,
