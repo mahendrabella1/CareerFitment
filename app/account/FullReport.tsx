@@ -174,12 +174,12 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
           <div className="toc">
             {[
               ["Executive summary", "The headline read on who you are", "pulse"],
-              ["Career DNA & profile", "Your archetype, radar and profile wheel", "radar"],
-              ["At-a-glance verdict", "All eight dimensions, scored & rated", "check"],
-              ["Benchmark vs peers", "How you compare to your stage", "score"],
+              ["Career DNA & profile", "Your archetype and profile radar", "radar"],
+              ["How this was measured", "The eight frameworks behind your scores", "check"],
+              ["At-a-glance scorecard", "All eight dimensions, ranked & rated", "score"],
               ["The eight dimensions", "A deep dive on each, one by one", "clusters"],
               ["Interests & personality", "RIASEC hexagon and temperament wheel", "career_interest"],
-              ["Careers that fit you", "Roles, badges, salaries & match table", "briefcase"],
+              ["Careers that fit you", "Roles, badges, salaries & recommendation", "briefcase"],
               ["Your path & plan", "Academics, roadmap, 30/90-day actions", "route"],
               ["Resources & scholarships", "Where to learn, work and get funded", "cap"],
             ].map(([t, d, ic]) => (
@@ -274,11 +274,12 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
       <section className="sheet rv">
         <div className="pad">
           <RH n={N()} kick="At a glance" />
-          <SecHead eyebrow="Every dimension, one verdict each" title="Your eight-dimension scorecard"
-            sub="Scores are 0–100. The rating shows where each area sits; the note says what it means for you." />
+          <SecHead eyebrow="Every dimension, ranked and rated" title="Your eight-dimension scorecard"
+            sub="Strongest first. Scores are 0–100, the tick on each bar marks the typical student at your stage, and the note says what it means for you." />
           <div className="vtable">
             <div className="vhead"><span>Dimension</span><span>Score</span><span className="vhide">Rating</span><span className="vhide2">What it means</span></div>
-            {radar.map((d) => {
+            {/* Sorted strongest-first so this one table also carries the ranking. */}
+            {radar.slice().sort((x, y) => y.score - x.score).map((d) => {
               const b = bandOf(d.score);
               const res = resultOf(d.key, a);
               return (
@@ -286,7 +287,9 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
                   <span className="vname"><span style={{ color: dimColor(d.key), display: "inline-flex" }}><Icon name={CAT[d.key].icon} size={15} /></span> {CAT[d.key].label}</span>
                   <span className="vbar"><SkillBar value={d.score} color={dimColor(d.key)} benchmark={BENCH[d.key]} /><b>{Math.round(d.score)}</b></span>
                   <span className={`vpill ${b.tone}`}>{b.label}</span>
-                  <span className="vmean vhide2">{res ? `${res.label}: ${res.value}` : (VERDICT[d.key] ?? "")}</span>
+                  {/* Never hidden: on a phone this wraps to its own line rather
+                      than dropping, so all eight dimensions keep their verdict. */}
+                  <span className="vmean">{res ? `${res.label}: ${res.value}` : (VERDICT[d.key] ?? "")}</span>
                 </div>
               );
             })}
@@ -297,86 +300,6 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
             <span><i className="d lo" /> Developing (&lt;50)</span>
             <span className="vlegend-bench"><i className="tick" /> tick = typical student at your stage</span>
           </div>
-          <RF name={name} />
-        </div>
-      </section>
-
-      {/* ===== PROFILE WHEEL ===== */}
-      <section className="sheet rv">
-        <div className="pad">
-          <RH n={N()} kick="Your profile wheel" />
-          <SecHead eyebrow="The same eight dimensions, as a wheel" title="Where your energy concentrates"
-            sub="Longer petals are stronger areas. The wheel makes the overall shape of your profile easy to see at a glance." />
-          <div className="wheel-row">
-            <RoseWheel items={radar.map((r) => ({ label: CAT[r.key].label.split(" ")[0], score: r.score, icon: CAT[r.key].icon, color: dimColor(r.key) }))} />
-            <div className="wheel-side">
-              {radar.slice().sort((x, y) => y.score - x.score).map((r, i) => (
-                <div className="ws-row" key={r.key}>
-                  <span className="ws-rk">{i + 1}</span>
-                  <span className="ws-dot" style={{ background: dimColor(r.key) }} />
-                  <span className="ws-nm">{CAT[r.key].label}</span>
-                  <span className="ws-v">{Math.round(r.score)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <RF name={name} />
-        </div>
-      </section>
-
-      {/* ===== DIMENSION DONUT DIALS ===== */}
-      <section className="sheet rv">
-        <div className="pad">
-          <RH n={N()} kick="Dimension dials" />
-          <SecHead eyebrow="Each dimension, scored" title="Your eight scores at a glance"
-            sub="A quick, colour-coded read of every dimension and what it captures." />
-          <div className="dials">
-            {radar.map((d) => {
-              const col = dimColor(d.key);
-              return (
-                <div className="dial" key={d.key}>
-                  <Ring value={d.score} size={72} stroke={8} color={col} track={C.line}>
-                    <div className="dial-n" style={{ color: col }}>{Math.round(d.score)}</div>
-                  </Ring>
-                  <div className="dial-body">
-                    <div className="dial-t"><span className="dial-ic" style={{ color: col }}><Icon name={CAT[d.key].icon} size={15} /></span>{CAT[d.key].label}</div>
-                    <div className="dial-d">{VERDICT[d.key]}</div>
-                  </div>
-                  <span className={`vpill ${bandOf(d.score).tone}`}>{bandOf(d.score).label}</span>
-                </div>
-              );
-            })}
-          </div>
-          <RF name={name} />
-        </div>
-      </section>
-
-      {/* ===== BENCHMARK VS PEERS ===== */}
-      <section className="sheet rv">
-        <div className="pad">
-          <RH n={N()} kick="Benchmark vs peers" />
-          <SecHead eyebrow="How you compare to your stage" title="You, against a typical student"
-            sub="Each dimension is compared with the average student at your level. Green means you're ahead; grey means room to grow." />
-          <div className="bench">
-            {radar.map((d) => {
-              const bench = BENCH[d.key];
-              const delta = Math.round(d.score - bench);
-              const pct = percentileOf(d.score);
-              return (
-                <div className="brow2" key={d.key}>
-                  <span className="bname"><Icon name={CAT[d.key].icon} size={14} /> {CAT[d.key].label}</span>
-                  <div className="btrack">
-                    <div className="bfill" style={{ width: `${clamp(d.score)}%` }} />
-                    <div className="bmark" style={{ left: `${clamp(bench)}%` }} title={`Typical: ${bench}`} />
-                  </div>
-                  <span className="byou">{Math.round(d.score)}</span>
-                  <span className={`bdelta ${delta >= 0 ? "up" : "down"}`}>{delta >= 0 ? "+" : ""}{delta}</span>
-                  <span className="bpct vhide">top {100 - pct}%</span>
-                </div>
-              );
-            })}
-          </div>
-          <div className="bench-note"><Icon name="info" size={14} /> Percentiles are indicative, comparing your score to a broad sample of students at the same stage.</div>
           <RF name={name} />
         </div>
       </section>
@@ -529,15 +452,21 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
         <div className="pad">
           <RH n={N()} kick="Careers where you fit" />
           <SecHead eyebrow="Specific roles your whole profile points to" title="Your top career matches"
-            sub="Ranked by fit, with the signals that matter: outlook, pay, automation-resistance and future demand." />
+            sub="Ranked by fit, with the signals that matter: our recommendation, outlook, pay, automation-resistance and future demand." />
           <div className="cardgrid">
             {roles.map((r, i) => {
               const mt = roleMetric(r.role);
+              // Was a whole extra table of its own; it is one pill's worth of
+              // information, so it lives on the card it describes.
+              const v = r.fit >= 75 ? { t: "Top Choice", c: "hi" } : r.fit >= 60 ? { t: "Good Choice", c: "mid" } : { t: "Explore", c: "lo" };
               return (
                 <div className="ccard" key={r.role + i}>
                   <div className="ccard-top">
                     <span className="ccard-rk">{i + 1}</span>
-                    <div className="ccard-main"><div className="ccard-nm">{r.role}</div><div className="ccard-dm">{r.domain}</div></div>
+                    <div className="ccard-main">
+                      <div className="ccard-nm">{r.role}</div>
+                      <div className="ccard-dm">{r.domain} · <span className={`ccard-verdict ${v.c}`}>{v.t}</span></div>
+                    </div>
                     <div className="ccard-fit"><b>{r.fit}%</b><span>fit</span></div>
                   </div>
                   <div className="ccard-badges">
@@ -549,31 +478,6 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
                   {r.salaryIndia ? (
                     <div className="ccard-sal"><span>India {r.salaryIndia}</span><span>Abroad {r.salaryAbroad}</span></div>
                   ) : null}
-                </div>
-              );
-            })}
-          </div>
-          <RF name={name} />
-        </div>
-      </section>
-
-      {/* ===== CAREER MATCH TABLE (Top Choice) ===== */}
-      <section className="sheet rv">
-        <div className="pad">
-          <RH n={N()} kick="Ranked career table" />
-          <SecHead eyebrow="Everything, side by side" title="Your recommendations, ranked"
-            sub="A quick table view of the same matches — sorted by fit, with a clear recommendation on each." />
-          <div className="mtable">
-            <div className="mhead"><span>#</span><span>Career</span><span className="vhide">Domain</span><span>Fit</span><span>Verdict</span></div>
-            {roles.map((r, i) => {
-              const v = r.fit >= 75 ? { t: "Top Choice", c: "hi" } : r.fit >= 60 ? { t: "Good Choice", c: "mid" } : { t: "Explore", c: "lo" };
-              return (
-                <div className="mrow" key={r.role + i}>
-                  <span className="mrk">{i + 1}</span>
-                  <span className="mnm">{r.role}</span>
-                  <span className="mdm vhide">{r.domain}</span>
-                  <span className="mfit"><span className="mfit-bar"><SkillBar value={r.fit} color={C.red} height={7} /></span><b>{r.fit}%</b></span>
-                  <span className={`mbadge ${v.c}`}>{v.t}</span>
                 </div>
               );
             })}
@@ -1099,48 +1003,16 @@ const CSS = `
 .frx .vpill.mid{background:var(--red-tint);color:var(--red-strong)}
 .frx .vpill.lo{background:var(--line-2);color:var(--ink-3)}
 .frx .vmean{font-size:12px;color:var(--ink-3)}
+/* Below the 4-column breakpoint the verdict wraps onto its own full-width line
+   instead of being dropped — every dimension keeps its explanation on mobile. */
+@media(max-width:819px){.frx .vmean{grid-column:1/-1;padding-left:23px;margin-top:-2px}}
 .frx .vlegend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-size:11.5px;color:var(--ink-3);align-items:center}
 .frx .vlegend .d{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:middle}
 .frx .vlegend .d.hi{background:var(--good)}.frx .vlegend .d.mid{background:var(--red)}.frx .vlegend .d.lo{background:var(--faint)}
 .frx .vlegend .tick{display:inline-block;width:2px;height:11px;background:var(--ink);opacity:.4;margin-right:6px;vertical-align:middle}
 .frx .vlegend-bench{margin-left:auto}
 
-/* wheel */
-.frx .wheel-row{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
-@media(max-width:720px){.frx .wheel-row{grid-template-columns:1fr;gap:18px}}
-.frx .wheel-side{display:flex;flex-direction:column;gap:2px}
-.frx .ws-row{display:grid;grid-template-columns:auto auto 1fr auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line-2)}
-.frx .ws-rk{width:22px;height:22px;border-radius:6px;background:var(--line-2);color:var(--ink-2);font-size:11px;font-weight:800;display:grid;place-items:center}
-.frx .ws-dot{width:12px;height:12px;border-radius:4px;flex:none}
-.frx .ws-nm{font-size:13px;font-weight:600;color:var(--ink-2)}
-.frx .ws-v{font-size:13.5px;font-weight:800;color:var(--ink)}
-
-/* dimension donut dials */
-.frx .dials{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:560px){.frx .dials{grid-template-columns:1fr}}
-.frx .dial{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:14px;padding:12px 15px;background:#fff}
-.frx .dial-n{font-size:17px;font-weight:800}
-.frx .dial-body{flex:1;min-width:0}
-.frx .dial-t{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:800}
-.frx .dial-ic{display:inline-flex}
-.frx .dial-d{font-size:11.5px;color:var(--ink-3);margin-top:2px}
 .frx .dom-hd .why{color:var(--red);font-weight:700}
-
-/* benchmark */
-.frx .bench{display:flex;flex-direction:column;gap:12px}
-.frx .brow2{display:grid;grid-template-columns:1.1fr 2fr auto auto;gap:12px;align-items:center}
-@media(min-width:820px){.frx .brow2{grid-template-columns:1.1fr 2.4fr auto auto auto}}
-.frx .bname{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--ink-2)}
-.frx .bname svg{color:var(--red)}
-.frx .btrack{position:relative;height:12px;background:var(--line-2);border-radius:999px;overflow:hidden}
-.frx .bfill{position:absolute;left:0;top:0;height:100%;background:var(--red);border-radius:999px}
-.frx .bmark{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--ink);opacity:.55;border-radius:2px}
-.frx .byou{font-size:13px;font-weight:800;min-width:24px;text-align:right}
-.frx .bdelta{font-size:11.5px;font-weight:800;min-width:34px;text-align:right}
-.frx .bdelta.up{color:var(--good)}.frx .bdelta.down{color:var(--muted)}
-.frx .bpct{font-size:11px;color:var(--muted);min-width:52px;text-align:right}
-.frx .bench-note{display:flex;align-items:center;gap:8px;margin-top:16px;font-size:11.5px;color:var(--ink-3);background:${C.bg};border:1px solid var(--line);border-radius:10px;padding:11px 14px}
-.frx .bench-note svg{color:var(--red);flex:none}
 
 /* dimension pages */
 .frx .dimhero{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;align-items:center}
@@ -1253,22 +1125,11 @@ const CSS = `
 .frx .ccard-sal{display:flex;gap:8px;margin-top:11px;font-size:11px;color:var(--ink-3)}
 .frx .ccard-sal span{flex:1;background:var(--line-2);border-radius:7px;padding:7px 9px;font-weight:600}
 
-/* match table */
-.frx .mtable{border:1px solid var(--line);border-radius:14px;overflow:hidden}
-.frx .mhead,.frx .mrow{display:grid;grid-template-columns:26px 1fr 1.2fr auto;gap:12px;align-items:center;padding:11px 16px}
-@media(max-width:820px){.frx .mhead,.frx .mrow{grid-template-columns:22px 1fr 1.1fr auto}}
-.frx .mhead{background:${C.bg};font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.frx .mrow{border-top:1px solid var(--line-2)}
-.frx .mrk{font-size:12px;font-weight:800;color:var(--ink-3)}
-.frx .mnm{font-size:13px;font-weight:700}
-.frx .mdm{font-size:12px;color:var(--ink-3)}
-.frx .mfit{display:flex;align-items:center;gap:10px}
-.frx .mfit-bar{width:70px}
-.frx .mfit b{font-size:12.5px;font-weight:800;color:var(--red)}
-.frx .mbadge{font-size:10.5px;font-weight:800;padding:4px 11px;border-radius:999px;white-space:nowrap;justify-self:end}
-.frx .mbadge.hi{background:var(--good-tint);color:#1f7a55}
-.frx .mbadge.mid{background:var(--red-tint);color:var(--red-strong)}
-.frx .mbadge.lo{background:var(--line-2);color:var(--ink-3)}
+/* the recommendation that used to be a table of its own */
+.frx .ccard-verdict{font-weight:800}
+.frx .ccard-verdict.hi{color:#1f7a55}
+.frx .ccard-verdict.mid{color:var(--red-strong)}
+.frx .ccard-verdict.lo{color:var(--ink-3)}
 
 /* domains */
 .frx .dom{border:1px solid var(--line);border-radius:15px;overflow:hidden;background:#fff;margin-bottom:14px;box-shadow:var(--shadow-sm)}
@@ -1422,6 +1283,6 @@ const CSS = `
   /* keep charts and blocks from being clipped/split awkwardly */
   .frx svg{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
   .frx .twocard,.frx .dom,.frx .role,.frx .fw,.frx .dcard,.frx .ccard,.frx .apcard,
-  .frx .model,.frx .scard,.frx .rstep,.frx .tcard,.frx .dial,.frx .vrow,.frx .brow2{break-inside:avoid}
+  .frx .model,.frx .scard,.frx .rstep,.frx .tcard,.frx .vrow{break-inside:avoid}
 }
 `;

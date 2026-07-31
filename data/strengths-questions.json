@@ -1496,12 +1496,12 @@
    {
     "type": "choice4",
     "q": "Q35",
-    "text": "Your school announces a month-long innovation challenge where teams must solve a real-life problem. Which role would you naturally choose?",
+    "text": "You and three friends decide to enter a national competition on top of your schoolwork. In the first week, what are you doing?",
     "options": [
-     "Study the problem carefully, collect information, and identify the best solution before starting.",
-     "Generate creative ideas and design an innovative solution that stands out.",
-     "Lead the team, motivate everyone, and coordinate responsibilities.",
-     "Prepare a clear action plan, timeline, and ensure every task is completed on schedule."
+     "Reading last year's winning entries and working out what the judges reward.",
+     "Sketching ideas nobody else would think of.",
+     "Getting the four of us organised and making sure nobody drops out.",
+     "Working back from the deadline into a calendar, and starting task one."
     ],
     "strengthPoints": [
      {
@@ -1525,12 +1525,12 @@
    {
     "type": "choice4",
     "q": "Q36",
-    "text": "Your teacher asks your class to organize an awareness campaign. Which responsibility would you enjoy the most?",
+    "text": "A younger student is being left out by their class, and your teacher asks a few of you to help. What would you do?",
     "options": [
-     "Deliver presentations and explain the campaign to different audiences.",
-     "Work closely with classmates to ensure everyone feels involved.",
-     "Design eye-catching posters, videos, or creative content.",
-     "Organize schedules, permissions, and logistics for the campaign."
+     "Talk to the class about it directly.",
+     "Spend time with the student first and get to know them.",
+     "Start an activity they'd shine at, so the others see them differently.",
+     "Set up a buddy system and make sure it actually runs."
     ],
     "strengthPoints": [
      {
@@ -1582,12 +1582,12 @@
    {
     "type": "choice4",
     "q": "Q38",
-    "text": "Your class receives feedback that your project needs improvement. What would you naturally do first?",
+    "text": "Halfway through a project you realise the method you chose isn't working. What's your first move?",
     "options": [
-     "Analyze the feedback to identify exactly what needs improvement.",
-     "Learn new techniques or ideas that could improve the project.",
-     "Discuss the feedback with teammates and gather everyone's suggestions.",
-     "Quickly adjust the project and try a different approach."
+     "Work out exactly where it started going wrong.",
+     "Look up how other people have solved something similar.",
+     "Get the team together and rethink it with them.",
+     "Switch to a different method and keep moving."
     ],
     "strengthPoints": [
      {
@@ -1611,12 +1611,12 @@
    {
     "type": "choice4",
     "q": "Q39",
-    "text": "Your school is conducting an entrepreneurship competition. Which part interests you the most?",
+    "text": "Your team presents to the whole school tomorrow and nothing is ready. What do you take charge of?",
     "options": [
-     "Pitch the idea confidently to the judges.",
-     "Develop a unique product or service idea.",
-     "Organize the team's work and ensure deadlines are met.",
-     "Motivate everyone and help the team perform at its best."
+     "The talking — I'll present it.",
+     "The idea — I'll make it worth watching.",
+     "The slides and the running order — I'll get it built.",
+     "The people — I'll keep everyone going."
     ],
     "strengthPoints": [
      {
@@ -1640,12 +1640,12 @@
    {
     "type": "choice4",
     "q": "Q40",
-    "text": "Your teacher gives your class an open-ended challenge with no fixed solution. What would you enjoy most?",
+    "text": "You're handed something broken — an old radio, a bicycle, a piece of code — and told to make it work. How do you start?",
     "options": [
-     "Analyze different possible solutions before choosing one.",
-     "Think of an original idea that no one else has considered.",
-     "Learn about similar challenges and improve your approach.",
-     "Experiment with different methods until one works well."
+     "Take it apart methodically and find the fault.",
+     "See whether it could become something better than it was.",
+     "Read up on how it's supposed to work first.",
+     "Start trying things and adjust as I learn what breaks."
     ],
     "strengthPoints": [
      {
@@ -1669,12 +1669,12 @@
    {
     "type": "choice4",
     "q": "Q41",
-    "text": "During a group activity, everyone has different opinions. What role do you naturally take?",
+    "text": "You've been put in a group with people you've never worked with before. What do you do in the first meeting?",
     "options": [
-     "Help everyone understand each other's viewpoints.",
-     "Clearly explain ideas and keep discussions focused.",
-     "Make decisions and guide the team toward a solution.",
-     "Ensure agreed tasks are completed efficiently."
+     "Get to know them a bit before we start.",
+     "Lay out what I think the task actually needs.",
+     "Suggest who should do what and get us moving.",
+     "Take the first task myself and start on it."
     ],
     "strengthPoints": [
      {
