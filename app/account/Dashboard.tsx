@@ -4,7 +4,7 @@
  * Dashboard — the premium /account experience (2026 redesign).
  *
  * A calm, scannable control centre built on the saved assessment summary:
- *   · Hero      — archetype, overall-fit ring, quick stats, primary actions
+ *   · Hero      — archetype, strongest-interest ring, quick stats, actions
  *   · KPI strip — four at-a-glance tiles
  *   · Profile   — interactive 8-dimension radar + a plain-language snapshot
  *   · Matches   — ranked career fits
@@ -127,7 +127,19 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
   const fits = domainFit(a);
   const topField = fits[0];
   const topDomainName = topField?.name ?? "your best-fit field";
-  const fit = Math.max(a.overallFitmentPct ?? 0, topField?.fit ?? 0);
+  // NOT an "overall fit" percentage. There isn't one, and there can't be.
+  // The top career's fitmentPct is 58 + 34 + 4 by construction and the top
+  // domainFit is 40 + 48 — both are the ceiling of a display band, so every
+  // student who ever took this saw the same ~96%. A number identical for
+  // everyone measures nothing; showing it as a headline invited a confidence
+  // the method cannot support.
+  //
+  // What IS real and does vary is how strongly the student scored their leading
+  // interest cluster, so that is what the hero reports, named rather than
+  // abstract.
+  const topTheme = (a.themes ?? [])[0] ?? null;
+  const topInterestScore = Math.round(topTheme?.score ?? 0);
+  const topInterestName = topTheme?.title ?? "—";
   const arch = archetype(a);
   const code = a.riasecCode || (a.themes ?? []).slice(0, 3).map((t) => t.letter).join("");
   const strongest = radar.slice().sort((x, y) => y.score - x.score)[0];
@@ -296,16 +308,17 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
                   </div>
                   <div className="ogd-hero-r">
                     <div className="ogd-ring-glow">
-                      <Ring value={fit} size={168} stroke={13} color={IN} track="rgba(255,255,255,0.14)">
-                        <div className="ogd-ring-pct">{fit}<small>%</small></div>
-                        <div className="ogd-ring-lab">overall fit</div>
+                      <Ring value={topInterestScore} size={168} stroke={13} color={IN} track="rgba(255,255,255,0.14)">
+                        <div className="ogd-ring-pct">{topInterestScore}<small>%</small></div>
+                        <div className="ogd-ring-lab">{topInterestName}</div>
                       </Ring>
                     </div>
                   </div>
                 </div>
 
                 <div className="ogd-kpis">
-                  <KpiTile icon="star" c={KPI[0]} label="Overall fitment" value={`${fit}%`} sub={bandLabel(fit)} subAccent />
+                  <KpiTile icon="star" c={KPI[0]} label="Strongest interest" value={topInterestName}
+                    sub={topTheme ? `${topInterestScore}% of your interest answers` : ""} subAccent />
                   <KpiTile icon="career_interest" c={KPI[1]} label="Interest code" value={code || "—"} sub="Holland RIASEC" />
                   <KpiTile icon="motivators" c={KPI[2]} label="Strongest area"
                     value={strongest ? String(Math.round(strongest.score)) : "—"} sub={strongest ? CAT_LABEL[strongest.key] : ""} />
@@ -410,8 +423,7 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
                 <div className="rail-h">Your top match</div>
                 <div className="rail-top-nm">{topField?.name || a.topCareer || "—"}</div>
                 {topField?.tagline ? <div className="rail-top-tag">{topField.tagline}</div> : null}
-                <div className="rail-top-bar"><SkillBar value={fit} color={IN} /></div>
-                <div className="rail-top-fit"><b>{fit}%</b> overall fit</div>
+                <div className="rail-top-fit">Drawn from your <b>{topInterestName}</b> answers</div>
               </div>
 
               {SHOW_TOOLKIT && (

@@ -147,13 +147,13 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
   const allDone = answeredCount >= requiredTotal;
 
   const set = (id: string, v: string) => setAnswers((a) => ({ ...a, [id]: v }));
-  // Single-select answers auto-advance to the next question (fast exam feel).
-  const AUTO_TYPES = ["yesno", "choice5", "choice4", "vark", "mcq", "mostleast"];
+  // Selecting an option records it and nothing else — advancing is the student's
+  // decision, via Next. Auto-advancing on tap pulled the page away mid-thought,
+  // made changing your mind require navigating back, and quietly rewarded
+  // answering fast on an instrument where the whole point is to consider five
+  // options that all sound reasonable.
   function answer(qq: { id: string; type: string }, v: string) {
     set(qq.id, v);
-    if (AUTO_TYPES.includes(qq.type) && cur < total - 1) {
-      window.setTimeout(() => { setCur((c) => Math.min(total - 1, c + 1)); window.scrollTo(0, 0); }, 240);
-    }
   }
   const go = (i: number) => { if (i >= 0 && i < total) { setCur(i); window.scrollTo(0, 0); } };
   const jumpToSection = (si: number) => { const idx = flat.findIndex((f) => f.si === si); if (idx >= 0) go(idx); };
