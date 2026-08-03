@@ -6,11 +6,14 @@ import { useAuth, type AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { Logo } from "@/app/Logo";
 import Landing from "@/app/Landing";
 import NewExam from "@/app/NewExam";
-// PAYMENT-GATE-DISABLED — fee turned off while the Razorpay live keys are being
-// sorted out; users go straight from registration into the exam. Search this
-// file for PAYMENT-GATE-DISABLED to re-enable (3 spots), then set a matching
-// RAZORPAY_KEY_ID / RAZORPAY_KEY_SECRET pair in Vercel.
-// import PaymentGate from "@/app/PaymentGate";
+// The fee gate is ON. A registered user reaches the exam only after a verified
+// payment (or if profile.paid is already true). Three places cooperate: this
+// import, the `paidNow` state, and the check just before <NewExam>.
+//
+// It needs RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET set in the host environment.
+// Without them /api/payment/order fails and nobody can start the exam — see the
+// note in lib/razorpay.ts.
+import PaymentGate from "@/app/PaymentGate";
 import { trackEvent } from "@/lib/metaPixel";
 import {
   Sparkles,
@@ -553,8 +556,9 @@ export default function AssessmentExperience() {
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
   const [thankYou, setThankYou] = useState(false);
   const [instructionsAccepted, setInstructionsAccepted] = useState(false);
-  // PAYMENT-GATE-DISABLED — set true right after a verified payment.
-  // const [paidNow, setPaidNow] = useState(false);
+  // Set true the moment a payment verifies, so the exam opens without waiting
+  // for the profile to round-trip from Firestore.
+  const [paidNow, setPaidNow] = useState(false);
   const [agreeChecked, setAgreeChecked] = useState(false);
   const [sectionShown, setSectionShown] = useState<Record<string, boolean>>({});
   const [qLeft, setQLeft] = useState(60); // seconds left on the current question
@@ -1050,12 +1054,13 @@ export default function AssessmentExperience() {
   // New set-based assessment: entered via /?begin=1 by a signed-in user.
   if (hasBegin && !results) {
     if (user && profile) {
-      // PAYMENT-GATE-DISABLED — the exam loads for every registered user for
-      // now. Uncomment to require the fee again (the gate itself, PaymentGate
-      // and the /api/payment routes, is untouched and still works).
-      // if (!(profile.paid || paidNow)) {
-      //   return <PaymentGate profile={profile} onPaid={() => setPaidNow(true)} />;
-      // }
+      // The fee gate. `profile.paid` is written server-side by
+      // /api/payment/verify after the signature is checked, so it cannot be set
+      // from the browser; `paidNow` only covers the gap before that write is
+      // read back.
+      if (!(profile.paid || paidNow)) {
+        return <PaymentGate profile={profile} onPaid={() => setPaidNow(true)} />;
+      }
       return (
         <NewExam
           category={profile.category || ""}
