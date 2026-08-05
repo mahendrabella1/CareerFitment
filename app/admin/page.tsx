@@ -102,6 +102,7 @@ export default function AdminPage() {
   const [payMsg, setPayMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [payConfigured, setPayConfigured] = useState(true); // Razorpay secret present
   const [paySource, setPaySource] = useState<"firestore" | "env">("firestore");
+  const [payForcedOff, setPayForcedOff] = useState(false); // code-level kill switch
 
   async function loadPaymentSettings() {
     try {
@@ -111,6 +112,7 @@ export default function AdminPage() {
       setPayPrice(String((Number(d?.amountPaise) || 9900) / 100));
       setPayConfigured(Boolean(d?.configured));
       setPaySource(d?.settingsSource === "env" ? "env" : "firestore");
+      setPayForcedOff(Boolean(d?.forcedOff));
     } catch {
       setPayMsg({ kind: "err", text: "Couldn't read the current payment settings." });
     } finally {
@@ -403,6 +405,17 @@ export default function AdminPage() {
               <Icon name={payMsg.kind === "ok" ? "check" : "info"} size={15} /> {payMsg.text}
             </div>
           )}
+          {/* Kill switch is on — say so, or this whole card looks broken. */}
+          {payLoaded && payForcedOff && (
+            <div style={S.payWarn}>
+              <Icon name="info" size={15} style={{ flex: "none", marginTop: 1 }} />
+              <span>
+                Payment is switched off in the code for everyone, so this toggle has no effect
+                right now and nobody is being charged. To hand control back to this switch, set
+                <b> FORCE_PAYMENT_OFF</b> to <b>false</b> in <b>lib/paymentSettings.ts</b> and redeploy.
+              </span>
+            </div>
+          )}
           {/* The message goes in a single <span>: this row is a flex container,
               so a bare <b> would become its own flex item and get pushed away
               from the surrounding words by the row's gap. */}
@@ -416,7 +429,9 @@ export default function AdminPage() {
               </span>
             </div>
           )}
-          {payLoaded && paySource === "env" && (
+          {/* Not shown while forced off: the kill switch returns before the
+              Firestore read, so "env" there says nothing about connectivity. */}
+          {payLoaded && paySource === "env" && !payForcedOff && (
             <div style={S.payWarn}>
               <Icon name="info" size={15} style={{ flex: "none", marginTop: 1 }} />
               <span>

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { razorpayKeyId } from "@/lib/razorpay";
-import { isPaymentActive } from "@/lib/paymentSettings";
+import { isPaymentActive, FORCE_PAYMENT_OFF } from "@/lib/paymentSettings";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +28,8 @@ export async function GET() {
     amountPaise: settings.amountPaise,
     /** "env" = Firestore unavailable, so the admin toggle isn't in effect. */
     settingsSource: settings.source,
+    /** Code-level kill switch is on — the admin toggle is overridden. */
+    forcedOff: FORCE_PAYMENT_OFF,
     keyId: razorpayKeyId(),
   });
 }

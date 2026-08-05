@@ -18,6 +18,20 @@
 import { isFirestoreConfigured, getFirestore } from "@/lib/firebase/admin";
 import { razorpayAmountPaise, razorpayKeySecret } from "@/lib/razorpay";
 
+// ─────────────────────────────────────────────────────────────────────────────
+// TEMPORARY KILL SWITCH — payment is currently OFF for everyone.
+//
+// While this is true, nobody is charged and every student goes straight into
+// the exam. It overrides BOTH the admin toggle and the env vars, deliberately:
+// it has to hold even on a deployment where the server can't reach Firestore.
+//
+// TO TURN PAYMENT BACK ON: set this to false and redeploy. Control then returns
+// to the admin switch in /admin (settings/payment), which additionally needs
+// FIREBASE_PROJECT_ID / FIREBASE_CLIENT_EMAIL / FIREBASE_PRIVATE_KEY set on the
+// server, or the toggle silently won't take effect.
+// ─────────────────────────────────────────────────────────────────────────────
+export const FORCE_PAYMENT_OFF = true;
+
 export const PAYMENT_SETTINGS_PATH = { collection: "settings", doc: "payment" } as const;
 
 /** Razorpay's minimum charge is ₹1; the ceiling is a sanity guard on typos. */
@@ -53,6 +67,10 @@ export async function getPaymentSettings(): Promise<PaymentSettings> {
     amountPaise: razorpayAmountPaise(),
     source: "env",
   };
+
+  // Kill switch wins over everything, and returns before any Firestore call so
+  // it still holds when the server has no admin credentials.
+  if (FORCE_PAYMENT_OFF) return { ...fallback, enabled: false };
 
   if (!isFirestoreConfigured()) return fallback;
 
