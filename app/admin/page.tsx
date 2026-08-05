@@ -13,7 +13,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Logo } from "@/app/Logo";
-import { collection, getDocs, addDoc, doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc, doc, updateDoc, setDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useAuth, authErrorMessage, type UserProfile } from "@/lib/auth/AuthProvider";
 import { isAdmin, ADMIN_LOGIN_EMAIL } from "@/lib/auth/admins";
@@ -90,6 +90,74 @@ export default function AdminPage() {
   const [newSchool, setNewSchool] = useState("");
   const [assigning, setAssigning] = useState<string | null>(null);
 
+  // ---- Payment settings (Firestore `settings/payment`) --------------------
+  // Loaded from /api/payment/status rather than read straight out of Firestore,
+  // because that endpoint reports what the SERVER will actually do — including
+  // whether Razorpay credentials exist and whether the toggle is even reaching
+  // it. Saving writes the doc, then re-reads the endpoint to confirm.
+  const [payEnabled, setPayEnabled] = useState(true);
+  const [payPrice, setPayPrice] = useState(""); // rupees, as typed
+  const [payLoaded, setPayLoaded] = useState(false);
+  const [paySaving, setPaySaving] = useState(false);
+  const [payMsg, setPayMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
+  const [payConfigured, setPayConfigured] = useState(true); // Razorpay secret present
+  const [paySource, setPaySource] = useState<"firestore" | "env">("firestore");
+
+  async function loadPaymentSettings() {
+    try {
+      const res = await fetch("/api/payment/status", { cache: "no-store" });
+      const d = await res.json();
+      setPayEnabled(d?.enabled !== false);
+      setPayPrice(String((Number(d?.amountPaise) || 9900) / 100));
+      setPayConfigured(Boolean(d?.configured));
+      setPaySource(d?.settingsSource === "env" ? "env" : "firestore");
+    } catch {
+      setPayMsg({ kind: "err", text: "Couldn't read the current payment settings." });
+    } finally {
+      setPayLoaded(true);
+    }
+  }
+
+  async function savePaymentSettings() {
+    const rupees = Number(payPrice);
+    if (!Number.isFinite(rupees) || rupees < 1 || rupees > 100000) {
+      setPayMsg({ kind: "err", text: "Enter a price between ₹1 and ₹1,00,000." });
+      return;
+    }
+    const db = getDb();
+    if (!db) { setPayMsg({ kind: "err", text: "Firebase isn't configured on this deployment." }); return; }
+    setPaySaving(true);
+    setPayMsg(null);
+    try {
+      await setDoc(
+        doc(db, "settings", "payment"),
+        {
+          enabled: payEnabled,
+          amountPaise: Math.round(rupees * 100),
+          updatedAt: new Date().toISOString(),
+          updatedBy: user?.email || "admin",
+        },
+        { merge: true }
+      );
+      // Confirm the server sees the change — a write that Firestore accepted but
+      // the server can't read back would silently leave the old price live.
+      await loadPaymentSettings();
+      setPayMsg({
+        kind: "ok",
+        text: payEnabled
+          ? `Saved — students are charged ₹${rupees % 1 === 0 ? rupees : rupees.toFixed(2)} before the exam.`
+          : "Saved — payment is off. Students go straight to the exam.",
+      });
+    } catch (e) {
+      setPayMsg({
+        kind: "err",
+        text: e instanceof Error ? e.message : "Could not save — check Firestore admin write rules.",
+      });
+    } finally {
+      setPaySaving(false);
+    }
+  }
+
   async function addSchool() {
     const name = newSchool.trim();
     if (!name) return;
@@ -145,6 +213,12 @@ export default function AdminPage() {
     }
     setBulk(false);
   }
+
+  useEffect(() => {
+    if (!admin) return;
+    void loadPaymentSettings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [admin]);
 
   useEffect(() => {
     if (!admin) return;
@@ -256,6 +330,94 @@ export default function AdminPage() {
           <Stat icon="clock" label="Not yet taken" value={stats.pending} accent={C.muted} />
           <Stat icon="star" label="Avg. feedback" value={stats.avg} accent={C.red} />
         </div>
+
+        {/* payment control — the fee gate students hit before the exam */}
+        <section style={S.payCard} className="og-adm-pay">
+          <div style={S.payHead}>
+            <span style={S.payIcon}><Icon name="card" size={18} /></span>
+            <div style={{ flex: 1, minWidth: 200 }}>
+              <div style={S.payTitle}>Assessment payment</div>
+              <p style={S.paySub}>
+                When this is on, students pay the fee below before the exam opens. Turn it off and
+                they go straight into the exam — no payment screen at all.
+              </p>
+            </div>
+            <label style={S.toggleWrap}>
+              <span style={{ ...S.toggleLabel, color: payEnabled ? C.ink : C.muted }}>
+                {payEnabled ? "Payment on" : "Payment off"}
+              </span>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={payEnabled}
+                aria-label="Enable payment"
+                disabled={!payLoaded || paySaving}
+                onClick={() => { setPayEnabled((v) => !v); setPayMsg(null); }}
+                style={{ ...S.toggle, ...(payEnabled ? S.toggleOn : {}), ...(payLoaded ? {} : { opacity: 0.5 }) }}
+              >
+                <span style={{ ...S.toggleKnob, ...(payEnabled ? S.toggleKnobOn : {}) }} />
+              </button>
+            </label>
+          </div>
+
+          <div style={S.payRow}>
+            <div>
+              <label style={S.payLabel} htmlFor="og-price">Price (₹)</label>
+              <div style={S.priceWrap}>
+                <span style={S.pricePrefix}>₹</span>
+                <input
+                  id="og-price"
+                  style={{ ...S.priceInput, ...(payEnabled ? {} : { color: C.muted }) }}
+                  type="number" min={1} max={100000} step="1" inputMode="decimal"
+                  value={payPrice}
+                  disabled={!payLoaded || paySaving}
+                  onChange={(e) => { setPayPrice(e.target.value); setPayMsg(null); }}
+                  onKeyDown={(e) => { if (e.key === "Enter") void savePaymentSettings(); }}
+                />
+              </div>
+            </div>
+            <button
+              style={{ ...S.paySave, ...(paySaving || !payLoaded ? { opacity: 0.6, cursor: "default" } : {}) }}
+              disabled={paySaving || !payLoaded}
+              onClick={() => void savePaymentSettings()}
+            >
+              {paySaving ? "Saving…" : "Save changes"}
+            </button>
+            <div style={S.payState} data-pay-state>
+              {!payLoaded ? (
+                <span style={S.payNote}>Loading current settings…</span>
+              ) : payEnabled && payConfigured ? (
+                <span style={{ ...S.pill, ...S.pillOk }}>
+                  <span style={{ ...S.dot, background: C.good }} /> Live — students are charged
+                </span>
+              ) : (
+                <span style={{ ...S.pill, ...S.pillWait }}>
+                  <span style={{ ...S.dot, background: C.muted }} /> Free — exam opens without payment
+                </span>
+              )}
+            </div>
+          </div>
+
+          {payMsg && (
+            <div style={payMsg.kind === "ok" ? S.payOk : S.error}>
+              <Icon name={payMsg.kind === "ok" ? "check" : "info"} size={15} /> {payMsg.text}
+            </div>
+          )}
+          {payLoaded && payEnabled && !payConfigured && (
+            <div style={S.payWarn}>
+              <Icon name="info" size={15} /> Payment is switched on, but no Razorpay key secret is set
+              on this deployment — students still get in free. Add <b>RAZORPAY_KEY_SECRET</b> to the
+              host environment to start charging.
+            </div>
+          )}
+          {payLoaded && paySource === "env" && (
+            <div style={S.payWarn}>
+              <Icon name="info" size={15} /> The server can&apos;t reach Firestore, so it&apos;s falling back to
+              the environment variables and this switch won&apos;t take effect. Add the Firebase admin
+              credentials (<b>serviceAccountKey.json</b> or the <b>FIREBASE_*</b> env vars) on the server.
+            </div>
+          )}
+        </section>
 
         <div style={S.tableCard}>
           <div style={S.tableHead}>
@@ -391,6 +553,7 @@ const ADMIN_CSS = `
 @media (max-width: 640px){
   .og-adm-header{padding:12px 14px !important}
   .og-adm-body{padding:16px 12px !important}
+  .og-adm-pay [data-pay-state]{margin-left:0 !important}
 }
 `;
 
@@ -415,6 +578,28 @@ const S: Record<string, React.CSSProperties> = {
   statIcon: { width: 32, height: 32, borderRadius: 9, display: "grid", placeItems: "center", background: C.line2, color: C.ink2, marginBottom: 12 },
   statValue: { fontSize: 26, fontWeight: 800, color: C.ink, lineHeight: 1.1 },
   statLabel: { fontSize: 12, color: C.ink3, fontWeight: 600, marginTop: 4 },
+
+  payCard: { background: "#fff", border: `1px solid ${C.line}`, borderRadius: 18, padding: "20px 22px", marginBottom: 16, boxShadow: "0 2px 10px rgba(20,20,25,.04)" },
+  payHead: { display: "flex", alignItems: "flex-start", gap: 12, flexWrap: "wrap" },
+  payIcon: { width: 32, height: 32, borderRadius: 9, display: "grid", placeItems: "center", background: C.redTint, color: C.red, flex: "none" },
+  payTitle: { fontSize: 15.5, fontWeight: 800, color: C.ink },
+  paySub: { fontSize: 13, color: C.ink3, margin: "5px 0 0", maxWidth: "62ch", lineHeight: 1.55 },
+  toggleWrap: { display: "inline-flex", alignItems: "center", gap: 10, cursor: "pointer", flex: "none" },
+  toggleLabel: { fontSize: 13, fontWeight: 700, whiteSpace: "nowrap" },
+  toggle: { position: "relative", width: 46, height: 26, borderRadius: 999, border: `1px solid ${C.line}`, background: C.line2, cursor: "pointer", padding: 0, transition: "background .15s, border-color .15s", flex: "none" },
+  toggleOn: { background: C.good, borderColor: C.good },
+  toggleKnob: { position: "absolute", top: 2, left: 2, width: 20, height: 20, borderRadius: "50%", background: "#fff", boxShadow: "0 1px 3px rgba(20,20,25,.25)", transition: "transform .15s", display: "block" },
+  toggleKnobOn: { transform: "translateX(20px)" },
+  payRow: { display: "flex", alignItems: "flex-end", gap: 12, flexWrap: "wrap", marginTop: 18 },
+  payLabel: { display: "block", fontSize: 12, fontWeight: 700, color: C.ink2, marginBottom: 6 },
+  priceWrap: { display: "flex", alignItems: "stretch", border: `1px solid ${C.line}`, borderRadius: 10, overflow: "hidden", background: "#fff" },
+  pricePrefix: { display: "grid", placeItems: "center", padding: "0 11px", background: C.line2, color: C.ink3, fontSize: 14, fontWeight: 700, borderRight: `1px solid ${C.line}` },
+  priceInput: { width: 120, padding: "9px 12px", border: "none", outline: "none", fontSize: 14.5, fontWeight: 700, color: C.ink, fontFamily: "inherit" },
+  paySave: { padding: "10px 18px", background: C.red, color: "#fff", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" },
+  payState: { marginLeft: "auto", paddingBottom: 2 },
+  payNote: { fontSize: 12.5, color: C.muted, fontWeight: 600 },
+  payOk: { display: "flex", alignItems: "center", gap: 8, background: C.goodTint, border: "1px solid #cbe8db", color: "#1f7a55", padding: "10px 14px", borderRadius: 10, fontSize: 13, marginTop: 14, fontWeight: 600 },
+  payWarn: { display: "flex", alignItems: "flex-start", gap: 8, background: "#fff8e8", border: "1px solid #f2e0b5", color: "#8a6516", padding: "10px 14px", borderRadius: 10, fontSize: 12.5, marginTop: 12, lineHeight: 1.5, fontWeight: 600 },
 
   tableCard: { background: "#fff", border: `1px solid ${C.line}`, borderRadius: 18, padding: "20px 22px", boxShadow: "0 2px 10px rgba(20,20,25,.04)" },
   tableHead: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 16, flexWrap: "wrap" },

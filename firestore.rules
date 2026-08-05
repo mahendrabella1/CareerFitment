@@ -22,6 +22,15 @@ service cloud.firestore {
       allow read: if request.auth != null;
       allow write: if isAdmin();
     }
+    // App settings written from /admin — currently `payment` (fee on/off and
+    // price). ONLY an admin may write: the server trusts these values when it
+    // creates a Razorpay order, so a student who could edit them could set
+    // their own price or waive the fee. Reads are open to signed-in users so
+    // the admin console can show the current state.
+    match /settings/{doc} {
+      allow read: if request.auth != null;
+      allow write: if isAdmin();
+    }
     // Everything else denied by default.
     match /{document=**} {
       allow read, write: if false;

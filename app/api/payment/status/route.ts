@@ -1,20 +1,33 @@
 import { NextResponse } from "next/server";
-import { razorpayKeyId, razorpayKeySecret, razorpayAmountPaise } from "@/lib/razorpay";
+import { razorpayKeyId } from "@/lib/razorpay";
+import { isPaymentActive } from "@/lib/paymentSettings";
 
 export const dynamic = "force-dynamic";
 
-// GET /api/payment/status — tells the client whether real payment is set up
-// (i.e. the server has the Razorpay secret). When it isn't, the payment gate is
-// skipped so the app stays fully usable with zero configuration. Add
-// RAZORPAY_KEY_SECRET in your host's env to turn the fee on.
+// GET /api/payment/status — tells the client whether a fee should be charged.
+//
+// Two independent things have to be true for the gate to appear:
+//   • an admin has payment switched ON in /admin (settings/payment), and
+//   • the server actually has the Razorpay secret (RAZORPAY_KEY_SECRET).
+// If either is false the gate is skipped and the student goes straight to the
+// exam — that's the admin's "payment disabled" mode, and it doubles as the
+// zero-configuration path this app has always had.
 //
 // keyId is echoed back so a broken deployment can be diagnosed from the browser
 // ("which key is production actually using?"). It is public by definition — the
 // same value is handed to Razorpay Checkout on every payment.
 export async function GET() {
+  const { active, settings, configured } = await isPaymentActive();
   return NextResponse.json({
-    configured: Boolean(razorpayKeySecret()),
+    /** The only field the gate needs: charge this student or not. */
+    active,
+    /** Razorpay credentials present server-side. */
+    configured,
+    /** Admin switch on its own, for the console to display. */
+    enabled: settings.enabled,
+    amountPaise: settings.amountPaise,
+    /** "env" = Firestore unavailable, so the admin toggle isn't in effect. */
+    settingsSource: settings.source,
     keyId: razorpayKeyId(),
-    amountPaise: razorpayAmountPaise(),
   });
 }

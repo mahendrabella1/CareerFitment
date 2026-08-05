@@ -1,16 +1,29 @@
 import { NextResponse } from "next/server";
-import { razorpayKeyId, razorpayKeySecret, razorpayAmountPaise } from "@/lib/razorpay";
+import { razorpayKeyId, razorpayKeySecret } from "@/lib/razorpay";
+import { getPaymentSettings } from "@/lib/paymentSettings";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 20;
 
 // POST /api/payment/order — creates a Razorpay order for the assessment fee.
 // The KEY_SECRET is used only here (server-side); the KEY_ID is returned so the
-// browser can open Checkout. Amount is fixed server-side (never trust the client).
+// browser can open Checkout. Both the on/off switch and the amount come from
+// the admin settings server-side — never from the client, which would otherwise
+// be free to name its own price.
 export async function POST() {
   const keyId = razorpayKeyId();
   const keySecret = razorpayKeySecret();
-  const amount = razorpayAmountPaise();
+  const settings = await getPaymentSettings();
+  const amount = settings.amountPaise;
+
+  // An admin turned the fee off. The gate should already have skipped straight
+  // to the exam; refuse here too so a stale tab can't still take money.
+  if (!settings.enabled) {
+    return NextResponse.json(
+      { success: false, message: "Payment is currently disabled.", reason: "payment_disabled" },
+      { status: 409 }
+    );
+  }
 
   if (!keyId || !keySecret) {
     return NextResponse.json(

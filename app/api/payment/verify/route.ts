@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import { pushLeadToCRM } from "@/lib/crm";
 import { sendLeadNotificationEmail } from "@/lib/leadEmail";
-import { razorpayKeySecret, razorpayAmountPaise } from "@/lib/razorpay";
+import { razorpayKeySecret } from "@/lib/razorpay";
+import { getPaymentSettings } from "@/lib/paymentSettings";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -68,11 +69,11 @@ export async function POST(req: Request) {
 
   // Best-effort CRM + email (never blocks the flow). Uses details the client passed.
   const email = (await emailFromToken(idToken)) || String(profile?.email || "");
-  const amount = razorpayAmountPaise();
+  const amount = (await getPaymentSettings()).amountPaise;
   const p = profile || {};
   const name = String(p.name || "");
   void Promise.all([
-    pushLeadToCRM({ name, email, phone: String(p.phone || ""), status: "paid" }),
+    pushLeadToCRM({ name, email, phone: String(p.phone || ""), status: "paid", amountRupees: amount / 100 }),
     sendLeadNotificationEmail(
       {
         name, email: email || String(p.email || ""), phone: String(p.phone || ""),

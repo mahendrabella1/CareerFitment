@@ -16,6 +16,8 @@ export interface CrmLead {
   message?: string | null;
   /** "unpaid" = registered but hasn't paid yet; "paid" = fee verified. */
   status?: "unpaid" | "paid";
+  /** Fee actually charged (the admin can change it) — used in the status note. */
+  amountRupees?: number;
 }
 
 export async function pushLeadToCRM(lead: CrmLead): Promise<void> {
@@ -28,7 +30,8 @@ export async function pushLeadToCRM(lead: CrmLead): Promise<void> {
   // internal lead-status enum and choked on an unrecognised value. Folding
   // the same information into the free-text "message" field instead keeps
   // the payload exactly on the schema they gave us.
-  const statusNote = lead.status === "paid" ? "Payment status: PAID (₹99 fee verified)." : "Payment status: UNPAID (registered, hasn't paid yet).";
+  const fee = lead.amountRupees != null ? `₹${lead.amountRupees % 1 === 0 ? lead.amountRupees : lead.amountRupees.toFixed(2)} ` : "";
+  const statusNote = lead.status === "paid" ? `Payment status: PAID (${fee}fee verified).` : "Payment status: UNPAID (registered, hasn't paid yet).";
   const message = [statusNote, lead.message].filter(Boolean).join(" ");
 
   try {

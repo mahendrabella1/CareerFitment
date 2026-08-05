@@ -39,18 +39,20 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
     Number(process.env.NEXT_PUBLIC_RAZORPAY_AMOUNT_PAISE || 9900)
   );
 
-  // If real payment isn't configured on the server (no Razorpay secret), skip the
-  // fee entirely so the app is fully usable with zero setup. It turns on the
-  // moment RAZORPAY_KEY_SECRET is added to the host env.
+  // Ask the server whether this student should be charged. It says no when an
+  // admin has switched payment off in /admin, or when real payment isn't
+  // configured (no Razorpay secret) — either way we skip the fee and let the
+  // exam load immediately. The price shown also comes from here, so it always
+  // matches the amount the order is created for.
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch("/api/payment/status");
+        const res = await fetch("/api/payment/status", { cache: "no-store" });
         const data = await res.json();
         if (!cancelled) {
           if (data?.amountPaise) setAmountPaise(Number(data.amountPaise));
-          if (!data?.configured) onPaid();
+          if (!data?.active) onPaid();
           else setChecking(false);
         }
       } catch {
@@ -70,6 +72,9 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
       const orderRes = await fetch("/api/payment/order", { method: "POST" });
       const order = await orderRes.json();
       if (!order.success) {
+        // An admin switched payment off while this tab was open — don't show an
+        // error for something that isn't one; just let them into the exam.
+        if (order.reason === "payment_disabled") { onPaid(); return; }
         // Never open Checkout without a valid order — Razorpay would render its
         // own "The api key provided is invalid" screen, which looks to the user
         // like a failed payment on a page that can still take their money.
