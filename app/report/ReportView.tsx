@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import ViewOnlyReport from "@/app/ReportViewOnly";
 import { buildNarrative } from "@/lib/report/narrative";
 import type { FitmentResult } from "@/lib/engine/fitment/types";
 
@@ -67,15 +68,15 @@ export default function ReportView({ data }: { data: ReportData }) {
 
   return (
     <div className="rep">
+      <ViewOnlyReport />
       {/* ---------- Cover / header ---------- */}
       <header className="rep-cover">
         <div className="rep-cover-top">
           <span className="og-logo">
             One<span>Grasp</span>
           </span>
-          <button className="rep-print" onClick={() => window.print()} type="button">
-            ⤓ Save / Print PDF
-          </button>
+          {/* Read-on-screen only — the PDF is delivered by email. */}
+          <span className="rep-mailnote">✉ A PDF copy is emailed to you</span>
         </div>
         <p className="rep-eyebrow">Career Fitment Report</p>
         <h1>

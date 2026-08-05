@@ -164,9 +164,11 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
           <button className="ogd-btn ghost" onClick={() => { setView("dashboard"); window.scrollTo(0, 0); }}>
             <Icon name="chevronLeft" size={16} /> Back to dashboard
           </button>
-          <button className="ogd-btn solid" onClick={() => window.print()}>
-            <Icon name="save" size={15} /> Download PDF
-          </button>
+          {/* No download here by design — the PDF is delivered by email, so the
+              inbox holds the one canonical copy. See <ViewOnlyReport/>. */}
+          <span className="ogd-mailnote">
+            <Icon name="bell" size={14} /> A PDF copy has been emailed to you
+          </span>
         </div>
         <FullReport a={a} name={name} />
       </div>
@@ -416,7 +418,9 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
               <div className="ogd-card rail-card">
                 <div className="rail-h">Quick actions</div>
                 <button className="rail-act primary" onClick={() => setView("report")}><Icon name="explain" size={16} /> View full report</button>
-                <button className="rail-act" onClick={() => setView("report")}><Icon name="save" size={16} /> Download PDF</button>
+                {/* The second action used to say "Download PDF" while doing the
+                    same thing as the first. The PDF now arrives by email. */}
+                <div className="rail-note"><Icon name="bell" size={14} /> Your PDF copy is emailed to you</div>
               </div>
 
               <div className="ogd-card rail-card">
@@ -716,6 +720,8 @@ const CSS = `
 .rail-act.primary{background:${IN};color:#fff;border-color:${IN}}
 .rail-act.primary svg{color:#fff}
 .rail-act:last-child{margin-bottom:0}
+.rail-note{display:flex;align-items:flex-start;gap:8px;margin-top:10px;font-size:12px;line-height:1.45;color:${C.ink3};font-weight:600}
+.rail-note svg{color:${C.muted};flex:none;margin-top:1px}
 .rail-top-nm{font-size:15px;font-weight:800;color:${C.ink}}
 .rail-top-tag{font-size:12px;color:${C.ink3};margin-top:3px;line-height:1.45}
 .rail-top-bar{margin:12px 0 8px}
@@ -1038,5 +1044,8 @@ const CSS = `
 .ogd-reportwrap{max-width:980px;margin:0 auto;padding:16px 24px 64px}
 .ogd-reportbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;position:sticky;top:0;
   z-index:5;background:${C.bg};padding:8px 0}
+.ogd-mailnote{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:${C.ink3};white-space:nowrap}
+.ogd-mailnote svg{color:${C.muted}}
+@media (max-width:560px){.ogd-mailnote{display:none}}
 @media print{.ogd-reportwrap{padding:0;margin:0;max-width:none}.ogd-reportbar{display:none}}
 `;

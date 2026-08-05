@@ -13,6 +13,7 @@ import Link from "next/link";
 import { Logo } from "@/app/Logo";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import Dashboard from "@/app/account/Dashboard";
+import ViewOnlyReport from "@/app/ReportViewOnly";
 import { StudentHero } from "@/app/account/illustrations";
 import { C } from "@/app/account/viz";
 
@@ -46,10 +47,14 @@ export default function AccountPage() {
   const signOut = () => { void logout().then(() => router.push("/signin")); };
 
   // Completed assessment → the full app-shell dashboard (owns its own chrome).
+  // Mounted at this level rather than inside the report view because the
+  // dashboard shows the same findings in condensed form — both are read-only,
+  // and the PDF students keep is the one emailed to them.
   if (a) {
     return (
       <>
         <style dangerouslySetInnerHTML={{ __html: PAGE_CSS }} />
+        <ViewOnlyReport />
         <Dashboard a={a} profile={profile} email={user.email} onSignOut={signOut} />
       </>
     );

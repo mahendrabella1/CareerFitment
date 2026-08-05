@@ -1412,8 +1412,8 @@ export default function AssessmentExperience() {
               <p>
                 Every assessment ends in a shareable report: your top-5 career fits with
                 the reasons behind each, your strengths and gaps, learning style, and a
-                simple next-step plan. Printable, revisitable, and easy to discuss with a
-                mentor.
+                simple next-step plan. Revisit it online any time, and a PDF copy lands in
+                your inbox to discuss with a mentor.
               </p>
               <ul className="rs-checks">
                 {[
@@ -1492,7 +1492,7 @@ export default function AssessmentExperience() {
                 { icon: <Lightbulb size={22} />, t: "Strengths & gaps", d: "See what you're strong at and exactly what to build to reach your target careers." },
                 { icon: <Layers size={22} />, t: "8 dimensions, one picture", d: "Interests, aptitude, personality, motivators, EI and more — combined, not averaged." },
                 { icon: <Clock size={22} />, t: "No time pressure", d: "Go at your own pace. Mark questions for review and jump around freely." },
-                { icon: <Award size={22} />, t: "A shareable report", d: "A clean, printable report you can revisit, download and discuss with a mentor." },
+                { icon: <Award size={22} />, t: "A shareable report", d: "A clean report you can revisit any time online, plus a PDF copy emailed to you to discuss with a mentor." },
               ].map((b, i) => (
                 <article key={b.t} className="lx-benefit anim-up" style={{ animationDelay: `${i * 60}ms` }}>
                   <div className="lx-benefit-icon">{b.icon}</div>

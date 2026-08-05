@@ -14,7 +14,11 @@
  *   · benchmark-vs-peers panel with percentiles
  *
  * Data comes from the saved assessment; narrative from lib/report/knowledge.
- * Scroll-reveal on screen; each sheet paginates for print ("Save as PDF").
+ * Scroll-reveal on screen. This is a VIEW-ONLY surface — <ViewOnlyReport/> (from
+ * the parent) blanks the page on print, and the PDF students actually keep is
+ * the one emailed to them, rendered server-side by lib/report/reportPdf.tsx.
+ * The per-sheet pagination CSS below is kept so the layout can be printed again
+ * by re-enabling that guard, but it has no effect while it's mounted.
  */
 
 import { useEffect, useRef } from "react";
@@ -624,7 +628,9 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
           <div className="closing">
             <h3>This is a map, not a verdict.</h3>
             <p>Your profile shows where you’ll thrive today — but you’re still growing. Revisit this report as you change, and share it with someone who’s guiding you.</p>
-            <button className="og-noprint b b1" onClick={() => window.print()}>Download / print this report</button>
+            {/* Was a print/download button. The PDF is emailed instead, so the
+                inbox holds one canonical copy rather than stale printouts. */}
+            <p className="closing-mail">A PDF copy of this report has been emailed to you — share that with a parent or mentor.</p>
           </div>
           {/* Says plainly what this is built from. A report that names a career
               invites more certainty than the method can carry, so the basis and
@@ -1277,6 +1283,8 @@ const CSS = `
 .frx .closing p{color:#c9c9d2;font-size:14px;line-height:1.6;max-width:52ch;margin:11px auto 0}
 .frx .closing .b{margin-top:20px;font-size:13px;font-weight:700;padding:12px 22px;border-radius:11px;border:none;cursor:pointer}
 .frx .closing .b1{background:var(--red);color:#fff}
+.frx .closing .closing-mail{margin-top:20px;display:inline-block;font-size:12.5px;font-weight:600;color:#e6e6ec;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:11px;padding:11px 18px;max-width:46ch}
 .frx .disclaimer{margin-top:14px;padding:14px 18px;border:1px solid var(--line);border-radius:12px;
   background:#fafafb;color:#5b5b66;font-size:12.5px;line-height:1.65}
 .frx .disclaimer b{color:${C.ink}}
