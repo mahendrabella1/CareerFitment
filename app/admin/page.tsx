@@ -403,18 +403,27 @@ export default function AdminPage() {
               <Icon name={payMsg.kind === "ok" ? "check" : "info"} size={15} /> {payMsg.text}
             </div>
           )}
+          {/* The message goes in a single <span>: this row is a flex container,
+              so a bare <b> would become its own flex item and get pushed away
+              from the surrounding words by the row's gap. */}
           {payLoaded && payEnabled && !payConfigured && (
             <div style={S.payWarn}>
-              <Icon name="info" size={15} /> Payment is switched on, but no Razorpay key secret is set
-              on this deployment — students still get in free. Add <b>RAZORPAY_KEY_SECRET</b> to the
-              host environment to start charging.
+              <Icon name="info" size={15} style={{ flex: "none", marginTop: 1 }} />
+              <span>
+                Payment is switched on, but no Razorpay key secret is set on this deployment —
+                students still get in free. Add <b>RAZORPAY_KEY_SECRET</b> to the host environment
+                to start charging.
+              </span>
             </div>
           )}
           {payLoaded && paySource === "env" && (
             <div style={S.payWarn}>
-              <Icon name="info" size={15} /> The server can&apos;t reach Firestore, so it&apos;s falling back to
-              the environment variables and this switch won&apos;t take effect. Add the Firebase admin
-              credentials (<b>serviceAccountKey.json</b> or the <b>FIREBASE_*</b> env vars) on the server.
+              <Icon name="info" size={15} style={{ flex: "none", marginTop: 1 }} />
+              <span>
+                The server can&apos;t reach Firestore, so it&apos;s falling back to the environment
+                variables and this switch won&apos;t take effect. Add the Firebase admin credentials
+                (<b>serviceAccountKey.json</b> or the <b>FIREBASE_*</b> env vars) on the server.
+              </span>
             </div>
           )}
         </section>
