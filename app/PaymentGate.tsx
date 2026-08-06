@@ -94,25 +94,38 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
 
   const [countdown, setCountdown] = useState("");
 
+  // `onPaid` is an inline arrow in the parent, so it is a new function on every
+  // parent render. Holding it in a ref lets the effect below depend on nothing
+  // and still call the current one.
+  //
+  // This matters more than it looks. With `onPaid` in the dependency list, a
+  // parent re-render tears the effect down mid-flight — the cleanup marks the
+  // in-flight request cancelled, and the request then returns without ever
+  // clearing `checking`, leaving the student on "Preparing your assessment…"
+  // for good. Depending on nothing means the cleanup runs only on a real
+  // unmount, which is the only time "cancelled" should mean anything.
+  const onPaidRef = useRef(onPaid);
+  onPaidRef.current = onPaid;
+
   // Ask the server whether this student should be charged. It says no when an
   // admin has switched payment off in /admin, or when real payment isn't
   // configured (no Razorpay secret) — either way we skip the fee and let the
   // exam load immediately.
-  //
-  // Runs exactly once. `onPaid` is an inline arrow in the parent, so it is a
-  // new function on every parent render and this effect would otherwise re-run
-  // and pop the coupon modal open again after the student had closed it.
-  const inited = useRef(false);
   useEffect(() => {
-    if (inited.current) return;
-    inited.current = true;
     let cancelled = false;
     (async () => {
+      // A request that never settles would park the student on the loading
+      // card indefinitely. Time it out into the catch below, which treats it
+      // the same as any other network failure — because that is what a request
+      // that never answers is.
+      const abort = new AbortController();
+      const timer = window.setTimeout(() => abort.abort(), 15000);
       try {
-        const res = await fetch("/api/payment/status", { cache: "no-store" });
+        const res = await fetch("/api/payment/status", { cache: "no-store", signal: abort.signal });
         const data = await res.json();
+        window.clearTimeout(timer);
         if (cancelled) return;
-        if (!data?.active) { onPaid(); return; }
+        if (!data?.active) { onPaidRef.current(); return; }
 
         // Seed the price line from the server's own numbers first, so that even
         // if the coupon call below fails the screen still quotes the admin's fee
@@ -140,13 +153,19 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
           // rather than "you just saved 900".
           if (applied.coupon) setPopupCoupon(applied);
         }
+        // Whatever the coupon call did, the price line is populated and the
+        // student must come out of the loading state. Nothing below this point
+        // may return early.
         setChecking(false);
       } catch {
-        if (!cancelled) onPaid(); // fail open in test/misconfig — never block the exam
+        window.clearTimeout(timer);
+        if (!cancelled) onPaidRef.current(); // fail open on a network/misconfig error
       }
     })();
     return () => { cancelled = true; };
-  }, [onPaid]);
+    // Mount only — see onPaidRef above.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Live "ends in" clock. Started in an effect so the server-rendered markup
   // and the first client paint agree (they'd otherwise differ by a second).
