@@ -84,10 +84,21 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
     invalidCode: false,
   });
 
-  // Coupon box (the hand-typed path — OGFREE and anything added later).
+  // Coupon box (the hand-typed path — OGFREE and anything added later). Starts
+  // collapsed; `openCouponBox` reveals it and puts the cursor straight in, so
+  // "click here" costs exactly one click and no aiming.
   const [couponInput, setCouponInput] = useState("");
   const [couponBusy, setCouponBusy] = useState(false);
   const [couponMsg, setCouponMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
+  const [couponOpen, setCouponOpen] = useState(false);
+  const couponInputRef = useRef<HTMLInputElement>(null);
+
+  function openCouponBox() {
+    setCouponOpen(true);
+    // The input does not exist until this render commits, so focus on the next
+    // frame rather than in the same tick.
+    requestAnimationFrame(() => couponInputRef.current?.focus());
+  }
 
   // The auto-applied-coupon popup. `popupCoupon` is what it announces.
   const [popupCoupon, setPopupCoupon] = useState<Priced | null>(null);
@@ -421,27 +432,40 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
             <li>Report emailed to you on completion</li>
           </ul>
 
-          {/* Hand-typed codes. Kept visible even with the sale code applied —
-              a student holding OGFREE must have somewhere to put it. */}
+          {/* Hand-typed codes. Collapsed behind a prompt, because the sale code
+              is already applied by the time anyone reads this — an empty box
+              sitting under a discounted price invites people to hunt for a
+              better one. It stays available for the student who does hold a
+              code (OGFREE), one click away and focused the moment it opens. */}
           <div className="pg-coupon">
-            <label className="pg-coupon-label" htmlFor="pg-coupon-input">Have a coupon code?</label>
-            <div className="pg-coupon-row">
-              <input
-                id="pg-coupon-input"
-                className="pg-coupon-input"
-                value={couponInput}
-                placeholder="Enter code"
-                autoCapitalize="characters"
-                spellCheck={false}
-                disabled={couponBusy || busy}
-                onChange={(e) => { setCouponInput(e.target.value.toUpperCase()); setCouponMsg(null); }}
-                onKeyDown={(e) => { if (e.key === "Enter") void applyTypedCoupon(); }}
-              />
-              <button className="pg-coupon-btn" disabled={couponBusy || busy || !couponInput.trim()} onClick={() => void applyTypedCoupon()}>
-                {couponBusy ? "Checking…" : "Apply"}
+            {!couponOpen ? (
+              <button className="pg-coupon-toggle" onClick={openCouponBox} disabled={busy}>
+                Have a coupon code? <span>Click here</span>
               </button>
-            </div>
-            {couponMsg && <div className={couponMsg.kind === "ok" ? "pg-coupon-ok" : "pg-coupon-err"}>{couponMsg.text}</div>}
+            ) : (
+              <div className="pg-coupon-open">
+                <label className="pg-coupon-label" htmlFor="pg-coupon-input">Enter your coupon code</label>
+                <div className="pg-coupon-row">
+                  <input
+                    id="pg-coupon-input"
+                    ref={couponInputRef}
+                    className="pg-coupon-input"
+                    value={couponInput}
+                    placeholder="e.g. OGFREE"
+                    autoCapitalize="characters"
+                    autoComplete="off"
+                    spellCheck={false}
+                    disabled={couponBusy || busy}
+                    onChange={(e) => { setCouponInput(e.target.value.toUpperCase()); setCouponMsg(null); }}
+                    onKeyDown={(e) => { if (e.key === "Enter") void applyTypedCoupon(); }}
+                  />
+                  <button className="pg-coupon-btn" disabled={couponBusy || busy || !couponInput.trim()} onClick={() => void applyTypedCoupon()}>
+                    {couponBusy ? "Checking…" : "Apply"}
+                  </button>
+                </div>
+                {couponMsg && <div className={couponMsg.kind === "ok" ? "pg-coupon-ok" : "pg-coupon-err"}>{couponMsg.text}</div>}
+              </div>
+            )}
           </div>
 
           {err ? <div className="pg-err">{err}</div> : null}
@@ -511,7 +535,7 @@ function CouponPopup({ priced, countdown, onClose }: { priced: Priced; countdown
         <button className="pg-modal-btn" onClick={onClose}>
           {free ? "Start my assessment" : `Continue — pay ${formatPaise(priced.payablePaise)}`}
         </button>
-        {!free && <div className="pg-modal-foot">Have another code? Enter it under “Have a coupon code?”</div>}
+        {!free && <div className="pg-modal-foot">Have another code? Close this and tap “Have a coupon code? Click here”.</div>}
       </div>
     </div>
   );
@@ -555,6 +579,14 @@ const CSS = `
 .pg-list li::before{content:"✓";position:absolute;left:0;top:0;width:19px;height:19px;border-radius:50%;background:#eef0ff;color:#6366F1;font-size:12px;font-weight:800;display:grid;place-items:center}
 
 .pg-coupon{text-align:left;border-top:1px solid #f0f1f6;padding-top:16px;margin-bottom:16px}
+.pg-coupon-toggle{display:block;width:100%;background:none;border:none;padding:2px 0;text-align:center;
+  font-family:inherit;font-size:13px;font-weight:600;color:#6b7080;cursor:pointer}
+.pg-coupon-toggle span{color:#6366F1;font-weight:800;text-decoration:underline;text-underline-offset:2px;margin-left:3px}
+.pg-coupon-toggle:hover span{color:#4f46e5}
+.pg-coupon-toggle:disabled{opacity:.5;cursor:default}
+.pg-coupon-open{animation:pgReveal .26s cubic-bezier(.2,.8,.25,1) both}
+@keyframes pgReveal{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.pg-coupon-open{animation:none}}
 .pg-coupon-label{display:block;font-size:12px;font-weight:700;color:#5b6070;margin-bottom:7px}
 .pg-coupon-row{display:flex;gap:8px}
 .pg-coupon-input{flex:1;min-width:0;border:1px solid #dfe3ec;border-radius:10px;padding:11px 12px;font-size:14px;
