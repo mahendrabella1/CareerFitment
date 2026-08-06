@@ -15,6 +15,7 @@ import {
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
   signOut,
   updateProfile as updateFirebaseProfile,
   onAuthStateChanged,
@@ -127,6 +128,8 @@ interface AuthState {
   profile: UserProfile | null;
   register: (input: RegisterInput) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
+  /** Emails a Firebase reset link. The password itself is never recoverable. */
+  resetPassword: (email: string) => Promise<void>;
   logout: () => Promise<void>;
   saveAssessment: (summary: AssessmentSummary) => Promise<void>;
   saveExamSession: (session: ExamSession) => Promise<void>;
@@ -227,6 +230,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await signInWithEmailAndPassword(auth, email.trim(), password);
   }
 
+  // Firebase stores only a hash of the password, so there is nothing to "look
+  // up" and show a student who has forgotten theirs — a reset link is the only
+  // route back in, and every screen that mentions the password points here.
+  async function resetPassword(email: string) {
+    const auth = getFirebaseAuth();
+    if (!auth) throw new Error("Accounts are not configured yet.");
+    await sendPasswordResetEmail(auth, email.trim());
+  }
+
   async function logout() {
     const auth = getFirebaseAuth();
     if (auth) await signOut(auth);
@@ -254,7 +266,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ ready: firebaseReady, loading, user, profile, register, signIn, logout, saveAssessment, saveExamSession, clearExamSession }}
+      value={{ ready: firebaseReady, loading, user, profile, register, signIn, resetPassword, logout, saveAssessment, saveExamSession, clearExamSession }}
     >
       {children}
     </AuthContext.Provider>

@@ -8,18 +8,53 @@ import Link from "next/link";
 import { Logo } from "@/app/Logo";
 import { useAuth, authErrorMessage } from "@/lib/auth/AuthProvider";
 import { emailIsValid } from "@/lib/auth/formOptions";
+import OfferBanner from "@/app/OfferBanner";
 
 export default function SignInPage() {
   const router = useRouter();
-  const { ready, signIn } = useAuth();
+  const { ready, signIn, resetPassword } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+  const [resetting, setResetting] = useState(false);
+
+  // Nobody can look a password up — Firebase stores only a hash — so a student
+  // who has forgotten theirs needs this to be one click away, not a support
+  // email. The confirmation is deliberately the same whether or not the address
+  // has an account: it must not become a way to test which emails are registered.
+  async function onForgotPassword() {
+    setError("");
+    setNotice("");
+    if (!emailIsValid(email)) {
+      setError("Enter your email address above, then tap “Forgot password?”.");
+      return;
+    }
+    if (!ready) {
+      setError("Accounts aren’t configured on this deployment yet.");
+      return;
+    }
+    setResetting(true);
+    try {
+      await resetPassword(email);
+      setNotice(`If an account exists for ${email.trim()}, a reset link is on its way. Check your spam folder too.`);
+    } catch (err) {
+      const code = (err as { code?: string })?.code;
+      if (code === "auth/user-not-found" || code === "auth/invalid-email") {
+        setNotice(`If an account exists for ${email.trim()}, a reset link is on its way. Check your spam folder too.`);
+      } else {
+        setError(authErrorMessage(err));
+      }
+    } finally {
+      setResetting(false);
+    }
+  }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    setNotice("");
     if (!emailIsValid(email) || !password) {
       setError("Enter your email and password.");
       return;
@@ -41,6 +76,7 @@ export default function SignInPage() {
 
   return (
     <div style={S.page}>
+      <OfferBanner />
       <header style={S.header}>
         <Link href="/" style={{ textDecoration: "none" }}><Logo height={30} /></Link>
         <div style={S.headerRight}>
@@ -60,6 +96,7 @@ export default function SignInPage() {
           </div>
 
           {error && <div style={S.errorBox}>{error}</div>}
+          {notice && <div style={S.noticeBox}>{notice}</div>}
 
           <form onSubmit={onSubmit} noValidate style={S.form}>
             <input style={S.input} type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
@@ -68,6 +105,10 @@ export default function SignInPage() {
               {submitting ? "Signing in…" : "Sign in"}
             </button>
           </form>
+
+          <button type="button" style={S.forgot} onClick={() => void onForgotPassword()} disabled={resetting}>
+            {resetting ? "Sending reset link…" : "Forgot password?"}
+          </button>
 
           <p style={S.foot}>
             Haven’t taken the test? <Link href="/register" style={S.link}>Register &amp; start</Link>
@@ -106,6 +147,8 @@ const S: Record<string, React.CSSProperties> = {
   vTitle: { fontSize: 19, fontWeight: 800, lineHeight: 1.2 },
   vSub: { fontSize: 12.5, color: "#64748b", marginTop: 3 },
   errorBox: { background: "#fee2e2", border: "1px solid #fca5a5", color: "#b91c1c", padding: "9px 12px", borderRadius: 9, fontSize: 13, marginBottom: 12, fontWeight: 600 },
+  noticeBox: { background: "#ecfdf5", border: "1px solid #a7f3d0", color: "#065f46", padding: "9px 12px", borderRadius: 9, fontSize: 13, marginBottom: 12, fontWeight: 600, lineHeight: 1.5 },
+  forgot: { display: "block", margin: "12px auto 0", background: "none", border: "none", color: BLUE, fontSize: 13, fontWeight: 700, cursor: "pointer", textDecoration: "underline", fontFamily: "inherit" },
   form: { display: "flex", flexDirection: "column", gap: 11 },
   input: { width: "100%", padding: "11px 13px", borderRadius: 9, border: "1px solid #cbd5e1", fontSize: 14.5, outline: "none", boxSizing: "border-box" },
   submit: { marginTop: 4, padding: "13px", background: BLUE, color: "#fff", border: "none", borderRadius: 11, fontSize: 15, fontWeight: 800, cursor: "pointer" },

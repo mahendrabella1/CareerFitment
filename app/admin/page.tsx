@@ -21,6 +21,11 @@ import { categoryLabel } from "@/lib/auth/formOptions";
 import { getDb, getFirebaseAuth } from "@/lib/firebase/client";
 import { Icon } from "@/app/Icons";
 import { C, Ring } from "@/app/account/viz";
+import { OFFER, formatPaise } from "@/lib/offer";
+// The same report component the student sees on their own dashboard. It takes
+// the whole summary as a prop and fetches nothing, so the admin view is the
+// student's view — there is no second rendering path to drift out of step.
+import FullReport from "@/app/account/FullReport";
 
 /**
  * ⚠️ DEV-ONLY admin shortcut. Lets the redesigned /admin be reviewed with a
@@ -89,6 +94,10 @@ export default function AdminPage() {
   const [schoolFilter, setSchoolFilter] = useState("");
   const [newSchool, setNewSchool] = useState("");
   const [assigning, setAssigning] = useState<string | null>(null);
+  // The student whose report is open full-screen, or null for the user table.
+  // Everything it needs is already in `rows` — latestAssessment is part of the
+  // profile document — so opening a report costs no extra Firestore read.
+  const [viewing, setViewing] = useState<UserProfile | null>(null);
 
   // ---- Payment settings (Firestore `settings/payment`) --------------------
   // Loaded from /api/payment/status rather than read straight out of Firestore,
@@ -299,6 +308,53 @@ export default function AdminPage() {
     );
   }
 
+  // A student's report, full screen. Rendered instead of the console rather
+  // than over it so the browser's own print/save-as-PDF captures the report
+  // alone — an overlay would carry the whole admin page into the printout.
+  if (viewing?.latestAssessment) {
+    const a = viewing.latestAssessment;
+    const st = sent[viewing.uid];
+    const completed = (() => {
+      try { return new Date(a.completedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }); }
+      catch { return ""; }
+    })();
+    return (
+      <div style={S.reportPage}>
+        <style dangerouslySetInnerHTML={{ __html: ADMIN_CSS }} />
+        <div style={S.reportBar} className="og-noprint og-adm-repbar">
+          <button style={S.reportBack} onClick={() => { setViewing(null); window.scrollTo(0, 0); }}>
+            <Icon name="chevronLeft" size={16} /> Back to users
+          </button>
+          <div style={S.reportWho}>
+            <b style={{ fontSize: 14 }}>{viewing.name || "—"}</b>
+            <span style={{ fontSize: 12, color: C.muted }}>
+              {viewing.email || "—"}
+              {viewing.institution ? ` · ${viewing.institution}` : ""}
+              {completed ? ` · completed ${completed}` : ""}
+            </span>
+          </div>
+          <div style={S.reportActions}>
+            <button style={S.sendBtn} onClick={() => window.print()}>
+              <Icon name="save" size={14} /> Print / PDF
+            </button>
+            {st === "sent" ? (
+              <span style={{ ...S.pill, ...S.pillSent }}><Icon name="check" size={13} /> Emailed</span>
+            ) : (
+              <button
+                style={{ ...S.sendBtn, ...(st === "sending" ? { opacity: 0.6 } : {}) }}
+                disabled={st === "sending"}
+                onClick={() => void sendReport(viewing)}
+              >
+                {st === "sending" ? "Sending…" : "Email to student"}
+              </button>
+            )}
+          </div>
+        </div>
+        <FullReport a={a} name={viewing.name} />
+      </div>
+    );
+  }
+
   return (
     <div style={S.page}>
       <style dangerouslySetInnerHTML={{ __html: ADMIN_CSS }} />
@@ -441,6 +497,37 @@ export default function AdminPage() {
               </span>
             </div>
           )}
+
+          {/* What the student actually sees on the payment screen. These are
+              code constants (lib/offer.ts + lib/coupons.ts), not settings — so
+              this is read-only, and says where to change them. */}
+          {payLoaded && payEnabled && (
+            <div style={S.payOffer}>
+              <div style={S.payOfferHead}>
+                <span style={{ ...S.pill, ...S.pillOk }}>
+                  <span style={{ ...S.dot, background: C.good }} /> {OFFER.active ? "Sale running" : "Sale off"}
+                </span>
+                <b style={{ fontSize: 13 }}>{OFFER.name}</b>
+                <span style={{ fontSize: 12, color: C.muted }}>ends {OFFER.endsOnLabel}</span>
+              </div>
+              <div style={S.payOfferRow}>
+                <span>Shown as</span>
+                <b><s style={{ color: C.muted, fontWeight: 600 }}>{formatPaise(OFFER.listPaise)}</s> → {payPrice ? `₹${payPrice}` : formatPaise(OFFER.salePaise)}</b>
+              </div>
+              <div style={S.payOfferRow}>
+                <span><b>{OFFER.autoCouponCode}</b> — applied automatically on the payment screen</span>
+                <b>{OFFER.discountPct}% off</b>
+              </div>
+              <div style={S.payOfferRow}>
+                <span><b>{OFFER.freeCouponCode}</b> — typed in by the student</span>
+                <b>Free entry</b>
+              </div>
+              <div style={{ ...S.payNote, marginTop: 6 }}>
+                Coupons and sale copy live in <b>lib/offer.ts</b> and <b>lib/coupons.ts</b> — edit and redeploy to change them.
+                Free-code uses are logged to the <b>couponRedemptions</b> collection.
+              </div>
+            </div>
+          )}
         </section>
 
         <div style={S.tableCard}>
@@ -488,7 +575,19 @@ export default function AdminPage() {
                     const a = u.latestAssessment;
                     return (
                       <tr key={u.uid || i}>
-                        <td style={S.td}><b style={S.name}>{u.name || "—"}</b></td>
+                        <td style={S.td}>
+                          {/* The name is the obvious thing to click for "show
+                              me this student" — but only once there's a report
+                              behind it, or the click does nothing and reads as
+                              broken. */}
+                          {a ? (
+                            <button style={S.nameBtn} onClick={() => { setViewing(u); window.scrollTo(0, 0); }} title="Open this student's report">
+                              {u.name || "—"}
+                            </button>
+                          ) : (
+                            <b style={S.name}>{u.name || "—"}</b>
+                          )}
+                        </td>
                         <td style={S.td}>{u.email || "—"}</td>
                         <td style={S.td}>{u.phone || "—"}</td>
                         <td style={S.td}>
@@ -513,21 +612,26 @@ export default function AdminPage() {
                         <td style={S.td}>{a?.overallFitmentPct != null ? <b style={{ color: C.red }}>{a.overallFitmentPct}%</b> : "—"}</td>
                         <td style={S.td}>
                           {a ? (
-                            (() => {
-                              const st = sent[u.uid];
-                              if (st === "sent") return <span style={{ ...S.pill, ...S.pillSent }}><Icon name="check" size={13} /> Sent</span>;
-                              if (st?.startsWith("error")) return (
-                                <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "flex-start" }}>
-                                  <button style={S.sendBtn} onClick={() => void sendReport(u)}>Retry</button>
-                                  <span style={{ fontSize: 11, color: C.redStrong, maxWidth: 240, lineHeight: 1.35 }}>{st.replace(/^error:\s*/, "")}</span>
-                                </div>
-                              );
-                              return (
-                                <button style={{ ...S.sendBtn, ...(st === "sending" ? { opacity: 0.6 } : {}) }} disabled={st === "sending"} onClick={() => void sendReport(u)}>
-                                  {st === "sending" ? "Sending…" : "Email report"}
-                                </button>
-                              );
-                            })()
+                            <div style={S.reportCell}>
+                              <button style={S.viewBtn} onClick={() => { setViewing(u); window.scrollTo(0, 0); }}>
+                                <Icon name="explain" size={14} /> View report
+                              </button>
+                              {(() => {
+                                const st = sent[u.uid];
+                                if (st === "sent") return <span style={{ ...S.pill, ...S.pillSent }}><Icon name="check" size={13} /> Sent</span>;
+                                if (st?.startsWith("error")) return (
+                                  <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "flex-start" }}>
+                                    <button style={S.sendBtn} onClick={() => void sendReport(u)}>Retry</button>
+                                    <span style={{ fontSize: 11, color: C.redStrong, maxWidth: 240, lineHeight: 1.35 }}>{st.replace(/^error:\s*/, "")}</span>
+                                  </div>
+                                );
+                                return (
+                                  <button style={{ ...S.sendBtn, ...(st === "sending" ? { opacity: 0.6 } : {}) }} disabled={st === "sending"} onClick={() => void sendReport(u)}>
+                                    {st === "sending" ? "Sending…" : "Email report"}
+                                  </button>
+                                );
+                              })()}
+                            </div>
                           ) : "—"}
                         </td>
                       </tr>
@@ -570,6 +674,12 @@ function Center({ children }: { children: React.ReactNode }) {
 const ADMIN_CSS = `
 .og-adm-table tbody tr{transition:background .12s}
 .og-adm-table tbody tr:hover{background:${C.line2}}
+/* Keep the printed report to the report itself — the toolbar is navigation,
+   and report-premium.css already hides the student-facing chrome. */
+@media print{.og-noprint{display:none !important}}
+@media (max-width: 640px){
+  .og-adm-repbar{padding:10px 12px !important;gap:10px !important}
+}
 @media (max-width: 720px){
   .og-adm-stats{grid-template-columns:repeat(2,1fr) !important}
   .og-adm-overview{flex-direction:column;align-items:flex-start !important;gap:18px}
@@ -625,6 +735,10 @@ const S: Record<string, React.CSSProperties> = {
   payOk: { display: "flex", alignItems: "center", gap: 8, background: C.goodTint, border: "1px solid #cbe8db", color: "#1f7a55", padding: "10px 14px", borderRadius: 10, fontSize: 13, marginTop: 14, fontWeight: 600 },
   payWarn: { display: "flex", alignItems: "flex-start", gap: 8, background: "#fff8e8", border: "1px solid #f2e0b5", color: "#8a6516", padding: "10px 14px", borderRadius: 10, fontSize: 12.5, marginTop: 12, lineHeight: 1.5, fontWeight: 600 },
 
+  payOffer: { background: "#fbfcff", border: `1px dashed ${C.line}`, borderRadius: 12, padding: "13px 15px", marginTop: 14 },
+  payOfferHead: { display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 4 },
+  payOfferRow: { display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 14, padding: "7px 0", borderTop: `1px solid ${C.line}`, fontSize: 12.5, color: C.muted, lineHeight: 1.45 },
+
   tableCard: { background: "#fff", border: `1px solid ${C.line}`, borderRadius: 18, padding: "20px 22px", boxShadow: "0 2px 10px rgba(20,20,25,.04)" },
   tableHead: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 16, flexWrap: "wrap" },
   tableTitle: { fontSize: 15.5, fontWeight: 800, display: "inline-flex", alignItems: "center", gap: 8 },
@@ -650,6 +764,16 @@ const S: Record<string, React.CSSProperties> = {
   pillWait: { background: C.line2, color: C.ink3 },
   pillSent: { background: C.goodTint, color: "#1f7a55" },
   sendBtn: { padding: "6px 13px", background: "#fff", color: C.ink2, border: `1px solid ${C.line}`, borderRadius: 8, fontSize: 12.5, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" },
+
+  // ---- report viewer ----
+  reportCell: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" },
+  viewBtn: { display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 13px", background: C.ink, color: "#fff", border: "none", borderRadius: 8, fontSize: 12.5, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" },
+  nameBtn: { background: "none", border: "none", padding: 0, font: "inherit", color: C.ink, fontWeight: 700, cursor: "pointer", textAlign: "left", textDecoration: "underline", textDecorationColor: C.line, textUnderlineOffset: 3 },
+  reportPage: { minHeight: "100vh", background: "#f7f7f8", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: C.ink },
+  reportBar: { position: "sticky", top: 0, zIndex: 40, display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap", padding: "12px 22px", background: "rgba(255,255,255,.94)", backdropFilter: "saturate(160%) blur(10px)", borderBottom: `1px solid ${C.line}` },
+  reportBack: { display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 14px", background: "#fff", color: C.ink2, border: `1px solid ${C.line}`, borderRadius: 9, fontSize: 13, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" },
+  reportWho: { display: "flex", flexDirection: "column", gap: 1, flex: 1, minWidth: 160 },
+  reportActions: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" },
   muted: { color: C.ink3, fontSize: 14, padding: "8px 0" },
   emptyRow: { color: C.ink3, fontSize: 14, padding: "28px 0", textAlign: "center" },
   linkBtn: { marginTop: 12, background: "none", border: "none", color: C.red, fontWeight: 700, fontSize: 14, cursor: "pointer" },

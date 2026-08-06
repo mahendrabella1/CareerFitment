@@ -14,6 +14,7 @@ import NewExam from "@/app/NewExam";
 // Without them /api/payment/order fails and nobody can start the exam — see the
 // note in lib/razorpay.ts.
 import PaymentGate from "@/app/PaymentGate";
+import ExamComplete from "@/app/ExamComplete";
 import { trackEvent } from "@/lib/metaPixel";
 import {
   Sparkles,
@@ -342,39 +343,6 @@ function OvLine({ dot, label, value, bold }: { dot?: string; label: string; valu
   );
 }
 
-function ThankYouScreen({ name }: { name?: string }) {
-  const [phase, setPhase] = useState<"load" | "done">("load");
-  useEffect(() => {
-    const t = setTimeout(() => setPhase("done"), 2600);
-    return () => clearTimeout(t);
-  }, []);
-  return (
-    <div style={TY.wrap}>
-      {phase === "load" ? (
-        <>
-          <div className="exam-spinner" />
-          <div style={TY.text}>Saving your responses…</div>
-          <div style={TY.sub}>Please wait a moment</div>
-        </>
-      ) : (
-        <div className="ty-pop" style={{ textAlign: "center" }}>
-          <div style={TY.check}>✓</div>
-          <div style={TY.thanks}>Thank you{name ? `, ${name}` : ""}! 🎉</div>
-          <div style={TY.sub}>Preparing your report…</div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-const TY: Record<string, React.CSSProperties> = {
-  wrap: { position: "fixed", inset: 0, zIndex: 1200, background: "linear-gradient(160deg, #f6f4ff, #eef1fb)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14, fontFamily: "Inter, system-ui, Segoe UI, sans-serif", padding: 24, textAlign: "center" },
-  text: { fontSize: 19, fontWeight: 800, color: "#1e293b" },
-  sub: { fontSize: 14, color: "#64748b" },
-  check: { width: 92, height: 92, borderRadius: "50%", margin: "0 auto 18px", background: "linear-gradient(135deg,#16a34a,#22c55e)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 48, fontWeight: 800, boxShadow: "0 14px 34px rgba(22,163,74,.4)" },
-  thanks: { fontSize: 28, fontWeight: 800, color: "#0f172a", marginBottom: 8 },
-};
-
 function Donut({ pct }: { pct: number }) {
   const r = 34;
   const circ = 2 * Math.PI * r;
@@ -540,7 +508,7 @@ function optionList(question: SessionQuestion) {
 
 export default function AssessmentExperience() {
   const router = useRouter();
-  const { user, profile, loading: authLoading, saveAssessment } = useAuth();
+  const { user, profile, loading: authLoading, saveAssessment, resetPassword } = useAuth();
   const [beginHandled, setBeginHandled] = useState(false);
   // Reactive to the URL query so a client-side nav to /?begin=1 (e.g. "Retake"
   // from the dashboard) always launches the exam instead of a stale landing.
@@ -1046,9 +1014,10 @@ export default function AssessmentExperience() {
     } catch {
       /* best-effort — still send them to the dashboard */
     }
-    // Show the thank-you screen (loader -> animated thanks), then redirect.
+    // Hand over to the completion screen. It carries the login details and the
+    // steps back into the dashboard, so it stays put until they choose to move
+    // on rather than redirecting out from under them.
     setThankYou(true);
-    setTimeout(() => router.push("/account"), 5000);
   }
 
   // New set-based assessment: entered via /?begin=1 by a signed-in user.
@@ -1863,7 +1832,18 @@ export default function AssessmentExperience() {
         </div>
       ) : null}
 
-      {thankYou ? <ThankYouScreen name={(lead.name || profile?.name || "").trim().split(/\s+/)[0]} /> : null}
+      {thankYou ? (
+        <ExamComplete
+          name={(lead.name || profile?.name || "").trim().split(/\s+/)[0]}
+          email={profile?.email || user?.email || lead.email || ""}
+          onGoToDashboard={() => router.push("/account")}
+          onResetPassword={
+            profile?.email || user?.email
+              ? () => resetPassword((profile?.email || user?.email) as string)
+              : undefined
+          }
+        />
+      ) : null}
 
       {results && user && !thankYou ? (
         <section

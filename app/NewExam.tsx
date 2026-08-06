@@ -31,6 +31,7 @@ const fmtTime = (s: number) => {
 };
 import { Logo } from "@/app/Logo";
 import { Icon } from "@/app/Icons";
+import ExamComplete from "@/app/ExamComplete";
 
 type Media =
   | { type: "grid"; cells: string[]; cols?: number }
@@ -82,7 +83,7 @@ export default function NewExam(props: { category: string; name?: string; onExit
 
 function NewExamInner({ category, name, onExit }: { category: string; name?: string; onExit: () => void }) {
   const router = useRouter();
-  const { saveAssessment, saveExamSession, clearExamSession, profile } = useAuth();
+  const { saveAssessment, saveExamSession, clearExamSession, resetPassword, profile, user } = useAuth();
   const [phase, setPhase] = useState<"loading" | "error" | "intro" | "resume" | "exam" | "thanks">("loading");
   const [data, setData] = useState<GenData | null>(null);
   const [cur, setCur] = useState(0);
@@ -235,8 +236,10 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
       try { await saveAssessment(j.data); } catch { /* still continue */ }
       try { await clearExamSession(); } catch { /* ignore */ }
       try { if (document.fullscreenElement) await document.exitFullscreen(); } catch { /* ignore */ }
+      // No auto-redirect: the completion screen carries the login details and
+      // the steps to get back in later, and whisking them away after four
+      // seconds is exactly how that gets missed. They leave when they choose.
       setPhase("thanks");
-      setTimeout(() => router.push("/account"), 4200);
     } catch (e) { setErr(e instanceof Error ? e.message : "Something went wrong"); setSubmitting(false); }
   }
 
@@ -247,16 +250,17 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
   if (phase === "error")
     return <Center><div style={{ color: "#c0564f" }}><Icon name="info" size={40} /></div><div style={S.big}>Couldn’t start the assessment</div><div style={S.subT}>{err}</div><button style={S.primary} onClick={exitExam}>Back</button></Center>;
 
-  if (phase === "thanks")
+  if (phase === "thanks") {
+    const email = profile?.email || user?.email || "";
     return (
-      <div style={S.thanks}><style dangerouslySetInnerHTML={{ __html: CSS }} />
-        <div className="og-pop" style={{ textAlign: "center" }}>
-          <div style={S.check}><Icon name="check" size={46} stroke={2.4} /></div>
-          <div style={S.thanksT}>Thank you{name ? `, ${name}` : ""}!</div>
-          <div style={S.subT}>Building your report…</div>
-        </div>
-      </div>
+      <ExamComplete
+        name={name}
+        email={email}
+        onGoToDashboard={() => router.push("/account")}
+        onResetPassword={email ? () => resetPassword(email) : undefined}
+      />
     );
+  }
 
   if (phase === "resume" && data)
     return (
