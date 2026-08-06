@@ -67,7 +67,7 @@ function pattern(pick: (cat: Category, i: number, n: number) => number) {
 
 const CI = B.career_interest[STAGE]["Set 1"] as any[];
 const CLUSTER_NAME: Record<string, string> = {
-  A: "Engineering & Construction", B: "Information Technology", C: "Health Science",
+  A: "Core Engineering & Infrastructure", B: "Information Technology", C: "Health Science",
   D: "Arts, Media & Design", E: "Business & Marketing", F: "Human & Public Services",
   G: "Science, Nature & Agriculture", H: "Sports, Hospitality & Lifestyle",
 };

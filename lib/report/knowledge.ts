@@ -26,11 +26,11 @@ export type Domain = {
 
 export const DOMAINS: Record<string, Domain> = {
   A: {
-    key: "A", name: "Engineering & Construction",
+    key: "A", name: "Core Engineering & Infrastructure",
     tagline: "Designing and building the physical world.",
     image: IMG("photo-1503387762-592deb58ef4e"),
-    whatItIs: "Turning ideas into real structures, machines, infrastructure and energy systems — from bridges and factories to renewable power and smart cities.",
-    roles: ["Civil / Structural Engineer", "Construction & Project Manager", "Mechanical / Industrial Engineer", "Renewable-Energy Engineer", "Supply-Chain / Logistics Manager"],
+    whatItIs: "Turning ideas into real machines, structures, infrastructure and energy systems — from engines and factories to bridges, renewable power and smart cities.",
+    roles: ["Mechanical / Industrial Engineer", "Civil / Structural Engineer", "Electrical & Electronics Engineer", "Renewable-Energy Engineer", "Infrastructure & Project Manager"],
     skills: ["Applied maths & physics", "CAD / design tools", "Structured problem-solving", "Project & site management", "Safety and standards"],
     howToJoin: ["Take Science (PCM) in classes 11–12", "B.E./B.Tech via JEE — or a diploma with lateral entry", "Specialise (civil, mechanical, etc.) and intern on real projects", "Add certifications: PMP, AutoCAD, LEED (green building)"],
     salaryIndia: "₹3.5–7 LPA entry · ₹10–22 LPA mid · ₹30 LPA+ as lead / project manager",

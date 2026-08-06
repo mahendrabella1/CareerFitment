@@ -8756,31 +8756,31 @@
      "text": "Your family is opening a small food outlet and wants your help. Which part of it would you want to run?",
      "options": [
       "Design the logo, the menu, the packaging and the look of the place.",
-      "Handle billing, stock, suppliers and the daily accounts.",
-      "Meet customers, take feedback, and bring in new business.",
-      "Set up the kitchen equipment and fix whatever breaks.",
-      "Make sure the food is safe, clean and genuinely good for people."
+      "Handle pricing, billing, suppliers and the daily accounts.",
+      "Set up the kitchen equipment, wiring and layout — and fix whatever breaks.",
+      "Make sure the food is safe, hygienic and genuinely good for people.",
+      "Build the ordering website and a simple app for online orders."
      ],
      "riasec": [
       {
        "A": 3,
-       "R": 1
-      },
-      {
-       "C": 3,
        "E": 1
       },
       {
-       "E": 3,
-       "S": 2
+       "C": 3,
+       "E": 2
       },
       {
        "R": 3,
-       "I": 2
+       "I": 1
       },
       {
        "S": 3,
        "I": 2
+      },
+      {
+       "I": 3,
+       "C": 1
       }
      ],
      "clusterWeights": [
@@ -8791,52 +8791,44 @@
        "E": 5
       },
       {
-       "H": 3,
-       "E": 2,
-       "F": 1
+       "A": 5
       },
       {
-       "A": 4,
-       "B": 1
+       "C": 5
       },
       {
-       "C": 4,
-       "G": 1
+       "B": 5
       }
      ],
      "careers": [
       [
-       "Architect",
-       "UX Designer",
        "Graphic Designer",
        "Product Designer",
-       "Animator"
+       "Interior Designer",
+       "Creative Director"
       ],
       [
-       "Business Manager",
        "Chartered Accountant",
+       "Business Manager",
        "Financial Analyst",
        "Operations Manager",
        "Auditor"
       ],
       [
-       "Entrepreneur",
-       "Project Manager",
-       "Teacher",
-       "Lawyer",
-       "HR Manager"
-      ],
-      [
-       "Robotics Engineer",
        "Mechanical Engineer",
-       "AI Engineer",
-       "Electronics Engineer",
-       "Product Engineer"
+       "Electrical Engineer",
+       "Automation Engineer",
+       "Engineer"
       ],
       [
        "Nutritionist",
        "Public Health Specialist",
-       "Food Technologist"
+       "Doctor"
+      ],
+      [
+       "Software Engineer",
+       "Mobile App Developer",
+       "UX Designer"
       ]
      ]
     },
@@ -8845,11 +8837,11 @@
      "q": "Q2",
      "text": "Your community faces a serious water shortage. What would you do first?",
      "options": [
-      "Collect data, identify the root cause, and test possible solutions.",
-      "Test the water for contamination and treat anyone who has fallen ill.",
-      "Meet local residents and organize volunteers to solve the issue together.",
-      "Design an awareness campaign using creative posters and videos.",
-      "Prepare a budget and action plan to implement the solution efficiently."
+      "Collect samples, identify the root cause and test possible solutions.",
+      "Meet local residents and organise volunteers to solve it together.",
+      "Design and build the pipelines, storage tanks and rainwater harvesting.",
+      "Build a sensor dashboard that tracks supply and flags leaks early.",
+      "Set up a community kitchen and rest area for the families queueing for water."
      ],
      "riasec": [
       {
@@ -8858,74 +8850,67 @@
       },
       {
        "S": 3,
+       "E": 2
+      },
+      {
+       "R": 3,
        "I": 2
       },
       {
+       "I": 3,
+       "R": 1
+      },
+      {
        "S": 3,
-       "E": 2
-      },
-      {
-       "A": 3,
        "E": 1
-      },
-      {
-       "C": 3,
-       "E": 2
       }
      ],
      "clusterWeights": [
       {
-       "G": 3,
-       "A": 1,
-       "C": 1
-      },
-      {
-       "C": 5
+       "G": 5
       },
       {
        "F": 5
       },
       {
-       "D": 4,
-       "E": 1
+       "A": 5
       },
       {
-       "E": 5
+       "B": 5
+      },
+      {
+       "H": 5
       }
      ],
      "careers": [
       [
+       "Environmental Scientist",
        "Research Scientist",
-       "Environmental Engineer",
-       "Doctor",
-       "Data Scientist",
-       "Civil Engineer"
-      ],
-      [
-       "Doctor",
-       "Public Health Specialist",
+       "Chemist",
        "Microbiologist"
       ],
       [
-       "IAS Officer",
        "Social Worker",
-       "Psychologist",
-       "Social Worker",
-       "Teacher"
+       "Civil Services Officer",
+       "Policy Analyst",
+       "Counsellor"
       ],
       [
-       "Graphic Designer",
-       "Digital Marketer",
-       "Content Creator",
-       "Media Professional",
-       "UX Designer"
+       "Civil Engineer",
+       "Environmental Engineer",
+       "Structural Engineer",
+       "Urban Planner"
       ],
       [
-       "Business Analyst",
-       "Operations Manager",
-       "Financial Planner",
-       "Project Manager",
-       "Banker"
+       "Data Analyst",
+       "Software Engineer",
+       "Network Engineer",
+       "Cloud Engineer"
+      ],
+      [
+       "Chef",
+       "Event Manager",
+       "Hotel Manager"
       ]
      ]
     },
@@ -8934,23 +8919,20 @@
      "q": "Q3",
      "text": "Your teacher asks you to create something that helps students learn better.",
      "options": [
-      "Organize the project timeline, budget, and responsibilities.",
-      "Develop a smart study app or simple learning device.",
-      "Design engaging illustrations, animations, or interactive visuals.",
+      "Organise the project timeline, budget and responsibilities.",
+      "Design engaging illustrations, animations and interactive visuals.",
       "Run sessions on sleep, stress and staying well enough to study.",
-      "Create a mentoring or peer-learning program for classmates."
+      "Create a mentoring or peer-learning programme for classmates.",
+      "Build a school garden or lab corner where students learn by growing and testing."
      ],
      "riasec": [
       {
-       "C": 3,
-       "E": 1
+       "E": 3,
+       "C": 2
       },
       {
-       "I": 3,
-       "R": 2
-      },
-      {
-       "A": 3
+       "A": 3,
+       "I": 1
       },
       {
        "S": 3,
@@ -8958,7 +8940,11 @@
       },
       {
        "S": 3,
-       "E": 1
+       "E": 2
+      },
+      {
+       "I": 3,
+       "R": 2
       }
      ],
      "clusterWeights": [
@@ -8966,53 +8952,47 @@
        "E": 5
       },
       {
-       "B": 2,
-       "A": 3
-      },
-      {
        "D": 5
       },
       {
-       "C": 4,
-       "F": 1
+       "C": 5
       },
       {
        "F": 5
+      },
+      {
+       "G": 5
       }
      ],
      "careers": [
       [
        "Project Manager",
-       "Chartered Accountant",
        "Business Manager",
        "Operations Manager",
        "Consultant"
       ],
       [
-       "Software Engineer",
-       "AI Engineer",
-       "Electronics Engineer",
-       "Robotics Engineer",
-       "Research Engineer"
-      ],
-      [
        "Animator",
        "Graphic Designer",
-       "Architect",
-       "Product Designer",
-       "UX Designer"
+       "Media Professional",
+       "Content Creator"
       ],
       [
        "Clinical Psychologist",
-       "Counsellor",
-       "Nutritionist"
+       "Nutritionist",
+       "Public Health Specialist"
       ],
       [
        "Teacher",
        "Counsellor",
-       "Psychologist",
-       "HR Manager",
+       "Technical Trainer",
        "Social Worker"
+      ],
+      [
+       "Agricultural Scientist",
+       "Horticulturist",
+       "Environmental Scientist",
+       "Biotechnologist"
       ]
      ]
     },
@@ -9022,177 +9002,161 @@
      "text": "During a science exhibition, which project would excite you the most?",
      "options": [
       "Model how an infection spreads through a school and how to stop it.",
-      "Build an AI model that predicts weather or crop diseases.",
-      "Plan the exhibition schedule, budget, and logistics.",
-      "Explain your project to visitors and answer their questions confidently.",
-      "Design an interactive exhibit that makes science easy to understand."
+      "An AI model that predicts the weather or spots crop disease from photos.",
+      "A working model of a bridge, an engine or a solar power system.",
+      "An interactive exhibit that makes a hard idea easy to understand.",
+      "A project on sports performance — nutrition, training and recovery."
      ],
      "riasec": [
       {
-       "I": 3,
-       "S": 1
-      },
-      {
-       "I": 3,
-       "R": 2
-      },
-      {
-       "C": 3,
-       "E": 2
-      },
-      {
        "S": 3,
-       "E": 2
+       "I": 2
+      },
+      {
+       "I": 3,
+       "R": 1
+      },
+      {
+       "R": 3,
+       "I": 2
       },
       {
        "A": 3,
-       "I": 1
+       "S": 1
+      },
+      {
+       "R": 3,
+       "S": 2
       }
      ],
      "clusterWeights": [
       {
-       "C": 4,
-       "G": 1
+       "C": 5
       },
       {
-       "G": 3,
-       "B": 2
+       "B": 5
       },
       {
-       "E": 5
-      },
-      {
-       "F": 4,
-       "D": 1
+       "A": 5
       },
       {
        "D": 5
+      },
+      {
+       "H": 5
       }
      ],
      "careers": [
       [
        "Doctor",
-       "Microbiologist",
-       "Public Health Specialist"
+       "Public Health Specialist",
+       "Nurse"
       ],
       [
        "AI Engineer",
        "Data Scientist",
-       "Research Scientist",
        "Software Engineer",
-       "Environmental Scientist"
+       "Data Analyst"
       ],
       [
-       "Project Manager",
-       "Operations Manager",
-       "Business Manager",
-       "Event Manager",
-       "Financial Planner"
+       "Civil Engineer",
+       "Mechanical Engineer",
+       "Renewable Energy Engineer",
+       "Structural Engineer"
       ],
       [
-       "Teacher",
-       "Lawyer",
-       "Psychologist",
-       "Science Communicator",
-       "Public Speaker"
-      ],
-      [
+       "Industrial Designer",
        "Product Designer",
-       "UX Designer",
-       "Graphic Designer",
-       "Science Communicator",
-       "Animator"
+       "Media Professional",
+       "Creative Director"
+      ],
+      [
+       "Sports Scientist",
+       "Fitness Trainer",
+       "Dietician",
+       "Sports Coach"
       ]
      ]
     },
     {
      "type": "choice5",
      "q": "Q5",
-     "text": "Your class must organize an event with a limited budget. Which responsibility would you prefer?",
+     "text": "Your class must organise an event with a limited budget. Which responsibility would you prefer?",
      "options": [
-      "Lead the team and coordinate with teachers and students.",
-      "Design invitations, posters, and stage decorations.",
-      "Take charge of first aid, hygiene and everyone's safety on the day.",
-      "Prepare the schedule, assign tasks, and ensure everything runs on time.",
-      "Calculate expenses and find the most cost-effective solutions."
+      "Prepare the budget, assign tasks and keep everything on schedule.",
+      "Lead the team and coordinate with teachers, students and parents.",
+      "Handle the catering, the guest experience and hospitality on the day.",
+      "Set up the stage, sound, lighting and the safe electrical work.",
+      "Make it a zero-waste event — measure the waste and design it out."
      ],
      "riasec": [
       {
-       "E": 3,
-       "S": 2
-      },
-      {
-       "A": 3
+       "C": 3,
+       "E": 2
       },
       {
        "S": 3,
-       "R": 1
+       "E": 2
       },
       {
-       "C": 3,
+       "S": 3,
        "E": 1
       },
       {
-       "C": 3,
-       "I": 2
+       "R": 3,
+       "I": 1
+      },
+      {
+       "I": 3,
+       "R": 2
       }
      ],
      "clusterWeights": [
       {
-       "H": 3,
-       "E": 2,
-       "F": 1
+       "E": 5
       },
       {
-       "D": 5
+       "F": 5
       },
       {
-       "C": 4,
-       "F": 1
+       "H": 5
       },
       {
-       "E": 3,
-       "H": 2,
-       "A": 1
+       "A": 5
       },
       {
-       "E": 4,
-       "B": 1
+       "G": 5
       }
      ],
      "careers": [
       [
-       "Entrepreneur",
-       "HR Manager",
        "Project Manager",
-       "Lawyer",
-       "Teacher"
-      ],
-      [
-       "Graphic Designer",
-       "Event Designer",
-       "Architect",
-       "Interior Designer",
-       "Animator"
-      ],
-      [
-       "Paramedic",
-       "Nurse",
-       "Public Health Specialist"
-      ],
-      [
        "Operations Manager",
-       "Event Manager",
-       "Banker",
-       "Auditor",
-       "Supply Chain Manager"
+       "Business Manager",
+       "Financial Planner"
       ],
       [
-       "Chartered Accountant",
-       "Financial Analyst",
-       "Data Analyst",
-       "Economist",
-       "Business Analyst"
+       "Teacher",
+       "HR Manager",
+       "Public Speaker",
+       "Civil Services Officer"
+      ],
+      [
+       "Event Manager",
+       "Hotel Manager",
+       "Chef",
+       "Travel Consultant"
+      ],
+      [
+       "Electrical Engineer",
+       "Electronics Engineer",
+       "Engineer",
+       "Automation Engineer"
+      ],
+      [
+       "Environmental Scientist",
+       "Forestry Officer",
+       "Horticulturist"
       ]
      ]
     },
@@ -9201,31 +9165,30 @@
      "q": "Q6",
      "text": "A weekend market gives students a free stall for one day. What would yours be?",
      "options": [
-      "My own artwork, prints, or handmade design pieces.",
+      "My own artwork, prints and handmade design pieces.",
       "Free tutoring and study advice for younger students.",
       "Free health checks — height, weight, eyesight — with simple advice.",
-      "Food I've cooked and served, priced to make a margin.",
-      "Live demos of experiments and gadgets I've built."
+      "Something I've sourced and priced to actually turn a profit.",
+      "A booth where I build people a free one-page website on the spot."
      ],
      "riasec": [
       {
        "A": 3
       },
       {
-       "S": 3,
-       "E": 1
+       "S": 3
       },
       {
        "S": 3,
-       "I": 1
+       "I": 2
       },
       {
        "E": 3,
-       "R": 2
+       "C": 2
       },
       {
        "I": 3,
-       "R": 2
+       "R": 1
       }
      ],
      "clusterWeights": [
@@ -9239,46 +9202,42 @@
        "C": 5
       },
       {
-       "H": 4,
-       "E": 2
+       "E": 5
       },
       {
-       "G": 3,
-       "B": 1,
-       "A": 1
+       "B": 5
       }
      ],
      "careers": [
       [
-       "Animator",
        "Graphic Designer",
-       "Architect",
-       "Film Maker",
-       "Fashion Designer"
+       "Fashion Designer",
+       "Photographer",
+       "Animator"
       ],
       [
        "Teacher",
-       "Psychologist",
-       "IAS Officer",
-       "Social Worker",
-       "HR Manager"
+       "Technical Trainer",
+       "Counsellor",
+       "Social Worker"
       ],
       [
        "Nurse",
-       "Doctor",
-       "Nutritionist"
+       "Paramedic",
+       "Physiotherapist",
+       "Public Health Specialist"
       ],
       [
-       "Chef",
-       "Hotel Manager",
-       "Entrepreneur"
+       "Entrepreneur",
+       "Startup Founder",
+       "Digital Marketer",
+       "Business Analyst"
       ],
       [
        "Software Engineer",
-       "Robotics Engineer",
-       "Research Scientist",
-       "AI Engineer",
-       "Electronics Engineer"
+       "Mobile App Developer",
+       "UX Designer",
+       "IT Support Specialist"
       ]
      ]
     },
@@ -9287,88 +9246,78 @@
      "q": "Q7",
      "text": "Your school is launching a robotics club. Which activity interests you the most?",
      "options": [
-      "Demonstrate the robot to visitors and explain how it works.",
-      "Plan the team's timeline, resources, and competition strategy.",
-      "Build and test the robot's hardware and programming.",
+      "Build and assemble the robot's hardware, motors and frame.",
+      "Write the code and the AI that decides what the robot does.",
       "Build an assistive device — a prosthetic hand or a mobility aid.",
-      "Design how the robot looks and interacts with users."
+      "Research which materials and sensors work best, and test them properly.",
+      "Build a robot that referees a match or trains athletes."
      ],
      "riasec": [
-      {
-       "S": 3,
-       "E": 2
-      },
-      {
-       "C": 3,
-       "E": 2
-      },
-      {
-       "R": 3,
-       "I": 3
-      },
       {
        "R": 3,
        "I": 2
       },
       {
-       "A": 3,
+       "I": 3,
+       "R": 2
+      },
+      {
+       "S": 3,
+       "R": 2
+      },
+      {
+       "I": 3,
        "R": 1
+      },
+      {
+       "R": 2,
+       "S": 2
       }
      ],
      "clusterWeights": [
       {
-       "F": 3,
-       "E": 2
+       "A": 5
       },
       {
-       "E": 5
+       "B": 5
       },
       {
-       "A": 4,
-       "B": 1
+       "C": 5
       },
       {
-       "C": 3,
-       "A": 2
+       "G": 5
       },
       {
-       "D": 4,
-       "A": 1
+       "H": 5
       }
      ],
      "careers": [
       [
-       "Teacher",
-       "Sales Engineer",
-       "Technical Trainer",
-       "Consultant",
-       "Lawyer"
-      ],
-      [
-       "Project Manager",
-       "Operations Manager",
-       "Entrepreneur",
-       "Business Analyst",
-       "Event Manager"
-      ],
-      [
        "Robotics Engineer",
        "Mechanical Engineer",
        "Electronics Engineer",
-       "Automation Engineer",
-       "AI Engineer"
+       "Automation Engineer"
+      ],
+      [
+       "AI Engineer",
+       "Software Engineer",
+       "Game Developer",
+       "Research Engineer"
       ],
       [
        "Biomedical Engineer",
-       "Physiotherapist",
-       "Occupational Therapist"
+       "Occupational Therapist",
+       "Physiotherapist"
       ],
       [
-       "Product Designer",
-       "Industrial Designer",
-       "UX Designer",
-       "Graphic Designer",
-       "Animator"
+       "Research Scientist",
+       "Chemist",
+       "Biotechnologist"
+      ],
+      [
+       "Sports Scientist",
+       "Sports Coach",
+       "Fitness Trainer"
       ]
      ]
     },
@@ -9377,86 +9326,79 @@
      "q": "Q8",
      "text": "A nearby hospital tells your school that patients keep missing appointments, and asks students for help. Which part would you take on?",
      "options": [
-      "Set up a booking and reminder system, and track whether it works.",
       "Talk to patients and staff to understand what's really stopping them.",
-      "Dig through the appointment records to find the pattern behind the no-shows.",
-      "Design reminder cards and signs that people actually read.",
-      "Sit in with the clinical staff and learn how patient care really works."
+      "Work out what the empty slots cost, and build a booking system that pays for itself.",
+      "Design reminder cards and signage that people actually read.",
+      "Study whether illness patterns, seasons or harvest timing explain the no-shows.",
+      "Arrange transport, refreshments and a comfortable waiting area."
      ],
      "riasec": [
+      {
+       "S": 3,
+       "I": 1
+      },
       {
        "C": 3,
        "E": 2
       },
       {
-       "S": 3,
-       "E": 2
+       "A": 3,
+       "S": 1
       },
       {
        "I": 3,
-       "R": 1
-      },
-      {
-       "A": 3
+       "C": 2
       },
       {
        "S": 3,
-       "I": 2
+       "E": 1
       }
      ],
      "clusterWeights": [
       {
+       "F": 5
+      },
+      {
        "E": 5
-      },
-      {
-       "F": 3,
-       "E": 2
-      },
-      {
-       "A": 1,
-       "G": 2,
-       "B": 2
       },
       {
        "D": 5
       },
       {
-       "C": 5
+       "G": 5
+      },
+      {
+       "H": 5
       }
      ],
      "careers": [
       [
-       "Project Manager",
-       "Operations Manager",
-       "Chartered Accountant",
-       "Business Manager",
-       "Consultant"
+       "Social Worker",
+       "Counsellor",
+       "Policy Analyst",
+       "Psychologist"
       ],
       [
-       "HR Manager",
-       "Teacher",
-       "Psychologist",
-       "Entrepreneur",
+       "Business Analyst",
+       "Operations Manager",
+       "Consultant",
        "Project Manager"
       ],
       [
-       "Engineer",
-       "Research Scientist",
-       "Data Scientist",
-       "Research Scientist",
-       "Software Engineer"
-      ],
-      [
-       "Product Designer",
-       "Architect",
-       "Animator",
-       "Product Designer",
+       "Graphic Designer",
+       "Content Creator",
+       "Media Professional",
        "Creative Director"
       ],
       [
-       "Doctor",
-       "Nurse",
-       "Physiotherapist"
+       "Microbiologist",
+       "Research Scientist",
+       "Environmental Scientist"
+      ],
+      [
+       "Hotel Manager",
+       "Event Manager",
+       "Travel Consultant"
       ]
      ]
     },
@@ -9465,16 +9407,16 @@
      "q": "Q9",
      "text": "You receive ₹5,000 to create a useful student project. How would you use it?",
      "options": [
-      "Set up a first-aid point and a health awareness corner for the school.",
-      "Create a creative product, app design, or awareness campaign.",
-      "Develop a business plan and track the project's finances.",
-      "Build a prototype or develop a technology-based solution.",
-      "Organize workshops or mentoring sessions for students."
+      "Build a working prototype — a device, a model or a machine.",
+      "Create a design product, a short film or an awareness campaign.",
+      "Start a small venture and track every rupee of profit and loss.",
+      "Develop an app or website that solves a real problem for students.",
+      "Set up a first-aid point and a health awareness corner."
      ],
      "riasec": [
       {
-       "S": 3,
-       "R": 1
+       "R": 3,
+       "I": 2
       },
       {
        "A": 3,
@@ -9482,21 +9424,20 @@
       },
       {
        "E": 3,
-       "C": 3
+       "C": 2
       },
       {
-       "R": 3,
-       "I": 2
+       "I": 3,
+       "C": 1
       },
       {
        "S": 3,
-       "E": 2
+       "I": 1
       }
      ],
      "clusterWeights": [
       {
-       "C": 4,
-       "F": 1
+       "A": 5
       },
       {
        "D": 5
@@ -9505,48 +9446,42 @@
        "E": 5
       },
       {
-       "G": 2,
-       "A": 2,
-       "B": 1
+       "B": 5
       },
       {
-       "F": 4,
-       "E": 1
+       "C": 5
       }
      ],
      "careers": [
       [
+       "Mechanical Engineer",
+       "Robotics Engineer",
+       "Engineer",
+       "Electronics Engineer"
+      ],
+      [
+       "Film Maker",
+       "Content Creator",
+       "Graphic Designer",
+       "Photographer"
+      ],
+      [
+       "Entrepreneur",
+       "Startup Founder",
+       "Financial Analyst",
+       "Business Manager"
+      ],
+      [
+       "Software Engineer",
+       "Mobile App Developer",
+       "UX Designer",
+       "Data Analyst"
+      ],
+      [
        "Nurse",
        "Paramedic",
-       "Public Health Specialist"
-      ],
-      [
-       "UX Designer",
-       "Graphic Designer",
-       "Product Designer",
-       "Architect",
-       "Animator"
-      ],
-      [
-       "Startup Founder",
-       "Chartered Accountant",
-       "Financial Analyst",
-       "Business Manager",
-       "Consultant"
-      ],
-      [
-       "Engineer",
-       "AI Engineer",
-       "Research Scientist",
-       "Robotics Engineer",
-       "Software Engineer"
-      ],
-      [
-       "Teacher",
-       "Psychologist",
-       "Entrepreneur",
-       "HR Manager",
-       "Counsellor"
+       "Public Health Specialist",
+       "Doctor"
       ]
      ]
     },
@@ -9555,38 +9490,121 @@
      "q": "Q10",
      "text": "Which YouTube channel would you watch for two hours without getting bored?",
      "options": [
-      "Science experiments, coding, engineering, or space exploration.",
-      "Medicine, surgery, the human body, nutrition and fitness science.",
-      "Art, animation, filmmaking, architecture, or design tutorials.",
-      "Business, finance, startups, investing, and productivity.",
-      "Sport, fitness, travel, food, and how people live well."
+      "Coding, software, AI, cybersecurity and how computers really work.",
+      "Space, wildlife, physics, farming and how the natural world works.",
+      "How bridges, engines, factories and power stations actually get built.",
+      "Sport, fitness, travel, food and how people live well.",
+      "Law, politics, social issues, teaching and public service."
      ],
      "riasec": [
+      {
+       "I": 3,
+       "R": 1
+      },
       {
        "I": 3,
        "R": 2
       },
       {
-       "I": 3,
-       "S": 2
-      },
-      {
-       "A": 3
-      },
-      {
-       "E": 3,
-       "C": 2
+       "R": 3,
+       "I": 2
       },
       {
        "S": 3,
        "R": 1
+      },
+      {
+       "S": 3,
+       "E": 2
       }
      ],
      "clusterWeights": [
       {
-       "G": 3,
-       "B": 2
+       "B": 5
       },
+      {
+       "G": 5
+      },
+      {
+       "A": 5
+      },
+      {
+       "H": 5
+      },
+      {
+       "F": 5
+      }
+     ],
+     "careers": [
+      [
+       "Software Engineer",
+       "AI Engineer",
+       "Cybersecurity Analyst",
+       "Data Scientist",
+       "Game Developer"
+      ],
+      [
+       "Astrophysicist",
+       "Marine Biologist",
+       "Environmental Scientist",
+       "Agricultural Scientist"
+      ],
+      [
+       "Civil Engineer",
+       "Mechanical Engineer",
+       "Aerospace Engineer",
+       "Renewable Energy Engineer"
+      ],
+      [
+       "Athlete",
+       "Sports Coach",
+       "Chef",
+       "Travel Consultant",
+       "Fitness Trainer"
+      ],
+      [
+       "Lawyer",
+       "IAS Officer",
+       "Judge",
+       "Teacher",
+       "Policy Analyst"
+      ]
+     ]
+    },
+    {
+     "type": "choice5",
+     "q": "Q11",
+     "text": "A company offers ten students a one-month paid internship. Which team would you ask to join?",
+     "options": [
+      "The team testing whether the product is safe for people to use.",
+      "The team redesigning how the product looks and feels.",
+      "The team tracking costs, stock and delivery schedules.",
+      "The team training new users and answering their questions.",
+      "The team running lab tests on new materials and ingredients."
+     ],
+     "riasec": [
+      {
+       "S": 3,
+       "I": 2
+      },
+      {
+       "A": 3,
+       "I": 1
+      },
+      {
+       "C": 3,
+       "E": 2
+      },
+      {
+       "S": 3,
+       "E": 1
+      },
+      {
+       "I": 3,
+       "R": 2
+      }
+     ],
+     "clusterWeights": [
       {
        "C": 5
       },
@@ -9597,131 +9615,42 @@
        "E": 5
       },
       {
-       "H": 4,
-       "F": 1
+       "F": 5
+      },
+      {
+       "G": 5
       }
      ],
      "careers": [
       [
-       "Research Scientist",
-       "Software Engineer",
-       "AI Engineer",
-       "Mechanical Engineer",
-       "Research Scientist"
-      ],
-      [
+       "Public Health Specialist",
+       "Pharmacist",
        "Doctor",
-       "Surgeon",
        "Nutritionist"
       ],
       [
-       "Architect",
-       "Graphic Designer",
-       "Animator",
-       "Fashion Designer",
-       "Product Designer"
-      ],
-      [
-       "Entrepreneur",
-       "Banker",
-       "Chartered Accountant",
-       "Financial Analyst",
-       "Consultant"
-      ],
-      [
-       "Sports Coach",
-       "Travel Consultant",
-       "Fitness Trainer"
-      ]
-     ]
-    },
-    {
-     "type": "choice5",
-     "q": "Q11",
-     "text": "A company offers ten students a one-month paid internship. Which team would you ask to join?",
-     "options": [
-      "The team training new users and answering their questions.",
-      "The team testing whether the product is safe for people to use.",
-      "The team redesigning how the product looks and feels.",
-      "The team working out why the product keeps failing.",
-      "The team tracking costs, stock and delivery schedules."
-     ],
-     "riasec": [
-      {
-       "S": 3,
-       "E": 3
-      },
-      {
-       "I": 3,
-       "C": 2
-      },
-      {
-       "A": 3
-      },
-      {
-       "I": 3,
-       "R": 2
-      },
-      {
-       "C": 3,
-       "E": 3
-      }
-     ],
-     "clusterWeights": [
-      {
-       "F": 4,
-       "E": 1
-      },
-      {
-       "C": 4,
-       "G": 1
-      },
-      {
-       "D": 5
-      },
-      {
-       "G": 1,
-       "B": 2,
-       "A": 1,
-       "C": 1
-      },
-      {
-       "E": 5
-      }
-     ],
-     "careers": [
-      [
-       "Teacher",
-       "Psychologist",
-       "Lawyer",
-       "IAS Officer",
-       "Entrepreneur"
-      ],
-      [
-       "Pharmacist",
-       "Biomedical Engineer",
-       "Public Health Specialist"
-      ],
-      [
-       "Architect",
+       "Product Designer",
+       "Industrial Designer",
        "UX Designer",
-       "Graphic Designer",
-       "Animator",
-       "Product Designer"
+       "Creative Director"
       ],
       [
-       "Research Scientist",
-       "AI Engineer",
-       "Software Engineer",
-       "Research Engineer",
-       "Doctor"
-      ],
-      [
-       "Business Manager",
-       "Chartered Accountant",
+       "Supply Chain Manager",
        "Operations Manager",
-       "Financial Planner",
-       "Startup Founder"
+       "Business Analyst",
+       "Auditor"
+      ],
+      [
+       "Technical Trainer",
+       "Teacher",
+       "HR Manager",
+       "Public Speaker"
+      ],
+      [
+       "Chemist",
+       "Food Technologist",
+       "Biotechnologist",
+       "Microbiologist"
       ]
      ]
     },
@@ -9730,87 +9659,78 @@
      "q": "Q12",
      "text": "Your school is starting a student-run magazine and website. Which role would you take?",
      "options": [
-      "Research the stories, check the facts, and build the website.",
-      "Design the layout, illustrations, photographs, and cover art.",
-      "Interview people, build the writing team, and reply to readers.",
-      "Handle advertising, budgets, and the publishing schedule.",
-      "Cover health, fitness and wellbeing for students."
+      "Design the layout, illustrations, photographs and cover art.",
+      "Build the website, keep it fast and handle everything technical.",
+      "Cover health, fitness and student wellbeing.",
+      "Cover sport, food, travel and campus life.",
+      "Set up and run the studio — cameras, lighting and recording equipment."
      ],
      "riasec": [
-      {
-       "I": 3,
-       "R": 2
-      },
       {
        "A": 3
       },
       {
-       "S": 3,
-       "E": 2
+       "I": 3,
+       "R": 1
       },
       {
-       "C": 3,
-       "E": 2
+       "S": 3,
+       "I": 1
       },
       {
        "S": 2,
-       "A": 2
+       "E": 2
+      },
+      {
+       "R": 3,
+       "I": 1
       }
      ],
      "clusterWeights": [
       {
-       "B": 2,
-       "G": 1,
-       "A": 1,
-       "D": 1
-      },
-      {
        "D": 5
       },
       {
-       "F": 5
+       "B": 5
       },
       {
-       "E": 5
+       "C": 5
       },
       {
-       "C": 4,
-       "D": 1
+       "H": 5
+      },
+      {
+       "A": 5
       }
      ],
      "careers": [
       [
-       "Software Engineer",
-       "Data Analyst",
-       "Research Scientist",
-       "Research Engineer",
-       "Science Communicator"
-      ],
-      [
        "Graphic Designer",
-       "Animator",
-       "Product Designer",
-       "Architect",
-       "Content Creator"
+       "Photographer",
+       "Creative Director",
+       "Journalist"
       ],
       [
-       "Teacher",
-       "Lawyer",
-       "Psychologist",
-       "HR Manager",
-       "Public Speaker"
-      ],
-      [
-       "Business Manager",
-       "Financial Analyst",
-       "Digital Marketer",
-       "Operations Manager",
-       "Chartered Accountant"
+       "Software Engineer",
+       "Cloud Engineer",
+       "Network Engineer",
+       "Database Administrator"
       ],
       [
        "Nutritionist",
        "Public Health Specialist",
-       "Journalist"
+       "Clinical Psychologist"
+      ],
+      [
+       "Sports Coach",
+       "Chef",
+       "Travel Consultant",
+       "Event Manager"
+      ],
+      [
+       "Electronics Engineer",
+       "Electrical Engineer",
+       "Engineer"
       ]
      ],
      "authored": true
@@ -21921,10 +21841,10 @@
       "D) Stand completely frozen, stare at the floor, and wait for the teacher to move on."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      2.0
+      2,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -21939,10 +21859,10 @@
       "D) Say nothing but stay angry all day, complaining about them behind their back."
      ],
      "scores": [
-      2.0,
-      2.0,
-      4.0,
-      3.0
+      2,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -21957,10 +21877,10 @@
       "D) Pretend you don't care at all and tell your friends you didn't really want to be on the team anyway."
      ],
      "scores": [
-      2.0,
-      2.0,
-      4.0,
-      3.0
+      2,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -21975,10 +21895,10 @@
       "D) Tell them to clean it up quickly before the teacher arrives and gives them a scolding."
      ],
      "scores": [
-      1.0,
-      2.0,
-      4.0,
-      3.0
+      1,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -21993,10 +21913,10 @@
       "D) Complain to the teacher immediately without speaking to the teammate first."
      ],
      "scores": [
-      3.0,
-      4.0,
-      2.0,
-      3.0
+      3,
+      4,
+      2,
+      3
      ]
     }
    ],
@@ -22013,10 +21933,10 @@
       "D) I try to pretend my body isn't doing anything and ignore the feeling completely."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -22031,10 +21951,10 @@
       "D) Scream loudly until your parents come and punish your sibling."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      2.0
+      2,
+      3,
+      4,
+      2
      ]
     },
     {
@@ -22049,10 +21969,10 @@
       "D) 'I will just skip this question in the exam and focus on memorizing other parts.'"
      ],
      "scores": [
-      2.0,
-      2.0,
-      4.0,
-      3.0
+      2,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -22067,10 +21987,10 @@
       "D) 'They look a bit strange, I wonder why they changed schools mid-year.'"
      ],
      "scores": [
-      3.0,
-      4.0,
-      2.0,
-      2.0
+      3,
+      4,
+      2,
+      2
      ]
     },
     {
@@ -22085,10 +22005,10 @@
       "D) Secretly hang out with one and tell the other person bad things about them to keep both happy."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      2.0
+      2,
+      3,
+      4,
+      2
      ]
     }
    ],
@@ -22105,10 +22025,10 @@
       "D) Don't think about it at all; just stay in a bad mood until it goes away naturally."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     },
     {
@@ -22123,10 +22043,10 @@
       "D) Point your finger immediately at the student behind you and say, 'He did it, punish him!'"
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      2.0
+      2,
+      3,
+      4,
+      2
      ]
     },
     {
@@ -22141,10 +22061,10 @@
       "D) Say, 'At least I passed, it doesn't matter much anyway,' and ignore the result."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      2.0
+      2,
+      3,
+      4,
+      2
      ]
     },
     {
@@ -22159,10 +22079,10 @@
       "D) Give them space by not talking to them or looking at them all day."
      ],
      "scores": [
-      3.0,
-      4.0,
-      1.0,
-      3.0
+      3,
+      4,
+      1,
+      3
      ]
     },
     {
@@ -22177,10 +22097,10 @@
       "D) Silently join the football game but play badly on purpose because you are unhappy."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     }
    ],
@@ -22197,10 +22117,10 @@
       "D) Assume that your parents don't love you enough because they haven't bought you a similar bicycle."
      ],
      "scores": [
-      4.0,
-      2.0,
-      2.0,
-      2.0
+      4,
+      2,
+      2,
+      2
      ]
     },
     {
@@ -22215,10 +22135,10 @@
       "D) Keep playing while getting more and more miserable and complaining loudly to your family."
      ],
      "scores": [
-      2.0,
-      2.0,
-      4.0,
-      3.0
+      2,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -22233,10 +22153,10 @@
       "D) Go to sleep for the rest of the day out of pure frustration and boredom."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -22251,10 +22171,10 @@
       "D) Stay and watch the drama like it is an interesting street movie."
      ],
      "scores": [
-      1.0,
-      3.0,
-      4.0,
-      2.0
+      1,
+      3,
+      4,
+      2
      ]
     },
     {
@@ -22269,10 +22189,10 @@
       "D) Just smile and let them have all the credit, but feel deeply bitter inside."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     }
    ],
@@ -22289,10 +22209,10 @@
       "D) I ignore the anxiety and watch videos on my phone to make the bad feeling disappear."
      ],
      "scores": [
-      4.0,
-      2.0,
-      2.0,
-      3.0
+      4,
+      2,
+      2,
+      3
      ]
     },
     {
@@ -22307,10 +22227,10 @@
       "D) Clean the room aggressively while throwing items around to show your frustration."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      3.0
+      2,
+      4,
+      3,
+      3
      ]
     },
     {
@@ -22325,10 +22245,10 @@
       "D) Shrug it off and say the judges were biased anyway, so it doesn't matter."
      ],
      "scores": [
-      2.0,
-      2.0,
-      4.0,
-      3.0
+      2,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -22343,10 +22263,10 @@
       "D) Laugh at how the teacher has completely lost control of the classroom."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      1.0
+      2,
+      4,
+      3,
+      1
      ]
     },
     {
@@ -22361,10 +22281,10 @@
       "D) Send them an angry text message demanding to know what their problem is."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      2.0
+      2,
+      4,
+      3,
+      2
      ]
     }
    ],
@@ -22381,10 +22301,10 @@
       "D) I get filled with rage and start planning how to create a new group to exclude them."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     },
     {
@@ -22399,10 +22319,10 @@
       "D) Stare at their paper for a long time, feeling deeply conflicted and wasting precious exam time."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      3.0
+      2,
+      4,
+      3,
+      3
      ]
     },
     {
@@ -22417,10 +22337,10 @@
       "D) Pretend that the model was never supposed to move and tell a flat lie to the judges."
      ],
      "scores": [
-      3.0,
-      4.0,
-      2.0,
-      2.0
+      3,
+      4,
+      2,
+      2
      ]
     },
     {
@@ -22435,10 +22355,10 @@
       "D) Shout out a correction from your seat to 'help' them with the word they are stuck on."
      ],
      "scores": [
-      1.0,
-      4.0,
-      3.0,
-      3.0
+      1,
+      4,
+      3,
+      3
      ]
     },
     {
@@ -22453,10 +22373,10 @@
       "D) Secretly forge their signature on the permission slip and figure out the money details later."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      2.0
+      2,
+      4,
+      3,
+      2
      ]
     }
    ],
@@ -22473,10 +22393,10 @@
       "D) Let my parents pick the club for me because they know better than me anyway."
      ],
      "scores": [
-      3.0,
-      4.0,
-      2.0,
-      3.0
+      3,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -22491,10 +22411,10 @@
       "D) Scream at the top of your lungs for a corridor monitor or physical education teacher to catch them."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      3.0
+      2,
+      4,
+      3,
+      3
      ]
     },
     {
@@ -22509,10 +22429,10 @@
       "D) Assume the teacher gave the best display spots to their favorite students."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      2.0
+      2,
+      4,
+      2,
+      2
      ]
     },
     {
@@ -22527,10 +22447,10 @@
       "D) Ask them for all the dramatic details of the sickness so you can share the update with others."
      ],
      "scores": [
-      1.0,
-      4.0,
-      3.0,
-      2.0
+      1,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -22545,10 +22465,10 @@
       "D) Apologize profusely for something you didn't do just to make the argument stop immediately."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     }
    ],
@@ -22565,10 +22485,10 @@
       "D) I don't realize anything; I just keep playing games and try not to think about the book."
      ],
      "scores": [
-      4.0,
-      2.0,
-      2.0,
-      2.0
+      4,
+      2,
+      2,
+      2
      ]
     },
     {
@@ -22583,10 +22503,10 @@
       "D) Keep frantically clicking the broken button over and over while crying hysterically."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      3.0
+      2,
+      4,
+      3,
+      3
      ]
     },
     {
@@ -22601,10 +22521,10 @@
       "D) Copy the solved examples blindly into your notebook without bothering to understand them."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -22619,10 +22539,10 @@
       "D) Wonder why they didn't study harder when they were young so they could have an AC office."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      1.0
+      2,
+      4,
+      3,
+      1
      ]
     },
     {
@@ -22637,10 +22557,10 @@
       "D) Step away entirely and let the most aggressive person have the spot just to keep things quiet."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     }
    ],
@@ -22657,10 +22577,10 @@
       "D) Force yourself to act overly loud and aggressive in the new class to hide your inner fear."
      ],
      "scores": [
-      4.0,
-      2.0,
-      2.0,
-      3.0
+      4,
+      2,
+      2,
+      3
      ]
     },
     {
@@ -22675,10 +22595,10 @@
       "D) Nod along silently, but feel intensely uncomfortable and judgmental inside without saying anything."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -22693,10 +22613,10 @@
       "D) Do only the bare minimum work needed to pass, since the inspiration is gone."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -22711,10 +22631,10 @@
       "D) Whisper to your friend that the student should have prepared better before opening their mouth."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      1.0
+      2,
+      4,
+      3,
+      1
      ]
     },
     {
@@ -22729,10 +22649,10 @@
       "D) Sit back and let them argue until the deadline passes and nothing gets done."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     }
    ],
@@ -22749,10 +22669,10 @@
       "D) Force yourself to stare blankly at the page while your mind travels to other imaginary worlds."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -22767,10 +22687,10 @@
       "D) Ask your parents to lock up your phone completely because you know you have no self-control."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      3.0
+      2,
+      4,
+      3,
+      3
      ]
     },
     {
@@ -22785,10 +22705,10 @@
       "D) Sit on the grass and sulk for an hour, refusing to talk to anyone in your family."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -22803,10 +22723,10 @@
       "D) Ignore them completely and chat with friends on the row ahead."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      3.0
+      2,
+      4,
+      3,
+      3
      ]
     },
     {
@@ -22821,10 +22741,10 @@
       "D) Leave the game yourself in silent protest without explaining your reason to anyone."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      3.0
+      2,
+      4,
+      3,
+      3
      ]
     }
    ]
@@ -22937,10 +22857,10 @@
       "D) Decide you have no self-discipline and never will."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     },
     {
@@ -22955,10 +22875,10 @@
       "D) Distance yourself from them without explanation until the feeling passes."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      3.0
+      2,
+      4,
+      3,
+      3
      ]
     },
     {
@@ -22973,10 +22893,10 @@
       "D) Take another mock test the very next day without changing anything."
      ],
      "scores": [
-      2.0,
-      2.0,
-      4.0,
-      3.0
+      2,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -22991,10 +22911,10 @@
       "D) Set the rivalry aside for a moment and ask if they're doing okay."
      ],
      "scores": [
-      1.0,
-      3.0,
-      3.0,
-      4.0
+      1,
+      3,
+      3,
+      4
      ]
     },
     {
@@ -23009,10 +22929,10 @@
       "D) Avoid raising it since challenging authority feels too risky."
      ],
      "scores": [
-      4.0,
-      2.0,
-      2.0,
-      3.0
+      4,
+      2,
+      2,
+      3
      ]
     }
    ],
@@ -23029,10 +22949,10 @@
       "D) Decide you simply don't have the willpower to be a serious student."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      2.0
+      2,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -23047,10 +22967,10 @@
       "D) Complain loudly to classmates about the teacher afterward."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      3.0
+      3,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -23065,10 +22985,10 @@
       "D) Ask for specific line-by-line feedback and revise it methodically over several drafts."
      ],
      "scores": [
-      3.0,
-      2.0,
-      2.0,
-      4.0
+      3,
+      2,
+      2,
+      4
      ]
     },
     {
@@ -23083,10 +23003,10 @@
       "D) Brush it off since it's not really your problem to solve."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     },
     {
@@ -23101,10 +23021,10 @@
       "D) Report them to the teacher immediately without talking to them first."
      ],
      "scores": [
-      3.0,
-      4.0,
-      2.0,
-      2.0
+      3,
+      4,
+      2,
+      2
      ]
     }
    ],
@@ -23121,10 +23041,10 @@
       "D) Decide you're just naturally short-tempered under academic stress."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      2.0
+      3,
+      2,
+      4,
+      2
      ]
     },
     {
@@ -23139,10 +23059,10 @@
       "D) Prepare a calm, brief response in advance so you're not caught off guard by the questions."
      ],
      "scores": [
-      3.0,
-      2.0,
-      2.0,
-      4.0
+      3,
+      2,
+      2,
+      4
      ]
     },
     {
@@ -23157,10 +23077,10 @@
       "D) Stop checking your application statuses altogether to avoid more disappointment."
      ],
      "scores": [
-      4.0,
-      2.0,
-      2.0,
-      3.0
+      4,
+      2,
+      2,
+      3
      ]
     },
     {
@@ -23175,10 +23095,10 @@
       "D) Share your own similar (or different) experience at length instead of focusing on theirs."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      3.0
+      2,
+      4,
+      3,
+      3
      ]
     },
     {
@@ -23193,10 +23113,10 @@
       "D) Complain to the teacher-in-charge about their attitude without addressing it directly first."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      3.0
+      3,
+      2,
+      4,
+      3
      ]
     }
    ],
@@ -23213,10 +23133,10 @@
       "D) Notice this as a recurring anxious thought pattern, and try reality-checking it against your actual track record."
      ],
      "scores": [
-      2.0,
-      2.0,
-      3.0,
-      4.0
+      2,
+      2,
+      3,
+      4
      ]
     },
     {
@@ -23231,10 +23151,10 @@
       "D) Cave in and join anyway, then feel resentful about lost study time."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     },
     {
@@ -23249,10 +23169,10 @@
       "D) Decide research isn't for you and rule it out as a future direction entirely."
      ],
      "scores": [
-      3.0,
-      4.0,
-      2.0,
-      2.0
+      3,
+      4,
+      2,
+      2
      ]
     },
     {
@@ -23267,10 +23187,10 @@
       "D) Assume they'll figure it out on their own eventually."
      ],
      "scores": [
-      2.0,
-      2.0,
-      4.0,
-      3.0
+      2,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -23285,10 +23205,10 @@
       "D) Name the tension directly and agree on how you both want to handle it, win or lose."
      ],
      "scores": [
-      3.0,
-      2.0,
-      3.0,
-      4.0
+      3,
+      2,
+      3,
+      4
      ]
     }
    ],
@@ -23305,10 +23225,10 @@
       "D) Decide you're just lazy and leave it at that."
      ],
      "scores": [
-      4.0,
-      3.0,
-      3.0,
-      2.0
+      4,
+      3,
+      3,
+      2
      ]
     },
     {
@@ -23323,10 +23243,10 @@
       "D) Interrupt loudly to correct them in front of everyone."
      ],
      "scores": [
-      3.0,
-      4.0,
-      3.0,
-      2.0
+      3,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -23341,10 +23261,10 @@
       "D) Blame the test series for being poorly calibrated."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      2.0
+      2,
+      3,
+      4,
+      2
      ]
     },
     {
@@ -23359,10 +23279,10 @@
       "D) Consider that something else might be weighing on them, and ask calmly if everything's okay."
      ],
      "scores": [
-      2.0,
-      3.0,
-      3.0,
-      4.0
+      2,
+      3,
+      3,
+      4
      ]
     },
     {
@@ -23377,10 +23297,10 @@
       "D) Announce your decision abruptly during an unrelated argument."
      ],
      "scores": [
-      4.0,
-      3.0,
-      2.0,
-      2.0
+      4,
+      3,
+      2,
+      2
      ]
     }
    ],
@@ -23397,10 +23317,10 @@
       "D) Decide your self-worth is just naturally tied to your grades and that's fine."
      ],
      "scores": [
-      3.0,
-      4.0,
-      3.0,
-      2.0
+      3,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -23415,10 +23335,10 @@
       "D) Stop talking abruptly and let someone else take over."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      2.0
+      3,
+      2,
+      4,
+      2
      ]
     },
     {
@@ -23433,10 +23353,10 @@
       "D) Ask the coach what qualities they were looking for, and consider how to build those for next time."
      ],
      "scores": [
-      3.0,
-      2.0,
-      2.0,
-      4.0
+      3,
+      2,
+      2,
+      4
      ]
     },
     {
@@ -23451,10 +23371,10 @@
       "D) Tell other friends so they can also be sensitive around the topic."
      ],
      "scores": [
-      4.0,
-      3.0,
-      2.0,
-      2.0
+      4,
+      3,
+      2,
+      2
      ]
     },
     {
@@ -23469,10 +23389,10 @@
       "D) Withdraw from the friendship entirely to avoid the pressure."
      ],
      "scores": [
-      3.0,
-      4.0,
-      2.0,
-      3.0
+      3,
+      4,
+      2,
+      3
      ]
     }
    ],
@@ -23489,10 +23409,10 @@
       "D) Decide it's easier to just keep saying that and move on."
      ],
      "scores": [
-      2.0,
-      2.0,
-      4.0,
-      3.0
+      2,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -23507,10 +23427,10 @@
       "D) Sit with the disappointment briefly, then objectively evaluate which points are worth addressing."
      ],
      "scores": [
-      3.0,
-      2.0,
-      2.0,
-      4.0
+      3,
+      2,
+      2,
+      4
      ]
     },
     {
@@ -23525,10 +23445,10 @@
       "D) Decide the career path isn't right for you based on this one subject."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     },
     {
@@ -23543,10 +23463,10 @@
       "D) Take it personally and assume you did something to cause it."
      ],
      "scores": [
-      3.0,
-      4.0,
-      2.0,
-      2.0
+      3,
+      4,
+      2,
+      2
      ]
     },
     {
@@ -23561,10 +23481,10 @@
       "D) Comply silently with every change even when you disagree."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      3.0
+      3,
+      2,
+      4,
+      3
      ]
     }
    ],
@@ -23581,10 +23501,10 @@
       "D) Recognise the procrastination is likely fear of confirming self-doubt, and try starting with a small, low-stakes step."
      ],
      "scores": [
-      2.0,
-      3.0,
-      3.0,
-      4.0
+      2,
+      3,
+      3,
+      4
      ]
     },
     {
@@ -23599,10 +23519,10 @@
       "D) Make a sarcastic comment about the results to nearby classmates."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     },
     {
@@ -23617,10 +23537,10 @@
       "D) Keep practicing the exact same way, hoping repetition alone will fix it."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -23635,10 +23555,10 @@
       "D) Talk about your own acceptances at length since it's exciting news."
      ],
      "scores": [
-      3.0,
-      3.0,
-      4.0,
-      2.0
+      3,
+      3,
+      4,
+      2
      ]
     },
     {
@@ -23653,10 +23573,10 @@
       "D) Voice your disagreement clearly during the discussion, then support the group's decision once it's made."
      ],
      "scores": [
-      3.0,
-      2.0,
-      2.0,
-      4.0
+      3,
+      2,
+      2,
+      4
      ]
     }
    ],
@@ -23673,10 +23593,10 @@
       "D) Assume there's nothing you can do to change how your motivation works."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     },
     {
@@ -23691,10 +23611,10 @@
       "D) Let the disappointment visibly affect your participation for the rest of the day."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -23709,10 +23629,10 @@
       "D) Blame yourself for poor initial planning and spiral into self-criticism."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      2.0
+      2,
+      3,
+      4,
+      2
      ]
     },
     {
@@ -23727,10 +23647,10 @@
       "D) Follow their lead and don't force the topic, while making it clear you're available if they want to talk."
      ],
      "scores": [
-      3.0,
-      2.0,
-      3.0,
-      4.0
+      3,
+      2,
+      3,
+      4
      ]
     },
     {
@@ -23745,10 +23665,10 @@
       "D) Pretend to agree with them just to keep things comfortable."
      ],
      "scores": [
-      4.0,
-      3.0,
-      2.0,
-      3.0
+      4,
+      3,
+      2,
+      3
      ]
     }
    ],
@@ -23765,10 +23685,10 @@
       "D) Decide the comparison is just useful motivation and keep doing it."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -23783,10 +23703,10 @@
       "D) Answer every question anxiously in detail, feeding your own stress further."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      3.0
+      3,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -23801,10 +23721,10 @@
       "D) Look honestly at what worked and what didn't, and use it to make next year's approach more effective, not just harder."
      ],
      "scores": [
-      2.0,
-      2.0,
-      3.0,
-      4.0
+      2,
+      2,
+      3,
+      4
      ]
     },
     {
@@ -23819,10 +23739,10 @@
       "D) Talk to their parents about your concerns instead of them."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     },
     {
@@ -23837,10 +23757,10 @@
       "D) Avoid the topic of the upcoming separation altogether to sidestep tension."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     }
    ]
@@ -23859,10 +23779,10 @@
       "D) Brush past it without reflecting on what happened."
      ],
      "scores": [
-      4.0,
-      2.0,
-      2.0,
-      3.0
+      4,
+      2,
+      2,
+      3
      ]
     },
     {
@@ -23877,10 +23797,10 @@
       "D) Passive-aggressively leave their mess untouched to make a point."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -23895,10 +23815,10 @@
       "D) Assume the process was rigged toward people with connections."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      2.0
+      2,
+      3,
+      4,
+      2
      ]
     },
     {
@@ -23913,10 +23833,10 @@
       "D) Send a low-pressure message letting them know you've noticed and you're around if they need anything."
      ],
      "scores": [
-      2.0,
-      3.0,
-      2.0,
-      4.0
+      2,
+      3,
+      2,
+      4
      ]
     },
     {
@@ -23931,10 +23851,10 @@
       "D) Let them take the lead entirely to avoid any friction."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     }
    ],
@@ -23951,10 +23871,10 @@
       "D) Change your plans impulsively to match what seems more impressive."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      2.0
+      2,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -23969,10 +23889,10 @@
       "D) Vent visibly to classmates immediately after the session ends."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      3.0
+      3,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -23987,10 +23907,10 @@
       "D) Review your resume/approach for patterns, seek feedback from a career counsellor or mentor, and adjust your strategy."
      ],
      "scores": [
-      2.0,
-      3.0,
-      2.0,
-      4.0
+      2,
+      3,
+      2,
+      4
      ]
     },
     {
@@ -24005,10 +23925,10 @@
       "D) Avoid discussing your own job search around them out of discomfort."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      3.0
+      4,
+      2,
+      3,
+      3
      ]
     },
     {
@@ -24023,10 +23943,10 @@
       "D) Start inviting your own guests over more often out of spite."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      2.0
+      2,
+      4,
+      3,
+      2
      ]
     }
    ],
@@ -24043,10 +23963,10 @@
       "D) Assume this is just what adult life feels like and accept it passively."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      2.0
+      2,
+      3,
+      4,
+      2
      ]
     },
     {
@@ -24061,10 +23981,10 @@
       "D) Suggest moving the money discussion to a calmer, separate conversation away from the group chat."
      ],
      "scores": [
-      3.0,
-      2.0,
-      3.0,
-      4.0
+      3,
+      2,
+      3,
+      4
      ]
     },
     {
@@ -24079,10 +23999,10 @@
       "D) Blame the course structure entirely without reflecting on your own preparation."
      ],
      "scores": [
-      4.0,
-      3.0,
-      2.0,
-      2.0
+      4,
+      3,
+      2,
+      2
      ]
     },
     {
@@ -24097,10 +24017,10 @@
       "D) Tell them things will work out without really engaging with the seriousness of it."
      ],
      "scores": [
-      3.0,
-      4.0,
-      2.0,
-      2.0
+      3,
+      4,
+      2,
+      2
      ]
     },
     {
@@ -24115,10 +24035,10 @@
       "D) Push through changes regardless of their objections since you're technically in charge."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      2.0
+      3,
+      2,
+      4,
+      2
      ]
     }
    ],
@@ -24135,10 +24055,10 @@
       "D) Recognise this dependency is unsustainable, and work on building a sense of self-worth outside of grades."
      ],
      "scores": [
-      2.0,
-      3.0,
-      2.0,
-      4.0
+      2,
+      3,
+      2,
+      4
      ]
     },
     {
@@ -24153,10 +24073,10 @@
       "D) Deflect the question entirely without really answering it."
      ],
      "scores": [
-      4.0,
-      2.0,
-      2.0,
-      3.0
+      4,
+      2,
+      2,
+      3
      ]
     },
     {
@@ -24171,10 +24091,10 @@
       "D) Pitch the exact same deck to more people without changes."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -24189,10 +24109,10 @@
       "D) Change the subject every time it comes up without acknowledging it."
      ],
      "scores": [
-      1.0,
-      3.0,
-      4.0,
-      3.0
+      1,
+      3,
+      4,
+      3
      ]
     },
     {
@@ -24207,10 +24127,10 @@
       "D) Have a direct conversation about the quality gap, and agree on a review process before final submission."
      ],
      "scores": [
-      2.0,
-      3.0,
-      2.0,
-      4.0
+      2,
+      3,
+      2,
+      4
      ]
     }
    ],
@@ -24227,10 +24147,10 @@
       "D) Decide checking email is just inherently stressful for everyone."
      ],
      "scores": [
-      4.0,
-      2.0,
-      2.0,
-      3.0
+      4,
+      2,
+      2,
+      3
      ]
     },
     {
@@ -24245,10 +24165,10 @@
       "D) Confront them loudly in front of the group."
      ],
      "scores": [
-      3.0,
-      4.0,
-      2.0,
-      2.0
+      3,
+      4,
+      2,
+      2
      ]
     },
     {
@@ -24263,10 +24183,10 @@
       "D) Quit the job abruptly without a backup financial plan."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      2.0
+      3,
+      2,
+      4,
+      2
      ]
     },
     {
@@ -24281,10 +24201,10 @@
       "D) Express your concern honestly once, in a caring way, then respect their autonomy either way."
      ],
      "scores": [
-      2.0,
-      2.0,
-      3.0,
-      4.0
+      2,
+      2,
+      3,
+      4
      ]
     },
     {
@@ -24299,10 +24219,10 @@
       "D) Let someone else break the news for you."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     }
    ],
@@ -24319,10 +24239,10 @@
       "D) Decide your work is generally strong and people are just being overly critical."
      ],
      "scores": [
-      3.0,
-      4.0,
-      3.0,
-      2.0
+      3,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -24337,10 +24257,10 @@
       "D) Avoid the peer and any conversation about the topic entirely."
      ],
      "scores": [
-      2.0,
-      2.0,
-      4.0,
-      3.0
+      2,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -24355,10 +24275,10 @@
       "D) Take time to genuinely evaluate the suggestion, then decide on a path forward with a clear rationale."
      ],
      "scores": [
-      2.0,
-      3.0,
-      2.0,
-      4.0
+      2,
+      3,
+      2,
+      4
      ]
     },
     {
@@ -24373,10 +24293,10 @@
       "D) Complain to the group about them being difficult."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     },
     {
@@ -24391,10 +24311,10 @@
       "D) Let the friendship fade naturally without addressing it."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     }
    ],
@@ -24411,10 +24331,10 @@
       "D) Decide you're just naturally more anxious than other interns."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      2.0
+      2,
+      3,
+      4,
+      2
      ]
     },
     {
@@ -24429,10 +24349,10 @@
       "D) Take time to process the frustration, then respond professionally to negotiate or decline."
      ],
      "scores": [
-      3.0,
-      2.0,
-      2.0,
-      4.0
+      3,
+      2,
+      2,
+      4
      ]
     },
     {
@@ -24447,10 +24367,10 @@
       "D) Assume it was purely political and stop putting in extra effort."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     },
     {
@@ -24465,10 +24385,10 @@
       "D) Make jokes about their mistakes to lighten the mood for yourself."
      ],
      "scores": [
-      3.0,
-      4.0,
-      2.0,
-      1.0
+      3,
+      4,
+      2,
+      1
      ]
     },
     {
@@ -24483,10 +24403,10 @@
       "D) Let it go since correcting it might make you look less capable."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      3.0
+      3,
+      2,
+      4,
+      3
      ]
     }
    ],
@@ -24503,10 +24423,10 @@
       "D) Recognise the overcommitting is tied to insecurity, and practice evaluating requests based on actual capacity, not anxiety."
      ],
      "scores": [
-      2.0,
-      3.0,
-      2.0,
-      4.0
+      2,
+      3,
+      2,
+      4
      ]
     },
     {
@@ -24521,10 +24441,10 @@
       "D) Shut down and stop participating in the discussion."
      ],
      "scores": [
-      4.0,
-      3.0,
-      2.0,
-      3.0
+      4,
+      3,
+      2,
+      3
      ]
     },
     {
@@ -24539,10 +24459,10 @@
       "D) Panic and accept the first offer regardless of fit, out of pure financial pressure."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -24557,10 +24477,10 @@
       "D) Compare it to your own, potentially different, job experience at length."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      2.0
+      3,
+      2,
+      4,
+      2
      ]
     },
     {
@@ -24575,10 +24495,10 @@
       "D) Be upfront about applying, and agree on how you'll support each other regardless of outcome."
      ],
      "scores": [
-      3.0,
-      2.0,
-      3.0,
-      4.0
+      3,
+      2,
+      3,
+      4
      ]
     }
    ],
@@ -24595,10 +24515,10 @@
       "D) Decide rest is simply unproductive and should be minimised."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     },
     {
@@ -24613,10 +24533,10 @@
       "D) Freeze and avoid working on it entirely out of overwhelm."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      3.0
+      2,
+      4,
+      3,
+      3
      ]
     },
     {
@@ -24631,10 +24551,10 @@
       "D) Feel like your entire future plan is now permanently ruined."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      2.0
+      3,
+      2,
+      4,
+      2
      ]
     },
     {
@@ -24649,10 +24569,10 @@
       "D) Reach out to check in before assuming anything, since it's out of character for them."
      ],
      "scores": [
-      2.0,
-      3.0,
-      3.0,
-      4.0
+      2,
+      3,
+      3,
+      4
      ]
     },
     {
@@ -24667,10 +24587,10 @@
       "D) Give vague, non-committal reasons to avoid an uncomfortable conversation."
      ],
      "scores": [
-      4.0,
-      2.0,
-      2.0,
-      3.0
+      4,
+      2,
+      2,
+      3
      ]
     }
    ],
@@ -24687,10 +24607,10 @@
       "D) Assume you'll disappoint them no matter what you choose, so it doesn't matter."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      2.0
+      2,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -24705,10 +24625,10 @@
       "D) Shut down completely and refuse to discuss it further at all."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      3.0
+      3,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -24723,10 +24643,10 @@
       "D) Give it a fair, defined trial period while actively exploring what changes (role, team, or company) might help."
      ],
      "scores": [
-      3.0,
-      2.0,
-      2.0,
-      4.0
+      3,
+      2,
+      2,
+      4
      ]
     },
     {
@@ -24741,10 +24661,10 @@
       "D) Offer to help them job hunt without asking if they want that kind of help."
      ],
      "scores": [
-      4.0,
-      3.0,
-      2.0,
-      3.0
+      4,
+      3,
+      2,
+      3
      ]
     },
     {
@@ -24759,10 +24679,10 @@
       "D) Back down immediately to avoid seeming difficult."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      2.0
+      2,
+      4,
+      3,
+      2
      ]
     }
    ]
@@ -24781,10 +24701,10 @@
       "D) Decide your colleagues have just been more annoying than usual."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     },
     {
@@ -24799,10 +24719,10 @@
       "D) Go quiet and disengage from the rest of the meeting."
      ],
      "scores": [
-      3.0,
-      4.0,
-      2.0,
-      3.0
+      3,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -24817,10 +24737,10 @@
       "D) Decide leadership doesn't value your ideas and stop proposing new things."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      2.0
+      3,
+      2,
+      4,
+      2
      ]
     },
     {
@@ -24835,10 +24755,10 @@
       "D) Check in privately, offer specific help, and normalise asking questions early on."
      ],
      "scores": [
-      3.0,
-      2.0,
-      3.0,
-      4.0
+      3,
+      2,
+      3,
+      4
      ]
     },
     {
@@ -24853,10 +24773,10 @@
       "D) Raise your objection publicly in a team meeting to get more support."
      ],
      "scores": [
-      4.0,
-      3.0,
-      2.0,
-      2.0
+      4,
+      3,
+      2,
+      2
      ]
     }
    ],
@@ -24873,10 +24793,10 @@
       "D) Assume your manager is always secretly unhappy with your work."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      2.0
+      2,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -24891,10 +24811,10 @@
       "D) Interrupt to correct them in front of the client."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      2.0
+      2,
+      3,
+      4,
+      2
      ]
     },
     {
@@ -24909,10 +24829,10 @@
       "D) Request specific feedback on what would strengthen your case, and build a concrete development plan."
      ],
      "scores": [
-      3.0,
-      2.0,
-      2.0,
-      4.0
+      3,
+      2,
+      2,
+      4
      ]
     },
     {
@@ -24927,10 +24847,10 @@
       "D) Pick up the slack quietly without saying anything to them."
      ],
      "scores": [
-      4.0,
-      3.0,
-      2.0,
-      3.0
+      4,
+      3,
+      2,
+      3
      ]
     },
     {
@@ -24945,10 +24865,10 @@
       "D) Avoid the conversation and just redo their work yourself."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     }
    ],
@@ -24965,10 +24885,10 @@
       "D) Try to read your manager's mood obsessively every morning to prepare yourself."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      2.0
+      3,
+      2,
+      4,
+      2
      ]
     },
     {
@@ -24983,10 +24903,10 @@
       "D) Acknowledge the frustration internally, then calmly assess what's realistically achievable and communicate that clearly."
      ],
      "scores": [
-      3.0,
-      2.0,
-      3.0,
-      4.0
+      3,
+      2,
+      3,
+      4
      ]
     },
     {
@@ -25001,10 +24921,10 @@
       "D) Take it as proof you're not good at your job."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     },
     {
@@ -25019,10 +24939,10 @@
       "D) Report the performance dip to your manager to be safe."
      ],
      "scores": [
-      3.0,
-      4.0,
-      3.0,
-      2.0
+      3,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -25037,10 +24957,10 @@
       "D) Stay completely out of it since it's not your responsibility."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      3.0
+      3,
+      2,
+      4,
+      3
      ]
     }
    ],
@@ -25057,10 +24977,10 @@
       "D) Recognise you're avoiding the discomfort of pushing back, and start being more deliberate about what you take on."
      ],
      "scores": [
-      2.0,
-      3.0,
-      2.0,
-      4.0
+      2,
+      3,
+      2,
+      4
      ]
     },
     {
@@ -25075,10 +24995,10 @@
       "D) Match their tone to assert yourself."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     },
     {
@@ -25093,10 +25013,10 @@
       "D) Compare yourself constantly to more experienced colleagues and feel discouraged."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -25111,10 +25031,10 @@
       "D) Stop giving feedback and just fix the mistakes yourself going forward."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      3.0
+      2,
+      3,
+      4,
+      3
      ]
     },
     {
@@ -25129,10 +25049,10 @@
       "D) Present a clear breakdown of what's achievable in the timeframe, and propose a realistic alternative."
      ],
      "scores": [
-      2.0,
-      2.0,
-      3.0,
-      4.0
+      2,
+      2,
+      3,
+      4
      ]
     }
    ],
@@ -25149,10 +25069,10 @@
       "D) Keep checking anyway, since the anxiety of not checking feels worse."
      ],
      "scores": [
-      4.0,
-      3.0,
-      2.0,
-      2.0
+      4,
+      3,
+      2,
+      2
      ]
     },
     {
@@ -25167,10 +25087,10 @@
       "D) Vent to colleagues about how unfair the review was."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      3.0
+      2,
+      4,
+      3,
+      3
      ]
     },
     {
@@ -25185,10 +25105,10 @@
       "D) Blame the client entirely without any self-reflection."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      2.0
+      3,
+      2,
+      4,
+      2
      ]
     },
     {
@@ -25203,10 +25123,10 @@
       "D) Acknowledge it briefly and let them know you're around if they want to talk, without forcing it."
      ],
      "scores": [
-      3.0,
-      3.0,
-      1.0,
-      4.0
+      3,
+      3,
+      1,
+      4
      ]
     },
     {
@@ -25221,10 +25141,10 @@
       "D) Address it publicly during a team meeting to set an example."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     }
    ],
@@ -25241,10 +25161,10 @@
       "D) Decide the job itself is simply meaningless and start checking out."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      2.0
+      2,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -25259,10 +25179,10 @@
       "D) Send a frustrated message venting about the missed deadlines."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      2.0
+      2,
+      3,
+      4,
+      2
      ]
     },
     {
@@ -25277,10 +25197,10 @@
       "D) Proactively bring up career growth in a conversation with your manager, with specific ideas of your own."
      ],
      "scores": [
-      2.0,
-      3.0,
-      3.0,
-      4.0
+      2,
+      3,
+      3,
+      4
      ]
     },
     {
@@ -25295,10 +25215,10 @@
       "D) Assume they made a mistake based on your own standards."
      ],
      "scores": [
-      4.0,
-      3.0,
-      3.0,
-      2.0
+      4,
+      3,
+      3,
+      2
      ]
     },
     {
@@ -25313,10 +25233,10 @@
       "D) Directly criticise the plan in front of the group."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      2.0
+      2,
+      4,
+      3,
+      2
      ]
     }
    ],
@@ -25333,10 +25253,10 @@
       "D) Decide the goal wasn't actually worth pursuing."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      2.0
+      3,
+      2,
+      4,
+      2
      ]
     },
     {
@@ -25351,10 +25271,10 @@
       "D) Stay composed, and find a better moment (or format) to make the case more thoroughly if you still believe in it."
      ],
      "scores": [
-      3.0,
-      2.0,
-      2.0,
-      4.0
+      3,
+      2,
+      2,
+      4
      ]
     },
     {
@@ -25369,10 +25289,10 @@
       "D) Coast through remaining tasks with minimal effort since the project no longer matters."
      ],
      "scores": [
-      4.0,
-      2.0,
-      2.0,
-      3.0
+      4,
+      2,
+      2,
+      3
      ]
     },
     {
@@ -25387,10 +25307,10 @@
       "D) Give them more work anyway since they haven't complained."
      ],
      "scores": [
-      3.0,
-      4.0,
-      3.0,
-      2.0
+      3,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -25405,10 +25325,10 @@
       "D) Go around them to someone more receptive on their team."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      2.0
+      2,
+      3,
+      4,
+      2
      ]
     }
    ],
@@ -25425,10 +25345,10 @@
       "D) Consider whether your own history with those people (or their role) is colouring how you receive their feedback."
      ],
      "scores": [
-      2.0,
-      2.0,
-      3.0,
-      4.0
+      2,
+      2,
+      3,
+      4
      ]
     },
     {
@@ -25443,10 +25363,10 @@
       "D) Blame whoever scheduled it to both parties."
      ],
      "scores": [
-      4.0,
-      3.0,
-      2.0,
-      3.0
+      4,
+      3,
+      2,
+      3
      ]
     },
     {
@@ -25461,10 +25381,10 @@
       "D) Bring it up repeatedly to make sure people notice your contribution."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -25479,10 +25399,10 @@
       "D) Assume it's fine since they haven't raised it as an issue."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      3.0
+      3,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -25497,10 +25417,10 @@
       "D) Separate the work issue from the friendship explicitly, and address the work concern directly but kindly."
      ],
      "scores": [
-      2.0,
-      3.0,
-      2.0,
-      4.0
+      2,
+      3,
+      2,
+      4
      ]
     }
    ],
@@ -25517,10 +25437,10 @@
       "D) Push through without examining the cause, assuming it'll pass."
      ],
      "scores": [
-      4.0,
-      2.0,
-      2.0,
-      3.0
+      4,
+      2,
+      2,
+      3
      ]
     },
     {
@@ -25535,10 +25455,10 @@
       "D) Overcorrect dramatically and become overly cautious in all communication going forward."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -25553,10 +25473,10 @@
       "D) Keep investing in the same skill regardless of the changing market."
      ],
      "scores": [
-      2.0,
-      2.0,
-      4.0,
-      3.0
+      2,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -25571,10 +25491,10 @@
       "D) Feel the disappointment honestly, and still offer a genuine, specific congratulations."
      ],
      "scores": [
-      3.0,
-      2.0,
-      3.0,
-      4.0
+      3,
+      2,
+      3,
+      4
      ]
     },
     {
@@ -25589,10 +25509,10 @@
       "D) Avoid addressing the change and hope everyone adjusts naturally."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     }
    ],
@@ -25609,10 +25529,10 @@
       "D) Decide this just makes you more dedicated than your peers."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      2.0
+      2,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -25627,10 +25547,10 @@
       "D) Overexplain defensively without focusing on solving the actual problem first."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      3.0
+      3,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -25645,10 +25565,10 @@
       "D) Take the feeling seriously, explore what's changed, and start deliberately exploring adjacent options."
      ],
      "scores": [
-      2.0,
-      2.0,
-      3.0,
-      4.0
+      2,
+      2,
+      3,
+      4
      ]
     },
     {
@@ -25663,10 +25583,10 @@
       "D) Keep the conversation strictly work-focused to maintain professional boundaries."
      ],
      "scores": [
-      4.0,
-      3.0,
-      3.0,
-      2.0
+      4,
+      3,
+      3,
+      2
      ]
     },
     {
@@ -25681,10 +25601,10 @@
       "D) Delay telling them for as long as possible to avoid the difficult conversation."
      ],
      "scores": [
-      3.0,
-      4.0,
-      2.0,
-      2.0
+      3,
+      4,
+      2,
+      2
      ]
     }
    ]
@@ -25703,10 +25623,10 @@
       "D) Ignore it since senior roles are inherently stressful."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     },
     {
@@ -25721,10 +25641,10 @@
       "D) Agree outwardly but feel deeply undermined without addressing it at all."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      3.0
+      2,
+      4,
+      3,
+      3
      ]
     },
     {
@@ -25739,10 +25659,10 @@
       "D) Blame the new leadership entirely without examining the broader context."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      2.0
+      2,
+      3,
+      4,
+      2
      ]
     },
     {
@@ -25757,10 +25677,10 @@
       "D) Have a genuine check-in conversation to understand what's changed, before assuming anything."
      ],
      "scores": [
-      2.0,
-      3.0,
-      3.0,
-      4.0
+      2,
+      3,
+      3,
+      4
      ]
     },
     {
@@ -25775,10 +25695,10 @@
       "D) Let them find out through the broader announcement rather than telling them individually first."
      ],
      "scores": [
-      4.0,
-      2.0,
-      3.0,
-      2.0
+      4,
+      2,
+      3,
+      2
      ]
     }
    ],
@@ -25795,10 +25715,10 @@
       "D) Ignore the feeling since acknowledging it feels uncomfortable."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -25813,10 +25733,10 @@
       "D) Show visible frustration or walk away from the table abruptly."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      2.0
+      3,
+      2,
+      4,
+      2
      ]
     },
     {
@@ -25831,10 +25751,10 @@
       "D) Seek honest feedback on the decision, and use it to decide whether to grow here or explore elsewhere deliberately."
      ],
      "scores": [
-      3.0,
-      2.0,
-      2.0,
-      4.0
+      3,
+      2,
+      2,
+      4
      ]
     },
     {
@@ -25849,10 +25769,10 @@
       "D) Quietly lower expectations without discussing it with them directly."
      ],
      "scores": [
-      4.0,
-      3.0,
-      2.0,
-      3.0
+      4,
+      3,
+      2,
+      3
      ]
     },
     {
@@ -25867,10 +25787,10 @@
       "D) Let them resolve it themselves since they're both experienced enough to handle it."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     }
    ],
@@ -25887,10 +25807,10 @@
       "D) Blame the organisational culture entirely for making you this way."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      2.0
+      3,
+      2,
+      4,
+      2
      ]
     },
     {
@@ -25905,10 +25825,10 @@
       "D) Acknowledge the challenge calmly in the moment, and follow up privately to understand and address it fully."
      ],
      "scores": [
-      2.0,
-      3.0,
-      3.0,
-      4.0
+      2,
+      3,
+      3,
+      4
      ]
     },
     {
@@ -25923,10 +25843,10 @@
       "D) Refuse to adapt the business model despite the changed market."
      ],
      "scores": [
-      4.0,
-      2.0,
-      2.0,
-      3.0
+      4,
+      2,
+      2,
+      3
      ]
     },
     {
@@ -25941,10 +25861,10 @@
       "D) Take their agreement at face value since they haven't raised objections."
      ],
      "scores": [
-      3.0,
-      4.0,
-      3.0,
-      2.0
+      3,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -25959,10 +25879,10 @@
       "D) Address it only if it becomes a visible problem to leadership."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      3.0
+      2,
+      3,
+      4,
+      3
      ]
     }
    ],
@@ -25979,10 +25899,10 @@
       "D) Recognise the over-identification, and start exploring what parts of your identity exist outside of your role."
      ],
      "scores": [
-      3.0,
-      2.0,
-      2.0,
-      4.0
+      3,
+      2,
+      2,
+      4
      ]
     },
     {
@@ -25997,10 +25917,10 @@
       "D) Start quietly doing the same thing back to them."
      ],
      "scores": [
-      4.0,
-      3.0,
-      2.0,
-      2.0
+      4,
+      3,
+      2,
+      2
      ]
     },
     {
@@ -26015,10 +25935,10 @@
       "D) Avoid making any decision indefinitely to sidestep the risk."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -26033,10 +25953,10 @@
       "D) Keep the conversation as brief and procedural as possible to get through it quickly."
      ],
      "scores": [
-      3.0,
-      3.0,
-      4.0,
-      2.0
+      3,
+      3,
+      4,
+      2
      ]
     },
     {
@@ -26051,10 +25971,10 @@
       "D) Acknowledge the changed dynamic openly, and recalibrate how you engage with them as a peer, not a mentee."
      ],
      "scores": [
-      2.0,
-      3.0,
-      2.0,
-      4.0
+      2,
+      3,
+      2,
+      4
      ]
     }
    ],
@@ -26071,10 +25991,10 @@
       "D) Assume the feeling will pass once you're less busy."
      ],
      "scores": [
-      4.0,
-      3.0,
-      2.0,
-      2.0
+      4,
+      3,
+      2,
+      2
      ]
     },
     {
@@ -26089,10 +26009,10 @@
       "D) Get defensive with whoever facilitated the review process."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      2.0
+      2,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -26107,10 +26027,10 @@
       "D) Assume this one failure defines your judgment permanently."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      2.0
+      2,
+      3,
+      4,
+      2
      ]
     },
     {
@@ -26125,10 +26045,10 @@
       "D) Create space for an honest conversation about their career satisfaction, without being accusatory about your suspicion."
      ],
      "scores": [
-      3.0,
-      2.0,
-      2.0,
-      4.0
+      3,
+      2,
+      2,
+      4
      ]
     },
     {
@@ -26143,10 +26063,10 @@
       "D) Avoid proposing the change to sidestep the friction."
      ],
      "scores": [
-      4.0,
-      2.0,
-      2.0,
-      3.0
+      4,
+      2,
+      2,
+      3
      ]
     }
    ],
@@ -26163,10 +26083,10 @@
       "D) Assume nothing at work will ever feel exciting again."
      ],
      "scores": [
-      2.0,
-      4.0,
-      3.0,
-      2.0
+      2,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -26181,10 +26101,10 @@
       "D) Let your own visible panic set the tone for the team's reaction."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      2.0
+      3,
+      2,
+      4,
+      2
      ]
     },
     {
@@ -26199,10 +26119,10 @@
       "D) Reassess what you actually valued about that path (impact, growth, compensation) and find new routes to it."
      ],
      "scores": [
-      2.0,
-      2.0,
-      3.0,
-      4.0
+      2,
+      2,
+      3,
+      4
      ]
     },
     {
@@ -26217,10 +26137,10 @@
       "D) Respect their front completely and never acknowledge it."
      ],
      "scores": [
-      4.0,
-      2.0,
-      2.0,
-      3.0
+      4,
+      2,
+      2,
+      3
      ]
     },
     {
@@ -26235,10 +26155,10 @@
       "D) Avoid the conversation as long as possible, letting resentment build."
      ],
      "scores": [
-      3.0,
-      4.0,
-      2.0,
-      2.0
+      3,
+      4,
+      2,
+      2
      ]
     }
    ],
@@ -26255,10 +26175,10 @@
       "D) Feel guilty about it without changing your approach."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      2.0
+      3,
+      2,
+      4,
+      2
      ]
     },
     {
@@ -26273,10 +26193,10 @@
       "D) Stay composed, evaluate honestly whether the terms are workable, and negotiate from a place of clarity, not fear."
      ],
      "scores": [
-      2.0,
-      2.0,
-      3.0,
-      4.0
+      2,
+      2,
+      3,
+      4
      ]
     },
     {
@@ -26291,10 +26211,10 @@
       "D) Assume something is wrong with you for questioning it."
      ],
      "scores": [
-      4.0,
-      3.0,
-      2.0,
-      2.0
+      4,
+      3,
+      2,
+      2
      ]
     },
     {
@@ -26309,10 +26229,10 @@
       "D) Focus purely on business continuity messaging without addressing the emotional impact."
      ],
      "scores": [
-      3.0,
-      4.0,
-      3.0,
-      2.0
+      3,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -26327,10 +26247,10 @@
       "D) Dismiss their concerns since you're confident in your own judgment."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      2.0
+      2,
+      3,
+      4,
+      2
      ]
     }
    ],
@@ -26347,10 +26267,10 @@
       "D) Recognise conflict-avoidance as a pattern with real costs, and start practising smaller, low-stakes direct conversations."
      ],
      "scores": [
-      2.0,
-      3.0,
-      2.0,
-      4.0
+      2,
+      3,
+      2,
+      4
      ]
     },
     {
@@ -26365,10 +26285,10 @@
       "D) Delay disclosure while you figure out exactly how it happened."
      ],
      "scores": [
-      4.0,
-      2.0,
-      2.0,
-      3.0
+      4,
+      2,
+      2,
+      3
      ]
     },
     {
@@ -26383,10 +26303,10 @@
       "D) Feel bitter that you haven't advanced as quickly as those you've developed."
      ],
      "scores": [
-      3.0,
-      4.0,
-      2.0,
-      2.0
+      3,
+      4,
+      2,
+      2
      ]
     },
     {
@@ -26401,10 +26321,10 @@
       "D) Let it continue since they're too talented to risk upsetting."
      ],
      "scores": [
-      3.0,
-      2.0,
-      4.0,
-      3.0
+      3,
+      2,
+      4,
+      3
      ]
     },
     {
@@ -26419,10 +26339,10 @@
       "D) Negotiate firmly but transparently, being clear that you value both a fair deal and the long-term relationship."
      ],
      "scores": [
-      2.0,
-      3.0,
-      2.0,
-      4.0
+      2,
+      3,
+      2,
+      4
      ]
     }
    ],
@@ -26439,10 +26359,10 @@
       "D) Quietly find reasons to not fully credit those ideas."
      ],
      "scores": [
-      4.0,
-      3.0,
-      2.0,
-      2.0
+      4,
+      3,
+      2,
+      2
      ]
     },
     {
@@ -26457,10 +26377,10 @@
       "D) React defensively and start questioning the decision to anyone who'll listen."
      ],
      "scores": [
-      3.0,
-      4.0,
-      3.0,
-      2.0
+      3,
+      4,
+      3,
+      2
      ]
     },
     {
@@ -26475,10 +26395,10 @@
       "D) Blame external circumstances entirely without any self-examination."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      2.0
+      2,
+      3,
+      4,
+      2
      ]
     },
     {
@@ -26493,10 +26413,10 @@
       "D) Facilitate an open conversation that helps both sides understand the other's perspective, without taking sides."
      ],
      "scores": [
-      2.0,
-      2.0,
-      3.0,
-      4.0
+      2,
+      2,
+      3,
+      4
      ]
     },
     {
@@ -26511,10 +26431,10 @@
       "D) Guilt them about loyalty and past investment in their growth."
      ],
      "scores": [
-      4.0,
-      3.0,
-      2.0,
-      2.0
+      4,
+      3,
+      2,
+      2
      ]
     }
    ],
@@ -26531,10 +26451,10 @@
       "D) Decide this just means you get bored easily and that's your nature."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     },
     {
@@ -26549,10 +26469,10 @@
       "D) Vent about it to colleagues instead of raising it with your manager."
      ],
      "scores": [
-      2.0,
-      3.0,
-      4.0,
-      3.0
+      2,
+      3,
+      4,
+      3
      ]
     },
     {
@@ -26567,10 +26487,10 @@
       "D) Explore it deliberately and realistically - financially, through small experiments - before committing fully either way."
      ],
      "scores": [
-      2.0,
-      3.0,
-      2.0,
-      4.0
+      2,
+      3,
+      2,
+      4
      ]
     },
     {
@@ -26585,10 +26505,10 @@
       "D) Acknowledge their exhaustion but don't change anything about their workload."
      ],
      "scores": [
-      4.0,
-      3.0,
-      2.0,
-      3.0
+      4,
+      3,
+      2,
+      3
      ]
     },
     {
@@ -26603,10 +26523,10 @@
       "D) Downplay the risks involved to avoid worrying them."
      ],
      "scores": [
-      2.0,
-      4.0,
-      2.0,
-      3.0
+      2,
+      4,
+      2,
+      3
      ]
     }
    ]

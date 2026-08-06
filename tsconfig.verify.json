@@ -11,6 +11,7 @@
     "plugins": []
   },
   "include": ["scripts/verify_scoring60.ts", "scripts/analyse_bank_2026.ts",
-              "scripts/audit_career_coverage.ts",
-              "lib/newAssessment/**/*.ts", "lib/auth/AuthProvider.tsx"]
+              "scripts/audit_career_coverage.ts", "scripts/audit_cluster_balance.ts",
+              "lib/newAssessment/**/*.ts", "lib/auth/AuthProvider.tsx",
+              "lib/report/knowledge.ts"]
 }

@@ -1,13 +1,13 @@
 {
  "dimensionWeights": {
-  "career_interest": 0.2,
-  "personality": 0.2,
-  "aptitude": 0.13,
-  "strengths": 0.13,
-  "motivators": 0.1,
-  "emotional_intelligence": 0.1,
-  "learning_styles": 0.07,
-  "multiple_intelligence": 0.07
+  "career_interest": 0.4,
+  "personality": 0.15,
+  "aptitude": 0.098,
+  "strengths": 0.098,
+  "motivators": 0.075,
+  "emotional_intelligence": 0.075,
+  "learning_styles": 0.053,
+  "multiple_intelligence": 0.053
  },
  "miWeights": {
   "Logical–Mathematical": 0.15,
@@ -1456,7 +1456,7 @@
   "Police Officer": "F",
   "Policy Analyst": "F",
   "Product Designer": "D",
-  "Product Engineer": "H",
+  "Product Engineer": "A",
   "Project Manager": "E",
   "Psychologist": "F",
   "Public Health Specialist": "C",
@@ -1467,7 +1467,7 @@
   "Research Engineer": "B",
   "Research Scientist": "G",
   "Robotics Engineer": "A",
-  "Sales Engineer": "H",
+  "Sales Engineer": "E",
   "Science Communicator": "F",
   "Social Worker": "F",
   "Software Engineer": "B",
