@@ -10,6 +10,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/app/Icons";
+import OfferBanner from "@/app/OfferBanner";
+import { OFFER, offerIsLive, formatPaise } from "@/lib/offer";
 
 const LOGO = "https://onegrasp.com/wp-content/uploads/2026/07/onegrasp-logo.png";
 const IMG = (id: string, w = 720) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=72`;
@@ -38,6 +40,9 @@ export default function Landing({ onStart }: { onStart: () => void }) {
   return (
     <div ref={root} className="ogl-land">
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
+
+      {/* sale ribbon — scrolls above the nav and away with the page */}
+      <OfferBanner />
 
       {/* nav */}
       <header className="ogl-nav">
@@ -78,6 +83,19 @@ export default function Landing({ onStart }: { onStart: () => void }) {
             <button className="ogl-btn ogl-btn-lg" onClick={onStart}>Take the assessment <Icon name="chevronRight" size={17} /></button>
             <a href="#science" className="ogl-btn-ghost ogl-btn-lg"><Icon name="play" size={14} /> See how it works</a>
           </div>
+
+          {/* The price, right where the decision is made — a CTA that doesn't
+              say what it costs makes people bounce to look for it. */}
+          {offerIsLive() && (
+            <div className="ogl-offer">
+              <span className="ogl-offer-badge">{OFFER.discountPct}% OFF</span>
+              <span className="ogl-offer-price">
+                <s>{formatPaise(OFFER.listPaise)}</s>
+                <b>{formatPaise(OFFER.salePaise)}</b>
+              </span>
+              <span className="ogl-offer-txt">{OFFER.name} · ends {OFFER.endsOnLabel}</span>
+            </div>
+          )}
         </div>
 
         <div className="ogl-hero-media ogl-reveal ogl-from-right">
@@ -539,6 +557,13 @@ const CSS = `
 .ogl-hg-t{font-size:13.5px;font-weight:700}
 .ogl-hg-d{font-size:11.5px;color:#8a919c;line-height:1.4;margin-top:1px}
 .ogl-hero-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.ogl-offer{display:inline-flex;align-items:center;gap:11px;flex-wrap:wrap;margin-top:16px;padding:9px 15px;
+  background:#fff7f7;border:1px solid #f7d3d5;border-radius:12px}
+.ogl-offer-badge{background:#e0242e;color:#fff;font-size:11px;font-weight:800;letter-spacing:.04em;border-radius:6px;padding:4px 8px}
+.ogl-offer-price{display:inline-flex;align-items:baseline;gap:8px}
+.ogl-offer-price s{color:#a2a7b4;font-size:14px;font-weight:600}
+.ogl-offer-price b{color:${INK};font-size:20px;font-weight:800}
+.ogl-offer-txt{font-size:12px;font-weight:600;color:#8a5b5e}
 
 /* sections */
 .ogl-sec{max-width:1180px;margin:0 auto;padding:70px 24px}

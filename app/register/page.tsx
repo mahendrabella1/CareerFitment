@@ -16,6 +16,8 @@ import { Icon } from "@/app/Icons";
 import { useAuth, authErrorMessage } from "@/lib/auth/AuthProvider";
 import { CLARITY_STAGES, journeyForCategory, PASSWORD_RULES, passwordIsValid, emailIsValid, phoneIsValid } from "@/lib/auth/formOptions";
 import { trackEvent } from "@/lib/metaPixel";
+import OfferBanner from "@/app/OfferBanner";
+import { OFFER, offerIsLive, formatPaise } from "@/lib/offer";
 
 const NAVY = "#2f3f9e";
 const BG = "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1600&q=70";
@@ -103,7 +105,9 @@ function RegisterForm() {
   }
 
   return (
-    <div style={S.page}>
+    <div style={S.shell}>
+      <OfferBanner />
+      <div style={S.page}>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div style={S.overlay} />
       <Link href="/" style={S.home}>HOME</Link>
@@ -193,6 +197,13 @@ function RegisterForm() {
             <>
               <h2 style={S.h}>Let’s start.</h2>
               <p style={S.subhint}>Your email and password are your login — you’ll use them to view your report anytime.</p>
+              {offerIsLive() && (
+                <div style={S.offer}>
+                  <span style={S.offerBadge}>{OFFER.discountPct}% OFF</span>
+                  <span><s style={S.offerWas}>{formatPaise(OFFER.listPaise)}</s> <b style={S.offerNow}>{formatPaise(OFFER.salePaise)}</b></span>
+                  <span style={S.offerTxt}>{OFFER.name} · coupon {OFFER.autoCouponCode} applies automatically</span>
+                </div>
+              )}
               {error && <div style={S.errorBox}>{error}</div>}
 
               <div style={S.grid2} className="og-g2">
@@ -248,6 +259,7 @@ function RegisterForm() {
       </div>
 
       <div style={S.brand}><span style={S.brandChip}><Logo height={26} /></span></div>
+      </div>
     </div>
   );
 }
@@ -267,7 +279,10 @@ function Field({ label, value, onChange, ok, touched, type = "text", placeholder
 
 /* -------------------------------- styles ------------------------------- */
 const S: Record<string, React.CSSProperties> = {
-  page: { position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px", fontFamily: "'Poppins', Inter, system-ui, sans-serif", background: `url(${BG}) center/cover fixed` },
+  // The shell stacks the sale ribbon above the form: the form keeps filling the
+  // rest of the screen rather than being pushed a banner's height off it.
+  shell: { display: "flex", flexDirection: "column", minHeight: "100vh" },
+  page: { position: "relative", flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px", fontFamily: "'Poppins', Inter, system-ui, sans-serif", background: `url(${BG}) center/cover fixed` },
   overlay: { position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(20,26,44,.62), rgba(20,26,44,.72))" },
   home: { position: "absolute", top: 20, right: 20, zIndex: 3, background: NAVY, color: "#fff", textDecoration: "none", fontSize: 12.5, fontWeight: 700, letterSpacing: .5, padding: "9px 20px", borderRadius: 8, border: "1px solid rgba(255,255,255,.25)" },
   brand: { position: "absolute", bottom: 16, left: 0, right: 0, display: "flex", justifyContent: "center", zIndex: 2 },
@@ -283,6 +298,12 @@ const S: Record<string, React.CSSProperties> = {
   body: { padding: "24px 34px 6px", minHeight: 310 },
   h: { textAlign: "center", fontSize: 20, fontWeight: 700, color: "#1f2740", margin: "2px 0 18px" },
   subhint: { textAlign: "center", fontSize: 12.5, color: "#8a90a0", margin: "-10px 0 16px" },
+
+  offer: { display: "flex", alignItems: "center", justifyContent: "center", flexWrap: "wrap", gap: 10, background: "#fff7f7", border: "1px solid #f7d3d5", borderRadius: 10, padding: "9px 12px", margin: "0 0 16px" },
+  offerBadge: { background: "#e0242e", color: "#fff", fontSize: 10.5, fontWeight: 800, borderRadius: 6, padding: "3px 7px", letterSpacing: .3 },
+  offerWas: { color: "#a2a7b4", fontSize: 13, fontWeight: 600 },
+  offerNow: { color: "#1f2740", fontSize: 17, fontWeight: 800 },
+  offerTxt: { fontSize: 11.5, fontWeight: 600, color: "#8a5b5e" },
 
   floatLabel: { display: "block", fontSize: 12, color: "#9aa1ad", marginBottom: 2 },
   underWrap: { position: "relative", marginBottom: 6, maxWidth: 480 },
