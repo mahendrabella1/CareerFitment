@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { razorpayKeyId } from "@/lib/razorpay";
 import { isPaymentActive, FORCE_PAYMENT_OFF } from "@/lib/paymentSettings";
+import { autoCoupon, toPublicCoupon } from "@/lib/coupons";
+import { OFFER, discountPctBetween } from "@/lib/offer";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +20,8 @@ export const dynamic = "force-dynamic";
 // same value is handed to Razorpay Checkout on every payment.
 export async function GET() {
   const { active, settings, configured } = await isPaymentActive();
+  const auto = autoCoupon();
+  const listPaise = Math.max(OFFER.listPaise, settings.amountPaise);
   return NextResponse.json({
     /** The only field the gate needs: charge this student or not. */
     active,
@@ -31,5 +35,19 @@ export async function GET() {
     /** Code-level kill switch is on — the admin toggle is overridden. */
     forcedOff: FORCE_PAYMENT_OFF,
     keyId: razorpayKeyId(),
+
+    // ── The running campaign, so the gate renders the whole price line from a
+    // single request: struck-through list price, the discount it works out to,
+    // and the code it should apply for the student without being asked.
+    offer: {
+      active: OFFER.active,
+      name: OFFER.name,
+      short: OFFER.short,
+      endsOnLabel: OFFER.endsOnLabel,
+      endsAtISO: OFFER.endsAtISO,
+      listPaise,
+      discountPct: discountPctBetween(listPaise, settings.amountPaise),
+      autoCoupon: auto ? toPublicCoupon(auto) : null,
+    },
   });
 }

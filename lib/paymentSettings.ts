@@ -19,18 +19,20 @@ import { isFirestoreConfigured, getFirestore } from "@/lib/firebase/admin";
 import { razorpayAmountPaise, razorpayKeySecret } from "@/lib/razorpay";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// TEMPORARY KILL SWITCH — payment is currently OFF for everyone.
+// EMERGENCY KILL SWITCH — currently OFF, i.e. payment is live.
 //
-// While this is true, nobody is charged and every student goes straight into
-// the exam. It overrides BOTH the admin toggle and the env vars, deliberately:
-// it has to hold even on a deployment where the server can't reach Firestore.
+// Set this to true to stop charging everyone at once: nobody is charged and
+// every student goes straight into the exam. It overrides BOTH the admin toggle
+// and the env vars, deliberately — it has to hold even on a deployment where
+// the server can't reach Firestore.
 //
-// TO TURN PAYMENT BACK ON: set this to false and redeploy. Control then returns
-// to the admin switch in /admin (settings/payment), which additionally needs
-// FIREBASE_PROJECT_ID / FIREBASE_CLIENT_EMAIL / FIREBASE_PRIVATE_KEY set on the
-// server, or the toggle silently won't take effect.
+// With it false (as now), control sits with the admin switch in /admin
+// (settings/payment), which additionally needs FIREBASE_PROJECT_ID /
+// FIREBASE_CLIENT_EMAIL / FIREBASE_PRIVATE_KEY set on the server, or the toggle
+// silently won't take effect. Charging ALSO requires RAZORPAY_KEY_SECRET on the
+// server — without it isPaymentActive() reports false and the exam opens free.
 // ─────────────────────────────────────────────────────────────────────────────
-export const FORCE_PAYMENT_OFF = true;
+export const FORCE_PAYMENT_OFF = false;
 
 export const PAYMENT_SETTINGS_PATH = { collection: "settings", doc: "payment" } as const;
 
