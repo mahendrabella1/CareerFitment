@@ -15,6 +15,7 @@
 import { Component, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth, type ExamSession } from "@/lib/auth/AuthProvider";
+import { getFirebaseAuth } from "@/lib/firebase/client";
 
 // Short chip labels so all 8 categories fit the bar without horizontal scroll.
 const SHORT_CAT: Record<string, string> = {
@@ -236,6 +237,23 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
       try { await saveAssessment(j.data); } catch { /* still continue */ }
       try { await clearExamSession(); } catch { /* ignore */ }
       try { if (document.fullscreenElement) await document.exitFullscreen(); } catch { /* ignore */ }
+
+      // Confirmation email with their login details. Fire-and-forget on purpose:
+      // the assessment is already saved by this point, and a mail outage must
+      // never turn a completed exam into an error screen. The same information
+      // is on the completion screen either way.
+      void (async () => {
+        try {
+          const idToken = await getFirebaseAuth()?.currentUser?.getIdToken();
+          if (!idToken) return;
+          await fetch("/api/assessment/completion-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ idToken, name, topCareer: j.data?.topCareer ?? "" }),
+          });
+        } catch { /* best-effort */ }
+      })();
+
       // No auto-redirect: the completion screen carries the login details and
       // the steps to get back in later, and whisking them away after four
       // seconds is exactly how that gets missed. They leave when they choose.
