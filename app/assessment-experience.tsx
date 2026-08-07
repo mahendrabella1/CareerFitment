@@ -508,7 +508,7 @@ function optionList(question: SessionQuestion) {
 
 export default function AssessmentExperience() {
   const router = useRouter();
-  const { user, profile, loading: authLoading, saveAssessment, resetPassword } = useAuth();
+  const { user, profile, loading: authLoading, saveAssessment } = useAuth();
   const [beginHandled, setBeginHandled] = useState(false);
   // Reactive to the URL query so a client-side nav to /?begin=1 (e.g. "Retake"
   // from the dashboard) always launches the exam instead of a stale landing.
@@ -1837,11 +1837,6 @@ export default function AssessmentExperience() {
           name={(lead.name || profile?.name || "").trim().split(/\s+/)[0]}
           email={profile?.email || user?.email || lead.email || ""}
           onGoToDashboard={() => router.push("/account")}
-          onResetPassword={
-            profile?.email || user?.email
-              ? () => resetPassword((profile?.email || user?.email) as string)
-              : undefined
-          }
         />
       ) : null}
 

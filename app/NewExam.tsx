@@ -84,7 +84,7 @@ export default function NewExam(props: { category: string; name?: string; onExit
 
 function NewExamInner({ category, name, onExit }: { category: string; name?: string; onExit: () => void }) {
   const router = useRouter();
-  const { saveAssessment, saveExamSession, clearExamSession, resetPassword, profile, user } = useAuth();
+  const { saveAssessment, saveExamSession, clearExamSession, profile, user } = useAuth();
   const [phase, setPhase] = useState<"loading" | "error" | "intro" | "resume" | "exam" | "thanks">("loading");
   const [data, setData] = useState<GenData | null>(null);
   const [cur, setCur] = useState(0);
@@ -238,10 +238,12 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
       try { await clearExamSession(); } catch { /* ignore */ }
       try { if (document.fullscreenElement) await document.exitFullscreen(); } catch { /* ignore */ }
 
-      // Confirmation email with their login details. Fire-and-forget on purpose:
-      // the assessment is already saved by this point, and a mail outage must
-      // never turn a completed exam into an error screen. The same information
-      // is on the completion screen either way.
+      // Thank-you email with the steps to sign back in. This is now the ONLY
+      // place those steps are given — the completion screen sends them straight
+      // to the dashboard instead — so it matters that it goes out on every
+      // submit. Still fire-and-forget: the assessment is already saved by this
+      // point, and a mail outage must never turn a completed exam into an error
+      // screen. (The report itself is a separate, manual send from /admin.)
       void (async () => {
         try {
           const idToken = await getFirebaseAuth()?.currentUser?.getIdToken();
@@ -254,9 +256,10 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
         } catch { /* best-effort */ }
       })();
 
-      // No auto-redirect: the completion screen carries the login details and
-      // the steps to get back in later, and whisking them away after four
-      // seconds is exactly how that gets missed. They leave when they choose.
+      // No auto-redirect. The dashboard is one click away on the completion
+      // screen, but the student decides when to take it — a timed jump would
+      // yank the "submitted successfully" confirmation away before they have
+      // read it.
       setPhase("thanks");
     } catch (e) { setErr(e instanceof Error ? e.message : "Something went wrong"); setSubmitting(false); }
   }
@@ -275,7 +278,6 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
         name={name}
         email={email}
         onGoToDashboard={() => router.push("/account")}
-        onResetPassword={email ? () => resetPassword(email) : undefined}
       />
     );
   }

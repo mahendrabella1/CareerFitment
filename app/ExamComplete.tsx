@@ -2,69 +2,46 @@
 
 /**
  * ExamComplete — the screen a student lands on the moment they submit the
- * assessment. It does three jobs, in this order:
+ * assessment. It does two jobs, and deliberately no more:
  *
  *   1. Close the exam properly — thank them, and confirm the responses are in.
- *   2. Tell them exactly how to get back to their report later. Most students
- *      submit, close the tab and return days afterwards, so the login route is
- *      spelled out here rather than assumed: the sign-in page, the email their
- *      account uses, and what to do when the password has gone.
- *   3. Get them to the dashboard now, in one click.
+ *   2. Get them to the dashboard now, in one click.
  *
- * On passwords: we show the account's EMAIL because that half of the login is
- * ours to show. The password is not — it is never stored in a readable form
- * anywhere in this system (Firebase keeps only a hash), so no screen can print
- * it back. That is a deliberate protection, not a gap, and the copy below says
- * so plainly and points at the reset link instead of leaving them stuck.
+ * It used to also print the login details, four sign-in steps and a "email me a
+ * password reset link" button. All of that moved into the completion email
+ * (lib/studentEmail.ts), which goes out automatically on submit: a student who
+ * needs sign-in instructions needs them days later, when this screen is long
+ * gone and only the email survives. Standing between a finished exam and the
+ * dashboard with a wall of instructions helped nobody who was still looking at
+ * it.
+ *
+ * The report itself is not emailed from here — an admin sends it by hand from
+ * /admin, which is why the copy says "our team will email you a copy" rather
+ * than promising anything instant.
  */
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { Logo } from "@/app/Logo";
 import { Icon } from "@/app/Icons";
 
 export interface ExamCompleteProps {
   /** First name, for the greeting. */
   name?: string;
-  /** The signed-in account's email — the username half of their login. */
+  /** The signed-in account's email — named so they know which inbox to check. */
   email?: string;
   /** Sends them into the dashboard without signing in again. */
   onGoToDashboard: () => void;
-  /**
-   * Triggers a password-reset email. Omit and the reset row falls back to a
-   * link to /signin, where the same option exists.
-   */
-  onResetPassword?: () => Promise<void>;
 }
 
-const STEPS: { title: string; detail: string; icon: string }[] = [
-  { icon: "explain", title: "Go to onegrasp.com and click “Sign in”", detail: "Or open the sign-in page directly with the button below — bookmark it for later." },
-  { icon: "user", title: "Enter your registered email", detail: "This is the same email you used when you created your OneGrasp account." },
-  { icon: "lock", title: "Enter the password you chose at registration", detail: "Forgotten it? Use “Forgot password” to have a reset link emailed to you." },
-  { icon: "score", title: "Open your dashboard to read the full report", detail: "Your career matches, all eight dimensions, strengths and next steps are saved there permanently." },
-];
-
-export default function ExamComplete({ name, email, onGoToDashboard, onResetPassword }: ExamCompleteProps) {
+export default function ExamComplete({ name, email, onGoToDashboard }: ExamCompleteProps) {
   // Brief "saving" beat before the thank-you, so the submit doesn't feel like
   // it vanished — the write has usually already finished by the time it ends.
   const [phase, setPhase] = useState<"saving" | "done">("saving");
-  const [resetState, setResetState] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   useEffect(() => {
     const t = setTimeout(() => setPhase("done"), 1800);
     return () => clearTimeout(t);
   }, []);
-
-  async function sendReset() {
-    if (!onResetPassword || resetState === "sending") return;
-    setResetState("sending");
-    try {
-      await onResetPassword();
-      setResetState("sent");
-    } catch {
-      setResetState("error");
-    }
-  }
 
   if (phase === "saving") {
     return (
@@ -106,67 +83,16 @@ export default function ExamComplete({ name, email, onGoToDashboard, onResetPass
           </span>
         </div>
 
-        {/* --- the login card: what to sign in with --- */}
-        <div className="xc-login">
-          <div className="xc-login-head">
-            <span className="xc-login-ic"><Icon name="lock" size={16} /></span>
-            <div>
-              <div className="xc-login-t">Your login details</div>
-              <div className="xc-login-s">Use these to reach your report at any time</div>
-            </div>
-          </div>
-
-          <div className="xc-field">
-            <span className="xc-field-k">Sign-in page</span>
-            <Link href="/signin" className="xc-field-link">onegrasp.com/signin</Link>
-          </div>
-          <div className="xc-field">
-            <span className="xc-field-k">Email</span>
-            <span className="xc-field-v">{email || "the email you registered with"}</span>
-          </div>
-          <div className="xc-field">
-            <span className="xc-field-k">Password</span>
-            <span className="xc-field-v xc-field-muted">
-              The password you created at registration
-            </span>
-          </div>
-
-          <p className="xc-privacy">
-            <b>We never display or email your password.</b> It is stored only in an
-            encrypted form that nobody at OneGrasp can read — including us. If you’ve
-            forgotten it, reset it below and you’ll be back in within a minute.
-          </p>
-
-          {onResetPassword ? (
-            <div className="xc-reset">
-              <button className="xc-reset-btn" onClick={() => void sendReset()} disabled={resetState === "sending" || resetState === "sent"}>
-                {resetState === "sending" ? "Sending…" : resetState === "sent" ? "Reset link sent ✓" : "Email me a password reset link"}
-              </button>
-              {resetState === "sent" && (
-                <div className="xc-reset-ok">Check your inbox{email ? ` (${email})` : ""} — and your spam folder if it isn’t there in a minute.</div>
-              )}
-              {resetState === "error" && (
-                <div className="xc-reset-err">Couldn’t send the reset email just now. You can also do this from the sign-in page.</div>
-              )}
-            </div>
-          ) : (
-            <Link href="/signin" className="xc-reset-btn xc-reset-link">Go to sign-in &amp; reset password</Link>
-          )}
+        {/* The sign-in steps live in the completion email now — this only says
+            it is on the way, so they know to look for it later. */}
+        <div className="xc-mail">
+          <span className="xc-mail-ic"><Icon name="explain" size={17} /></span>
+          <span>
+            We’ve emailed a confirmation to{" "}
+            <b>{email || "your registered email address"}</b> with the steps to
+            sign back in whenever you want to reread your report.
+          </span>
         </div>
-
-        {/* --- the steps --- */}
-        <div className="xc-steps-head">How to log in to your dashboard</div>
-        <ol className="xc-steps">
-          {STEPS.map((s, i) => (
-            <li className="xc-step" key={s.title}>
-              <span className="xc-step-n">{i + 1}</span>
-              <div className="xc-step-body">
-                <div className="xc-step-t"><span className="xc-step-ic"><Icon name={s.icon} size={15} /></span>{s.title}</div>
-                <div className="xc-step-d">{s.detail}</div>
-              </div>
-            </li>
-          ))}
-        </ol>
 
         <button className="xc-cta" onClick={onGoToDashboard}>
           Go to my dashboard <Icon name="chevronRight" size={16} />
@@ -210,36 +136,10 @@ const CSS = `
   border-radius:13px;padding:13px 15px;margin:20px 0 24px;font-size:13px;line-height:1.55;color:#334155}
 .xc-note-ic{color:#3b5bdb;flex:none;margin-top:1px}
 
-.xc-login{text-align:left;background:#fbfcff;border:1px solid #e6eaf5;border-radius:16px;padding:18px 18px 16px;margin-bottom:26px}
-.xc-login-head{display:flex;align-items:center;gap:11px;margin-bottom:14px}
-.xc-login-ic{width:32px;height:32px;flex:none;border-radius:9px;background:#eef2ff;color:#3b5bdb;display:grid;place-items:center}
-.xc-login-t{font-size:15px;font-weight:800;color:#0f172a}
-.xc-login-s{font-size:12px;color:#7b8496;margin-top:1px}
-.xc-field{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:9px 0;border-top:1px solid #edf0f7;font-size:13.5px}
-.xc-field-k{color:#7b8496;font-weight:600;flex:none}
-.xc-field-v{font-weight:700;color:#0f172a;text-align:right;word-break:break-all}
-.xc-field-muted{font-weight:600;color:#5b6474}
-.xc-field-link{font-weight:800;color:#3b5bdb;text-decoration:none;text-align:right;word-break:break-all}
-.xc-field-link:hover{text-decoration:underline}
-.xc-privacy{font-size:12px;line-height:1.6;color:#6b7280;background:#fff;border:1px dashed #dfe4ef;border-radius:11px;padding:11px 13px;margin:14px 0 13px}
-.xc-privacy b{color:#3d4657}
-.xc-reset-btn{display:block;width:100%;padding:11px 14px;background:#fff;color:#3b5bdb;border:1.5px solid #c9d4f5;
-  border-radius:11px;font-size:13.5px;font-weight:800;cursor:pointer;font-family:inherit;text-align:center;text-decoration:none}
-.xc-reset-btn:hover{background:#f3f6ff}
-.xc-reset-btn:disabled{opacity:.7;cursor:default}
-.xc-reset-link{display:block}
-.xc-reset-ok{font-size:12px;font-weight:600;color:#15803d;margin-top:8px}
-.xc-reset-err{font-size:12px;font-weight:600;color:#b91c1c;margin-top:8px}
-
-.xc-steps-head{text-align:left;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#8a919f;margin-bottom:12px}
-.xc-steps{list-style:none;padding:0;margin:0 0 26px;display:flex;flex-direction:column;gap:2px;text-align:left;counter-reset:none}
-.xc-step{display:flex;gap:13px;padding:11px 0;border-bottom:1px solid #f1f3f9}
-.xc-step:last-child{border-bottom:none}
-.xc-step-n{width:25px;height:25px;flex:none;border-radius:50%;background:#eef2ff;color:#3b5bdb;font-size:12.5px;font-weight:800;display:grid;place-items:center;margin-top:1px}
-.xc-step-body{min-width:0}
-.xc-step-t{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:#0f172a;line-height:1.4}
-.xc-step-ic{color:#9aa3b6;flex:none;display:inline-flex}
-.xc-step-d{font-size:12.5px;color:#6b7280;line-height:1.55;margin-top:3px}
+.xc-mail{display:flex;align-items:flex-start;gap:11px;text-align:left;background:#fbfcff;border:1px solid #e6eaf5;
+  border-radius:13px;padding:13px 15px;margin:0 0 24px;font-size:13px;line-height:1.55;color:#4b5563}
+.xc-mail-ic{color:#3b5bdb;flex:none;margin-top:1px}
+.xc-mail b{color:#0f172a;word-break:break-all}
 
 .xc-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px;
   background:#171624;color:#fff;border:none;border-radius:13px;font-size:15px;font-weight:800;cursor:pointer;
