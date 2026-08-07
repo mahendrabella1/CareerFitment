@@ -181,14 +181,38 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
   const lvl = band(p);
   switch (key) {
     case "personality": {
-      const t = temperamentOf(a);
-      const dual = t.scores[1].score > 45;
+      const { reads, measured } = traitProfile(a);
+      const top = reads[0], second = reads[1], last = reads[reads.length - 1];
+      // An older assessment never scored the five separately. Every read sits
+      // at a default 50, so naming a "strongest" trait would be reporting the
+      // order of an array as if it were a finding. Explain the traits instead.
+      if (!measured) {
+        return {
+          meaning: `Personality here means five simple things: how curious you are, how much you plan ahead, where your energy comes from, how you deal with people, and how you handle pressure. Your assessment recorded an overall personality result rather than a score for each of the five, so they are explained below without individual numbers. There is no good or bad score on any of them — they describe how you work best, not how well.`,
+          strengths: TRAITS.slice(0, 3).map((t) => `${t.name}: ${t.about}`),
+          grow: ["Read the five below and note which two sound most like you — that pair explains most of how you work", "Work with people who are strong where you are not", "Notice which situations leave you energised and which leave you drained"],
+          recommend: ["Pick roles and teams that fit how you naturally work rather than fighting your own grain", "Ask two people who know you well which of the five they'd say is most you", "Retake the assessment on the current question set for a scored breakdown"],
+          next: "Read the five traits below and pick the two that sound most like you.",
+        };
+      }
       return {
-        meaning: `Your natural temperament is ${t.primary.name} — ${t.primary.tagline.toLowerCase()}${dual ? `, with a ${t.secondary.name} side` : ""}. ${t.primary.strength} This is the "operating system" behind how you engage with people, handle pressure, make decisions and recharge.`,
-        strengths: [t.primary.strength, `As a${/^[AEIOU]/.test(t.primary.name) ? "n" : ""} ${t.primary.name}, you bring ${t.primary.traits.slice(0, 2).join(" and ").toLowerCase()} energy to a team`, "Knowing your temperament helps you pick environments that fit you"],
-        grow: [t.primary.watch, `Borrow from your ${t.secondary.name} side when a situation needs it`, "Notice which situations drain vs. energise you, and plan around them"],
-        recommend: ["Choose roles and teams that fit your natural style rather than fighting it", "Pair up with people whose strengths cover your blind spots", "Keep a simple journal of what energises and what exhausts you for a month"],
-        next: "Shortlist 2–3 work environments that match your temperament and talk to someone already in them.",
+        meaning: `Personality here means five simple things: how curious you are, how much you plan, where your energy comes from, how you deal with people, and how you handle pressure. Yours stands out most on ${top.trait.name.toLowerCase()} — ${top.blurb} There is no good or bad score on any of these. They just describe how you work best, which is what makes some study habits and some jobs feel easy for you and others feel like hard work.`,
+        strengths: [
+          top.blurb,
+          `${second.trait.name} is your next strongest: ${second.blurb.toLowerCase()}`,
+          "Knowing this lets you pick subjects, teams and jobs that suit how you already are, instead of fighting yourself",
+        ],
+        grow: [
+          `You score lowest on ${last.trait.name.toLowerCase()}. That is not a weakness — ${last.blurb.toLowerCase()} It only becomes a problem when a situation needs the opposite, so plan for those.`,
+          "Work with people who are strong where you are not, rather than trying to be good at everything",
+          "Notice which situations leave you energised and which leave you drained, and choose accordingly",
+        ],
+        recommend: [
+          "Pick roles and teams that fit how you naturally work rather than fighting your own grain",
+          "Pair up with people whose strengths cover your blind spots",
+          "Keep a simple note for a month of what energises and what exhausts you — the pattern is usually obvious by the end",
+        ],
+        next: "Shortlist 2–3 kinds of work that suit how you're described above, and talk to someone already doing one of them.",
       };
     }
     case "career_interest": {
@@ -490,39 +514,118 @@ export function actionPlan(a: AssessmentSummary, domainName: string): { days30: 
   return PLANS[keyOfDomain(domainName)] ?? PLANS.B;
 }
 
-/* ------------------------- four temperaments --------------------------- */
-export type Temperament = { key: string; name: string; tagline: string; traits: string[]; strength: string; watch: string; emoji: string };
-
-export const TEMPERAMENTS: Record<string, Temperament> = {
-  sanguine: { key: "sanguine", name: "Sanguine", tagline: "Enthusiastic, social & optimistic", traits: ["Outgoing", "Expressive", "Warm", "Spontaneous"], strength: "You energise people and thrive on connection, variety and new experiences.", watch: "Can lose focus on long, detailed or repetitive tasks.", emoji: "☀", },
-  choleric: { key: "choleric", name: "Choleric", tagline: "Driven, decisive & goal-focused", traits: ["Ambitious", "Confident", "Direct", "Natural leader"], strength: "You take charge, set clear goals and get things done fast.", watch: "Can be impatient with slower people or processes.", emoji: "🔥", },
-  melancholic: { key: "melancholic", name: "Melancholic", tagline: "Analytical, deep & detail-oriented", traits: ["Thoughtful", "Precise", "Loyal", "Reflective"], strength: "You think deeply, plan carefully and hold yourself to high standards.", watch: "Can over-analyse, or be too hard on yourself.", emoji: "🌙", },
-  phlegmatic: { key: "phlegmatic", name: "Phlegmatic", tagline: "Calm, steady & easy-going", traits: ["Patient", "Reliable", "Diplomatic", "Consistent"], strength: "You stay calm under pressure and keep teams balanced and grounded.", watch: "Can avoid conflict, or resist change longer than needed.", emoji: "🍃", },
+/* --------------------------- the five traits --------------------------- */
+/**
+ * The Big Five — the only personality model this report shows a student.
+ *
+ * It used to also derive the four temperaments (Sanguine / Choleric /
+ * Melancholic / Phlegmatic) from these same five numbers and lead with those.
+ * They are gone: they added no information the five traits didn't already
+ * carry, and putting a Greek label on a 15-year-old is not a result they can
+ * do anything with.
+ *
+ * Everything here is written to be read by the student, not by a psychologist.
+ * `key` keeps the formal trait name because that is what the scoring engines
+ * store in `topStrengths` and what the career library matches on — the plain
+ * `name` is a presentation layer over it, and never replaces it in the data.
+ *
+ * A low score is never written as a fault. These are preferences, not grades:
+ * every trait has a real edge at both ends, and a student reading "you are
+ * disorganised" learns nothing they can use.
+ */
+export type Trait = {
+  /** Formal name as stored in `topStrengths` — the join key, not display text. */
+  key: string;
+  /** What the report actually calls it. */
+  name: string;
+  /** One line on what the trait is even asking about. */
+  about: string;
+  /** What a high score means, in plain words. */
+  high: string;
+  /** What a lower score means — a different strength, not a deficit. */
+  low: string;
+  /** What it tends to mean for studying and work. */
+  atWork: string;
+  emoji: string;
 };
+
+export const TRAITS: Trait[] = [
+  {
+    key: "Openness", name: "Curiosity & new ideas", emoji: "💡",
+    about: "Whether you go looking for new ideas and new ways of doing things, or prefer what you already know works.",
+    high: "You like new ideas, new places and doing things a different way. Repetition bores you quickly, and you'd rather try something and learn from it than play it safe.",
+    low: "You prefer what is proven and familiar. You'd rather do a known thing really well than gamble on an untested idea — which makes you steady when other people are chasing the next new thing.",
+    atWork: "High: creative, changing, design-led work. Lower: work where reliability and doing it properly matter more than novelty.",
+  },
+  {
+    key: "Conscientiousness", name: "Planning & follow-through", emoji: "🎯",
+    about: "Whether you plan ahead and finish things, or work in bursts and keep your options open.",
+    high: "You plan ahead, keep your word and finish what you start. Deadlines rarely catch you out, and people trust you with things that matter.",
+    low: "You work in bursts and stay flexible. Long plans feel restrictive, and you're at your best when you can respond to what's actually in front of you.",
+    atWork: "High: long projects, detail, responsibility. Lower: fast-changing work where plans get thrown out anyway.",
+  },
+  {
+    key: "Extraversion", name: "Energy around people", emoji: "🗣",
+    about: "Where your energy comes from — being around people, or having time to yourself.",
+    high: "Being around people lifts you. You think out loud, enjoy a full room, and a day with no one in it feels flat.",
+    low: "You recharge in quiet. You think before you speak, prefer a few close people to a crowd, and can concentrate for long stretches without needing company.",
+    atWork: "High: teams, clients, presenting, selling. Lower: focused solo work, research, writing, craft.",
+  },
+  {
+    key: "Agreeableness", name: "Warmth with people", emoji: "🤝",
+    about: "Whether you lean toward keeping the peace, or toward saying exactly what you think.",
+    high: "You look after people, give them the benefit of the doubt, and would rather find agreement than win an argument. People bring you their problems.",
+    low: "You say what you think and hold your position. You're comfortable disagreeing, which is exactly what's needed when everyone else is going along with a bad idea.",
+    atWork: "High: caring, teaching, support and team roles. Lower: negotiation, quality control, roles that need a straight answer.",
+  },
+  {
+    key: "Emotional Stability", name: "Staying calm under pressure", emoji: "🧘",
+    about: "How much pressure and setbacks knock you off course, and how fast you come back.",
+    high: "Pressure doesn't rattle you much. You keep a level head when things go wrong, which is why people look to you in a crisis.",
+    low: "You feel things strongly and spot problems early — often before anyone else does. Stress hits you harder, so rest, routine and people you trust matter more for you than for most.",
+    atWork: "High: high-stakes, deadline-heavy or emergency work. Lower: work with a steadier rhythm, where care and noticing detail count.",
+  },
+];
 
 /** Read Big-Five sub-trait scores from the saved data, matching by name. */
 function bigFive(a: AssessmentSummary) {
-  const find = (needle: string) => (a.topStrengths ?? []).find((x) => x.subTraitName?.toLowerCase().includes(needle))?.normalizedScore;
+  const find = (needle: string) => {
+    const hit = (a.topStrengths ?? []).find((x) => x.subTraitName?.toLowerCase().includes(needle))?.normalizedScore;
+    // The legacy Yes/No bank records the five trait NAMES but scores them all
+    // at 0. That is "not measured", not "scored zero" — read it as missing so
+    // the report falls back to neutral instead of drawing five empty bars.
+    return hit == null || hit <= 0 ? undefined : hit;
+  };
   const O = find("open"), C = find("consc"), E = find("extra"), A = find("agree");
   let S = find("stab"); const neuro = find("neuro"); if (S == null && neuro != null) S = 100 - neuro;
   const v = (x?: number) => (x == null ? 50 : x);
   return { O: v(O), C: v(C), E: v(E), A: v(A), S: v(S), has: [O, C, E, A].some((x) => x != null) };
 }
 
-export function temperamentScores(a: AssessmentSummary): { key: string; score: number }[] {
-  const { O, C, E, A, S } = bigFive(a);
-  const raw = {
-    sanguine: E * 0.6 + A * 0.25 + O * 0.15,
-    choleric: E * 0.5 + C * 0.3 + (100 - A) * 0.2,
-    melancholic: (100 - E) * 0.4 + C * 0.35 + O * 0.25,
-    phlegmatic: (100 - E) * 0.35 + A * 0.4 + S * 0.25,
-  };
-  return Object.entries(raw).map(([key, score]) => ({ key, score: Math.round(score) })).sort((x, y) => y.score - x.score);
-}
+export type TraitRead = { trait: Trait; score: number; level: "high" | "mid" | "low"; blurb: string };
 
-export function temperamentOf(a: AssessmentSummary): { primary: Temperament; secondary: Temperament; scores: { key: string; score: number }[] } {
-  const scores = temperamentScores(a);
-  return { primary: TEMPERAMENTS[scores[0].key], secondary: TEMPERAMENTS[scores[1].key], scores };
+/**
+ * The five traits with this student's score, strongest first. `measured` is
+ * false for older assessments that never captured the five separately — the
+ * report still explains the traits, it just doesn't put numbers on them.
+ */
+export function traitProfile(a: AssessmentSummary): { reads: TraitRead[]; measured: boolean } {
+  const b = bigFive(a);
+  const byKey: Record<string, number> = {
+    Openness: b.O, Conscientiousness: b.C, Extraversion: b.E,
+    Agreeableness: b.A, "Emotional Stability": b.S,
+  };
+  const reads = TRAITS.map((trait) => {
+    const score = Math.round(byKey[trait.key] ?? 50);
+    // Middling scores are the common case and mean "it depends on the day" —
+    // claiming a clear result there would be inventing one.
+    const level: TraitRead["level"] = score >= 60 ? "high" : score <= 40 ? "low" : "mid";
+    const blurb = level === "high" ? trait.high
+      : level === "low" ? trait.low
+      : `You sit in the middle here — you can go either way depending on the situation. ${trait.about}`;
+    return { trait, score, level, blurb };
+  }).sort((x, y) => y.score - x.score);
+  return { reads, measured: b.has };
 }
 
 /* ------------------------- clear per-dimension result ------------------ */
@@ -532,7 +635,9 @@ const eiBand = (p: number) => (p >= 75 ? "High EQ" : p >= 55 ? "Solid EQ" : p >=
 export function resultOf(key: string, a: AssessmentSummary): { label: string; value: string } | null {
   const two = (arr?: { n: string }[]) => (arr ?? []).slice(0, 2).map((x) => x.n).join(" · ");
   switch (key) {
-    case "personality": { const t = temperamentOf(a); return { label: "Your temperament", value: `${t.primary.name}${t.secondary && t.scores[1].score > 45 ? " · " + t.secondary.name : ""}` }; }
+    // No chip when the five were never scored separately — every trait sits at
+    // the same default, so "stands out most" would just be naming array order.
+    case "personality": { const { reads, measured } = traitProfile(a); return measured ? { label: "Stands out most", value: reads[0].trait.name } : null; }
     case "career_interest": { const code = a.riasecCode || (a.themes ?? []).slice(0, 3).map((t) => t.letter).join(""); return code ? { label: "Your Holland code", value: code } : null; }
     case "multiple_intelligence": return { label: "Top intelligences", value: two((a.topIntelligences ?? []).map((x) => ({ n: x.name }))) };
     case "emotional_intelligence": {
@@ -745,16 +850,30 @@ export function academicPath(a: AssessmentSummary, journeyCode: string): Academi
 
 /* ------------------------- work-environment fit ------------------------ */
 export function workEnvironment(a: AssessmentSummary): { fit: string; blurb: string; tags: string[] } {
-  const t = temperamentOf(a).primary;
+  // Driven by the trait that stands out most, so this section and the
+  // personality section can never describe two different people.
+  const { reads, measured } = traitProfile(a);
+  const top = reads[0];
   const val = a.topValues?.[0]?.tag;
-  const map: Record<string, { fit: string; tags: string[] }> = {
-    choleric: { fit: "Fast-paced, goal-driven teams", tags: ["Ownership", "Ambitious teams", "Room to lead"] },
-    sanguine: { fit: "Collaborative, people-facing environments", tags: ["Teamwork", "Variety", "Client-facing"] },
-    melancholic: { fit: "Focused, deep-work environments", tags: ["Deep work", "Autonomy", "Craft & quality"] },
-    phlegmatic: { fit: "Stable, supportive organisations", tags: ["Stability", "Clear structure", "Steady growth"] },
+  // Nothing measured means no standout trait to reason from. Fall back to what
+  // the student's own values say, which is real data, rather than dressing up
+  // an unscored default as a recommendation.
+  if (!measured) {
+    return {
+      fit: "Somewhere that fits how you like to work",
+      blurb: `Look past the job title when you choose a college, a team or a first job${val ? `: you told us ${String(val).toLowerCase()} matters to you, so start there` : ""}. Whether a place is busy or quiet, planned or improvised, competitive or supportive will shape your day far more than what the role is called.`,
+      tags: ["Know your own style", "Ask about the day-to-day", "Talk to someone already there"],
+    };
+  }
+  const map: Record<string, { fit: string; tags: string[]; why: string }> = {
+    Extraversion: { fit: "Busy, people-facing teams", tags: ["Teamwork", "Variety", "Working with clients"], why: "you get your energy from other people" },
+    Conscientiousness: { fit: "Organised places with real responsibility", tags: ["Ownership", "Clear goals", "Long projects"], why: "you plan ahead and finish what you start" },
+    Openness: { fit: "Creative places that keep changing", tags: ["New ideas", "Freedom to try things", "Variety"], why: "you want new ideas and room to try them" },
+    Agreeableness: { fit: "Supportive, cooperative teams", tags: ["Helping people", "Good teammates", "Shared credit"], why: "you work best with people, not against them" },
+    "Emotional Stability": { fit: "High-pressure work that would rattle most people", tags: ["Deadlines", "Responsibility", "Calm under stress"], why: "pressure doesn’t knock you off course" },
   };
-  const base = map[t.key] ?? map.melancholic;
-  const blurb = `As a ${t.name.toLowerCase()} personality${val ? ` who values ${String(val).toLowerCase()}` : ""}, you’ll do your best work in ${base.fit.toLowerCase()}. Look for that when choosing colleges, teams and first jobs — the environment matters as much as the role.`;
+  const base = map[top.trait.key] ?? map.Conscientiousness;
+  const blurb = `Because ${base.why}${val ? `, and you care about ${String(val).toLowerCase()}` : ""}, you’ll do your best work in ${base.fit.toLowerCase()}. Look for that when choosing colleges, teams and first jobs — where you work matters as much as what the job is called.`;
   return { fit: base.fit, blurb, tags: base.tags };
 }
 

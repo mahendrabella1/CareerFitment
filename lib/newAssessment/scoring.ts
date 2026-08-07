@@ -25,6 +25,19 @@ const STRENGTH_SELF: Record<string, string> = {
   ES: "Emotional & Social",
 };
 
+// Student-facing wording for the Big Five. The formal names stay in the data
+// (the career library matches on them); this is only for text a student reads.
+// Kept in step with TRAITS in lib/report/knowledge.ts.
+const PLAIN_TRAIT: Record<string, string> = {
+  Openness: "curiosity & new ideas",
+  Conscientiousness: "planning & follow-through",
+  Extraversion: "energy around people",
+  Agreeableness: "warmth with people",
+  "Emotional Stability": "staying calm under pressure",
+  // The legacy Yes/No bank scores the reverse pole under its clinical name.
+  Neuroticism: "sensitivity to stress",
+};
+
 export function scoreAssessment(
   stage: StageKey,
   chosenSets: Record<Category, string>,
@@ -34,11 +47,13 @@ export function scoreAssessment(
   // vectors and is scored by its own engine — see scoring60.ts.
   if (isV2Bank(stage, chosenSets)) return scoreAssessment60(stage, chosenSets, answers);
 
-  // ---------- Personality: Big Five + temperament ----------
+  // ---------- Personality: Big Five ----------
+  // The four temperaments used to be derived here too. They are no longer
+  // reported to the student, so nothing computes them any more — see the note
+  // on TRAITS in lib/report/knowledge.ts.
   const pers = getSet("personality", stage, chosenSets.personality);
   let topStrengths: AssessmentSummary["topStrengths"];
   let personalityScore: number;
-  let dominantTemp: string | null;
   const usesPoints = pers.some((q) => Array.isArray(q.points) && q.trait);
   if (usesPoints) {
     // New 9-10 format: 4 situational options, each worth points toward a Big-Five trait.
@@ -54,14 +69,6 @@ export function scoreAssessment(
     const TRAITS = ["Openness", "Conscientiousness", "Extraversion", "Agreeableness", "Emotional Stability"];
     topStrengths = TRAITS.filter((t) => mx[t]).map((t) => ({ parameterName: "Personality", subTraitName: t, normalizedScore: ts(t) }))
       .sort((a, b) => b.normalizedScore - a.normalizedScore);
-    const E = ts("Extraversion"), A = ts("Agreeableness"), C = ts("Conscientiousness"), O = ts("Openness"), S = ts("Emotional Stability");
-    const tScore: Record<string, number> = {
-      Sanguine: E * 0.6 + A * 0.25 + O * 0.15,
-      Choleric: E * 0.5 + C * 0.3 + (100 - A) * 0.2,
-      Melancholic: (100 - E) * 0.4 + C * 0.35 + O * 0.25,
-      Phlegmatic: (100 - E) * 0.35 + A * 0.4 + S * 0.25,
-    };
-    dominantTemp = Object.entries(tScore).sort((a, b) => b[1] - a[1])[0][0];
     personalityScore = Math.round(TRAITS.reduce((s, t) => s + ts(t), 0) / TRAITS.length);
   } else {
     // Legacy Yes/No format.
@@ -85,8 +92,10 @@ export function scoreAssessment(
         for (const t of ["sanguine", "choleric", "melancholic", "phlegmatic"]) if (s.startsWith(t)) temp[cap(t)] += 1;
       }
     });
+    // This tally is no longer reported as a result. It survives only as a
+    // proxy for "how pronounced is this profile", which is what the legacy
+    // bank's personality score has always actually been.
     const tempRanked = Object.entries(temp).sort((a, b) => b[1] - a[1]);
-    dominantTemp = tempRanked[0]?.[1] ? tempRanked[0][0] : null;
     topStrengths = Object.entries(big).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1])
       .map(([k]) => ({ parameterName: "Personality", subTraitName: k, normalizedScore: 0 }));
     personalityScore = persAnswered ? clamp(Math.round((tempRanked[0][1] / persAnswered) * 100 + 20)) : 50;
@@ -280,7 +289,12 @@ export function scoreAssessment(
     summary: topCluster
       ? `Your interests point most strongly toward ${topCluster}. Combined with your aptitude, strengths and working style, the profile below maps how you think, learn and decide.`
       : "Your profile across the eight areas is shown below.",
-    outcomeLabel: dominantTemp ? `${dominantTemp} temperament` : null,
+    // Plain-language, because the student reads this (report header, report
+    // email). Temperament names are no longer reported — see the note on
+    // TRAITS in lib/report/knowledge.ts.
+    outcomeLabel: topStrengths[0]
+      ? `Strongest trait: ${PLAIN_TRAIT[topStrengths[0].subTraitName] ?? topStrengths[0].subTraitName}`
+      : null,
     confidence: "medium",
     matches: matches.slice(0, 6),
     topStrengths: topStrengths.slice(0, 8),

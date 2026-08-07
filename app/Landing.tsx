@@ -304,7 +304,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
 
 /* ------------------------------- content ------------------------------- */
 const DIMENSIONS = [
-  { title: "Personality", short: "How you naturally think, feel and behave.", desc: "How you engage, decide, handle pressure and recharge.", framework: "Big Five + Temperament", icon: "user", img: IMG("photo-1522071820081-009f0129c71c") },
+  { title: "Personality", short: "How you naturally think, feel and behave.", desc: "How you engage, decide, handle pressure and recharge.", framework: "Big Five (OCEAN)", icon: "user", img: IMG("photo-1522071820081-009f0129c71c") },
   { title: "Career Interest", short: "Work environments that match your interests.", desc: "The fields and activities that genuinely pull you in.", framework: "Interest clustering", icon: "compass", img: IMG("photo-1541339907198-e08756dedf3f") },
   { title: "Multiple Intelligence", short: "Your natural abilities beyond traditional IQ.", desc: "The ways you most naturally think and process the world.", framework: "Gardner’s 8 intelligences", icon: "bulb", img: IMG("photo-1532094349884-543bc11b234d") },
   { title: "Emotional Intelligence", short: "How you understand and manage emotions.", desc: "Reading situations, managing yourself and relating to others.", framework: "EI scenarios", icon: "pulse", img: IMG("photo-1552664730-d307ca884978") },

@@ -131,7 +131,9 @@ check("Big Five reports all 5 traits", r.topStrengths.length === 5, `${r.topStre
 check("a RIASEC code is produced", (r.riasecCode ?? "").length === 3, `"${r.riasecCode}"`);
 check("EI returns a score", typeof r.ei === "number", `${r.ei}`);
 check("aptitude returns a score", typeof r.aptitudePct === "number", `${r.aptitudePct}`);
-check("a temperament is named", typeof r.outcomeLabel === "string", `${r.outcomeLabel}`);
+check("the outcome label names a trait in plain words, not a temperament",
+  typeof r.outcomeLabel === "string" && !/sanguine|choleric|melancholic|phlegmatic/i.test(r.outcomeLabel),
+  `${r.outcomeLabel}`);
 
 /* -------------------------------------------------------------------------- */
 console.log(failures === 0 ? "\nAll checks passed.\n" : `\n${failures} check(s) FAILED.\n`);

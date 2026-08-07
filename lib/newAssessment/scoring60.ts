@@ -36,6 +36,18 @@ const BIG_FIVE: Record<string, string> = {
   O: "Openness", C: "Conscientiousness", E: "Extraversion",
   A: "Agreeableness", S: "Emotional Stability",
 };
+
+// Student-facing wording for the same five traits. The formal names above stay
+// in the data — the career library matches on them — so this map is only ever
+// used for text a student reads. Kept in step with TRAITS in
+// lib/report/knowledge.ts, which is where the full explanations live.
+const PLAIN_TRAIT: Record<string, string> = {
+  Openness: "curiosity & new ideas",
+  Conscientiousness: "planning & follow-through",
+  Extraversion: "energy around people",
+  Agreeableness: "warmth with people",
+  "Emotional Stability": "staying calm under pressure",
+};
 const RIASEC: Record<string, string> = {
   R: "Realistic", I: "Investigative", A: "Artistic",
   S: "Social", E: "Enterprising", C: "Conventional",
@@ -176,15 +188,9 @@ export function scoreAssessment60(
   const pers = getSet("personality", stage, chosenSets.personality);
   const big = tally(pers, "personality", "traitPoints", answers);
   const bigFive = rank(big.raw, big.max, (k) => BIG_FIVE[k] ?? k);
-  const t = (k: string) => pct(big.raw, big.max, k);
-  const E = t("E"), A = t("A"), C = t("C"), O = t("O"), S = t("S");
-  const tempScores: Vec = {
-    Sanguine: E * 0.6 + A * 0.25 + O * 0.15,
-    Choleric: E * 0.5 + C * 0.3 + (100 - A) * 0.2,
-    Melancholic: (100 - E) * 0.4 + C * 0.35 + O * 0.25,
-    Phlegmatic: (100 - E) * 0.35 + A * 0.4 + S * 0.25,
-  };
-  const dominantTemp = Object.entries(tempScores).sort((a, b) => b[1] - a[1])[0][0];
+  // The four temperaments were derived from these same five numbers and are no
+  // longer reported, so they are no longer computed — see the note on TRAITS in
+  // lib/report/knowledge.ts.
   // Forced choice makes it impossible to score high on all five traits at once,
   // so the mean is structurally ~40 for everyone and would read as a weakness
   // beside the other spokes. The spoke is the strongest trait: how pronounced
@@ -383,7 +389,10 @@ export function scoreAssessment60(
     summary: topCluster
       ? `Your interests point most strongly toward ${topCluster}. Combined with your aptitude, strengths, motivators and working style, the profile below maps how you think, learn and decide.`
       : "Your profile across the eight dimensions is shown below.",
-    outcomeLabel: `${dominantTemp} temperament`,
+    // Plain-language, because this label is shown to the student (report header,
+    // report email). The temperament names it used to carry are no longer
+    // reported — see the note on TRAITS in lib/report/knowledge.ts.
+    outcomeLabel: bigFive[0] ? `Strongest trait: ${PLAIN_TRAIT[bigFive[0].name] ?? bigFive[0].name}` : null,
     confidence: aptOf && ci.length ? "high" : "medium",
     matches,
     topStrengths: bigFive.map((x) => ({

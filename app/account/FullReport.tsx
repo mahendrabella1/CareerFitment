@@ -7,7 +7,7 @@
  * single light-red accent), blending the best of the reference reports:
  *   · branded 8-dimension cover image + real stock-photo section bands
  *   · at-a-glance verdict table (traffic-light)      [SACS]
- *   · profile wheel + temperament wheel (rose charts)[Clevry]
+ *   · profile wheel + five-trait wheel (rose charts)  [Clevry]
  *   · RIASEC hexagon, radar, donuts, vertical & horizontal bars
  *   · career metric-badge cards (Bright Outlook / Salary / Automation / Future)
  *                                                    [TUCareers / CareerNaksha]
@@ -29,7 +29,7 @@ import { Scene } from "@/app/account/illustrations";
 import {
   categoryDeepDive, roadmap, stageLabelOf, DOMAINS,
   archetype, percentileOf, subTraits, actionPlan, type Domain,
-  temperamentOf, resultOf, TEMPERAMENTS, domainFit, type DomainFit,
+  traitProfile, resultOf, domainFit, type DomainFit,
   FUTURE, LEARNING, JOB_PORTALS, SCHOLARSHIPS_2026,
   academicPath, workEnvironment, ROLE_MODELS, PARENT_TIPS,
 } from "@/lib/report/knowledge";
@@ -96,7 +96,7 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
   // Overall fit now reflects the whole profile, not just the interest tally.
   const fit = Math.max(a.overallFitmentPct ?? 0, topDomain.fit);
   const roles = coherentRoles(a, fits);
-  const temp = temperamentOf(a);
+  const traits = traitProfile(a);
   const acad = academicPath(a, a.journeyCode);
   const workEnv = workEnvironment(a);
   const topLetter = (a.themes ?? [])[0]?.letter ?? "B";
@@ -182,7 +182,7 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
               ["How this was measured", "The eight frameworks behind your scores", "check"],
               ["At-a-glance scorecard", "All eight dimensions, ranked & rated", "score"],
               ["The eight dimensions", "A deep dive on each, one by one", "clusters"],
-              ["Interests & personality", "RIASEC hexagon and temperament wheel", "career_interest"],
+              ["Interests & personality", "RIASEC hexagon and your five traits", "career_interest"],
               ["Careers that fit you", "Roles, badges, salaries & recommendation", "briefcase"],
               ["Your path & plan", "Academics, roadmap, 30/90-day actions", "route"],
               ["Resources & scholarships", "Where to learn, work and get funded", "cap"],
@@ -345,24 +345,34 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
               </div>
               <p className="dimlede">{dd.meaning}</p>
 
+              {/* Personality is the one dimension students read as a verdict on
+                  who they are, so it gets the five traits spelled out in plain
+                  words — no Greek temperament labels, no jargon, and no trait
+                  written as a fault. */}
               {d.key === "personality" ? (
                 <div className="temps">
-                  <div className="subhd">Your temperament — the four types, yours highlighted</div>
+                  <div className="subhd">Your five traits — what each one actually means</div>
                   <div className="temp-wheel-row">
-                    <RoseWheel small items={temp.scores.map((ts) => ({ label: TEMPERAMENTS[ts.key].name, score: ts.score }))}
-                      accentIndex={temp.scores.findIndex((ts) => ts.key === temp.primary.key)} />
+                    <RoseWheel small items={traits.reads.map((r) => ({ label: r.trait.name, score: r.score }))}
+                      accentIndex={0} />
                     <div className="temp-grid">
-                      {temp.scores.map((ts) => {
-                        const T = TEMPERAMENTS[ts.key]; const on = ts.key === temp.primary.key;
-                        return (
-                          <div className={`tcard${on ? " on" : ""}`} key={ts.key}>
-                            <div className="th"><span className={`tdot${on ? " on" : ""}`} /><span className="tn">{T.name}</span><span className="tsc">{ts.score}</span></div>
-                            <div className="tt">{T.tagline}</div>
-                            {on ? <div className="tw"><b>Your edge:</b> {T.strength}</div> : null}
+                      {traits.reads.map((r, i) => (
+                        <div className={`tcard${i === 0 ? " on" : ""}`} key={r.trait.key}>
+                          <div className="th">
+                            <span className={`tdot${i === 0 ? " on" : ""}`} />
+                            <span className="tn">{r.trait.emoji} {r.trait.name}</span>
+                            {traits.measured ? <span className="tsc">{r.score}</span> : null}
                           </div>
-                        );
-                      })}
+                          <div className="tt">{r.trait.about}</div>
+                          <div className="tw">{r.blurb}</div>
+                        </div>
+                      ))}
                     </div>
+                  </div>
+                  <div className="tnote">
+                    There is no good or bad score here. A high and a low score are
+                    two different strengths — what matters is picking study and work
+                    that suit the way you already are.
                   </div>
                 </div>
               ) : null}
@@ -776,7 +786,7 @@ function Badge({ on, label, value, icon, tone }: { on?: boolean; label: string; 
   );
 }
 
-/** Rose / polar wheel — petals sized by score. Used for the profile & temperament. */
+/** Rose / polar wheel — petals sized by score. Used for the profile & the five traits. */
 function RoseWheel({ items, accentIndex = -1, small }: { items: { label: string; score: number; icon?: string; color?: string }[]; accentIndex?: number; small?: boolean }) {
   const size = small ? 200 : 300;
   const cx = size / 2, cy = size / 2, R = small ? 74 : 116, n = items.length || 8;
@@ -1094,12 +1104,16 @@ const CSS = `
 .frx .param .tcard.on .th .tsc,.frx .param .tw b{color:var(--dc)}
 .frx .param .th .tdot.on{background:var(--dc)}
 
-/* temperament */
+/* the five traits */
 .frx .temps{margin-top:26px}
-.frx .temp-wheel-row{display:grid;grid-template-columns:.8fr 1.2fr;gap:22px;align-items:center}
+/* Five cards, each carrying a full sentence — the wheel takes the narrower
+   column and the cards get the room, or the text sets three words to a line. */
+.frx .temp-wheel-row{display:grid;grid-template-columns:.62fr 1.38fr;gap:22px;align-items:start}
 @media(max-width:640px){.frx .temp-wheel-row{grid-template-columns:1fr}}
 .frx .temp-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
 @media(max-width:440px){.frx .temp-grid{grid-template-columns:1fr}}
+.frx .tnote{margin-top:14px;padding:11px 14px;border-radius:11px;background:var(--dc-tint);
+  border:1px solid var(--dc-line);font-size:11.5px;line-height:1.5;color:var(--ink-2)}
 .frx .tcard{border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff}
 .frx .tcard.on{border-color:var(--red);background:var(--red-tint);box-shadow:0 6px 18px rgba(242,85,90,.12)}
 .frx .th{display:flex;align-items:center;gap:8px}
