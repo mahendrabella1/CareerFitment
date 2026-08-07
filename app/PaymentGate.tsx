@@ -96,8 +96,13 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
   function openCouponBox() {
     setCouponOpen(true);
     // The input does not exist until this render commits, so focus on the next
-    // frame rather than in the same tick.
-    requestAnimationFrame(() => couponInputRef.current?.focus());
+    // frame rather than in the same tick. Scroll it into view too: this is also
+    // reached from the popup's CTA, where the box sits below the fold on a
+    // phone and a silent focus would look like nothing happened.
+    requestAnimationFrame(() => {
+      couponInputRef.current?.focus();
+      couponInputRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+    });
   }
 
   // The auto-applied-coupon popup. `popupCoupon` is what it announces.
@@ -451,7 +456,11 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
                     ref={couponInputRef}
                     className="pg-coupon-input"
                     value={couponInput}
-                    placeholder="e.g. OGFREE"
+                    // Never put a real code here. A placeholder is read by
+                    // every student who opens this box, including the ones
+                    // about to pay — an example like "OGFREE" hands them a
+                    // 100%-off code (lib/coupons.ts) for free.
+                    placeholder="ENTER CODE"
                     autoCapitalize="characters"
                     autoComplete="off"
                     spellCheck={false}
@@ -480,7 +489,12 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
       </div>
 
       {popupCoupon?.coupon && (
-        <CouponPopup priced={popupCoupon} countdown={countdown} onClose={() => setPopupCoupon(null)} />
+        <CouponPopup
+          priced={popupCoupon}
+          countdown={countdown}
+          onClose={() => setPopupCoupon(null)}
+          onUseAnotherCode={() => { setPopupCoupon(null); openCouponBox(); }}
+        />
       )}
     </div>
   );
@@ -492,7 +506,13 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
  * time the gate prices the sale coupon, and again whenever a hand-typed code
  * lands — the moment a price changes is exactly when it's worth interrupting.
  */
-function CouponPopup({ priced, countdown, onClose }: { priced: Priced; countdown: string; onClose: () => void }) {
+function CouponPopup({ priced, countdown, onClose, onUseAnotherCode }: {
+  priced: Priced;
+  countdown: string;
+  onClose: () => void;
+  /** Dismiss the popup and drop the cursor straight into the coupon field. */
+  onUseAnotherCode: () => void;
+}) {
   const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -535,7 +555,16 @@ function CouponPopup({ priced, countdown, onClose }: { priced: Priced; countdown
         <button className="pg-modal-btn" onClick={onClose}>
           {free ? "Start my assessment" : `Continue — pay ${formatPaise(priced.payablePaise)}`}
         </button>
-        {!free && <div className="pg-modal-foot">Have another code? Close this and tap “Have a coupon code? Click here”.</div>}
+        {/* A real control, not a note telling the student where to find one:
+            it closes the popup and opens the coupon field, focused. */}
+        {!free && (
+          <div className="pg-modal-foot">
+            Have another code?{" "}
+            <button type="button" className="pg-modal-link" onClick={onUseAnotherCode}>
+              Apply a coupon code
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -629,6 +658,10 @@ const CSS = `
 .pg-modal-btn{width:100%;margin-top:18px;padding:14px;background:#171624;color:#fff;border:none;border-radius:12px;font-size:14.5px;font-weight:800;cursor:pointer;font-family:inherit}
 .pg-modal-btn:hover{background:#2b2a3f}
 .pg-modal-foot{font-size:11.5px;color:#8a8f9c;margin-top:11px}
+.pg-modal-link{background:none;border:none;padding:2px 2px;font-family:inherit;font-size:11.5px;font-weight:800;
+  color:#6366F1;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.pg-modal-link:hover{color:#4f46e5}
+.pg-modal-link:focus-visible{outline:2px solid #6366F1;outline-offset:2px;border-radius:6px}
 
 @keyframes pgFade{from{opacity:0}to{opacity:1}}
 @keyframes pgPop{from{opacity:0;transform:translateY(22px) scale(.94)}to{opacity:1;transform:none}}
