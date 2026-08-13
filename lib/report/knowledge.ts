@@ -251,7 +251,11 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
     case "learning_styles": {
       const top = a.learningStyles?.[0]?.name || "a mixed";
       return {
-        meaning: `You learn best through a ${top} approach. Matching how you study and work to this style makes new material noticeably faster to absorb and retain.`,
+        // Deliberately a PREFERENCE, not an ability, and never a career signal.
+        // Four items cannot support "you learn best through X" — that is a
+        // causal claim about how well you learn, and the evidence here is only
+        // which kind of material you say you prefer. Use it for study tactics.
+        meaning: `You show a clear preference for ${top} material when you study. That is a preference rather than a measure of ability — it doesn't limit what you can learn, and it isn't a reason to pick or rule out a career. It is genuinely useful for one thing: choosing how you revise.`,
         strengths: [`A clear, usable ${top} learning preference`, "You can design study and work around what actually sticks", "Faster upskilling when you use the right method"],
         grow: ["Build some flexibility in other modes — not every course or job will match your style", "Combine two modes (e.g. visual + doing) for tougher material"],
         recommend: [`Convert notes into your ${top} format (diagrams, recordings, summaries or practice)`, "Teach a concept to someone else to lock it in", "Space your revision instead of cramming"],

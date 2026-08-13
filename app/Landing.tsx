@@ -109,7 +109,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
           </div>
           <div className="ogl-trust">
             <span><Icon name="lock" size={16} /> <b>100% Confidential</b><small>Your data is secure</small></span>
-            <span><Icon name="score" size={16} /> <b>Research-backed</b><small>Validated assessments</small></span>
+            <span><Icon name="score" size={16} /> <b>Research-backed</b><small>Established frameworks</small></span>
             <span><Icon name="user" size={16} /> <b>50K+ Users</b><small>Students &amp; professionals</small></span>
           </div>
         </div>
@@ -175,7 +175,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
         <div className="ogl-sec-head ogl-reveal">
           <span className="ogl-kicker">How we evaluate</span>
           <h2 className="ogl-h2 ogl-serif">A scientific method, <span className="ogl-hl">end to end.</span></h2>
-          <p className="ogl-sub">Every answer is scored against a validated model, combined, then translated into plain-English guidance.</p>
+          <p className="ogl-sub">Every answer is scored against an established model, combined, then translated into plain-English guidance.</p>
         </div>
         <div className="ogl-steps">
           {STEPS.map((s, i) => (
@@ -194,7 +194,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
           <span className="ogl-sci-shield"><Icon name="shield" size={26} /></span>
           <div className="ogl-sci-text">
             <b>Built on science. Made simple.</b>
-            <span>Our framework combines global, validated models with advanced analytics to deliver clarity you can actually use.</span>
+            <span>Our framework combines global, established models with advanced analytics to deliver clarity you can actually use.</span>
           </div>
           <div className="ogl-sci-charts">
             <MiniDonut pct={72} color="#2f6bff" />
@@ -308,7 +308,7 @@ const DIMENSIONS = [
   { title: "Career Interest", short: "Work environments that match your interests.", desc: "The fields and activities that genuinely pull you in.", framework: "Interest clustering", icon: "compass", img: IMG("photo-1541339907198-e08756dedf3f") },
   { title: "Multiple Intelligence", short: "Your natural abilities beyond traditional IQ.", desc: "The ways you most naturally think and process the world.", framework: "Gardner’s 8 intelligences", icon: "bulb", img: IMG("photo-1532094349884-543bc11b234d") },
   { title: "Emotional Intelligence", short: "How you understand and manage emotions.", desc: "Reading situations, managing yourself and relating to others.", framework: "EI scenarios", icon: "pulse", img: IMG("photo-1552664730-d307ca884978") },
-  { title: "Learning Styles", short: "The way you learn best and retain more.", desc: "How you absorb new material fastest — visual, aural, reading, kinesthetic.", framework: "VARK", icon: "learning_styles", img: IMG("photo-1503676260728-1c00da094a0b") },
+  { title: "Learning Preferences", short: "The kinds of study material you prefer.", desc: "Which kinds of study material you prefer — visual, aural, reading, kinesthetic. A study aid, not a career signal.", framework: "VARK", icon: "learning_styles", img: IMG("photo-1503676260728-1c00da094a0b") },
   { title: "Motivators", short: "What drives you and keeps you going.", desc: "What energises you — and what quietly burns you out.", framework: "Work-values model", icon: "match", img: IMG("photo-1454165804606-c3d57bc86b40") },
   { title: "Strengths", short: "Your core strengths and how to use them.", desc: "Problem-solving, critical thinking, decisions and communication.", framework: "Reasoning + self-report", icon: "star", img: IMG("photo-1503387762-592deb58ef4e") },
   { title: "Aptitude", short: "Your ability to learn and solve problems.", desc: "Verbal, numerical, logical and spatial reasoning, scored objectively.", framework: "Cognitive reasoning", icon: "cpu", img: IMG("photo-1461749280684-dccba630e2f6") },
@@ -316,7 +316,7 @@ const DIMENSIONS = [
 
 const STEPS = [
   { ic: "answer", t: "Answer", d: "Stage-appropriate questions across all eight dimensions, with visuals and audio where it helps.", color: "#2f6bff", soft: "#e9f0ff" },
-  { ic: "score", t: "Score", d: "Each response is scored against its validated model — Big Five, Gardner, VARK, EI and more.", color: "#16a34a", soft: "#e6f6ec" },
+  { ic: "score", t: "Score", d: "Each response is scored against its established model — Big Five, Gardner, VARK, EI and more.", color: "#16a34a", soft: "#e6f6ec" },
   { ic: "combine", t: "Combine", d: "Dimensions are weighted and cross-checked to build one coherent profile.", color: "#7c3aed", soft: "#f1e9fd" },
   { ic: "match", t: "Match", d: "Your interests and aptitudes map to specific career clusters and roles.", color: "#f59e0b", soft: "#fdf1dd" },
   { ic: "explain", t: "Explain", d: "You get a clear report — a single visual map plus plain-English guidance.", color: "#14b8a6", soft: "#e0f5f2" },

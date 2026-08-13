@@ -78,7 +78,7 @@ function reportHtml(name: string, a: AssessmentSummary): string {
     <div style="background:linear-gradient(135deg,#2f4062,#5a76a6);color:#fff;padding:26px;border-radius:14px 14px 0 0">
       <div style="font-size:12px;opacity:.85;text-transform:uppercase;letter-spacing:1px">OneGrasp · Career Report</div>
       <div style="font-size:22px;font-weight:800;margin-top:8px;line-height:1.25">Hi ${esc(name || "there")}, your best-fit direction is ${esc(top.name)}.</div>
-      ${a.overallFitmentPct != null ? `<div style="margin-top:8px;font-size:13px;opacity:.92">${a.overallFitmentPct}% top fit${a.outcomeLabel ? ` · ${esc(a.outcomeLabel)}` : ""}</div>` : ""}
+      ${a.overallFitmentPct != null ? `<div style="margin-top:8px;font-size:13px;opacity:.92">${a.overallFitmentPct}/100 profile alignment${a.outcomeLabel ? ` · ${esc(a.outcomeLabel)}` : ""}</div>` : ""}
     </div>
     <div style="border:1px solid #e6e9ef;border-top:none;background:#fff;padding:24px">
       ${a.summary ? `<p style="color:#475569;line-height:1.6;font-size:14px;margin:0 0 18px">${esc(a.summary)}</p>` : ""}

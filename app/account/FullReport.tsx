@@ -45,7 +45,7 @@ const CAT: Record<string, Meta> = {
   career_interest: { label: "Career Interest", dim: "02", icon: "career_interest", img: P + "career-interest.png" },
   multiple_intelligence: { label: "Multiple Intelligence", dim: "03", icon: "multiple_intelligence", img: P + "Multiple-intelligence.png" },
   emotional_intelligence: { label: "Emotional Intelligence", dim: "04", icon: "emotional_intelligence", img: P + "Emotional-inteliigence.png" },
-  learning_styles: { label: "Learning Styles", dim: "05", icon: "learning_styles", img: P + "Learning-stykes.png" },
+  learning_styles: { label: "Learning Preferences", dim: "05", icon: "learning_styles", img: P + "Learning-stykes.png" },
   motivators: { label: "Motivators", dim: "06", icon: "motivators", img: P + "Motivators.png" },
   strengths: { label: "Strengths", dim: "07", icon: "strengths", img: P + "strenghts.png" },
   aptitude: { label: "Aptitude", dim: "08", icon: "aptitude", img: P + "aptitude.png" },
@@ -130,12 +130,15 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
           </div>
           <div className="kick">Career Fitment Report</div>
           <h1>Who you are, <span>and where it can take you.</span></h1>
-          <p className="lede">A complete map of your strengths, interests and natural wiring — built from your responses across eight validated frameworks.</p>
+          <p className="lede">A complete map of your strengths, interests and natural wiring — built from your responses across eight established frameworks.</p>
           <div className="cover-hero">
             <div className="cover-preview">
               <div className="cp-head">
                 <span className="cp-kick">Your profile · at a glance</span>
-                <span className="cp-fit"><b>{fit}%</b> overall fit</span>
+                {/* "Profile alignment", never "fit %". A percentage invites
+                    "96% = I'm 96% likely to succeed", which this number has
+                    never meant — see the note in scoring60.ts. */}
+                <span className="cp-fit"><b>{fit}</b>/100 profile alignment</span>
               </div>
               <div className="cp-body">
                 <div className="cp-radar"><RadarChart data={radar} color={C.red} abbr={CATEGORY_ABBR} /></div>
@@ -215,12 +218,16 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
             </div>
             <div className="exec-r">
               <Ring value={fit} size={150} stroke={14} color={C.red}>
-                <div className="ring-num" style={{ fontSize: 34 }}>{fit}<small>%</small></div>
-                <div className="ring-den">overall fit</div>
+                <div className="ring-num" style={{ fontSize: 34 }}>{fit}<small>/100</small></div>
+                <div className="ring-den">profile alignment</div>
               </Ring>
               <div className="exec-legend">
                 <div><b style={{ color: C.good }}>Where you shine</b>{strongest ? ` ${CAT[strongest.key].label}` : ""}</div>
                 <div><b style={{ color: C.muted }}>Room to grow</b>{weakest ? ` ${CAT[weakest.key].label}` : ""}</div>
+              </div>
+              <div className="exec-caveat">
+                How consistently your answers line up across the eight dimensions.
+                It is not a prediction of success, and not a mark out of 100.
               </div>
             </div>
           </div>
@@ -255,7 +262,7 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
       <section className="sheet rv">
         <div className="pad">
           <RH n={N()} kick="How this was measured" />
-          <SecHead eyebrow="The science behind your report" title="Eight validated frameworks, one picture"
+          <SecHead eyebrow="The science behind your report" title="Eight established frameworks, one picture"
             sub="Your responses were scored against eight independent, research-backed models." />
           <div className="dims8">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -676,7 +683,7 @@ const FRAMEWORKS = [
 const VERDICT: Record<string, string> = {
   personality: "How you’re naturally wired.", career_interest: "What genuinely pulls you.",
   multiple_intelligence: "How your mind works best.", emotional_intelligence: "How you read and manage emotion.",
-  learning_styles: "How you learn fastest.", motivators: "What keeps you going.",
+  learning_styles: "How you prefer to study.", motivators: "What keeps you going.",
   strengths: "Your repeatable talents.", aptitude: "How quickly you pick things up.",
 };
 const RIASEC_NAME: Record<string, string> = { R: "Realistic", I: "Investigative", A: "Artistic", S: "Social", E: "Enterprising", C: "Conventional" };
@@ -990,6 +997,7 @@ const CSS = `
 .frx .ec-v{font-size:14px;font-weight:800;color:var(--ink);margin-top:3px;display:block}
 .frx .exec-r{display:flex;flex-direction:column;align-items:center;gap:14px}
 .frx .exec-legend{font-size:12px;color:var(--ink-2);display:flex;flex-direction:column;gap:6px;text-align:center}
+.frx .exec-caveat{margin-top:10px;max-width:230px;font-size:10.5px;line-height:1.5;color:var(--muted);text-align:center}
 .frx .exec-legend b{font-weight:800}
 
 /* dna */

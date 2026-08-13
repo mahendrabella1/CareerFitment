@@ -1404,7 +1404,7 @@ export default function AssessmentExperience() {
             <div className="lx-head">
               <span className="lx-eyebrow">For every stage</span>
               <h2>The right assessment for the right age</h2>
-              <p>Each stage uses age-appropriate, validated instruments — not one generic test.</p>
+              <p>Each stage uses age-appropriate, established instruments — not one generic test.</p>
             </div>
             <div className="agegrid">
               {[
@@ -1438,7 +1438,7 @@ export default function AssessmentExperience() {
               <FlaskConical size={26} className="science-flask" />
               <div>
                 <span className="lx-eyebrow">Trusted methodology</span>
-                <h3>Built on validated psychometric science</h3>
+                <h3>Built on established psychometric science</h3>
                 <div className="science-tags">
                   {["RIASEC / Holland", "Big Five", "DBDA / DAT", "MIDAS", "EQ-i", "SWVI", "VARK", "O*NET"].map((t) => (
                     <span key={t}>{t}</span>
@@ -1457,7 +1457,7 @@ export default function AssessmentExperience() {
             <div className="lx-benefits">
               {[
                 { icon: <Target size={22} />, t: "Clear top-5 direction", d: "No vague labels — specific careers ranked by real fit, with the reasons spelled out." },
-                { icon: <ShieldCheck size={22} />, t: "Defensible & validated", d: "Age-appropriate psychometric methods (RIASEC, aptitude, Big-Five style), not a personality meme." },
+                { icon: <ShieldCheck size={22} />, t: "Established methods", d: "Age-appropriate psychometric methods (RIASEC, aptitude, Big-Five style), not a personality meme." },
                 { icon: <Lightbulb size={22} />, t: "Strengths & gaps", d: "See what you're strong at and exactly what to build to reach your target careers." },
                 { icon: <Layers size={22} />, t: "8 dimensions, one picture", d: "Interests, aptitude, personality, motivators, EI and more — combined, not averaged." },
                 { icon: <Clock size={22} />, t: "No time pressure", d: "Go at your own pace. Mark questions for review and jump around freely." },

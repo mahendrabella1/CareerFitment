@@ -21,7 +21,7 @@ function makeFresh() {
 
 const CAT_LABEL: Record<string, string> = {
   personality: "Personality", career_interest: "Career Interest", multiple_intelligence: "Multiple Intelligence",
-  emotional_intelligence: "Emotional Intelligence", learning_styles: "Learning Styles", motivators: "Motivators",
+  emotional_intelligence: "Emotional Intelligence", learning_styles: "Learning Preferences", motivators: "Motivators",
   strengths: "Strengths", aptitude: "Aptitude",
 };
 
@@ -107,7 +107,7 @@ function ReportDoc({ name, a }: { name: string; a: AssessmentSummary }) {
           <Text style={s.hKick}>ONEGRASP · CAREER FITMENT REPORT</Text>
           <Text style={s.hTitle}>{name || "Your"} career fitment report</Text>
           <Text style={s.hSub}>
-            {a.overallFitmentPct != null ? `${a.overallFitmentPct}% overall fit` : ""}
+            {a.overallFitmentPct != null ? `${a.overallFitmentPct}/100 profile alignment` : ""}
             {`  ·  ${new Date(a.completedAt).toLocaleDateString()}`}
           </Text>
         </View>

@@ -103,6 +103,53 @@ const pct = (raw: Vec, max: Vec, k: string) =>
   max[k] ? clamp(Math.round(((raw[k] ?? 0) / max[k]) * 100)) : 0;
 
 /**
+ * Turn "how many times the expected share did you score" into a 0-100 number.
+ *
+ * THIS EXISTS TO STOP THE REPORT PRINTING 100. The previous mapping was
+ * `share / (2 x expected)` hard-clamped at 100, which meant any dimension
+ * picked at twice its expected rate printed a perfect score — and on a
+ * forced-choice bank with 8 options, picking one thing 25% of the time does
+ * that. Whole sections of the report came out saturated at 100, which tells a
+ * student nothing: if Numerical, Verbal, Logical, Abstract, Spatial, Attention
+ * to Detail and Mechanical are all "100", the profile has no shape to read.
+ *
+ * r/(r+1) is a standard saturating curve and never actually reaches 1:
+ *   r = 0   ->  0   never chosen, and that still has to read as zero
+ *   r = 1   -> 50   exactly the expected share: the typical result
+ *   r = 2   -> 67
+ *   r = 3   -> 75
+ *   r = 5   -> 83
+ *   r = 9   -> 90
+ * A 100 is now unreachable by construction rather than by tuning, and the gaps
+ * between dimensions survive instead of being flattened against a ceiling.
+ *
+ * These are NOT percentiles and must never be labelled as such — there is no
+ * norm sample behind them. They are descriptive scores within this student's
+ * own profile: "pronounced for you", not "higher than N% of students". See
+ * SCORE_BANDS for the wording the report is allowed to use.
+ */
+const curve = (ratio: number) => clamp(Math.round((ratio / (ratio + 1)) * 100));
+
+/**
+ * Descriptive bands for a 0-100 dimension score. Deliberately worded as
+ * RELATIVE PREFERENCE/STRENGTH WITHIN THIS PROFILE, because that is all the
+ * data supports today: no norm population has been collected, so nothing here
+ * may claim a percentile or a comparison against other students. Swap this for
+ * true percentile bands only once a norm sample exists.
+ */
+export const SCORE_BANDS: { min: number; label: string }[] = [
+  { min: 80, label: "Exceptional relative strength" },
+  { min: 70, label: "Strong" },
+  { min: 60, label: "Above average for you" },
+  { min: 40, label: "Typical range" },
+  { min: 25, label: "Developing" },
+  { min: 0, label: "Lower relative preference" },
+];
+
+export const bandLabel = (score: number) =>
+  (SCORE_BANDS.find((b) => score >= b.min) ?? SCORE_BANDS[SCORE_BANDS.length - 1]).label;
+
+/**
  * Ipsative normalisation for the forced-choice dimensions (RIASEC, clusters,
  * strengths, motivators, intelligences). The workbook's logic tab scores these
  * as a SHARE of the points awarded ("Total = 128 … Investigative = 31/128"),
@@ -151,8 +198,11 @@ function shareRank(
       // Flooring the denominator at the even split fixes both. The cost is that
       // a rarely-offered dimension can no longer reach 100 — which is honest,
       // since the bank never gave the student enough chances to show it.
-      const denom = stretch * Math.max(expected, even);
-      return { key: k, name: label(k), score: clamp(Math.round((actual / denom) * 100)) };
+      const denom = Math.max(expected, even);
+      // `stretch` now sets where the midpoint of the curve sits rather than
+      // where it clips: scoring `stretch`x your expected share reads ~67, not
+      // 100. See `curve` for why nothing may print a perfect score.
+      return { key: k, name: label(k), score: curve(actual / denom / stretch) };
     })
     .sort((a, b) => b.score - a.score);
 }
@@ -200,20 +250,46 @@ export function scoreAssessment60(
   /* ---------------- 3. Aptitude -> ability, difficulty-weighted ---------- */
   // Workbook: "Instead of correct 1 / incorrect 0 ... Easy 1, Medium 2, Hard 3".
   const apt = getSet("aptitude", stage, chosenSets.aptitude);
-  const aptDom: Record<string, { got: number; of: number }> = {};
+  const aptDom: Record<string, { got: number; of: number; items: number }> = {};
   let aptGot = 0, aptOf = 0;
   apt.forEach((q, i) => {
     const w = DIFFICULTY[String(q.difficulty || "medium")] ?? 2;
     const d = String(q.domain || "Reasoning");
     const idx = parseInt(answers[`aptitude:${i}`] ?? "", 10);
     const ok = !Number.isNaN(idx) && idx === q.correct;
-    aptDom[d] = aptDom[d] || { got: 0, of: 0 };
-    aptDom[d].of += w; aptOf += w;
+    aptDom[d] = aptDom[d] || { got: 0, of: 0, items: 0 };
+    aptDom[d].of += w; aptDom[d].items += 1; aptOf += w;
     if (ok) { aptDom[d].got += w; aptGot += w; }
   });
   const aptitudePct = aptOf ? Math.round((aptGot / aptOf) * 100) : null;
+
+  // Per-domain aptitude used to be a raw got/of percentage. On the 9-10 bank
+  // that is 10 questions across SEVEN domains — Verbal, Abstract, Spatial,
+  // Attention to Detail and Mechanical get exactly ONE question each. A raw
+  // percentage over one item can only ever print 0 or 100, which is how a
+  // report ends up claiming a student is 100 at all seven abilities. That is a
+  // coin flip rendered as a precise score.
+  //
+  // Each domain is now shrunk toward the student's own overall aptitude rate in
+  // proportion to how little evidence stands behind it (a standard
+  // small-sample/empirical-Bayes correction). One item barely moves the
+  // estimate off the student's overall rate; several items move it a long way.
+  // The result is a profile with a readable SHAPE — 91/84/88/76/68 rather than
+  // 100/100/100/100/100 — and 100 becomes unreachable on a short bank, which is
+  // the honest outcome.
+  //
+  // This does not manufacture precision the items don't have: a one-item domain
+  // still deserves an "estimated from 1 question" caveat in the report, and
+  // `items` is carried here so that caveat can be shown. Lengthening the 9-10
+  // aptitude set is the real fix; this stops the report overclaiming until then.
+  const overallRate = aptOf ? aptGot / aptOf : 0.5;
+  const PRIOR_ITEMS = 3; // pseudo-items of prior; ~= "worth 3 questions of doubt"
   const topAptitudes = Object.entries(aptDom)
-    .map(([skill, { got, of }]) => ({ skill, score: Math.round((got / of) * 100) }))
+    .map(([skill, { got, of, items }]) => {
+      const perItem = of / Math.max(1, items); // this domain's average item weight
+      const prior = PRIOR_ITEMS * perItem;
+      return { skill, score: clamp(Math.round(((got + prior * overallRate) / (of + prior)) * 100)) };
+    })
     .sort((a, b) => b.score - a.score);
   const aptScores: Vec = Object.fromEntries(topAptitudes.map((x) => [x.skill, x.score]));
 
@@ -237,11 +313,15 @@ export function scoreAssessment60(
     const style = !Number.isNaN(idx) && Array.isArray(q.styles) ? q.styles[idx] : null;
     if (style) vark[style] = (vark[style] ?? 0) + 1;
   });
-  // Four items, four styles: an even split is 25% each, so a preference is
-  // stretched against a 50% share reading as 100 ("how clear is the pull").
+  // Four items, four styles: an even split is 25% each. This is a PREFERENCE
+  // strength, not an ability — "how clear is the pull toward this material",
+  // never "you learn best this way". Two of four items landing on one style
+  // used to print 100; the curve makes that read ~67, which is all four items
+  // can honestly support.
   const lsTotal = ls.length || 1;
+  const evenShare = 1 / 4;
   const learningStyles = Object.entries(vark)
-    .map(([name, n]) => ({ name, score: clamp(Math.round((n / lsTotal / 0.5) * 100)) }))
+    .map(([name, n]) => ({ name, score: curve((n / lsTotal / evenShare) / 2) }))
     .sort((a, b) => b.score - a.score);
 
   /* ---------------- 7. Multiple intelligences -> 8 talents --------------- */
@@ -252,7 +332,13 @@ export function scoreAssessment60(
 
   /* ---------------- 8. Emotional intelligence -> 5 dimensions ------------ */
   const eiQ = getSet("emotional_intelligence", stage, chosenSets.emotional_intelligence);
-  const eiDim: Vec = {};
+  // Accumulate per dimension. This used to ASSIGN — `eiDim[d] = ...` inside the
+  // loop — so a dimension asked about more than once kept only its last
+  // question and threw the rest away, and a single item scored at its best
+  // option printed a flat 100. Every EI dimension bar in the report was
+  // effectively one question wide, and those numbers also fed career matching
+  // through DIM_SCORES below.
+  const eiTal: Record<string, { got: number; of: number }> = {};
   let eiSum = 0, eiMax = 0;
   eiQ.forEach((q, i) => {
     const scores: number[] = Array.isArray(q.scores) ? q.scores : [];
@@ -261,8 +347,18 @@ export function scoreAssessment60(
     const got = !Number.isNaN(idx) && typeof scores[idx] === "number" ? scores[idx] : 0;
     eiSum += got; eiMax += best;
     const d = String(q.dimension || "Emotional Intelligence");
-    eiDim[d] = clamp(Math.round((got / best) * 100));
+    eiTal[d] = eiTal[d] || { got: 0, of: 0 };
+    eiTal[d].got += got; eiTal[d].of += best;
   });
+  // Same small-sample correction as aptitude: a one-item EI dimension is shrunk
+  // toward the student's overall EI rate rather than printing 0 or 100.
+  const eiRate = eiMax ? eiSum / eiMax : 0.5;
+  const eiDim: Vec = Object.fromEntries(
+    Object.entries(eiTal).map(([d, { got, of }]) => {
+      const prior = of; // one item's worth of doubt, scaled to this dimension
+      return [d, clamp(Math.round(((got + prior * eiRate) / (of + prior)) * 100))];
+    })
+  );
   const eiPct = eiMax ? Math.round((eiSum / eiMax) * 100) : null;
 
   /* ================= Career vector matching ============================= */
@@ -352,10 +448,27 @@ export function scoreAssessment60(
   const matches: AssessmentSummary["matches"] = ranked.slice(0, 6).map(({ p, raw }) => {
     const letter = MAP.professionCluster[p];
     const info = letter ? CLUSTERS[letter] : undefined;
-    // Spread the visible top-6 across a readable band instead of bunching at
-    // the ceiling when their raw scores are close.
-    const t = maxRaw > minRaw ? (raw - minRaw) / (maxRaw - minRaw) : 1;
-    const fitmentPct = clamp(Math.round(58 + t * 34 + (raw / maxRaw) * 4), 40, 96);
+    // PROFILE ALIGNMENT — how much of this student's weighted profile actually
+    // supports this career. Not a probability of success, and not a percentage
+    // of anything: `raw` is already the weighted mean of the dimensions that
+    // mention this profession, scaled by how much of the profile weighs in.
+    //
+    // What this replaced was a rank-spread dressed up as a measurement:
+    //
+    //   const t = maxRaw > minRaw ? (raw - minRaw) / (maxRaw - minRaw) : 1;
+    //   fitmentPct = clamp(round(58 + t * 34 + (raw / maxRaw) * 4), 40, 96)
+    //
+    // The top match is by definition `raw === maxRaw`, so `t` was always 1 and
+    // the headline number was always exactly 96 — for every student, every
+    // time, no matter what they answered. The bottom of the visible six was
+    // pinned to 58 the same way. Those numbers described the ORDER of the list,
+    // never the strength of the match, and a student comparing "96%" against a
+    // friend's "96%" was comparing two constants.
+    //
+    // Reporting `raw` directly means a genuinely strong profile match reads
+    // higher than a weak one, two students get different numbers, and the same
+    // student's careers spread according to real differences in support.
+    const fitmentPct = clamp(Math.round(raw * 100), 0, 99);
     return {
       title: p,
       fitmentPct,
