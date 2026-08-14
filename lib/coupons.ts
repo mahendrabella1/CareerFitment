@@ -8,7 +8,7 @@
 // never a price. Every route that touches money (order / coupon / redeem) calls
 // `priceWithCoupon` with the admin's own fee as the base, so a student who edits
 // the request can at best name a code that doesn't exist — they can't invent a
-// discount, and they can't turn a ₹99 order into a ₹1 one.
+// discount, and they can't turn a ₹49 order into a ₹1 one.
 //
 // TO ADD OR CHANGE A CODE: edit COUPONS below and redeploy. Codes are matched
 // case-insensitively and trimmed, so "ogfree", " OGFREE " and "OgFree" all work

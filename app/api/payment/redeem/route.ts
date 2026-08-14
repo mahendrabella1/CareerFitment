@@ -88,7 +88,7 @@ export async function POST(req: Request) {
   }
 
   // Same CRM + notification side-effects a real payment fires, marked as a
-  // waiver so a ₹0 lead is never mistaken for a ₹99 one in the CRM.
+  // waiver so a ₹0 lead is never mistaken for a ₹49 one in the CRM.
   void Promise.all([
     pushLeadToCRM({
       name,

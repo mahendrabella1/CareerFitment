@@ -72,7 +72,7 @@ export async function POST(req: Request) {
         amount,
         currency: "INR",
         receipt: `og_${Date.now()}`,
-        // The coupon rides along in the notes so a ₹99 order can be traced back
+        // The coupon rides along in the notes so a ₹49 order can be traced back
         // to the campaign that priced it, straight from the Razorpay dashboard.
         notes: {
           purpose: "assessment_fee",

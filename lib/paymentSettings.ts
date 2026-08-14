@@ -43,7 +43,7 @@ export const MAX_AMOUNT_PAISE = 10_000_000; // ₹1,00,000
 export interface PaymentSettings {
   /** Admin switch: false = the fee is waived and students go straight to the exam. */
   enabled: boolean;
-  /** Fee in paise (9900 = ₹99). */
+  /** Fee in paise (4900 = ₹49). */
   amountPaise: number;
   /** Where the values came from — "env" means the admin toggle isn't in effect. */
   source: "firestore" | "env";

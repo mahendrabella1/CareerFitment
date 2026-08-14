@@ -118,7 +118,7 @@ export default function AdminPage() {
       const res = await fetch("/api/payment/status", { cache: "no-store" });
       const d = await res.json();
       setPayEnabled(d?.enabled !== false);
-      setPayPrice(String((Number(d?.amountPaise) || 9900) / 100));
+      setPayPrice(String((Number(d?.amountPaise) || 4900) / 100));
       setPayConfigured(Boolean(d?.configured));
       setPaySource(d?.settingsSource === "env" ? "env" : "firestore");
       setPayForcedOff(Boolean(d?.forcedOff));
