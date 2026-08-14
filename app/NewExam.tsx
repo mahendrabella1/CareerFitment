@@ -78,6 +78,13 @@ class ExamErrorBoundary extends Component<{ onExit: () => void; children: ReactN
   }
 }
 
+/**
+ * Per-tab marker that this browser tab has just submitted an assessment.
+ * sessionStorage, not localStorage: it should die with the tab, and it must not
+ * follow the student to another tab where they legitimately want to retake.
+ */
+const JUST_FINISHED = "og:exam:justFinished";
+
 export default function NewExam(props: { category: string; name?: string; onExit: () => void }) {
   return <ExamErrorBoundary onExit={props.onExit}><NewExamInner {...props} /></ExamErrorBoundary>;
 }
@@ -85,7 +92,7 @@ export default function NewExam(props: { category: string; name?: string; onExit
 function NewExamInner({ category, name, onExit }: { category: string; name?: string; onExit: () => void }) {
   const router = useRouter();
   const { saveAssessment, saveExamSession, clearExamSession, profile, user } = useAuth();
-  const [phase, setPhase] = useState<"loading" | "error" | "intro" | "resume" | "exam" | "thanks">("loading");
+  const [phase, setPhase] = useState<"loading" | "error" | "intro" | "resume" | "exam" | "thanks" | "already">("loading");
   const [data, setData] = useState<GenData | null>(null);
   const [cur, setCur] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -102,6 +109,21 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
   useEffect(() => {
     if (inited.current) return;
     inited.current = true;
+
+    // Guard against re-entering the exam right after finishing it. Submitting
+    // clears the saved session, so the "resume" branch below can't fire and the
+    // student would be dropped straight into a NEW randomly generated exam
+    // without being asked — which is exactly what pressing the browser's Back
+    // button from the completion screen used to do.
+    //
+    // Deliberately a question rather than a hard block: retaking is a real
+    // feature, and only the student can say which they meant.
+    let finished = false;
+    try { finished = sessionStorage.getItem(JUST_FINISHED) === "1"; } catch { /* private mode */ }
+    const es0 = profile?.examSession;
+    const canResume0 = !!(es0 && es0.status === "in_progress" && es0.chosenSets && Object.keys(es0.chosenSets).length);
+    if (finished && !canResume0) { setPhase("already"); return; }
+
     const es = profile?.examSession;
     const resume = !!(es && es.status === "in_progress" && es.chosenSets && Object.keys(es.chosenSets).length);
     const body = resume ? { stage: es!.stage, chosenSets: es!.chosenSets } : { category };
@@ -238,12 +260,14 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
       try { await clearExamSession(); } catch { /* ignore */ }
       try { if (document.fullscreenElement) await document.exitFullscreen(); } catch { /* ignore */ }
 
-      // Thank-you email with the steps to sign back in. This is now the ONLY
-      // place those steps are given — the completion screen sends them straight
-      // to the dashboard instead — so it matters that it goes out on every
-      // submit. Still fire-and-forget: the assessment is already saved by this
-      // point, and a mail outage must never turn a completed exam into an error
-      // screen. (The report itself is a separate, manual send from /admin.)
+      // One request, two emails: the student's thank-you with the steps to sign
+      // back in, and the team's notice at support@ that a report is waiting to
+      // be sent by hand from /admin. This is the ONLY place the student gets
+      // those steps — the completion screen sends them straight to the
+      // dashboard instead — so it matters that it fires on every submit.
+      //
+      // Still fire-and-forget: the assessment is already saved by this point,
+      // and a mail outage must never turn a completed exam into an error screen.
       void (async () => {
         try {
           const idToken = await getFirebaseAuth()?.currentUser?.getIdToken();
@@ -251,10 +275,21 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
           await fetch("/api/assessment/completion-email", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ idToken, name, topCareer: j.data?.topCareer ?? "" }),
+            body: JSON.stringify({
+              idToken,
+              name,
+              topCareer: j.data?.topCareer ?? "",
+              alignment: j.data?.overallFitmentPct ?? null,
+            }),
           });
         } catch { /* best-effort */ }
       })();
+
+      // Mark the exam finished for THIS TAB. Submitting clears the saved
+      // session, so anything that lands back on the exam URL — the browser
+      // Back button most of all — would otherwise find no session to resume and
+      // silently generate a brand-new exam. See the guard on mount.
+      try { sessionStorage.setItem(JUST_FINISHED, "1"); } catch { /* private mode */ }
 
       // No auto-redirect. The dashboard is one click away on the completion
       // screen, but the student decides when to take it — a timed jump would
@@ -270,6 +305,29 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
 
   if (phase === "error")
     return <Center><div style={{ color: "#c0564f" }}><Icon name="info" size={40} /></div><div style={S.big}>Couldn’t start the assessment</div><div style={S.subT}>{err}</div><button style={S.primary} onClick={exitExam}>Back</button></Center>;
+
+  // Reached by navigating back onto the exam after submitting it. Ask instead
+  // of silently starting a new one — the student almost always wants their
+  // report, and a fresh 60-question exam is an expensive thing to open by
+  // accident.
+  if (phase === "already")
+    return (
+      <Center>
+        <div style={{ color: "#16a34a" }}><Icon name="check" size={40} stroke={2.6} /></div>
+        <div style={S.big}>You’ve already submitted this assessment</div>
+        <div style={S.subT}>Your report is saved on your dashboard. Starting again means answering every question afresh.</div>
+        <button style={S.primary} onClick={exitExam}>Go to my dashboard</button>
+        <button
+          style={S.ghost}
+          onClick={() => {
+            try { sessionStorage.removeItem(JUST_FINISHED); } catch { /* private mode */ }
+            void restartExam();
+          }}
+        >
+          Start a new assessment
+        </button>
+      </Center>
+    );
 
   if (phase === "thanks") {
     const email = profile?.email || user?.email || "";

@@ -29,6 +29,70 @@ function getTransporter() {
   };
 }
 
+/**
+ * Where team notifications about a finished assessment go. Overridable so a
+ * staging deployment doesn't page the real support inbox.
+ */
+const TEAM_INBOX = (process.env.TEAM_NOTIFY_EMAIL || "support@onegrasp.com").trim();
+
+/**
+ * Tell the team a student has finished, so somebody can send their report.
+ *
+ * This one matters operationally rather than as a nicety: the REPORT is a
+ * manual send from /admin, so without this nobody knows there is a report
+ * waiting. A student who completes at 11pm and hears nothing has no way to tell
+ * whether the system failed or the team simply hasn't got to it.
+ *
+ * Best-effort like everything else here — a mail outage must never turn a
+ * completed assessment into an error for the student.
+ */
+export async function sendAssessmentCompletedNotification(input: {
+  name?: string | null;
+  email?: string | null;
+  topCareer?: string | null;
+  /** Profile alignment 0-100, when scoring produced one. */
+  alignment?: number | null;
+}): Promise<boolean> {
+  const t = getTransporter();
+  if (!t) return false; // SMTP not configured on this deployment — skip silently
+
+  const when = new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
+  const rows: [string, string][] = [
+    ["Student", s(input.name)],
+    ["Email", s(input.email)],
+    ["Completed at", when],
+    ["Top career match", s(input.topCareer)],
+    ["Profile alignment", input.alignment != null ? `${input.alignment}/100` : "—"],
+  ];
+
+  const html = `<div style="font-family:Inter,Arial,sans-serif;color:#111">
+    <h2 style="margin:0 0 6px">Assessment completed ✓</h2>
+    <p style="color:#555;margin:0 0 14px">
+      A student has finished the assessment. Their report is on their dashboard;
+      the emailed copy is still a manual send from <b>/admin</b>.
+    </p>
+    <table style="border-collapse:collapse">${rows
+      .map(([k, v]) => `<tr><td style="padding:5px 16px 5px 0;color:#64748b">${k}</td><td style="font-weight:600">${v}</td></tr>`)
+      .join("")}</table>
+    <p style="color:#64748b;font-size:13px;margin:16px 0 0">Action: open /admin and send this student their report.</p>
+  </div>`;
+
+  try {
+    await t.transporter.sendMail({
+      from: `OneGrasp <${t.from}>`,
+      to: TEAM_INBOX,
+      // Replying goes straight to the student rather than to the shared inbox.
+      replyTo: input.email || undefined,
+      subject: `Assessment completed — ${s(input.name) !== "—" ? s(input.name) : s(input.email)}`,
+      html,
+    });
+    return true;
+  } catch (err) {
+    console.error("Completion notification email failed:", err instanceof Error ? err.message : err);
+    return false;
+  }
+}
+
 export async function sendLeadNotificationEmail(
   lead: LeadEmailData,
   status: "unpaid" | "paid",

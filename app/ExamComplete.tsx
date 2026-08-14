@@ -20,7 +20,7 @@
  * than promising anything instant.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Logo } from "@/app/Logo";
 import { Icon } from "@/app/Icons";
 import ShareAchievement from "@/app/ShareAchievement";
@@ -44,6 +44,31 @@ export default function ExamComplete({ name, fullName, email, onGoToDashboard }:
   useEffect(() => {
     const t = setTimeout(() => setPhase("done"), 1800);
     return () => clearTimeout(t);
+  }, []);
+
+  // `onGoToDashboard` is an inline arrow in both parents, so it is a new
+  // function every render. Held in a ref so the Back guard below can depend on
+  // nothing and still call the current one.
+  const goRef = useRef(onGoToDashboard);
+  goRef.current = onGoToDashboard;
+
+  // BACK-BUTTON GUARD.
+  //
+  // Submitting the assessment doesn't change the URL — the student is still on
+  // the exam route — and it clears the saved exam session. So pressing the
+  // browser's Back arrow here used to land straight back on the exam with
+  // nothing to resume, which generated a whole new randomly-picked assessment
+  // and made it look like their answers had been thrown away.
+  //
+  // Pushing one throwaway history entry means the first Back press pops that
+  // instead, and we send them to the dashboard — the thing they were almost
+  // certainly reaching for. NewExam has a second guard for any other route
+  // back onto the exam.
+  useEffect(() => {
+    window.history.pushState({ ogExamDone: true }, "", window.location.href);
+    const onPop = () => goRef.current();
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
   }, []);
 
   if (phase === "saving") {
