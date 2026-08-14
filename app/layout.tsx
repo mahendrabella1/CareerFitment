@@ -11,7 +11,7 @@ import "./exam-premium.css";
 export const metadata: Metadata = {
   title: "OneGrasp Career Fitment",
   description:
-    "Category-based career fitment assessments with a 120-question journey and fit summary.",
+    "Category-based career fitment assessments with a 60+ question journey and fit summary.",
 };
 
 // Critical for phones: render at device width (not the 980px fallback) so every

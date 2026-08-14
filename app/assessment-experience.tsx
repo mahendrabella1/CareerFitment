@@ -572,7 +572,7 @@ export default function AssessmentExperience() {
   const currentQuestion = session?.questions[currentIndex] ?? null;
   const answeredCount = Object.keys(savedAnswers).length;
   const expectedQuestionCount =
-    selectedJourney?.total_questions ?? blueprint?.totalQuestions ?? 120;
+    selectedJourney?.total_questions ?? blueprint?.totalQuestions ?? 60;
   const blueprintWarnings =
     blueprint?.parameters.filter((parameter) => parameter.status !== "ready") ?? [];
   const sessionWarnings =

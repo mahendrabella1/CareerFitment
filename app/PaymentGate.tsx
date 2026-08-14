@@ -431,7 +431,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
 
           <p className="pg-sub">Unlock your full psychometric assessment and personalised career report.</p>
           <ul className="pg-list">
-            <li>120-question assessment across 8 established frameworks</li>
+            <li>60+ question assessment across 8 established frameworks</li>
             <li>Coherent best-fit career fields &amp; matches</li>
             <li>In-depth report — strengths, growth areas &amp; a plan</li>
             <li>Report emailed to you on completion</li>

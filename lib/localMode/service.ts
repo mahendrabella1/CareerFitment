@@ -175,7 +175,7 @@ const JOURNEYS: JourneyRow[] = [
     code: "career_discovery",
     name: "Career Discovery",
     age_group: "Class 6-8",
-    total_questions: 120,
+    total_questions: 60,
     is_active: true,
   },
   {
@@ -183,7 +183,7 @@ const JOURNEYS: JourneyRow[] = [
     code: "stream_selection",
     name: "Stream Selection",
     age_group: "Class 9-10",
-    total_questions: 120,
+    total_questions: 60,
     is_active: true,
   },
   {
@@ -191,7 +191,7 @@ const JOURNEYS: JourneyRow[] = [
     code: "career_planning",
     name: "Career Planning",
     age_group: "Class 11-12",
-    total_questions: 120,
+    total_questions: 60,
     is_active: true,
   },
   {
@@ -199,7 +199,7 @@ const JOURNEYS: JourneyRow[] = [
     code: "graduate_readiness",
     name: "Graduate Readiness",
     age_group: "Graduate 18-21",
-    total_questions: 120,
+    total_questions: 60,
     is_active: true,
   },
   {
@@ -207,7 +207,7 @@ const JOURNEYS: JourneyRow[] = [
     code: "career_growth",
     name: "Career Growth",
     age_group: "Early Career 21-25",
-    total_questions: 120,
+    total_questions: 60,
     is_active: true,
   },
   {
@@ -215,7 +215,7 @@ const JOURNEYS: JourneyRow[] = [
     code: "leadership_excellence",
     name: "Leadership Excellence",
     age_group: "Professionals 25-55",
-    total_questions: 120,
+    total_questions: 60,
     is_active: true,
   },
 ];
