@@ -23,17 +23,20 @@
 import { useEffect, useState } from "react";
 import { Logo } from "@/app/Logo";
 import { Icon } from "@/app/Icons";
+import ShareAchievement from "@/app/ShareAchievement";
 
 export interface ExamCompleteProps {
   /** First name, for the greeting. */
   name?: string;
+  /** Full name, for the shareable achievement card. Falls back to `name`. */
+  fullName?: string;
   /** The signed-in account's email — named so they know which inbox to check. */
   email?: string;
   /** Sends them into the dashboard without signing in again. */
   onGoToDashboard: () => void;
 }
 
-export default function ExamComplete({ name, email, onGoToDashboard }: ExamCompleteProps) {
+export default function ExamComplete({ name, fullName, email, onGoToDashboard }: ExamCompleteProps) {
   // Brief "saving" beat before the thank-you, so the submit doesn't feel like
   // it vanished — the write has usually already finished by the time it ends.
   const [phase, setPhase] = useState<"saving" | "done">("saving");
@@ -93,6 +96,11 @@ export default function ExamComplete({ name, email, onGoToDashboard }: ExamCompl
             sign back in whenever you want to reread your report.
           </span>
         </div>
+
+        {/* Sits above the dashboard CTA on purpose: this is the one moment a
+            student feels like sharing, and it is gone once they navigate away.
+            It shares the achievement only — never a result. */}
+        <ShareAchievement name={fullName || name} />
 
         <button className="xc-cta" onClick={onGoToDashboard}>
           Go to my dashboard <Icon name="chevronRight" size={16} />

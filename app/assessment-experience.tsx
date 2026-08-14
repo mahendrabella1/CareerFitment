@@ -1835,6 +1835,7 @@ export default function AssessmentExperience() {
       {thankYou ? (
         <ExamComplete
           name={(lead.name || profile?.name || "").trim().split(/\s+/)[0]}
+          fullName={(profile?.name || lead.name || "").trim()}
           email={profile?.email || user?.email || lead.email || ""}
           onGoToDashboard={() => router.push("/account")}
         />

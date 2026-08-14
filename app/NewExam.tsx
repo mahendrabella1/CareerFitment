@@ -276,6 +276,7 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
     return (
       <ExamComplete
         name={name}
+        fullName={profile?.name || name}
         email={email}
         onGoToDashboard={() => router.push("/account")}
       />
