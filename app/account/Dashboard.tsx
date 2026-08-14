@@ -22,9 +22,18 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { AssessmentSummary, UserProfile } from "@/lib/auth/AuthProvider";
 import { Logo } from "@/app/Logo";
+import dynamic from "next/dynamic";
 import { Icon, CATEGORY_ABBR } from "@/app/Icons";
 import { C, Ring, SkillBar, RadarChart, type RadarDatum } from "@/app/account/viz";
-import FullReport from "@/app/account/FullReport";
+// The full report is ~85KB of source behind a "Full report" click, and most
+// dashboard visits never open it. Loading it on demand keeps that weight off
+// the dashboard's own first paint.
+const FullReport = dynamic(() => import("@/app/account/FullReport"), {
+  ssr: false,
+  loading: () => (
+    <div style={{ padding: 48, textAlign: "center", color: "#64748b", fontSize: 14 }}>Preparing your report…</div>
+  ),
+});
 import { TOOLKIT_TABS } from "@/app/account/toolkitData";
 import {
   archetype, actionPlan, domainFit,

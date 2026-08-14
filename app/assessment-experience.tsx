@@ -1,11 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { useAuth, type AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { Logo } from "@/app/Logo";
 import Landing from "@/app/Landing";
-import NewExam from "@/app/NewExam";
+// The exam engine, the payment gate and the completion screen are loaded ON
+// DEMAND. None of them can appear until a visitor has signed in, paid and
+// started — but as static imports their JavaScript was part of the very first
+// download for anyone who merely opened the marketing page. Splitting them out
+// takes that weight off the only paint that decides whether a visitor stays.
+// `ssr: false` because all three are interactive-only and gated on auth state,
+// so there is nothing useful to render on the server.
+const NewExam = dynamic(() => import("@/app/NewExam"), { ssr: false, loading: () => <FullPageSpinner /> });
 // The fee gate is ON. A registered user reaches the exam only after a verified
 // payment (or if profile.paid is already true). Three places cooperate: this
 // import, the `paidNow` state, and the check just before <NewExam>.
@@ -13,8 +21,8 @@ import NewExam from "@/app/NewExam";
 // It needs RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET set in the host environment.
 // Without them /api/payment/order fails and nobody can start the exam — see the
 // note in lib/razorpay.ts.
-import PaymentGate from "@/app/PaymentGate";
-import ExamComplete from "@/app/ExamComplete";
+const PaymentGate = dynamic(() => import("@/app/PaymentGate"), { ssr: false, loading: () => <FullPageSpinner /> });
+const ExamComplete = dynamic(() => import("@/app/ExamComplete"), { ssr: false, loading: () => <FullPageSpinner /> });
 import { trackEvent } from "@/lib/metaPixel";
 import {
   Sparkles,
@@ -506,19 +514,45 @@ function optionList(question: SessionQuestion) {
   }));
 }
 
+/** Shown for the moment a lazily-loaded screen (exam, gate, completion) fetches. */
+function FullPageSpinner() {
+  return (
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#eef1f6" }}>
+      <div style={{ width: 38, height: 38, borderRadius: "50%", border: "3px solid #dfe3ef", borderTopColor: "#3b5bdb", animation: "ogSpin .8s linear infinite" }} />
+      <style dangerouslySetInnerHTML={{ __html: "@keyframes ogSpin{to{transform:rotate(360deg)}}" }} />
+    </div>
+  );
+}
+
 export default function AssessmentExperience() {
   const router = useRouter();
   const { user, profile, loading: authLoading, saveAssessment } = useAuth();
   const [beginHandled, setBeginHandled] = useState(false);
-  // Reactive to the URL query so a client-side nav to /?begin=1 (e.g. "Retake"
-  // from the dashboard) always launches the exam instead of a stale landing.
-  const searchParams = useSearchParams();
-  const hasBegin = searchParams.get("begin") === "1";
+  // Read the query string off `window` rather than with useSearchParams().
+  //
+  // THIS IS A PAGE-SPEED FIX, not a style preference. useSearchParams() in the
+  // App Router forces the Suspense subtree it sits in out of the prerendered
+  // HTML — a CSR bailout. Since this component IS the whole page, the static
+  // document for "/" shipped with an empty body: no headline, no copy, nothing.
+  // A visitor downloaded a blank page and then waited for ~318kB of JavaScript
+  // (Firebase included) to parse and run before a single pixel appeared.
+  //
+  // Reading the URL directly keeps the marketing page server-rendered, so the
+  // HTML now arrives with the landing already in it. `pathname` is included so
+  // a client-side nav to /?begin=1 ("Retake" from the dashboard) still
+  // re-reads the query rather than launching a stale landing.
+  const pathname = usePathname();
+  const query = useMemo(
+    () => new URLSearchParams(typeof window === "undefined" ? "" : window.location.search),
+    // Re-read on every client-side navigation.
+    [pathname]
+  );
+  const hasBegin = query.get("begin") === "1";
   // Carried through to /api/leads -> CRM so campaigns stay attributable.
   const utm = {
-    utmSource: searchParams.get("utm_source") ?? undefined,
-    utmMedium: searchParams.get("utm_medium") ?? undefined,
-    utmCampaign: searchParams.get("utm_campaign") ?? undefined,
+    utmSource: query.get("utm_source") ?? undefined,
+    utmMedium: query.get("utm_medium") ?? undefined,
+    utmCampaign: query.get("utm_campaign") ?? undefined,
   };
   const [feedbackRating, setFeedbackRating] = useState<number | null>(null);
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
