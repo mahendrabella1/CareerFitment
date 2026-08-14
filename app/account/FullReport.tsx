@@ -36,6 +36,15 @@ import {
 
 /* ------------------------------- assets -------------------------------- */
 const LOGO = "/onegrasp-logo-tight.png";
+
+/**
+ * Colour per best-fit rank — green, amber, blue. Rank, not domain: the point is
+ * to separate 1st / 2nd / 3rd at a glance, and it stays stable no matter which
+ * domains come out on top. Ordered warm-to-cool so the strongest reads first.
+ * All three sit near the same perceived weight, so none of them looks like a
+ * warning next to the others.
+ */
+const RANK_COLOURS = ["#12996b", "#e08a1e", "#2f6bff"] as const;
 const P = "https://onegrasp.com/wp-content/uploads/2026/07/";
 const DIMS8 = P + "ChatGPT-Image-Jul-10-2026-05_34_15-PM.png";
 
@@ -245,7 +254,10 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
             <div className="radar-wrap"><RadarChart data={radar} color={C.red} abbr={CATEGORY_ABBR} /></div>
             <div className="band-v">
               {domainList.slice(0, 3).map((d, i) => (
-                <div className="dcard" key={d.key}>
+                // One colour per rank rather than three identical red cards:
+                // three bars in the same red read as one repeated result, and
+                // the eye has nothing to separate first from third.
+                <div className="dcard" key={d.key} style={{ ["--rc" as string]: RANK_COLOURS[i] } as React.CSSProperties}>
                   <div className="rk">BEST-FIT DOMAIN 0{i + 1}</div>
                   <div className="nm">{d.name}</div>
                   <div className="ds">{d.tagline}</div>
@@ -849,7 +861,9 @@ function RiasecHex({ themes }: { themes: { letter: string; title?: string; score
 
 function DomainCard({ d, rank }: { d: Domain & { fit: number; why?: string }; rank: number }) {
   return (
-    <div className="dom">
+    // Same rank colour as the Career DNA cards, so a domain that is 2nd in one
+    // section is not green there and red here.
+    <div className="dom" style={{ ["--rc" as string]: RANK_COLOURS[(rank - 1) % RANK_COLOURS.length] } as React.CSSProperties}>
       <div className="dom-hd">
         <span className="rk">{rank}</span>
         <div><div className="nm">{d.name}</div><div className="tl">{d.tagline}{d.why ? <span className="why"> · {d.why}</span> : null}</div></div>
@@ -1005,14 +1019,17 @@ const CSS = `
 @media(max-width:720px){.frx .dna-hero{grid-template-columns:1fr;gap:20px}}
 .frx .radar-wrap{display:flex;justify-content:center}
 .frx .band-v{display:flex;flex-direction:column;gap:10px}
-.frx .dcard{border:1px solid var(--line);border-radius:12px;padding:14px 15px;background:#fff}
-.frx .dcard .rk{font-size:10.5px;font-weight:800;color:var(--red);letter-spacing:.06em}
+/* --rc is set per card in the markup (RANK_COLOURS); the red fallback keeps
+   any other .dcard usage looking as it did. */
+.frx .dcard{border:1px solid var(--line);border-radius:12px;padding:14px 15px;background:#fff;
+  border-left:3px solid var(--rc,var(--red))}
+.frx .dcard .rk{font-size:10.5px;font-weight:800;color:var(--rc,var(--red));letter-spacing:.06em}
 .frx .dcard .nm{font-size:15px;font-weight:800;margin-top:5px}
 .frx .dcard .ds{font-size:12px;color:var(--ink-3);margin-top:4px;line-height:1.45}
 .frx .dcard .mt{display:flex;align-items:center;gap:8px;margin-top:10px}
 .frx .dcard .mt .t{flex:1;height:6px;border-radius:999px;background:var(--line);overflow:hidden}
-.frx .dcard .mt .t i{display:block;height:100%;border-radius:999px;background:var(--red)}
-.frx .dcard .mt .v{font-size:12px;font-weight:800;color:var(--red)}
+.frx .dcard .mt .t i{display:block;height:100%;border-radius:999px;background:var(--rc,var(--red))}
+.frx .dcard .mt .v{font-size:12px;font-weight:800;color:var(--rc,var(--red))}
 
 /* method */
 .frx .fw-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -1175,11 +1192,11 @@ const CSS = `
 /* domains */
 .frx .dom{border:1px solid var(--line);border-radius:15px;overflow:hidden;background:#fff;margin-bottom:14px;box-shadow:var(--shadow-sm)}
 .frx .dom-hd{display:flex;align-items:center;gap:14px;padding:16px 18px;background:${C.bg};border-bottom:1px solid var(--line)}
-.frx .dom-hd .rk{width:32px;height:32px;border-radius:9px;flex:none;display:grid;place-items:center;font-weight:800;color:#fff;background:var(--red)}
+.frx .dom-hd .rk{width:32px;height:32px;border-radius:9px;flex:none;display:grid;place-items:center;font-weight:800;color:#fff;background:var(--rc,var(--red))}
 .frx .dom-hd .nm{font-size:16px;font-weight:800}
 .frx .dom-hd .tl{font-size:12px;color:var(--ink-3);margin-top:2px}
 .frx .dom-hd .fit{margin-left:auto;text-align:right;flex:none}
-.frx .dom-hd .fit b{font-size:21px;font-weight:800;color:var(--red)}
+.frx .dom-hd .fit b{font-size:21px;font-weight:800;color:var(--rc,var(--red))}
 .frx .dom-hd .fit span{display:block;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .frx .dom-bd{display:grid;grid-template-columns:1fr 1fr}
 @media(max-width:560px){.frx .dom-bd{grid-template-columns:1fr}}

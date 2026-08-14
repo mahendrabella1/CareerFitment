@@ -322,12 +322,24 @@ export default function ShareAchievement({ name, date }: { name?: string; date?:
         </div>
       </div>
 
-      <div className="sa-btns">
-        {canNativeShare && (
+      {/* The OS share sheet is the ONLY route to Instagram Story, WhatsApp
+          Status, Snapchat, Telegram and everything else on the phone — no
+          website can target those directly. So it leads, and the per-app
+          buttons below it are the desktop fallback. */}
+      {canNativeShare && (
+        <>
           <button className="sa-btn sa-primary" onClick={() => void nativeShare()} disabled={busy}>
-            <IconShare /> {busy ? "Preparing…" : "Share my card"}
+            <IconShare /> {busy ? "Preparing your card…" : "Share to any app"}
           </button>
-        )}
+          <div className="sa-hint">
+            Opens your phone’s share sheet with the card attached — pick
+            <b> Instagram</b> (Story or Post), <b>WhatsApp</b> (a chat or
+            <b> My Status</b>), Snapchat, Telegram, or anything else installed.
+          </div>
+        </>
+      )}
+
+      <div className="sa-btns">
         <a
           className="sa-btn sa-wa"
           href={`https://wa.me/?text=${encodeURIComponent(`${CAPTION(first)} ${shareUrl("whatsapp")}`)}`}
@@ -346,7 +358,7 @@ export default function ShareAchievement({ name, date }: { name?: string; date?:
           <IconLinkedIn /> LinkedIn
         </a>
         <button className="sa-btn sa-ig" onClick={() => void download()} disabled={busy}>
-          <IconInstagram /> {busy ? "Preparing…" : "Instagram"}
+          <IconInstagram /> {busy ? "Saving…" : "Save image"}
         </button>
         <button className="sa-btn sa-copy" onClick={() => void copy(shareUrl("copy"), "link")}>
           <IconLink /> {copied === "link" ? "Copied ✓" : "Copy link"}
@@ -355,13 +367,14 @@ export default function ShareAchievement({ name, date }: { name?: string; date?:
 
       {copied === "caption" && (
         <div className="sa-note sa-note-ok">
-          ✓ Caption copied — paste it when you post. For Instagram, add the saved
-          image to your story or feed.
+          ✓ Card saved and caption copied — add the image to your Instagram Story
+          or Post, or to your WhatsApp Status, and paste the caption.
         </div>
       )}
       <div className="sa-note">
-        Instagram doesn’t let a website fill in a post, so tapping it saves the card
-        as an image for you to add yourself.
+        {canNativeShare
+          ? "Instagram Story vs Post, and WhatsApp chat vs Status, are chosen inside those apps — no website can pick for you, so the share sheet above hands them the card and you choose there."
+          : "On a phone you’ll also get a “Share to any app” button, which reaches Instagram Story, WhatsApp Status and every other app installed."}
       </div>
     </div>
   );
@@ -419,7 +432,10 @@ const CSS = `
 .sa-btn:active{transform:none}
 .sa-btn:disabled{opacity:.65;cursor:default;transform:none;filter:none}
 .sa-btn svg{flex:none}
-.sa-primary{flex-basis:100%;background:linear-gradient(90deg,#171624,#33305a);box-shadow:0 8px 20px rgba(23,22,36,.24)}
+.sa-primary{display:flex;width:100%;margin-top:14px;padding:14px;font-size:14.5px;
+  background:linear-gradient(90deg,#171624,#33305a);box-shadow:0 8px 20px rgba(23,22,36,.24)}
+.sa-hint{font-size:11px;line-height:1.55;color:#6b7280;margin:8px 2px 0;text-align:center}
+.sa-hint b{color:#3d4657;font-weight:800}
 .sa-wa{background:#25D366;box-shadow:0 8px 18px rgba(37,211,102,.28)}
 .sa-li{background:#0A66C2;box-shadow:0 8px 18px rgba(10,102,194,.26)}
 .sa-ig{background:linear-gradient(90deg,#F58529,#DD2A7B 55%,#8134AF);box-shadow:0 8px 18px rgba(221,42,123,.26)}
