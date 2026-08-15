@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { useAuth, type AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { Logo } from "@/app/Logo";
@@ -514,6 +514,11 @@ function optionList(question: SessionQuestion) {
   }));
 }
 
+// useLayoutEffect warns when React renders on the server. This page IS
+// prerendered, so fall back to useEffect there — the effect's whole job is to
+// read window.location, which does not exist on the server anyway.
+const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
+
 /** Shown for the moment a lazily-loaded screen (exam, gate, completion) fetches. */
 function FullPageSpinner() {
   return (
@@ -538,15 +543,30 @@ export default function AssessmentExperience() {
   // (Firebase included) to parse and run before a single pixel appeared.
   //
   // Reading the URL directly keeps the marketing page server-rendered, so the
-  // HTML now arrives with the landing already in it. `pathname` is included so
-  // a client-side nav to /?begin=1 ("Retake" from the dashboard) still
-  // re-reads the query rather than launching a stale landing.
-  const pathname = usePathname();
-  const query = useMemo(
-    () => new URLSearchParams(typeof window === "undefined" ? "" : window.location.search),
-    // Re-read on every client-side navigation.
-    [pathname]
-  );
+  // HTML now arrives with the landing already in it.
+  //
+  // It CANNOT be read during render, though. On a client-side navigation the
+  // App Router only writes the new URL to window.history in an insertion
+  // effect (HistoryUpdater), which runs after the render that mounts the new
+  // page. So a component that reads window.location.search while rendering
+  // sees the URL it came FROM — /register, /account — and concludes
+  // begin !== "1". That is what sent every student who finished registering,
+  // or pressed "Take the assessment" on the dashboard, to the marketing page
+  // instead of into the exam. It only ever worked on a hard reload.
+  //
+  // So: start empty (which is also what the server rendered, so hydration
+  // matches), then sync in a LAYOUT effect. Layout effects run after insertion
+  // effects in the same commit — the URL is up to date by then — and the
+  // resulting re-render is flushed before the browser paints, so the exam
+  // appears directly, with no flash of the landing page in between.
+  const [search, setSearch] = useState("");
+  useIsomorphicLayoutEffect(() => {
+    // No dependency list on purpose: a push from "/" to "/?begin=1" changes
+    // neither the pathname nor the mounted tree, and would be missed.
+    const s = window.location.search;
+    setSearch((prev) => (prev === s ? prev : s));
+  });
+  const query = useMemo(() => new URLSearchParams(search), [search]);
   const hasBegin = query.get("begin") === "1";
   // Carried through to /api/leads -> CRM so campaigns stay attributable.
   const utm = {
@@ -942,15 +962,15 @@ export default function AssessmentExperience() {
   // Handle the post-register redirect (/?begin=1) once auth has settled.
   useEffect(() => {
     if (beginHandled || authLoading) return;
-    if (typeof window === "undefined") return;
-    const begin = new URLSearchParams(window.location.search).get("begin");
-    if (begin !== "1") return;
+    // `hasBegin`, not a fresh read of window.location: on a client-side
+    // navigation this effect can run before the router has written the new URL.
+    if (!hasBegin) return;
     setBeginHandled(true);
     // Signed-in users are handled by the NewExam early-return below;
     // signed-out users go to register (which comes back with ?begin=1).
     if (!user) router.replace("/register");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authLoading, user, beginHandled, router]);
+  }, [authLoading, user, beginHandled, hasBegin, router]);
 
   // Prefill the lead form from the signed-in profile.
   useEffect(() => {
