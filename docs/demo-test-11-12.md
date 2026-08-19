@@ -243,6 +243,29 @@ on the catalogue still holding what it held the day the student sat the paper.
 A class 9-10 student is unaffected: `/account` passes an empty list unless a
 `demoReport` exists.
 
+The three demo sections are written as **one story in three chapters**, not as
+cards dropped into a page:
+
+| | Chapter | What it does |
+|---|---|---|
+| 1 | **The question you came with** | the career they chose, beside what the paper found, and the verdict |
+| 2 | **Why we say that** | a short lead-in that frames the standard sections as the evidence for chapter 1 |
+| — | *(dimensions, best-fit fields, how you think)* | the evidence itself |
+| 3 | **The road from here** | the roadmap(s), opening with a recap of chapter 1 rather than reintroducing the careers |
+| — | *(My Plan, 30/90 days)* | reads as the first steps on that road |
+
+Each chapter ends by naming what comes next, so the reader is carried forward
+instead of landing on an unexplained wall of dials.
+
+The roadmap no longer reprints the career title, field and blurb that chapter 1
+already gave a few hundred pixels earlier — that duplication was what made the
+report feel like two documents stapled together.
+
+Making this possible needed a fix in `Dashboard`: `before` was documented as
+accepting any built-in section id but only `"dimensions"` was honoured, so
+anything else silently fell to the end of the page while the sidebar listed it
+in its anchored position. Every anchor now renders where it claims to.
+
 ### 1. Wanted vs found  (rendered first, above the dimensions)
 
 The career the student named *before* the paper, set against what the paper

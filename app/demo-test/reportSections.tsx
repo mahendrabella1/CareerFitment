@@ -91,6 +91,17 @@ const VERDICT_STYLE: Record<Verdict, { bg: string; line: string; ink: string; la
 };
 
 /* ===================== 1. WANTED vs FOUND ===================== */
+/** Small chapter marker. Three numbered beats make a report read as one piece
+ *  rather than a pile of cards a student scrolls past. */
+function Chapter({ n, of, title }: { n: number; of: number; title: string }) {
+  return (
+    <div style={S.chapter}>
+      <span style={S.chapterN}>Chapter {n} of {of}</span>
+      <span style={S.chapterT}>{title}</span>
+    </div>
+  );
+}
+
 function AlignmentSection({ alignment, bare }: { alignment: Alignment; bare?: boolean }) {
   const v = VERDICT_STYLE[alignment.verdict];
   // `bare` drops the dashboard card chrome. Inside the in-depth report each
@@ -103,6 +114,7 @@ function AlignmentSection({ alignment, bare }: { alignment: Alignment; bare?: bo
         ? { background: v.bg, border: `1px solid ${v.line}`, borderRadius: 14, padding: "20px 22px" }
         : { background: v.bg, borderColor: v.line }}
     >
+      <Chapter n={1} of={3} title="The question you came with" />
       <div style={S.verdictTop}>
         <span style={{ ...S.verdictIcon, background: v.ink }}>{v.icon}</span>
         <span style={{ ...S.verdictLabel, color: v.ink }}>{v.label}</span>
@@ -140,23 +152,64 @@ function AlignmentSection({ alignment, bare }: { alignment: Alignment; bare?: bo
           {alignment.nextSteps.map((s, i) => <li key={i} style={S.step}>{s}</li>)}
         </ol>
       </div>
+
+      <p style={S.bridge}>
+        <b>Next:</b> the sections below are the evidence behind that verdict &mdash; your eight
+        dimensions, the fields they add up to, and how you think. Then{" "}
+        <b>Chapter 3</b> turns it into a road you can actually walk.
+      </p>
     </div>
   );
 }
 
 /* ===================== 2. ROADMAPS ===================== */
+/**
+ * The short bridge between the verdict and the evidence.
+ *
+ * Without it the report jumped from "here is the answer" straight into eight
+ * radar dials with no explanation of what the reader was now looking at, and
+ * the roadmap arrived pages later with nothing tying it back.
+ */
+function EvidenceLeadIn({ alignment, bare }: { alignment: Alignment | null; bare?: boolean }) {
+  return (
+    <div
+      className={bare ? undefined : "ogd-card"}
+      style={bare ? { border: `1px solid ${C.line}`, borderRadius: 14, padding: "20px 22px" } : undefined}
+    >
+      <Chapter n={2} of={3} title="Why we say that" />
+      <h2 style={S.h2}>The evidence behind the verdict</h2>
+      <p style={S.cardSub}>
+        {alignment
+          ? `Nothing above was a guess. Everything that follows is what your own answers produced, scored section by section — and it is what put ${alignment.measured.clusterName ?? "that field"} at the top.`
+          : "Everything that follows is what your own answers produced, scored section by section."}
+      </p>
+      <ol style={S.roadmapOl}>
+        <li style={S.step}><b>Your eight dimensions</b> — personality, interests, aptitude and the rest, each scored on its own.</li>
+        <li style={S.step}><b>Your best-fit fields</b> — those eight dimensions blended into which broad fields suit you.</li>
+        <li style={S.step}><b>How you think &amp; work</b> — the intelligences, drivers and learning style underneath it all.</li>
+      </ol>
+      <p style={S.bridge}>
+        Read them as evidence, not as marks. Then <b>Chapter 3</b> turns the verdict into a plan.
+      </p>
+    </div>
+  );
+}
+
 function RoadmapSection({ desired, measured, figures, bare }: {
   desired: CareerBlock; measured: CareerBlock | null; figures?: Figures; bare?: boolean;
 }) {
   const [tab, setTab] = useState<"desired" | "measured">("desired");
   return (
     <div className={bare ? undefined : "ogd-card"}>
-      <h2 style={S.h2}>Your detailed roadmap</h2>
+      <Chapter n={3} of={3} title="The road from here" />
+      <h2 style={S.h2}>{measured ? "Two roads, side by side" : `The road to ${desired.title}`}</h2>
       {measured ? (
         <>
           <p style={S.cardSub}>
-            Both routes are here. Read the one you chose first, then the one your answers point at
-            &mdash; then decide for yourself. Nobody is telling you to switch.
+            Chapter 1 put <b>{desired.title}</b> beside <b>{measured.title}</b>. Here is what each
+            one actually asks of you &mdash; the exams, the years, the money and the honest part.
+            Read the one you chose first. Nobody is telling you to switch; this is so you are
+            choosing with the whole picture rather than half of it.
           </p>
           <div style={S.tabRow}>
             <button style={{ ...S.roadTab, ...(tab === "desired" ? S.roadTabOn : {}) }} onClick={() => setTab("desired")}>
@@ -171,7 +224,9 @@ function RoadmapSection({ desired, measured, figures, bare }: {
       ) : (
         <>
           <p style={S.cardSub}>
-            Your choice and your results agree, so there is one road to walk. Here it is in detail.
+            Chapter 1 found that your answers and your choice point the same way, so there is one
+            road rather than a decision to make. Here is what it asks of you &mdash; the exams, the
+            years, the money and the honest part.
           </p>
           <RoadmapView career={desired} figures={figures} />
         </>
@@ -184,12 +239,10 @@ function RoadmapView({ career, figures }: { career: CareerBlock; figures?: Figur
   const r = career.roadmap;
   return (
     <div>
-      <div style={S.roadHead}>
-        <div>
-          <div style={S.roadTitle}>{career.title}</div>
-          <div style={S.roadMeta}>{career.familyLabel} &middot; {career.clusterName}</div>
-        </div>
-      </div>
+      {/* No title/cluster/blurb block here. Chapter 1 already named this career
+          and its field a few hundred pixels up, and the tab above says which
+          road you are reading - repeating all three was the duplication that
+          made the report feel like two documents stapled together. */}
       <p style={S.roadBlurb}>{career.blurb}</p>
 
       <Block title="What you would actually do">
@@ -297,6 +350,11 @@ function Block({ title, children }: { title: string; children: React.ReactNode }
 
 const S: Record<string, React.CSSProperties> = {
   h2: { fontSize: 18, fontWeight: 800, margin: "0 0 6px" },
+  chapter: { display: "flex", alignItems: "baseline", gap: 10, marginBottom: 10, flexWrap: "wrap" },
+  chapterN: { fontSize: 10.5, fontWeight: 800, letterSpacing: .6, textTransform: "uppercase", color: NAVY, background: "#eef1fb", border: "1px solid #dfe4f7", borderRadius: 999, padding: "3px 9px" },
+  chapterT: { fontSize: 12, fontWeight: 700, color: C.muted, letterSpacing: .2 },
+  bridge: { fontSize: 13, color: C.ink3, lineHeight: 1.65, margin: "14px 0 0", paddingTop: 12, borderTop: `1px dashed ${C.line}` },
+  roadmapOl: { margin: "0 0 4px", paddingLeft: 18 },
   cardSub: { fontSize: 13, color: C.ink3, lineHeight: 1.6, margin: "0 0 16px" },
 
   verdictTop: { display: "flex", alignItems: "center", gap: 9, marginBottom: 10 },
@@ -321,9 +379,6 @@ const S: Record<string, React.CSSProperties> = {
   roadTab: { padding: "10px 16px", border: `1.5px solid ${C.line}`, background: "#fff", borderRadius: 9, fontSize: 12.5, fontWeight: 700, color: C.ink3, cursor: "pointer" },
   roadTabOn: { borderColor: NAVY, background: "#eef1fb", color: NAVY },
 
-  roadHead: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 },
-  roadTitle: { fontSize: 19, fontWeight: 800 },
-  roadMeta: { fontSize: 12, color: C.muted, marginTop: 2 },
   roadBlurb: { fontSize: 14, color: C.ink2, lineHeight: 1.65, margin: "0 0 18px" },
 
   block: { marginBottom: 20 },
@@ -394,9 +449,23 @@ export function demoExtraSections(data: DemoReportExtras): ExtraSection[] {
     });
   }
   out.push({
+    id: "evidence",
+    label: "Why we say that",
+    icon: "explain",
+    // Straight after the verdict and before the dials it introduces.
+    before: "dimensions",
+    inFullReport: true,
+    node: <EvidenceLeadIn alignment={data.alignment ?? null} />,
+    reportNode: <EvidenceLeadIn alignment={data.alignment ?? null} bare />,
+  });
+  out.push({
     id: "roadmap",
     label: "Your roadmap",
     icon: "route",
+    // After every evidence section and before the 30/90-day plan, which then
+    // reads as the immediate first steps ON that road. Sitting at the very end
+    // of the page, it had nothing to follow from.
+    before: "plan",
     inFullReport: true,
     node: (
       <RoadmapSection

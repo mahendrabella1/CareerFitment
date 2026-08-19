@@ -142,8 +142,21 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
     // built-in ones, so they come LAST in the sidebar too. Listing them first
     // put "Your roadmap" above "8 Dimensions" while it rendered at the bottom,
     // which made the scroll-spy highlight the wrong entry the whole way down.
-    ...extraSections.filter((x) => !x.before).map((x) => ({ id: x.id, label: x.label, icon: x.icon })),
+    ...extraSections
+      .filter((x) => !x.before || !NAV.some((n) => n.id === x.before))
+      .map((x) => ({ id: x.id, label: x.label, icon: x.icon })),
   ];
+  // Extras anchored to a section, rendered wherever that section is. `before`
+  // was documented as accepting any built-in id but only "dimensions" was
+  // actually handled - anything else fell through to the end of the page while
+  // the sidebar listed it in its anchored position, so the nav and the page
+  // disagreed for every anchor but one.
+  const extrasBefore = (id: string) =>
+    extraSections
+      .filter((x) => x.before === id)
+      .map((x) => (
+        <section key={x.id} id={x.id} className="ash-sec">{x.node}</section>
+      ));
   const name = (profile?.name || "").trim();
   const first = name.split(/\s+/)[0] || "there";
   const initial = (name || email || "?").trim().charAt(0).toUpperCase();
@@ -312,9 +325,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
           <div className="ash-grid">
             <div className="ash-content">
 
-              {extraSections.filter((x) => x.before === "dimensions").map((x) => (
-                <section key={x.id} id={x.id} className="ash-sec">{x.node}</section>
-              ))}
+              {extrasBefore("dimensions")}
 
               {/* ===== DIMENSIONS ===== */}
               <section id="dimensions" className="ash-sec">
@@ -339,6 +350,8 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                   <DimPanel d={radar.find((r) => r.key === dimKey) ?? radar[0]} a={a} />
                 </div>
               </section>
+
+              {extrasBefore("overview")}
 
               {/* ===== OVERVIEW ===== */}
               <section id="overview" className="ash-sec">
@@ -407,6 +420,8 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                 </div>
               </section>
 
+              {extrasBefore("fields")}
+
               {/* ===== FIELDS ===== */}
               <section id="fields" className="ash-sec">
                 <div className="ogd-card">
@@ -430,6 +445,8 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                 </div>
               </section>
 
+              {extrasBefore("mind")}
+
               {/* ===== MIND ===== */}
               <section id="mind" className="ash-sec">
                 <div className="ogd-card">
@@ -443,6 +460,8 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                 </div>
               </section>
 
+              {extrasBefore("plan")}
+
               {/* ===== PLAN ===== */}
               <section id="plan" className="ash-sec">
                 <GoalTracker plan={plan} storageKey={`og-goals-${a.completedAt}`} domain={topDomainName} />
@@ -455,9 +474,12 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                 </section>
               )}
 
-              {extraSections.filter((x) => x.before !== "dimensions").map((x) => (
-                <section key={x.id} id={x.id} className="ash-sec">{x.node}</section>
-              ))}
+              {/* Anything not anchored to a section lands here, at the end. */}
+              {extraSections
+                .filter((x) => !x.before || !NAV.some((n) => n.id === x.before))
+                .map((x) => (
+                  <section key={x.id} id={x.id} className="ash-sec">{x.node}</section>
+                ))}
 
               {/* ===== DETAILS ===== */}
               <section className="ash-sec">
