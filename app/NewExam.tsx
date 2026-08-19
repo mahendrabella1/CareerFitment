@@ -115,6 +115,13 @@ export interface ScoringOverride {
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   persist?: "assessment" | "demo";
+  /**
+   * Pulls the caller's own report data out of the response, to be stored
+   * alongside the summary. Without this the demo's comparison and roadmaps
+   * exist only in memory and vanish the moment the student navigates away.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  pickExtras?: (data: any) => any;
 }
 
 type ExamProps = {
@@ -305,8 +312,11 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
       const j = await res.json();
       if (!j.success) throw new Error(j.message || "Scoring failed");
       const summary = scoring ? scoring.pickSummary(j.data) : j.data;
-      const store = scoring?.persist === "demo" ? saveDemoAssessment : saveAssessment;
-      try { await store(summary); } catch { /* still continue */ }
+      const extras = scoring?.pickExtras ? scoring.pickExtras(j.data) : undefined;
+      try {
+        if (scoring?.persist === "demo") await saveDemoAssessment(summary, extras);
+        else await saveAssessment(summary);
+      } catch { /* still continue */ }
       // Hand the full response back before the completion screen renders, so a
       // caller supplying its own report has it ready rather than re-fetching.
       try { scoring?.onResult?.(j.data); } catch { /* caller's problem, not the exam's */ }

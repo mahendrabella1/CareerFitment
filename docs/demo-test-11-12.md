@@ -192,9 +192,23 @@ cut-down version of its own: it renders `app/account/Dashboard.tsx` with the
 student's summary, so it cannot silently fall behind when the real report
 improves.
 
-Two sections are added on top, through Dashboard's `extraSections` prop. That
-prop is inert unless passed, so `/account` and the class 9-10 report are
-untouched.
+Two sections are added on top, through Dashboard's `extraSections` prop.
+
+**Shown in both places.** The report appears immediately after the paper at
+`/demo-test`, and any time afterwards at `/account`. Both render the same
+`demoExtraSections()` from `app/demo-test/reportSections.tsx`, so they cannot
+diverge. The comparison and the resolved roadmaps are saved onto the profile as
+`demoReport` when the paper is scored - previously they lived only in memory,
+so a student who clicked through to their dashboard, or came back the next day,
+found the standard report with no sign of the career they chose or the one they
+were matched to.
+
+The saved payload carries the **resolved roadmaps**, not career ids (~8KB
+against a 1MB Firestore limit). A report opened a year later should not depend
+on the catalogue still holding what it held the day the student sat the paper.
+
+A class 9-10 student is unaffected: `/account` passes an empty list unless a
+`demoReport` exists.
 
 ### 1. Wanted vs found  (rendered first, above the dimensions)
 

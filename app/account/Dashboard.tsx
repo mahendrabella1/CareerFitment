@@ -125,11 +125,15 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
   // Sidebar order must match render order, or the scroll-spy highlights the
   // wrong entry. Both are derived from the same list.
   const navItems = [
-    ...extraSections.filter((x) => !x.before).map((x) => ({ id: x.id, label: x.label, icon: x.icon })),
     ...NAV.flatMap((n) => [
       ...extraSections.filter((x) => x.before === n.id).map((x) => ({ id: x.id, label: x.label, icon: x.icon })),
       n,
     ]),
+    // Anchored extras render before their section; the rest render after the
+    // built-in ones, so they come LAST in the sidebar too. Listing them first
+    // put "Your roadmap" above "8 Dimensions" while it rendered at the bottom,
+    // which made the scroll-spy highlight the wrong entry the whole way down.
+    ...extraSections.filter((x) => !x.before).map((x) => ({ id: x.id, label: x.label, icon: x.icon })),
   ];
   const name = (profile?.name || "").trim();
   const first = name.split(/\s+/)[0] || "there";

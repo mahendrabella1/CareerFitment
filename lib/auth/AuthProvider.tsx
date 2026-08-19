@@ -103,6 +103,18 @@ export interface UserProfile {
   latestAssessment?: AssessmentSummary;
   /** Result of the free /demo-test paper, kept apart from the paid one. */
   demoAssessment?: AssessmentSummary;
+  /**
+   * The demo report's own two sections - the wanted-vs-found comparison and
+   * the resolved roadmaps - stored so /account can show the SAME report the
+   * student saw straight after the paper. Without this the dashboard drops
+   * everything specific to the demo the moment they navigate away.
+   *
+   * Deliberately stores the resolved roadmaps rather than career ids: a report
+   * a student opens a year later should not depend on the catalogue still
+   * containing what it contained on the day they sat the paper.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  demoReport?: any;
   // Payment gate: false/absent = registered but unpaid; true = paid (set
   // server-side by /api/payment/verify after signature verification).
   paid?: boolean;
@@ -134,7 +146,8 @@ interface AuthState {
   resetPassword: (email: string) => Promise<void>;
   logout: () => Promise<void>;
   saveAssessment: (summary: AssessmentSummary) => Promise<void>;
-  saveDemoAssessment: (summary: AssessmentSummary) => Promise<void>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  saveDemoAssessment: (summary: AssessmentSummary, extras?: any) => Promise<void>;
   saveExamSession: (session: ExamSession) => Promise<void>;
   clearExamSession: () => Promise<void>;
 }
@@ -267,15 +280,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
    * someone who registered THROUGH the demo still finds a report on their
    * dashboard, and someone who already had one keeps it.
    */
-  async function saveDemoAssessment(summary: AssessmentSummary) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async function saveDemoAssessment(summary: AssessmentSummary, extras?: any) {
     const db = getDb();
     if (!db || !user) throw new Error("Not signed in.");
     const isFirstReport = !profile?.latestAssessment;
     const patch: Record<string, unknown> = { demoAssessment: summary };
+    if (extras) patch.demoReport = extras;
     if (isFirstReport) patch.latestAssessment = summary;
     await setDoc(doc(db, "users", user.uid), patch, { merge: true });
     setProfile((p) =>
-      p ? { ...p, demoAssessment: summary, ...(isFirstReport ? { latestAssessment: summary } : {}) } : p
+      p
+        ? {
+            ...p,
+            demoAssessment: summary,
+            ...(extras ? { demoReport: extras } : {}),
+            ...(isFirstReport ? { latestAssessment: summary } : {}),
+          }
+        : p
     );
   }
 

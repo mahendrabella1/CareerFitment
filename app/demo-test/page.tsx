@@ -76,6 +76,15 @@ export default function DemoTestPage() {
           pickSummary: (d) => d.summary,
           // Never into `latestAssessment` when a paid report already exists.
           persist: "demo",
+          // The comparison and roadmaps are saved too, so /account can show
+          // the same report later instead of the plain dashboard.
+          pickExtras: (d) => ({
+            figures: d.figures ?? null,
+            alignment: d.alignment ?? null,
+            desiredCareer: d.desiredCareer,
+            measuredCareer: d.measuredCareer ?? null,
+            combination: d.combination,
+          }),
           onResult: (d) => setReport(d as DemoReportData),
         }}
       />
