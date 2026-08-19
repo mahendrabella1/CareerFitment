@@ -20,6 +20,7 @@
  */
 
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
+import { domainFit } from "@/lib/report/knowledge";
 import { getCareer, alternativesFor, careersForCombination, type Career } from "./catalogue";
 
 /** How the desired career compares with the assessment result. */
@@ -34,7 +35,10 @@ export interface Alignment {
   desired: { id: string; title: string; cluster: string; clusterName: string };
   /** The strongest career the assessment itself points at. */
   measured: { title: string; cluster: string | null; clusterName: string | null; fitmentPct: number | null };
-  /** The student's own score on the cluster their desired career sits in, 0-100. */
+  /**
+ * Blended fit for the field the desired career sits in, 0-100 - the SAME
+ * number and scale the report's "Your best-fit fields" prints for it.
+ */
   desiredClusterScore: number | null;
   /** Where the desired career ranks in the student's own result list, 1-based. */
   desiredRank: number | null;
@@ -49,20 +53,32 @@ export interface Alignment {
 const ALL_CLUSTERS = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
 /**
- * Cluster letter -> the student score, defaulting to 0.
+ * The blended fit for every cluster, ranked - the SAME numbers and the same
+ * order the report's "Your best-fit fields" shows.
  *
- * scoring60 drops zero-scoring clusters from `themes` entirely. Reading the
- * scores straight off that list therefore returned "no value" for exactly the
- * student who scored NOTHING on the cluster they said they wanted, and the
- * report printed "not measured" where it should have printed 0%. That is the
- * single most important number on the page, so it is defaulted here instead.
+ * This used to read the interest themes directly, while the dashboard ranked
+ * the same eight clusters with domainFit, which blends interests, aptitude,
+ * intelligences and drivers. The two disagreed, so one page could say
+ * "best-fit field #1: Sports, Hospitality & Lifestyle" and, a few centimetres
+ * below, "what the assessment found: Entrepreneur (Business & Marketing)".
+ * Two answers to the same question makes the whole report look invented.
+ *
+ * There is now one ranking and every part of the page reads from it.
  */
+function clusterFit(summary: AssessmentSummary): { letter: string; name: string; fit: number }[] {
+  const byLetter = new Map(domainFit(summary).map((d) => [d.key, d]));
+  return ALL_CLUSTERS.map((letter) => ({
+    letter,
+    name: byLetter.get(letter)?.name ?? letter,
+    fit: byLetter.get(letter)?.fit ?? 0,
+  })).sort((a, b) => b.fit - a.fit);
+}
+
+/** Cluster letter -> its blended fit, every letter present. */
 function clusterScores(summary: AssessmentSummary): Record<string, number> {
   const out: Record<string, number> = {};
   for (const letter of ALL_CLUSTERS) out[letter] = 0;
-  for (const theme of summary.themes ?? []) {
-    if (theme.letter) out[theme.letter] = theme.score;
-  }
+  for (const d of clusterFit(summary)) out[d.letter] = d.fit;
   return out;
 }
 
@@ -79,26 +95,13 @@ export function titlesMatch(a: string, b: string): boolean {
 }
 
 /**
- * Which cluster the assessment's own top career belongs to. The matches carry a
- * cluster NAME rather than a letter, so it is resolved by name against the same
- * themes list the letters came from.
+ * The cluster the report itself puts first. Taken from the same ranking the
+ * dashboard renders, so "what the assessment found" can never name a different
+ * field from the one printed at the top of "Your best-fit fields".
  */
 function measuredCluster(summary: AssessmentSummary): { letter: string | null; name: string | null } {
-  const themes = summary.themes ?? [];
-  const top = summary.matches?.[0];
-  if (top) {
-    const theme = themes.find((t) => t.title === top.blurb);
-    if (theme) return { letter: theme.letter, name: theme.title };
-  }
-  // The engine prints the placeholder blurb "Career match" for any profession
-  // missing from its cluster table, and several names introduced by the demo
-  // interest bank are missing from it. Falling through to the placeholder left
-  // `letter` null, which made same-cluster agreement impossible to detect and
-  // printed "Career match" at the student as though it were a cluster name.
-  // The student's own strongest cluster is the honest answer in that case.
-  const best = [...themes].sort((a, b) => b.score - a.score)[0];
-  if (best) return { letter: best.letter, name: best.title };
-  return { letter: null, name: null };
+  const top = clusterFit(summary)[0];
+  return top ? { letter: top.letter, name: top.name } : { letter: null, name: null };
 }
 
 function pct(n: number | null): string {
@@ -149,7 +152,10 @@ export function computeAlignment(
   else verdict = "divergent";
 
   const desiredName = desired.title;
-  const measuredName = topMatch?.title ?? "the profile above";
+  // The career named to the student is the one measuredCareerFor resolves, so
+  // the name, its cluster and the roadmap shown below all describe one thing.
+  const measuredCareer = measuredCareerFor(summary, combination);
+  const measuredName = measuredCareer?.title ?? topMatch?.title ?? "the profile above";
 
   let headline: string;
   let explanation: string;
@@ -165,8 +171,8 @@ export function computeAlignment(
       : `Your assessment backs the direction you chose: ${desiredName} sits in your strongest cluster.`;
     explanation =
       `Before the test you said you wanted to become a ${desiredName}. ` +
-      `Your answers point to the same place: ${desired.clusterName} is your strongest career cluster ` +
-      `at ${pct(desiredClusterScore)}, and the assessment's own top match is ${measuredName}. ` +
+      `Your answers point to the same place: ${desired.clusterName} is your strongest field ` +
+      `at ${pct(desiredClusterScore)} blended fit, and the career it points to is ${measuredName}. ` +
       `That is a genuine agreement rather than a coincidence — the interest, aptitude and personality ` +
       `sections were scored separately and independently arrived at the same cluster. ` +
       `The roadmap below is therefore the one to follow.`;
@@ -179,7 +185,7 @@ export function computeAlignment(
     headline = `Your choice of ${desiredName} is close to what the assessment found, but not identical.`;
     explanation =
       `You chose ${desiredName}, which sits in ${desired.clusterName}. ` +
-      `Your assessment scores ${desired.clusterName} at ${pct(desiredClusterScore)}` +
+      `Your blended fit for ${desired.clusterName} is ${pct(desiredClusterScore)}` +
       (desiredRank >= 0 ? ` (your number ${desiredRank + 1} cluster of eight)` : "") +
       `, so the pull towards it is real. Where it differs is the specific role: the strongest single ` +
       `match from your answers is ${measuredName}` +
@@ -202,7 +208,7 @@ export function computeAlignment(
     headline = `Your assessment points somewhere different from the career you chose.`;
     explanation =
       `You told us you wanted to become a ${desiredName}, which sits in ${desired.clusterName}. ` +
-      `Your answers scored that cluster at ${pct(desiredClusterScore)}` +
+      `Your blended fit for that field is ${pct(desiredClusterScore)}` +
       (desiredRank >= 0 ? ` (number ${desiredRank + 1} of your eight clusters)` : "") +
       `, while your strongest cluster is ${measured.name ?? "a different one"} and your top single match ` +
       `is ${measuredName}` +
@@ -239,7 +245,13 @@ export function computeAlignment(
       title: measuredName,
       cluster: measured.letter,
       clusterName: measured.name,
-      fitmentPct: topMatch?.fitmentPct ?? null,
+      // The alignment figure for the career actually named. Reading
+      // matches[0] here printed one career's percentage beside another
+      // career's name.
+      fitmentPct:
+        (summary.matches ?? []).find((m) => titlesMatch(m.title, measuredName))?.fitmentPct ??
+        scores[measured.letter ?? ""] ??
+        null,
     },
     desiredClusterScore,
     desiredRank: desiredRank >= 0 ? desiredRank + 1 : null,
@@ -265,17 +277,23 @@ export function measuredCareerFor(
   const offered = careersForCombination(combination).filter((c) => c.verdict !== "red");
   if (!offered.length) return null;
 
-  for (const match of summary.matches ?? []) {
-    // Loose match: the scoring engine says "Psychologist" where the catalogue
-    // says "Psychologist / Counsellor". An exact comparison missed those and
-    // fell through to an unrelated career from the same cluster.
-    const hit = offered.find((c) => titlesMatch(c.title, match.title));
-    if (hit) return getCareer(hit.id) ?? null;
-  }
-  // Fall back to the strongest cluster the student can actually study into.
-  for (const theme of [...(summary.themes ?? [])].sort((a, b) => b.score - a.score)) {
-    const inCluster = offered.filter((c) => c.cluster === theme.letter);
-    if (inCluster.length) return getCareer(inCluster[0].id) ?? null;
+  // Walk the clusters in the report's own order and take the first one the
+  // student can actually study into.
+  //
+  // Previously this scanned the engine's match list first and only fell back to
+  // clusters, so the career it named routinely belonged to a different field
+  // from the one printed at the top of "Your best-fit fields" - the report said
+  // "Sports, Hospitality & Lifestyle, 88%" and then "the assessment found:
+  // Entrepreneur (Business & Marketing)". The cluster leads now; the match list
+  // only chooses WHICH career inside that cluster to name.
+  for (const cluster of clusterFit(summary)) {
+    const inCluster = offered.filter((c) => c.cluster === cluster.letter);
+    if (!inCluster.length) continue;
+    for (const match of summary.matches ?? []) {
+      const hit = inCluster.find((c) => titlesMatch(c.title, match.title));
+      if (hit) return getCareer(hit.id) ?? null;
+    }
+    return getCareer(inCluster[0].id) ?? null;
   }
   return getCareer(offered[0].id) ?? null;
 }

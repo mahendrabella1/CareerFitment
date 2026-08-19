@@ -734,39 +734,59 @@ export function domainFit(a: AssessmentSummary): DomainFit[] {
   const interestOf: Record<string, number> = {};
   (a.themes ?? []).forEach((t) => { interestOf[t.letter] = t.score; });
 
-  // Average score of the user's items whose name matches any keyword (0–100).
-  const matchScore = (items: { n: string; s: number }[], keys: string[]) => {
+  // Average score of the user's items whose name matches any keyword (0–100),
+  // or NULL when nothing matched.
+  //
+  // The difference matters. Returning 0 for "no keyword matched" treated an
+  // absence of evidence as evidence of zero, which quietly punished any domain
+  // whose affinity words happened not to appear in this student's top items —
+  // and that is not a statement about the student at all.
+  const matchScore = (items: { n: string; s: number }[], keys: string[]): number | null => {
     const hits = items.filter((it) => keys.some((k) => it.n.includes(k)));
-    if (!hits.length) return 0;
+    if (!hits.length) return null;
     return hits.reduce((s, h) => s + h.s, 0) / hits.length;
   };
 
-  const raw = Object.keys(DOMAINS).map((key) => {
-    const aff = AFFINITY[key];
-    const interest = interestOf[key] ?? 0;
-    const aScore = aff ? matchScore(apt, aff.apt) : 0;
-    const mScore = aff ? matchScore(mi, aff.mi) : 0;
-    const vScore = aff ? matchScore(val, aff.val) : 0;
-    // Interest leads; abilities/intelligences reinforce; values nudge.
-    const r = 0.42 * interest + 0.26 * aScore + 0.22 * mScore + 0.10 * vScore;
-    const reinforcedBy = [
-      aScore >= 55 && apt.find((x) => aff?.apt.some((k) => x.n.includes(k)))?.n,
-      mScore >= 55 && mi.find((x) => aff?.mi.some((k) => x.n.includes(k)))?.n,
-    ].filter(Boolean) as string[];
-    return { key, r, reinforcedBy };
-  });
+  return Object.keys(DOMAINS)
+    .map((key) => {
+      const aff = AFFINITY[key];
+      const interest = interestOf[key] ?? 0;
+      const aScore = aff ? matchScore(apt, aff.apt) : null;
+      const mScore = aff ? matchScore(mi, aff.mi) : null;
+      const vScore = aff ? matchScore(val, aff.val) : null;
 
-  const maxR = Math.max(1, ...raw.map((x) => x.r));
-  return raw
-    .map(({ key, r, reinforcedBy }) => {
-      // Scale so the strongest reads ~88 and the field spreads sensibly (min 42).
-      const fit = Math.max(42, Math.min(92, Math.round(40 + (r / maxR) * 48)));
+      // A weighted mean over the evidence that EXISTS, exactly as the career
+      // matcher averages only the dimensions that mention a profession.
+      // Interest always counts (a cluster genuinely scored 0 should read 0);
+      // abilities, intelligences and values count only when something matched.
+      let num = 0.42 * interest;
+      let den = 0.42;
+      if (aScore !== null) { num += 0.26 * aScore; den += 0.26; }
+      if (mScore !== null) { num += 0.22 * mScore; den += 0.22; }
+      if (vScore !== null) { num += 0.10 * vScore; den += 0.10; }
+
+      // Reported directly, NOT stretched across the field.
+      //
+      // It used to be `40 + (r / maxR) * 48` clamped to [42, 92]. Because the
+      // strongest domain is by definition r === maxR, the top field printed ~88
+      // for every student every time, and the floor of 42 meant a domain the
+      // student scored ZERO on still displayed 42%. Those numbers described the
+      // ORDER of the list, never the strength of the fit — the same defect this
+      // codebase already removed from fitmentPct in scoring60.
+      const fit = Math.max(0, Math.min(99, Math.round(num / den)));
+
+      const reinforcedBy = [
+        aScore !== null && aScore >= 55 && apt.find((x) => aff?.apt.some((k) => x.n.includes(k)))?.n,
+        mScore !== null && mScore >= 55 && mi.find((x) => aff?.mi.some((k) => x.n.includes(k)))?.n,
+      ].filter(Boolean) as string[];
       const why = reinforcedBy.length
         ? `Backed by your ${reinforcedBy.slice(0, 2).join(" and ")}.`
         : `Aligned with your ${AFFINITY[key]?.label ?? "overall profile"}.`;
       return { ...DOMAINS[key], fit, why };
     })
-    .sort((x, y) => y.fit - x.fit);
+    // Ties break on interest, so the order can never contradict the interest
+    // headline shown beside it.
+    .sort((x, y) => y.fit - x.fit || (interestOf[y.key] ?? 0) - (interestOf[x.key] ?? 0));
 }
 
 /* ------------------------- future outlook ------------------------------ */

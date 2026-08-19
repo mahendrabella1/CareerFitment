@@ -115,8 +115,8 @@ function AlignmentSection({ alignment, bare }: { alignment: Alignment; bare?: bo
           <div style={S.vsMeta}>{alignment.desired.clusterName}</div>
           {alignment.desiredClusterScore != null && (
             <div style={S.vsScore}>
-              You scored {Math.round(alignment.desiredClusterScore)}% on this cluster
-              {alignment.desiredRank ? ` — rank ${alignment.desiredRank} of 8` : ""}
+              {Math.round(alignment.desiredClusterScore)}% blended fit
+              {alignment.desiredRank ? ` — rank ${alignment.desiredRank} of 8 fields` : ""}
             </div>
           )}
         </div>
@@ -126,7 +126,7 @@ function AlignmentSection({ alignment, bare }: { alignment: Alignment; bare?: bo
           <div style={S.vsTitle}>{alignment.measured.title}</div>
           <div style={S.vsMeta}>{alignment.measured.clusterName ?? "—"}</div>
           {alignment.measured.fitmentPct != null && (
-            <div style={S.vsScore}>{alignment.measured.fitmentPct}% profile alignment</div>
+            <div style={S.vsScore}>{alignment.measured.fitmentPct}% blended fit</div>
           )}
         </div>
       </div>
