@@ -85,13 +85,52 @@ class ExamErrorBoundary extends Component<{ onExit: () => void; children: ReactN
  */
 const JUST_FINISHED = "og:exam:justFinished";
 
-export default function NewExam(props: { category: string; name?: string; onExit: () => void }) {
+/**
+ * Optional scoring override.
+ *
+ * The paid paper posts to /api/new-assessment/score and saves whatever comes
+ * back. The class 11-12 demo needs a different endpoint, because its report
+ * also carries the desired-vs-measured comparison and two roadmaps, which the
+ * plain summary has no room for.
+ *
+ * Rather than fork the exam engine — 1,000 lines of question rendering,
+ * navigation, autosave and resume that must not diverge — the difference is
+ * expressed as this one optional prop. Omit it and the behaviour is exactly
+ * what it always was.
+ */
+export interface ScoringOverride {
+  url: string;
+  /** Merged into the POST body alongside stage, chosenSets and answers. */
+  extraBody?: Record<string, unknown>;
+  /** Pulls the AssessmentSummary out of a response shaped for this endpoint. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  pickSummary: (data: any) => any;
+  /** Receives the whole response so the caller can render its own report. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onResult?: (data: any) => void;
+  /**
+   * Where to store the scored summary. Defaults to saveAssessment, which
+   * writes the field /account renders - so a paper that is NOT the paid one
+   * must supply its own, or it overwrites a real report with a demo.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  persist?: "assessment" | "demo";
+}
+
+type ExamProps = {
+  category: string;
+  name?: string;
+  onExit: () => void;
+  scoring?: ScoringOverride;
+};
+
+export default function NewExam(props: ExamProps) {
   return <ExamErrorBoundary onExit={props.onExit}><NewExamInner {...props} /></ExamErrorBoundary>;
 }
 
-function NewExamInner({ category, name, onExit }: { category: string; name?: string; onExit: () => void }) {
+function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
   const router = useRouter();
-  const { saveAssessment, saveExamSession, clearExamSession, profile, user } = useAuth();
+  const { saveAssessment, saveDemoAssessment, saveExamSession, clearExamSession, profile, user } = useAuth();
   const [phase, setPhase] = useState<"loading" | "error" | "intro" | "resume" | "exam" | "thanks" | "already">("loading");
   const [data, setData] = useState<GenData | null>(null);
   const [cur, setCur] = useState(0);
@@ -126,7 +165,13 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
 
     const es = profile?.examSession;
     const resume = !!(es && es.status === "in_progress" && es.chosenSets && Object.keys(es.chosenSets).length);
-    const body = resume ? { stage: es!.stage, chosenSets: es!.chosenSets } : { category };
+    // `category` goes with the resume fields, not instead of them: the server
+    // uses it to refuse a saved session that belongs to a different paper.
+    // Without it, opening the demo with a half-finished paid exam saved on the
+    // profile resumed the paid exam inside the demo.
+    const body = resume
+      ? { category, stage: es!.stage, chosenSets: es!.chosenSets }
+      : { category };
     fetch("/api/new-assessment/generate", {
       method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
     })
@@ -250,13 +295,21 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
     if (!data) return;
     setSubmitting(true);
     try {
-      const res = await fetch("/api/new-assessment/score", {
+      const res = await fetch(scoring?.url ?? "/api/new-assessment/score", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ stage: data.stage, chosenSets: data.chosenSets, answers }),
+        body: JSON.stringify({
+          stage: data.stage, chosenSets: data.chosenSets, answers,
+          ...(scoring?.extraBody ?? {}),
+        }),
       });
       const j = await res.json();
       if (!j.success) throw new Error(j.message || "Scoring failed");
-      try { await saveAssessment(j.data); } catch { /* still continue */ }
+      const summary = scoring ? scoring.pickSummary(j.data) : j.data;
+      const store = scoring?.persist === "demo" ? saveDemoAssessment : saveAssessment;
+      try { await store(summary); } catch { /* still continue */ }
+      // Hand the full response back before the completion screen renders, so a
+      // caller supplying its own report has it ready rather than re-fetching.
+      try { scoring?.onResult?.(j.data); } catch { /* caller's problem, not the exam's */ }
       try { await clearExamSession(); } catch { /* ignore */ }
       try { if (document.fullscreenElement) await document.exitFullscreen(); } catch { /* ignore */ }
 
@@ -278,8 +331,8 @@ function NewExamInner({ category, name, onExit }: { category: string; name?: str
             body: JSON.stringify({
               idToken,
               name,
-              topCareer: j.data?.topCareer ?? "",
-              alignment: j.data?.overallFitmentPct ?? null,
+              topCareer: summary?.topCareer ?? "",
+              alignment: summary?.overallFitmentPct ?? null,
             }),
           });
         } catch { /* best-effort */ }

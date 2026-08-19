@@ -101,6 +101,8 @@ export interface UserProfile {
   examSession?: ExamSession | null;
   createdAt?: unknown;
   latestAssessment?: AssessmentSummary;
+  /** Result of the free /demo-test paper, kept apart from the paid one. */
+  demoAssessment?: AssessmentSummary;
   // Payment gate: false/absent = registered but unpaid; true = paid (set
   // server-side by /api/payment/verify after signature verification).
   paid?: boolean;
@@ -132,6 +134,7 @@ interface AuthState {
   resetPassword: (email: string) => Promise<void>;
   logout: () => Promise<void>;
   saveAssessment: (summary: AssessmentSummary) => Promise<void>;
+  saveDemoAssessment: (summary: AssessmentSummary) => Promise<void>;
   saveExamSession: (session: ExamSession) => Promise<void>;
   clearExamSession: () => Promise<void>;
 }
@@ -251,6 +254,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfile((p) => (p ? { ...p, latestAssessment: summary } : p));
   }
 
+  /**
+   * Stores a /demo-test result without destroying a paid one.
+   *
+   * The demo writes through the same exam engine, so it used to call
+   * saveAssessment and overwrite `latestAssessment` - the field /account
+   * renders. A paying student who opened the demo link had their real report
+   * silently replaced by a free one.
+   *
+   * The demo result therefore lands in its own field, and only fills
+   * `latestAssessment` when nothing is there yet. That keeps both cases right:
+   * someone who registered THROUGH the demo still finds a report on their
+   * dashboard, and someone who already had one keeps it.
+   */
+  async function saveDemoAssessment(summary: AssessmentSummary) {
+    const db = getDb();
+    if (!db || !user) throw new Error("Not signed in.");
+    const isFirstReport = !profile?.latestAssessment;
+    const patch: Record<string, unknown> = { demoAssessment: summary };
+    if (isFirstReport) patch.latestAssessment = summary;
+    await setDoc(doc(db, "users", user.uid), patch, { merge: true });
+    setProfile((p) =>
+      p ? { ...p, demoAssessment: summary, ...(isFirstReport ? { latestAssessment: summary } : {}) } : p
+    );
+  }
+
   async function saveExamSession(session: ExamSession) {
     const db = getDb();
     if (!db || !user) return;
@@ -266,7 +294,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ ready: firebaseReady, loading, user, profile, register, signIn, resetPassword, logout, saveAssessment, saveExamSession, clearExamSession }}
+      value={{ ready: firebaseReady, loading, user, profile, register, signIn, resetPassword, logout, saveAssessment, saveDemoAssessment, saveExamSession, clearExamSession }}
     >
       {children}
     </AuthContext.Provider>
