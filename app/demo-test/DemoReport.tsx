@@ -3,23 +3,28 @@
 /**
  * /demo-test report.
  *
- * Everything the standard report shows (the eight-dimension profile, clusters,
- * strengths, aptitude), plus the two sections this demo exists for:
+ * This is the SAME report a class 9-10 student gets - the full dashboard, the
+ * eight dimensions, best-fit fields, how you think, the plan, and the in-depth
+ * FullReport one click away - with two sections added that only make sense for
+ * the demo:
  *
- *   1. WANTED vs FOUND - the career the student named before the paper, set
- *      against what the paper measured, with the disagreement stated plainly
- *      when there is one.
- *   2. ROADMAPS - the detailed route for the desired career, and, when the two
- *      disagree, the route for the measured one too, side by side.
+ *   1. WANTED vs FOUND - the career the student named BEFORE the paper, set
+ *      against what the paper measured. Placed first, above the dimensions,
+ *      because it is the question they actually came with.
+ *   2. ROADMAPS - the detailed route for their choice, and for the measured
+ *      career too when the two disagree.
  *
- * The comparison is placed FIRST, above the charts. It is the question the
- * student actually came with, and burying it under radar plots would be a
- * design that flatters the engine rather than serving the reader.
+ * Both are passed in through Dashboard's `extraSections` rather than rebuilt
+ * here. That was a deliberate correction: this file used to render its own
+ * cut-down report with a handful of cards, so a demo student saw noticeably
+ * less than a paying class 9-10 student. Reusing the dashboard means the demo
+ * cannot silently fall behind the real report when that one improves.
  */
 
 import { useState } from "react";
-import { Logo } from "@/app/Logo";
-import { C, Ring, RadarChart, SkillBar, dimColor, type RadarDatum } from "@/app/account/viz";
+import Dashboard, { type ExtraSection } from "@/app/account/Dashboard";
+import type { AssessmentSummary, UserProfile } from "@/lib/auth/AuthProvider";
+import { C } from "@/app/account/viz";
 
 const NAVY = "#2f3f9e";
 
@@ -59,9 +64,6 @@ interface CareerBlock {
   alternatives: { id: string; title: string; blurb: string; verdict: string; cluster: string }[];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Summary = any;
-
 export interface Figures {
   asOf: string;
   basis: string;
@@ -70,7 +72,7 @@ export interface Figures {
 }
 
 export interface DemoReportData {
-  summary: Summary;
+  summary: AssessmentSummary;
   figures?: Figures;
   alignment: Alignment | null;
   desiredCareer: CareerBlock;
@@ -84,186 +86,132 @@ const VERDICT_STYLE: Record<Verdict, { bg: string; line: string; ink: string; la
   divergent: { bg: "#fdeeed", line: "#f3ccc9", ink: "#8d3f39", label: "Your results point elsewhere", icon: "!" },
 };
 
-export default function DemoReport({ data, name, onExit }: {
+export default function DemoReport({ data, profile, email, onExit }: {
   data: DemoReportData;
-  name?: string;
-  onExit: () => void;
+  profile?: UserProfile | null;
+  email?: string | null;
+  onExit?: () => void;
 }) {
-  const { summary, alignment, desiredCareer, measuredCareer } = data;
-  const [tab, setTab] = useState<"desired" | "measured">("desired");
+  const extras: ExtraSection[] = [];
 
-  const radar: RadarDatum[] = (summary.radar ?? []).map((r: RadarDatum) => ({
-    key: r.key, label: r.label, score: r.score,
-  }));
-  const v = alignment ? VERDICT_STYLE[alignment.verdict] : null;
+  if (data.alignment) {
+    extras.push({
+      id: "alignment",
+      label: "Your choice vs your result",
+      icon: "compass",
+      // First, ahead of the dimensions. A student opens this report to find out
+      // whether what they want matches what they are; the charts are the
+      // evidence for that answer, not a substitute for it.
+      before: "dimensions",
+      node: <AlignmentSection alignment={data.alignment} />,
+    });
+  }
+
+  extras.push({
+    id: "roadmap",
+    label: "Your roadmap",
+    icon: "route",
+    node: (
+      <RoadmapSection
+        desired={data.desiredCareer}
+        measured={data.measuredCareer}
+        figures={data.figures}
+      />
+    ),
+  });
 
   return (
-    <div style={S.page}>
+    <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-      <header style={S.header} className="og-noprint">
-        <Logo height={34} />
-        <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-          <span style={S.demoTag}>Demo report</span>
-          <button style={S.exitBtn} onClick={onExit}>Go to dashboard</button>
+      <Dashboard
+        a={data.summary}
+        profile={profile}
+        email={email}
+        onSignOut={onExit}
+        extraSections={extras}
+      />
+    </>
+  );
+}
+
+/* ===================== 1. WANTED vs FOUND ===================== */
+function AlignmentSection({ alignment }: { alignment: Alignment }) {
+  const v = VERDICT_STYLE[alignment.verdict];
+  return (
+    <div className="ogd-card" style={{ background: v.bg, borderColor: v.line }}>
+      <div style={S.verdictTop}>
+        <span style={{ ...S.verdictIcon, background: v.ink }}>{v.icon}</span>
+        <span style={{ ...S.verdictLabel, color: v.ink }}>{v.label}</span>
+      </div>
+      <h2 style={{ ...S.h2, color: v.ink }}>{alignment.headline}</h2>
+
+      <div style={S.vsRow} className="ogx-vs">
+        <div style={S.vsBox}>
+          <div style={S.vsCap}>What you said you wanted</div>
+          <div style={S.vsTitle}>{alignment.desired.title}</div>
+          <div style={S.vsMeta}>{alignment.desired.clusterName}</div>
+          {alignment.desiredClusterScore != null && (
+            <div style={S.vsScore}>
+              You scored {Math.round(alignment.desiredClusterScore)}% on this cluster
+              {alignment.desiredRank ? ` — rank ${alignment.desiredRank} of 8` : ""}
+            </div>
+          )}
         </div>
-      </header>
-
-      <main style={S.wrap}>
-        <section style={S.hero}>
-          <h1 style={S.h1}>{name ? `${name}, here is your report` : "Your career report"}</h1>
-          <p style={S.heroSub}>
-            {data.combination} &middot; {summary.matches?.length ?? 0} career matches &middot;
-            {" "}60 questions across 8 dimensions
-          </p>
-        </section>
-
-        {/* ===================== 1. WANTED vs FOUND ===================== */}
-        {alignment && v && (
-          <section style={{ ...S.card, background: v.bg, borderColor: v.line }}>
-            <div style={S.verdictTop}>
-              <span style={{ ...S.verdictIcon, background: v.ink }}>{v.icon}</span>
-              <span style={{ ...S.verdictLabel, color: v.ink }}>{v.label}</span>
-            </div>
-
-            <h2 style={{ ...S.h2, color: v.ink }}>{alignment.headline}</h2>
-
-            <div style={S.vsRow}>
-              <div style={S.vsBox}>
-                <div style={S.vsCap}>What you said you wanted</div>
-                <div style={S.vsTitle}>{alignment.desired.title}</div>
-                <div style={S.vsMeta}>{alignment.desired.clusterName}</div>
-                {alignment.desiredClusterScore != null && (
-                  <div style={S.vsScore}>
-                    You scored {Math.round(alignment.desiredClusterScore)}% on this cluster
-                    {alignment.desiredRank ? ` — rank ${alignment.desiredRank} of 8` : ""}
-                  </div>
-                )}
-              </div>
-              <div style={S.vsArrow}>vs</div>
-              <div style={S.vsBox}>
-                <div style={S.vsCap}>What the assessment found</div>
-                <div style={S.vsTitle}>{alignment.measured.title}</div>
-                <div style={S.vsMeta}>{alignment.measured.clusterName ?? "—"}</div>
-                {alignment.measured.fitmentPct != null && (
-                  <div style={S.vsScore}>{alignment.measured.fitmentPct}% profile alignment</div>
-                )}
-              </div>
-            </div>
-
-            <p style={S.explain}>{alignment.explanation}</p>
-
-            <div style={S.stepsBox}>
-              <div style={S.stepsTitle}>What to do about it</div>
-              <ol style={S.steps}>
-                {alignment.nextSteps.map((s, i) => <li key={i} style={S.step}>{s}</li>)}
-              </ol>
-            </div>
-          </section>
-        )}
-
-        {/* ===================== 2. ROADMAPS ===================== */}
-        <section style={S.card}>
-          <h2 style={S.h2}>Your detailed roadmap</h2>
-          {measuredCareer ? (
-            <>
-              <p style={S.cardSub}>
-                Both routes are here. Read the one you chose first, then the one your answers point at
-                &mdash; then decide for yourself. Nobody is telling you to switch.
-              </p>
-              <div style={S.tabRow}>
-                <button
-                  style={{ ...S.roadTab, ...(tab === "desired" ? S.roadTabOn : {}) }}
-                  onClick={() => setTab("desired")}
-                >
-                  You chose: {desiredCareer.title}
-                </button>
-                <button
-                  style={{ ...S.roadTab, ...(tab === "measured" ? S.roadTabOn : {}) }}
-                  onClick={() => setTab("measured")}
-                >
-                  Assessment suggests: {measuredCareer.title}
-                </button>
-              </div>
-              <RoadmapView career={tab === "desired" ? desiredCareer : measuredCareer} figures={data.figures} />
-            </>
-          ) : (
-            <>
-              <p style={S.cardSub}>
-                Your choice and your results agree, so there is one road to walk. Here it is in detail.
-              </p>
-              <RoadmapView career={desiredCareer} figures={data.figures} />
-            </>
+        <div style={S.vsArrow}>vs</div>
+        <div style={S.vsBox}>
+          <div style={S.vsCap}>What the assessment found</div>
+          <div style={S.vsTitle}>{alignment.measured.title}</div>
+          <div style={S.vsMeta}>{alignment.measured.clusterName ?? "—"}</div>
+          {alignment.measured.fitmentPct != null && (
+            <div style={S.vsScore}>{alignment.measured.fitmentPct}% profile alignment</div>
           )}
-        </section>
+        </div>
+      </div>
 
-        {/* ===================== 3. THE PROFILE ===================== */}
-        <section style={S.card}>
-          <h2 style={S.h2}>Your eight-dimension profile</h2>
+      <p style={S.explain}>{alignment.explanation}</p>
+
+      <div style={S.stepsBox}>
+        <div style={S.stepsTitle}>What to do about it</div>
+        <ol style={S.steps}>
+          {alignment.nextSteps.map((s, i) => <li key={i} style={S.step}>{s}</li>)}
+        </ol>
+      </div>
+    </div>
+  );
+}
+
+/* ===================== 2. ROADMAPS ===================== */
+function RoadmapSection({ desired, measured, figures }: {
+  desired: CareerBlock; measured: CareerBlock | null; figures?: Figures;
+}) {
+  const [tab, setTab] = useState<"desired" | "measured">("desired");
+  return (
+    <div className="ogd-card">
+      <h2 style={S.h2}>Your detailed roadmap</h2>
+      {measured ? (
+        <>
           <p style={S.cardSub}>
-            Each dimension was scored separately. This is the evidence the comparison above is built on.
+            Both routes are here. Read the one you chose first, then the one your answers point at
+            &mdash; then decide for yourself. Nobody is telling you to switch.
           </p>
-          {radar.length > 0 && (
-            <div style={S.radarWrap}><RadarChart data={radar} /></div>
-          )}
-          <div style={S.dimGrid}>
-            {radar.map((r) => (
-              <div key={r.key} style={S.dimCell}>
-                <DimRing label={r.label} score={r.score} dimKey={r.key} />
-              </div>
-            ))}
+          <div style={S.tabRow}>
+            <button style={{ ...S.roadTab, ...(tab === "desired" ? S.roadTabOn : {}) }} onClick={() => setTab("desired")}>
+              You chose: {desired.title}
+            </button>
+            <button style={{ ...S.roadTab, ...(tab === "measured" ? S.roadTabOn : {}) }} onClick={() => setTab("measured")}>
+              Assessment suggests: {measured.title}
+            </button>
           </div>
-        </section>
-
-        {summary.matches?.length > 0 && (
-          <section style={S.card}>
-            <h2 style={S.h2}>Your strongest career matches</h2>
-            <p style={S.cardSub}>
-              Ranked by how much of your weighted profile actually supports each one. This is a measure
-              of fit, not a prediction of success.
-            </p>
-            {summary.matches.map((m: { title: string; fitmentPct: number; band: string; blurb: string }) => (
-              <div key={m.title} style={S.matchRow}>
-                <div style={{ flex: 1 }}>
-                  <strong style={S.matchTitle}>{m.title}</strong>
-                  <div style={S.matchBlurb}>{m.blurb}</div>
-                </div>
-                <div style={S.matchPct}>{m.fitmentPct}%</div>
-              </div>
-            ))}
-          </section>
-        )}
-
-        {summary.themes?.length > 0 && (
-          <section style={S.card}>
-            <h2 style={S.h2}>Career clusters</h2>
-            {summary.themes.map((t: { letter: string; title: string; score: number; meaning: string }) => (
-              <div key={t.letter} style={{ marginBottom: 10 }}>
-                <BarRow label={t.title} score={t.score} />
-                <div style={S.clusterMeaning}>{t.meaning}</div>
-              </div>
-            ))}
-          </section>
-        )}
-
-        {summary.topAptitudes?.length > 0 && (
-          <section style={S.card}>
-            <h2 style={S.h2}>Aptitude</h2>
-            <p style={S.cardSub}>
-              15 reasoning questions across six areas, weighted by difficulty. With two to three
-              questions behind each area, read these as a shape rather than an exact mark.
-            </p>
-            {summary.topAptitudes.map((a: { skill: string; score: number }) => (
-              <BarRow key={a.skill} label={a.skill} score={a.score} />
-            ))}
-          </section>
-        )}
-
-        <p style={S.disclaimer}>
-          This is a demo report. It reflects the answers you gave today, read through established
-          frameworks &mdash; RIASEC interests, the Big Five, multiple intelligences and emotional
-          intelligence. It is a starting point for a conversation, not a limit on what you can become.
-        </p>
-      </main>
+          <RoadmapView career={tab === "desired" ? desired : measured} figures={figures} />
+        </>
+      ) : (
+        <>
+          <p style={S.cardSub}>
+            Your choice and your results agree, so there is one road to walk. Here it is in detail.
+          </p>
+          <RoadmapView career={desired} figures={figures} />
+        </>
+      )}
     </div>
   );
 }
@@ -291,7 +239,7 @@ function RoadmapView({ career, figures }: { career: CareerBlock; figures?: Figur
           calendar and confirm exact dates on each board&rsquo;s official site.
         </p>
         {r.entranceExams.map((e) => (
-          <div key={e.name} style={S.examRow}>
+          <div key={e.name} style={S.examRow} className="ogx-exam">
             <div style={S.examName}>{e.name}</div>
             <div style={S.examWhen}>{e.when}</div>
             <div style={S.examOpens}>{e.opens}</div>
@@ -312,10 +260,10 @@ function RoadmapView({ career, figures }: { career: CareerBlock; figures?: Figur
       </Block>
 
       <Block title="Start this year — while you are still in school">
-        <ul style={S.ul}>{r.buildNow.map((x, i) => <li key={i} style={S.liAction}>{x}</li>)}</ul>
+        <ul style={S.ul}>{r.buildNow.map((x, i) => <li key={i} style={S.li}>{x}</li>)}</ul>
       </Block>
 
-      <div style={S.twoCol}>
+      <div style={S.twoCol} className="ogx-two">
         <Block title="Skills that matter">
           <ul style={S.ul}>{r.coreSkills.map((x, i) => <li key={i} style={S.li}>{x}</li>)}</ul>
         </Block>
@@ -329,7 +277,7 @@ function RoadmapView({ career, figures }: { career: CareerBlock; figures?: Figur
       </div>
 
       <Block title="What it pays">
-        <div style={S.salaryRow}>
+        <div style={S.salaryRow} className="ogx-sal">
           {(["entry", "mid", "senior"] as const).map((k) => (
             <div key={k} style={S.salaryCell}>
               <div style={S.salaryCap}>{k === "entry" ? "Starting" : k === "mid" ? "Mid-career" : "Senior"}</div>
@@ -374,31 +322,6 @@ function RoadmapView({ career, figures }: { career: CareerBlock; figures?: Figur
   );
 }
 
-/** A labelled dial. Ring itself draws only the arc; the caption is its child. */
-function DimRing({ label, score, dimKey }: { label: string; score: number; dimKey: string }) {
-  return (
-    <div style={{ textAlign: "center" }}>
-      <Ring value={score} size={92} stroke={9} color={dimColor(dimKey)}>
-        <tspan style={{ fontSize: 19, fontWeight: 800, fill: C.ink }}>{Math.round(score)}</tspan>
-      </Ring>
-      <div style={{ fontSize: 11.5, color: C.ink3, marginTop: 6, fontWeight: 600 }}>{label}</div>
-    </div>
-  );
-}
-
-/** A named row with a bar, which is how every score list in this report reads. */
-function BarRow({ label, score, color }: { label: string; score: number; color?: string }) {
-  return (
-    <div style={{ marginBottom: 11 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
-        <span style={{ fontSize: 13, fontWeight: 600, color: C.ink2 }}>{label}</span>
-        <span style={{ fontSize: 12.5, fontWeight: 700, color: C.ink3 }}>{Math.round(score)}</span>
-      </div>
-      <SkillBar value={score} color={color} />
-    </div>
-  );
-}
-
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div style={S.block}>
@@ -409,17 +332,6 @@ function Block({ title, children }: { title: string; children: React.ReactNode }
 }
 
 const S: Record<string, React.CSSProperties> = {
-  page: { minHeight: "100vh", background: C.bg, fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: C.ink },
-  header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", background: "#fff", borderBottom: `1px solid ${C.line}`, position: "sticky", top: 0, zIndex: 5 },
-  demoTag: { fontSize: 11.5, fontWeight: 700, color: NAVY, background: "#eef1fb", border: "1px solid #dfe4f7", borderRadius: 999, padding: "5px 11px" },
-  exitBtn: { padding: "9px 16px", background: NAVY, color: "#fff", border: "none", borderRadius: 9, fontSize: 13, fontWeight: 700, cursor: "pointer" },
-
-  wrap: { maxWidth: 860, margin: "0 auto", padding: "24px 18px 70px" },
-  hero: { marginBottom: 18 },
-  h1: { fontSize: 26, fontWeight: 800, margin: "0 0 6px", letterSpacing: -.4 },
-  heroSub: { fontSize: 13, color: C.ink3, margin: 0 },
-
-  card: { background: "#fff", border: `1px solid ${C.line}`, borderRadius: 16, padding: "24px 22px", marginBottom: 16, boxShadow: "0 2px 10px rgba(20,20,25,.04)" },
   h2: { fontSize: 18, fontWeight: 800, margin: "0 0 6px" },
   cardSub: { fontSize: 13, color: C.ink3, lineHeight: 1.6, margin: "0 0 16px" },
 
@@ -454,8 +366,9 @@ const S: Record<string, React.CSSProperties> = {
   blockTitle: { fontSize: 11.5, fontWeight: 800, letterSpacing: .5, textTransform: "uppercase", color: NAVY, marginBottom: 9, paddingBottom: 6, borderBottom: `1px solid ${C.line}` },
   ul: { margin: 0, paddingLeft: 18 },
   li: { fontSize: 13.5, lineHeight: 1.65, color: C.ink2, marginBottom: 5 },
-  liAction: { fontSize: 13.5, lineHeight: 1.65, color: C.ink2, marginBottom: 7, fontWeight: 500 },
   dayInLife: { fontSize: 13, color: C.ink3, lineHeight: 1.65, marginTop: 10, background: C.line2, borderRadius: 9, padding: "10px 13px" },
+
+  caveat: { fontSize: 11.5, color: C.muted, lineHeight: 1.6, margin: "10px 0 0", background: C.line2, borderRadius: 8, padding: "9px 11px" },
 
   examRow: { display: "grid", gridTemplateColumns: "1.1fr 1fr 1.4fr", gap: 10, padding: "9px 0", borderBottom: `1px solid ${C.line2}`, fontSize: 12.5 },
   examName: { fontWeight: 700, color: C.ink },
@@ -485,25 +398,12 @@ const S: Record<string, React.CSSProperties> = {
   altRow: { padding: "9px 0", borderBottom: `1px solid ${C.line2}` },
   altTitle: { fontSize: 13.5, display: "block" },
   altBlurb: { fontSize: 12.5, color: C.ink3, lineHeight: 1.55 },
-
-  radarWrap: { maxWidth: 420, margin: "0 auto 18px" },
-  dimGrid: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14 },
-  dimCell: { display: "flex", justifyContent: "center" },
-
-  matchRow: { display: "flex", alignItems: "center", gap: 14, padding: "11px 0", borderBottom: `1px solid ${C.line2}` },
-  matchTitle: { fontSize: 14.5 },
-  matchBlurb: { fontSize: 12, color: C.muted, marginTop: 2 },
-  matchPct: { fontSize: 17, fontWeight: 800, color: NAVY },
-
-  clusterMeaning: { fontSize: 11.5, color: C.muted, marginTop: -4, marginBottom: 8 },
-
-  caveat: { fontSize: 11.5, color: C.muted, lineHeight: 1.6, margin: "10px 0 0",
-            background: C.line2, borderRadius: 8, padding: "9px 11px" },
-  disclaimer: { fontSize: 12, color: C.muted, lineHeight: 1.7, textAlign: "center", maxWidth: 640, margin: "26px auto 0" },
 };
 
 const CSS = `
-@media print{ .og-noprint{display:none !important} }
 @media(max-width:720px){
-  .og-vs{flex-direction:column !important}
+  .ogx-vs{flex-direction:column !important}
+  .ogx-two{grid-template-columns:1fr !important}
+  .ogx-sal{grid-template-columns:1fr !important}
+  .ogx-exam{grid-template-columns:1fr !important;gap:2px !important}
 }`;

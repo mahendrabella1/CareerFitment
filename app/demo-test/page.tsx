@@ -40,7 +40,7 @@ function Spinner() {
 
 export default function DemoTestPage() {
   const router = useRouter();
-  const { profile } = useAuth();
+  const { profile, user } = useAuth();
   const [intake, setIntake] = useState<IntakeResult | null>(null);
   const [report, setReport] = useState<DemoReportData | null>(null);
 
@@ -48,7 +48,8 @@ export default function DemoTestPage() {
     return (
       <DemoReport
         data={report}
-        name={(profile?.name || "").trim().split(/\s+/)[0]}
+        profile={profile}
+        email={profile?.email ?? user?.email ?? null}
         onExit={() => router.push("/account")}
       />
     );

@@ -18,7 +18,7 @@
  * <FullReport/>, reachable via the "Full report" action.
  */
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import type { AssessmentSummary, UserProfile } from "@/lib/auth/AuthProvider";
 import { Logo } from "@/app/Logo";
@@ -95,7 +95,24 @@ const BENCH: Record<string, number> = {
 const bandLabel = (p: number) =>
   p >= 80 ? "Standout" : p >= 65 ? "Strength" : p >= 50 ? "Solid" : p >= 35 ? "Emerging" : "Developing";
 
-export default function Dashboard({ a, profile, email, onSignOut }: { a: AssessmentSummary; profile?: UserProfile | null; email?: string | null; onSignOut?: () => void }) {
+/**
+ * An extra section injected into the dashboard, with its own sidebar entry.
+ *
+ * The class 11-12 demo shows the same report class 9-10 students get, plus two
+ * sections that only make sense there (wanted-vs-found, and the roadmaps). This
+ * prop is how it adds them without forking 1,000 lines of dashboard that must
+ * not drift apart. Omit it and the dashboard is exactly what it always was.
+ */
+export interface ExtraSection {
+  id: string;
+  label: string;
+  icon: string;
+  node: ReactNode;
+  /** Render before this built-in section id; appended if omitted or unmatched. */
+  before?: string;
+}
+
+export default function Dashboard({ a, profile, email, onSignOut, extraSections = [] }: { a: AssessmentSummary; profile?: UserProfile | null; email?: string | null; onSignOut?: () => void; extraSections?: ExtraSection[] }) {
   const [view, setView] = useState<"dashboard" | "report">("dashboard");
   const [navOpen, setNavOpen] = useState(false);
   const [active, setActive] = useState("dimensions");
@@ -105,6 +122,15 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
     return top?.key || CANON[0];
   });
   const [menuOpen, setMenuOpen] = useState(false);
+  // Sidebar order must match render order, or the scroll-spy highlights the
+  // wrong entry. Both are derived from the same list.
+  const navItems = [
+    ...extraSections.filter((x) => !x.before).map((x) => ({ id: x.id, label: x.label, icon: x.icon })),
+    ...NAV.flatMap((n) => [
+      ...extraSections.filter((x) => x.before === n.id).map((x) => ({ id: x.id, label: x.label, icon: x.icon })),
+      n,
+    ]),
+  ];
   const name = (profile?.name || "").trim();
   const first = name.split(/\s+/)[0] || "there";
   const initial = (name || email || "?").trim().charAt(0).toUpperCase();
@@ -194,7 +220,7 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
         <div className="ash-brand"><Link href="/" style={{ textDecoration: "none" }}><Logo height={30} /></Link></div>
         <nav className="ash-nav">
           <div className="ash-nav-lbl">Menu</div>
-          {NAV.map((n) => (
+          {navItems.map((n) => (
             <button key={n.id} className={`ash-navi${active === n.id ? " on" : ""}`} onClick={() => go(n.id)}>
               <Icon name={n.icon} size={18} /><span>{n.label}</span>
             </button>
@@ -266,6 +292,10 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
         <main className="ash-main">
           <div className="ash-grid">
             <div className="ash-content">
+
+              {extraSections.filter((x) => x.before === "dimensions").map((x) => (
+                <section key={x.id} id={x.id} className="ash-sec">{x.node}</section>
+              ))}
 
               {/* ===== DIMENSIONS ===== */}
               <section id="dimensions" className="ash-sec">
@@ -405,6 +435,10 @@ export default function Dashboard({ a, profile, email, onSignOut }: { a: Assessm
                   <Toolkit tab={toolkitTab} setTab={setToolkitTab} />
                 </section>
               )}
+
+              {extraSections.filter((x) => x.before !== "dimensions").map((x) => (
+                <section key={x.id} id={x.id} className="ash-sec">{x.node}</section>
+              ))}
 
               {/* ===== DETAILS ===== */}
               <section className="ash-sec">

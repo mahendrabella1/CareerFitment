@@ -31,6 +31,14 @@ demo stage — see the isolation check at the bottom of this page.
 Everything is generated from the two workbooks in the repository root. Re-run
 the builders when the client sends a new sheet; nothing is hand-edited.
 
+**Build memory.** `npm run build` runs Next with a 4GB heap
+(`node --max-old-space-size=4096`). The app statically imports ~4.3MB of
+question-bank JSON, and the default Node heap dies during static generation
+with a Windows access violation / OOM. The flag lives in the `build` script in
+`package.json` so local and Vercel builds behave identically. The earlier fix
+for this - removing 1.43MB of denormalised duplication from the demo data -
+is described under defect 5; this is what remains after that.
+
 ```
 python scripts/build_demo_11_12.py      # question bank      -> data/demo-11-12/questions.json
 python scripts/build_demo_aptitude.py   # aptitude bank      -> data/demo-11-12/aptitude.json
@@ -177,15 +185,48 @@ expansion and the new streams were done together.
 
 ## The report
 
-Two sections beyond the standard report, both driven by `lib/demo11/alignment.ts`.
+**It is the same report a class 9-10 student gets** - the full dashboard, the
+eight dimensions, best-fit fields, how you think, the plan, the career toolkit,
+and the in-depth `FullReport` one click away. The demo does not render a
+cut-down version of its own: it renders `app/account/Dashboard.tsx` with the
+student's summary, so it cannot silently fall behind when the real report
+improves.
 
-### 1. Wanted vs found
+Two sections are added on top, through Dashboard's `extraSections` prop. That
+prop is inert unless passed, so `/account` and the class 9-10 report are
+untouched.
+
+### 1. Wanted vs found  (rendered first, above the dimensions)
 
 The career the student named *before* the paper, set against what the paper
-measured. Three verdicts:
+measured. It sits first because it is the question they actually came with; the
+charts below are the evidence for the answer, not a substitute for it.
 
 | Verdict | Condition |
 |---|---|
+| `strong` | desired cluster is top-3 **and** either the top match names the career, or the cluster is rank 1 |
+| `partial` | same cluster, or named in the top three matches, or the cluster is top-3 |
+| `divergent` | none of the above |
+
+The top-3 cluster floor on `strong` matters: without it, a student who scored
+**0% on their desired cluster and ranked it 7th of 8** was told their
+assessment agreed with them, because the career happened to appear low in the
+match list on the strength of other dimensions.
+
+When they disagree, the report says so plainly, quantifies the gap, and then
+**hands the decision back**. It never instructs the student to switch - a
+60-question paper cannot support overruling what someone came in wanting, and
+the copy says as much.
+
+### 2. Roadmaps
+
+The desired career's roadmap always. When the verdict is not `strong`, the
+measured career's roadmap as well, in a tab beside it. Each carries entrance
+exams and when to sit them, the stage-by-stage path, what to start this year,
+skills, representative colleges, salary bands, and a `realityCheck` - the
+honest downside, because a roadmap that only sells is not guidance.
+
+---|---|
 | `strong` | desired cluster is top-3 **and** either the top match names the career, or the cluster is rank 1 |
 | `partial` | same cluster, or named in the top three matches, or the cluster is top-3 |
 | `divergent` | none of the above |
