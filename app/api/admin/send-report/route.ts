@@ -100,7 +100,11 @@ function reportHtml(name: string, a: AssessmentSummary): string {
 }
 
 export async function POST(req: Request) {
-  let body: { idToken?: string; to?: string; name?: string; report?: AssessmentSummary };
+  // `demo` carries the class 11-12 sections (comparison + roadmaps) when the
+  // student sat the demo paper. Optional: a class 9-10 report has none and the
+  // PDF simply omits that page.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let body: { idToken?: string; to?: string; name?: string; report?: AssessmentSummary; demo?: any };
   try {
     body = await req.json();
   } catch {
@@ -156,7 +160,7 @@ export async function POST(req: Request) {
   // Attach a PDF of the report; if PDF generation fails, still send the HTML.
   let attachments: { filename: string; content: Buffer; contentType: string }[] = [];
   try {
-    const pdf = await renderReportPdf(body.name ?? "", body.report);
+    const pdf = await renderReportPdf(body.name ?? "", body.report, body.demo);
     attachments = [{ filename: "OneGrasp-Career-Report.pdf", content: pdf, contentType: "application/pdf" }];
   } catch (e) {
     console.error("PDF generation failed, sending without attachment:", e);

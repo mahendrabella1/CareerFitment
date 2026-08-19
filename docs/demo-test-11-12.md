@@ -207,6 +207,18 @@ improves.
 
 Two sections are added on top, through Dashboard's `extraSections` prop.
 
+**Shown everywhere a report is.** Dashboard and Full report are two different
+views, and the demo's sections belong in both — plus every other surface a
+report reaches:
+
+| Surface | Carries the 11-12 sections |
+|---|---|
+| `/demo-test` right after the paper | yes |
+| `/account` dashboard | yes |
+| `/account` → **Full report** | yes, as its own report sheets |
+| `/admin` (before emailing) | yes — reviewers must see what they send |
+| **Emailed PDF** | yes — the copy the student keeps |
+
 **Shown in all three places.** The report appears immediately after the paper
 at `/demo-test`, any time afterwards at `/account`, and inside the in-depth
 **Full report** reached from the sidebar. All three render the same

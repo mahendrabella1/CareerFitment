@@ -85,7 +85,7 @@ function Bar({ label, score }: { label: string; score: number }) {
   );
 }
 
-function ReportDoc({ name, a }: { name: string; a: AssessmentSummary }) {
+function ReportDoc({ name, a, demo }: { name: string; a: AssessmentSummary; demo?: DemoReportForPdf }) {
   const domains = (a.themes ?? [])
     .filter((t) => t.score > 0 && DOMAINS[t.letter])
     .slice(0, 3)
@@ -194,10 +194,130 @@ function ReportDoc({ name, a }: { name: string; a: AssessmentSummary }) {
           </Text>
         </View>
       </Page>
+
+      {/* The emailed PDF is the copy a student keeps. A class 11-12 student's
+          report is not complete without the career they chose, the career the
+          assessment pointed to, and the roadmap - so those go here too, not
+          only on screen. Omitted entirely for class 9-10. */}
+      {demo?.desiredCareer ? (
+        <Page size="A4" style={s.page}>
+          <View style={s.header}>
+            <Text style={s.hKick}>ONEGRASP · CAREER FITMENT REPORT</Text>
+            <Text style={s.hTitle}>Your choice vs your result</Text>
+          </View>
+          <View style={s.body}>
+            {demo.alignment ? (
+              <>
+                <View style={s.archBox}>
+                  <Text style={s.archKick}>WHAT WE COMPARED</Text>
+                  <Text style={s.archName}>{demo.alignment.headline}</Text>
+                </View>
+
+                <View style={s.twoCol}>
+                  <View style={s.col}>
+                    <Text style={s.colHd}>What you said you wanted</Text>
+                    <Text style={s.cardName}>{demo.alignment.desired?.title}</Text>
+                    <Text style={s.cardWhat}>{demo.alignment.desired?.clusterName}</Text>
+                    {demo.alignment.desiredClusterScore != null ? (
+                      <Text style={s.dimNext}>
+                        {Math.round(demo.alignment.desiredClusterScore)}% blended fit
+                        {demo.alignment.desiredRank ? `  ·  rank ${demo.alignment.desiredRank} of 8 fields` : ""}
+                      </Text>
+                    ) : null}
+                  </View>
+                  <View style={s.col}>
+                    <Text style={s.colHd}>What the assessment found</Text>
+                    <Text style={s.cardName}>{demo.alignment.measured?.title}</Text>
+                    <Text style={s.cardWhat}>{demo.alignment.measured?.clusterName}</Text>
+                    {demo.alignment.measured?.fitmentPct != null ? (
+                      <Text style={s.dimNext}>{demo.alignment.measured.fitmentPct}% blended fit</Text>
+                    ) : null}
+                  </View>
+                </View>
+
+                <Text style={{ ...s.cardWhat, marginTop: 10 }}>{demo.alignment.explanation}</Text>
+
+                <Text style={{ ...s.h3, marginTop: 14 }}>What to do about it</Text>
+                {(demo.alignment.nextSteps ?? []).map((x: string, i: number) => (
+                  <View key={i} style={s.li}><Text style={s.liDot}>•</Text><Text style={s.liText}>{x}</Text></View>
+                ))}
+              </>
+            ) : null}
+
+            <RoadmapPdf title={`Roadmap · ${demo.desiredCareer.title}`} career={demo.desiredCareer} />
+            {demo.measuredCareer ? (
+              <RoadmapPdf title={`Roadmap · ${demo.measuredCareer.title}`} career={demo.measuredCareer} />
+            ) : null}
+          </View>
+        </Page>
+      ) : null}
     </Document>
   );
 }
 
-export async function renderReportPdf(name: string, a: AssessmentSummary): Promise<Buffer> {
-  return renderToBuffer(<ReportDoc name={name} a={a} />);
+/** One career's roadmap, in the PDF's own primitives. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function RoadmapPdf({ title, career }: { title: string; career: any }) {
+  const r = career?.roadmap;
+  if (!r) return null;
+  return (
+    <View style={s.card} wrap={false}>
+      <Text style={s.cardRank}>{title}</Text>
+      <Text style={s.cardName}>{career.title}</Text>
+      <Text style={s.cardWhat}>{career.blurb}</Text>
+
+      <Text style={{ ...s.colHd, marginTop: 8 }}>Entrance exams</Text>
+      {(r.entranceExams ?? []).slice(0, 4).map((e: { name: string; when: string }, i: number) => (
+        <View key={i} style={s.li}><Text style={s.liDot}>•</Text>
+          <Text style={s.liText}>{e.name} — {e.when}</Text></View>
+      ))}
+
+      <Text style={{ ...s.colHd, marginTop: 6 }}>The path</Text>
+      {(r.afterSchool ?? []).map((x: { stage: string; years: string }, i: number) => (
+        <View key={i} style={s.li}><Text style={s.liDot}>•</Text>
+          <Text style={s.liText}>{x.stage} ({x.years})</Text></View>
+      ))}
+
+      <Text style={{ ...s.colHd, marginTop: 6 }}>Start this year</Text>
+      {(r.buildNow ?? []).slice(0, 4).map((x: string, i: number) => (
+        <View key={i} style={s.li}><Text style={s.liDot}>•</Text><Text style={s.liText}>{x}</Text></View>
+      ))}
+
+      {r.salary ? (
+        <>
+          <View style={s.salRow}><Text style={s.salK}>Starting</Text><Text style={s.salV}>{r.salary.entry}</Text></View>
+          <View style={s.salRow}><Text style={s.salK}>Mid</Text><Text style={s.salV}>{r.salary.mid}</Text></View>
+          <View style={s.salRow}><Text style={s.salK}>Senior</Text><Text style={s.salV}>{r.salary.senior}</Text></View>
+          <Text style={{ ...s.dimNext, marginTop: 4 }}>
+            Indicative ranges, not quotes — check current figures before relying on them.
+          </Text>
+        </>
+      ) : null}
+
+      {r.realityCheck ? (
+        <>
+          <Text style={{ ...s.colHd, marginTop: 8 }}>The honest part</Text>
+          <Text style={s.cardWhat}>{r.realityCheck}</Text>
+        </>
+      ) : null}
+    </View>
+  );
+}
+
+/**
+ * The class 11-12 demo's own two sections, as saved on the profile.
+ *
+ * Typed loosely on purpose: this module is the PDF renderer and has no reason
+ * to depend on the demo catalogue's types. It renders whatever is present and
+ * omits the page entirely when nothing is.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type DemoReportForPdf = any;
+
+export async function renderReportPdf(
+  name: string,
+  a: AssessmentSummary,
+  demo?: DemoReportForPdf
+): Promise<Buffer> {
+  return renderToBuffer(<ReportDoc name={name} a={a} demo={demo} />);
 }

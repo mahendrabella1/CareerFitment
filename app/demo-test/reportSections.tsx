@@ -21,6 +21,7 @@
 
 import { useState } from "react";
 import type { ExtraSection } from "@/app/account/Dashboard";
+import type { ReportSheet } from "@/app/account/FullReport";
 import { C } from "@/app/account/viz";
 
 const NAVY = "#2f3f9e";
@@ -414,4 +415,19 @@ export function demoExtraSections(data: DemoReportExtras): ExtraSection[] {
     ),
   });
   return out;
+}
+
+
+/**
+ * The same two sections as report SHEETS, for callers that render FullReport
+ * directly rather than through the dashboard - /admin, which shows a student's
+ * report before emailing it.
+ *
+ * Without this an admin reviewed a class 11-12 report that was missing the
+ * comparison and the roadmaps, then sent it.
+ */
+export function demoReportSheets(data: DemoReportExtras): ReportSheet[] {
+  return demoExtraSections(data)
+    .filter((x) => x.inFullReport)
+    .map((x) => ({ id: x.id, kicker: x.label, node: x.reportNode ?? x.node }));
 }
