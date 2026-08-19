@@ -19,6 +19,19 @@ demo stage — see the isolation check at the bottom of this page.
    are shown; the closed ones are visible but disabled, so a student can see
    what their subject choice ruled out rather than just being offered a shorter
    list.
+
+Steps 2 and 3 are native `<select>` dropdowns grouped with `<optgroup>` — by
+stream family, and by career domain. The career list is rebuilt from the API
+every time the stream changes, so it only ever contains what that exact
+combination reaches:
+
+| Career | MPC | BiPC | CEC | HEC |
+|---|---|---|---|---|
+| Doctor (MBBS) | closed | **open** | closed | closed |
+| Mechanical Engineer | **open** | conditional | closed | closed |
+| Nurse | conditional | **open** | closed | closed |
+| Chartered Accountant | **open** | **open** | **open** | **open** |
+| Software Engineer | **open** | **open** | **open** | conditional |
 4. **Details** — name, email, phone, password. Creates a Firebase account.
    No payment.
 5. **Exam** — 60 questions across 8 dimensions, no time pressure.

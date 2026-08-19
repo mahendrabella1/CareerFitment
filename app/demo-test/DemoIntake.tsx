@@ -8,10 +8,16 @@
  * career list is filtered BY that combination. Asking for the career first
  * would mean offering a commerce student MBBS and taking it away afterwards.
  *
+ * Stream and career are both native <select> dropdowns, grouped with <optgroup>
+ * — by stream family, and by career domain. Native is the right call here: it
+ * is the control every student already knows, it types-ahead through 177
+ * careers, and on a phone it opens the OS picker rather than a wall of chips.
+ *
  * Careers are shown in all three states rather than filtered down to what is
  * open. A student who took Commerce and wanted medicine needs to SEE that the
  * door is shut and why, at the moment they are choosing — that is guidance.
- * Silently omitting it just looks like the list is short.
+ * Silently omitting it just looks like the list is short. Closed careers are
+ * `disabled` options, which the browser greys out and refuses to select.
  */
 
 import { useEffect, useMemo, useState } from "react";
@@ -56,7 +62,6 @@ export default function DemoIntake({ onDone }: { onDone: (r: IntakeResult) => vo
   const [groups, setGroups] = useState<{ domain: string; careers: OfferedCareer[] }[]>([]);
   const [counts, setCounts] = useState<{ open: number; conditional: number; closed: number } | null>(null);
   const [loadingCareers, setLoadingCareers] = useState(false);
-  const [search, setSearch] = useState("");
 
   const [f, setF] = useState({ name: "", email: "", phone: "", city: "", institution: "", age: "", password: "" });
   const [showPw, setShowPw] = useState(false);
@@ -96,14 +101,6 @@ export default function DemoIntake({ onDone }: { onDone: (r: IntakeResult) => vo
     }
     return null;
   }, [groups, careerId]);
-
-  const visibleGroups = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    if (!q) return groups;
-    return groups
-      .map((g) => ({ domain: g.domain, careers: g.careers.filter((c) => c.title.toLowerCase().includes(q)) }))
-      .filter((g) => g.careers.length);
-  }, [groups, search]);
 
   const nameOk = f.name.trim() !== "";
   const emailOk = emailIsValid(f.email);
@@ -219,22 +216,45 @@ export default function DemoIntake({ onDone }: { onDone: (r: IntakeResult) => vo
                 you can reach and which are closed &mdash; follows from this one answer.
               </p>
               {!families.length && <p style={S.muted}>Loading streams&hellip;</p>}
-              {families.map((fam) => (
-                <div key={fam.family} style={{ marginBottom: 18 }}>
-                  <div style={S.groupLabel}>{fam.family}</div>
-                  <div style={S.chipWrap}>
+
+              {/* One dropdown, grouped by stream family. A native select is
+                  right here: it is the control every student already knows,
+                  it types-ahead, and on a phone it opens the OS picker rather
+                  than a wall of chips. */}
+              <label style={S.selLabel} htmlFor="og-stream">Stream &amp; subject combination</label>
+              <select
+                id="og-stream"
+                style={S.select}
+                value={combination}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  const fam = families.find((f) => f.combinations.includes(value));
+                  setFamily(fam?.family ?? "");
+                  setCombination(value);
+                }}
+              >
+                <option value="">Select your combination&hellip;</option>
+                {families.map((fam) => (
+                  <optgroup key={fam.family} label={fam.family}>
                     {fam.combinations.map((combo) => (
-                      <button
-                        key={combo}
-                        onClick={() => { setFamily(fam.family); setCombination(combo); }}
-                        style={{ ...S.chip, ...(combination === combo ? S.chipOn : {}) }}
-                      >
-                        {combo}
-                      </button>
+                      <option key={combo} value={combo}>{combo}</option>
                     ))}
+                  </optgroup>
+                ))}
+              </select>
+
+              {combination && (
+                <div style={S.selectedBox}>
+                  <div>
+                    <strong>{combination}</strong>
+                    <div style={S.selectedNote}>
+                      {family} stream. The career list on the next step is filtered to exactly
+                      what this combination opens.
+                    </div>
                   </div>
                 </div>
-              ))}
+              )}
+
               <div style={S.footer}>
                 <button style={S.ghost} onClick={() => setStep(0)}>&larr; Back</button>
                 <button
@@ -277,51 +297,39 @@ export default function DemoIntake({ onDone }: { onDone: (r: IntakeResult) => vo
                 ))}
               </div>
 
-              <input
-                style={S.search}
-                placeholder="Search careers, e.g. engineer, doctor, designer"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-
-              {loadingCareers && <p style={S.muted}>Working out what your stream opens&hellip;</p>}
-
-              <div style={S.careerScroll} className="og-demo-scroll">
-                {visibleGroups.map((g) => (
-                  <div key={g.domain} style={{ marginBottom: 14 }}>
-                    <div style={S.groupLabel}>{g.domain}</div>
-                    {g.careers.map((c) => {
-                      const closed = c.verdict === "red";
-                      const meta = VERDICT_META[c.verdict];
-                      return (
-                        <button
-                          key={c.id}
-                          disabled={closed}
-                          onClick={() => !closed && setCareerId(c.id)}
-                          title={closed ? meta.note : c.via.length ? `via ${c.via.slice(0, 3).join(", ")}` : ""}
-                          style={{
-                            ...S.careerRow,
-                            ...(careerId === c.id ? S.careerRowOn : {}),
-                            ...(closed ? S.careerRowOff : {}),
-                          }}
-                        >
-                          <span style={{ ...S.dot, background: meta.dot }} />
-                          <span style={S.careerTitle}>{c.title}</span>
-                          {c.verdict === "yellow" && <span style={S.tagWarn}>conditions apply</span>}
-                          {closed && (
-                            <span style={S.tagOff}>
-                              {c.unlisted ? "not offered from this stream" : "not eligible"}
-                            </span>
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
+              {/* One dropdown, grouped by domain and filtered to THIS stream.
+                  Closed careers stay in the list as disabled options rather
+                  than being removed: a commerce student who wanted medicine
+                  needs to see the door is shut, at the moment they choose. A
+                  native select greys disabled options for free, and its
+                  type-ahead makes 177 careers navigable. */}
+              <label style={S.selLabel} htmlFor="og-career">Career you want</label>
+              <select
+                id="og-career"
+                style={S.select}
+                value={careerId}
+                disabled={loadingCareers || !groups.length}
+                onChange={(e) => setCareerId(e.target.value)}
+              >
+                <option value="">
+                  {loadingCareers ? "Working out what your stream opens…" : "Select a career…"}
+                </option>
+                {groups.map((g) => (
+                  <optgroup key={g.domain} label={g.domain}>
+                    {g.careers.map((c) => (
+                      <option key={c.id} value={c.id} disabled={c.verdict === "red"}>
+                        {c.title}
+                        {c.verdict === "yellow" ? "  — conditions apply" : ""}
+                        {c.verdict === "red"
+                          ? c.unlisted
+                            ? "  — not offered from this stream"
+                            : "  — not eligible from this stream"
+                          : ""}
+                      </option>
+                    ))}
+                  </optgroup>
                 ))}
-                {!loadingCareers && !visibleGroups.length && (
-                  <p style={S.muted}>No careers match that search.</p>
-                )}
-              </div>
+              </select>
 
               {selectedCareer && (
                 <div style={S.selectedBox}>
@@ -467,6 +475,8 @@ const S: Record<string, React.CSSProperties> = {
   bigChoiceTitle: { fontSize: 16, fontWeight: 800 },
   bigChoiceSub: { fontSize: 12.5, color: C.ink3 },
 
+  selLabel: { display: "block", fontSize: 12, fontWeight: 700, color: C.ink2, marginBottom: 6 },
+  select: { width: "100%", padding: "12px 13px", border: `1.5px solid ${C.line}`, borderRadius: 10, fontSize: 14, background: "#fff", color: C.ink, outline: "none", boxSizing: "border-box", cursor: "pointer" },
   groupLabel: { fontSize: 11, fontWeight: 800, letterSpacing: .5, textTransform: "uppercase", color: C.muted, margin: "0 0 8px" },
   chipWrap: { display: "flex", flexWrap: "wrap", gap: 8 },
   chip: { padding: "9px 14px", border: `1.5px solid ${C.line}`, background: "#fff", borderRadius: 999, fontSize: 12.5, fontWeight: 600, color: C.ink2, cursor: "pointer" },
