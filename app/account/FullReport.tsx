@@ -21,7 +21,7 @@
  * by re-enabling that guard, but it has no effect while it's mounted.
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { Icon, CATEGORY_ABBR } from "@/app/Icons";
 import { C, Ring, RadarChart, SkillBar, dimColor, type RadarDatum } from "@/app/account/viz";
@@ -73,7 +73,26 @@ const bandOf = (p: number) =>
   : p >= 50 ? { label: "Solid", tone: "mid" } : p >= 35 ? { label: "Emerging", tone: "lo" }
   : { label: "Developing", tone: "lo" };
 
-export default function FullReport({ a, name }: { a: AssessmentSummary; name?: string }) {
+/**
+ * Extra report sheets, appended before the closing page.
+ *
+ * The class 11-12 demo needs its wanted-vs-found comparison and roadmaps in
+ * the in-depth report too, not only on the dashboard. A student who opened
+ * "Full report" previously got the standard report with no sign of the career
+ * they chose - the very thing the demo exists to tell them.
+ *
+ * Each entry becomes its own `.sheet`, so it reads as part of the report
+ * rather than a dashboard card that wandered in. Omit the prop and the report
+ * is exactly what it always was.
+ */
+export interface ReportSheet {
+  id: string;
+  /** Small caps label in the sheet header, e.g. "Your choice vs your result". */
+  kicker: string;
+  node: ReactNode;
+}
+
+export default function FullReport({ a, name, extraSheets = [] }: { a: AssessmentSummary; name?: string; extraSheets?: ReportSheet[] }) {
   const root = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -644,6 +663,17 @@ export default function FullReport({ a, name }: { a: AssessmentSummary; name?: s
           <RF name={name} />
         </div>
       </section>
+
+      {/* ===== EXTRA SHEETS (class 11-12 demo) ===== */}
+      {extraSheets.map((sheet) => (
+        <section key={sheet.id} className="sheet rv">
+          <div className="pad">
+            <RH n={N()} kick={sheet.kicker} />
+            {sheet.node}
+            <RF name={name} />
+          </div>
+        </section>
+      ))}
 
       {/* ===== FOR PARENTS + CLOSING ===== */}
       <section className="sheet rv">

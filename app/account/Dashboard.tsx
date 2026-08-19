@@ -110,6 +110,15 @@ export interface ExtraSection {
   node: ReactNode;
   /** Render before this built-in section id; appended if omitted or unmatched. */
   before?: string;
+  /**
+   * Also render this section inside the in-depth "Full report", as its own
+   * sheet. Without it a class 11-12 student who opened the full report found
+   * the standard one, with no sign of the career they chose or the roadmap -
+   * which is the whole reason the demo report exists.
+   */
+  inFullReport?: boolean;
+  /** Variant used inside the full report, where sheet chrome replaces the card. */
+  reportNode?: ReactNode;
 }
 
 export default function Dashboard({ a, profile, email, onSignOut, extraSections = [] }: { a: AssessmentSummary; profile?: UserProfile | null; email?: string | null; onSignOut?: () => void; extraSections?: ExtraSection[] }) {
@@ -209,7 +218,13 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
             <Icon name="bell" size={14} /> A PDF copy has been emailed to you
           </span>
         </div>
-        <FullReport a={a} name={name} />
+        <FullReport
+          a={a}
+          name={name}
+          extraSheets={extraSections
+            .filter((x) => x.inFullReport)
+            .map((x) => ({ id: x.id, kicker: x.label, node: x.reportNode ?? x.node }))}
+        />
       </div>
     );
   }

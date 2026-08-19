@@ -207,10 +207,18 @@ improves.
 
 Two sections are added on top, through Dashboard's `extraSections` prop.
 
-**Shown in both places.** The report appears immediately after the paper at
-`/demo-test`, and any time afterwards at `/account`. Both render the same
+**Shown in all three places.** The report appears immediately after the paper
+at `/demo-test`, any time afterwards at `/account`, and inside the in-depth
+**Full report** reached from the sidebar. All three render the same
 `demoExtraSections()` from `app/demo-test/reportSections.tsx`, so they cannot
-diverge. The comparison and the resolved roadmaps are saved onto the profile as
+diverge.
+
+In the full report each section becomes its own report *sheet* (via
+`inFullReport` and a `reportNode` variant that drops the dashboard card
+chrome), so it reads as part of the document rather than a widget that wandered
+in. A student who opened the full report previously got the standard class 9-10
+report with no sign of the career they chose - the very thing the demo exists
+to tell them. The comparison and the resolved roadmaps are saved onto the profile as
 `demoReport` when the paper is scored - previously they lived only in memory,
 so a student who clicked through to their dashboard, or came back the next day,
 found the standard report with no sign of the career they chose or the one they

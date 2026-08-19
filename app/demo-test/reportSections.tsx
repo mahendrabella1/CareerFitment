@@ -90,10 +90,18 @@ const VERDICT_STYLE: Record<Verdict, { bg: string; line: string; ink: string; la
 };
 
 /* ===================== 1. WANTED vs FOUND ===================== */
-function AlignmentSection({ alignment }: { alignment: Alignment }) {
+function AlignmentSection({ alignment, bare }: { alignment: Alignment; bare?: boolean }) {
   const v = VERDICT_STYLE[alignment.verdict];
+  // `bare` drops the dashboard card chrome. Inside the in-depth report each
+  // section is already its own sheet, and a card within a page reads as a
+  // stray widget rather than part of the document.
   return (
-    <div className="ogd-card" style={{ background: v.bg, borderColor: v.line }}>
+    <div
+      className={bare ? undefined : "ogd-card"}
+      style={bare
+        ? { background: v.bg, border: `1px solid ${v.line}`, borderRadius: 14, padding: "20px 22px" }
+        : { background: v.bg, borderColor: v.line }}
+    >
       <div style={S.verdictTop}>
         <span style={{ ...S.verdictIcon, background: v.ink }}>{v.icon}</span>
         <span style={{ ...S.verdictLabel, color: v.ink }}>{v.label}</span>
@@ -136,12 +144,12 @@ function AlignmentSection({ alignment }: { alignment: Alignment }) {
 }
 
 /* ===================== 2. ROADMAPS ===================== */
-function RoadmapSection({ desired, measured, figures }: {
-  desired: CareerBlock; measured: CareerBlock | null; figures?: Figures;
+function RoadmapSection({ desired, measured, figures, bare }: {
+  desired: CareerBlock; measured: CareerBlock | null; figures?: Figures; bare?: boolean;
 }) {
   const [tab, setTab] = useState<"desired" | "measured">("desired");
   return (
-    <div className="ogd-card">
+    <div className={bare ? undefined : "ogd-card"}>
       <h2 style={S.h2}>Your detailed roadmap</h2>
       {measured ? (
         <>
@@ -379,18 +387,29 @@ export function demoExtraSections(data: DemoReportExtras): ExtraSection[] {
       label: "Your choice vs your result",
       icon: "compass",
       before: "dimensions",
+      inFullReport: true,
       node: <AlignmentSection alignment={data.alignment} />,
+      reportNode: <AlignmentSection alignment={data.alignment} bare />,
     });
   }
   out.push({
     id: "roadmap",
     label: "Your roadmap",
     icon: "route",
+    inFullReport: true,
     node: (
       <RoadmapSection
         desired={data.desiredCareer}
         measured={data.measuredCareer}
         figures={data.figures}
+      />
+    ),
+    reportNode: (
+      <RoadmapSection
+        desired={data.desiredCareer}
+        measured={data.measuredCareer}
+        figures={data.figures}
+        bare
       />
     ),
   });
