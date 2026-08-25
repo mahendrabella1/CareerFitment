@@ -25,15 +25,15 @@ export const OFFER = {
   listPaise: 99900,
 
   /**
-   * The advertised sale price in paise (4900 = ₹49), used as the FALLBACK for
+   * The advertised sale price in paise (9900 = ₹99), used as the FALLBACK for
    * marketing copy on pages that have no reason to call the API. The amount a
    * student is actually charged is always the admin's fee from
    * /api/payment/status — keep this in step with /admin so the banner and the
    * checkout never quote different numbers.
    */
-  salePaise: 4900,
+  salePaise: 9900,
 
-  /** Headline discount, rounded for display (₹999 → ₹49 is 95.1%). */
+  /** Headline discount, rounded for display (₹999 → ₹99 is 90.1%). */
   discountPct: 95,
 
   /** Last moment of the sale, IST. Used for the "ends in" countdown copy. */
@@ -52,13 +52,13 @@ export function offerIsLive(): boolean {
   return OFFER.active;
 }
 
-/** "₹49" / "₹49.50" — paise in, display string out. No stray ".00". */
+/** "₹99" / "₹99.50" — paise in, display string out. No stray ".00". */
 export function formatPaise(paise: number): string {
   const rupees = Math.max(0, paise) / 100;
   return `₹${rupees % 1 === 0 ? rupees.toLocaleString("en-IN") : rupees.toFixed(2)}`;
 }
 
-/** Discount as a whole percent, e.g. list 99900 + payable 4900 → 95. */
+/** Discount as a whole percent, e.g. list 99900 + payable 9900 → 90. */
 export function discountPctBetween(listPaise: number, payablePaise: number): number {
   if (listPaise <= 0) return 0;
   return Math.max(0, Math.min(100, Math.round((1 - payablePaise / listPaise) * 100)));
