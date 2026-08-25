@@ -15,7 +15,7 @@
 
 export const OFFER = {
   /** Master switch for all sale UI (banner, strike-through, discount badges). */
-  active: true,
+  active: false,
 
   /** Campaign name, shown in the banner and on the payment screen. */
   name: "August 15 Freedom Sale",
