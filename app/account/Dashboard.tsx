@@ -12,6 +12,16 @@ const FullReport = dynamic(() => import("@/app/account/FullReport"), {
   loading: () => <div style={{ padding: 48, textAlign: "center", color: "#64748b", fontSize: 14 }}>Preparing your report…</div>,
 });
 
+export interface ExtraSection {
+  id: string;
+  label: string;
+  icon: string;
+  node: ReactNode;
+  before?: string;
+  inFullReport?: boolean;
+  reportNode?: ReactNode;
+}
+
 const MENU_ITEMS = [
   { title: "Dashboard", icon: "clusters" },
   { title: "Career Analysis", icon: "compass" },
