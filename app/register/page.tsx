@@ -16,8 +16,6 @@ import { Icon } from "@/app/Icons";
 import { useAuth, authErrorMessage } from "@/lib/auth/AuthProvider";
 import { CLARITY_STAGES, journeyForCategory, PASSWORD_RULES, passwordIsValid, emailIsValid, phoneIsValid } from "@/lib/auth/formOptions";
 import { trackEvent } from "@/lib/metaPixel";
-import OfferBanner from "@/app/OfferBanner";
-import { OFFER, offerIsLive, formatPaise } from "@/lib/offer";
 
 const NAVY = "#2f3f9e";
 const BG = "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1600&q=70";
@@ -106,7 +104,6 @@ function RegisterForm() {
 
   return (
     <div style={S.shell}>
-      <OfferBanner />
       <div style={S.page}>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div style={S.overlay} />

@@ -23,8 +23,7 @@ import { doc, setDoc } from "firebase/firestore";
 import type { UserProfile } from "@/lib/auth/AuthProvider";
 import { getFirebaseAuth, getDb } from "@/lib/firebase/client";
 import { trackEvent } from "@/lib/metaPixel";
-import { OFFER, formatPaise, msUntilOfferEnds } from "@/lib/offer";
-import OfferBanner from "@/app/OfferBanner";
+import { formatPaise } from "@/lib/offer";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare global {
