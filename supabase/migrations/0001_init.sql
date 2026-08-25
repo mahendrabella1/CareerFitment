@@ -119,6 +119,50 @@ create table session_scores (
 create index idx_scores_session on session_scores(session_id);
 
 -- ============================================================
+-- 8. CAREER PROGRAMME MAPPING (FuturePath data integration)
+-- ============================================================
+create table degree_families (
+  id uuid primary key default gen_random_uuid(),
+  name text not null unique,
+  description text,
+  created_at timestamptz not null default now()
+);
+create index idx_degree_families_name on degree_families(name);
+
+create table programmes (
+  id uuid primary key default gen_random_uuid(),
+  name text not null unique,
+  degree_family_id uuid not null references degree_families(id),
+  description text,
+  created_at timestamptz not null default now()
+);
+create index idx_programmes_family on programmes(degree_family_id);
+create index idx_programmes_name on programmes(name);
+
+create table stream_groups (
+  id uuid primary key default gen_random_uuid(),
+  code text not null unique,
+  name text not null,
+  description text,
+  created_at timestamptz not null default now()
+);
+create index idx_stream_groups_code on stream_groups(code);
+
+create table programme_stream_eligibility (
+  id uuid primary key default gen_random_uuid(),
+  mapping_id text not null unique,
+  programme_id uuid not null references programmes(id),
+  stream_group_id uuid not null references stream_groups(id),
+  eligibility_status text not null check (eligibility_status in ('GREEN', 'YELLOW', 'RED', 'GREEN_YELLOW', 'RED_YELLOW')),
+  status_description text,
+  created_at timestamptz not null default now(),
+  unique(programme_id, stream_group_id)
+);
+create index idx_pse_programme on programme_stream_eligibility(programme_id);
+create index idx_pse_stream on programme_stream_eligibility(stream_group_id);
+create index idx_pse_status on programme_stream_eligibility(eligibility_status);
+
+-- ============================================================
 -- Row Level Security — locked down by default.
 -- Question banks and blueprints are readable by anyone (needed to render
 -- the assessment); sessions/responses/scores are only visible to their
@@ -132,11 +176,19 @@ alter table assessment_sessions enable row level security;
 alter table session_questions enable row level security;
 alter table assessment_responses enable row level security;
 alter table session_scores enable row level security;
+alter table degree_families enable row level security;
+alter table programmes enable row level security;
+alter table stream_groups enable row level security;
+alter table programme_stream_eligibility enable row level security;
 
 create policy "public read journeys" on journeys for select using (is_active);
 create policy "public read parameters" on blueprint_parameters for select using (true);
 create policy "public read subtraits" on sub_traits for select using (true);
 create policy "public read questions" on questions for select using (is_active);
+create policy "public read degree families" on degree_families for select using (true);
+create policy "public read programmes" on programmes for select using (true);
+create policy "public read stream groups" on stream_groups for select using (true);
+create policy "public read programme eligibility" on programme_stream_eligibility for select using (true);
 
 create policy "owner reads own sessions" on assessment_sessions
   for select using (auth.uid() = user_id or user_id is null);
