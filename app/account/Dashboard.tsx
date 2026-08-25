@@ -40,16 +40,16 @@ import {
   percentileOf, subTraits, resultOf, categoryDeepDive,
 } from "@/lib/report/knowledge";
 
-// Dashboard accent — indigo/purple (the red brand logo stays as-is).
-const IN = "#6366F1", IN_STRONG = "#4F46E5", IN_TINT = "#EEF0FF", IN_LINE = "#D5D9FB";
+// Dashboard accent — OneGrasp red theme (white, black, grey, red #db3433).
+const IN = "#db3433", IN_STRONG = "#b82a2b", IN_TINT = "#fef0f0", IN_LINE = "#f5d5d5";
 // The same branded "eight dimensions" illustration used on the full report cover.
 const DIMS8 = "https://onegrasp.com/wp-content/uploads/2026/07/ChatGPT-Image-Jul-10-2026-05_34_15-PM.png";
-// KPI tile accent colours (purple / blue / green / orange), matching the design.
+// KPI tile accent colours (red / grey / grey-dark / black), matching OneGrasp design.
 const KPI = [
-  { c: "#6366F1", t: "#EEF0FF" },
-  { c: "#2F80ED", t: "#E8F1FE" },
-  { c: "#22A06B", t: "#E6F5EE" },
-  { c: "#F2994A", t: "#FCF0E5" },
+  { c: "#db3433", t: "#fef0f0" },
+  { c: "#6b7280", t: "#f3f4f6" },
+  { c: "#374151", t: "#f9fafb" },
+  { c: "#111827", t: "#f9fafb" },
 ];
 
 // Left-sidebar navigation → scrolls to the matching section id.
