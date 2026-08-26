@@ -12,28 +12,28 @@
 export const colors = {
   // Primary ink for text and UI
   ink: {
-    100: "#ffffff", // white
-    95: "#f9f9fa",  // almost white
-    90: "#f3f3f5",  // very light grey
-    80: "#ececef",  // light grey (borders)
-    70: "#dcdce0",  // light medium grey
-    60: "#c4c4cd",  // medium grey (subtle dividers)
-    50: "#9a9aa6",  // medium (secondary text, disabled)
-    40: "#63636f",  // darker grey (secondary text)
-    30: "#3d3d45",  // dark grey (primary text, lighter variant)
-    20: "#1f1f24",  // very dark (strong emphasis)
-    10: "#0f0f13",  // near-black (strongest contrast)
+    "100": "#ffffff", // white
+    "95": "#f9f9fa",  // almost white
+    "90": "#f3f3f5",  // very light grey
+    "80": "#ececef",  // light grey (borders)
+    "70": "#dcdce0",  // light medium grey
+    "60": "#c4c4cd",  // medium grey (subtle dividers)
+    "50": "#9a9aa6",  // medium (secondary text, disabled)
+    "40": "#63636f",  // darker grey (secondary text)
+    "30": "#3d3d45",  // dark grey (primary text, lighter variant)
+    "20": "#1f1f24",  // very dark (strong emphasis)
+    "10": "#0f0f13",  // near-black (strongest contrast)
   },
 
   // Accent - OneGrasp brand red (used strategically, not everywhere)
   accent: {
-    100: "#fef0f0", // very light tint
-    90: "#fde5e5",  // light tint
-    80: "#f5d5d5",  // medium light
-    60: "#e8a5a5",  // medium
-    40: "#db3433",  // primary red (core brand)
-    30: "#b82a2b",  // darker red (hover/active)
-    20: "#8f1f1f",  // very dark red
+    "100": "#fef0f0", // very light tint
+    "90": "#fde5e5",  // light tint
+    "80": "#f5d5d5",  // medium light
+    "60": "#e8a5a5",  // medium
+    "40": "#db3433",  // primary red (core brand)
+    "30": "#b82a2b",  // darker red (hover/active)
+    "20": "#8f1f1f",  // very dark red
   },
 
   // Semantic colors
