@@ -137,7 +137,7 @@ export default function DashboardRedesigned({
             backgroundColor: colors.ink[95],
           }}
         >
-          <Logo size={40} />
+          <Logo height={40} />
           <button
             onClick={() => setView("dashboard")}
             style={{
@@ -175,7 +175,7 @@ export default function DashboardRedesigned({
       >
         <PageContainer>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <Logo size={40} />
+            <Logo height={40} />
             <div style={{ display: "flex", alignItems: "center", gap: spacing[4], fontSize: typography.scale.sm.fontSize }}>
               <span style={{ color: colors.ink[40] }}>{email}</span>
               {onSignOut && (
