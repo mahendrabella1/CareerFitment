@@ -26,6 +26,7 @@ import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { Icon, CATEGORY_ABBR } from "@/app/Icons";
 import { C, Ring, RadarChart, SkillBar, dimColor, type RadarDatum } from "@/app/account/viz";
 import { Scene } from "@/app/account/illustrations";
+import { CareerCard, getCareerVisual } from "@/app/account/careerVisuals";
 import {
   categoryDeepDive, roadmap, stageLabelOf, DOMAINS,
   archetype, percentileOf, subTraits, actionPlan, type Domain,
