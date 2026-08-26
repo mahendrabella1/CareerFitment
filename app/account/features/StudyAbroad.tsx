@@ -171,11 +171,11 @@ export default function StudyAbroad() {
                 <div style={styles.countryStats}>
                   <div>
                     <span style={styles.statLabel}>Universities</span>
-                    <span style={styles.statValue}>{country.universities_count}+</span>
+                    <span style={styles.statValue}>{country.universitiesCount}+</span>
                   </div>
                   <div>
                     <span style={styles.statLabel}>Tuition</span>
-                    <span style={styles.statValue}>${((country.tuition_range?.min) || 0) / 1000}k-${((country.tuition_range?.max) || 0) / 1000}k</span>
+                    <span style={styles.statValue}>${((country.tuitionRange?.min) || 0) / 1000}k-${((country.tuitionRange?.max) || 0) / 1000}k</span>
                   </div>
                   <div>
                     <span style={styles.statLabel}>Cost of Living</span>
