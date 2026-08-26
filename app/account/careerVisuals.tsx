@@ -1,7 +1,63 @@
 /**
- * Career-specific SVG illustrations and visual content for reports
- * Provides contextual visuals for different career clusters
+ * Career-specific visuals for reports
+ * Uses real images from Unsplash/Pexels with SVG fallback
  */
+
+import { getCareerImage, getCareerCluster } from './careerImagesData';
+
+/**
+ * Image component with SVG fallback for career visuals
+ * Shows real photo, falls back to SVG if image fails to load
+ */
+export const CareerImageWithSVG = ({
+  careerTitle,
+  svgComponent
+}: {
+  careerTitle: string;
+  svgComponent: React.ReactNode;
+}) => {
+  const cluster = getCareerCluster(careerTitle);
+  const imageUrl = getCareerImage(cluster);
+
+  return (
+    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+      <img
+        src={imageUrl}
+        alt={careerTitle}
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          borderRadius: '6px',
+          display: 'block',
+        }}
+        onError={(e) => {
+          // Fallback to SVG if image fails
+          const parent = (e.target as HTMLElement).parentElement;
+          if (parent) {
+            parent.style.display = 'none';
+            const svgParent = parent.nextElementSibling as HTMLElement;
+            if (svgParent) svgParent.style.display = 'flex';
+          }
+        }}
+      />
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'none',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+        }}
+      >
+        {svgComponent}
+      </div>
+    </div>
+  );
+};
 
 export const CareerVisuals = {
   // Healthcare & Medicine

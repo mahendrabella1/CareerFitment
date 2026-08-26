@@ -26,7 +26,7 @@ import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { Icon, CATEGORY_ABBR } from "@/app/Icons";
 import { C, Ring, RadarChart, SkillBar, dimColor, type RadarDatum } from "@/app/account/viz";
 import { Scene } from "@/app/account/illustrations";
-import { CareerCard, getCareerVisual } from "@/app/account/careerVisuals";
+import { CareerCard, getCareerVisual, CareerImageWithSVG } from "@/app/account/careerVisuals";
 import {
   categoryDeepDive, roadmap, stageLabelOf, DOMAINS,
   archetype, percentileOf, subTraits, actionPlan, type Domain,
@@ -515,10 +515,8 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
               const Visual = getCareerVisual(r.role);
               return (
                 <div className="ccard" key={r.role + i}>
-                  <div style={{ height: '120px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', borderRadius: '8px', background: '#F9FAFB' }}>
-                    <div style={{ width: '100px', height: '100px' }}>
-                      <Visual />
-                    </div>
+                  <div style={{ height: '150px', marginBottom: '12px', borderRadius: '8px', background: '#F9FAFB', overflow: 'hidden' }}>
+                    <CareerImageWithSVG careerTitle={r.role} svgComponent={<Visual />} />
                   </div>
                   <div className="ccard-top">
                     <span className="ccard-rk">{i + 1}</span>
