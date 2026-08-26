@@ -63,7 +63,7 @@ const NAV = [
 
 // Career-toolkit (colleges/exams/internships/scholarships/careers) is
 // temporarily disabled — flip to true to bring it back.
-const SHOW_TOOLKIT = false;
+const SHOW_TOOLKIT = true;
 
 const CANON = [
   "personality", "career_interest", "multiple_intelligence", "emotional_intelligence",
