@@ -208,7 +208,7 @@ export default function DashboardRedesigned({
         <HeroCard withGradient>
           <HeroContent
             title={arch.name || "Your Career Profile"}
-            subtitle={arch.desc}
+            subtitle={arch.tagline}
             icon={arch.icon ? <Icon type={arch.icon} /> : undefined}
             metadata={[
               { label: "Top Strength", value: topDimLabel },
