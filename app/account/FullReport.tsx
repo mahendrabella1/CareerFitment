@@ -27,6 +27,7 @@ import { Icon, CATEGORY_ABBR } from "@/app/Icons";
 import { C, Ring, RadarChart, SkillBar, dimColor, type RadarDatum } from "@/app/account/viz";
 import { Scene } from "@/app/account/illustrations";
 import { CareerCard, getCareerVisual, CareerImageWithSVG } from "@/app/account/careerVisuals";
+import { getImageForRole } from "@/app/account/careerRoleImages";
 import {
   categoryDeepDive, roadmap, stageLabelOf, DOMAINS,
   archetype, percentileOf, subTraits, actionPlan, type Domain,

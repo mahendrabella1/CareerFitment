@@ -3,7 +3,7 @@
  * Uses real images from Unsplash/Pexels with SVG fallback
  */
 
-import { getCareerImage, getCareerCluster } from './careerImagesData';
+import { getImageForRole } from './careerRoleImages';
 
 /**
  * Image component with SVG fallback for career visuals
@@ -16,8 +16,7 @@ export const CareerImageWithSVG = ({
   careerTitle: string;
   svgComponent: React.ReactNode;
 }) => {
-  const cluster = getCareerCluster(careerTitle);
-  const imageUrl = getCareerImage(cluster);
+  const imageUrl = getImageForRole(careerTitle);
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
