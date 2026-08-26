@@ -268,7 +268,7 @@ export default function DashboardRedesigned({
         <SectionHeader
           title="Your Top Career Matches"
           subtitle={`Based on your ${topDimLabel.toLowerCase()} profile and assessment results`}
-          icon={<Icon type="compass" />}
+          icon={<Icon name="compass" />}
         />
         <CardGrid columns={3} gap={spacing[4]} style={{ marginBottom: spacing[8] }}>
           {topMatches.map((match) => (
@@ -316,7 +316,7 @@ export default function DashboardRedesigned({
         <SectionHeader
           title="Your 8 Dimensions"
           subtitle="How you think, work, and learn"
-          icon={<Icon type="radar" />}
+          icon={<Icon name="radar" />}
         />
 
         {/* Radar Chart */}
@@ -368,7 +368,7 @@ export default function DashboardRedesigned({
         <SectionHeader
           title="30/90-Day Action Plan"
           subtitle="Build momentum with achievable goals"
-          icon={<Icon type="check" />}
+          icon={<Icon name="check" />}
         />
         <Card variant="elevated" padding="lg" style={{ marginBottom: spacing[8] }}>
           <GoalTracker />
@@ -380,7 +380,7 @@ export default function DashboardRedesigned({
             <SectionHeader
               title="Career Toolkit"
               subtitle="Everything you need to explore careers and build your future"
-              icon={<Icon type="briefcase" />}
+              icon={<Icon name="briefcase" />}
             />
 
             {/* Toolkit Tabs */}
@@ -440,7 +440,7 @@ export default function DashboardRedesigned({
                           flexShrink: 0,
                         }}
                       >
-                        <Icon type={item.icon} />
+                        <Icon name={item.icon} />
                       </div>
                     )}
                     <div style={{ flex: 1 }}>
