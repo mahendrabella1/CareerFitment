@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "@/app/Logo";
 import { useAuth } from "@/lib/auth/AuthProvider";
-import Dashboard from "@/app/account/Dashboard";
+import DashboardRedesigned from "@/app/account/DashboardRedesigned";
 import { demoExtraSections } from "@/app/demo-test/reportSections";
 import ViewOnlyReport from "@/app/ReportViewOnly";
 import { StudentHero } from "@/app/account/illustrations";
@@ -64,12 +64,11 @@ export default function AccountPage() {
       <>
         <style dangerouslySetInnerHTML={{ __html: PAGE_CSS }} />
         <ViewOnlyReport />
-        <Dashboard
+        <DashboardRedesigned
           a={a}
           profile={profile}
           email={user.email}
           onSignOut={signOut}
-          extraSections={demoExtras}
         />
       </>
     );
