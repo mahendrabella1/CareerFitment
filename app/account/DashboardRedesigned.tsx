@@ -568,6 +568,38 @@ export default function DashboardRedesigned({
                 Open Assistant →
               </Link>
             </div>
+
+            <div
+              style={{
+                padding: spacing[4],
+                backgroundColor: colors.accent[100],
+                borderRadius: radius.lg,
+                border: `2px solid ${colors.accent[40]}`,
+              }}
+            >
+              <p style={{ margin: "0 0 12px", fontWeight: 600, fontSize: 14, color: colors.ink[10] }}>
+                🌟 Explore All Features
+              </p>
+              <p style={{ margin: 0, fontSize: 13, color: colors.ink[40], lineHeight: 1.5, marginBottom: spacing[2] }}>
+                500+ careers, internships, study abroad & more
+              </p>
+              <Link
+                href="/account/features"
+                style={{
+                  display: "inline-block",
+                  padding: `${spacing[2]} ${spacing[3]}`,
+                  backgroundColor: colors.accent[40],
+                  color: colors.ink[100],
+                  borderRadius: radius.md,
+                  textDecoration: "none",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                Explore Features →
+              </Link>
+            </div>
           </div>
         </div>
       </PageContainer>

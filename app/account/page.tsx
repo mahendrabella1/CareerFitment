@@ -52,18 +52,10 @@ export default function AccountPage() {
   // dashboard shows the same findings in condensed form — both are read-only,
   // and the PDF students keep is the one emailed to them.
   if (a) {
-    // A student who sat the class 11-12 demo gets the SAME report here that
-    // they saw straight after the paper - the standard dashboard plus their
-    // wanted-vs-found comparison and roadmaps. Those were previously dropped
-    // the moment they left /demo-test, so the dashboard showed no sign of the
-    // career they chose or the one they were matched to.
-    const demoExtras = profile?.demoReport && profile.demoReport.desiredCareer
-      ? demoExtraSections(profile.demoReport)
-      : [];
+    // Assessment complete → render the redesigned dashboard with all features
     return (
       <>
         <style dangerouslySetInnerHTML={{ __html: PAGE_CSS }} />
-        <ViewOnlyReport />
         <DashboardRedesigned
           a={a}
           profile={profile}
