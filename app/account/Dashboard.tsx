@@ -592,19 +592,19 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                 <div className="rail-h">Featured features</div>
                 <div className="rail-feature">
                   <Icon name="lightbulb" size={18} style={{color:'#ff6b35'}} />
-                  <div><div style={{fontSize:'12px', fontWeight:'700', color:C.ink}}>Startups</div><div style={{fontSize:'10px', color:C.ink4}}>12 opportunities</div></div>
+                  <div><div style={{fontSize:'12px', fontWeight:'700', color:C.ink}}>Startups</div><div style={{fontSize:'10px', color:C.ink3}}>12 opportunities</div></div>
                 </div>
                 <div className="rail-feature">
                   <Icon name="microscope" size={18} style={{color:'#004e89'}} />
-                  <div><div style={{fontSize:'12px', fontWeight:'700', color:C.ink}}>Research</div><div style={{fontSize:'10px', color:C.ink4}}>12 programs</div></div>
+                  <div><div style={{fontSize:'12px', fontWeight:'700', color:C.ink}}>Research</div><div style={{fontSize:'10px', color:C.ink3}}>12 programs</div></div>
                 </div>
                 <div className="rail-feature">
                   <Icon name="piggybank" size={18} style={{color:'#1e7b34'}} />
-                  <div><div style={{fontSize:'12px', fontWeight:'700', color:C.ink}}>Finances</div><div style={{fontSize:'10px', color:C.ink4}}>12 courses</div></div>
+                  <div><div style={{fontSize:'12px', fontWeight:'700', color:C.ink}}>Finances</div><div style={{fontSize:'10px', color:C.ink3}}>12 courses</div></div>
                 </div>
                 <div className="rail-feature">
                   <Icon name="scale" size={18} style={{color:'#8b5a8e'}} />
-                  <div><div style={{fontSize:'12px', fontWeight:'700', color:C.ink}}>Law & Rights</div><div style={{fontSize:'10px', color:C.ink4}}>12 resources</div></div>
+                  <div><div style={{fontSize:'12px', fontWeight:'700', color:C.ink}}>Law & Rights</div><div style={{fontSize:'10px', color:C.ink3}}>12 resources</div></div>
                 </div>
               </div>
 

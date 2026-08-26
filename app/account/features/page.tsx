@@ -67,7 +67,7 @@ const S: Record<string, React.CSSProperties> = {
   },
   email: {
     fontSize: 13,
-    color: C.ink[60],
+    color: C.ink3,
     marginRight: 16,
   },
   backBtn: {
@@ -81,7 +81,7 @@ const S: Record<string, React.CSSProperties> = {
     cursor: "pointer",
   },
   muted: {
-    color: C.ink[60],
+    color: C.ink3,
     fontSize: 15,
     marginBottom: 12,
   },
