@@ -249,7 +249,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
 
       {/* ============================ SIDEBAR ============================ */}
       <aside className={`ash-side${navOpen ? " open" : ""} og-noprint`}>
-        <div className="ash-brand"><Link href="/" style={{ textDecoration: "none" }}><Logo height={30} /></Link></div>
+        <div className="ash-brand"><Link href="/" style={{ textDecoration: "none" }}><Logo height={50} /></Link></div>
         <nav className="ash-nav">
           <div className="ash-nav-lbl">Menu</div>
           {navItems.map((n) => (
@@ -327,8 +327,82 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
 
               {extrasBefore("dimensions")}
 
+              {/* ===== CAREER TOOLKIT FEATURES GRID ===== */}
+              <section id="toolkit-features" className="ash-sec">
+                <div className="ogd-card">
+                  <CardHead icon="route" title="Your Career Toolkit"
+                    sub="Explore resources to shape your future — colleges, internships, scholarships, and much more." />
+                  <div className="toolkit-grid">
+                    <div className="toolkit-card startups">
+                      <div className="toolkit-icon"><Icon name="lightbulb" size={28} /></div>
+                      <h3>Startups</h3>
+                      <p>Connect with innovative founders</p>
+                      <span className="toolkit-count">12 opportunities</span>
+                    </div>
+                    <div className="toolkit-card research">
+                      <div className="toolkit-icon"><Icon name="microscope" size={28} /></div>
+                      <h3>Research</h3>
+                      <p>Cutting-edge research programs</p>
+                      <span className="toolkit-count">12 programs</span>
+                    </div>
+                    <div className="toolkit-card finance">
+                      <div className="toolkit-icon"><Icon name="piggybank" size={28} /></div>
+                      <h3>Financial Literacy</h3>
+                      <p>Master money management</p>
+                      <span className="toolkit-count">12 courses</span>
+                    </div>
+                    <div className="toolkit-card law">
+                      <div className="toolkit-icon"><Icon name="scale" size={28} /></div>
+                      <h3>Law & Rights</h3>
+                      <p>Know your legal protections</p>
+                      <span className="toolkit-count">12 resources</span>
+                    </div>
+                    <div className="toolkit-card colleges">
+                      <div className="toolkit-icon"><Icon name="school" size={28} /></div>
+                      <h3>Indian Colleges</h3>
+                      <p>10,000+ colleges & courses</p>
+                      <span className="toolkit-count">Browse all</span>
+                    </div>
+                    <div className="toolkit-card universities">
+                      <div className="toolkit-icon"><Icon name="compass" size={28} /></div>
+                      <h3>Study Abroad</h3>
+                      <p>8,000+ universities worldwide</p>
+                      <span className="toolkit-count">Explore</span>
+                    </div>
+                    <div className="toolkit-card exams">
+                      <div className="toolkit-icon"><Icon name="answer" size={28} /></div>
+                      <h3>Entrance Exams</h3>
+                      <p>1,400+ exam details</p>
+                      <span className="toolkit-count">View all</span>
+                    </div>
+                    <div className="toolkit-card internships">
+                      <div className="toolkit-icon"><Icon name="briefcase" size={28} /></div>
+                      <h3>Internships</h3>
+                      <p>200+ virtual opportunities</p>
+                      <span className="toolkit-count">Apply now</span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* ===== REPORT PREVIEW ===== */}
+              <section id="report-preview" className="ash-sec">
+                <div className="ogd-card report-preview-card">
+                  <CardHead icon="explain" title="Your Career Report"
+                    sub="Your personalized assessment results and detailed analysis." />
+                  <div className="report-actions">
+                    <button className="report-btn primary" onClick={() => setView("report")}>
+                      <Icon name="explain" size={16} /> View Full Report
+                    </button>
+                    <button className="report-btn secondary" onClick={() => go("dimensions")}>
+                      <Icon name="radar" size={16} /> View Assessment Details
+                    </button>
+                  </div>
+                </div>
+              </section>
+
               {/* ===== DIMENSIONS ===== */}
-              <section id="dimensions" className="ash-sec">
+              <section id="dimensions" className="ash-sec" style={{display: 'none'}}>
                 <div className="ogd-card">
                   <CardHead icon="radar" title="Your eight dimensions"
                     sub="Tap a dimension below to see its full breakdown — everything from your report, right here." />
@@ -500,25 +574,51 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
             {/* ===== RIGHT RAIL ===== */}
             <aside className="ash-rail og-noprint">
               <div className="ogd-card rail-card">
-                <div className="rail-h">Quick actions</div>
-                <button className="rail-act primary" onClick={() => setView("report")}><Icon name="explain" size={16} /> View full report</button>
-                {/* The second action used to say "Download PDF" while doing the
-                    same thing as the first. The PDF now arrives by email. */}
-                <div className="rail-note"><Icon name="bell" size={14} /> Your PDF copy is emailed to you</div>
-              </div>
-
-              <div className="ogd-card rail-card">
                 <div className="rail-h">Your top match</div>
                 <div className="rail-top-nm">{topField?.name || a.topCareer || "—"}</div>
                 {topField?.tagline ? <div className="rail-top-tag">{topField.tagline}</div> : null}
                 <div className="rail-top-fit">Drawn from your <b>{topInterestName}</b> answers</div>
               </div>
 
+              <div className="ogd-card rail-card">
+                <div className="rail-h">Interest strength</div>
+                <Ring value={topInterestScore} size={100} stroke={8} color={IN}>
+                  <div style={{fontSize:'24px', fontWeight:'800', color:C.ink}}>{topInterestScore}%</div>
+                </Ring>
+                <div style={{fontSize:'12px', color:C.ink3, textAlign:'center', marginTop:'8px'}}>{topInterestName}</div>
+              </div>
+
+              <div className="ogd-card rail-card">
+                <div className="rail-h">Featured features</div>
+                <div className="rail-feature">
+                  <Icon name="lightbulb" size={18} style={{color:'#ff6b35'}} />
+                  <div><div style={{fontSize:'12px', fontWeight:'700', color:C.ink}}>Startups</div><div style={{fontSize:'10px', color:C.ink4}}>12 opportunities</div></div>
+                </div>
+                <div className="rail-feature">
+                  <Icon name="microscope" size={18} style={{color:'#004e89'}} />
+                  <div><div style={{fontSize:'12px', fontWeight:'700', color:C.ink}}>Research</div><div style={{fontSize:'10px', color:C.ink4}}>12 programs</div></div>
+                </div>
+                <div className="rail-feature">
+                  <Icon name="piggybank" size={18} style={{color:'#1e7b34'}} />
+                  <div><div style={{fontSize:'12px', fontWeight:'700', color:C.ink}}>Finances</div><div style={{fontSize:'10px', color:C.ink4}}>12 courses</div></div>
+                </div>
+                <div className="rail-feature">
+                  <Icon name="scale" size={18} style={{color:'#8b5a8e'}} />
+                  <div><div style={{fontSize:'12px', fontWeight:'700', color:C.ink}}>Law & Rights</div><div style={{fontSize:'10px', color:C.ink4}}>12 resources</div></div>
+                </div>
+              </div>
+
+              <div className="ogd-card rail-card">
+                <div className="rail-h">Next steps</div>
+                <button className="rail-act primary" onClick={() => setView("report")}><Icon name="explain" size={16} /> View report</button>
+                <div className="rail-note"><Icon name="check" size={14} /> PDF emailed to you</div>
+              </div>
+
               {SHOW_TOOLKIT && (
                 <div className="ogd-card rail-card">
                   <div className="rail-h">Career toolkit</div>
-                  <button className="rail-act" onClick={() => go("resources")}><Icon name="route" size={16} /> Open toolkit</button>
-                  <div className="rail-toolhint">Colleges · exams · internships · scholarships · careers — in your sidebar.</div>
+                  <button className="rail-act" onClick={() => go("resources")}><Icon name="route" size={16} /> Explore toolkit</button>
+                  <div className="rail-toolhint">Colleges · exams · internships · scholarships — more in your menu.</div>
                 </div>
               )}
             </aside>
@@ -1132,4 +1232,53 @@ const CSS = `
 .ogd-mailnote svg{color:${C.muted}}
 @media (max-width:560px){.ogd-mailnote{display:none}}
 @media print{.ogd-reportwrap{padding:0;margin:0;max-width:none}.ogd-reportbar{display:none}}
+
+/* Toolkit Features Grid */
+.toolkit-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:12px}
+@media(max-width:1000px){.toolkit-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:640px){.toolkit-grid{grid-template-columns:repeat(2,1fr)}}
+.toolkit-card{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 18px;border:2px solid ${C.line};border-radius:14px;transition:all .2s;cursor:pointer;background:#fff}
+.toolkit-card:hover{border-color:${IN};box-shadow:0 8px 24px rgba(${IN.replace('#','')},0.12);transform:translateY(-2px)}
+.toolkit-card.startups{border-top-color:#ff6b35}
+.toolkit-card.research{border-top-color:#004e89}
+.toolkit-card.finance{border-top-color:#1e7b34}
+.toolkit-card.law{border-top-color:#8b5a8e}
+.toolkit-card.colleges{border-top-color:#6366f1}
+.toolkit-card.universities{border-top-color:#db2777}
+.toolkit-card.exams{border-top-color:#f59e0b}
+.toolkit-card.internships{border-top-color:#10b981}
+.toolkit-icon{width:56px;height:56px;border-radius:12px;display:grid;place-items:center;margin-bottom:12px;font-weight:600}
+.toolkit-card.startups .toolkit-icon{background:#ff6b35;color:#fff;opacity:.15}
+.toolkit-card.research .toolkit-icon{background:#004e89;color:#fff;opacity:.15}
+.toolkit-card.finance .toolkit-icon{background:#1e7b34;color:#fff;opacity:.15}
+.toolkit-card.law .toolkit-icon{background:#8b5a8e;color:#fff;opacity:.15}
+.toolkit-card.colleges .toolkit-icon{background:#6366f1;color:#fff;opacity:.15}
+.toolkit-card.universities .toolkit-icon{background:#db2777;color:#fff;opacity:.15}
+.toolkit-card.exams .toolkit-icon{background:#f59e0b;color:#fff;opacity:.15}
+.toolkit-card.internships .toolkit-icon{background:#10b981;color:#fff;opacity:.15}
+.toolkit-card h3{font-size:15px;font-weight:800;color:${C.ink};margin:0 0 6px;letter-spacing:-.01em}
+.toolkit-card p{font-size:12px;color:${C.ink2};margin:0 0 12px;line-height:1.4}
+.toolkit-count{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:${IN};background:${IN}15;padding:4px 10px;border-radius:6px}
+
+/* Report Preview */
+.report-preview-card{background:linear-gradient(135deg, ${C.surface} 0%, #f5f3ff 100%);border:2px solid ${IN_LINE}}
+.report-actions{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
+.report-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;font-size:13.5px;font-weight:700;border-radius:10px;border:1px solid;transition:all .2s;cursor:pointer;font-family:inherit}
+.report-btn.primary{background:${IN};color:#fff;border-color:${IN}}
+.report-btn.primary:hover{background:${IN_STRONG};border-color:${IN_STRONG}}
+.report-btn.secondary{background:#fff;color:${IN};border-color:${IN_LINE}}
+.report-btn.secondary:hover{background:${IN_TINT};border-color:${IN}}
+
+/* Improve text contrast */
+.ash-top-s{color:${C.ink2}!important}
+.ogd-arch-tag{color:${C.ink2}!important}
+.ogd-cardhead p{color:${C.ink2}!important}
+
+/* Sidebar branding size */
+.ash-brand{padding:24px 22px 20px}
+
+/* Right Rail Features */
+.rail-feature{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid ${C.line2};align-items:flex-start}
+.rail-feature:last-child{border-bottom:none}
+.rail-feature svg{flex:none;margin-top:2px}
 `;
