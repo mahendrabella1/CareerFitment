@@ -4,7 +4,7 @@
  * exam bodies use their permanent domains so links stay valid year to year.
  */
 
-export type Listing = { name: string; meta: string; tag?: string; href: string };
+export type Listing = { name: string; meta: string; tag?: string; href: string; icon?: string };
 export type ToolkitTab = { id: string; label: string; icon: string; blurb: string; items: Listing[] };
 
 export const TOOLKIT_TABS: ToolkitTab[] = [

@@ -109,7 +109,7 @@ export interface CareerDomain {
   name: string;                    // e.g., "Technology", "Healthcare"
   description: string;
   clusters: CareerCluster[];
-  source?: Source;
+  source?: Source | string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -121,7 +121,7 @@ export interface CareerCluster {
   description: string;
   roles: Career[];
   color?: string;                  // For UI
-  source?: Source;
+  source?: Source | string;
 }
 
 export interface Career {
@@ -162,7 +162,7 @@ export interface Career {
     currency: string;
     experience: string;            // e.g., "0-2 years", "5-10 years"
     region?: string;               // e.g., "India", "USA"
-    source?: Source;
+    source?: Source | string;
   }[];
 
   // Pathways
@@ -183,8 +183,8 @@ export interface Career {
   relatedCareers?: string[];          // Career IDs
 
   // Metadata
-  tags?: ('high_demand' | 'emerging' | 'new_age' | 'fast_growing' | 'traditional' | 'research_oriented' | 'entrepreneurship' | 'high_specialization')[];
-  source?: Source;
+  tags?: ('high_demand' | 'emerging' | 'new_age' | 'fast_growing' | 'traditional' | 'research_oriented' | 'entrepreneurship' | 'high_specialization' | 'creative')[];
+  source?: Source | string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -209,9 +209,30 @@ export interface College {
   entrance_exams?: string[];     // NEET, JEE, etc.
 
   website?: string;
-  source?: Source;
+  source?: Source | string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface Country {
+  id: string;
+  name: string;
+  description: string;
+  educationSystem?: string;
+  popularCourses?: string[];
+  universitiesCount?: number;
+  tuitionRange?: { min: number; max: number; currency: string; per_year?: boolean };
+  livingCosts?: { min: number; max: number; currency: string; per_year?: boolean };
+  scholarships?: string[];
+  eligibility?: string;
+  entranceTests?: string[];
+  studentVisa?: string;
+  intakeMonths?: string[];
+  applicationTimeline?: string;
+  durationUg?: string;
+  postStudyOptions?: string;
+  website?: string;
+  lastVerified?: Date;
 }
 
 export interface University {
@@ -267,7 +288,7 @@ export interface University {
   website?: string;
   admissionsEmail?: string;
 
-  source?: Source;
+  source?: Source | string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -321,7 +342,7 @@ export interface Internship {
   // Application
   applicationLink?: string;
 
-  source?: Source;
+  source?: Source | string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -359,7 +380,7 @@ export interface Workshop {
   // Registration
   registrationLink?: string;
 
-  source?: Source;
+  source?: Source | string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -392,7 +413,7 @@ export interface Scholarship {
   // Application
   applicationLink?: string;
 
-  source?: Source;
+  source?: Source | string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -409,7 +430,7 @@ export interface ResearchResource {
   content: string;
   resources?: string[];          // URLs, references
 
-  source?: Source;
+  source?: Source | string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -430,7 +451,7 @@ export interface Conference {
   studentEligibility: boolean;
   website?: string;
 
-  source?: Source;
+  source?: Source | string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -451,7 +472,7 @@ export interface Journal {
   peerReviewed: boolean;
   impactFactor?: number;
 
-  source?: Source;
+  source?: Source | string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -480,7 +501,7 @@ export interface Startup {
     amount: number;
     currency: string;
     round: string;              // e.g., "Series A", "Seed"
-    source?: Source;
+    source?: Source | string;
   }[];
 
   // Impact & Lessons
@@ -491,7 +512,7 @@ export interface Startup {
   // Opportunities
   hiringLink?: string;
 
-  source?: Source;
+  source?: Source | string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -515,7 +536,7 @@ export interface Company {
   salaryData?: string[];         // Links to salary info
   reviewsLink?: string;
 
-  source?: Source;
+  source?: Source | string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -539,7 +560,7 @@ export interface FinancialResource {
     data: Record<string, any>;
   };
 
-  source?: Source;
+  source?: Source | string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -557,7 +578,7 @@ export interface LegalResource {
   officialReference?: string;    // e.g., "IPC Section 293"
   officialLink?: string;
 
-  source?: Source;
+  source?: Source | string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -623,7 +644,7 @@ export interface ReportData {
   // Metadata
   generatedAt: Date;
   validUntil?: Date;
-  source?: Source;
+  source?: Source | string;
 }
 
 export interface RoadmapPhase {

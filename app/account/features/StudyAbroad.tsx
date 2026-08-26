@@ -40,7 +40,7 @@ export default function StudyAbroad() {
       result = getUniversitiesByCountry(selectedCountry);
     } else {
       // All universities
-      countries.forEach(country => {
+      Object.values(countries).forEach((country: Country) => {
         result = result.concat(getUniversitiesByCountry(country.name));
       });
     }
@@ -48,13 +48,13 @@ export default function StudyAbroad() {
     if (searchQuery) {
       result = result.filter(u =>
         u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        u.programs?.some(p => p.toLowerCase().includes(searchQuery.toLowerCase()))
+        u.programs?.some(p => (typeof p === 'string' ? p : (p as any).name || '').toLowerCase().includes(searchQuery.toLowerCase()))
       );
     }
 
     const budget = BUDGET_RANGES[selectedBudget];
     result = result.filter(u => {
-      const tuition = u.tuition_range?.min || 0;
+      const tuition = u.tuitionRange?.min || 0;
       return tuition >= budget.min && tuition <= budget.max;
     });
 
@@ -62,7 +62,7 @@ export default function StudyAbroad() {
     if (sortBy === "ranking") {
       result.sort((a, b) => (a.ranking?.rank || 999) - (b.ranking?.rank || 999));
     } else if (sortBy === "tuition") {
-      result.sort((a, b) => (a.tuition_range?.min || 0) - (b.tuition_range?.min || 0));
+      result.sort((a, b) => (a.tuitionRange?.min || 0) - (b.tuitionRange?.min || 0));
     } else {
       result.sort((a, b) => a.name.localeCompare(b.name));
     }
@@ -164,28 +164,28 @@ export default function StudyAbroad() {
         <div style={styles.countriesSection}>
           <h2 style={styles.sectionHeading}>Explore by Country</h2>
           <div style={styles.countriesGrid}>
-            {countries.slice(0, 8).map(country => (
+            {Object.values(countries).slice(0, 8).map((country: Country) => (
               <div key={country.name} style={styles.countryCard}>
                 <h3 style={styles.countryCardTitle}>{country.name}</h3>
                 <p style={styles.countryCardDesc}>{country.description}</p>
                 <div style={styles.countryStats}>
                   <div>
                     <span style={styles.statLabel}>Universities</span>
-                    <span style={styles.statValue}>{country.universitiesCount}+</span>
+                    <span style={styles.statValue}>{country.universities_count}+</span>
                   </div>
                   <div>
                     <span style={styles.statLabel}>Tuition</span>
-                    <span style={styles.statValue}>${country.tuition_range.min / 1000}k-${country.tuition_range.max / 1000}k</span>
+                    <span style={styles.statValue}>${((country.tuition_range?.min) || 0) / 1000}k-${((country.tuition_range?.max) || 0) / 1000}k</span>
                   </div>
                   <div>
                     <span style={styles.statLabel}>Cost of Living</span>
-                    <span style={styles.statValue}>${country.livingCosts.min / 1000}k-${country.livingCosts.max / 1000}k</span>
+                    <span style={styles.statValue}>${((country.livingCosts?.min || 0) / 1000)}k-${((country.livingCosts?.max || 0) / 1000)}k</span>
                   </div>
                 </div>
                 {country.scholarships && country.scholarships.length > 0 && (
                   <div style={styles.scholarshipsInfo}>
                     <p style={styles.scholarshipsLabel}>Available Scholarships:</p>
-                    <p style={styles.scholarshipsList}>{country.scholarships.slice(0, 2).join(", ")}</p>
+                    <p style={styles.scholarshipsList}>{country.scholarships?.slice(0, 2).join(", ") || "Available"}</p>
                   </div>
                 )}
                 <a
@@ -236,13 +236,13 @@ function UniversityCard({ university }: { university: University }) {
         <div style={styles.infoItem}>
           <span style={styles.infoLabel}>Tuition</span>
           <span style={styles.infoValue}>
-            ${university.tuition_range?.min / 1000}k-${university.tuition_range?.max / 1000}k
+            ${(university.tuitionRange?.min || 0) / 1000}k-${(university.tuitionRange?.max || 0) / 1000}k
           </span>
         </div>
         <div style={styles.infoItem}>
           <span style={styles.infoLabel}>Living Costs</span>
           <span style={styles.infoValue}>
-            ${university.living_costs?.min / 1000}k-${university.living_costs?.max / 1000}k
+            ${(university.livingCosts?.min || 0) / 1000}k-${(university.livingCosts?.max || 0) / 1000}k
           </span>
         </div>
       </div>
@@ -255,8 +255,8 @@ function UniversityCard({ university }: { university: University }) {
             <section>
               <h4 style={styles.sectionTitle}>Programs Offered</h4>
               <div style={styles.programsList}>
-                {university.programs.slice(0, 8).map((prog, i) => (
-                  <span key={i} style={styles.programTag}>{prog}</span>
+                {university.programs.slice(0, 8).map((prog: any, i) => (
+                  <span key={i} style={styles.programTag}>{typeof prog === 'string' ? prog : prog.name || prog}</span>
                 ))}
               </div>
             </section>
@@ -315,8 +315,8 @@ const styles = {
     maxWidth: 1400,
     margin: "0 auto",
     padding: spacing[8],
-    fontFamily: typography.fontFamily,
-    backgroundColor: colors.bg,
+    fontFamily: typography.family.sans,
+    backgroundColor: colors.ink[95],
   } as React.CSSProperties,
 
   header: {
@@ -340,7 +340,7 @@ const styles = {
 
   controlsPanel: {
     background: "#fff",
-    border: `1px solid ${colors.line}`,
+    border: `1px solid ${colors.ink[80]}`,
     borderRadius: radius.lg,
     padding: spacing[6],
     marginBottom: spacing[6],
@@ -355,9 +355,9 @@ const styles = {
     width: "100%",
     padding: spacing[3],
     fontSize: 15,
-    border: `1px solid ${colors.line}`,
+    border: `1px solid ${colors.ink[80]}`,
     borderRadius: radius.md,
-    fontFamily: typography.fontFamily,
+    fontFamily: typography.family.sans,
     boxSizing: "border-box",
   } as React.CSSProperties,
 
@@ -382,7 +382,7 @@ const styles = {
 
   countryButton: {
     padding: spacing[3],
-    border: `1px solid ${colors.line}`,
+    border: `1px solid ${colors.ink[80]}`,
     borderRadius: radius.md,
     background: "#fff",
     cursor: "pointer",
@@ -423,9 +423,9 @@ const styles = {
   select: {
     padding: spacing[3],
     fontSize: 14,
-    border: `1px solid ${colors.line}`,
+    border: `1px solid ${colors.ink[80]}`,
     borderRadius: radius.md,
-    fontFamily: typography.fontFamily,
+    fontFamily: typography.family.sans,
     backgroundColor: "#fff",
   } as React.CSSProperties,
 
@@ -444,7 +444,7 @@ const styles = {
 
   uniCard: {
     background: "#fff",
-    border: `1px solid ${colors.line}`,
+    border: `1px solid ${colors.ink[80]}`,
     borderRadius: radius.lg,
     padding: spacing[5],
     boxShadow: shadows.sm,
@@ -491,7 +491,7 @@ const styles = {
     width: 32,
     height: 32,
     borderRadius: "50%",
-    border: `1px solid ${colors.line}`,
+    border: `1px solid ${colors.ink[80]}`,
     background: "#fff",
     fontSize: 20,
     cursor: "pointer",
@@ -530,7 +530,7 @@ const styles = {
   } as React.CSSProperties,
 
   expandedContent: {
-    borderTop: `1px solid ${colors.line}`,
+    borderTop: `1px solid ${colors.ink[80]}`,
     paddingTop: spacing[4],
     marginTop: spacing[4],
     display: "flex",
@@ -632,7 +632,7 @@ const styles = {
 
   countryCard: {
     background: "#fff",
-    border: `1px solid ${colors.line}`,
+    border: `1px solid ${colors.ink[80]}`,
     borderRadius: radius.lg,
     padding: spacing[5],
     boxShadow: shadows.sm,

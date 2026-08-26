@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Link from "next/link";
 import { colors, spacing, typography, radius, shadows } from "@/app/account/designTokens";
-import { getAllCareers, searchCareers, getCareersInCluster } from "@/lib/data/careerLibraryData";
+import { getAllCareers, searchCareers } from "@/lib/data/careerLibraryData";
 import type { Career } from "@/lib/data/schema";
 
 const CLUSTERS = [
@@ -53,13 +52,13 @@ export default function CareerLibrary() {
 
     const salRange = SALARY_RANGES[selectedSalaryRange];
     result = result.filter(c => {
-      const avgSalary = c.salaryRange[0]?.min || 0;
+      const avgSalary = c.salaryRange?.[0]?.min || 0;
       return avgSalary >= salRange.min && avgSalary <= salRange.max;
     });
 
     // Sort
     if (sortBy === "salary") {
-      result.sort((a, b) => (b.salaryRange[0]?.min || 0) - (a.salaryRange[0]?.min || 0));
+      result.sort((a, b) => (b.salaryRange?.[0]?.min || 0) - (a.salaryRange?.[0]?.min || 0));
     } else if (sortBy === "demand") {
       const demandScore = { high: 3, medium: 2, low: 1 };
       result.sort((a, b) =>
@@ -168,7 +167,7 @@ export default function CareerLibrary() {
 
       {/* Career Grid */}
       <div style={styles.careerGrid}>
-        {filtered.map(career => (
+        {filtered.map((career: Career) => (
           <CareerCard key={career.id} career={career} />
         ))}
       </div>
@@ -186,10 +185,10 @@ function CareerCard({ career }: { career: Career }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const demandColor = {
-    high: colors.success,
-    medium: colors.warning,
+    high: colors.accent[40],
+    medium: colors.ink[50],
     low: colors.ink[60],
-  }[career.currentDemand] || colors.ink[60];
+  }[career.currentDemand as keyof {high: string; medium: string; low: string}] || colors.ink[60];
 
   return (
     <div style={styles.card}>
@@ -220,7 +219,7 @@ function CareerCard({ career }: { career: Career }) {
         <div style={styles.stat}>
           <span style={styles.statLabel}>Salary Range</span>
           <span style={styles.statValue}>
-            ${(career.salaryRange[0]?.min || 0) / 1000}k - ${(career.salaryRange[0]?.max || 0) / 1000}k
+            ${(career.salaryRange?.[0]?.min || 0) / 1000}k - ${(career.salaryRange?.[0]?.max || 0) / 1000}k
           </span>
         </div>
         <div style={styles.stat}>
@@ -242,33 +241,35 @@ function CareerCard({ career }: { career: Career }) {
           <section>
             <h4 style={styles.sectionTitle}>Key Skills Needed</h4>
             <div style={styles.tagsList}>
-              {career.skills.slice(0, 8).map((skill, i) => (
+              {(career.skills?.slice(0, 8) ?? []).map((skill, i) => (
                 <span key={i} style={styles.tag}>{skill}</span>
               ))}
             </div>
           </section>
 
           {/* Education */}
-          <section>
-            <h4 style={styles.sectionTitle}>Education Paths</h4>
-            <div style={styles.educationGrid}>
-              {career.education.degrees?.length > 0 && (
-                <div>
-                  <p style={styles.educationLabel}>Degrees</p>
-                  <p style={styles.educationValue}>{career.education.degrees.join(", ")}</p>
-                </div>
-              )}
-              {career.education.certifications?.length > 0 && (
-                <div>
-                  <p style={styles.educationLabel}>Certifications</p>
-                  <p style={styles.educationValue}>{career.education.certifications.slice(0, 3).join(", ")}</p>
-                </div>
-              )}
-            </div>
-          </section>
+          {career.education && (
+            <section>
+              <h4 style={styles.sectionTitle}>Education Paths</h4>
+              <div style={styles.educationGrid}>
+                {career.education.degrees && career.education.degrees.length > 0 && (
+                  <div>
+                    <p style={styles.educationLabel}>Degrees</p>
+                    <p style={styles.educationValue}>{career.education.degrees.join(", ")}</p>
+                  </div>
+                )}
+                {career.education.certifications && career.education.certifications.length > 0 && (
+                  <div>
+                    <p style={styles.educationLabel}>Certifications</p>
+                    <p style={styles.educationValue}>{career.education.certifications.slice(0, 3).join(", ")}</p>
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
 
           {/* Top Companies */}
-          {career.companies?.length > 0 && (
+          {career.companies && career.companies.length > 0 && (
             <section>
               <h4 style={styles.sectionTitle}>Top Hiring Companies</h4>
               <div style={styles.tagsList}>
@@ -292,7 +293,7 @@ function CareerCard({ career }: { career: Career }) {
           )}
 
           {/* Source */}
-          <p style={styles.source}>📍 Data from: {career.source}</p>
+          <p style={styles.source}>📍 Data from: {career.source?.toString() || "Multiple sources"}</p>
         </div>
       )}
     </div>
@@ -304,8 +305,8 @@ const styles = {
     maxWidth: 1400,
     margin: "0 auto",
     padding: spacing[8],
-    fontFamily: typography.fontFamily,
-    backgroundColor: colors.bg,
+    fontFamily: typography.family.sans,
+    backgroundColor: colors.ink[95],
   } as React.CSSProperties,
 
   header: {
@@ -329,7 +330,7 @@ const styles = {
 
   controlsPanel: {
     background: "#fff",
-    border: `1px solid ${colors.line}`,
+    border: `1px solid ${colors.ink[80]}`,
     borderRadius: radius.lg,
     padding: spacing[6],
     marginBottom: spacing[6],
@@ -344,9 +345,9 @@ const styles = {
     width: "100%",
     padding: spacing[3],
     fontSize: 15,
-    border: `1px solid ${colors.line}`,
+    border: `1px solid ${colors.ink[80]}`,
     borderRadius: radius.md,
-    fontFamily: typography.fontFamily,
+    fontFamily: typography.family.sans,
     boxSizing: "border-box",
   } as React.CSSProperties,
 
@@ -375,7 +376,7 @@ const styles = {
     alignItems: "center",
     gap: spacing[2],
     padding: spacing[3],
-    border: `1px solid ${colors.line}`,
+    border: `1px solid ${colors.ink[80]}`,
     borderRadius: radius.md,
     background: "#fff",
     cursor: "pointer",
@@ -414,9 +415,9 @@ const styles = {
   select: {
     padding: spacing[3],
     fontSize: 14,
-    border: `1px solid ${colors.line}`,
+    border: `1px solid ${colors.ink[80]}`,
     borderRadius: radius.md,
-    fontFamily: typography.fontFamily,
+    fontFamily: typography.family.sans,
     backgroundColor: "#fff",
   } as React.CSSProperties,
 
@@ -434,7 +435,7 @@ const styles = {
 
   card: {
     background: "#fff",
-    border: `1px solid ${colors.line}`,
+    border: `1px solid ${colors.ink[80]}`,
     borderRadius: radius.lg,
     padding: spacing[5],
     boxShadow: shadows.sm,
@@ -477,7 +478,7 @@ const styles = {
     width: 32,
     height: 32,
     borderRadius: "50%",
-    border: `1px solid ${colors.line}`,
+    border: `1px solid ${colors.ink[80]}`,
     background: "#fff",
     fontSize: 20,
     cursor: "pointer",
@@ -524,7 +525,7 @@ const styles = {
   } as React.CSSProperties,
 
   expandedContent: {
-    borderTop: `1px solid ${colors.line}`,
+    borderTop: `1px solid ${colors.ink[80]}`,
     paddingTop: spacing[4],
     marginTop: spacing[4],
     display: "flex",
@@ -596,7 +597,7 @@ const styles = {
 
   pathCard: {
     padding: spacing[3],
-    backgroundColor: colors.success,
+    backgroundColor: colors.accent[40],
     borderRadius: radius.md,
     color: "#fff",
   } as React.CSSProperties,

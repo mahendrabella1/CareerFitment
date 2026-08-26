@@ -21,7 +21,7 @@
  * by re-enabling that guard, but it has no effect while it's mounted.
  */
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, type ReactNode } from "react";
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { Icon, CATEGORY_ABBR } from "@/app/Icons";
 import { C, Ring, RadarChart, SkillBar, dimColor, type RadarDatum } from "@/app/account/viz";
@@ -112,10 +112,10 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
     revs.forEach((e) => e.classList.add("in"));
   }, []);
 
-  const radar: RadarDatum[] = (a.radar ?? []).length
-    ? CANON.map((k) => (a.radar!.find((r) => r.key === k) ?? { key: k, label: CAT[k].label, score: 0 }))
-    : CANON.map((k) => ({ key: k, label: CAT[k].label, score: 0 }));
-
+  const radar: RadarDatum[] = useMemo(() => {
+    const src = ((a.radar ?? []).length ? a.radar! : []).map((r) => ({ ...r, bench: BENCH[r.key] || 50 }));
+    return CANON.map((k) => src.find((r) => r.key === k) ?? { key: k, label: CAT[k].label, score: 0, bench: BENCH[k] || 50 });
+  }, [a.radar]);
   // Coherent recommendations: blend interest + abilities + intelligences + values.
   const fits = domainFit(a);
   const domainList = fits.slice(0, 3);

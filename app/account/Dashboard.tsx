@@ -180,8 +180,8 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
   };
 
   const radar: RadarDatum[] = useMemo(() => {
-    const src = (a.radar ?? []).length ? a.radar! : [];
-    return CANON.map((k) => src.find((r) => r.key === k) ?? { key: k, label: CAT_LABEL[k], score: 0 });
+    const src = ((a.radar ?? []).length ? a.radar! : []).map((r) => ({ ...r, bench: BENCH[r.key] || 50 }));
+    return CANON.map((k) => src.find((r) => r.key === k) ?? { key: k, label: CAT_LABEL[k], score: 0, bench: BENCH[k] || 50 });
   }, [a.radar]);
 
   // Coherent recommendation: blend interest + abilities + intelligences + values.

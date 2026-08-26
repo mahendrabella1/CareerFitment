@@ -23,21 +23,21 @@ const FEATURES = [
     name: "Study Abroad",
     icon: "✈️",
     desc: "100+ universities across 20 countries with costs",
-    color: colors.info,
+    color: colors.accent[40],
   },
   {
     id: "internships",
     name: "Internships & Opportunities",
     icon: "🎯",
     desc: "300+ internships, 100+ workshops, 200+ scholarships",
-    color: colors.success,
+    color: colors.accent[40],
   },
   {
     id: "financial",
     name: "Financial Literacy",
     icon: "💰",
     desc: "30+ topics on money, investing, taxes, and planning",
-    color: colors.warning,
+    color: colors.ink[50],
   },
   {
     id: "legal",
@@ -198,7 +198,7 @@ function InternshipsPage() {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[4] }}>
         {data.slice(0, 12).map((item: any, idx: number) => (
-          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.line}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
+          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.ink[80]}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2] }}>{item.title || item.name}</h3>
             <p style={{ fontSize: 13, color: colors.ink[60], lineHeight: 1.5, margin: 0, marginBottom: spacing[3] }}>
               {item.description || item.provider || item.awardAmount?.min}
@@ -223,7 +223,7 @@ function FinancialLiteracyPage() {
   const categories = [...new Set(topics.map((t: any) => t.category))];
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const filtered = selectedCategory ? getTopicsByCategory(selectedCategory) : topics;
+  const filtered = selectedCategory ? getTopicsByCategory(selectedCategory as "basics" | "banking" | "investing" | "markets" | "taxes" | "planning") : topics;
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
@@ -240,7 +240,7 @@ function FinancialLiteracyPage() {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: spacing[4] }}>
         {filtered.slice(0, 12).map((topic: any, idx: number) => (
-          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.line}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
+          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.ink[80]}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2] }}>{topic.title}</h3>
             <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3] }}>
               <span style={styles.badge}>{topic.difficulty}</span>
@@ -262,7 +262,7 @@ function LegalResourcesPage() {
   const categories = [...new Set(resources.map((r: any) => r.category))];
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const filtered = selectedCategory ? getResourcesByCategory(selectedCategory) : resources;
+  const filtered = selectedCategory ? getResourcesByCategory(selectedCategory as "student-rights" | "safety" | "labor" | "cyber" | "relationships" | "protection") : resources;
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
@@ -279,7 +279,7 @@ function LegalResourcesPage() {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: spacing[4] }}>
         {filtered.slice(0, 12).map((resource: any, idx: number) => (
-          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.line}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
+          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.ink[80]}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2] }}>{resource.title}</h3>
             <p style={{ fontSize: 13, color: colors.ink[60], lineHeight: 1.5, margin: 0, marginBottom: spacing[3] }}>{resource.description}</p>
             <div style={{ marginBottom: spacing[2] }}>
@@ -309,7 +309,7 @@ function ResearchPage() {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[4] }}>
         {opportunities.slice(0, 12).map((opp: any, idx: number) => (
-          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.line}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
+          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.ink[80]}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2] }}>{opp.title}</h3>
             <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3] }}>
               <span style={styles.badge}>{opp.type}</span>
@@ -341,7 +341,7 @@ function StartupsPage() {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[4] }}>
         {startups.slice(0, 12).map((startup: any, idx: number) => (
-          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.line}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
+          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.ink[80]}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[1] }}>{startup.name}</h3>
             <p style={{ fontSize: 12, color: colors.ink[60], margin: 0, marginBottom: spacing[2] }}>Founded {startup.foundedYear} • {startup.location}</p>
             <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3] }}>
@@ -361,8 +361,8 @@ function StartupsPage() {
 
 const styles = {
   container: {
-    fontFamily: typography.fontFamily,
-    backgroundColor: colors.bg,
+    fontFamily: typography.family.sans,
+    backgroundColor: colors.ink[95],
     minHeight: "100vh",
   } as React.CSSProperties,
 
@@ -389,7 +389,7 @@ const styles = {
   } as React.CSSProperties,
 
   tabsContainer: {
-    borderBottom: `1px solid ${colors.line}`,
+    borderBottom: `1px solid ${colors.ink[80]}`,
     backgroundColor: "#fff",
     position: "sticky",
     top: 0,
@@ -445,7 +445,7 @@ const styles = {
 
   featureCard: {
     background: "#fff",
-    border: `1px solid ${colors.line}`,
+    border: `1px solid ${colors.ink[80]}`,
     borderRadius: radius.lg,
     padding: spacing[6],
     boxShadow: shadows.sm,
@@ -492,7 +492,7 @@ const styles = {
 
   categoryBtn: {
     padding: `${spacing[2]} ${spacing[4]}`,
-    border: `1px solid ${colors.line}`,
+    border: `1px solid ${colors.ink[80]}`,
     borderRadius: radius.md,
     background: "#fff",
     fontSize: 13,

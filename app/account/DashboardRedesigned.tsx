@@ -338,29 +338,28 @@ export default function DashboardRedesigned({
         {/* Dimension Grid */}
         <CardGrid columns={4} gap={spacing[4]} style={{ marginBottom: spacing[8] }}>
           {radarData.map((dim) => (
-            <Card
-              key={dim.key}
-              variant="subtle"
-              padding="md"
-              style={{
-                cursor: "pointer",
-                transition: `background-color ${180}ms ease-out, border-color ${180}ms ease-out`,
-              }}
-              onClick={() => setDimKey(dim.key)}
-              clickable
-            >
-              <div style={{ display: "flex", flexDirection: "column", gap: spacing[1] }}>
-                <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.02em", color: colors.ink[50] }}>
-                  {dim.label}
+            <div key={dim.key} onClick={() => setDimKey(dim.key)} style={{ cursor: "pointer" }}>
+              <Card
+                variant="subtle"
+                padding="md"
+                style={{
+                  transition: `background-color ${180}ms ease-out, border-color ${180}ms ease-out`,
+                }}
+                clickable
+              >
+                <div style={{ display: "flex", flexDirection: "column", gap: spacing[1] }}>
+                  <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.02em", color: colors.ink[50] }}>
+                    {dim.label}
+                  </div>
+                  <div style={{ fontSize: "24px", fontWeight: 700, color: colors.accent[40] }}>
+                    {dim.score}
+                  </div>
+                  <div style={{ fontSize: "11px", color: colors.ink[40] }}>
+                    {bandLabel(dim.score)} vs. typical {Math.round(dim.bench)}
+                  </div>
                 </div>
-                <div style={{ fontSize: "24px", fontWeight: 700, color: colors.accent[40] }}>
-                  {dim.score}
-                </div>
-                <div style={{ fontSize: "11px", color: colors.ink[40] }}>
-                  {bandLabel(dim.score)} vs. typical {Math.round(dim.bench)}
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </div>
           ))}
         </CardGrid>
 
