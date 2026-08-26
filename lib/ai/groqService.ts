@@ -7,7 +7,9 @@
  * Frontend calls /api/ai/search endpoint
  */
 
-// NOTE: In production, get from environment variable
+// CRITICAL: API key from environment variable ONLY
+// Set in .env.local or deployment environment: GROQ_API_KEY=gsk_...
+// Never hardcode API keys in source code
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 

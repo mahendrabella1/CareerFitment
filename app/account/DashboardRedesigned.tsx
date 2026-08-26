@@ -460,36 +460,115 @@ export default function DashboardRedesigned({
           </>
         )}
 
-        {/* Footer CTA */}
+        {/* Footer CTA - Reports & AI */}
         <div
           style={{
-            textAlign: "center",
             padding: spacing[6],
             borderTop: `1px solid ${colors.ink[80]}`,
             marginTop: spacing[8],
           }}
         >
-          <p style={{ color: colors.ink[40], marginBottom: spacing[2] }}>
-            Ready to explore your career path in detail?
-          </p>
-          <button
-            onClick={() => setView("report")}
-            style={{
-              padding: `${spacing[3]} ${spacing[6]}`,
-              backgroundColor: colors.accent[40],
-              color: colors.ink[100],
-              borderRadius: radius.md,
-              border: "none",
-              fontSize: typography.scale.body.fontSize,
-              fontWeight: 600,
-              cursor: "pointer",
-              transition: `background-color ${180}ms ease-out`,
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = colors.accent[30])}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = colors.accent[40])}
-          >
-            View Full Report
-          </button>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: spacing[4] }}>
+            <div
+              style={{
+                padding: spacing[4],
+                backgroundColor: colors.accent[100],
+                borderRadius: radius.lg,
+                border: `2px solid ${colors.accent[40]}`,
+              }}
+            >
+              <p style={{ margin: "0 0 12px", fontWeight: 600, fontSize: 14, color: colors.ink[10] }}>
+                📋 Comprehensive Report
+              </p>
+              <p style={{ margin: 0, fontSize: 13, color: colors.ink[40], lineHeight: 1.5, marginBottom: spacing[2] }}>
+                30+ sections with full profile analysis
+              </p>
+              <Link
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setView("report");
+                }}
+                style={{
+                  display: "inline-block",
+                  padding: `${spacing[2]} ${spacing[3]}`,
+                  backgroundColor: colors.accent[40],
+                  color: colors.ink[100],
+                  borderRadius: radius.md,
+                  textDecoration: "none",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                View Report →
+              </Link>
+            </div>
+
+            <div
+              style={{
+                padding: spacing[4],
+                backgroundColor: colors.ink[90],
+                borderRadius: radius.lg,
+                border: `1px solid ${colors.ink[80]}`,
+              }}
+            >
+              <p style={{ margin: "0 0 12px", fontWeight: 600, fontSize: 14, color: colors.ink[10] }}>
+                🎯 Career Fit Report
+              </p>
+              <p style={{ margin: 0, fontSize: 13, color: colors.ink[40], lineHeight: 1.5, marginBottom: spacing[2] }}>
+                Top careers matched to your profile
+              </p>
+              <Link
+                href="/account/reports"
+                style={{
+                  display: "inline-block",
+                  padding: `${spacing[2]} ${spacing[3]}`,
+                  backgroundColor: colors.ink[40],
+                  color: colors.ink[100],
+                  borderRadius: radius.md,
+                  textDecoration: "none",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                View Report →
+              </Link>
+            </div>
+
+            <div
+              style={{
+                padding: spacing[4],
+                backgroundColor: colors.ink[90],
+                borderRadius: radius.lg,
+                border: `1px solid ${colors.ink[80]}`,
+              }}
+            >
+              <p style={{ margin: "0 0 12px", fontWeight: 600, fontSize: 14, color: colors.ink[10] }}>
+                🤖 AI Assistant
+              </p>
+              <p style={{ margin: 0, fontSize: 13, color: colors.ink[40], lineHeight: 1.5, marginBottom: spacing[2] }}>
+                Ask education & career questions (7/month)
+              </p>
+              <Link
+                href="/account/reports"
+                style={{
+                  display: "inline-block",
+                  padding: `${spacing[2]} ${spacing[3]}`,
+                  backgroundColor: colors.ink[40],
+                  color: colors.ink[100],
+                  borderRadius: radius.md,
+                  textDecoration: "none",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                Open Assistant →
+              </Link>
+            </div>
+          </div>
         </div>
       </PageContainer>
     </div>
