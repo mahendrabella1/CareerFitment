@@ -194,13 +194,6 @@ function RegisterForm() {
             <>
               <h2 style={S.h}>Let’s start.</h2>
               <p style={S.subhint}>Your email and password are your login — you’ll use them to view your report anytime.</p>
-              {offerIsLive() && (
-                <div style={S.offer}>
-                  <span style={S.offerBadge}>{OFFER.discountPct}% OFF</span>
-                  <span><s style={S.offerWas}>{formatPaise(OFFER.listPaise)}</s> <b style={S.offerNow}>{formatPaise(OFFER.salePaise)}</b></span>
-                  <span style={S.offerTxt}>{OFFER.name} · coupon {OFFER.autoCouponCode} applies automatically</span>
-                </div>
-              )}
               {error && <div style={S.errorBox}>{error}</div>}
 
               <div style={S.grid2} className="og-g2">
