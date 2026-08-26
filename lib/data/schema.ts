@@ -221,8 +221,8 @@ export interface Country {
   educationSystem?: string;
   popularCourses?: string[];
   universitiesCount?: number;
-  tuitionRange?: { min: number; max: number; currency: string; per_year?: boolean };
-  livingCosts?: { min: number; max: number; currency: string; per_year?: boolean };
+  tuitionRange?: { min: number; max: number; currency: string; perYear?: boolean };
+  livingCosts?: { min: number; max: number; currency: string; perMonth?: boolean };
   scholarships?: string[];
   eligibility?: string;
   entranceTests?: string[];

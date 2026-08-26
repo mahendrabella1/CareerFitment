@@ -41,7 +41,7 @@ export const COUNTRIES: Record<string, Country> = {
       min: 15000,
       max: 30000,
       currency: "USD",
-      perYear: true,
+      perMonth: false,
     },
     scholarships: ["Fulbright Scholarship", "DistinguishedInternational", "Merit-based scholarships"],
     eligibility: "High school diploma equivalent, English proficiency (TOEFL/IELTS)",
@@ -73,7 +73,7 @@ export const COUNTRIES: Record<string, Country> = {
       min: 12000,
       max: 18000,
       currency: "GBP",
-      perYear: true,
+      perMonth: true,
     },
     scholarships: ["Chevening Scholarship", "Commonwealth Scholarship", "University-specific"],
     eligibility: "High school equivalent, English proficiency (IELTS 6.5+)",
@@ -111,7 +111,7 @@ export const COUNTRIES: Record<string, Country> = {
       min: 15000,
       max: 20000,
       currency: "CAD",
-      perYear: true,
+      perMonth: true,
     },
     scholarships: [
       "Vanier Canada Graduate Scholarship",
@@ -153,7 +153,7 @@ export const COUNTRIES: Record<string, Country> = {
       min: 10000,
       max: 15000,
       currency: "EUR",
-      perYear: true,
+      perMonth: true,
     },
     scholarships: ["DAAD Scholarship", "Erasmus+ Program", "University-specific"],
     eligibility: "12-year school completion, German language proficiency (B1 level)",
@@ -191,7 +191,7 @@ export const COUNTRIES: Record<string, Country> = {
       min: 20000,
       max: 30000,
       currency: "AUD",
-      perYear: true,
+      perMonth: true,
     },
     scholarships: ["Australia Awards Scholarship", "University-specific", "Enterprise Scholarships"],
     eligibility: "High school completion, English proficiency (IELTS 6+)",
@@ -229,7 +229,7 @@ export const COUNTRIES: Record<string, Country> = {
       min: 12000,
       max: 18000,
       currency: "EUR",
-      perYear: true,
+      perMonth: true,
     },
     scholarships: ["Orange Knowledge Program (OKP)", "Erasmus Mundus", "University scholarships"],
     eligibility: "High school diploma, English proficiency (TOEFL/IELTS/Duolingo)",
@@ -267,7 +267,7 @@ export const COUNTRIES: Record<string, Country> = {
       min: 24000,
       max: 36000,
       currency: "SGD",
-      perYear: true,
+      perMonth: true,
     },
     scholarships: ["MOE Scholarship", "ASEAN Scholarship", "University Scholarships"],
     eligibility: "High school diploma, English proficiency",
@@ -437,7 +437,7 @@ export const TOP_UNIVERSITIES: University[] = [
     ],
     ranking: { source: "QS 2026", rank: 25, year: 2026 },
     tuitionRange: { min: 15000, max: 40000, currency: "CAD", perYear: true },
-    livingCosts: { min: 15000, max: 25000, currency: "CAD", perYear: false },
+    livingCosts: { min: 15000, max: 25000, currency: "CAD", perMonth: false },
     scholarships: ["International scholarships"],
     website: "https://www.utoronto.ca/",
     source: "qs-rankings-2026",
@@ -479,6 +479,6 @@ export function searchUniversities(query: string): University[] {
     (u) =>
       u.name.toLowerCase().includes(query.toLowerCase()) ||
       u.country.toLowerCase().includes(query.toLowerCase()) ||
-      u.location.toLowerCase().includes(query.toLowerCase())
+      u.location?.toLowerCase().includes(query.toLowerCase())
   );
 }
