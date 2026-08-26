@@ -186,10 +186,10 @@ function CareerCard({ career }: { career: Career }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const demandColor = {
-    high: colors.green[60],
-    medium: colors.yellow[60],
-    low: colors.gray[60],
-  }[career.currentDemand] || colors.gray[60];
+    high: colors.success,
+    medium: colors.warning,
+    low: colors.ink[60],
+  }[career.currentDemand] || colors.ink[60];
 
   return (
     <div style={styles.card}>
@@ -386,9 +386,9 @@ const styles = {
   } as React.CSSProperties,
 
   clusterButtonActive: {
-    background: colors.red,
+    background: colors.accent[40],
     color: "#fff",
-    border: `1px solid ${colors.red}`,
+    border: `1px solid ${colors.accent[40]}`,
   } as React.CSSProperties,
 
   clusterIcon: {
@@ -469,7 +469,7 @@ const styles = {
     fontSize: 11,
     fontWeight: 700,
     borderRadius: radius.sm,
-    backgroundColor: colors.gray[20],
+    backgroundColor: colors.ink[90],
     color: colors.ink[80],
   } as React.CSSProperties,
 
@@ -499,7 +499,7 @@ const styles = {
     gridTemplateColumns: "1fr 1fr",
     gap: spacing[3],
     padding: spacing[3],
-    backgroundColor: colors.gray[5],
+    backgroundColor: colors.ink[95],
     borderRadius: radius.md,
     marginBottom: spacing[3],
   } as React.CSSProperties,
@@ -559,7 +559,7 @@ const styles = {
     padding: `${spacing[1]} ${spacing[3]}`,
     fontSize: 12,
     fontWeight: 600,
-    backgroundColor: colors.red,
+    backgroundColor: colors.accent[40],
     color: "#fff",
     borderRadius: radius.full,
   } as React.CSSProperties,
@@ -569,7 +569,7 @@ const styles = {
     padding: `${spacing[1]} ${spacing[3]}`,
     fontSize: 12,
     fontWeight: 600,
-    backgroundColor: colors.blue,
+    backgroundColor: colors.info,
     color: "#fff",
     borderRadius: radius.full,
   } as React.CSSProperties,
@@ -596,7 +596,7 @@ const styles = {
 
   pathCard: {
     padding: spacing[3],
-    backgroundColor: colors.green,
+    backgroundColor: colors.success,
     borderRadius: radius.md,
     color: "#fff",
   } as React.CSSProperties,

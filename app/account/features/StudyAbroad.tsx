@@ -391,9 +391,9 @@ const styles = {
   } as React.CSSProperties,
 
   countryButtonActive: {
-    background: colors.blue,
+    background: colors.info,
     color: "#fff",
-    border: `1px solid ${colors.blue}`,
+    border: `1px solid ${colors.info}`,
   } as React.CSSProperties,
 
   countryName: {
@@ -482,7 +482,7 @@ const styles = {
     padding: `${spacing[1]} ${spacing[2]}`,
     fontSize: 12,
     fontWeight: 700,
-    backgroundColor: colors.yellow,
+    backgroundColor: colors.warning,
     color: colors.ink[100],
     borderRadius: radius.sm,
   } as React.CSSProperties,
@@ -505,7 +505,7 @@ const styles = {
     gridTemplateColumns: "1fr 1fr",
     gap: spacing[3],
     padding: spacing[3],
-    backgroundColor: colors.gray[5],
+    backgroundColor: colors.ink[95],
     borderRadius: radius.md,
     marginBottom: spacing[3],
   } as React.CSSProperties,
@@ -558,7 +558,7 @@ const styles = {
     padding: `${spacing[1]} ${spacing[3]}`,
     fontSize: 12,
     fontWeight: 600,
-    backgroundColor: colors.blue,
+    backgroundColor: colors.info,
     color: "#fff",
     borderRadius: radius.full,
   } as React.CSSProperties,
@@ -600,7 +600,7 @@ const styles = {
   visitBtn: {
     display: "inline-block",
     padding: `${spacing[3]} ${spacing[4]}`,
-    background: colors.blue,
+    background: colors.info,
     color: "#fff",
     borderRadius: radius.md,
     textDecoration: "none",
@@ -659,7 +659,7 @@ const styles = {
     gridTemplateColumns: "repeat(3, 1fr)",
     gap: spacing[2],
     padding: spacing[3],
-    backgroundColor: colors.gray[5],
+    backgroundColor: colors.ink[95],
     borderRadius: radius.md,
     marginBottom: spacing[3],
     textAlign: "center",
@@ -683,7 +683,7 @@ const styles = {
 
   scholarshipsInfo: {
     padding: spacing[3],
-    backgroundColor: colors.green,
+    backgroundColor: colors.success,
     borderRadius: radius.md,
     color: "#fff",
     marginBottom: spacing[3],
@@ -705,7 +705,7 @@ const styles = {
   exploreBtn: {
     display: "inline-block",
     padding: `${spacing[2]} ${spacing[4]}`,
-    background: colors.red,
+    background: colors.accent[40],
     color: "#fff",
     borderRadius: radius.md,
     textDecoration: "none",

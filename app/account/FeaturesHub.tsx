@@ -16,49 +16,49 @@ const FEATURES = [
     name: "Career Library",
     icon: "💼",
     desc: "500+ careers with salary, skills, and education paths",
-    color: colors.red,
+    color: colors.accent[40],
   },
   {
     id: "study-abroad",
     name: "Study Abroad",
     icon: "✈️",
     desc: "100+ universities across 20 countries with costs",
-    color: colors.blue,
+    color: colors.info,
   },
   {
     id: "internships",
     name: "Internships & Opportunities",
     icon: "🎯",
     desc: "300+ internships, 100+ workshops, 200+ scholarships",
-    color: colors.green,
+    color: colors.success,
   },
   {
     id: "financial",
     name: "Financial Literacy",
     icon: "💰",
     desc: "30+ topics on money, investing, taxes, and planning",
-    color: colors.yellow,
+    color: colors.warning,
   },
   {
     id: "legal",
     name: "Legal Resources",
     icon: "⚖️",
     desc: "20+ guides on rights, safety, cyber law, and more",
-    color: colors.purple,
+    color: "#6366f1",
   },
   {
     id: "research",
     name: "Research Opportunities",
     icon: "🔬",
     desc: "50+ programs, competitions, and conferences",
-    color: colors.pink,
+    color: "#ec4899",
   },
   {
     id: "startups",
     name: "Startup Ecosystem",
     icon: "🚀",
     desc: "100+ startups and entrepreneurship resources",
-    color: colors.orange,
+    color: "#f97316",
   },
 ];
 
@@ -188,7 +188,7 @@ function InternshipsPage() {
             onClick={() => setActiveTab(tab as any)}
             style={{
               ...{ padding: `${spacing[2]} ${spacing[4]}`, border: "none", borderRadius: radius.md, fontSize: 14, fontWeight: 700, cursor: "pointer" },
-              ...(activeTab === tab ? { background: colors.green, color: "#fff" } : { background: colors.gray[20], color: colors.ink[80] }),
+              ...(activeTab === tab ? { background: colors.success, color: "#fff" } : { background: colors.ink[90], color: colors.ink[80] }),
             }}
           >
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -204,13 +204,13 @@ function InternshipsPage() {
               {item.description || item.provider || item.awardAmount?.min}
             </p>
             <div style={{ display: "flex", gap: spacing[2], flexWrap: "wrap", marginBottom: spacing[3] }}>
-              {item.organization && <span style={{ ...styles.badge, backgroundColor: colors.red }}>{item.organization}</span>}
-              {item.provider && <span style={{ ...styles.badge, backgroundColor: colors.blue }}>{item.provider}</span>}
-              {item.paid !== undefined && <span style={{ ...styles.badge, backgroundColor: colors.green }}>{item.paid ? "Paid" : "Free"}</span>}
-              {item.free !== undefined && <span style={{ ...styles.badge, backgroundColor: colors.blue }}>{item.free ? "Free" : "Paid"}</span>}
+              {item.organization && <span style={{ ...styles.badge, backgroundColor: colors.accent[40] }}>{item.organization}</span>}
+              {item.provider && <span style={{ ...styles.badge, backgroundColor: colors.info }}>{item.provider}</span>}
+              {item.paid !== undefined && <span style={{ ...styles.badge, backgroundColor: colors.success }}>{item.paid ? "Paid" : "Free"}</span>}
+              {item.free !== undefined && <span style={{ ...styles.badge, backgroundColor: colors.info }}>{item.free ? "Free" : "Paid"}</span>}
             </div>
-            {item.stipend && <p style={{ fontSize: 13, fontWeight: 700, color: colors.red, margin: 0 }}>₹{item.stipend.amount}/month</p>}
-            {item.awardAmount && <p style={{ fontSize: 13, fontWeight: 700, color: colors.green, margin: 0 }}>₹{item.awardAmount.min}-₹{item.awardAmount.max}/year</p>}
+            {item.stipend && <p style={{ fontSize: 13, fontWeight: 700, color: colors.accent[40], margin: 0 }}>₹{item.stipend.amount}/month</p>}
+            {item.awardAmount && <p style={{ fontSize: 13, fontWeight: 700, color: colors.success, margin: 0 }}>₹{item.awardAmount.min}-₹{item.awardAmount.max}/year</p>}
           </div>
         ))}
       </div>
@@ -291,7 +291,7 @@ function LegalResourcesPage() {
               </ul>
             </div>
             {resource.helplineNumber && (
-              <p style={{ fontSize: 12, fontWeight: 700, color: colors.red, margin: 0 }}>🆘 Helpline: {resource.helplineNumber}</p>
+              <p style={{ fontSize: 12, fontWeight: 700, color: colors.accent[40], margin: 0 }}>🆘 Helpline: {resource.helplineNumber}</p>
             )}
           </div>
         ))}
@@ -317,8 +317,8 @@ function ResearchPage() {
               <span style={styles.badge}>{opp.field}</span>
             </div>
             <p style={{ fontSize: 13, color: colors.ink[60], lineHeight: 1.5, margin: 0, marginBottom: spacing[2] }}>{opp.description}</p>
-            {opp.prizes && <p style={{ fontSize: 12, fontWeight: 700, color: colors.green, margin: 0 }}>🏆 {opp.prizes}</p>}
-            <a href={opp.url} target="_blank" rel="noopener" style={{ fontSize: 12, color: colors.red, textDecoration: "none", fontWeight: 700 }}>Learn more →</a>
+            {opp.prizes && <p style={{ fontSize: 12, fontWeight: 700, color: colors.success, margin: 0 }}>🏆 {opp.prizes}</p>}
+            <a href={opp.url} target="_blank" rel="noopener" style={{ fontSize: 12, color: colors.accent[40], textDecoration: "none", fontWeight: 700 }}>Learn more →</a>
           </div>
         ))}
       </div>
@@ -347,11 +347,11 @@ function StartupsPage() {
             <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3] }}>
               <span style={styles.badge}>{startup.industry}</span>
               <span style={styles.badge}>{startup.stage}</span>
-              {startup.isUnicorn && <span style={{ ...styles.badge, backgroundColor: colors.yellow }}>🦄 Unicorn</span>}
+              {startup.isUnicorn && <span style={{ ...styles.badge, backgroundColor: colors.warning }}>🦄 Unicorn</span>}
             </div>
             <p style={{ fontSize: 13, color: colors.ink[70], lineHeight: 1.5, margin: 0, marginBottom: spacing[2] }}>{startup.description}</p>
-            <p style={{ fontSize: 12, fontWeight: 700, color: colors.red, margin: 0 }}>Funding: ${startup.fundingRaised.amount / 1000000}M</p>
-            <a href={startup.website} target="_blank" rel="noopener" style={{ fontSize: 12, color: colors.blue, textDecoration: "none", fontWeight: 700 }}>Visit website →</a>
+            <p style={{ fontSize: 12, fontWeight: 700, color: colors.accent[40], margin: 0 }}>Funding: ${startup.fundingRaised.amount / 1000000}M</p>
+            <a href={startup.website} target="_blank" rel="noopener" style={{ fontSize: 12, color: colors.info, textDecoration: "none", fontWeight: 700 }}>Visit website →</a>
           </div>
         ))}
       </div>
@@ -423,7 +423,7 @@ const styles = {
   } as React.CSSProperties,
 
   tabActive: {
-    borderBottomColor: colors.red,
+    borderBottomColor: colors.accent[40],
   } as React.CSSProperties,
 
   tabIcon: {
@@ -452,7 +452,7 @@ const styles = {
     cursor: "pointer",
     transition: "all 0.2s",
     position: "relative",
-    borderLeft: `4px solid ${colors.red}`,
+    borderLeft: `4px solid ${colors.accent[40]}`,
   } as React.CSSProperties,
 
   featureIcon: {
@@ -480,7 +480,7 @@ const styles = {
 
   arrow: {
     fontSize: 24,
-    color: colors.red,
+    color: colors.accent[40],
     position: "absolute",
     right: spacing[4],
     bottom: spacing[4],
@@ -503,9 +503,9 @@ const styles = {
   } as React.CSSProperties,
 
   categoryBtnActive: {
-    background: colors.red,
+    background: colors.accent[40],
     color: "#fff",
-    borderColor: colors.red,
+    borderColor: colors.accent[40],
   } as React.CSSProperties,
 
   badge: {
@@ -514,7 +514,7 @@ const styles = {
     fontSize: 11,
     fontWeight: 700,
     borderRadius: radius.sm,
-    backgroundColor: colors.gray[20],
+    backgroundColor: colors.ink[90],
     color: colors.ink[80],
   } as React.CSSProperties,
 };
