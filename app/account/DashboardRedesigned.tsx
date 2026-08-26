@@ -105,8 +105,8 @@ export default function DashboardRedesigned({
   const topMatches = (a.clusters ?? [])
     .slice(0, 3)
     .map((c) => ({
-      rank: c.id,
-      title: c.name,
+      rank: c.cluster,
+      title: c.cluster.charAt(0).toUpperCase() + c.cluster.slice(1),
       fit: c.score,
       verdict: c.score >= 65 ? "Top choice" : "Strong fit",
     }));
