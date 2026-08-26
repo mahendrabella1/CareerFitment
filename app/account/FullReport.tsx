@@ -512,8 +512,14 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
               // Was a whole extra table of its own; it is one pill's worth of
               // information, so it lives on the card it describes.
               const v = r.fit >= 75 ? { t: "Top Choice", c: "hi" } : r.fit >= 60 ? { t: "Good Choice", c: "mid" } : { t: "Explore", c: "lo" };
+              const Visual = getCareerVisual(r.role);
               return (
                 <div className="ccard" key={r.role + i}>
+                  <div style={{ height: '120px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', borderRadius: '8px', background: '#F9FAFB' }}>
+                    <div style={{ width: '100px', height: '100px' }}>
+                      <Visual />
+                    </div>
+                  </div>
                   <div className="ccard-top">
                     <span className="ccard-rk">{i + 1}</span>
                     <div className="ccard-main">
