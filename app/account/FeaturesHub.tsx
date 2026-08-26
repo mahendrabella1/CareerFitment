@@ -4,6 +4,11 @@ import { useState } from "react";
 import { colors, spacing, typography, radius, shadows } from "@/app/account/designTokens";
 import CareerLibrary from "@/app/account/features/CareerLibrary";
 import StudyAbroad from "@/app/account/features/StudyAbroad";
+import { getInternships, getWorkshops, getScholarships } from "@/lib/data/internshipsData";
+import { getFinancialTopics, getTopicsByCategory } from "@/lib/data/financialLiteracyData";
+import { getLegalResources, getResourcesByCategory } from "@/lib/data/legalResourcesData";
+import { getResearchOpportunities } from "@/lib/data/researchData";
+import { getAllStartups, getUnicorns } from "@/lib/data/startupsData";
 
 const FEATURES = [
   {
@@ -165,8 +170,6 @@ export default function FeaturesHub() {
 
 // Quick placeholder pages for remaining features
 function InternshipsPage() {
-  const { getInternships, getWorkshops, getScholarships } = require("@/lib/data/internshipsData");
-
   const [activeTab, setActiveTab] = useState<"internships" | "workshops" | "scholarships">("internships");
   const internships = getInternships();
   const workshops = getWorkshops();
@@ -216,8 +219,6 @@ function InternshipsPage() {
 }
 
 function FinancialLiteracyPage() {
-  const { getFinancialTopics, getTopicsByCategory } = require("@/lib/data/financialLiteracyData");
-
   const topics = getFinancialTopics();
   const categories = [...new Set(topics.map((t: any) => t.category))];
 
@@ -257,8 +258,6 @@ function FinancialLiteracyPage() {
 }
 
 function LegalResourcesPage() {
-  const { getLegalResources, getResourcesByCategory } = require("@/lib/data/legalResourcesData");
-
   const resources = getLegalResources();
   const categories = [...new Set(resources.map((r: any) => r.category))];
 
@@ -302,8 +301,6 @@ function LegalResourcesPage() {
 }
 
 function ResearchPage() {
-  const { getResearchOpportunities } = require("@/lib/data/researchData");
-
   const opportunities = getResearchOpportunities();
 
   return (
@@ -330,8 +327,6 @@ function ResearchPage() {
 }
 
 function StartupsPage() {
-  const { getAllStartups, getUnicorns } = require("@/lib/data/startupsData");
-
   const [showUnicorns, setShowUnicorns] = useState(false);
   const startups = showUnicorns ? getUnicorns() : getAllStartups();
 
