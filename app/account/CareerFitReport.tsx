@@ -157,7 +157,7 @@ export default function CareerFitReport({
         <div className="cfr-section">
           <h2 className="cfr-section-title">Your Profile</h2>
           <p style={{ fontSize: 14, color: C.ink3, margin: 0, lineHeight: 1.6 }}>
-            You are a <b>{arch.name}</b>. {arch.desc}
+            You are a <b>{arch.name}</b>. {arch.tagline}
           </p>
         </div>
 
