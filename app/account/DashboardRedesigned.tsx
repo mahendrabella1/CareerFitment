@@ -209,7 +209,7 @@ export default function DashboardRedesigned({
           <HeroContent
             title={arch.name || "Your Career Profile"}
             subtitle={arch.tagline}
-            icon={arch.icon ? <Icon type={arch.icon} /> : undefined}
+            icon={undefined}
             metadata={[
               { label: "Top Strength", value: topDimLabel },
               {
