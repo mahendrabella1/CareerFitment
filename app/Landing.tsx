@@ -10,8 +10,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/app/Icons";
-import OfferBanner from "@/app/OfferBanner";
-import { OFFER, offerIsLive, formatPaise } from "@/lib/offer";
 
 const LOGO = "https://onegrasp.com/wp-content/uploads/2026/07/onegrasp-logo.png";
 const IMG = (id: string, w = 720) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=72`;
@@ -40,9 +38,6 @@ export default function Landing({ onStart }: { onStart: () => void }) {
   return (
     <div ref={root} className="ogl-land">
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-
-      {/* sale ribbon — scrolls above the nav and away with the page */}
-      <OfferBanner />
 
       {/* nav */}
       <header className="ogl-nav">
