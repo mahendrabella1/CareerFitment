@@ -8,6 +8,7 @@ export async function POST(req: NextRequest) {
     const { messages } = await req.json();
 
     if (!GROQ_API_KEY) {
+      console.error("GROQ_API_KEY not found in environment");
       return NextResponse.json({ error: "API key not configured" }, { status: 500 });
     }
 
@@ -23,10 +24,16 @@ export async function POST(req: NextRequest) {
       }),
     });
 
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Groq API error:", errorData);
+      return NextResponse.json(errorData, { status: response.status });
+    }
+
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error) {
     console.error("Chat API error:", error);
-    return NextResponse.json({ error: "Failed to process chat" }, { status: 500 });
+    return NextResponse.json({ error: `Server error: ${error instanceof Error ? error.message : "Unknown error"}` }, { status: 500 });
   }
 }
