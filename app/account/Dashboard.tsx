@@ -385,7 +385,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                   </div>
 
                   {/* Features Grid with Background Images */}
-                  <div style={{padding: '0 80px 80px', maxWidth: '100%', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '32px'}}>
+                  <div style={{padding: '0 80px 80px', maxWidth: '100%', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '32px'}}>
                     {[
                       {id:'startups', title:'Startups', desc:'Connect with innovative founders and ideas.', color:'#ea580c', emoji:'🚀', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_39_45-AM.png)'},
                       {id:'research', title:'Research', desc:'Explore cutting-edge research programs.', color:'#0369a1', emoji:'🔬', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_40_43-AM.png)'},
@@ -395,6 +395,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                       {id:'study-abroad', title:'Study Abroad', desc:'Discover universities worldwide.', color:'#dc2626', emoji:'✈️', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_46_05-AM.png)'},
                       {id:'exams', title:'Entrance Exams', desc:'Explore exams and eligibility details.', color:'#9333ea', emoji:'📝', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_54_06-AM.png)'},
                       {id:'internships', title:'Internships', desc:'Gain real-world experience with top opportunities.', color:'#ca8a04', emoji:'💼', bg:'url(https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=600&h=400&fit=crop&q=85)'},
+                      {id:'resources', title:'Scholarships', desc:'Fund your education with 200+ awards.', color:'#f59e0b', emoji:'🎓', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_59_10-AM.png)'},
                     ].map((feature) => (
                       <div key={feature.id} onClick={() => go(feature.id)} style={{background:'#fff', borderRadius:'12px', border:`1px solid ${C.line}`, cursor:'pointer', transition:'all 250ms ease', boxShadow:'0 2px 8px rgba(0,0,0,0.05)', overflow:'hidden', display:'flex', flexDirection:'column', height: '100%'}}>
                         <div style={{height:'160px', backgroundImage:feature.bg, backgroundSize:'cover', backgroundPosition:'center', position:'relative'}}>
