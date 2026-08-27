@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 const GROQ_API_KEY = process.env.GROQ_API_KEY || "";
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
+console.log("🔑 GROQ_API_KEY loaded:", GROQ_API_KEY ? "✅ YES" : "❌ NO");
+
 export async function POST(req: NextRequest) {
   try {
     const { messages } = await req.json();
