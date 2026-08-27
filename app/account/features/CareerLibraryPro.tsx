@@ -761,7 +761,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 13,
     color: colors.ink[70],
     padding: spacing[3],
-    backgroundColor: colors.ink[98],
+    backgroundColor: colors.ink[95],
     borderRadius: radius.md,
     border: `1px solid ${colors.ink[80]}`,
   },
