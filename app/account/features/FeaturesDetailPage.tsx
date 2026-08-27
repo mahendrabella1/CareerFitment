@@ -136,7 +136,7 @@ function EntranceExamsPage() {
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
-      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[100] }}>{config.title}</h1>
+      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[10] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[20], marginBottom: spacing[6] }}>
         {config.subtitle}
       </p>
@@ -144,7 +144,7 @@ function EntranceExamsPage() {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
         {exams.map((exam, idx) => (
           <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm, transition: "all 0.3s" }}>
-            <h3 style={{ fontSize: 18, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[100] }}>{exam.name}</h3>
+            <h3 style={{ fontSize: 18, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[10] }}>{exam.name}</h3>
             <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3], flexWrap: "wrap" }}>
               <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>{exam.field}</span>
               <span style={{ ...styles.badge, background: exam.difficulty === "Very High" ? "#DC2626" : "#FBBF24", color: "#000" }}>{exam.difficulty}</span>
@@ -171,7 +171,7 @@ function InternshipsDetailPage({ activeTab, setActiveTab }: { activeTab: string;
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
-      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[100] }}>{config.title}</h1>
+      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[10] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[20], marginBottom: spacing[6] }}>
         {config.subtitle}
       </p>
@@ -195,7 +195,7 @@ function InternshipsDetailPage({ activeTab, setActiveTab }: { activeTab: string;
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
         {data.slice(0, 20).map((item: any, idx: number) => (
           <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[100] }}>{item.title || item.name}</h3>
+            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[10] }}>{item.title || item.name}</h3>
             <p style={{ fontSize: 14, color: colors.ink[30], lineHeight: 1.6, margin: 0, marginBottom: spacing[3] }}>
               {item.description || item.provider || item.organizationName}
             </p>
@@ -225,7 +225,7 @@ function FinancialLiteracyDetailPage() {
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
-      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[100] }}>{config.title}</h1>
+      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[10] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[20], marginBottom: spacing[6] }}>
         {config.subtitle}
       </p>
@@ -249,7 +249,7 @@ function FinancialLiteracyDetailPage() {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
         {filtered.slice(0, 20).map((topic: any, idx: number) => (
           <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[100] }}>{topic.title}</h3>
+            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[10] }}>{topic.title}</h3>
             <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3] }}>
               <span style={{ ...styles.badge, background: config.accentColor, color: "#000" }}>📚 {topic.difficulty}</span>
               <span style={{ ...styles.badge, background: config.borderColor, color: colors.ink[80] }}>⏱️ {topic.duration}</span>
@@ -275,7 +275,7 @@ function LegalResourcesDetailPage() {
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
-      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[100] }}>{config.title}</h1>
+      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[10] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[20], marginBottom: spacing[6] }}>
         {config.subtitle}
       </p>
@@ -299,7 +299,7 @@ function LegalResourcesDetailPage() {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
         {filtered.slice(0, 20).map((resource: any, idx: number) => (
           <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[100] }}>{resource.title}</h3>
+            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[10] }}>{resource.title}</h3>
             <p style={{ fontSize: 14, color: colors.ink[30], lineHeight: 1.6, margin: 0, marginBottom: spacing[3] }}>{resource.description}</p>
             {resource.keyPoints && (
               <div style={{ marginBottom: spacing[3] }}>
@@ -326,7 +326,7 @@ function ResearchDetailPage() {
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
-      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[100] }}>{config.title}</h1>
+      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[10] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[20], marginBottom: spacing[6] }}>
         {config.subtitle}
       </p>
@@ -334,7 +334,7 @@ function ResearchDetailPage() {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
         {opportunities.slice(0, 20).map((opp: any, idx: number) => (
           <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[100] }}>{opp.title}</h3>
+            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[10] }}>{opp.title}</h3>
             <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3], flexWrap: "wrap" }}>
               <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>📌 {opp.type}</span>
               <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>📍 {opp.level}</span>
@@ -357,7 +357,7 @@ function StartupsDetailPage() {
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
-      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[100] }}>{config.title}</h1>
+      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[10] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[20], marginBottom: spacing[6] }}>
         {config.subtitle}
       </p>
@@ -374,7 +374,7 @@ function StartupsDetailPage() {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
         {startups.slice(0, 20).map((startup: any, idx: number) => (
           <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[1], color: colors.ink[100] }}>{startup.name}</h3>
+            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[1], color: colors.ink[10] }}>{startup.name}</h3>
             <p style={{ fontSize: 13, color: colors.ink[20], margin: 0, marginBottom: spacing[3] }}>📅 Founded {startup.foundedYear} • 📍 {startup.location}</p>
             <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3], flexWrap: "wrap" }}>
               <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>{startup.industry}</span>
@@ -397,7 +397,7 @@ function ScholarshipsDetailPage() {
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
-      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[100] }}>{config.title}</h1>
+      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[10] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[20], marginBottom: spacing[6] }}>
         {config.subtitle}
       </p>
@@ -405,7 +405,7 @@ function ScholarshipsDetailPage() {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
         {scholarships.slice(0, 20).map((scholarship: any, idx: number) => (
           <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[100] }}>{scholarship.name}</h3>
+            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[10] }}>{scholarship.name}</h3>
             <p style={{ fontSize: 14, color: colors.ink[30], lineHeight: 1.6, margin: 0, marginBottom: spacing[3] }}>🏢 {scholarship.provider}</p>
             <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3], flexWrap: "wrap" }}>
               {scholarship.category && <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>📁 {scholarship.category}</span>}

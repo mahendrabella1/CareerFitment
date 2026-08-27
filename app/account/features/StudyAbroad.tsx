@@ -326,7 +326,7 @@ const styles = {
   title: {
     fontSize: 32,
     fontWeight: 800,
-    color: colors.ink[100],
+    color: colors.ink[10],
     margin: 0,
     marginBottom: spacing[2],
   } as React.CSSProperties,
@@ -465,7 +465,7 @@ const styles = {
   uniTitle: {
     fontSize: 18,
     fontWeight: 700,
-    color: colors.ink[100],
+    color: colors.ink[10],
     margin: 0,
     marginBottom: spacing[1],
   } as React.CSSProperties,
@@ -483,7 +483,7 @@ const styles = {
     fontSize: 12,
     fontWeight: 700,
     backgroundColor: colors.warning,
-    color: colors.ink[100],
+    color: colors.ink[10],
     borderRadius: radius.sm,
   } as React.CSSProperties,
 
@@ -526,7 +526,7 @@ const styles = {
   infoValue: {
     fontSize: 14,
     fontWeight: 700,
-    color: colors.ink[100],
+    color: colors.ink[10],
   } as React.CSSProperties,
 
   expandedContent: {
@@ -619,7 +619,7 @@ const styles = {
   sectionHeading: {
     fontSize: 24,
     fontWeight: 800,
-    color: colors.ink[100],
+    color: colors.ink[10],
     margin: 0,
     marginBottom: spacing[5],
   } as React.CSSProperties,
@@ -641,7 +641,7 @@ const styles = {
   countryCardTitle: {
     fontSize: 18,
     fontWeight: 700,
-    color: colors.ink[100],
+    color: colors.ink[10],
     margin: 0,
     marginBottom: spacing[2],
   } as React.CSSProperties,
@@ -678,7 +678,7 @@ const styles = {
     display: "block",
     fontSize: 13,
     fontWeight: 700,
-    color: colors.ink[100],
+    color: colors.ink[10],
   } as React.CSSProperties,
 
   scholarshipsInfo: {

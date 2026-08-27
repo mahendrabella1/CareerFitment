@@ -103,7 +103,7 @@ const styles: Record<string, React.CSSProperties> = {
   title: {
     fontSize: 24,
     fontWeight: 800,
-    color: colors.ink[100],
+    color: colors.ink[10],
     margin: 0,
     marginBottom: spacing[1],
     lineHeight: 1.2,

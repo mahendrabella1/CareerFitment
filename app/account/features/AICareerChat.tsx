@@ -220,7 +220,7 @@ export default function AICareerChat({ userId }: { userId: string }) {
             <div style={{
               ...styles.message,
               background: msg.type === "user" ? colors.accent[40] : colors.ink[90],
-              color: msg.type === "user" ? "#fff" : colors.ink[100]
+              color: msg.type === "user" ? "#fff" : colors.ink[10]
             }}>
               {msg.content}
             </div>
