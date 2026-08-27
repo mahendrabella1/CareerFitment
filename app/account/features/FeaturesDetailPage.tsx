@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { colors, spacing, typography, radius, shadows } from "@/app/account/designTokens";
-import CareerLibraryPro from "./CareerLibraryPro";
+import CareerLibraryEnhanced from "./CareerLibraryEnhanced";
 import StudyAbroad from "./StudyAbroad";
 import { Icon } from "@/app/Icons";
 import {
@@ -23,7 +23,7 @@ export default function FeaturesDetailPage({ featureId, onClose }: { featureId: 
   const renderFeature = () => {
     switch (featureId) {
       case "careers":
-        return <CareerLibraryPro />;
+        return <CareerLibraryEnhanced />;
 
       case "study-abroad":
         return <StudyAbroad />;
