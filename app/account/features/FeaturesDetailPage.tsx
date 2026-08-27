@@ -56,7 +56,7 @@ export default function FeaturesDetailPage({ featureId, onClose }: { featureId: 
 
   return (
     <div style={styles.container}>
-      <button onClick={onClose} style={styles.closeBtn}>
+      <button type="button" onClick={onClose} style={styles.closeBtn}>
         ← Back to Dashboard
       </button>
       {renderFeature()}
@@ -120,6 +120,7 @@ function InternshipsDetailPage({ activeTab, setActiveTab }: { activeTab: string;
         {["internships", "workshops", "scholarships"].map((tab) => (
           <button
             key={tab}
+            type="button"
             onClick={() => setActiveTab(tab)}
             style={{
               ...styles.tabBtn,
@@ -169,12 +170,13 @@ function FinancialLiteracyDetailPage() {
       </p>
 
       <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[6], flexWrap: "wrap" }}>
-        <button onClick={() => setSelectedCategory(null)} style={{ ...styles.tabBtn, ...(selectedCategory === null ? styles.tabBtnActive : {}) }}>
+        <button type="button" onClick={() => setSelectedCategory(null)} style={{ ...styles.tabBtn, ...(selectedCategory === null ? styles.tabBtnActive : {}) }}>
           All Topics
         </button>
         {categories.map((cat) => (
           <button
             key={cat}
+            type="button"
             onClick={() => setSelectedCategory(cat as any)}
             style={{ ...styles.tabBtn, ...(selectedCategory === cat ? styles.tabBtnActive : {}) }}
           >
@@ -217,12 +219,13 @@ function LegalResourcesDetailPage() {
       </p>
 
       <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[6], flexWrap: "wrap" }}>
-        <button onClick={() => setSelectedCategory(null)} style={{ ...styles.tabBtn, ...(selectedCategory === null ? styles.tabBtnActive : {}) }}>
+        <button type="button" onClick={() => setSelectedCategory(null)} style={{ ...styles.tabBtn, ...(selectedCategory === null ? styles.tabBtnActive : {}) }}>
           All Topics
         </button>
         {categories.map((cat) => (
           <button
             key={cat}
+            type="button"
             onClick={() => setSelectedCategory(cat as any)}
             style={{ ...styles.tabBtn, ...(selectedCategory === cat ? styles.tabBtnActive : {}) }}
           >
@@ -296,10 +299,10 @@ function StartupsDetailPage() {
       </p>
 
       <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[6] }}>
-        <button onClick={() => setShowUnicorns(false)} style={{ ...styles.tabBtn, ...(showUnicorns === false ? styles.tabBtnActive : {}) }}>
+        <button type="button" onClick={() => setShowUnicorns(false)} style={{ ...styles.tabBtn, ...(showUnicorns === false ? styles.tabBtnActive : {}) }}>
           All Startups
         </button>
-        <button onClick={() => setShowUnicorns(true)} style={{ ...styles.tabBtn, ...(showUnicorns === true ? styles.tabBtnActive : {}) }}>
+        <button type="button" onClick={() => setShowUnicorns(true)} style={{ ...styles.tabBtn, ...(showUnicorns === true ? styles.tabBtnActive : {}) }}>
           Unicorns Only
         </button>
       </div>
@@ -371,6 +374,8 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: "pointer",
     color: colors.ink[70],
     marginBottom: spacing[6],
+    pointerEvents: "auto" as const,
+    userSelect: "none" as const,
   },
 
   tabBtn: {
@@ -383,6 +388,8 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: "pointer",
     transition: "all 0.2s",
     color: colors.ink[80],
+    pointerEvents: "auto" as const,
+    userSelect: "none" as const,
   },
 
   tabBtnActive: {
