@@ -72,6 +72,10 @@ export default function StudyAbroad() {
 
   return (
     <div style={styles.container}>
+      {/* Hero Image */}
+      <div style={{ marginBottom: spacing[6], borderRadius: radius.lg, overflow: "hidden", maxHeight: "320px" }}>
+        <img src="https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_46_05-AM.png" alt="Study Abroad" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+      </div>
       <div style={styles.header}>
         <h1 style={styles.title}>Study Abroad</h1>
         <p style={styles.subtitle}>Explore 100+ universities across 20 countries with detailed admissions and cost information</p>

@@ -59,6 +59,10 @@ export default function CareerLibraryEnhanced() {
 
   return (
     <div style={styles.container}>
+      {/* Hero Image */}
+      <div style={{ marginBottom: spacing[6], borderRadius: radius.lg, overflow: "hidden", maxHeight: "320px" }}>
+        <img src="https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_49_20-AM.png" alt="Career Library" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+      </div>
       {/* Header */}
       <div style={styles.header}>
         <div>
