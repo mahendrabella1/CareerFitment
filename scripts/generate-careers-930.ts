@@ -228,7 +228,7 @@ const careersByCluster = {
 };
 
 // Summary
-const summary = Object.entries(careersByCluster).reduce((acc, [cluster, careers]) => {
+const summary = Object.entries(careersByCluster).reduce((acc: Record<string, number>, [cluster, careers]) => {
   acc[cluster] = careers.length;
   return acc;
 }, {});
