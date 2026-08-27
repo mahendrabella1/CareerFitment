@@ -39,6 +39,9 @@ import {
   archetype, actionPlan, domainFit,
   percentileOf, subTraits, resultOf, categoryDeepDive,
 } from "@/lib/report/knowledge";
+import CareerLibrary from "@/app/account/features/CareerLibrary";
+import StudyAbroad from "@/app/account/features/StudyAbroad";
+import FeaturesHub from "@/app/account/FeaturesHub";
 
 // Dashboard accent — OneGrasp red theme (white, black, grey, red #db3433).
 const IN = "#db3433", IN_STRONG = "#b82a2b", IN_TINT = "#fef0f0", IN_LINE = "#f5d5d5";
@@ -59,6 +62,13 @@ const NAV = [
   { id: "fields", label: "Best-fit Fields", icon: "compass" },
   { id: "mind", label: "How You Think", icon: "multiple_intelligence" },
   { id: "plan", label: "My Plan", icon: "check" },
+  { id: "careers", label: "Career Library", icon: "briefcase" },
+  { id: "study-abroad", label: "Study Abroad", icon: "plane" },
+  { id: "internships", label: "Internships", icon: "target" },
+  { id: "financial", label: "Financial Literacy", icon: "dollar" },
+  { id: "legal", label: "Legal Resources", icon: "shield" },
+  { id: "research", label: "Research Opportunities", icon: "microscope" },
+  { id: "startups", label: "Startup Ecosystem", icon: "rocket" },
 ];
 
 // Career-toolkit (colleges/exams/internships/scholarships/careers) is
@@ -547,6 +557,70 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                   <Toolkit tab={toolkitTab} setTab={setToolkitTab} />
                 </section>
               )}
+
+              {/* ===== FEATURES ===== */}
+              <section id="careers" className="ash-sec">
+                <div className="ogd-card">
+                  <CardHead icon="briefcase" title="Career Library" />
+                  <div style={{padding:'24px'}}>
+                    <CareerLibrary />
+                  </div>
+                </div>
+              </section>
+
+              <section id="study-abroad" className="ash-sec">
+                <div className="ogd-card">
+                  <CardHead icon="plane" title="Study Abroad" />
+                  <div style={{padding:'24px'}}>
+                    <StudyAbroad />
+                  </div>
+                </div>
+              </section>
+
+              <section id="internships" className="ash-sec">
+                <div className="ogd-card">
+                  <CardHead icon="target" title="Internships & Opportunities" />
+                  <div style={{padding:'24px'}}>
+                    <FeaturesHub />
+                  </div>
+                </div>
+              </section>
+
+              <section id="financial" className="ash-sec">
+                <div className="ogd-card">
+                  <CardHead icon="dollar" title="Financial Literacy" />
+                  <div style={{padding:'24px'}}>
+                    <FeaturesHub />
+                  </div>
+                </div>
+              </section>
+
+              <section id="legal" className="ash-sec">
+                <div className="ogd-card">
+                  <CardHead icon="shield" title="Legal Resources" />
+                  <div style={{padding:'24px'}}>
+                    <FeaturesHub />
+                  </div>
+                </div>
+              </section>
+
+              <section id="research" className="ash-sec">
+                <div className="ogd-card">
+                  <CardHead icon="microscope" title="Research Opportunities" />
+                  <div style={{padding:'24px'}}>
+                    <FeaturesHub />
+                  </div>
+                </div>
+              </section>
+
+              <section id="startups" className="ash-sec">
+                <div className="ogd-card">
+                  <CardHead icon="rocket" title="Startup Ecosystem" />
+                  <div style={{padding:'24px'}}>
+                    <FeaturesHub />
+                  </div>
+                </div>
+              </section>
 
               {/* Anything not anchored to a section lands here, at the end. */}
               {extraSections
