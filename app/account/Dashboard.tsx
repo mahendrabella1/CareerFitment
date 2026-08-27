@@ -39,7 +39,6 @@ import {
   archetype, actionPlan, domainFit,
   percentileOf, subTraits, resultOf, categoryDeepDive,
 } from "@/lib/report/knowledge";
-import CareerLibrary from "@/app/account/features/CareerLibrary";
 import StudyAbroad from "@/app/account/features/StudyAbroad";
 import FeaturesHub from "@/app/account/FeaturesHub";
 

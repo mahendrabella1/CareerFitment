@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { colors, spacing, typography, radius, shadows } from "@/app/account/designTokens";
-import CareerLibrary from "@/app/account/features/CareerLibrary";
+import CareerLibraryPro from "@/app/account/features/CareerLibraryPro";
 import StudyAbroad from "@/app/account/features/StudyAbroad";
 import { getInternships, getWorkshops, getScholarships } from "@/lib/data/internshipsData";
 import { getFinancialTopics, getTopicsByCategory } from "@/lib/data/financialLiteracyData";
@@ -125,7 +125,7 @@ export default function FeaturesHub() {
       {/* Feature Detail View */}
       {activeFeature === "careers" && (
         <div style={styles.featureDetailContainer}>
-          <CareerLibrary />
+          <CareerLibraryPro />
         </div>
       )}
 
