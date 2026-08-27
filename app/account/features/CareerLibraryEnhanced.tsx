@@ -499,12 +499,6 @@ const styles: Record<string, React.CSSProperties> = {
     color: colors.accent[40],
   },
 
-  mainLayout: {
-    display: "grid",
-    gridTemplateColumns: "260px 1fr",
-    gap: spacing[6],
-  },
-
   sidebar: {
     background: "#fff",
     borderRadius: radius.lg,
