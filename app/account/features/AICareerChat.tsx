@@ -278,13 +278,13 @@ const styles: Record<string, React.CSSProperties> = {
   title: {
     fontSize: 18,
     fontWeight: 700,
-    color: colors.ink[100],
+    color: colors.ink[10],
     margin: 0,
     marginBottom: spacing[1],
   },
   subtitle: {
     fontSize: 13,
-    color: colors.ink[60],
+    color: colors.ink[20],
     margin: 0,
   },
   remaining: {
@@ -294,7 +294,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   remainingLabel: {
     fontSize: 11,
-    color: colors.ink[60],
+    color: colors.ink[20],
     marginBottom: spacing[1],
   },
   remainingCount: {
@@ -332,13 +332,13 @@ const styles: Record<string, React.CSSProperties> = {
   emptyTitle: {
     fontSize: 20,
     fontWeight: 700,
-    color: colors.ink[100],
+    color: colors.ink[10],
     margin: 0,
     marginBottom: spacing[2],
   },
   emptyText: {
     fontSize: 14,
-    color: colors.ink[60],
+    color: colors.ink[20],
     margin: 0,
     marginBottom: spacing[5],
   },
