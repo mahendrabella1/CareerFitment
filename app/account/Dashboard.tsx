@@ -34,6 +34,12 @@ const FullReport = dynamic(() => import("@/app/account/FullReport"), {
     <div style={{ padding: 48, textAlign: "center", color: "#64748b", fontSize: 14 }}>Preparing your report…</div>
   ),
 });
+const FeaturesDetailPage = dynamic(() => import("@/app/account/features/FeaturesDetailPage"), {
+  ssr: false,
+  loading: () => (
+    <div style={{ padding: 48, textAlign: "center", color: "#64748b", fontSize: 14 }}>Loading feature…</div>
+  ),
+});
 import { TOOLKIT_TABS } from "@/app/account/toolkitData";
 import {
   archetype, actionPlan, domainFit,
@@ -133,9 +139,10 @@ export interface ExtraSection {
 }
 
 export default function Dashboard({ a, profile, email, onSignOut, extraSections = [] }: { a: AssessmentSummary; profile?: UserProfile | null; email?: string | null; onSignOut?: () => void; extraSections?: ExtraSection[] }) {
-  const [view, setView] = useState<"dashboard" | "report">("dashboard");
+  const [view, setView] = useState<"dashboard" | "report" | "feature">("dashboard");
   const [navOpen, setNavOpen] = useState(false);
   const [active, setActive] = useState("dimensions");
+  const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
   const [toolkitTab, setToolkitTab] = useState(TOOLKIT_TABS[0].id);
   const [dimKey, setDimKey] = useState<string>(() => {
     const top = (a.radar ?? []).slice().sort((x, y) => y.score - x.score)[0];
@@ -187,7 +194,15 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
 
   const go = (id: string) => {
     setNavOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Check if it's a feature ID
+    const featureIds = ["careers", "study-abroad", "exams", "internships", "financial", "legal", "research", "startups", "resources"];
+    if (featureIds.includes(id)) {
+      setView("feature");
+      setSelectedFeature(id);
+      window.scrollTo(0, 0);
+    } else {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   const radar: RadarDatum[] = useMemo(() => {
@@ -227,6 +242,15 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
     try { return new Date(a.completedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }); }
     catch { return ""; }
   })();
+
+  if (view === "feature") {
+    return (
+      <div style={{ background: "#fff", minHeight: "100vh" }}>
+        <style dangerouslySetInnerHTML={{ __html: CSS }} />
+        {selectedFeature && <FeaturesDetailPage featureId={selectedFeature} onClose={() => { setView("dashboard"); window.scrollTo(0, 0); }} />}
+      </div>
+    );
+  }
 
   if (view === "report") {
     return (
