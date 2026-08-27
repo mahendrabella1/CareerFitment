@@ -20,6 +20,7 @@
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { AssessmentSummary, UserProfile } from "@/lib/auth/AuthProvider";
 import { Logo } from "@/app/Logo";
 import dynamic from "next/dynamic";
@@ -139,6 +140,7 @@ export interface ExtraSection {
 }
 
 export default function Dashboard({ a, profile, email, onSignOut, extraSections = [] }: { a: AssessmentSummary; profile?: UserProfile | null; email?: string | null; onSignOut?: () => void; extraSections?: ExtraSection[] }) {
+  const router = useRouter();
   const [view, setView] = useState<"dashboard" | "report" | "feature">("dashboard");
   const [navOpen, setNavOpen] = useState(false);
   const [active, setActive] = useState("dimensions");
@@ -194,12 +196,22 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
 
   const go = (id: string) => {
     setNavOpen(false);
-    // Check if it's a feature ID
-    const featureIds = ["careers", "study-abroad", "exams", "internships", "financial", "legal", "research", "startups", "resources"];
-    if (featureIds.includes(id)) {
-      setView("feature");
-      setSelectedFeature(id);
-      window.scrollTo(0, 0);
+    // Feature navigation map
+    const featureRoutes: Record<string, string> = {
+      "careers": "/account/features/careers",
+      "study-abroad": "/account/features/study-abroad",
+      "exams": "/account/features/entrance-exams",
+      "internships": "/account/features/internships",
+      "financial": "/account/features/financial-literacy",
+      "legal": "/account/features/legal-resources",
+      "research": "/account/features/research",
+      "startups": "/account/features/startups",
+      "resources": "/account/features/scholarships",
+    };
+
+    // Check if it's a feature ID and navigate to its page
+    if (featureRoutes[id]) {
+      router.push(featureRoutes[id]);
     } else {
       document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
