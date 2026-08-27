@@ -6,8 +6,7 @@ import CareerLibraryPro from "./CareerLibraryPro";
 import StudyAbroad from "./StudyAbroad";
 import { Icon } from "@/app/Icons";
 import {
-  getInternships, getWorkshops, getScholarships,
-  getCompanies, getBootcamps
+  getInternships, getWorkshops, getScholarships
 } from "@/lib/data/internshipsData";
 import {
   getFinancialTopics, getTopicsByCategory
@@ -107,20 +106,18 @@ function InternshipsDetailPage({ activeTab, setActiveTab }: { activeTab: string;
   const internships = getInternships();
   const workshops = getWorkshops();
   const scholarships = getScholarships();
-  const companies = getCompanies();
-  const bootcamps = getBootcamps();
 
-  const data = activeTab === "internships" ? internships : activeTab === "workshops" ? workshops : activeTab === "scholarships" ? scholarships : activeTab === "companies" ? companies : bootcamps;
+  const data = activeTab === "internships" ? internships : activeTab === "workshops" ? workshops : scholarships;
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
       <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[4] }}>Internships & Opportunities</h1>
       <p style={{ fontSize: 16, color: colors.ink[60], marginBottom: spacing[6] }}>
-        Discover 300+ internships, 100+ workshops, 200+ scholarships, and top companies hiring.
+        Discover 300+ internships, 100+ workshops, and 200+ scholarships available nationwide.
       </p>
 
       <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[6], flexWrap: "wrap" }}>
-        {["internships", "workshops", "scholarships", "companies", "bootcamps"].map((tab) => (
+        {["internships", "workshops", "scholarships"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
