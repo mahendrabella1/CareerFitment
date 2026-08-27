@@ -10,12 +10,21 @@
  */
 
 import { Career, CareerCluster } from "./schema";
+import { CAREER_LIBRARY_930_PLUS } from "./careerLibrary930Plus";
 
 /**
- * Top 100 most common careers by category (sample from 500+)
- * Full dataset can be imported from O*NET CSV
+ * COMPREHENSIVE CAREER LIBRARY - 930+ CAREERS
+ * Sourced from O*NET 30.2 (U.S. Department of Labor)
+ * Each career includes complete detailed information:
+ * education, skills, salary ranges, companies, learning paths, AI impact
  */
-export const CAREER_LIBRARY: Career[] = [
+export const CAREER_LIBRARY: Career[] = CAREER_LIBRARY_930_PLUS;
+
+/**
+ * Deprecated: Original sample careers (replaced by 930+ comprehensive database)
+ * Kept for backward compatibility reference only
+ */
+export const CAREER_LIBRARY_LEGACY: Career[] = [
   // TECHNOLOGY & SOFTWARE (150+ from O*NET)
   {
     id: "15-1132.00",
