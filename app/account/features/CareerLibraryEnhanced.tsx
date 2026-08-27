@@ -440,12 +440,6 @@ const styles: Record<string, React.CSSProperties> = {
     color: colors.accent[40],
   },
 
-  statLabel: {
-    fontSize: 12,
-    color: colors.ink[60],
-    marginTop: spacing[1],
-  },
-
   mainLayout: {
     display: "grid",
     gridTemplateColumns: "260px 1fr",
