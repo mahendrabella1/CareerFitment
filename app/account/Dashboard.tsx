@@ -63,6 +63,7 @@ const NAV = [
   { id: "plan", label: "My Plan", icon: "check" },
   { id: "careers", label: "Career Library", icon: "briefcase" },
   { id: "study-abroad", label: "Study Abroad", icon: "signpost" },
+  { id: "exams", label: "Entrance Exams", icon: "edit" },
   { id: "internships", label: "Internships", icon: "route" },
   { id: "financial", label: "Financial Literacy", icon: "card" },
   { id: "legal", label: "Legal Resources", icon: "shield" },
@@ -362,8 +363,8 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                       {id:'legal', title:'Law & Rights', desc:'Know your legal rights and protections.', color:'#7c3aed', emoji:'⚖️', bg:'url(https://images.unsplash.com/photo-1589519160732-57fc498494f8?w=600&h=400&fit=crop&q=85)'},
                       {id:'careers', title:'Career Library', desc:'Explore 500+ careers with detailed paths.', color:'#2563eb', emoji:'🎓', bg:'url(https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop&q=85)'},
                       {id:'study-abroad', title:'Study Abroad', desc:'Discover universities worldwide.', color:'#dc2626', emoji:'✈️', bg:'url(https://images.unsplash.com/photo-1569163139394-de4798aa62b3?w=600&h=400&fit=crop&q=85)'},
-                      {id:'internships', title:'Entrance Exams', desc:'Explore exams and eligibility details.', color:'#9333ea', emoji:'📝', bg:'url(https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop&q=85)'},
-                      {id:'resources', title:'Internships', desc:'Gain real-world experience with top opportunities.', color:'#ca8a04', emoji:'💼', bg:'url(https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=600&h=400&fit=crop&q=85)'},
+                      {id:'exams', title:'Entrance Exams', desc:'Explore exams and eligibility details.', color:'#9333ea', emoji:'📝', bg:'url(https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop&q=85)'},
+                      {id:'internships', title:'Internships', desc:'Gain real-world experience with top opportunities.', color:'#ca8a04', emoji:'💼', bg:'url(https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=600&h=400&fit=crop&q=85)'},
                     ].map((feature) => (
                       <div key={feature.id} onClick={() => go(feature.id)} style={{background:'#fff', borderRadius:'12px', border:`1px solid ${C.line}`, cursor:'pointer', transition:'all 250ms ease', boxShadow:'0 2px 8px rgba(0,0,0,0.05)', overflow:'hidden', display:'flex', flexDirection:'column', height: '100%'}}>
                         <div style={{height:'160px', backgroundImage:feature.bg, backgroundSize:'cover', backgroundPosition:'center', position:'relative'}}>
