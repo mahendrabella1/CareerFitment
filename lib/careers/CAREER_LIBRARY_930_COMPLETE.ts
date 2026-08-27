@@ -211,7 +211,7 @@ export const CAREER_STATISTICS = {
     trades: CAREER_LIBRARY_930_PLUS.filter(c => c.clusterId === 'trades').length,
   },
   highDemandCareers: CAREER_LIBRARY_930_PLUS.filter(c => c.currentDemand === 'high').length,
-  emerg ingDemandCareers: CAREER_LIBRARY_930_PLUS.filter(c => c.emergingDemand === 'high').length,
+  emergingDemandCareers: CAREER_LIBRARY_930_PLUS.filter(c => c.emergingDemand === 'high').length,
   averageSalaryIndiaFreshers: Math.round(
     CAREER_LIBRARY_930_PLUS.reduce((sum, c) => {
       const fresherSalary = c.salaryRange.find(s => s.experience === '0-2 years' && s.region === 'India');
