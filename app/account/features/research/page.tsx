@@ -5,6 +5,7 @@ import { useAuth } from "@/lib/auth/AuthProvider";
 import Link from "next/link";
 import { Logo } from "@/app/Logo";
 import FeaturesDetailPage from "@/app/account/features/FeaturesDetailPage";
+import AICareerChat from "@/app/account/features/AICareerChat";
 import { colors, spacing } from "@/app/account/designTokens";
 
 export default function ResearchPage() {
@@ -24,6 +25,11 @@ export default function ResearchPage() {
       </header>
       <div style={styles.content}>
         <FeaturesDetailPage featureId="research" onClose={() => router.back()} />
+
+        {/* AI Assistant */}
+        <div style={styles.aiSection}>
+          <AICareerChat userId={user.id || user.email || "guest"} />
+        </div>
       </div>
     </div>
   );
@@ -36,4 +42,5 @@ const styles: Record<string, React.CSSProperties> = {
   backBtn: { padding: `${spacing[2]} ${spacing[4]}`, background: colors.ink[95], border: `1px solid ${colors.ink[80]}`, borderRadius: 6, cursor: "pointer", fontSize: 13, fontWeight: 600, color: colors.ink[70] },
   content: { padding: spacing[4] },
   muted: { color: colors.ink[60], fontSize: 14 },
+  aiSection: { marginTop: spacing[6], maxWidth: "100%", margin: `${spacing[6]} auto 0` },
 };
