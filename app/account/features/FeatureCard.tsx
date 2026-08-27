@@ -117,7 +117,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   description: {
     fontSize: 14,
-    color: colors.ink[70],
+    color: colors.ink[30],
     lineHeight: 1.6,
     margin: 0,
     marginBottom: spacing[4],

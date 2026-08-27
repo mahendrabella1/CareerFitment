@@ -287,103 +287,162 @@ function CareerListItem({ career, onViewDetails, clusterColor }: { career: Caree
   );
 }
 
-// Career Detail View
+// Career Detail View - Professional Design
 function CareerDetailView({ career, onClose }: { career: Career; onClose: () => void }) {
   return (
-    <div style={styles.detailContainer}>
-      <button type="button" onClick={onClose} style={styles.backBtn}>← Back to List</button>
+    <div style={styles.detailPage}>
+      <button type="button" onClick={onClose} style={styles.backBtn}>← Back to Careers</button>
 
-      <div style={styles.detailContent}>
-        <h1 style={styles.detailTitle}>{career.name}</h1>
-        <p style={styles.detailSubtitle}>{career.overview}</p>
-
-        <div style={styles.detailGrid}>
-          {/* What They Do */}
-          <section style={styles.detailSection}>
-            <h2 style={styles.sectionHead}>📋 What They Do</h2>
-            <p>{career.whatTheyDo}</p>
-          </section>
-
-          {/* Salary */}
-          <section style={styles.detailSection}>
-            <h2 style={styles.sectionHead}>💰 Salary Expectations</h2>
-            {career.salaryRange?.map((range, i) => (
-              <div key={i} style={styles.salaryRange}>
-                <strong>{range.experience}</strong>
-                <p>₹{(range.min / 100000).toFixed(1)}L - ₹{(range.max / 100000).toFixed(1)}L {range.currency === "INR" ? "(India)" : "(USA)"}</p>
-              </div>
-            ))}
-          </section>
-
-          {/* Education */}
-          <section style={styles.detailSection}>
-            <h2 style={styles.sectionHead}>🎓 Education Required</h2>
-            <div>
-              <p><strong>Subjects:</strong> {career.education?.subjects?.join(", ")}</p>
-              <p><strong>Degrees:</strong> {career.education?.degrees?.join(", ")}</p>
-              {career.education?.certifications && (
-                <p><strong>Certifications:</strong> {career.education.certifications.join(", ")}</p>
-              )}
-            </div>
-          </section>
-
-          {/* Skills */}
-          <section style={styles.detailSection}>
-            <h2 style={styles.sectionHead}>⚡ Key Skills</h2>
-            <div style={styles.skillsList}>
-              {career.skills?.map((skill, i) => (
-                <span key={i} style={styles.skillBadge}>{skill}</span>
-              ))}
-            </div>
-          </section>
-
-          {/* Tools */}
-          {career.tools && (
-            <section style={styles.detailSection}>
-              <h2 style={styles.sectionHead}>🛠️ Tools & Technologies</h2>
-              <div style={styles.skillsList}>
-                {career.tools.map((tool, i) => (
-                  <span key={i} style={{...styles.skillBadge, background: colors.info}}>💻 {tool}</span>
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* Top Companies */}
-          {career.companies && (
-            <section style={styles.detailSection}>
-              <h2 style={styles.sectionHead}>🏢 Top Hiring Companies</h2>
-              <div style={styles.companiesList}>
-                {career.companies.map((company, i) => (
-                  <span key={i} style={styles.companyTag}>{company}</span>
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* Future Outlook */}
-          <section style={styles.detailSection}>
-            <h2 style={styles.sectionHead}>📈 Future Outlook</h2>
-            <p>{career.futureOutlook}</p>
-            {career.aiImpact && (
-              <p><strong>AI Impact:</strong> {career.aiImpact}</p>
+      {/* Hero Section */}
+      <div style={styles.heroSection}>
+        <div style={styles.heroContent}>
+          <h1 style={styles.heroTitle}>{career.name}</h1>
+          <p style={styles.heroSubtitle}>{career.overview}</p>
+          <div style={styles.demandBadges}>
+            <span style={{...styles.badge, background: career.currentDemand === 'high' ? '#ef4444' : '#f59e0b', color: '#fff'}}>
+              {career.currentDemand === 'high' ? '🔥' : '📈'} {career.currentDemand.toUpperCase()} DEMAND
+            </span>
+            {career.emergingDemand === 'high' && (
+              <span style={{...styles.badge, background: '#10b981', color: '#fff'}}>✨ EMERGING</span>
             )}
-          </section>
-
-          {/* Learning Paths */}
-          {career.beginner && (
-            <section style={styles.detailSection}>
-              <h2 style={styles.sectionHead}>🚀 {career.beginner.title}</h2>
-              <ul style={styles.pathList}>
-                {career.beginner.steps.map((step, i) => (
-                  <li key={i}>{step}</li>
-                ))}
-              </ul>
-              <p><em>Duration: {career.beginner.duration}</em></p>
-            </section>
-          )}
+          </div>
         </div>
       </div>
+
+      {/* 2-Column Layout */}
+      <div style={styles.mainLayout}>
+        {/* Left Column - Key Info */}
+        <div style={styles.leftColumn}>
+          {/* Salary Card */}
+          <div style={styles.card}>
+            <h2 style={styles.cardTitle}>💰 Salary Expectations</h2>
+            <div style={styles.salaryGrid}>
+              {career.salaryRange?.map((range, i) => (
+                <div key={i} style={styles.salaryBox}>
+                  <div style={styles.salaryLabel}>{range.experience}</div>
+                  <div style={styles.salaryAmount}>
+                    {range.currency === 'INR' ? '₹' : '$'}{range.currency === 'INR' ? (range.min / 100000).toFixed(1) + 'L' : range.min/1000 + 'K'}
+                  </div>
+                  <div style={styles.salaryRange2}>to {range.currency === 'INR' ? '₹' : '$'}{range.currency === 'INR' ? (range.max / 100000).toFixed(1) + 'L' : range.max/1000 + 'K'}</div>
+                  <div style={styles.salaryRegion}>{range.region}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Skills Card */}
+          <div style={styles.card}>
+            <h2 style={styles.cardTitle}>⚡ Key Skills Required</h2>
+            <div style={styles.tagsContainer}>
+              {career.skills?.map((skill, i) => (
+                <span key={i} style={styles.skillTag}>{skill}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Tools Card */}
+          {career.tools && (
+            <div style={styles.card}>
+              <h2 style={styles.cardTitle}>🛠️ Tools & Technologies</h2>
+              <div style={styles.tagsContainer}>
+                {career.tools.map((tool, i) => (
+                  <span key={i} style={{...styles.toolTag}}>{tool}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Right Column - Detailed Info */}
+        <div style={styles.rightColumn}>
+          {/* What They Do Card */}
+          <div style={styles.card}>
+            <h2 style={styles.cardTitle}>📋 What They Do</h2>
+            <p style={styles.cardText}>{career.whatTheyDo}</p>
+          </div>
+
+          {/* Education Card */}
+          <div style={styles.card}>
+            <h2 style={styles.cardTitle}>🎓 Education Required</h2>
+            <div style={styles.educationGrid}>
+              <div>
+                <div style={styles.eduLabel}>Subjects</div>
+                <p style={styles.eduValue}>{career.education?.subjects?.join(", ")}</p>
+              </div>
+              <div>
+                <div style={styles.eduLabel}>Degrees</div>
+                <p style={styles.eduValue}>{career.education?.degrees?.join(", ")}</p>
+              </div>
+              {career.education?.certifications && (
+                <div>
+                  <div style={styles.eduLabel}>Certifications</div>
+                  <p style={styles.eduValue}>{career.education.certifications.join(", ")}</p>
+                </div>
+              )}
+              {career.education?.entranceExams && (
+                <div>
+                  <div style={styles.eduLabel}>Entrance Exams</div>
+                  <p style={styles.eduValue}>{career.education.entranceExams.join(", ")}</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Companies Card */}
+          {career.companies && (
+            <div style={styles.card}>
+              <h2 style={styles.cardTitle}>🏢 Top Hiring Companies</h2>
+              <div style={styles.companiesGrid}>
+                {career.companies.map((company, i) => (
+                  <div key={i} style={styles.companyBadge}>{company}</div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Future & AI Card */}
+          <div style={styles.card}>
+            <h2 style={styles.cardTitle}>📈 Future Outlook & AI Impact</h2>
+            <div style={styles.outlookSection}>
+              <p style={styles.cardText}><strong>Future:</strong> {career.futureOutlook}</p>
+              {career.aiImpact && (
+                <p style={styles.cardText}><strong>AI Impact:</strong> {career.aiImpact}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Learning Paths - Full Width */}
+      {career.beginner && (
+        <div style={styles.card}>
+          <h2 style={styles.cardTitle}>🚀 {career.beginner.title}</h2>
+          <div style={styles.stepsGrid}>
+            {career.beginner.steps.map((step, i) => (
+              <div key={i} style={styles.stepCard}>
+                <div style={styles.stepNumber}>{i + 1}</div>
+                <div style={styles.stepContent}>{step}</div>
+              </div>
+            ))}
+          </div>
+          <p style={styles.duration}>⏱️ Duration: {career.beginner.duration}</p>
+        </div>
+      )}
+
+      {career.advanced && (
+        <div style={styles.card}>
+          <h2 style={styles.cardTitle}>🏆 {career.advanced.title}</h2>
+          <div style={styles.stepsGrid}>
+            {career.advanced.steps.map((step, i) => (
+              <div key={i} style={styles.stepCard}>
+                <div style={styles.stepNumber}>{i + 1}</div>
+                <div style={styles.stepContent}>{step}</div>
+              </div>
+            ))}
+          </div>
+          <p style={styles.duration}>⏱️ Duration: {career.advanced.duration}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -416,7 +475,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   subtitle: {
     fontSize: 16,
-    color: colors.ink[60],
+    color: colors.ink[20],
     margin: 0,
   },
 
@@ -548,7 +607,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   clusterCount: {
     fontSize: 11,
-    color: colors.ink[60],
+    color: colors.ink[20],
   },
 
   select: {
@@ -585,7 +644,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   clusterDesc: {
     fontSize: 14,
-    color: colors.ink[60],
+    color: colors.ink[20],
     margin: `${spacing[1]} 0 0 0`,
   },
 
@@ -612,7 +671,7 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: "pointer",
     fontSize: 13,
     fontWeight: 600,
-    color: colors.ink[60],
+    color: colors.ink[20],
     borderRadius: radius.sm,
     transition: "all 0.2s",
   },
@@ -624,7 +683,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   resultCounter: {
     fontSize: 14,
-    color: colors.ink[60],
+    color: colors.ink[20],
   },
 
   careerGrid: {
@@ -909,6 +968,268 @@ const styles: Record<string, React.CSSProperties> = {
   emptyText: {
     fontSize: 16,
     color: colors.ink[10],
+    margin: 0,
+  },
+
+  // ========== NEW PROFESSIONAL DETAIL VIEW STYLES ==========
+  detailPage: {
+    maxWidth: 1400,
+    margin: "0 auto",
+    padding: spacing[6],
+    background: colors.ink[95],
+    minHeight: "100vh",
+  },
+
+  backBtn: {
+    padding: `${spacing[2]} ${spacing[4]}`,
+    background: colors.ink[90],
+    border: `1px solid ${colors.ink[80]}`,
+    borderRadius: radius.md,
+    fontSize: 14,
+    fontWeight: 600,
+    cursor: "pointer",
+    color: colors.ink[10],
+    marginBottom: spacing[6],
+  },
+
+  heroSection: {
+    background: "#fff",
+    padding: spacing[8],
+    borderRadius: radius.lg,
+    marginBottom: spacing[6],
+    boxShadow: shadows.md,
+    borderLeft: `6px solid ${colors.accent[40]}`,
+  },
+
+  heroContent: {},
+
+  heroTitle: {
+    fontSize: 48,
+    fontWeight: 900,
+    color: colors.ink[10],
+    margin: 0,
+    marginBottom: spacing[2],
+  },
+
+  heroSubtitle: {
+    fontSize: 18,
+    color: colors.ink[20],
+    margin: 0,
+    marginBottom: spacing[4],
+    lineHeight: 1.6,
+  },
+
+  demandBadges: {
+    display: "flex",
+    gap: spacing[3],
+    flexWrap: "wrap",
+  },
+
+  badge: {
+    padding: `${spacing[2]} ${spacing[4]}`,
+    borderRadius: radius.full,
+    fontSize: 12,
+    fontWeight: 700,
+    textTransform: "uppercase",
+    letterSpacing: "0.05em",
+  },
+
+  mainLayout: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1.5fr",
+    gap: spacing[6],
+    marginBottom: spacing[6],
+  },
+
+  leftColumn: {
+    display: "flex",
+    flexDirection: "column",
+    gap: spacing[6],
+  },
+
+  rightColumn: {
+    display: "flex",
+    flexDirection: "column",
+    gap: spacing[6],
+  },
+
+  card: {
+    background: "#fff",
+    padding: spacing[6],
+    borderRadius: radius.lg,
+    boxShadow: shadows.sm,
+    border: `1px solid ${colors.ink[90]}`,
+  },
+
+  cardTitle: {
+    fontSize: 20,
+    fontWeight: 700,
+    color: colors.ink[10],
+    margin: 0,
+    marginBottom: spacing[4],
+    display: "flex",
+    alignItems: "center",
+    gap: spacing[2],
+  },
+
+  cardText: {
+    fontSize: 15,
+    color: colors.ink[20],
+    lineHeight: 1.8,
+    margin: 0,
+  },
+
+  salaryGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+    gap: spacing[3],
+  },
+
+  salaryBox: {
+    background: colors.ink[95],
+    padding: spacing[4],
+    borderRadius: radius.md,
+    border: `2px solid ${colors.accent[40]}`,
+    textAlign: "center",
+  },
+
+  salaryLabel: {
+    fontSize: 12,
+    fontWeight: 700,
+    color: colors.ink[20],
+    textTransform: "uppercase",
+    marginBottom: spacing[2],
+  },
+
+  salaryAmount: {
+    fontSize: 24,
+    fontWeight: 800,
+    color: colors.accent[40],
+    marginBottom: spacing[1],
+  },
+
+  salaryRange2: {
+    fontSize: 13,
+    color: colors.ink[30],
+    marginBottom: spacing[2],
+  },
+
+  salaryRegion: {
+    fontSize: 11,
+    color: colors.ink[20],
+    fontWeight: 600,
+  },
+
+  tagsContainer: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: spacing[2],
+  },
+
+  skillTag: {
+    display: "inline-block",
+    padding: `${spacing[2]} ${spacing[3]}`,
+    background: colors.accent[100],
+    color: colors.accent[40],
+    borderRadius: radius.full,
+    fontSize: 13,
+    fontWeight: 600,
+  },
+
+  toolTag: {
+    display: "inline-block",
+    padding: `${spacing[2]} ${spacing[3]}`,
+    background: colors.info,
+    color: "#fff",
+    borderRadius: radius.full,
+    fontSize: 13,
+    fontWeight: 600,
+  },
+
+  educationGrid: {
+    display: "grid",
+    gridTemplateColumns: "1fr",
+    gap: spacing[3],
+  },
+
+  eduLabel: {
+    fontSize: 12,
+    fontWeight: 700,
+    color: colors.ink[20],
+    textTransform: "uppercase",
+    marginBottom: spacing[1],
+  },
+
+  eduValue: {
+    fontSize: 14,
+    color: colors.ink[10],
+    fontWeight: 500,
+    margin: 0,
+  },
+
+  companiesGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
+    gap: spacing[3],
+  },
+
+  companyBadge: {
+    padding: spacing[3],
+    background: colors.info,
+    color: "#fff",
+    borderRadius: radius.md,
+    fontSize: 13,
+    fontWeight: 600,
+    textAlign: "center",
+  },
+
+  outlookSection: {
+    display: "flex",
+    flexDirection: "column",
+    gap: spacing[3],
+  },
+
+  stepsGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+    gap: spacing[4],
+    marginBottom: spacing[4],
+  },
+
+  stepCard: {
+    display: "flex",
+    gap: spacing[3],
+    background: colors.ink[95],
+    padding: spacing[4],
+    borderRadius: radius.md,
+    border: `1px solid ${colors.ink[80]}`,
+  },
+
+  stepNumber: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "36px",
+    height: "36px",
+    borderRadius: radius.full,
+    background: colors.accent[40],
+    color: "#fff",
+    fontWeight: 700,
+    fontSize: 14,
+    flexShrink: 0,
+  },
+
+  stepContent: {
+    fontSize: 14,
+    color: colors.ink[10],
+    fontWeight: 500,
+    lineHeight: 1.5,
+  },
+
+  duration: {
+    fontSize: 13,
+    color: colors.ink[20],
+    fontWeight: 600,
     margin: 0,
   },
 };

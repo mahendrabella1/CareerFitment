@@ -187,8 +187,8 @@ function CareerCard({ career }: { career: Career }) {
   const demandColor = {
     high: colors.accent[40],
     medium: colors.ink[50],
-    low: colors.ink[60],
-  }[career.currentDemand as keyof {high: string; medium: string; low: string}] || colors.ink[60];
+    low: colors.ink[20],
+  }[career.currentDemand as keyof {high: string; medium: string; low: string}] || colors.ink[20];
 
   return (
     <div style={styles.card}>
@@ -323,7 +323,7 @@ const styles = {
 
   subtitle: {
     fontSize: 16,
-    color: colors.ink[60],
+    color: colors.ink[20],
     margin: 0,
     lineHeight: 1.6,
   } as React.CSSProperties,
@@ -423,7 +423,7 @@ const styles = {
 
   resultCounter: {
     fontSize: 14,
-    color: colors.ink[60],
+    color: colors.ink[20],
     marginBottom: spacing[4],
   } as React.CSSProperties,
 
@@ -489,7 +489,7 @@ const styles = {
 
   overview: {
     fontSize: 14,
-    color: colors.ink[70],
+    color: colors.ink[30],
     lineHeight: 1.5,
     margin: 0,
     marginBottom: spacing[3],
@@ -513,7 +513,7 @@ const styles = {
   statLabel: {
     fontSize: 11,
     fontWeight: 700,
-    color: colors.ink[60],
+    color: colors.ink[20],
     textTransform: "uppercase" as const,
     marginBottom: spacing[1],
   } as React.CSSProperties,
@@ -544,7 +544,7 @@ const styles = {
 
   sectionText: {
     fontSize: 13,
-    color: colors.ink[70],
+    color: colors.ink[30],
     lineHeight: 1.6,
     margin: 0,
   } as React.CSSProperties,
@@ -583,7 +583,7 @@ const styles = {
   educationLabel: {
     fontSize: 11,
     fontWeight: 700,
-    color: colors.ink[60],
+    color: colors.ink[20],
     margin: 0,
     marginBottom: spacing[1],
     textTransform: "uppercase" as const,
@@ -624,7 +624,7 @@ const styles = {
 
   source: {
     fontSize: 11,
-    color: colors.ink[60],
+    color: colors.ink[20],
     margin: 0,
     fontStyle: "italic",
   } as React.CSSProperties,
@@ -636,7 +636,7 @@ const styles = {
 
   emptyText: {
     fontSize: 16,
-    color: colors.ink[60],
+    color: colors.ink[20],
     margin: 0,
   } as React.CSSProperties,
 };

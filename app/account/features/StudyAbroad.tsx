@@ -333,7 +333,7 @@ const styles = {
 
   subtitle: {
     fontSize: 16,
-    color: colors.ink[60],
+    color: colors.ink[20],
     margin: 0,
     lineHeight: 1.6,
   } as React.CSSProperties,
@@ -405,7 +405,7 @@ const styles = {
   countryCount: {
     display: "block",
     fontSize: 11,
-    color: colors.ink[60],
+    color: colors.ink[20],
     marginTop: spacing[1],
   } as React.CSSProperties,
 
@@ -431,7 +431,7 @@ const styles = {
 
   resultCounter: {
     fontSize: 14,
-    color: colors.ink[60],
+    color: colors.ink[20],
     marginBottom: spacing[4],
   } as React.CSSProperties,
 
@@ -472,7 +472,7 @@ const styles = {
 
   uniLocation: {
     fontSize: 13,
-    color: colors.ink[60],
+    color: colors.ink[20],
     margin: 0,
     marginBottom: spacing[2],
   } as React.CSSProperties,
@@ -518,7 +518,7 @@ const styles = {
   infoLabel: {
     fontSize: 11,
     fontWeight: 700,
-    color: colors.ink[60],
+    color: colors.ink[20],
     textTransform: "uppercase",
     marginBottom: spacing[1],
   } as React.CSSProperties,
@@ -586,7 +586,7 @@ const styles = {
     display: "block",
     fontSize: 11,
     fontWeight: 700,
-    color: colors.ink[60],
+    color: colors.ink[20],
     textTransform: "uppercase",
     marginBottom: spacing[1],
   } as React.CSSProperties,
@@ -648,7 +648,7 @@ const styles = {
 
   countryCardDesc: {
     fontSize: 13,
-    color: colors.ink[70],
+    color: colors.ink[30],
     lineHeight: 1.6,
     margin: 0,
     marginBottom: spacing[3],
@@ -669,7 +669,7 @@ const styles = {
     display: "block",
     fontSize: 10,
     fontWeight: 700,
-    color: colors.ink[60],
+    color: colors.ink[20],
     textTransform: "uppercase",
     marginBottom: spacing[1],
   } as React.CSSProperties,
@@ -724,7 +724,7 @@ const styles = {
 
   emptyText: {
     fontSize: 16,
-    color: colors.ink[60],
+    color: colors.ink[20],
     margin: 0,
   } as React.CSSProperties,
 };

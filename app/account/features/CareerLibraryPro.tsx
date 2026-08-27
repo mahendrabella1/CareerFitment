@@ -408,7 +408,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   subtitle: {
     fontSize: 16,
-    color: colors.ink[60],
+    color: colors.ink[20],
     margin: 0,
   },
 
@@ -434,7 +434,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   statLabel: {
     fontSize: 12,
-    color: colors.ink[60],
+    color: colors.ink[20],
     marginTop: spacing[1],
   },
 
@@ -506,7 +506,7 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: "pointer",
     fontSize: 13,
     fontWeight: 500,
-    color: colors.ink[70],
+    color: colors.ink[30],
     transition: "all 0.2s",
     textAlign: "left",
   },
@@ -565,7 +565,7 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: "pointer",
     fontSize: 13,
     fontWeight: 600,
-    color: colors.ink[60],
+    color: colors.ink[20],
     borderRadius: radius.sm,
     transition: "all 0.2s",
   },
@@ -577,7 +577,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   resultCounter: {
     fontSize: 14,
-    color: colors.ink[60],
+    color: colors.ink[20],
   },
 
   careerGrid: {
@@ -626,7 +626,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   gridCardDesc: {
     fontSize: 13,
-    color: colors.ink[70],
+    color: colors.ink[30],
     margin: 0,
     marginBottom: spacing[4],
     lineHeight: 1.5,
@@ -645,7 +645,7 @@ const styles: Record<string, React.CSSProperties> = {
   gridStatLabel: {
     fontSize: 11,
     fontWeight: 700,
-    color: colors.ink[60],
+    color: colors.ink[20],
     textTransform: "uppercase",
     marginBottom: spacing[1],
   },
@@ -715,7 +715,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   listRowSubtext: {
     fontSize: 12,
-    color: colors.ink[60],
+    color: colors.ink[20],
   },
 
   compareView: {
@@ -732,7 +732,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   emptyText: {
     fontSize: 16,
-    color: colors.ink[60],
+    color: colors.ink[20],
     margin: 0,
   },
 
@@ -759,7 +759,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   compTableCell: {
     fontSize: 13,
-    color: colors.ink[70],
+    color: colors.ink[30],
     padding: spacing[3],
     backgroundColor: colors.ink[95],
     borderRadius: radius.md,

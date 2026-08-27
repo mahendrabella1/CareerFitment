@@ -66,7 +66,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   email: {
     fontSize: 12,
-    color: colors.ink[60],
+    color: colors.ink[20],
     marginRight: spacing[4],
   },
   backBtn: {
@@ -77,13 +77,13 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: "pointer",
     fontSize: 13,
     fontWeight: 600,
-    color: colors.ink[70],
+    color: colors.ink[30],
   },
   content: {
     padding: spacing[4],
   },
   muted: {
-    color: colors.ink[60],
+    color: colors.ink[20],
     fontSize: 14,
   },
 };

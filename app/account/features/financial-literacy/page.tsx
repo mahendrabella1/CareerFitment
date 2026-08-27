@@ -24,8 +24,8 @@ export default function FinancialLiteracyPage() {
 const styles: Record<string, React.CSSProperties> = {
   page: { minHeight: "100vh", background: colors.ink[95], fontFamily: "system-ui, -apple-system, sans-serif" },
   header: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: spacing[4], borderBottom: `1px solid ${colors.ink[80]}`, background: "#fff" },
-  email: { fontSize: 12, color: colors.ink[60], marginRight: spacing[4] },
-  backBtn: { padding: `${spacing[2]} ${spacing[4]}`, background: colors.ink[95], border: `1px solid ${colors.ink[80]}`, borderRadius: 6, cursor: "pointer", fontSize: 13, fontWeight: 600, color: colors.ink[70] },
+  email: { fontSize: 12, color: colors.ink[20], marginRight: spacing[4] },
+  backBtn: { padding: `${spacing[2]} ${spacing[4]}`, background: colors.ink[95], border: `1px solid ${colors.ink[80]}`, borderRadius: 6, cursor: "pointer", fontSize: 13, fontWeight: 600, color: colors.ink[30] },
   content: { padding: spacing[4] },
-  muted: { color: colors.ink[60], fontSize: 14 },
+  muted: { color: colors.ink[20], fontSize: 14 },
 };
