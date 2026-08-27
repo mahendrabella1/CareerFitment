@@ -28,7 +28,7 @@ export default function ResearchPage() {
 
         {/* AI Assistant */}
         <div style={styles.aiSection}>
-          <AICareerChat userId={user.id || user.email || "guest"} />
+          <AICareerChat userId={(user as any).uid || user.email || "guest"} />
         </div>
       </div>
     </div>
