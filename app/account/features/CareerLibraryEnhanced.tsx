@@ -863,18 +863,6 @@ const styles: Record<string, React.CSSProperties> = {
     minHeight: "100vh",
   },
 
-  backBtn: {
-    padding: `${spacing[2]} ${spacing[4]}`,
-    background: colors.ink[95],
-    border: `1px solid ${colors.ink[80]}`,
-    borderRadius: radius.md,
-    fontSize: 14,
-    fontWeight: 600,
-    cursor: "pointer",
-    color: colors.ink[10],
-    marginBottom: spacing[6],
-  },
-
   detailContent: {
     background: "#fff",
     borderRadius: radius.lg,
