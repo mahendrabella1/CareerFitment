@@ -268,19 +268,6 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
               <Icon name={n.icon} size={18} /><span>{n.label}</span>
             </button>
           ))}
-          <div className="ash-nav-lbl">Career Toolkit</div>
-          {TOOLKIT_TABS.map((t) => (
-            SHOW_TOOLKIT ? (
-              <button key={t.id} className={`ash-navi${active === "resources" && toolkitTab === t.id ? " on" : ""}`}
-                onClick={() => { setToolkitTab(t.id); go("resources"); }}>
-                <Icon name={t.icon} size={18} /><span>{t.label}</span><span className="ash-navi-c">{t.items.length}</span>
-              </button>
-            ) : (
-              <button key={t.id} className="ash-navi locked" disabled aria-disabled="true" title="Unlocks soon">
-                <Icon name={t.icon} size={18} /><span>{t.label}</span><span className="ash-navi-lock"><Icon name="lock" size={13} /></span>
-              </button>
-            )
-          ))}
           <div className="ash-nav-lbl">Report</div>
           <button className="ash-navi" onClick={() => setView("report")}><Icon name="explain" size={18} /><span>Full report</span></button>
         </nav>
@@ -337,64 +324,6 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
             <div className="ash-content">
 
               {extrasBefore("dimensions")}
-
-              {/* ===== CAREER TOOLKIT FEATURES GRID ===== */}
-              <section id="toolkit-features" className="ash-sec">
-                <div className="ogd-card">
-                  <CardHead icon="route" title="Your Career Toolkit"
-                    sub="Explore resources to shape your future — colleges, internships, scholarships, and much more." />
-                  <div className="toolkit-grid">
-                    <div className="toolkit-card startups">
-                      <div className="toolkit-icon"><Icon name="lightbulb" size={28} /></div>
-                      <h3>Startups</h3>
-                      <p>Connect with innovative founders</p>
-                      <span className="toolkit-count">12 opportunities</span>
-                    </div>
-                    <div className="toolkit-card research">
-                      <div className="toolkit-icon"><Icon name="microscope" size={28} /></div>
-                      <h3>Research</h3>
-                      <p>Cutting-edge research programs</p>
-                      <span className="toolkit-count">12 programs</span>
-                    </div>
-                    <div className="toolkit-card finance">
-                      <div className="toolkit-icon"><Icon name="piggybank" size={28} /></div>
-                      <h3>Financial Literacy</h3>
-                      <p>Master money management</p>
-                      <span className="toolkit-count">12 courses</span>
-                    </div>
-                    <div className="toolkit-card law">
-                      <div className="toolkit-icon"><Icon name="scale" size={28} /></div>
-                      <h3>Law & Rights</h3>
-                      <p>Know your legal protections</p>
-                      <span className="toolkit-count">12 resources</span>
-                    </div>
-                    <div className="toolkit-card colleges">
-                      <div className="toolkit-icon"><Icon name="school" size={28} /></div>
-                      <h3>Indian Colleges</h3>
-                      <p>10,000+ colleges & courses</p>
-                      <span className="toolkit-count">Browse all</span>
-                    </div>
-                    <div className="toolkit-card universities">
-                      <div className="toolkit-icon"><Icon name="compass" size={28} /></div>
-                      <h3>Study Abroad</h3>
-                      <p>8,000+ universities worldwide</p>
-                      <span className="toolkit-count">Explore</span>
-                    </div>
-                    <div className="toolkit-card exams">
-                      <div className="toolkit-icon"><Icon name="answer" size={28} /></div>
-                      <h3>Entrance Exams</h3>
-                      <p>1,400+ exam details</p>
-                      <span className="toolkit-count">View all</span>
-                    </div>
-                    <div className="toolkit-card internships">
-                      <div className="toolkit-icon"><Icon name="briefcase" size={28} /></div>
-                      <h3>Internships</h3>
-                      <p>200+ virtual opportunities</p>
-                      <span className="toolkit-count">Apply now</span>
-                    </div>
-                  </div>
-                </div>
-              </section>
 
               {/* ===== REPORT PREVIEW ===== */}
               <section id="report-preview" className="ash-sec">
