@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from "react";
 import { colors, spacing, radius, shadows } from "@/app/account/designTokens";
 
-const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
 const PROMPT_LIMIT = 7;
 
 const PREFILLED_PROMPTS = [
@@ -76,12 +75,14 @@ export default function SmallChat({ userId }: { userId: string }) {
     setLoading(true);
 
     try {
-      const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      const res = await fetch("/api/chat", {
         method: "POST",
-        headers: { "Authorization": `Bearer ${GEMINI_API_KEY}`, "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "mixtral-8x7b-32768",
-          messages: [{ role: "system", content: "You are a career advisor. Answer briefly (2-3 sentences)." }, { role: "user", content: input }],
+          messages: [
+            { role: "system", content: "You are a career advisor. Answer briefly (2-3 sentences)." },
+            { role: "user", content: input }
+          ],
         }),
       });
 

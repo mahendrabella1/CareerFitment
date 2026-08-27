@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { colors, spacing, radius, shadows } from "@/app/account/designTokens";
 
-const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
 const PROMPT_LIMIT = 7;
 
 const PREFILLED_PROMPTS = [
@@ -124,28 +123,19 @@ export default function AICareerChat({ userId }: { userId: string }) {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        "https://api.groq.com/openai/v1/chat/completions",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${GEMINI_API_KEY}`
-          },
-          body: JSON.stringify({
-            model: "mixtral-8x7b-32768",
-            messages: [{
-              role: "system",
-              content: "You are an expert career and education advisor. Answer questions about careers, education, and learning opportunities. Keep answers concise and practical. Only answer education and career-related questions."
-            }, {
-              role: "user",
-              content: input
-            }],
-            max_tokens: 500,
-            temperature: 0.7
-          })
-        }
-      );
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [{
+            role: "system",
+            content: "You are an expert career and education advisor. Answer questions about careers, education, and learning opportunities. Keep answers concise and practical. Only answer education and career-related questions."
+          }, {
+            role: "user",
+            content: input
+          }]
+        })
+      });
 
       if (!response.ok) throw new Error("API error");
 
