@@ -558,66 +558,103 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                 </section>
               )}
 
-              {/* ===== FEATURES ===== */}
-              <section id="careers" className="ash-sec">
-                <div className="ogd-card">
-                  <CardHead icon="briefcase" title="Career Library" />
-                  <div style={{padding:'24px'}}>
-                    <CareerLibrary />
+              {/* ===== FEATURES HUB ===== */}
+              <section id="careers" className="ash-sec" style={{paddingTop: 0, paddingBottom: 0}}>
+                <div style={{marginBottom: '48px', borderRadius: '16px', overflow: 'hidden', background: 'linear-gradient(135deg, #f0e7ff 0%, #e8f4ff 100%)'}}>
+                  {/* Hero Section */}
+                  <div style={{display: 'flex', alignItems: 'center', padding: '60px 40px', gap: '60px'}}>
+                    <div style={{flex: 1}}>
+                      <h2 style={{fontSize: '36px', fontWeight: '800', color: C.ink, margin: '0 0 16px 0', lineHeight: 1.2}}>
+                        Explore Your Opportunities
+                      </h2>
+                      <p style={{fontSize: '16px', color: C.ink3, margin: 0, lineHeight: 1.6}}>
+                        Discover pathways, resources and experiences aligned with your future.
+                      </p>
+                      <div style={{width: '100px', height: '4px', background: IN, marginTop: '24px', borderRadius: '2px'}}></div>
+                    </div>
+                    <div style={{flex: 1, textAlign: 'center'}}>
+                      <img src="https://onegrasp.com/wp-content/uploads/2026/08/69045c6d-9060-4669-8cc6-b8cf030a3f35.png" alt="Explore" style={{maxWidth: '100%', height: 'auto', maxHeight: '280px'}} />
+                    </div>
                   </div>
-                </div>
-              </section>
 
-              <section id="study-abroad" className="ash-sec">
-                <div className="ogd-card">
-                  <CardHead icon="plane" title="Study Abroad" />
-                  <div style={{padding:'24px'}}>
-                    <StudyAbroad />
-                  </div>
-                </div>
-              </section>
+                  {/* Features Grid */}
+                  <div style={{padding: '0 40px 60px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px'}}>
+                    {/* Startups */}
+                    <div onClick={() => go("startups")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+                      <div style={{fontSize: '32px', marginBottom: '16px'}}>🚀</div>
+                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Startups</h3>
+                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Connect with innovative founders and ideas.</p>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#ff6b35', fontSize: '14px', fontWeight: '600'}}>
+                        <span>100+ opportunities</span>
+                        <span>→</span>
+                      </div>
+                    </div>
 
-              <section id="internships" className="ash-sec">
-                <div className="ogd-card">
-                  <CardHead icon="target" title="Internships & Opportunities" />
-                  <div style={{padding:'24px'}}>
-                    <FeaturesHub />
-                  </div>
-                </div>
-              </section>
+                    {/* Research */}
+                    <div onClick={() => go("research")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+                      <div style={{fontSize: '32px', marginBottom: '16px'}}>🔬</div>
+                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Research</h3>
+                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Explore cutting-edge research programs.</p>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#004e89', fontSize: '14px', fontWeight: '600'}}>
+                        <span>50+ programs</span>
+                        <span>→</span>
+                      </div>
+                    </div>
 
-              <section id="financial" className="ash-sec">
-                <div className="ogd-card">
-                  <CardHead icon="dollar" title="Financial Literacy" />
-                  <div style={{padding:'24px'}}>
-                    <FeaturesHub />
-                  </div>
-                </div>
-              </section>
+                    {/* Financial Literacy */}
+                    <div onClick={() => go("financial")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+                      <div style={{fontSize: '32px', marginBottom: '16px'}}>💰</div>
+                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Financial Literacy</h3>
+                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Build practical money management skills.</p>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#1e7b34', fontSize: '14px', fontWeight: '600'}}>
+                        <span>30+ courses</span>
+                        <span>→</span>
+                      </div>
+                    </div>
 
-              <section id="legal" className="ash-sec">
-                <div className="ogd-card">
-                  <CardHead icon="shield" title="Legal Resources" />
-                  <div style={{padding:'24px'}}>
-                    <FeaturesHub />
-                  </div>
-                </div>
-              </section>
+                    {/* Legal Resources */}
+                    <div onClick={() => go("legal")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+                      <div style={{fontSize: '32px', marginBottom: '16px'}}>⚖️</div>
+                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Law & Rights</h3>
+                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Know your legal rights and protections.</p>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#8b5a8e', fontSize: '14px', fontWeight: '600'}}>
+                        <span>20+ resources</span>
+                        <span>→</span>
+                      </div>
+                    </div>
 
-              <section id="research" className="ash-sec">
-                <div className="ogd-card">
-                  <CardHead icon="microscope" title="Research Opportunities" />
-                  <div style={{padding:'24px'}}>
-                    <FeaturesHub />
-                  </div>
-                </div>
-              </section>
+                    {/* Career Library */}
+                    <div onClick={() => go("careers")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+                      <div style={{fontSize: '32px', marginBottom: '16px'}}>💼</div>
+                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Career Library</h3>
+                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Explore 500+ careers with detailed paths.</p>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#2563eb', fontSize: '14px', fontWeight: '600'}}>
+                        <span>500+ careers</span>
+                        <span>→</span>
+                      </div>
+                    </div>
 
-              <section id="startups" className="ash-sec">
-                <div className="ogd-card">
-                  <CardHead icon="rocket" title="Startup Ecosystem" />
-                  <div style={{padding:'24px'}}>
-                    <FeaturesHub />
+                    {/* Study Abroad */}
+                    <div onClick={() => go("study-abroad")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+                      <div style={{fontSize: '32px', marginBottom: '16px'}}>✈️</div>
+                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Study Abroad</h3>
+                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Discover universities worldwide.</p>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#dc2626', fontSize: '14px', fontWeight: '600'}}>
+                        <span>100+ universities</span>
+                        <span>→</span>
+                      </div>
+                    </div>
+
+                    {/* Internships */}
+                    <div onClick={() => go("internships")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+                      <div style={{fontSize: '32px', marginBottom: '16px'}}>🎯</div>
+                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Internships</h3>
+                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Gain real-world experience.</p>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#7c3aed', fontSize: '14px', fontWeight: '600'}}>
+                        <span>300+ openings</span>
+                        <span>→</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </section>
