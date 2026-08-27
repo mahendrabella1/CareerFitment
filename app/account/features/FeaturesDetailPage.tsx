@@ -24,54 +24,63 @@ const FEATURE_CONFIG = {
     subtitle: "Explore 900+ careers with detailed information on roles, salaries, education, and growth paths.",
     accentColor: "#8B5CF6", // Purple
     borderColor: "#DDD6FE",
+    image: "https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_49_20-AM.png",
   },
   research: {
     title: "Research Opportunities",
     subtitle: "Explore 50+ cutting-edge research programs, competitions, and conferences.",
     accentColor: "#14B8A6", // Teal
     borderColor: "#CCFBF1",
+    image: "https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_40_43-AM.png",
   },
   internships: {
     title: "Internships & Opportunities",
     subtitle: "Discover 300+ internships, 100+ workshops, and 200+ scholarships available nationwide.",
     accentColor: "#3B82F6", // Blue
     borderColor: "#DBEAFE",
+    image: "https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-11_02_22-AM.png",
   },
   resources: {
     title: "Scholarships & Awards",
     subtitle: "Access 200+ scholarship awards from government, NGOs, and private organizations.",
     accentColor: "#10B981", // Green
     borderColor: "#D1FAE5",
+    image: "https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_59_10-AM.png",
   },
   "study-abroad": {
     title: "Study Abroad",
     subtitle: "Discover top universities across 20+ countries with scholarship opportunities.",
     accentColor: "#F97316", // Orange
     borderColor: "#FFEDD5",
+    image: "https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_46_05-AM.png",
   },
   financial: {
     title: "Financial Literacy",
     subtitle: "Master 30+ topics on money management, investing, taxes, and financial planning.",
     accentColor: "#F59E0B", // Gold
     borderColor: "#FEF3C7",
+    image: "https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_41_34-AM.png",
   },
   legal: {
     title: "Legal Resources & Rights",
     subtitle: "Know your legal rights, safety protocols, and protection measures. 20+ comprehensive guides.",
     accentColor: "#64748B", // Dark slate
     borderColor: "#E2E8F0",
+    image: "https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_42_40-AM.png",
   },
   startups: {
     title: "Startup Ecosystem",
     subtitle: "Connect with 100+ innovative startups and learn entrepreneurship from founders.",
     accentColor: "#EF4444", // Red
     borderColor: "#FEE2E2",
+    image: "https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_39_45-AM.png",
   },
   exams: {
     title: "Entrance Exams & Eligibility",
     subtitle: "Comprehensive guide to major entrance exams, preparation resources, and eligibility criteria.",
     accentColor: "#1E3A8A", // Navy
     borderColor: "#DBEAFE",
+    image: "https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_54_06-AM.png",
   },
 };
 
@@ -136,6 +145,11 @@ function EntranceExamsPage() {
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
+      {config.image && (
+        <div style={{ marginBottom: spacing[6], borderRadius: radius.lg, overflow: "hidden", maxHeight: "320px" }}>
+          <img src={config.image} alt={config.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+        </div>
+      )}
       <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[10] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[20], marginBottom: spacing[6] }}>
         {config.subtitle}
@@ -326,6 +340,11 @@ function ResearchDetailPage() {
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
+      {config.image && (
+        <div style={{ marginBottom: spacing[6], borderRadius: radius.lg, overflow: "hidden", maxHeight: "320px" }}>
+          <img src={config.image} alt={config.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+        </div>
+      )}
       <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[10] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[20], marginBottom: spacing[6] }}>
         {config.subtitle}
@@ -397,6 +416,11 @@ function ScholarshipsDetailPage() {
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
+      {config.image && (
+        <div style={{ marginBottom: spacing[6], borderRadius: radius.lg, overflow: "hidden", maxHeight: "320px" }}>
+          <img src={config.image} alt={config.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+        </div>
+      )}
       <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[10] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[20], marginBottom: spacing[6] }}>
         {config.subtitle}
