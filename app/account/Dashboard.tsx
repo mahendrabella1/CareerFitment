@@ -341,42 +341,44 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
               </section>
 
               {/* ===== FEATURES HUB ===== */}
-              <section id="careers" className="ash-sec" style={{paddingTop: 0, paddingBottom: 0}}>
-                <div style={{marginBottom: '48px', borderRadius: '16px', overflow: 'hidden', background: 'linear-gradient(135deg, #f0e7ff 0%, #e8f4ff 100%)'}}>
+              <section id="careers" className="ash-sec" style={{paddingTop: 0, paddingBottom: 0, marginLeft: '-24px', marginRight: '-24px', paddingLeft: 0, paddingRight: 0}}>
+                <div style={{marginBottom: '0', borderRadius: '0', overflow: 'hidden', background: 'linear-gradient(135deg, #f0e7ff 0%, #e8f4ff 100%)'}}>
                   {/* Hero Section */}
-                  <div style={{display: 'flex', alignItems: 'center', padding: '80px 60px', gap: '80px'}}>
+                  <div style={{display: 'flex', alignItems: 'center', padding: '80px 80px', gap: '80px', maxWidth: '1600px', margin: '0 auto'}}>
                     <div style={{flex: 1}}>
-                      <h2 style={{fontSize: '42px', fontWeight: '800', color: C.ink, margin: '0 0 16px 0', lineHeight: 1.2}}>
+                      <h2 style={{fontSize: '48px', fontWeight: '800', color: C.ink, margin: '0 0 16px 0', lineHeight: 1.2}}>
                         Your World Beyond Academics
                       </h2>
                       <p style={{fontSize: '18px', color: C.ink3, margin: 0, lineHeight: 1.6}}>
-                        Discover opportunities across careers, research, education, finance, and more.
+                        Discover 500+ careers, 100+ universities, research, internships, scholarships, startups, finance, and legal resources — all tailored for your journey.
                       </p>
                       <div style={{width: '100px', height: '4px', background: IN, marginTop: '24px', borderRadius: '2px'}}></div>
                     </div>
-                    <div style={{flex: 1.2, textAlign: 'center'}}>
-                      <img src="https://onegrasp.com/wp-content/uploads/2026/08/69045c6d-9060-4669-8cc6-b8cf030a3f35.png" alt="Explore" style={{maxWidth: '100%', height: 'auto', maxHeight: '380px'}} />
+                    <div style={{flex: 1, textAlign: 'center', minWidth: 0}}>
+                      <img src="https://onegrasp.com/wp-content/uploads/2026/08/69045c6d-9060-4669-8cc6-b8cf030a3f35.png" alt="Explore" style={{maxWidth: '100%', height: 'auto', maxHeight: '380px', display: 'block'}} />
                     </div>
                   </div>
 
                   {/* Features Grid with Background Images */}
-                  <div style={{padding: '0 60px 80px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '32px'}}>
+                  <div style={{padding: '80px', maxWidth: '100%', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '32px'}}>
                     {[
-                      {id:'startups', title:'Startups', desc:'Connect with innovative founders and ideas.', count:'100+ opportunities', color:'#ea580c', icon:'flag', bg:'linear-gradient(135deg, rgba(234,88,12,0.4) 0%, rgba(234,88,12,0.6) 100%), url(https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop)'},
-                      {id:'research', title:'Research', desc:'Explore cutting-edge research programs.', count:'50+ programs', color:'#0369a1', icon:'pulse', bg:'linear-gradient(135deg, rgba(3,105,161,0.4) 0%, rgba(3,105,161,0.6) 100%), url(https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&h=300&fit=crop)'},
-                      {id:'financial', title:'Financial Literacy', desc:'Build practical money management skills.', count:'30+ courses', color:'#16a34a', icon:'card', bg:'linear-gradient(135deg, rgba(22,163,74,0.4) 0%, rgba(22,163,74,0.6) 100%), url(https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=500&h=300&fit=crop)'},
-                      {id:'legal', title:'Law & Rights', desc:'Know your legal rights and protections.', count:'20+ resources', color:'#7c3aed', icon:'shield', bg:'linear-gradient(135deg, rgba(124,58,237,0.4) 0%, rgba(124,58,237,0.6) 100%), url(https://images.unsplash.com/photo-1589519160732-57fc498494f8?w=500&h=300&fit=crop)'},
-                      {id:'careers', title:'Career Library', desc:'Explore 500+ careers with detailed paths.', count:'500+ careers', color:'#2563eb', icon:'briefcase', bg:'linear-gradient(135deg, rgba(37,99,235,0.4) 0%, rgba(37,99,235,0.6) 100%), url(https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop)'},
-                      {id:'study-abroad', title:'Study Abroad', desc:'Discover universities worldwide.', count:'100+ universities', color:'#dc2626', icon:'signpost', bg:'linear-gradient(135deg, rgba(220,38,38,0.4) 0%, rgba(220,38,38,0.6) 100%), url(https://images.unsplash.com/photo-1569163139394-de4798aa62b3?w=500&h=300&fit=crop)'},
-                      {id:'internships', title:'Internships', desc:'Gain real-world experience.', count:'300+ openings', color:'#9333ea', icon:'route', bg:'linear-gradient(135deg, rgba(147,51,234,0.4) 0%, rgba(147,51,234,0.6) 100%), url(https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop)'},
-                      {id:'scholarships', title:'Scholarships', desc:'Fund your education with awards.', count:'200+ awards', color:'#ca8a04', icon:'star', bg:'linear-gradient(135deg, rgba(202,138,4,0.4) 0%, rgba(202,138,4,0.6) 100%), url(https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=500&h=300&fit=crop)'},
+                      {id:'careers', title:'Career Library', desc:'Explore 500+ careers with salaries, skills, education paths, and future demand.', count:'500+ careers', color:'#2563eb', icon:'briefcase', bg:'linear-gradient(135deg, rgba(37,99,235,0.5) 0%, rgba(37,99,235,0.8) 100%), url(https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop&q=80)'},
+                      {id:'study-abroad', title:'Study Abroad', desc:'Discover 100+ universities across 20 countries with admission requirements and costs.', count:'100+ universities', color:'#dc2626', icon:'signpost', bg:'linear-gradient(135deg, rgba(220,38,38,0.5) 0%, rgba(220,38,38,0.8) 100%), url(https://images.unsplash.com/photo-1569163139394-de4798aa62b3?w=600&h=400&fit=crop&q=80)'},
+                      {id:'internships', title:'Internships', desc:'Gain real-world experience with 300+ internship openings and 200+ scholarships available.', count:'300+ internships', color:'#9333ea', icon:'route', bg:'linear-gradient(135deg, rgba(147,51,234,0.5) 0%, rgba(147,51,234,0.8) 100%), url(https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop&q=80)'},
+                      {id:'financial', title:'Financial Literacy', desc:'Master money management, investing, taxes, budgeting, and financial planning essentials.', count:'30+ topics', color:'#16a34a', icon:'card', bg:'linear-gradient(135deg, rgba(22,163,74,0.5) 0%, rgba(22,163,74,0.8) 100%), url(https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=600&h=400&fit=crop&q=80)'},
+                      {id:'legal', title:'Law & Rights', desc:'Understand student rights, labor laws, cyber safety, and legal protections comprehensively.', count:'20+ resources', color:'#7c3aed', icon:'shield', bg:'linear-gradient(135deg, rgba(124,58,237,0.5) 0%, rgba(124,58,237,0.8) 100%), url(https://images.unsplash.com/photo-1589519160732-57fc498494f8?w=600&h=400&fit=crop&q=80)'},
+                      {id:'research', title:'Research', desc:'Explore 50+ cutting-edge research programs, competitions, and academic opportunities.', count:'50+ programs', color:'#0369a1', icon:'pulse', bg:'linear-gradient(135deg, rgba(3,105,161,0.5) 0%, rgba(3,105,161,0.8) 100%), url(https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=600&h=400&fit=crop&q=80)'},
+                      {id:'startups', title:'Startups', desc:'Connect with 100+ innovative startups and learn entrepreneurship from founders and mentors.', count:'100+ startups', color:'#ea580c', icon:'flag', bg:'linear-gradient(135deg, rgba(234,88,12,0.5) 0%, rgba(234,88,12,0.8) 100%), url(https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop&q=80)'},
+                      {id:'resources', title:'Scholarships', desc:'Access 200+ scholarship awards from government, NGOs, and private organizations nationwide.', count:'200+ awards', color:'#ca8a04', icon:'star', bg:'linear-gradient(135deg, rgba(202,138,4,0.5) 0%, rgba(202,138,4,0.8) 100%), url(https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=600&h=400&fit=crop&q=80)'},
                     ].map((feature) => (
-                      <div key={feature.id} onClick={() => go(feature.id)} style={{background:'#fff', borderRadius:'12px', border:`1px solid ${C.line}`, cursor:'pointer', transition:'all 200ms ease', boxShadow:'0 2px 8px rgba(0,0,0,0.04)', overflow:'hidden', display:'flex', flexDirection:'column'}}>
-                        <div style={{height:'160px', backgroundImage:feature.bg, backgroundSize:'cover', backgroundPosition:'center'}}></div>
-                        <div style={{padding:'32px 24px', flex:1, display:'flex', flexDirection:'column'}}>
-                          <h3 style={{fontSize:'16px', fontWeight:'700', color:C.ink, margin:'0 0 8px 0'}}>{feature.title}</h3>
-                          <p style={{fontSize:'13px', color:C.ink3, margin:'0 0 16px 0', lineHeight:1.5, flex:1}}>{feature.desc}</p>
-                          <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', color:feature.color, fontSize:'14px', fontWeight:'600'}}><span>{feature.count}</span><span>→</span></div>
+                      <div key={feature.id} onClick={() => go(feature.id)} style={{background:'#fff', borderRadius:'16px', border:`1px solid ${C.line}`, cursor:'pointer', transition:'all 250ms ease', boxShadow:'0 4px 12px rgba(0,0,0,0.06)', overflow:'hidden', display:'flex', flexDirection:'column', transform:'translateY(0)', hover:{transform:'translateY(-4px)', boxShadow:'0 8px 20px rgba(0,0,0,0.10)'}}}>
+                        <div style={{height:'220px', backgroundImage:feature.bg, backgroundSize:'cover', backgroundPosition:'center', position:'relative'}}>
+                          <div style={{position:'absolute', inset:0, background:'linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.15) 100%)'}}></div>
+                        </div>
+                        <div style={{padding:'28px 24px', flex:1, display:'flex', flexDirection:'column'}}>
+                          <h3 style={{fontSize:'18px', fontWeight:'700', color:C.ink, margin:'0 0 8px 0'}}>{feature.title}</h3>
+                          <p style={{fontSize:'14px', color:C.ink3, margin:'0 0 20px 0', lineHeight:1.6, flex:1}}>{feature.desc}</p>
+                          <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', color:feature.color, fontSize:'14px', fontWeight:'700'}}><span>{feature.count}</span><span style={{fontSize:'18px'}}>→</span></div>
                         </div>
                       </div>
                     ))}
