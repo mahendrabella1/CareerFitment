@@ -63,12 +63,13 @@ const NAV = [
   { id: "mind", label: "How You Think", icon: "multiple_intelligence" },
   { id: "plan", label: "My Plan", icon: "check" },
   { id: "careers", label: "Career Library", icon: "briefcase" },
-  { id: "study-abroad", label: "Study Abroad", icon: "plane" },
-  { id: "internships", label: "Internships", icon: "target" },
-  { id: "financial", label: "Financial Literacy", icon: "dollar" },
+  { id: "study-abroad", label: "Study Abroad", icon: "signpost" },
+  { id: "internships", label: "Internships", icon: "route" },
+  { id: "financial", label: "Financial Literacy", icon: "card" },
   { id: "legal", label: "Legal Resources", icon: "shield" },
-  { id: "research", label: "Research Opportunities", icon: "microscope" },
-  { id: "startups", label: "Startup Ecosystem", icon: "rocket" },
+  { id: "research", label: "Research Opportunities", icon: "pulse" },
+  { id: "startups", label: "Startup Ecosystem", icon: "flag" },
+  { id: "resources", label: "Scholarships", icon: "star" },
 ];
 
 // Career-toolkit (colleges/exams/internships/scholarships/careers) is
@@ -577,14 +578,16 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                     </div>
                   </div>
 
-                  {/* Features Grid */}
+                  {/* Features Grid - 8 columns (2x4) */}
                   <div style={{padding: '0 40px 60px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px'}}>
                     {/* Startups */}
                     <div onClick={() => go("startups")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
-                      <div style={{fontSize: '32px', marginBottom: '16px'}}>🚀</div>
+                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#fed7aa', color: '#ea580c', marginBottom: '16px'}}>
+                        <Icon name="flag" size={24} style={{color: 'inherit'}} />
+                      </div>
                       <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Startups</h3>
                       <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Connect with innovative founders and ideas.</p>
-                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#ff6b35', fontSize: '14px', fontWeight: '600'}}>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#ea580c', fontSize: '14px', fontWeight: '600'}}>
                         <span>100+ opportunities</span>
                         <span>→</span>
                       </div>
@@ -592,10 +595,12 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
 
                     {/* Research */}
                     <div onClick={() => go("research")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
-                      <div style={{fontSize: '32px', marginBottom: '16px'}}>🔬</div>
+                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#dbeafe', color: '#0369a1', marginBottom: '16px'}}>
+                        <Icon name="pulse" size={24} style={{color: 'inherit'}} />
+                      </div>
                       <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Research</h3>
                       <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Explore cutting-edge research programs.</p>
-                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#004e89', fontSize: '14px', fontWeight: '600'}}>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#0369a1', fontSize: '14px', fontWeight: '600'}}>
                         <span>50+ programs</span>
                         <span>→</span>
                       </div>
@@ -603,10 +608,12 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
 
                     {/* Financial Literacy */}
                     <div onClick={() => go("financial")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
-                      <div style={{fontSize: '32px', marginBottom: '16px'}}>💰</div>
+                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#dcfce7', color: '#16a34a', marginBottom: '16px'}}>
+                        <Icon name="card" size={24} style={{color: 'inherit'}} />
+                      </div>
                       <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Financial Literacy</h3>
                       <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Build practical money management skills.</p>
-                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#1e7b34', fontSize: '14px', fontWeight: '600'}}>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#16a34a', fontSize: '14px', fontWeight: '600'}}>
                         <span>30+ courses</span>
                         <span>→</span>
                       </div>
@@ -614,10 +621,12 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
 
                     {/* Legal Resources */}
                     <div onClick={() => go("legal")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
-                      <div style={{fontSize: '32px', marginBottom: '16px'}}>⚖️</div>
+                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#e9d5ff', color: '#7c3aed', marginBottom: '16px'}}>
+                        <Icon name="shield" size={24} style={{color: 'inherit'}} />
+                      </div>
                       <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Law & Rights</h3>
                       <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Know your legal rights and protections.</p>
-                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#8b5a8e', fontSize: '14px', fontWeight: '600'}}>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#7c3aed', fontSize: '14px', fontWeight: '600'}}>
                         <span>20+ resources</span>
                         <span>→</span>
                       </div>
@@ -625,7 +634,9 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
 
                     {/* Career Library */}
                     <div onClick={() => go("careers")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
-                      <div style={{fontSize: '32px', marginBottom: '16px'}}>💼</div>
+                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#dbeafe', color: '#2563eb', marginBottom: '16px'}}>
+                        <Icon name="briefcase" size={24} style={{color: 'inherit'}} />
+                      </div>
                       <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Career Library</h3>
                       <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Explore 500+ careers with detailed paths.</p>
                       <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#2563eb', fontSize: '14px', fontWeight: '600'}}>
@@ -636,7 +647,9 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
 
                     {/* Study Abroad */}
                     <div onClick={() => go("study-abroad")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
-                      <div style={{fontSize: '32px', marginBottom: '16px'}}>✈️</div>
+                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#fee2e2', color: '#dc2626', marginBottom: '16px'}}>
+                        <Icon name="signpost" size={24} style={{color: 'inherit'}} />
+                      </div>
                       <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Study Abroad</h3>
                       <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Discover universities worldwide.</p>
                       <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#dc2626', fontSize: '14px', fontWeight: '600'}}>
@@ -647,11 +660,26 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
 
                     {/* Internships */}
                     <div onClick={() => go("internships")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
-                      <div style={{fontSize: '32px', marginBottom: '16px'}}>🎯</div>
+                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#f3e8ff', color: '#9333ea', marginBottom: '16px'}}>
+                        <Icon name="route" size={24} style={{color: 'inherit'}} />
+                      </div>
                       <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Internships</h3>
                       <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Gain real-world experience.</p>
-                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#7c3aed', fontSize: '14px', fontWeight: '600'}}>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#9333ea', fontSize: '14px', fontWeight: '600'}}>
                         <span>300+ openings</span>
+                        <span>→</span>
+                      </div>
+                    </div>
+
+                    {/* Scholarships */}
+                    <div onClick={() => go("resources")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#fef08a', color: '#ca8a04', marginBottom: '16px'}}>
+                        <Icon name="star" size={24} style={{color: 'inherit'}} />
+                      </div>
+                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Scholarships</h3>
+                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Fund your education with awards.</p>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#ca8a04', fontSize: '14px', fontWeight: '600'}}>
+                        <span>200+ awards</span>
                         <span>→</span>
                       </div>
                     </div>
