@@ -88,7 +88,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3-5 years"
     },
-    tags: ["high_demand", "fast_growing", "remote_friendly", "new_age", "future_proof"],
+    tags: ["high_demand", "fast_growing", "emerging", "new_age", "high_demand"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -142,7 +142,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3+ years"
     },
-    tags: ["high_demand", "bootcamp_friendly", "fast_growing", "remote_friendly"],
+    tags: ["high_demand", "fast_growing", "fast_growing", "emerging"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -196,7 +196,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3+ years"
     },
-    tags: ["high_demand", "bootcamp_friendly", "creative_technical"],
+    tags: ["high_demand", "fast_growing", "creative"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -250,7 +250,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3+ years"
     },
-    tags: ["high_demand", "fast_growing", "scalable"],
+    tags: ["high_demand", "fast_growing", "high_demand"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -304,7 +304,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3+ years"
     },
-    tags: ["high_demand", "growing", "cross_platform"],
+    tags: ["high_demand", "fast_growing", "emerging"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -359,7 +359,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3-5 years"
     },
-    tags: ["high_demand", "fastest_growing", "emerging", "lucrative"],
+    tags: ["high_demand", "fast_growing", "emerging", "high_demand"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -413,7 +413,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3-5 years"
     },
-    tags: ["high_demand", "emerging", "scalable", "lucrative"],
+    tags: ["high_demand", "emerging", "high_demand", "high_demand"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -466,7 +466,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "5+ years"
     },
-    tags: ["research", "emerging", "academic", "specialized"],
+    tags: ["research_oriented", "emerging", "research_oriented", "high_specialization"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -520,7 +520,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3-5 years"
     },
-    tags: ["high_demand", "emerging", "specialized", "lucrative"],
+    tags: ["high_demand", "emerging", "high_specialization", "high_demand"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -574,7 +574,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3-5 years"
     },
-    tags: ["high_demand", "emerging", "fast_growing", "specialized"],
+    tags: ["high_demand", "emerging", "fast_growing", "high_specialization"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -628,7 +628,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3-5 years"
     },
-    tags: ["high_demand", "emerging", "specialized"],
+    tags: ["high_demand", "emerging", "high_specialization"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -684,7 +684,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "5+ years"
     },
-    tags: ["high_demand", "growing", "enterprise", "leadership"],
+    tags: ["high_demand", "fast_growing", "high_demand", "high_specialization"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -738,7 +738,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3-5 years"
     },
-    tags: ["high_demand", "growing", "critical_infrastructure"],
+    tags: ["high_demand", "fast_growing", "high_demand"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -792,7 +792,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3-5 years"
     },
-    tags: ["stable_demand", "critical_infrastructure"],
+    tags: ["high_demand", "high_demand"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -846,7 +846,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3-5 years"
     },
-    tags: ["stable_demand", "critical_infrastructure"],
+    tags: ["high_demand", "high_demand"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -901,7 +901,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3-5 years"
     },
-    tags: ["high_demand", "emerging", "critical", "lucrative"],
+    tags: ["high_demand", "emerging", "high_demand", "high_demand"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -955,7 +955,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3-5 years"
     },
-    tags: ["high_demand", "specialized", "lucrative"],
+    tags: ["high_demand", "high_specialization", "high_demand"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -1011,7 +1011,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3+ years"
     },
-    tags: ["entry_level", "growing", "career_progression"],
+    tags: ["emerging", "fast_growing", "high_specialization"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -1023,7 +1023,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
 
   {
     id: "29-1141.00",
-    clusterId: "healthcare",
+    clusterId: "high_demand",
     name: "Registered Nurse",
     overview: "Provide direct patient care, health education, and coordination of treatment plans",
     whatTheyDo: "Administer medications and treatments, monitor vital signs, provide emotional support, coordinate with physicians, educate patients, maintain medical records",
@@ -1069,7 +1069,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3-5 years"
     },
-    tags: ["essential_profession", "high_demand", "stable_career"],
+    tags: ["high_demand", "high_demand", "traditional"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -1077,7 +1077,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
 
   {
     id: "29-1061.00",
-    clusterId: "healthcare",
+    clusterId: "high_demand",
     name: "Physician (Doctor)",
     overview: "Diagnose and treat diseases, injuries, and medical conditions in patients",
     whatTheyDo: "Examine patients, order and interpret tests, prescribe medications, perform surgeries, develop treatment plans, counsel patients on health",
@@ -1123,7 +1123,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "5+ years"
     },
-    tags: ["essential_profession", "prestigious", "high_earning"],
+    tags: ["high_demand", "high_demand", "high_demand"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -1131,7 +1131,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
 
   {
     id: "29-1062.00",
-    clusterId: "healthcare",
+    clusterId: "high_demand",
     name: "Dentist",
     overview: "Diagnose and treat problems with teeth, gums, and mouth",
     whatTheyDo: "Examine teeth and gums, clean teeth, fill cavities, perform extractions, make dentures, counsel on oral hygiene",
@@ -1177,7 +1177,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3+ years"
     },
-    tags: ["healthcare", "good_earning", "work_life_balance"],
+    tags: ["high_demand", "high_demand", "high_demand"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -1236,7 +1236,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "5+ years"
     },
-    tags: ["stable_demand", "infrastructure", "respected"],
+    tags: ["high_demand", "high_demand", "high_demand"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -1290,7 +1290,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "5+ years"
     },
-    tags: ["stable_demand", "innovation", "respected"],
+    tags: ["high_demand", "emerging", "high_demand"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -1350,7 +1350,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3-5 years"
     },
-    tags: ["high_demand", "growing", "good_salary"],
+    tags: ["high_demand", "fast_growing", "high_demand"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -1404,7 +1404,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "5+ years"
     },
-    tags: ["stable_demand", "respected", "good_earning"],
+    tags: ["high_demand", "high_demand", "high_demand"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -1464,7 +1464,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "3-5 years"
     },
-    tags: ["creative", "growing", "freelance_friendly"],
+    tags: ["creative", "fast_growing", "entrepreneurship"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -1524,7 +1524,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "5+ years"
     },
-    tags: ["research", "stable", "academic"],
+    tags: ["research_oriented", "traditional", "research_oriented"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -1584,7 +1584,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "5+ years"
     },
-    tags: ["essential_profession", "stable", "meaningful"],
+    tags: ["high_demand", "traditional", "high_demand"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
@@ -1598,7 +1598,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
 
   {
     id: "47-2111.00",
-    clusterId: "trades",
+    clusterId: "high_demand",
     name: "Electrician",
     overview: "Install, maintain, and repair electrical systems and equipment",
     whatTheyDo: "Install wiring, troubleshoot electrical problems, repair equipment, maintain safety standards, follow electrical codes, provide customer service",
@@ -1644,7 +1644,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
       ],
       duration: "5+ years"
     },
-    tags: ["trades", "high_demand", "self_employed_friendly"],
+    tags: ["high_demand", "high_demand", "entrepreneurship"],
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
