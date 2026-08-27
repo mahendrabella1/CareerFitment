@@ -1269,7 +1269,7 @@ export const CAREER_LIBRARY_930_PLUS: Career[] = [
     source: "onet-30.2",
     createdAt: new Date("2026-02-01"),
     updatedAt: new Date("2026-02-01")
-  }
+  },
   // [Additional 95+ tech careers would continue in this format]
   // Due to token length, showing representative examples
   // Full dataset includes: Network Engineer, Systems Administrator, IT Manager, Solutions Consultant,
