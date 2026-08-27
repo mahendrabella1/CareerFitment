@@ -341,6 +341,79 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                 </div>
               </section>
 
+              {/* ===== FEATURES HUB ===== */}
+              <section id="careers" className="ash-sec" style={{paddingTop: 0, paddingBottom: 0}}>
+                <div style={{marginBottom: '48px', borderRadius: '16px', overflow: 'hidden', background: 'linear-gradient(135deg, #f0e7ff 0%, #e8f4ff 100%)'}}>
+                  {/* Hero Section */}
+                  <div style={{display: 'flex', alignItems: 'center', padding: '60px 40px', gap: '60px'}}>
+                    <div style={{flex: 1}}>
+                      <h2 style={{fontSize: '36px', fontWeight: '800', color: C.ink, margin: '0 0 16px 0', lineHeight: 1.2}}>
+                        Explore Your Opportunities
+                      </h2>
+                      <p style={{fontSize: '16px', color: C.ink3, margin: 0, lineHeight: 1.6}}>
+                        Discover pathways, resources and experiences aligned with your future.
+                      </p>
+                      <div style={{width: '100px', height: '4px', background: IN, marginTop: '24px', borderRadius: '2px'}}></div>
+                    </div>
+                    <div style={{flex: 1, textAlign: 'center'}}>
+                      <img src="https://onegrasp.com/wp-content/uploads/2026/08/69045c6d-9060-4669-8cc6-b8cf030a3f35.png" alt="Explore" style={{maxWidth: '100%', height: 'auto', maxHeight: '280px'}} />
+                    </div>
+                  </div>
+
+                  {/* Features Grid */}
+                  <div style={{padding: '0 40px 60px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px'}}>
+                    <div onClick={() => go("startups")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#fed7aa', color: '#ea580c', marginBottom: '16px'}}><Icon name="flag" size={24} style={{color: 'inherit'}} /></div>
+                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Startups</h3>
+                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Connect with innovative founders and ideas.</p>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#ea580c', fontSize: '14px', fontWeight: '600'}}><span>100+ opportunities</span><span>→</span></div>
+                    </div>
+                    <div onClick={() => go("research")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#dbeafe', color: '#0369a1', marginBottom: '16px'}}><Icon name="pulse" size={24} style={{color: 'inherit'}} /></div>
+                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Research</h3>
+                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Explore cutting-edge research programs.</p>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#0369a1', fontSize: '14px', fontWeight: '600'}}><span>50+ programs</span><span>→</span></div>
+                    </div>
+                    <div onClick={() => go("financial")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#dcfce7', color: '#16a34a', marginBottom: '16px'}}><Icon name="card" size={24} style={{color: 'inherit'}} /></div>
+                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Financial Literacy</h3>
+                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Build practical money management skills.</p>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#16a34a', fontSize: '14px', fontWeight: '600'}}><span>30+ courses</span><span>→</span></div>
+                    </div>
+                    <div onClick={() => go("legal")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#e9d5ff', color: '#7c3aed', marginBottom: '16px'}}><Icon name="shield" size={24} style={{color: 'inherit'}} /></div>
+                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Law & Rights</h3>
+                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Know your legal rights and protections.</p>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#7c3aed', fontSize: '14px', fontWeight: '600'}}><span>20+ resources</span><span>→</span></div>
+                    </div>
+                    <div onClick={() => go("careers")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#dbeafe', color: '#2563eb', marginBottom: '16px'}}><Icon name="briefcase" size={24} style={{color: 'inherit'}} /></div>
+                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Career Library</h3>
+                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Explore 500+ careers with detailed paths.</p>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#2563eb', fontSize: '14px', fontWeight: '600'}}><span>500+ careers</span><span>→</span></div>
+                    </div>
+                    <div onClick={() => go("study-abroad")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#fee2e2', color: '#dc2626', marginBottom: '16px'}}><Icon name="signpost" size={24} style={{color: 'inherit'}} /></div>
+                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Study Abroad</h3>
+                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Discover universities worldwide.</p>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#dc2626', fontSize: '14px', fontWeight: '600'}}><span>100+ universities</span><span>→</span></div>
+                    </div>
+                    <div onClick={() => go("internships")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#f3e8ff', color: '#9333ea', marginBottom: '16px'}}><Icon name="route" size={24} style={{color: 'inherit'}} /></div>
+                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Internships</h3>
+                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Gain real-world experience.</p>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#9333ea', fontSize: '14px', fontWeight: '600'}}><span>300+ openings</span><span>→</span></div>
+                    </div>
+                    <div onClick={() => go("resources")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
+                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#fef08a', color: '#ca8a04', marginBottom: '16px'}}><Icon name="star" size={24} style={{color: 'inherit'}} /></div>
+                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Scholarships</h3>
+                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Fund your education with awards.</p>
+                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#ca8a04', fontSize: '14px', fontWeight: '600'}}><span>200+ awards</span><span>→</span></div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
               {/* ===== DIMENSIONS ===== */}
               <section id="dimensions" className="ash-sec" style={{display: 'none'}}>
                 <div className="ogd-card">
@@ -487,134 +560,6 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                   <Toolkit tab={toolkitTab} setTab={setToolkitTab} />
                 </section>
               )}
-
-              {/* ===== FEATURES HUB ===== */}
-              <section id="careers" className="ash-sec" style={{paddingTop: 0, paddingBottom: 0}}>
-                <div style={{marginBottom: '48px', borderRadius: '16px', overflow: 'hidden', background: 'linear-gradient(135deg, #f0e7ff 0%, #e8f4ff 100%)'}}>
-                  {/* Hero Section */}
-                  <div style={{display: 'flex', alignItems: 'center', padding: '60px 40px', gap: '60px'}}>
-                    <div style={{flex: 1}}>
-                      <h2 style={{fontSize: '36px', fontWeight: '800', color: C.ink, margin: '0 0 16px 0', lineHeight: 1.2}}>
-                        Explore Your Opportunities
-                      </h2>
-                      <p style={{fontSize: '16px', color: C.ink3, margin: 0, lineHeight: 1.6}}>
-                        Discover pathways, resources and experiences aligned with your future.
-                      </p>
-                      <div style={{width: '100px', height: '4px', background: IN, marginTop: '24px', borderRadius: '2px'}}></div>
-                    </div>
-                    <div style={{flex: 1, textAlign: 'center'}}>
-                      <img src="https://onegrasp.com/wp-content/uploads/2026/08/69045c6d-9060-4669-8cc6-b8cf030a3f35.png" alt="Explore" style={{maxWidth: '100%', height: 'auto', maxHeight: '280px'}} />
-                    </div>
-                  </div>
-
-                  {/* Features Grid - 8 columns (2x4) */}
-                  <div style={{padding: '0 40px 60px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px'}}>
-                    {/* Startups */}
-                    <div onClick={() => go("startups")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
-                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#fed7aa', color: '#ea580c', marginBottom: '16px'}}>
-                        <Icon name="flag" size={24} style={{color: 'inherit'}} />
-                      </div>
-                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Startups</h3>
-                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Connect with innovative founders and ideas.</p>
-                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#ea580c', fontSize: '14px', fontWeight: '600'}}>
-                        <span>100+ opportunities</span>
-                        <span>→</span>
-                      </div>
-                    </div>
-
-                    {/* Research */}
-                    <div onClick={() => go("research")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
-                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#dbeafe', color: '#0369a1', marginBottom: '16px'}}>
-                        <Icon name="pulse" size={24} style={{color: 'inherit'}} />
-                      </div>
-                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Research</h3>
-                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Explore cutting-edge research programs.</p>
-                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#0369a1', fontSize: '14px', fontWeight: '600'}}>
-                        <span>50+ programs</span>
-                        <span>→</span>
-                      </div>
-                    </div>
-
-                    {/* Financial Literacy */}
-                    <div onClick={() => go("financial")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
-                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#dcfce7', color: '#16a34a', marginBottom: '16px'}}>
-                        <Icon name="card" size={24} style={{color: 'inherit'}} />
-                      </div>
-                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Financial Literacy</h3>
-                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Build practical money management skills.</p>
-                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#16a34a', fontSize: '14px', fontWeight: '600'}}>
-                        <span>30+ courses</span>
-                        <span>→</span>
-                      </div>
-                    </div>
-
-                    {/* Legal Resources */}
-                    <div onClick={() => go("legal")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
-                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#e9d5ff', color: '#7c3aed', marginBottom: '16px'}}>
-                        <Icon name="shield" size={24} style={{color: 'inherit'}} />
-                      </div>
-                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Law & Rights</h3>
-                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Know your legal rights and protections.</p>
-                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#7c3aed', fontSize: '14px', fontWeight: '600'}}>
-                        <span>20+ resources</span>
-                        <span>→</span>
-                      </div>
-                    </div>
-
-                    {/* Career Library */}
-                    <div onClick={() => go("careers")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
-                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#dbeafe', color: '#2563eb', marginBottom: '16px'}}>
-                        <Icon name="briefcase" size={24} style={{color: 'inherit'}} />
-                      </div>
-                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Career Library</h3>
-                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Explore 500+ careers with detailed paths.</p>
-                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#2563eb', fontSize: '14px', fontWeight: '600'}}>
-                        <span>500+ careers</span>
-                        <span>→</span>
-                      </div>
-                    </div>
-
-                    {/* Study Abroad */}
-                    <div onClick={() => go("study-abroad")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
-                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#fee2e2', color: '#dc2626', marginBottom: '16px'}}>
-                        <Icon name="signpost" size={24} style={{color: 'inherit'}} />
-                      </div>
-                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Study Abroad</h3>
-                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Discover universities worldwide.</p>
-                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#dc2626', fontSize: '14px', fontWeight: '600'}}>
-                        <span>100+ universities</span>
-                        <span>→</span>
-                      </div>
-                    </div>
-
-                    {/* Internships */}
-                    <div onClick={() => go("internships")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
-                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#f3e8ff', color: '#9333ea', marginBottom: '16px'}}>
-                        <Icon name="route" size={24} style={{color: 'inherit'}} />
-                      </div>
-                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Internships</h3>
-                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Gain real-world experience.</p>
-                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#9333ea', fontSize: '14px', fontWeight: '600'}}>
-                        <span>300+ openings</span>
-                        <span>→</span>
-                      </div>
-                    </div>
-
-                    {/* Scholarships */}
-                    <div onClick={() => go("resources")} style={{background: '#fff', padding: '28px 24px', borderRadius: '12px', border: `1px solid ${C.line}`, cursor: 'pointer', transition: 'all 200ms ease', boxShadow: '0 2px 8px rgba(0,0,0,0.04)'}}>
-                      <div style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#fef08a', color: '#ca8a04', marginBottom: '16px'}}>
-                        <Icon name="star" size={24} style={{color: 'inherit'}} />
-                      </div>
-                      <h3 style={{fontSize: '16px', fontWeight: '700', color: C.ink, margin: '0 0 8px 0'}}>Scholarships</h3>
-                      <p style={{fontSize: '13px', color: C.ink3, margin: '0 0 16px 0', lineHeight: 1.5}}>Fund your education with awards.</p>
-                      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#ca8a04', fontSize: '14px', fontWeight: '600'}}>
-                        <span>200+ awards</span>
-                        <span>→</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
 
               {/* Anything not anchored to a section lands here, at the end. */}
               {extraSections
