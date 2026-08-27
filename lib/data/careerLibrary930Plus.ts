@@ -2,49 +2,7 @@
 // Generated: 2026-02-01
 // Source: O*NET 30.2, Payscale 2026, Indeed 2026
 
-export interface SalaryData {
-  min: number;
-  max: number;
-  currency: "INR" | "USD";
-  experience: string;
-  region: "India" | "USA";
-  source: string;
-}
-
-export interface CareerPath {
-  title: string;
-  steps: string[];
-  duration: string;
-}
-
-export interface Career {
-  id: string;
-  clusterId: "tech" | "health" | "engineering" | "business" | "creative" | "science" | "social" | "trades";
-  name: string;
-  overview: string;
-  whatTheyDo: string;
-  education: {
-    subjects: string[];
-    degrees: string[];
-    certifications: string[];
-    entranceExams: string[];
-  };
-  skills: string[];
-  tools: string[];
-  companies: string[];
-  industries: string[];
-  currentDemand: "high" | "medium" | "low";
-  emergingDemand?: "high" | "medium" | "low";
-  futureOutlook: string;
-  aiImpact: string;
-  salaryRange: SalaryData[];
-  beginner: CareerPath;
-  advanced: CareerPath;
-  tags: string[];
-  source: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { Career } from '@/lib/data/schema';
 
 export const CAREER_LIBRARY_930_PLUS: Career[] = [
   // ============ TECHNOLOGY CLUSTER (150+) ============
