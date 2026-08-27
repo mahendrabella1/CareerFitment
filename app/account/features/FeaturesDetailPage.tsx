@@ -185,6 +185,11 @@ function InternshipsDetailPage({ activeTab, setActiveTab }: { activeTab: string;
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
+      {config.image && (
+        <div style={{ marginBottom: spacing[6], borderRadius: radius.lg, overflow: "hidden", maxHeight: "320px" }}>
+          <img src={config.image} alt={config.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+        </div>
+      )}
       <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[10] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[20], marginBottom: spacing[6] }}>
         {config.subtitle}
