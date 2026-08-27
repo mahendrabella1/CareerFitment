@@ -8,7 +8,6 @@ import Link from "next/link";
 import { Logo } from "@/app/Logo";
 import { useAuth, authErrorMessage } from "@/lib/auth/AuthProvider";
 import { emailIsValid } from "@/lib/auth/formOptions";
-import OfferBanner from "@/app/OfferBanner";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -76,7 +75,6 @@ export default function SignInPage() {
 
   return (
     <div style={S.page}>
-      <OfferBanner />
       <header style={S.header}>
         <Link href="/" style={{ textDecoration: "none" }}><Logo height={30} /></Link>
         <div style={S.headerRight}>

@@ -1,0 +1,467 @@
+mapping_id,degree_family,programme_name,stream_group,eligibility_status
+MAP0001,Engineering & Technology,B.Tech Computer Science,PCM,GREEN
+MAP0002,Engineering & Technology,B.Tech Computer Science,PCB,RED_YELLOW
+MAP0003,Engineering & Technology,B.Tech Computer Science,PCMB,GREEN
+MAP0004,Engineering & Technology,B.Tech Computer Science,Commerce,RED_YELLOW
+MAP0005,Engineering & Technology,B.Tech Computer Science,Humanities,RED
+MAP0006,Engineering & Technology,B.Tech Computer Science,Vocational,YELLOW
+MAP0007,Engineering & Technology,B.Tech AI/ML,PCM,GREEN
+MAP0008,Engineering & Technology,B.Tech AI/ML,PCB,RED_YELLOW
+MAP0009,Engineering & Technology,B.Tech AI/ML,PCMB,GREEN
+MAP0010,Engineering & Technology,B.Tech AI/ML,Commerce,RED_YELLOW
+MAP0011,Engineering & Technology,B.Tech AI/ML,Humanities,RED
+MAP0012,Engineering & Technology,B.Tech AI/ML,Vocational,YELLOW
+MAP0013,Engineering & Technology,B.Tech Data Science,PCM,GREEN
+MAP0014,Engineering & Technology,B.Tech Data Science,PCB,RED_YELLOW
+MAP0015,Engineering & Technology,B.Tech Data Science,PCMB,GREEN
+MAP0016,Engineering & Technology,B.Tech Data Science,Commerce,RED_YELLOW
+MAP0017,Engineering & Technology,B.Tech Data Science,Humanities,RED
+MAP0018,Engineering & Technology,B.Tech Data Science,Vocational,YELLOW
+MAP0019,Engineering & Technology,B.Tech ECE,PCM,GREEN
+MAP0020,Engineering & Technology,B.Tech ECE,PCB,RED
+MAP0021,Engineering & Technology,B.Tech ECE,PCMB,GREEN
+MAP0022,Engineering & Technology,B.Tech ECE,Commerce,RED
+MAP0023,Engineering & Technology,B.Tech ECE,Humanities,RED
+MAP0024,Engineering & Technology,B.Tech ECE,Vocational,YELLOW
+MAP0025,Engineering & Technology,B.Tech EEE,PCM,GREEN
+MAP0026,Engineering & Technology,B.Tech EEE,PCB,RED
+MAP0027,Engineering & Technology,B.Tech EEE,PCMB,GREEN
+MAP0028,Engineering & Technology,B.Tech EEE,Commerce,RED
+MAP0029,Engineering & Technology,B.Tech EEE,Humanities,RED
+MAP0030,Engineering & Technology,B.Tech EEE,Vocational,YELLOW
+MAP0031,Engineering & Technology,B.Tech Mechanical,PCM,GREEN
+MAP0032,Engineering & Technology,B.Tech Mechanical,PCB,RED
+MAP0033,Engineering & Technology,B.Tech Mechanical,PCMB,GREEN
+MAP0034,Engineering & Technology,B.Tech Mechanical,Commerce,RED
+MAP0035,Engineering & Technology,B.Tech Mechanical,Humanities,RED
+MAP0036,Engineering & Technology,B.Tech Mechanical,Vocational,YELLOW
+MAP0037,Engineering & Technology,B.Tech Civil,PCM,GREEN
+MAP0038,Engineering & Technology,B.Tech Civil,PCB,RED
+MAP0039,Engineering & Technology,B.Tech Civil,PCMB,GREEN
+MAP0040,Engineering & Technology,B.Tech Civil,Commerce,RED
+MAP0041,Engineering & Technology,B.Tech Civil,Humanities,RED
+MAP0042,Engineering & Technology,B.Tech Civil,Vocational,YELLOW
+MAP0043,Engineering & Technology,B.Tech Chemical,PCM,GREEN
+MAP0044,Engineering & Technology,B.Tech Chemical,PCB,YELLOW
+MAP0045,Engineering & Technology,B.Tech Chemical,PCMB,GREEN
+MAP0046,Engineering & Technology,B.Tech Chemical,Commerce,RED
+MAP0047,Engineering & Technology,B.Tech Chemical,Humanities,RED
+MAP0048,Engineering & Technology,B.Tech Chemical,Vocational,YELLOW
+MAP0049,Engineering & Technology,B.Tech Aerospace,PCM,GREEN
+MAP0050,Engineering & Technology,B.Tech Aerospace,PCB,RED
+MAP0051,Engineering & Technology,B.Tech Aerospace,PCMB,GREEN
+MAP0052,Engineering & Technology,B.Tech Aerospace,Commerce,RED
+MAP0053,Engineering & Technology,B.Tech Aerospace,Humanities,RED
+MAP0054,Engineering & Technology,B.Tech Aerospace,Vocational,YELLOW
+MAP0055,Engineering & Technology,B.Tech Biotechnology,PCM,GREEN_YELLOW
+MAP0056,Engineering & Technology,B.Tech Biotechnology,PCB,GREEN
+MAP0057,Engineering & Technology,B.Tech Biotechnology,PCMB,GREEN
+MAP0058,Engineering & Technology,B.Tech Biotechnology,Commerce,RED
+MAP0059,Engineering & Technology,B.Tech Biotechnology,Humanities,RED
+MAP0060,Engineering & Technology,B.Tech Biotechnology,Vocational,YELLOW
+MAP0061,Engineering & Technology,B.Tech Food Technology,PCM,GREEN
+MAP0062,Engineering & Technology,B.Tech Food Technology,PCB,GREEN
+MAP0063,Engineering & Technology,B.Tech Food Technology,PCMB,GREEN
+MAP0064,Engineering & Technology,B.Tech Food Technology,Commerce,RED
+MAP0065,Engineering & Technology,B.Tech Food Technology,Humanities,RED
+MAP0066,Engineering & Technology,B.Tech Food Technology,Vocational,YELLOW
+MAP0067,Engineering & Technology,B.Tech Agricultural Engineering,PCM,GREEN
+MAP0068,Engineering & Technology,B.Tech Agricultural Engineering,PCB,YELLOW
+MAP0069,Engineering & Technology,B.Tech Agricultural Engineering,PCMB,GREEN
+MAP0070,Engineering & Technology,B.Tech Agricultural Engineering,Commerce,RED
+MAP0071,Engineering & Technology,B.Tech Agricultural Engineering,Humanities,RED
+MAP0072,Engineering & Technology,B.Tech Agricultural Engineering,Vocational,YELLOW
+MAP0073,Engineering & Technology,B.Tech Dairy Technology,PCM,GREEN
+MAP0074,Engineering & Technology,B.Tech Dairy Technology,PCB,GREEN
+MAP0075,Engineering & Technology,B.Tech Dairy Technology,PCMB,GREEN
+MAP0076,Engineering & Technology,B.Tech Dairy Technology,Commerce,RED
+MAP0077,Engineering & Technology,B.Tech Dairy Technology,Humanities,RED
+MAP0078,Engineering & Technology,B.Tech Dairy Technology,Vocational,YELLOW
+MAP0079,Engineering & Technology,B.Tech Environmental Engineering,PCM,GREEN
+MAP0080,Engineering & Technology,B.Tech Environmental Engineering,PCB,YELLOW
+MAP0081,Engineering & Technology,B.Tech Environmental Engineering,PCMB,GREEN
+MAP0082,Engineering & Technology,B.Tech Environmental Engineering,Commerce,RED
+MAP0083,Engineering & Technology,B.Tech Environmental Engineering,Humanities,RED
+MAP0084,Engineering & Technology,B.Tech Environmental Engineering,Vocational,YELLOW
+MAP0085,Architecture & Planning,B.Arch,PCM,GREEN
+MAP0086,Architecture & Planning,B.Arch,PCB,RED_YELLOW
+MAP0087,Architecture & Planning,B.Arch,PCMB,GREEN
+MAP0088,Architecture & Planning,B.Arch,Commerce,RED
+MAP0089,Architecture & Planning,B.Arch,Humanities,RED
+MAP0090,Architecture & Planning,B.Planning,PCM,GREEN
+MAP0091,Architecture & Planning,B.Planning,PCB,RED_YELLOW
+MAP0092,Architecture & Planning,B.Planning,PCMB,GREEN
+MAP0093,Architecture & Planning,B.Planning,Commerce,RED_YELLOW
+MAP0094,Architecture & Planning,B.Planning,Humanities,RED_YELLOW
+MAP0095,Architecture & Planning,B.Des,PCM,GREEN
+MAP0096,Architecture & Planning,B.Des,PCB,GREEN
+MAP0097,Architecture & Planning,B.Des,PCMB,GREEN
+MAP0098,Architecture & Planning,B.Des,Commerce,GREEN
+MAP0099,Architecture & Planning,B.Des,Humanities,GREEN
+MAP0100,Architecture & Planning,BFA,PCM,GREEN
+MAP0101,Architecture & Planning,BFA,PCB,GREEN
+MAP0102,Architecture & Planning,BFA,PCMB,GREEN
+MAP0103,Architecture & Planning,BFA,Commerce,GREEN
+MAP0104,Architecture & Planning,BFA,Humanities,GREEN
+MAP0105,Architecture & Planning,B.Plan-related programmes,PCM,GREEN
+MAP0106,Architecture & Planning,B.Plan-related programmes,PCB,YELLOW
+MAP0107,Architecture & Planning,B.Plan-related programmes,PCMB,GREEN
+MAP0108,Architecture & Planning,B.Plan-related programmes,Commerce,YELLOW
+MAP0109,Architecture & Planning,B.Plan-related programmes,Humanities,YELLOW
+MAP0110,Computer & IT Pathways,B.Tech CSE,PCM,GREEN
+MAP0111,Computer & IT Pathways,B.Tech CSE,PCB,RED_YELLOW
+MAP0112,Computer & IT Pathways,B.Tech CSE,Commerce_Math,RED_YELLOW
+MAP0113,Computer & IT Pathways,B.Tech CSE,Commerce_No_Math,RED
+MAP0114,Computer & IT Pathways,B.Tech CSE,Humanities_Math,RED_YELLOW
+MAP0115,Computer & IT Pathways,B.Tech CSE,Humanities_No_Math,RED
+MAP0116,Computer & IT Pathways,B.Sc CS,PCM,GREEN
+MAP0117,Computer & IT Pathways,B.Sc CS,PCB,YELLOW
+MAP0118,Computer & IT Pathways,B.Sc CS,Commerce_Math,GREEN
+MAP0119,Computer & IT Pathways,B.Sc CS,Commerce_No_Math,YELLOW
+MAP0120,Computer & IT Pathways,B.Sc CS,Humanities_Math,GREEN
+MAP0121,Computer & IT Pathways,B.Sc CS,Humanities_No_Math,YELLOW
+MAP0122,Computer & IT Pathways,BCA,PCM,GREEN
+MAP0123,Computer & IT Pathways,BCA,PCB,GREEN
+MAP0124,Computer & IT Pathways,BCA,Commerce_Math,GREEN
+MAP0125,Computer & IT Pathways,BCA,Commerce_No_Math,GREEN
+MAP0126,Computer & IT Pathways,BCA,Humanities_Math,GREEN
+MAP0127,Computer & IT Pathways,BCA,Humanities_No_Math,YELLOW
+MAP0128,Computer & IT Pathways,B.Sc Data Science,PCM,GREEN
+MAP0129,Computer & IT Pathways,B.Sc Data Science,PCB,YELLOW
+MAP0130,Computer & IT Pathways,B.Sc Data Science,Commerce_Math,GREEN
+MAP0131,Computer & IT Pathways,B.Sc Data Science,Commerce_No_Math,YELLOW
+MAP0132,Computer & IT Pathways,B.Sc Data Science,Humanities_Math,GREEN
+MAP0133,Computer & IT Pathways,B.Sc Data Science,Humanities_No_Math,YELLOW
+MAP0134,Computer & IT Pathways,B.Sc AI,PCM,GREEN
+MAP0135,Computer & IT Pathways,B.Sc AI,PCB,YELLOW
+MAP0136,Computer & IT Pathways,B.Sc AI,Commerce_Math,GREEN
+MAP0137,Computer & IT Pathways,B.Sc AI,Commerce_No_Math,YELLOW
+MAP0138,Computer & IT Pathways,B.Sc AI,Humanities_Math,GREEN
+MAP0139,Computer & IT Pathways,B.Sc AI,Humanities_No_Math,YELLOW
+MAP0140,Computer & IT Pathways,B.Sc Cybersecurity,PCM,GREEN
+MAP0141,Computer & IT Pathways,B.Sc Cybersecurity,PCB,YELLOW
+MAP0142,Computer & IT Pathways,B.Sc Cybersecurity,Commerce_Math,GREEN
+MAP0143,Computer & IT Pathways,B.Sc Cybersecurity,Commerce_No_Math,YELLOW
+MAP0144,Computer & IT Pathways,B.Sc Cybersecurity,Humanities_Math,YELLOW
+MAP0145,Computer & IT Pathways,B.Sc Cybersecurity,Humanities_No_Math,YELLOW
+MAP0146,Computer & IT Pathways,B.Tech AI/ML,PCM,GREEN
+MAP0147,Computer & IT Pathways,B.Tech AI/ML,PCB,RED_YELLOW
+MAP0148,Computer & IT Pathways,B.Tech AI/ML,Commerce_Math,RED_YELLOW
+MAP0149,Computer & IT Pathways,B.Tech AI/ML,Commerce_No_Math,RED
+MAP0150,Computer & IT Pathways,B.Tech AI/ML,Humanities_Math,RED
+MAP0151,Computer & IT Pathways,B.Tech AI/ML,Humanities_No_Math,RED
+MAP0152,Medical & Health Sciences,MBBS,PCM,RED
+MAP0153,Medical & Health Sciences,MBBS,PCB,GREEN
+MAP0154,Medical & Health Sciences,MBBS,PCMB,GREEN
+MAP0155,Medical & Health Sciences,BDS,PCM,RED
+MAP0156,Medical & Health Sciences,BDS,PCB,GREEN
+MAP0157,Medical & Health Sciences,BDS,PCMB,GREEN
+MAP0158,Medical & Health Sciences,BAMS,PCM,RED
+MAP0159,Medical & Health Sciences,BAMS,PCB,GREEN
+MAP0160,Medical & Health Sciences,BAMS,PCMB,GREEN
+MAP0161,Medical & Health Sciences,BHMS,PCM,RED
+MAP0162,Medical & Health Sciences,BHMS,PCB,GREEN
+MAP0163,Medical & Health Sciences,BHMS,PCMB,GREEN
+MAP0164,Medical & Health Sciences,BUMS,PCM,RED
+MAP0165,Medical & Health Sciences,BUMS,PCB,GREEN
+MAP0166,Medical & Health Sciences,BUMS,PCMB,GREEN
+MAP0167,Medical & Health Sciences,BSMS,PCM,RED
+MAP0168,Medical & Health Sciences,BSMS,PCB,GREEN
+MAP0169,Medical & Health Sciences,BSMS,PCMB,GREEN
+MAP0170,Medical & Health Sciences,Veterinary / BVSc,PCM,RED
+MAP0171,Medical & Health Sciences,Veterinary / BVSc,PCB,GREEN
+MAP0172,Medical & Health Sciences,Veterinary / BVSc,PCMB,GREEN
+MAP0173,Medical & Health Sciences,B.Sc Nursing,PCM,RED_YELLOW
+MAP0174,Medical & Health Sciences,B.Sc Nursing,PCB,GREEN
+MAP0175,Medical & Health Sciences,B.Sc Nursing,PCMB,GREEN
+MAP0176,Medical & Health Sciences,Physiotherapy,PCM,RED_YELLOW
+MAP0177,Medical & Health Sciences,Physiotherapy,PCB,GREEN
+MAP0178,Medical & Health Sciences,Physiotherapy,PCMB,GREEN
+MAP0179,Medical & Health Sciences,Occupational Therapy,PCM,RED_YELLOW
+MAP0180,Medical & Health Sciences,Occupational Therapy,PCB,GREEN
+MAP0181,Medical & Health Sciences,Occupational Therapy,PCMB,GREEN
+MAP0182,Medical & Health Sciences,Medical Laboratory Technology,PCM,YELLOW
+MAP0183,Medical & Health Sciences,Medical Laboratory Technology,PCB,GREEN
+MAP0184,Medical & Health Sciences,Medical Laboratory Technology,PCMB,GREEN
+MAP0185,Medical & Health Sciences,Radiology / Imaging,PCM,YELLOW
+MAP0186,Medical & Health Sciences,Radiology / Imaging,PCB,GREEN
+MAP0187,Medical & Health Sciences,Radiology / Imaging,PCMB,GREEN
+MAP0188,Medical & Health Sciences,Optometry,PCM,YELLOW
+MAP0189,Medical & Health Sciences,Optometry,PCB,GREEN
+MAP0190,Medical & Health Sciences,Optometry,PCMB,GREEN
+MAP0191,Medical & Health Sciences,Pharmacy,PCM,YELLOW
+MAP0192,Medical & Health Sciences,Pharmacy,PCB,GREEN
+MAP0193,Medical & Health Sciences,Pharmacy,PCMB,GREEN
+MAP0194,Medical & Health Sciences,Biotechnology,PCM,YELLOW
+MAP0195,Medical & Health Sciences,Biotechnology,PCB,GREEN
+MAP0196,Medical & Health Sciences,Biotechnology,PCMB,GREEN
+MAP0197,Medical & Health Sciences,Microbiology,PCM,RED_YELLOW
+MAP0198,Medical & Health Sciences,Microbiology,PCB,GREEN
+MAP0199,Medical & Health Sciences,Microbiology,PCMB,GREEN
+MAP0200,Medical & Health Sciences,Biochemistry,PCM,RED_YELLOW
+MAP0201,Medical & Health Sciences,Biochemistry,PCB,GREEN
+MAP0202,Medical & Health Sciences,Biochemistry,PCMB,GREEN
+MAP0203,Medical & Health Sciences,Genetics,PCM,RED_YELLOW
+MAP0204,Medical & Health Sciences,Genetics,PCB,GREEN
+MAP0205,Medical & Health Sciences,Genetics,PCMB,GREEN
+MAP0206,Pure Sciences,B.Sc Physics,PCM,GREEN
+MAP0207,Pure Sciences,B.Sc Physics,PCB,RED_YELLOW
+MAP0208,Pure Sciences,B.Sc Physics,PCMB,GREEN
+MAP0209,Pure Sciences,B.Sc Physics,Commerce_Math,RED
+MAP0210,Pure Sciences,B.Sc Physics,Humanities_Math,RED
+MAP0211,Pure Sciences,B.Sc Mathematics,PCM,GREEN
+MAP0212,Pure Sciences,B.Sc Mathematics,PCB,RED
+MAP0213,Pure Sciences,B.Sc Mathematics,PCMB,GREEN
+MAP0214,Pure Sciences,B.Sc Mathematics,Commerce_Math,YELLOW
+MAP0215,Pure Sciences,B.Sc Mathematics,Humanities_Math,YELLOW
+MAP0216,Pure Sciences,B.Sc Chemistry,PCM,GREEN
+MAP0217,Pure Sciences,B.Sc Chemistry,PCB,GREEN
+MAP0218,Pure Sciences,B.Sc Chemistry,PCMB,GREEN
+MAP0219,Pure Sciences,B.Sc Chemistry,Commerce_Math,RED
+MAP0220,Pure Sciences,B.Sc Chemistry,Humanities_Math,RED
+MAP0221,Pure Sciences,B.Sc Statistics,PCM,GREEN
+MAP0222,Pure Sciences,B.Sc Statistics,PCB,YELLOW
+MAP0223,Pure Sciences,B.Sc Statistics,PCMB,GREEN
+MAP0224,Pure Sciences,B.Sc Statistics,Commerce_Math,GREEN
+MAP0225,Pure Sciences,B.Sc Statistics,Humanities_Math,YELLOW
+MAP0226,Pure Sciences,B.Sc Computer Science,PCM,GREEN
+MAP0227,Pure Sciences,B.Sc Computer Science,PCB,YELLOW
+MAP0228,Pure Sciences,B.Sc Computer Science,PCMB,GREEN
+MAP0229,Pure Sciences,B.Sc Computer Science,Commerce_Math,YELLOW
+MAP0230,Pure Sciences,B.Sc Computer Science,Humanities_Math,YELLOW
+MAP0231,Pure Sciences,B.Sc Data Science,PCM,GREEN
+MAP0232,Pure Sciences,B.Sc Data Science,PCB,YELLOW
+MAP0233,Pure Sciences,B.Sc Data Science,PCMB,GREEN
+MAP0234,Pure Sciences,B.Sc Data Science,Commerce_Math,GREEN
+MAP0235,Pure Sciences,B.Sc Data Science,Humanities_Math,YELLOW
+MAP0236,Pure Sciences,B.Sc Economics,PCM,GREEN
+MAP0237,Pure Sciences,B.Sc Economics,PCB,YELLOW
+MAP0238,Pure Sciences,B.Sc Economics,PCMB,GREEN
+MAP0239,Pure Sciences,B.Sc Economics,Commerce_Math,GREEN
+MAP0240,Pure Sciences,B.Sc Economics,Humanities_Math,GREEN
+MAP0241,Pure Sciences,B.Sc Psychology,PCM,GREEN
+MAP0242,Pure Sciences,B.Sc Psychology,PCB,GREEN
+MAP0243,Pure Sciences,B.Sc Psychology,PCMB,GREEN
+MAP0244,Pure Sciences,B.Sc Psychology,Commerce_Math,GREEN
+MAP0245,Pure Sciences,B.Sc Psychology,Humanities_Math,GREEN
+MAP0246,Pure Sciences,B.Sc Geology,PCM,GREEN
+MAP0247,Pure Sciences,B.Sc Geology,PCB,GREEN_YELLOW
+MAP0248,Pure Sciences,B.Sc Geology,PCMB,GREEN
+MAP0249,Pure Sciences,B.Sc Geology,Commerce_Math,RED
+MAP0250,Pure Sciences,B.Sc Geology,Humanities_Math,RED
+MAP0251,Pure Sciences,B.Sc Environmental Science,PCM,GREEN
+MAP0252,Pure Sciences,B.Sc Environmental Science,PCB,GREEN
+MAP0253,Pure Sciences,B.Sc Environmental Science,PCMB,GREEN
+MAP0254,Pure Sciences,B.Sc Environmental Science,Commerce_Math,YELLOW
+MAP0255,Pure Sciences,B.Sc Environmental Science,Humanities_Math,YELLOW
+MAP0256,Pure Sciences,B.Sc Biotechnology,PCM,YELLOW
+MAP0257,Pure Sciences,B.Sc Biotechnology,PCB,GREEN
+MAP0258,Pure Sciences,B.Sc Biotechnology,PCMB,GREEN
+MAP0259,Pure Sciences,B.Sc Biotechnology,Commerce_Math,RED
+MAP0260,Pure Sciences,B.Sc Biotechnology,Humanities_Math,RED
+MAP0261,Agriculture & Allied Sciences,B.Sc Agriculture,PCM,GREEN
+MAP0262,Agriculture & Allied Sciences,B.Sc Agriculture,PCB,GREEN
+MAP0263,Agriculture & Allied Sciences,B.Sc Agriculture,PCMB,GREEN
+MAP0264,Agriculture & Allied Sciences,B.Sc Horticulture,PCM,GREEN
+MAP0265,Agriculture & Allied Sciences,B.Sc Horticulture,PCB,GREEN
+MAP0266,Agriculture & Allied Sciences,B.Sc Horticulture,PCMB,GREEN
+MAP0267,Agriculture & Allied Sciences,B.Sc Forestry,PCM,GREEN
+MAP0268,Agriculture & Allied Sciences,B.Sc Forestry,PCB,GREEN
+MAP0269,Agriculture & Allied Sciences,B.Sc Forestry,PCMB,GREEN
+MAP0270,Agriculture & Allied Sciences,B.F.Sc Fisheries,PCM,GREEN
+MAP0271,Agriculture & Allied Sciences,B.F.Sc Fisheries,PCB,GREEN
+MAP0272,Agriculture & Allied Sciences,B.F.Sc Fisheries,PCMB,GREEN
+MAP0273,Agriculture & Allied Sciences,B.Tech Agricultural Engineering,PCM,GREEN
+MAP0274,Agriculture & Allied Sciences,B.Tech Agricultural Engineering,PCB,YELLOW
+MAP0275,Agriculture & Allied Sciences,B.Tech Agricultural Engineering,PCMB,GREEN
+MAP0276,Agriculture & Allied Sciences,B.Tech Food Technology,PCM,GREEN
+MAP0277,Agriculture & Allied Sciences,B.Tech Food Technology,PCB,GREEN
+MAP0278,Agriculture & Allied Sciences,B.Tech Food Technology,PCMB,GREEN
+MAP0279,Agriculture & Allied Sciences,B.Tech Dairy Technology,PCM,GREEN
+MAP0280,Agriculture & Allied Sciences,B.Tech Dairy Technology,PCB,GREEN
+MAP0281,Agriculture & Allied Sciences,B.Tech Dairy Technology,PCMB,GREEN
+MAP0282,Agriculture & Allied Sciences,B.Sc Agribusiness,PCM,GREEN
+MAP0283,Agriculture & Allied Sciences,B.Sc Agribusiness,PCB,GREEN
+MAP0284,Agriculture & Allied Sciences,B.Sc Agribusiness,PCMB,GREEN
+MAP0285,Agriculture & Allied Sciences,B.Sc Food Nutrition & Dietetics,PCM,GREEN
+MAP0286,Agriculture & Allied Sciences,B.Sc Food Nutrition & Dietetics,PCB,GREEN
+MAP0287,Agriculture & Allied Sciences,B.Sc Food Nutrition & Dietetics,PCMB,GREEN
+MAP0288,Agriculture & Allied Sciences,B.Tech Biotechnology,PCM,GREEN
+MAP0289,Agriculture & Allied Sciences,B.Tech Biotechnology,PCB,GREEN
+MAP0290,Agriculture & Allied Sciences,B.Tech Biotechnology,PCMB,GREEN
+MAP0291,Commerce & Management,B.Com,PCM,GREEN
+MAP0292,Commerce & Management,B.Com,PCB,GREEN
+MAP0293,Commerce & Management,B.Com,PCMB,GREEN
+MAP0294,Commerce & Management,B.Com,Commerce,GREEN
+MAP0295,Commerce & Management,B.Com,Humanities,GREEN
+MAP0296,Commerce & Management,B.Com Hons,PCM,GREEN_YELLOW
+MAP0297,Commerce & Management,B.Com Hons,PCB,YELLOW
+MAP0298,Commerce & Management,B.Com Hons,PCMB,GREEN
+MAP0299,Commerce & Management,B.Com Hons,Commerce,GREEN
+MAP0300,Commerce & Management,B.Com Hons,Humanities,YELLOW
+MAP0301,Commerce & Management,BBA,PCM,GREEN
+MAP0302,Commerce & Management,BBA,PCB,GREEN
+MAP0303,Commerce & Management,BBA,PCMB,GREEN
+MAP0304,Commerce & Management,BBA,Commerce,GREEN
+MAP0305,Commerce & Management,BBA,Humanities,GREEN
+MAP0306,Commerce & Management,BMS,PCM,GREEN
+MAP0307,Commerce & Management,BMS,PCB,GREEN
+MAP0308,Commerce & Management,BMS,PCMB,GREEN
+MAP0309,Commerce & Management,BMS,Commerce,GREEN
+MAP0310,Commerce & Management,BMS,Humanities,GREEN
+MAP0311,Commerce & Management,BBM,PCM,GREEN
+MAP0312,Commerce & Management,BBM,PCB,GREEN
+MAP0313,Commerce & Management,BBM,PCMB,GREEN
+MAP0314,Commerce & Management,BBM,Commerce,GREEN
+MAP0315,Commerce & Management,BBM,Humanities,GREEN
+MAP0316,Commerce & Management,BBA Finance,PCM,GREEN
+MAP0317,Commerce & Management,BBA Finance,PCB,GREEN
+MAP0318,Commerce & Management,BBA Finance,PCMB,GREEN
+MAP0319,Commerce & Management,BBA Finance,Commerce,GREEN
+MAP0320,Commerce & Management,BBA Finance,Humanities,GREEN
+MAP0321,Commerce & Management,BBA Business Analytics,PCM,GREEN
+MAP0322,Commerce & Management,BBA Business Analytics,PCB,YELLOW
+MAP0323,Commerce & Management,BBA Business Analytics,PCMB,GREEN
+MAP0324,Commerce & Management,BBA Business Analytics,Commerce,GREEN
+MAP0325,Commerce & Management,BBA Business Analytics,Humanities,YELLOW
+MAP0326,Commerce & Management,B.Sc Finance,PCM,GREEN
+MAP0327,Commerce & Management,B.Sc Finance,PCB,YELLOW
+MAP0328,Commerce & Management,B.Sc Finance,PCMB,GREEN
+MAP0329,Commerce & Management,B.Sc Finance,Commerce,GREEN
+MAP0330,Commerce & Management,B.Sc Finance,Humanities,YELLOW
+MAP0331,Commerce & Management,B.Sc Economics,PCM,GREEN
+MAP0332,Commerce & Management,B.Sc Economics,PCB,YELLOW
+MAP0333,Commerce & Management,B.Sc Economics,PCMB,GREEN
+MAP0334,Commerce & Management,B.Sc Economics,Commerce,GREEN
+MAP0335,Commerce & Management,B.Sc Economics,Humanities,GREEN
+MAP0336,Professional Commerce,CA,PCM,GREEN
+MAP0337,Professional Commerce,CA,PCB,GREEN
+MAP0338,Professional Commerce,CA,Commerce,GREEN
+MAP0339,Professional Commerce,CA,Humanities,GREEN
+MAP0340,Professional Commerce,CS,PCM,GREEN
+MAP0341,Professional Commerce,CS,PCB,GREEN
+MAP0342,Professional Commerce,CS,Commerce,GREEN
+MAP0343,Professional Commerce,CS,Humanities,GREEN
+MAP0344,Professional Commerce,CMA,PCM,GREEN
+MAP0345,Professional Commerce,CMA,PCB,GREEN
+MAP0346,Professional Commerce,CMA,Commerce,GREEN
+MAP0347,Professional Commerce,CMA,Humanities,GREEN
+MAP0348,Professional Commerce,CFA pathway,PCM,GREEN
+MAP0349,Professional Commerce,CFA pathway,PCB,GREEN
+MAP0350,Professional Commerce,CFA pathway,Commerce,GREEN
+MAP0351,Professional Commerce,CFA pathway,Humanities,GREEN
+MAP0352,Professional Commerce,Actuarial Science,PCM,GREEN
+MAP0353,Professional Commerce,Actuarial Science,PCB,YELLOW
+MAP0354,Professional Commerce,Actuarial Science,Commerce,GREEN
+MAP0355,Professional Commerce,Actuarial Science,Humanities,YELLOW
+MAP0356,Professional Commerce,ACCA,PCM,GREEN
+MAP0357,Professional Commerce,ACCA,PCB,GREEN
+MAP0358,Professional Commerce,ACCA,Commerce,GREEN
+MAP0359,Professional Commerce,ACCA,Humanities,GREEN
+MAP0360,Law,BA LLB,PCM,GREEN
+MAP0361,Law,BA LLB,PCB,GREEN
+MAP0362,Law,BA LLB,Commerce,GREEN
+MAP0363,Law,BA LLB,Humanities,GREEN
+MAP0364,Law,BBA LLB,PCM,GREEN
+MAP0365,Law,BBA LLB,PCB,GREEN
+MAP0366,Law,BBA LLB,Commerce,GREEN
+MAP0367,Law,BBA LLB,Humanities,GREEN
+MAP0368,Law,B.Com LLB,PCM,GREEN
+MAP0369,Law,B.Com LLB,PCB,GREEN
+MAP0370,Law,B.Com LLB,Commerce,GREEN
+MAP0371,Law,B.Com LLB,Humanities,GREEN
+MAP0372,Law,B.Sc LLB,PCM,GREEN
+MAP0373,Law,B.Sc LLB,PCB,GREEN
+MAP0374,Law,B.Sc LLB,Commerce,GREEN
+MAP0375,Law,B.Sc LLB,Humanities,GREEN
+MAP0376,Humanities & Social Sciences,BA English,PCM,GREEN
+MAP0377,Humanities & Social Sciences,BA English,PCB,GREEN
+MAP0378,Humanities & Social Sciences,BA English,Commerce,GREEN
+MAP0379,Humanities & Social Sciences,BA English,Humanities,GREEN
+MAP0380,Humanities & Social Sciences,BA History,PCM,GREEN
+MAP0381,Humanities & Social Sciences,BA History,PCB,GREEN
+MAP0382,Humanities & Social Sciences,BA History,Commerce,GREEN
+MAP0383,Humanities & Social Sciences,BA History,Humanities,GREEN
+MAP0384,Humanities & Social Sciences,BA Political Science,PCM,GREEN
+MAP0385,Humanities & Social Sciences,BA Political Science,PCB,GREEN
+MAP0386,Humanities & Social Sciences,BA Political Science,Commerce,GREEN
+MAP0387,Humanities & Social Sciences,BA Political Science,Humanities,GREEN
+MAP0388,Humanities & Social Sciences,BA Sociology,PCM,GREEN
+MAP0389,Humanities & Social Sciences,BA Sociology,PCB,GREEN
+MAP0390,Humanities & Social Sciences,BA Sociology,Commerce,GREEN
+MAP0391,Humanities & Social Sciences,BA Sociology,Humanities,GREEN
+MAP0392,Humanities & Social Sciences,BA Psychology,PCM,GREEN
+MAP0393,Humanities & Social Sciences,BA Psychology,PCB,GREEN
+MAP0394,Humanities & Social Sciences,BA Psychology,Commerce,GREEN
+MAP0395,Humanities & Social Sciences,BA Psychology,Humanities,GREEN
+MAP0396,Humanities & Social Sciences,BA Philosophy,PCM,GREEN
+MAP0397,Humanities & Social Sciences,BA Philosophy,PCB,GREEN
+MAP0398,Humanities & Social Sciences,BA Philosophy,Commerce,GREEN
+MAP0399,Humanities & Social Sciences,BA Philosophy,Humanities,GREEN
+MAP0400,Humanities & Social Sciences,BA Geography,PCM,GREEN
+MAP0401,Humanities & Social Sciences,BA Geography,PCB,GREEN
+MAP0402,Humanities & Social Sciences,BA Geography,Commerce,GREEN
+MAP0403,Humanities & Social Sciences,BA Geography,Humanities,GREEN
+MAP0404,Humanities & Social Sciences,BA Economics,PCM,YELLOW
+MAP0405,Humanities & Social Sciences,BA Economics,PCB,YELLOW
+MAP0406,Humanities & Social Sciences,BA Economics,Commerce,GREEN
+MAP0407,Humanities & Social Sciences,BA Economics,Humanities,GREEN
+MAP0408,Humanities & Social Sciences,BA Journalism,PCM,GREEN
+MAP0409,Humanities & Social Sciences,BA Journalism,PCB,GREEN
+MAP0410,Humanities & Social Sciences,BA Journalism,Commerce,GREEN
+MAP0411,Humanities & Social Sciences,BA Journalism,Humanities,GREEN
+MAP0412,Humanities & Social Sciences,BA Mass Communication,PCM,GREEN
+MAP0413,Humanities & Social Sciences,BA Mass Communication,PCB,GREEN
+MAP0414,Humanities & Social Sciences,BA Mass Communication,Commerce,GREEN
+MAP0415,Humanities & Social Sciences,BA Mass Communication,Humanities,GREEN
+MAP0416,Humanities & Social Sciences,BA International Relations,PCM,GREEN
+MAP0417,Humanities & Social Sciences,BA International Relations,PCB,GREEN
+MAP0418,Humanities & Social Sciences,BA International Relations,Commerce,GREEN
+MAP0419,Humanities & Social Sciences,BA International Relations,Humanities,GREEN
+MAP0420,Humanities & Social Sciences,BA Public Policy,PCM,GREEN
+MAP0421,Humanities & Social Sciences,BA Public Policy,PCB,GREEN
+MAP0422,Humanities & Social Sciences,BA Public Policy,Commerce,GREEN
+MAP0423,Humanities & Social Sciences,BA Public Policy,Humanities,GREEN
+MAP0424,Humanities & Social Sciences,BA Anthropology,PCM,GREEN
+MAP0425,Humanities & Social Sciences,BA Anthropology,PCB,GREEN
+MAP0426,Humanities & Social Sciences,BA Anthropology,Commerce,GREEN
+MAP0427,Humanities & Social Sciences,BA Anthropology,Humanities,GREEN
+MAP0428,Humanities & Social Sciences,BA Linguistics,PCM,GREEN
+MAP0429,Humanities & Social Sciences,BA Linguistics,PCB,GREEN
+MAP0430,Humanities & Social Sciences,BA Linguistics,Commerce,GREEN
+MAP0431,Humanities & Social Sciences,BA Linguistics,Humanities,GREEN
+MAP0432,Design,B.Des,PCM,GREEN
+MAP0433,Design,B.Des,PCB,GREEN
+MAP0434,Design,B.Des,Commerce,GREEN
+MAP0435,Design,B.Des,Humanities,GREEN
+MAP0436,Design,B.Des,Vocational,GREEN
+MAP0437,Design,BFA,PCM,GREEN
+MAP0438,Design,BFA,PCB,GREEN
+MAP0439,Design,BFA,Commerce,GREEN
+MAP0440,Design,BFA,Humanities,GREEN
+MAP0441,Design,BFA,Vocational,GREEN
+MAP0442,Design,Fashion Design,PCM,GREEN
+MAP0443,Design,Fashion Design,PCB,GREEN
+MAP0444,Design,Fashion Design,Commerce,GREEN
+MAP0445,Design,Fashion Design,Humanities,GREEN
+MAP0446,Design,Fashion Design,Vocational,GREEN
+MAP0447,Design,Communication Design,PCM,GREEN
+MAP0448,Design,Communication Design,PCB,GREEN
+MAP0449,Design,Communication Design,Commerce,GREEN
+MAP0450,Design,Communication Design,Humanities,GREEN
+MAP0451,Design,Communication Design,Vocational,GREEN
+MAP0452,Design,Product Design,PCM,GREEN
+MAP0453,Design,Product Design,PCB,GREEN
+MAP0454,Design,Product Design,Commerce,GREEN
+MAP0455,Design,Product Design,Humanities,GREEN
+MAP0456,Design,Product Design,Vocational,GREEN
+MAP0457,Design,Interior Design,PCM,GREEN
+MAP0458,Design,Interior Design,PCB,GREEN
+MAP0459,Design,Interior Design,Commerce,GREEN
+MAP0460,Design,Interior Design,Humanities,GREEN
+MAP0461,Design,Interior Design,Vocational,GREEN
+MAP0462,Design,UX/UI Design,PCM,GREEN
+MAP0463,Design,UX/UI Design,PCB,GREEN
+MAP0464,Design,UX/UI Design,Commerce,GREEN
+MAP0465,Design,UX/UI Design,Humanities,GREEN
+MAP0466,Design,UX/UI Design,Vocational,GREEN

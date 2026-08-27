@@ -4,7 +4,7 @@
  * exam bodies use their permanent domains so links stay valid year to year.
  */
 
-export type Listing = { name: string; meta: string; tag?: string; href: string };
+export type Listing = { name: string; meta: string; tag?: string; href: string; icon?: string };
 export type ToolkitTab = { id: string; label: string; icon: string; blurb: string; items: Listing[] };
 
 export const TOOLKIT_TABS: ToolkitTab[] = [
@@ -293,6 +293,78 @@ export const TOOLKIT_TABS: ToolkitTab[] = [
       { name: "Schwarzman Scholars", meta: "Master's · Tsinghua, China", href: "https://www.schwarzmanscholars.org/" },
       { name: "Australia Awards", meta: "Study in Australia · Govt", href: "https://www.dfat.gov.au/people-to-people/australia-awards" },
       { name: "New Zealand Excellence Awards", meta: "Study in New Zealand", href: "https://www.studywithnewzealand.govt.nz/" },
+    ],
+  },
+  {
+    id: "startups", label: "Startups", icon: "lightbulb",
+    blurb: "Connect with innovative startups and emerging founders. Gain real-world experience through internships and mentorship.",
+    items: [
+      { name: "TechStartup Hub", meta: "AI & Machine Learning · Bangalore", tag: "Series A", href: "https://www.techstartuphub.com/" },
+      { name: "EduVenture", meta: "EdTech Platform · Delhi", tag: "Seed", href: "https://www.eduventure.co/" },
+      { name: "GreenTech Solutions", meta: "Clean Energy · Mumbai", tag: "Series A", href: "https://www.greentechsolutions.io/" },
+      { name: "HealthConnect", meta: "Telemedicine · Hyderabad", tag: "Pre-Series A", href: "https://www.healthconnect.co/" },
+      { name: "FinTech Pro", meta: "Digital Payments · Bangalore", tag: "Series A", href: "https://www.fintechpro.in/" },
+      { name: "FarmTech Innovation", meta: "Smart Farming · Pune", tag: "Series A", href: "https://www.farmtechinnovation.in/" },
+      { name: "SecureChain", meta: "Blockchain Security · Bangalore", tag: "Seed", href: "https://www.securechain.io/" },
+      { name: "LogisticsPro", meta: "Supply Chain · Mumbai", tag: "Series A", href: "https://www.logisticspro.co.in/" },
+      { name: "FoodTech Connect", meta: "Cloud Kitchen Network · Delhi", tag: "Series A", href: "https://www.foodtechconnect.in/" },
+      { name: "DroneAI", meta: "Drone Solutions · Bangalore", tag: "Seed", href: "https://www.droneai.io/" },
+      { name: "HRTech Plus", meta: "HR Automation · Pune", tag: "Series A", href: "https://www.hrtechplus.co/" },
+      { name: "RealEstateAI", meta: "PropTech · Bangalore", tag: "Series A", href: "https://www.realestate-ai.in/" },
+    ],
+  },
+  {
+    id: "research", label: "Research", icon: "microscope",
+    blurb: "Explore cutting-edge research opportunities at top institutions. Develop critical thinking and contribute to discoveries.",
+    items: [
+      { name: "AI & Robotics Research Program", meta: "IIT Delhi", tag: "Beginner+", href: "https://www.iitd.ac.in/academics/research" },
+      { name: "Biomedical Research Initiative", meta: "AIIMS Delhi", tag: "Intermediate", href: "https://www.aiims.edu/research" },
+      { name: "Climate Change Research", meta: "CSIR Lab, Pune", tag: "All levels", href: "https://www.csir.res.in/" },
+      { name: "Quantum Computing Research", meta: "IISc Bangalore", tag: "Advanced", href: "https://www.iisc.ac.in/research/" },
+      { name: "Materials Science Lab", meta: "IIT Bombay", tag: "Beginner+", href: "https://www.iitb.ac.in/en/research" },
+      { name: "Neuroscience Research Fellowship", meta: "NCBS Bangalore", tag: "Intermediate+", href: "https://www.ncbs.res.in/" },
+      { name: "Environmental Biology Research", meta: "SACON, Tamil Nadu", tag: "All levels", href: "https://www.sacon.org/" },
+      { name: "Nanotechnology Research", meta: "IIT Madras", tag: "Intermediate+", href: "https://www.iitm.ac.in/research" },
+      { name: "Computational Biology Lab", meta: "IIIT Hyderabad", tag: "Advanced", href: "https://www.iiit.ac.in/research" },
+      { name: "Ocean Research Program", meta: "NIO, Goa", tag: "All levels", href: "https://www.nio.org/" },
+      { name: "Space Technology Research", meta: "ISRO Centers · Pan-India", tag: "Advanced", href: "https://www.isro.gov.in/" },
+      { name: "Renewable Energy Lab", meta: "NREL India", tag: "Intermediate+", href: "https://www.nrel.gov/" },
+    ],
+  },
+  {
+    id: "law", label: "Law & Rights", icon: "scale",
+    blurb: "Know your legal rights as a student, understand laws protecting men & women, and access legal resources and guidance.",
+    items: [
+      { name: "Student Rights & Responsibilities", meta: "Legal guide for students", tag: "Essential", href: "https://www.india.gov.in/official-website-supreme-court-india/" },
+      { name: "Right to Education Act (RTE)", meta: "Constitutional right to free education", tag: "Govt", href: "https://mhrd.gov.in/" },
+      { name: "Protection of Women from Domestic Violence Act", meta: "DV Act 2005 - Women's protection", tag: "Women", href: "https://www.indiacode.nic.in/" },
+      { name: "Sexual Harassment of Women Workplace Act", meta: "POSH Act - Workplace safety", tag: "Women", href: "https://www.indiacode.nic.in/" },
+      { name: "Anti-Bullying & Ragging Laws", meta: "Anti-ragging ordinance for colleges", tag: "Student", href: "https://www.ugc.ac.in/" },
+      { name: "Juvenile Justice Act", meta: "Laws protecting minors/youth", tag: "Youth", href: "https://www.indiacode.nic.in/" },
+      { name: "Dowry Prohibition Act", meta: "Legal provisions against dowry", tag: "Women", href: "https://www.indiacode.nic.in/" },
+      { name: "Equal Remuneration Act", meta: "Equal pay for equal work", tag: "Employment", href: "https://www.indiacode.nic.in/" },
+      { name: "Men's Rights & Legal Protections", meta: "Custody, maintenance, property rights", tag: "Men", href: "https://www.india.gov.in/" },
+      { name: "Student Grievance Redressal", meta: "How to file complaints in colleges", tag: "Student", href: "https://www.ugc.ac.in/" },
+      { name: "Free Legal Aid Services", meta: "Government legal aid for poor students", tag: "Free", href: "https://nalsa.gov.in/" },
+      { name: "National Commission for Women (NCW)", meta: "Women's rights grievance portal", tag: "Women", href: "https://ncw.gov.in/" },
+    ],
+  },
+  {
+    id: "financial_literacy", label: "Financial Literacy", icon: "piggybank",
+    blurb: "Master personal finance, investments and money management. Build a strong foundation for your financial future.",
+    items: [
+      { name: "Personal Finance Basics", meta: "Khan Academy · Free", tag: "Beginner", href: "https://www.khanacademy.org/college-careers-more/personal-finance" },
+      { name: "Stock Market Investing 101", meta: "NSE Academy", tag: "Beginner+", href: "https://www.nseacademy.com/" },
+      { name: "Cryptocurrency & Blockchain", meta: "Udemy · ₹299", tag: "Intermediate", href: "https://www.udemy.com/topic/cryptocurrency/" },
+      { name: "Debt Management & Credit Building", meta: "Money Control · Free", tag: "Beginner", href: "https://www.moneycontrol.com/" },
+      { name: "Real Estate Investment Guide", meta: "Leverage Edu · ₹1,499", tag: "Intermediate+", href: "https://leverageedu.com/" },
+      { name: "Retirement Planning & Insurance", meta: "ICICI Prudential · Free", tag: "Intermediate", href: "https://www.iciciprudential.com/" },
+      { name: "Mutual Funds Mastery", meta: "Groww · Free", tag: "Beginner+", href: "https://groww.in/" },
+      { name: "Tax Planning Essentials", meta: "ClearTax · Free", tag: "Intermediate", href: "https://cleartax.in/" },
+      { name: "Budget & Savings Planning", meta: "ET Money · Free", tag: "Beginner", href: "https://etmoney.com/" },
+      { name: "Forex & Currency Trading", meta: "Investopedia · Free", tag: "Intermediate+", href: "https://www.investopedia.com/" },
+      { name: "Insurance Planning 101", meta: "Policy Bazaar · Free", tag: "Beginner", href: "https://www.policybazaar.com/" },
+      { name: "Investment Portfolio Building", meta: "Zerodha · Free", tag: "Intermediate", href: "https://zerodha.com/" },
     ],
   },
   {

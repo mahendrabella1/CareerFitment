@@ -21,11 +21,13 @@
  * by re-enabling that guard, but it has no effect while it's mounted.
  */
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, type ReactNode } from "react";
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { Icon, CATEGORY_ABBR } from "@/app/Icons";
 import { C, Ring, RadarChart, SkillBar, dimColor, type RadarDatum } from "@/app/account/viz";
 import { Scene } from "@/app/account/illustrations";
+import { CareerCard, getCareerVisual, CareerImageWithSVG } from "@/app/account/careerVisuals";
+import { getImageForRole } from "@/app/account/careerRoleImages";
 import {
   categoryDeepDive, roadmap, stageLabelOf, DOMAINS,
   archetype, percentileOf, subTraits, actionPlan, type Domain,
@@ -110,10 +112,10 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
     revs.forEach((e) => e.classList.add("in"));
   }, []);
 
-  const radar: RadarDatum[] = (a.radar ?? []).length
-    ? CANON.map((k) => (a.radar!.find((r) => r.key === k) ?? { key: k, label: CAT[k].label, score: 0 }))
-    : CANON.map((k) => ({ key: k, label: CAT[k].label, score: 0 }));
-
+  const radar: RadarDatum[] = useMemo(() => {
+    const src = ((a.radar ?? []).length ? a.radar! : []).map((r) => ({ ...r, bench: BENCH[r.key] || 50 }));
+    return CANON.map((k) => src.find((r) => r.key === k) ?? { key: k, label: CAT[k].label, score: 0, bench: BENCH[k] || 50 });
+  }, [a.radar]);
   // Coherent recommendations: blend interest + abilities + intelligences + values.
   const fits = domainFit(a);
   const domainList = fits.slice(0, 3);
@@ -511,8 +513,12 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
               // Was a whole extra table of its own; it is one pill's worth of
               // information, so it lives on the card it describes.
               const v = r.fit >= 75 ? { t: "Top Choice", c: "hi" } : r.fit >= 60 ? { t: "Good Choice", c: "mid" } : { t: "Explore", c: "lo" };
+              const Visual = getCareerVisual(r.role);
               return (
                 <div className="ccard" key={r.role + i}>
+                  <div style={{ height: '150px', marginBottom: '12px', borderRadius: '8px', background: '#F9FAFB', overflow: 'hidden' }}>
+                    <CareerImageWithSVG careerTitle={r.role} svgComponent={<Visual />} />
+                  </div>
                   <div className="ccard-top">
                     <span className="ccard-rk">{i + 1}</span>
                     <div className="ccard-main">

@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "@/app/Logo";
 import { useAuth } from "@/lib/auth/AuthProvider";
-import Dashboard from "@/app/account/Dashboard";
+import DashboardRedesigned from "@/app/account/DashboardRedesigned";
 import { demoExtraSections } from "@/app/demo-test/reportSections";
 import ViewOnlyReport from "@/app/ReportViewOnly";
 import { StudentHero } from "@/app/account/illustrations";
@@ -52,24 +52,15 @@ export default function AccountPage() {
   // dashboard shows the same findings in condensed form — both are read-only,
   // and the PDF students keep is the one emailed to them.
   if (a) {
-    // A student who sat the class 11-12 demo gets the SAME report here that
-    // they saw straight after the paper - the standard dashboard plus their
-    // wanted-vs-found comparison and roadmaps. Those were previously dropped
-    // the moment they left /demo-test, so the dashboard showed no sign of the
-    // career they chose or the one they were matched to.
-    const demoExtras = profile?.demoReport && profile.demoReport.desiredCareer
-      ? demoExtraSections(profile.demoReport)
-      : [];
+    // Assessment complete → render the redesigned dashboard with all features
     return (
       <>
         <style dangerouslySetInnerHTML={{ __html: PAGE_CSS }} />
-        <ViewOnlyReport />
-        <Dashboard
+        <DashboardRedesigned
           a={a}
           profile={profile}
           email={user.email}
           onSignOut={signOut}
-          extraSections={demoExtras}
         />
       </>
     );

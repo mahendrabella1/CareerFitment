@@ -149,7 +149,7 @@ export function SkillBar({
 }
 
 /* ---------------------------- RadarChart ------------------------------- */
-export type RadarDatum = { key: string; label: string; score: number };
+export type RadarDatum = { key: string; label: string; score: number; bench: number };
 
 /** Single-series radar. Stateless — parent owns the selected index. */
 export function RadarChart({

@@ -2,20 +2,6 @@
 
 /**
  * PaymentGate — shown before the exam when the signed-in user hasn't paid.
- *
- * Prices are never decided here. The gate asks the server what the fee is
- * (/api/payment/status) and what a coupon is worth (/api/payment/coupon), then
- * either opens Razorpay Checkout for a real charge or calls
- * /api/payment/redeem for a code that waives the fee outright. Only a verified
- * success — a signature checked server-side, or a waiver the server priced —
- * fires onPaid(), which is what lets the exam load.
- *
- * The sale runs on two coupons (see lib/coupons.ts):
- *   • OG15 — applied for the student the moment this screen opens, and
- *     announced in a popup so the discount is impossible to miss. It resolves
- *     to the admin's own fee, so the screen and the order can't disagree.
- *   • OGFREE — typed in by hand; the fee drops to ₹0 and there is no Razorpay
- *     order at all.
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -23,8 +9,7 @@ import { doc, setDoc } from "firebase/firestore";
 import type { UserProfile } from "@/lib/auth/AuthProvider";
 import { getFirebaseAuth, getDb } from "@/lib/firebase/client";
 import { trackEvent } from "@/lib/metaPixel";
-import { OFFER, formatPaise, msUntilOfferEnds } from "@/lib/offer";
-import OfferBanner from "@/app/OfferBanner";
+import { formatPaise } from "@/lib/offer";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare global {
@@ -54,31 +39,17 @@ function loadScript(src: string): Promise<boolean> {
   });
 }
 
-/** "2d 06h 41m" until the sale ends, or "" once it has passed. */
-function formatCountdown(ms: number): string {
-  if (ms <= 0) return "";
-  const total = Math.floor(ms / 1000);
-  const d = Math.floor(total / 86400);
-  const h = Math.floor((total % 86400) / 3600);
-  const m = Math.floor((total % 3600) / 60);
-  const s = total % 60;
-  return d > 0 ? `${d}d ${String(h).padStart(2, "0")}h ${String(m).padStart(2, "0")}m`
-               : `${String(h).padStart(2, "0")}h ${String(m).padStart(2, "0")}m ${String(s).padStart(2, "0")}s`;
-}
-
 export default function PaymentGate({ profile, onPaid }: { profile: UserProfile; onPaid: () => void }) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const [checking, setChecking] = useState(true);
 
-  // Fee comes from the server so the price on screen always matches the amount
-  // the order is actually created for (NEXT_PUBLIC_* is frozen at build time).
   const [priced, setPriced] = useState<Priced>({
-    listPaise: OFFER.listPaise,
-    basePaise: OFFER.salePaise,
-    payablePaise: OFFER.salePaise,
-    savingPaise: OFFER.listPaise - OFFER.salePaise,
-    discountPct: OFFER.discountPct,
+    listPaise: 9900,
+    basePaise: 9900,
+    payablePaise: 9900,
+    savingPaise: 0,
+    discountPct: 0,
     coupon: null,
     free: false,
     invalidCode: false,
@@ -107,8 +78,6 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
 
   // The auto-applied-coupon popup. `popupCoupon` is what it announces.
   const [popupCoupon, setPopupCoupon] = useState<Priced | null>(null);
-
-  const [countdown, setCountdown] = useState("");
 
   // `onPaid` is an inline arrow in the parent, so it is a new function on every
   // parent render. Holding it in a ref lets the effect below depend on nothing
@@ -143,11 +112,8 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
         if (cancelled) return;
         if (!data?.active) { onPaidRef.current(); return; }
 
-        // Seed the price line from the server's own numbers first, so that even
-        // if the coupon call below fails the screen still quotes the admin's fee
-        // rather than the fallback compiled into lib/offer.ts.
-        const base = Number(data?.amountPaise) || OFFER.salePaise;
-        const list = Math.max(Number(data?.offer?.listPaise) || OFFER.listPaise, base);
+        const base = Number(data?.amountPaise) || 9900;
+        const list = Math.max(Number(data?.offer?.listPaise) || 9900, base);
         setPriced((p) => ({
           ...p,
           listPaise: list,
@@ -183,14 +149,6 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Live "ends in" clock. Started in an effect so the server-rendered markup
-  // and the first client paint agree (they'd otherwise differ by a second).
-  useEffect(() => {
-    const tick = () => setCountdown(formatCountdown(msUntilOfferEnds()));
-    tick();
-    const id = window.setInterval(tick, 1000);
-    return () => window.clearInterval(id);
-  }, []);
 
   /** Ask the server what a code is worth. Returns null on a transport failure. */
   async function priceCoupon(code: string): Promise<Priced | null> {
@@ -232,11 +190,10 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
     setPopupCoupon(result);
   }
 
-  /** Drop back to the sale price after a hand-typed code is removed. */
+  /** Drop back to base price after a hand-typed code is removed. */
   async function clearTypedCoupon() {
     setCouponMsg(null);
-    const back = await priceCoupon(OFFER.autoCouponCode);
-    if (back) setPriced(back);
+    setPriced((p) => ({ ...p, coupon: null, free: false, payablePaise: p.basePaise }));
   }
 
   /**
@@ -390,31 +347,17 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
   return (
     <div className="pg-shell">
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-      <OfferBanner />
 
       <div style={S.page}>
         <div className="pg-card">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="pg-logo" src="/onegrasp-logo-tight.png" alt="OneGrasp" />
 
-          {OFFER.active && (
-            <div className="pg-ribbon">
-              <span className="pg-ribbon-flag">🇮🇳</span>
-              <span>{OFFER.name}</span>
-              {countdown && <span className="pg-ribbon-time">ends in {countdown}</span>}
-            </div>
-          )}
-
           <div className="pg-kicker">One-time assessment fee</div>
 
           <div className="pg-pricerow">
-            {priced.savingPaise > 0 && <span className="pg-was">{formatPaise(priced.listPaise)}</span>}
-            <h1 className="pg-price">{priced.free ? "FREE" : formatPaise(priced.payablePaise)}</h1>
-            {priced.discountPct > 0 && <span className="pg-off">{priced.discountPct}% OFF</span>}
+            <h1 className="pg-price">{priced.free ? "FREE" : "Pay to continue"}</h1>
           </div>
-          {priced.savingPaise > 0 && (
-            <div className="pg-save">You save {formatPaise(priced.savingPaise)} today</div>
-          )}
 
           {priced.coupon && (
             <div className={`pg-chip${priced.free ? " pg-chip-free" : ""}`}>
@@ -491,7 +434,6 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
       {popupCoupon?.coupon && (
         <CouponPopup
           priced={popupCoupon}
-          countdown={countdown}
           onClose={() => setPopupCoupon(null)}
           onUseAnotherCode={() => { setPopupCoupon(null); openCouponBox(); }}
         />
@@ -506,9 +448,8 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
  * time the gate prices the sale coupon, and again whenever a hand-typed code
  * lands — the moment a price changes is exactly when it's worth interrupting.
  */
-function CouponPopup({ priced, countdown, onClose, onUseAnotherCode }: {
+function CouponPopup({ priced, onClose, onUseAnotherCode }: {
   priced: Priced;
-  countdown: string;
   onClose: () => void;
   /** Dismiss the popup and drop the cursor straight into the coupon field. */
   onUseAnotherCode: () => void;
@@ -528,7 +469,7 @@ function CouponPopup({ priced, countdown, onClose, onUseAnotherCode }: {
       <div className="pg-modal" onClick={(e) => e.stopPropagation()}>
         <button className="pg-modal-x" onClick={onClose} aria-label="Close">✕</button>
         <div className="pg-modal-burst">{free ? "🎁" : "🎉"}</div>
-        <div className="pg-modal-kick">{free ? "Coupon applied" : OFFER.name}</div>
+        <div className="pg-modal-kick">Coupon applied</div>
         <h2 className="pg-modal-title" id="pg-modal-title">
           {free ? "Your fee is fully waived!" : `Flat ${priced.discountPct}% off — applied for you`}
         </h2>
@@ -537,19 +478,14 @@ function CouponPopup({ priced, countdown, onClose, onUseAnotherCode }: {
           <span className="pg-modal-code-label">Coupon code</span>
           <span className="pg-modal-code-val">{priced.coupon?.code}</span>
           <span className="pg-modal-code-state">
-            {priced.coupon?.auto ? "✓ Applied automatically" : "✓ Applied to your order"}
+            ✓ Applied to your order
           </span>
         </div>
 
-        <div className="pg-modal-prices">
-          <span className="pg-modal-was">{formatPaise(priced.listPaise)}</span>
-          <span className="pg-modal-arrow">→</span>
-          <span className="pg-modal-now">{free ? "FREE" : formatPaise(priced.payablePaise)}</span>
-        </div>
-        <div className="pg-modal-save">You save {formatPaise(priced.savingPaise)}</div>
-
-        {!free && countdown && (
-          <div className="pg-modal-timer">⏳ Offer ends in <b>{countdown}</b> ({OFFER.endsOnLabel})</div>
+        {free && (
+          <div className="pg-modal-prices">
+            <span className="pg-modal-now">FREE</span>
+          </div>
         )}
 
         <button className="pg-modal-btn" onClick={onClose}>
