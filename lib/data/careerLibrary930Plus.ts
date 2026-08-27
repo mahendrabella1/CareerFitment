@@ -1,4 +1,4 @@
-﻿import { Career } from '@/types/career';
+﻿import { Career } from '@/lib/data/schema';
 
 export const CAREER_LIBRARY_930_PLUS: Career[] = [
   {
