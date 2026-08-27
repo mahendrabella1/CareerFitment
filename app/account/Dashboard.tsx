@@ -348,10 +348,10 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                   <div style={{display: 'flex', alignItems: 'center', padding: '80px 60px', gap: '80px'}}>
                     <div style={{flex: 1}}>
                       <h2 style={{fontSize: '42px', fontWeight: '800', color: C.ink, margin: '0 0 16px 0', lineHeight: 1.2}}>
-                        Explore Your Opportunities
+                        Your World Beyond Academics
                       </h2>
                       <p style={{fontSize: '18px', color: C.ink3, margin: 0, lineHeight: 1.6}}>
-                        Discover pathways, resources and experiences aligned with your future.
+                        Discover opportunities across careers, research, education, finance, and more.
                       </p>
                       <div style={{width: '100px', height: '4px', background: IN, marginTop: '24px', borderRadius: '2px'}}></div>
                     </div>
