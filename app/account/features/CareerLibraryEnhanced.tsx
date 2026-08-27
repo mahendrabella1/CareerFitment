@@ -711,13 +711,6 @@ const styles: Record<string, React.CSSProperties> = {
     marginLeft: -spacing[5],
   },
 
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: 700,
-    color: colors.ink[10],
-    margin: 0,
-  },
-
   demandBadge: {
     padding: `${spacing[1]} ${spacing[2]}`,
     fontSize: 11,
@@ -768,16 +761,6 @@ const styles: Record<string, React.CSSProperties> = {
     gap: spacing[2],
     marginBottom: spacing[4],
     flexWrap: "wrap",
-  },
-
-  skillTag: {
-    display: "inline-block",
-    padding: `${spacing[1]} ${spacing[2]}`,
-    fontSize: 11,
-    fontWeight: 700,
-    background: colors.accent[100],
-    color: colors.accent[40],
-    borderRadius: radius.full,
   },
 
   detailsBtn: {
