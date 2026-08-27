@@ -344,7 +344,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
               <section id="careers" className="ash-sec" style={{paddingTop: 0, paddingBottom: 0, marginLeft: '-24px', marginRight: '-24px', paddingLeft: 0, paddingRight: 0}}>
                 <div style={{background: '#fff'}}>
                   {/* Header */}
-                  <div style={{padding: '60px 60px 40px', maxWidth: '1400px', margin: '0 auto'}}>
+                  <div style={{padding: '60px 80px 40px', maxWidth: '100%', margin: '0 auto'}}>
                     <h2 style={{fontSize: '36px', fontWeight: '800', color: C.ink, margin: '0 0 12px 0', lineHeight: 1.2}}>
                       Explore Your Opportunities
                     </h2>
@@ -354,7 +354,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                   </div>
 
                   {/* Features Grid with Background Images */}
-                  <div style={{padding: '0 60px 80px', maxWidth: '1400px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '28px'}}>
+                  <div style={{padding: '0 80px 80px', maxWidth: '100%', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '32px'}}>
                     {[
                       {id:'startups', title:'Startups', desc:'Connect with innovative founders and ideas.', color:'#ea580c', emoji:'🚀', bg:'url(https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop&q=85)'},
                       {id:'research', title:'Research', desc:'Explore cutting-edge research programs.', color:'#0369a1', emoji:'🔬', bg:'url(https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=600&h=400&fit=crop&q=85)'},
@@ -868,7 +868,7 @@ const CSS = `
 .ash-top-h{font-size:16px;font-weight:800;color:${C.ink}}
 .ash-top-s{font-size:12px;color:${C.ink3};margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ash-main{padding:22px 26px 56px}
-.ash-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;max-width:1200px;margin:0 auto}
+.ash-grid{display:grid;grid-template-columns:1fr;gap:18px;max-width:1400px;margin:0 auto}
 .ash-content{display:flex;flex-direction:column;gap:16px;min-width:0}
 .ash-sec{scroll-margin-top:78px;display:flex;flex-direction:column;gap:16px}
 .ash-banner{display:flex;align-items:center;gap:13px;background:#fff;border:1px solid ${C.line};border-radius:14px;padding:13px 18px;box-shadow:0 1px 2px rgba(20,20,25,.04)}
@@ -878,7 +878,7 @@ const CSS = `
 .ash-banner-t span{font-size:12.5px;color:${C.ink3}}
 .ash-banner-a{display:flex;gap:8px;flex-wrap:wrap}
 @media(max-width:560px){.ash-banner{flex-wrap:wrap}.ash-banner-a{width:100%}}
-.ash-rail{display:flex;flex-direction:column;gap:14px;position:sticky;top:78px;align-self:start}
+.ash-rail{display:none}
 
 /* right rail */
 .rail-card{padding:16px 17px !important}
