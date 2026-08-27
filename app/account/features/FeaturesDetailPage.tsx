@@ -17,6 +17,64 @@ import {
 import { getResearchOpportunities } from "@/lib/data/researchData";
 import { getAllStartups, getUnicorns } from "@/lib/data/startupsData";
 
+// Unified Feature Design System
+const FEATURE_CONFIG = {
+  careers: {
+    title: "Career Opportunities",
+    subtitle: "Explore 900+ careers with detailed information on roles, salaries, education, and growth paths.",
+    accentColor: "#8B5CF6", // Purple
+    borderColor: "#DDD6FE",
+  },
+  research: {
+    title: "Research Opportunities",
+    subtitle: "Explore 50+ cutting-edge research programs, competitions, and conferences.",
+    accentColor: "#14B8A6", // Teal
+    borderColor: "#CCFBF1",
+  },
+  internships: {
+    title: "Internships & Opportunities",
+    subtitle: "Discover 300+ internships, 100+ workshops, and 200+ scholarships available nationwide.",
+    accentColor: "#3B82F6", // Blue
+    borderColor: "#DBEAFE",
+  },
+  resources: {
+    title: "Scholarships & Awards",
+    subtitle: "Access 200+ scholarship awards from government, NGOs, and private organizations.",
+    accentColor: "#10B981", // Green
+    borderColor: "#D1FAE5",
+  },
+  "study-abroad": {
+    title: "Study Abroad",
+    subtitle: "Discover top universities across 20+ countries with scholarship opportunities.",
+    accentColor: "#F97316", // Orange
+    borderColor: "#FFEDD5",
+  },
+  financial: {
+    title: "Financial Literacy",
+    subtitle: "Master 30+ topics on money management, investing, taxes, and financial planning.",
+    accentColor: "#F59E0B", // Gold
+    borderColor: "#FEF3C7",
+  },
+  legal: {
+    title: "Legal Resources & Rights",
+    subtitle: "Know your legal rights, safety protocols, and protection measures. 20+ comprehensive guides.",
+    accentColor: "#64748B", // Dark slate
+    borderColor: "#E2E8F0",
+  },
+  startups: {
+    title: "Startup Ecosystem",
+    subtitle: "Connect with 100+ innovative startups and learn entrepreneurship from founders.",
+    accentColor: "#EF4444", // Red
+    borderColor: "#FEE2E2",
+  },
+  exams: {
+    title: "Entrance Exams & Eligibility",
+    subtitle: "Comprehensive guide to major entrance exams, preparation resources, and eligibility criteria.",
+    accentColor: "#1E3A8A", // Navy
+    borderColor: "#DBEAFE",
+  },
+};
+
 export default function FeaturesDetailPage({ featureId, onClose }: { featureId: string; onClose: () => void }) {
   const [activeTab, setActiveTab] = useState("all");
 
@@ -66,6 +124,7 @@ export default function FeaturesDetailPage({ featureId, onClose }: { featureId: 
 
 // Entrance Exams Page
 function EntranceExamsPage() {
+  const config = FEATURE_CONFIG.exams;
   const exams = [
     { name: "JEE Main", field: "Engineering", difficulty: "High", date: "Jan-Apr", website: "jeemain.nta.ac.in" },
     { name: "JEE Advanced", field: "Engineering", difficulty: "Very High", date: "May", website: "jeeadv.ac.in" },
@@ -77,21 +136,21 @@ function EntranceExamsPage() {
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
-      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[4] }}>Entrance Exams & Eligibility</h1>
+      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[100] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[60], marginBottom: spacing[6] }}>
-        Comprehensive guide to major entrance exams, preparation resources, and eligibility criteria.
+        {config.subtitle}
       </p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[4] }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
         {exams.map((exam, idx) => (
-          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.ink[80]}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
-            <h3 style={{ fontSize: 18, fontWeight: 700, margin: 0, marginBottom: spacing[2] }}>{exam.name}</h3>
+          <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm, transition: "all 0.3s" }}>
+            <h3 style={{ fontSize: 18, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[100] }}>{exam.name}</h3>
             <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3], flexWrap: "wrap" }}>
-              <span style={{ ...styles.badge, background: colors.accent[40], color: "#fff" }}>{exam.field}</span>
-              <span style={{ ...styles.badge, background: exam.difficulty === "Very High" ? colors.error : colors.warning }}>{exam.difficulty}</span>
+              <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>{exam.field}</span>
+              <span style={{ ...styles.badge, background: exam.difficulty === "Very High" ? "#DC2626" : "#FBBF24", color: "#000" }}>{exam.difficulty}</span>
             </div>
-            <p style={{ fontSize: 13, color: colors.ink[60], margin: 0, marginBottom: spacing[2] }}>Exam Date: <strong>{exam.date}</strong></p>
-            <a href={`https://${exam.website}`} target="_blank" rel="noopener" style={{ fontSize: 13, color: colors.accent[40], textDecoration: "none", fontWeight: 700 }}>
+            <p style={{ fontSize: 14, color: colors.ink[70], margin: 0, marginBottom: spacing[3], lineHeight: 1.5 }}>📅 <strong>{exam.date}</strong></p>
+            <a href={`https://${exam.website}`} target="_blank" rel="noopener" style={{ fontSize: 13, color: config.accentColor, textDecoration: "none", fontWeight: 700, display: "inline-block", marginTop: spacing[2] }}>
               Official Website →
             </a>
           </div>
@@ -103,6 +162,7 @@ function EntranceExamsPage() {
 
 // Internships Detail Page
 function InternshipsDetailPage({ activeTab, setActiveTab }: { activeTab: string; setActiveTab: (tab: string) => void }) {
+  const config = FEATURE_CONFIG.internships;
   const internships = getInternships();
   const workshops = getWorkshops();
   const scholarships = getScholarships();
@@ -111,9 +171,9 @@ function InternshipsDetailPage({ activeTab, setActiveTab }: { activeTab: string;
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
-      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[4] }}>Internships & Opportunities</h1>
+      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[100] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[60], marginBottom: spacing[6] }}>
-        Discover 300+ internships, 100+ workshops, and 200+ scholarships available nationwide.
+        {config.subtitle}
       </p>
 
       <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[6], flexWrap: "wrap" }}>
@@ -124,7 +184,7 @@ function InternshipsDetailPage({ activeTab, setActiveTab }: { activeTab: string;
             onClick={() => setActiveTab(tab)}
             style={{
               ...styles.tabBtn,
-              ...(activeTab === tab ? styles.tabBtnActive : {}),
+              ...(activeTab === tab ? { ...styles.tabBtnActive, background: config.accentColor, borderColor: config.accentColor } : {}),
             }}
           >
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -132,22 +192,22 @@ function InternshipsDetailPage({ activeTab, setActiveTab }: { activeTab: string;
         ))}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[4] }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
         {data.slice(0, 20).map((item: any, idx: number) => (
-          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.ink[80]}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2] }}>{item.title || item.name}</h3>
-            <p style={{ fontSize: 13, color: colors.ink[60], lineHeight: 1.5, margin: 0, marginBottom: spacing[3] }}>
+          <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[100] }}>{item.title || item.name}</h3>
+            <p style={{ fontSize: 14, color: colors.ink[70], lineHeight: 1.6, margin: 0, marginBottom: spacing[3] }}>
               {item.description || item.provider || item.organizationName}
             </p>
-            <div style={{ display: "flex", gap: spacing[2], flexWrap: "wrap", marginBottom: spacing[2] }}>
-              {item.organization && <span style={{ ...styles.badge }}>{item.organization}</span>}
-              {item.provider && <span style={{ ...styles.badge }}>{item.provider}</span>}
+            <div style={{ display: "flex", gap: spacing[2], flexWrap: "wrap", marginBottom: spacing[3] }}>
+              {item.organization && <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>{item.organization}</span>}
+              {item.provider && <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>{item.provider}</span>}
               {item.domain && <span style={{ ...styles.badge }}>{item.domain}</span>}
-              {item.paid !== undefined && <span style={{ ...styles.badge, background: colors.success, color: "#fff" }}>{item.paid ? "Paid" : "Free"}</span>}
+              {item.paid !== undefined && <span style={{ ...styles.badge, background: item.paid ? "#10B981" : "#6B7280", color: "#fff" }}>{item.paid ? "💰 Paid" : "Free"}</span>}
             </div>
-            {item.stipend && <p style={{ fontSize: 13, fontWeight: 700, color: colors.accent[40], margin: 0 }}>₹{item.stipend.amount}/month</p>}
-            {item.awardAmount && <p style={{ fontSize: 13, fontWeight: 700, color: colors.success, margin: 0 }}>₹{item.awardAmount.min}-₹{item.awardAmount.max}</p>}
-            {item.salary && <p style={{ fontSize: 13, fontWeight: 700, color: colors.info, margin: 0 }}>₹{item.salary.min}-₹{item.salary.max}/month</p>}
+            {item.stipend && <p style={{ fontSize: 13, fontWeight: 700, color: config.accentColor, margin: 0 }}>💵 ₹{item.stipend.amount}/month</p>}
+            {item.awardAmount && <p style={{ fontSize: 13, fontWeight: 700, color: config.accentColor, margin: 0 }}>🏆 ₹{item.awardAmount.min}-₹{item.awardAmount.max}</p>}
+            {item.salary && <p style={{ fontSize: 13, fontWeight: 700, color: config.accentColor, margin: 0 }}>💼 ₹{item.salary.min}-₹{item.salary.max}/month</p>}
           </div>
         ))}
       </div>
@@ -157,6 +217,7 @@ function InternshipsDetailPage({ activeTab, setActiveTab }: { activeTab: string;
 
 // Financial Literacy Detail Page
 function FinancialLiteracyDetailPage() {
+  const config = FEATURE_CONFIG.financial;
   const topics = getFinancialTopics();
   const categories = [...new Set(topics.map((t: any) => t.category))];
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -164,13 +225,13 @@ function FinancialLiteracyDetailPage() {
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
-      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[4] }}>Financial Literacy</h1>
+      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[100] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[60], marginBottom: spacing[6] }}>
-        Master 30+ topics on money management, investing, taxes, and financial planning.
+        {config.subtitle}
       </p>
 
       <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[6], flexWrap: "wrap" }}>
-        <button type="button" onClick={() => setSelectedCategory(null)} style={{ ...styles.tabBtn, ...(selectedCategory === null ? styles.tabBtnActive : {}) }}>
+        <button type="button" onClick={() => setSelectedCategory(null)} style={{ ...styles.tabBtn, ...(selectedCategory === null ? { ...styles.tabBtnActive, background: config.accentColor, borderColor: config.accentColor } : {}) }}>
           All Topics
         </button>
         {categories.map((cat) => (
@@ -178,24 +239,24 @@ function FinancialLiteracyDetailPage() {
             key={cat}
             type="button"
             onClick={() => setSelectedCategory(cat as any)}
-            style={{ ...styles.tabBtn, ...(selectedCategory === cat ? styles.tabBtnActive : {}) }}
+            style={{ ...styles.tabBtn, ...(selectedCategory === cat ? { ...styles.tabBtnActive, background: config.accentColor, borderColor: config.accentColor } : {}) }}
           >
             {(cat as string).replace(/_/g, " ").toUpperCase()}
           </button>
         ))}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[4] }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
         {filtered.slice(0, 20).map((topic: any, idx: number) => (
-          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.ink[80]}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2] }}>{topic.title}</h3>
+          <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[100] }}>{topic.title}</h3>
             <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3] }}>
-              <span style={{ ...styles.badge }}>{topic.difficulty}</span>
-              <span style={{ ...styles.badge }}>{topic.duration}</span>
+              <span style={{ ...styles.badge, background: config.accentColor, color: "#000" }}>📚 {topic.difficulty}</span>
+              <span style={{ ...styles.badge, background: config.borderColor, color: colors.ink[80] }}>⏱️ {topic.duration}</span>
             </div>
-            <p style={{ fontSize: 13, color: colors.ink[60], lineHeight: 1.5, margin: 0, marginBottom: spacing[2] }}>{topic.description}</p>
-            <div style={{ fontSize: 12, color: colors.ink[70] }}>
-              <strong>Learn:</strong> {topic.keyLearnings?.slice(0, 2).join(", ")}
+            <p style={{ fontSize: 14, color: colors.ink[70], lineHeight: 1.6, margin: 0, marginBottom: spacing[3] }}>{topic.description}</p>
+            <div style={{ fontSize: 12, color: colors.ink[70], lineHeight: 1.5 }}>
+              <strong>🎓 Learn:</strong> {topic.keyLearnings?.slice(0, 2).join(", ")}
             </div>
           </div>
         ))}
@@ -206,6 +267,7 @@ function FinancialLiteracyDetailPage() {
 
 // Legal Resources Detail Page
 function LegalResourcesDetailPage() {
+  const config = FEATURE_CONFIG.legal;
   const resources = getLegalResources();
   const categories = [...new Set(resources.map((r: any) => r.category))];
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -213,13 +275,13 @@ function LegalResourcesDetailPage() {
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
-      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[4] }}>Legal Resources & Rights</h1>
+      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[100] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[60], marginBottom: spacing[6] }}>
-        Know your legal rights, safety protocols, and protection measures. 20+ comprehensive guides.
+        {config.subtitle}
       </p>
 
       <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[6], flexWrap: "wrap" }}>
-        <button type="button" onClick={() => setSelectedCategory(null)} style={{ ...styles.tabBtn, ...(selectedCategory === null ? styles.tabBtnActive : {}) }}>
+        <button type="button" onClick={() => setSelectedCategory(null)} style={{ ...styles.tabBtn, ...(selectedCategory === null ? { ...styles.tabBtnActive, background: config.accentColor, borderColor: config.accentColor } : {}) }}>
           All Topics
         </button>
         {categories.map((cat) => (
@@ -227,29 +289,29 @@ function LegalResourcesDetailPage() {
             key={cat}
             type="button"
             onClick={() => setSelectedCategory(cat as any)}
-            style={{ ...styles.tabBtn, ...(selectedCategory === cat ? styles.tabBtnActive : {}) }}
+            style={{ ...styles.tabBtn, ...(selectedCategory === cat ? { ...styles.tabBtnActive, background: config.accentColor, borderColor: config.accentColor } : {}) }}
           >
             {(cat as string).replace(/_/g, " ").toUpperCase()}
           </button>
         ))}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[4] }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
         {filtered.slice(0, 20).map((resource: any, idx: number) => (
-          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.ink[80]}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2] }}>{resource.title}</h3>
-            <p style={{ fontSize: 13, color: colors.ink[60], lineHeight: 1.5, margin: 0, marginBottom: spacing[2] }}>{resource.description}</p>
+          <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[100] }}>{resource.title}</h3>
+            <p style={{ fontSize: 14, color: colors.ink[70], lineHeight: 1.6, margin: 0, marginBottom: spacing[3] }}>{resource.description}</p>
             {resource.keyPoints && (
-              <div style={{ marginBottom: spacing[2] }}>
-                <strong style={{ fontSize: 12, color: colors.ink[80] }}>Key Points:</strong>
-                <ul style={{ fontSize: 12, color: colors.ink[70], margin: `${spacing[1]} 0 0 ${spacing[3]}` }}>
+              <div style={{ marginBottom: spacing[3] }}>
+                <strong style={{ fontSize: 12, color: config.accentColor }}>⚖️ Key Points:</strong>
+                <ul style={{ fontSize: 12, color: colors.ink[70], margin: `${spacing[1]} 0 0 ${spacing[3]}`, paddingLeft: spacing[3] }}>
                   {resource.keyPoints.slice(0, 2).map((point: string, i: number) => (
                     <li key={i}>{point}</li>
                   ))}
                 </ul>
               </div>
             )}
-            {resource.helplineNumber && <p style={{ fontSize: 12, fontWeight: 700, color: colors.accent[40], margin: 0 }}>🆘 {resource.helplineNumber}</p>}
+            {resource.helplineNumber && <p style={{ fontSize: 13, fontWeight: 700, color: config.accentColor, margin: 0 }}>🆘 {resource.helplineNumber}</p>}
           </div>
         ))}
       </div>
@@ -259,26 +321,27 @@ function LegalResourcesDetailPage() {
 
 // Research Detail Page
 function ResearchDetailPage() {
+  const config = FEATURE_CONFIG.research;
   const opportunities = getResearchOpportunities();
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
-      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[4] }}>Research Opportunities</h1>
+      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[100] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[60], marginBottom: spacing[6] }}>
-        Explore 50+ cutting-edge research programs, competitions, and conferences.
+        {config.subtitle}
       </p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[4] }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
         {opportunities.slice(0, 20).map((opp: any, idx: number) => (
-          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.ink[80]}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2] }}>{opp.title}</h3>
-            <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3] }}>
-              <span style={{ ...styles.badge }}>{opp.type}</span>
-              <span style={{ ...styles.badge }}>{opp.level}</span>
-              <span style={{ ...styles.badge }}>{opp.field}</span>
+          <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[100] }}>{opp.title}</h3>
+            <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3], flexWrap: "wrap" }}>
+              <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>📌 {opp.type}</span>
+              <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>📍 {opp.level}</span>
+              <span style={{ ...styles.badge, background: config.borderColor, color: colors.ink[80] }}>🔬 {opp.field}</span>
             </div>
-            <p style={{ fontSize: 13, color: colors.ink[60], lineHeight: 1.5, margin: 0, marginBottom: spacing[2] }}>{opp.description}</p>
-            {opp.prizes && <p style={{ fontSize: 12, fontWeight: 700, color: colors.success, margin: 0 }}>🏆 {opp.prizes}</p>}
+            <p style={{ fontSize: 14, color: colors.ink[70], lineHeight: 1.6, margin: 0, marginBottom: spacing[3] }}>{opp.description}</p>
+            {opp.prizes && <p style={{ fontSize: 13, fontWeight: 700, color: config.accentColor, margin: 0 }}>🏆 {opp.prizes}</p>}
           </div>
         ))}
       </div>
@@ -288,37 +351,38 @@ function ResearchDetailPage() {
 
 // Startups Detail Page
 function StartupsDetailPage() {
+  const config = FEATURE_CONFIG.startups;
   const [showUnicorns, setShowUnicorns] = useState(false);
   const startups = showUnicorns ? getUnicorns() : getAllStartups();
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
-      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[4] }}>Startup Ecosystem</h1>
+      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[100] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[60], marginBottom: spacing[6] }}>
-        Connect with 100+ innovative startups and learn entrepreneurship from founders.
+        {config.subtitle}
       </p>
 
       <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[6] }}>
-        <button type="button" onClick={() => setShowUnicorns(false)} style={{ ...styles.tabBtn, ...(showUnicorns === false ? styles.tabBtnActive : {}) }}>
+        <button type="button" onClick={() => setShowUnicorns(false)} style={{ ...styles.tabBtn, ...(showUnicorns === false ? { ...styles.tabBtnActive, background: config.accentColor, borderColor: config.accentColor } : {}) }}>
           All Startups
         </button>
-        <button type="button" onClick={() => setShowUnicorns(true)} style={{ ...styles.tabBtn, ...(showUnicorns === true ? styles.tabBtnActive : {}) }}>
-          Unicorns Only
+        <button type="button" onClick={() => setShowUnicorns(true)} style={{ ...styles.tabBtn, ...(showUnicorns === true ? { ...styles.tabBtnActive, background: config.accentColor, borderColor: config.accentColor } : {}) }}>
+          🦄 Unicorns Only
         </button>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[4] }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
         {startups.slice(0, 20).map((startup: any, idx: number) => (
-          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.ink[80]}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[1] }}>{startup.name}</h3>
-            <p style={{ fontSize: 12, color: colors.ink[60], margin: 0, marginBottom: spacing[2] }}>Founded {startup.foundedYear} • {startup.location}</p>
-            <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3] }}>
-              <span style={{ ...styles.badge }}>{startup.industry}</span>
-              <span style={{ ...styles.badge }}>{startup.stage}</span>
-              {startup.isUnicorn && <span style={{ ...styles.badge, background: colors.warning, color: "#000" }}>🦄 Unicorn</span>}
+          <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[1], color: colors.ink[100] }}>{startup.name}</h3>
+            <p style={{ fontSize: 13, color: colors.ink[60], margin: 0, marginBottom: spacing[3] }}>📅 Founded {startup.foundedYear} • 📍 {startup.location}</p>
+            <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3], flexWrap: "wrap" }}>
+              <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>{startup.industry}</span>
+              <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>{startup.stage}</span>
+              {startup.isUnicorn && <span style={{ ...styles.badge, background: "#FCD34D", color: "#000", fontWeight: 800 }}>🦄 Unicorn</span>}
             </div>
-            <p style={{ fontSize: 13, color: colors.ink[70], lineHeight: 1.5, margin: 0, marginBottom: spacing[2] }}>{startup.description}</p>
-            <p style={{ fontSize: 12, fontWeight: 700, color: colors.accent[40], margin: 0 }}>Funding: ${startup.fundingRaised?.amount / 1000000 || 0}M</p>
+            <p style={{ fontSize: 14, color: colors.ink[70], lineHeight: 1.6, margin: 0, marginBottom: spacing[3] }}>{startup.description}</p>
+            <p style={{ fontSize: 13, fontWeight: 700, color: config.accentColor, margin: 0 }}>💰 Funding: ${startup.fundingRaised?.amount / 1000000 || 0}M</p>
           </div>
         ))}
       </div>
@@ -328,26 +392,27 @@ function StartupsDetailPage() {
 
 // Scholarships Detail Page
 function ScholarshipsDetailPage() {
+  const config = FEATURE_CONFIG.resources;
   const scholarships = getScholarships();
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
-      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[4] }}>Scholarships & Awards</h1>
+      <h1 style={{ fontSize: 36, fontWeight: 800, marginBottom: spacing[2], color: colors.ink[100] }}>{config.title}</h1>
       <p style={{ fontSize: 16, color: colors.ink[60], marginBottom: spacing[6] }}>
-        Access 200+ scholarship awards from government, NGOs, and private organizations.
+        {config.subtitle}
       </p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[4] }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
         {scholarships.slice(0, 20).map((scholarship: any, idx: number) => (
-          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.ink[80]}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2] }}>{scholarship.name}</h3>
-            <p style={{ fontSize: 13, color: colors.ink[60], lineHeight: 1.5, margin: 0, marginBottom: spacing[3] }}>{scholarship.provider}</p>
-            <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3] }}>
-              {scholarship.category && <span style={{ ...styles.badge }}>{scholarship.category}</span>}
-              {scholarship.level && <span style={{ ...styles.badge }}>{scholarship.level}</span>}
+          <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[100] }}>{scholarship.name}</h3>
+            <p style={{ fontSize: 14, color: colors.ink[70], lineHeight: 1.6, margin: 0, marginBottom: spacing[3] }}>🏢 {scholarship.provider}</p>
+            <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3], flexWrap: "wrap" }}>
+              {scholarship.category && <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>📁 {scholarship.category}</span>}
+              {scholarship.level && <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>🎓 {scholarship.level}</span>}
             </div>
-            <p style={{ fontSize: 12, fontWeight: 700, color: colors.success, margin: 0 }}>
-              ₹{scholarship.awardAmount?.min || 0}-₹{scholarship.awardAmount?.max || 0}
+            <p style={{ fontSize: 13, fontWeight: 700, color: config.accentColor, margin: 0 }}>
+              💵 ₹{scholarship.awardAmount?.min || 0}-₹{scholarship.awardAmount?.max || 0}
             </p>
           </div>
         ))}

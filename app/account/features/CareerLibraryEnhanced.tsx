@@ -660,9 +660,8 @@ const styles: Record<string, React.CSSProperties> = {
     borderBottom: `2px solid`,
     borderLeftWidth: 4,
     borderLeftStyle: "solid",
-    paddingLeft: 0,
-    marginLeft: -spacing[5],
     paddingLeft: spacing[5],
+    marginLeft: -spacing[5],
   },
 
   cardTitle: {
