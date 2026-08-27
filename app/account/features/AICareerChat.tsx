@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { colors, spacing, radius, shadows } from "@/app/account/designTokens";
 
-const PROMPT_LIMIT = 7;
+const PROMPT_LIMIT = 10;
 
 const PREFILLED_PROMPTS = [
   "What careers align with my interests in technology and innovation?",
