@@ -367,27 +367,33 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
 
               {/* ===== FEATURES HUB ===== */}
               <section id="careers" className="ash-sec" style={{paddingTop: 0, paddingBottom: 0, marginLeft: '-24px', marginRight: '-24px', paddingLeft: 0, paddingRight: 0}}>
-                <div style={{background: '#fff'}}>
-                  {/* Header */}
-                  <div style={{padding: '60px 80px 40px', maxWidth: '100%', margin: '0 auto'}}>
-                    <h2 style={{fontSize: '36px', fontWeight: '800', color: C.ink, margin: '0 0 12px 0', lineHeight: 1.2}}>
-                      Explore Your Opportunities
-                    </h2>
-                    <p style={{fontSize: '16px', color: C.ink3, margin: 0, lineHeight: 1.6}}>
-                      Discover pathways, resources and experiences aligned with your future.
-                    </p>
+                <div style={{background: 'linear-gradient(135deg, #f0e7ff 0%, #e8f4ff 100%)'}}>
+                  {/* Hero Section */}
+                  <div style={{display: 'flex', alignItems: 'center', padding: '80px 80px', gap: '80px', maxWidth: '100%', margin: '0 auto'}}>
+                    <div style={{flex: 1}}>
+                      <h2 style={{fontSize: '48px', fontWeight: '800', color: C.ink, margin: '0 0 16px 0', lineHeight: 1.2}}>
+                        Explore Your Opportunities
+                      </h2>
+                      <p style={{fontSize: '18px', color: C.ink3, margin: 0, lineHeight: 1.6}}>
+                        Discover pathways, resources and experiences aligned with your future. 500+ careers, 100+ universities, internships, research, finance, and more.
+                      </p>
+                      <div style={{width: '100px', height: '4px', background: IN, marginTop: '24px', borderRadius: '2px'}}></div>
+                    </div>
+                    <div style={{flex: 1, textAlign: 'center'}}>
+                      <img src="https://onegrasp.com/wp-content/uploads/2026/08/69045c6d-9060-4669-8cc6-b8cf030a3f35.png" alt="Explore" style={{maxWidth: '100%', height: 'auto', maxHeight: '380px'}} />
+                    </div>
                   </div>
 
                   {/* Features Grid with Background Images */}
                   <div style={{padding: '0 80px 80px', maxWidth: '100%', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '32px'}}>
                     {[
-                      {id:'startups', title:'Startups', desc:'Connect with innovative founders and ideas.', color:'#ea580c', emoji:'🚀', bg:'url(https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop&q=85)'},
-                      {id:'research', title:'Research', desc:'Explore cutting-edge research programs.', color:'#0369a1', emoji:'🔬', bg:'url(https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=600&h=400&fit=crop&q=85)'},
-                      {id:'financial', title:'Financial Literacy', desc:'Build practical money management skills.', color:'#16a34a', emoji:'₹', bg:'url(https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=600&h=400&fit=crop&q=85)'},
-                      {id:'legal', title:'Law & Rights', desc:'Know your legal rights and protections.', color:'#7c3aed', emoji:'⚖️', bg:'url(https://images.unsplash.com/photo-1589519160732-57fc498494f8?w=600&h=400&fit=crop&q=85)'},
-                      {id:'careers', title:'Career Library', desc:'Explore 500+ careers with detailed paths.', color:'#2563eb', emoji:'🎓', bg:'url(https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop&q=85)'},
-                      {id:'study-abroad', title:'Study Abroad', desc:'Discover universities worldwide.', color:'#dc2626', emoji:'✈️', bg:'url(https://images.unsplash.com/photo-1569163139394-de4798aa62b3?w=600&h=400&fit=crop&q=85)'},
-                      {id:'exams', title:'Entrance Exams', desc:'Explore exams and eligibility details.', color:'#9333ea', emoji:'📝', bg:'url(https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop&q=85)'},
+                      {id:'startups', title:'Startups', desc:'Connect with innovative founders and ideas.', color:'#ea580c', emoji:'🚀', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_39_45-AM.png)'},
+                      {id:'research', title:'Research', desc:'Explore cutting-edge research programs.', color:'#0369a1', emoji:'🔬', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_40_43-AM.png)'},
+                      {id:'financial', title:'Financial Literacy', desc:'Build practical money management skills.', color:'#16a34a', emoji:'₹', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_41_34-AM.png)'},
+                      {id:'legal', title:'Law & Rights', desc:'Know your legal rights and protections.', color:'#7c3aed', emoji:'⚖️', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_42_40-AM.png)'},
+                      {id:'careers', title:'Career Library', desc:'Explore 500+ careers with detailed paths.', color:'#2563eb', emoji:'🎓', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_49_20-AM.png)'},
+                      {id:'study-abroad', title:'Study Abroad', desc:'Discover universities worldwide.', color:'#dc2626', emoji:'✈️', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_46_05-AM.png)'},
+                      {id:'exams', title:'Entrance Exams', desc:'Explore exams and eligibility details.', color:'#9333ea', emoji:'📝', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_54_06-AM.png)'},
                       {id:'internships', title:'Internships', desc:'Gain real-world experience with top opportunities.', color:'#ca8a04', emoji:'💼', bg:'url(https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=600&h=400&fit=crop&q=85)'},
                     ].map((feature) => (
                       <div key={feature.id} onClick={() => go(feature.id)} style={{background:'#fff', borderRadius:'12px', border:`1px solid ${C.line}`, cursor:'pointer', transition:'all 250ms ease', boxShadow:'0 2px 8px rgba(0,0,0,0.05)', overflow:'hidden', display:'flex', flexDirection:'column', height: '100%'}}>
