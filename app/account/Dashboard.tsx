@@ -304,8 +304,6 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
               <Icon name={n.icon} size={18} /><span>{n.label}</span>
             </button>
           ))}
-          <div className="ash-nav-lbl">Report</div>
-          <button className="ash-navi" onClick={() => setView("report")}><Icon name="explain" size={18} /><span>Full report</span></button>
         </nav>
         <div className="ash-side-foot">
           <div className="ash-user">
@@ -359,24 +357,6 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
           <div className="ash-grid">
             <div className="ash-content">
 
-              {extrasBefore("dimensions")}
-
-              {/* ===== REPORT PREVIEW ===== */}
-              <section id="report-preview" className="ash-sec">
-                <div className="ogd-card report-preview-card">
-                  <CardHead icon="explain" title="Your Career Report"
-                    sub="Your personalized assessment results and detailed analysis." />
-                  <div className="report-actions">
-                    <button className="report-btn primary" onClick={() => setView("report")}>
-                      <Icon name="explain" size={16} /> View Full Report
-                    </button>
-                    <button className="report-btn secondary" onClick={() => go("dimensions")}>
-                      <Icon name="radar" size={16} /> View Assessment Details
-                    </button>
-                  </div>
-                </div>
-              </section>
-
               {/* ===== FEATURES HUB ===== */}
               <section id="careers" className="ash-sec" style={{paddingTop: 0, paddingBottom: 0, marginLeft: '-24px', marginRight: '-24px', paddingLeft: 0, paddingRight: 0}}>
                 <div style={{background: 'linear-gradient(135deg, #f0e7ff 0%, #e8f4ff 100%)'}}>
@@ -387,7 +367,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                         Explore Your Opportunities
                       </h2>
                       <p style={{fontSize: '15px', color: C.ink3, margin: 0, lineHeight: 1.5}}>
-                        Discover pathways, resources and experiences. 500+ careers, 100+ universities, internships, research, finance, and more.
+                        Discover pathways, resources and experiences. 40+ detailed careers, 100+ universities, internships, research, finance, and more.
                       </p>
                       <div style={{width: '80px', height: '3px', background: IN, marginTop: '16px', borderRadius: '2px'}}></div>
                     </div>
