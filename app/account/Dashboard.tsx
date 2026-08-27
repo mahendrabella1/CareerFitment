@@ -371,9 +371,9 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                       {id:'startups', title:'Startups', desc:'Connect with 100+ innovative startups and learn entrepreneurship from founders and mentors.', count:'100+ startups', color:'#ea580c', icon:'flag', bg:'linear-gradient(135deg, rgba(234,88,12,0.5) 0%, rgba(234,88,12,0.8) 100%), url(https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop&q=80)'},
                       {id:'resources', title:'Scholarships', desc:'Access 200+ scholarship awards from government, NGOs, and private organizations nationwide.', count:'200+ awards', color:'#ca8a04', icon:'star', bg:'linear-gradient(135deg, rgba(202,138,4,0.5) 0%, rgba(202,138,4,0.8) 100%), url(https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=600&h=400&fit=crop&q=80)'},
                     ].map((feature) => (
-                      <div key={feature.id} onClick={() => go(feature.id)} style={{background:'#fff', borderRadius:'16px', border:`1px solid ${C.line}`, cursor:'pointer', transition:'all 250ms ease', boxShadow:'0 4px 12px rgba(0,0,0,0.06)', overflow:'hidden', display:'flex', flexDirection:'column', transform:'translateY(0)', hover:{transform:'translateY(-4px)', boxShadow:'0 8px 20px rgba(0,0,0,0.10)'}}}>
-                        <div style={{height:'220px', backgroundImage:feature.bg, backgroundSize:'cover', backgroundPosition:'center', position:'relative'}}>
-                          <div style={{position:'absolute', inset:0, background:'linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.15) 100%)'}}></div>
+                      <div key={feature.id} onClick={() => go(feature.id)} style={{background:'#fff', borderRadius:'16px', border:`1px solid ${C.line}`, cursor:'pointer', transition:'all 250ms ease', boxShadow:'0 4px 12px rgba(0,0,0,0.06)', overflow:'hidden', display:'flex', flexDirection:'column'}}>
+                        <div style={{height:'220px', backgroundImage:feature.bg, backgroundSize:'cover', backgroundPosition:'center', position:'relative', backgroundAttachment:'fixed'}}>
+                          <div style={{position:'absolute', top:0, left:0, right:0, bottom:0, background:'linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.15) 100%)'}}></div>
                         </div>
                         <div style={{padding:'28px 24px', flex:1, display:'flex', flexDirection:'column'}}>
                           <h3 style={{fontSize:'18px', fontWeight:'700', color:C.ink, margin:'0 0 8px 0'}}>{feature.title}</h3>
