@@ -409,7 +409,7 @@ const styles: Record<string, React.CSSProperties> = {
   title: {
     fontSize: 40,
     fontWeight: 800,
-    color: colors.ink[100],
+    color: colors.ink[10],
     margin: 0,
     marginBottom: spacing[2],
   },
@@ -466,7 +466,7 @@ const styles: Record<string, React.CSSProperties> = {
   sidebarTitle: {
     fontSize: 16,
     fontWeight: 700,
-    color: colors.ink[100],
+    color: colors.ink[10],
     margin: 0,
   },
 
@@ -489,7 +489,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: "block",
     fontSize: 12,
     fontWeight: 700,
-    color: colors.ink[80],
+    color: colors.ink[20],
     marginBottom: spacing[2],
     textTransform: "uppercase",
   },
@@ -519,7 +519,7 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: "pointer",
     fontSize: 13,
     fontWeight: 600,
-    color: colors.ink[100],
+    color: colors.ink[10],
     transition: "all 0.2s",
     textAlign: "left",
     display: "flex",
@@ -579,7 +579,7 @@ const styles: Record<string, React.CSSProperties> = {
   clusterTitle: {
     fontSize: 28,
     fontWeight: 800,
-    color: colors.ink[100],
+    color: colors.ink[10],
     margin: 0,
   },
 
@@ -661,7 +661,7 @@ const styles: Record<string, React.CSSProperties> = {
   cardTitle: {
     fontSize: 18,
     fontWeight: 700,
-    color: colors.ink[100],
+    color: colors.ink[10],
     margin: 0,
   },
 
@@ -676,7 +676,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   cardDesc: {
     fontSize: 13,
-    color: colors.ink[100],
+    color: colors.ink[10],
     margin: 0,
     marginBottom: spacing[4],
     lineHeight: 1.5,
@@ -699,7 +699,7 @@ const styles: Record<string, React.CSSProperties> = {
   statLabel: {
     fontSize: 11,
     fontWeight: 700,
-    color: colors.ink[100],
+    color: colors.ink[10],
     textTransform: "uppercase",
     marginBottom: spacing[1],
   },
@@ -707,7 +707,7 @@ const styles: Record<string, React.CSSProperties> = {
   statValue: {
     fontSize: 14,
     fontWeight: 700,
-    color: colors.ink[100],
+    color: colors.ink[10],
   },
 
   cardSkills: {
@@ -764,14 +764,14 @@ const styles: Record<string, React.CSSProperties> = {
   listItemTitle: {
     fontSize: 18,
     fontWeight: 700,
-    color: colors.ink[100],
+    color: colors.ink[10],
     margin: 0,
     marginBottom: spacing[2],
   },
 
   listItemDesc: {
     fontSize: 14,
-    color: colors.ink[100],
+    color: colors.ink[10],
     margin: 0,
     marginBottom: spacing[3],
   },
@@ -780,7 +780,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     gap: spacing[3],
     fontSize: 12,
-    color: colors.ink[80],
+    color: colors.ink[20],
     flexWrap: "wrap",
   },
 
@@ -812,7 +812,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 14,
     fontWeight: 600,
     cursor: "pointer",
-    color: colors.ink[100],
+    color: colors.ink[10],
     marginBottom: spacing[6],
   },
 
@@ -826,14 +826,14 @@ const styles: Record<string, React.CSSProperties> = {
   detailTitle: {
     fontSize: 48,
     fontWeight: 800,
-    color: colors.ink[100],
+    color: colors.ink[10],
     margin: 0,
     marginBottom: spacing[3],
   },
 
   detailSubtitle: {
     fontSize: 18,
-    color: colors.ink[80],
+    color: colors.ink[20],
     margin: 0,
     marginBottom: spacing[8],
     lineHeight: 1.6,
@@ -853,7 +853,7 @@ const styles: Record<string, React.CSSProperties> = {
   sectionHead: {
     fontSize: 18,
     fontWeight: 700,
-    color: colors.ink[100],
+    color: colors.ink[10],
     margin: `0 0 ${spacing[3]} 0`,
   },
 
@@ -908,7 +908,7 @@ const styles: Record<string, React.CSSProperties> = {
 
   emptyText: {
     fontSize: 16,
-    color: colors.ink[100],
+    color: colors.ink[10],
     margin: 0,
   },
 };
