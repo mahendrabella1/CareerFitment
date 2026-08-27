@@ -369,23 +369,23 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
               <section id="careers" className="ash-sec" style={{paddingTop: 0, paddingBottom: 0, marginLeft: '-24px', marginRight: '-24px', paddingLeft: 0, paddingRight: 0}}>
                 <div style={{background: 'linear-gradient(135deg, #f0e7ff 0%, #e8f4ff 100%)'}}>
                   {/* Hero Section */}
-                  <div style={{display: 'flex', alignItems: 'center', padding: '80px 80px', gap: '80px', maxWidth: '100%', margin: '0 auto'}}>
+                  <div style={{display: 'flex', alignItems: 'center', padding: '48px 60px', gap: '48px', maxWidth: '100%', margin: '0 auto'}}>
                     <div style={{flex: 1}}>
-                      <h2 style={{fontSize: '48px', fontWeight: '800', color: C.ink, margin: '0 0 16px 0', lineHeight: 1.2}}>
+                      <h2 style={{fontSize: '40px', fontWeight: '800', color: C.ink, margin: '0 0 12px 0', lineHeight: 1.2}}>
                         Explore Your Opportunities
                       </h2>
-                      <p style={{fontSize: '18px', color: C.ink3, margin: 0, lineHeight: 1.6}}>
-                        Discover pathways, resources and experiences aligned with your future. 500+ careers, 100+ universities, internships, research, finance, and more.
+                      <p style={{fontSize: '15px', color: C.ink3, margin: 0, lineHeight: 1.5}}>
+                        Discover pathways, resources and experiences. 500+ careers, 100+ universities, internships, research, finance, and more.
                       </p>
-                      <div style={{width: '100px', height: '4px', background: IN, marginTop: '24px', borderRadius: '2px'}}></div>
+                      <div style={{width: '80px', height: '3px', background: IN, marginTop: '16px', borderRadius: '2px'}}></div>
                     </div>
-                    <div style={{flex: 1, textAlign: 'center'}}>
-                      <img src="https://onegrasp.com/wp-content/uploads/2026/08/69045c6d-9060-4669-8cc6-b8cf030a3f35.png" alt="Explore" style={{maxWidth: '100%', height: 'auto', maxHeight: '380px'}} />
+                    <div style={{flex: 0.8, textAlign: 'center', minWidth: 0}}>
+                      <img src="https://onegrasp.com/wp-content/uploads/2026/08/69045c6d-9060-4669-8cc6-b8cf030a3f35.png" alt="Explore" style={{maxWidth: '100%', height: 'auto', maxHeight: '280px'}} />
                     </div>
                   </div>
 
                   {/* Features Grid with Background Images */}
-                  <div style={{padding: '0 80px 80px', maxWidth: '100%', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '32px'}}>
+                  <div style={{padding: '0 60px 48px', maxWidth: '100%', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px'}}>
                     {[
                       {id:'startups', title:'Startups', desc:'Connect with innovative founders and ideas.', color:'#ea580c', emoji:'🚀', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_39_45-AM.png)'},
                       {id:'research', title:'Research', desc:'Explore cutting-edge research programs.', color:'#0369a1', emoji:'🔬', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_40_43-AM.png)'},
@@ -397,19 +397,19 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                       {id:'internships', title:'Internships', desc:'Gain real-world experience with top opportunities.', color:'#ca8a04', emoji:'💼', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-11_02_22-AM.png)'},
                       {id:'resources', title:'Scholarships', desc:'Fund your education with 200+ awards.', color:'#f59e0b', emoji:'🎓', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_59_10-AM.png)'},
                     ].map((feature) => (
-                      <div key={feature.id} onClick={() => go(feature.id)} style={{background:'#fff', borderRadius:'12px', border:`1px solid ${C.line}`, cursor:'pointer', transition:'all 250ms ease', boxShadow:'0 2px 8px rgba(0,0,0,0.05)', overflow:'hidden', display:'flex', flexDirection:'column', height: '100%'}}>
-                        <div style={{height:'160px', backgroundImage:feature.bg, backgroundSize:'cover', backgroundPosition:'center', position:'relative'}}>
+                      <div key={feature.id} onClick={() => go(feature.id)} style={{background:'#fff', borderRadius:'10px', border:`1px solid ${C.line}`, cursor:'pointer', transition:'all 250ms ease', boxShadow:'0 1px 4px rgba(0,0,0,0.04)', overflow:'hidden', display:'flex', flexDirection:'column', height: '100%'}}>
+                        <div style={{height:'140px', backgroundImage:feature.bg, backgroundSize:'cover', backgroundPosition:'center', position:'relative'}}>
                           <div style={{position:'absolute', inset:0, background:'linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.2) 100%)'}}></div>
                         </div>
-                        <div style={{padding:'20px 20px 24px', flex:1, display:'flex', flexDirection:'column'}}>
-                          <div style={{display:'flex', alignItems:'center', gap:'12px', marginBottom:'12px'}}>
-                            <div style={{width:'44px', height:'44px', borderRadius:'50%', background:feature.color, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'22px', flexShrink:0}}>
+                        <div style={{padding:'16px 16px 18px', flex:1, display:'flex', flexDirection:'column'}}>
+                          <div style={{display:'flex', alignItems:'center', gap:'10px', marginBottom:'10px'}}>
+                            <div style={{width:'40px', height:'40px', borderRadius:'50%', background:feature.color, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'20px', flexShrink:0}}>
                               {feature.emoji}
                             </div>
-                            <h3 style={{fontSize:'16px', fontWeight:'700', color:C.ink, margin:0}}>{feature.title}</h3>
+                            <h3 style={{fontSize:'15px', fontWeight:'700', color:C.ink, margin:0}}>{feature.title}</h3>
                           </div>
-                          <p style={{fontSize:'13px', color:C.ink3, margin:'0 0 16px 0', lineHeight:1.5, flex:1}}>{feature.desc}</p>
-                          <div style={{display:'flex', alignItems:'center', color:feature.color, fontSize:'14px', fontWeight:'600'}}>
+                          <p style={{fontSize:'12px', color:C.ink3, margin:'0 0 12px 0', lineHeight:1.4, flex:1}}>{feature.desc}</p>
+                          <div style={{display:'flex', alignItems:'center', color:feature.color, fontSize:'13px', fontWeight:'600'}}>
                             <span>→</span>
                           </div>
                         </div>
