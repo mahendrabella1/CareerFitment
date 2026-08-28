@@ -18,47 +18,41 @@ const PRIMARY = "#3b5bdb";
 const INK = "#151a24";
 
 const GALLERY_IMAGES = [
-  "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_103613991-scaled.jpg",
-  "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_105125190_HDR-scaled.jpg",
-  "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120203457_PORTRAIT-scaled.jpg",
-  "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120614298-scaled.jpg",
-  "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120615426-scaled.jpg",
-  "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_122233827-scaled.jpg",
-  "https://onegrasp.com/wp-content/uploads/2026/08/IMG-20260420-WA0060.jpg",
-  "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418103653_01-scaled.jpg",
-  "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418112244-scaled.jpg",
-  "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM-1.jpeg",
-  "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM.jpeg",
-  "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.36-AM.jpeg",
-  "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.02-AM.jpeg",
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_103613991-scaled.jpg", title: "Discover Your Strengths", desc: "Find what makes you unique" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_105125190_HDR-scaled.jpg", title: "Career Clarity", desc: "Match your talents with careers" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120203457_PORTRAIT-scaled.jpg", title: "25-Minute Assessment", desc: "Quick & comprehensive" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120614298-scaled.jpg", title: "Science-Backed", desc: "Based on proven frameworks" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120615426-scaled.jpg", title: "Personalized Insights", desc: "Tailored to your profile" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_122233827-scaled.jpg", title: "8 Dimensions", desc: "Complete personality analysis" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG-20260420-WA0060.jpg", title: "Real Students", desc: "Success stories from peers" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418103653_01-scaled.jpg", title: "Expert Guidance", desc: "From career professionals" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418112244-scaled.jpg", title: "Clear Roadmap", desc: "See your path forward" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM-1.jpeg", title: "100% Confidential", desc: "Your data is secure" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM.jpeg", title: "Instant Results", desc: "Get your report immediately" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.36-AM.jpeg", title: "50K+ Students", desc: "Trusted by many" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.02-AM.jpeg", title: "Career Options", desc: "Explore 1000+ careers" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.01-AM.jpeg", title: "Start Today", desc: "Begin your journey now" },
 ];
 
-function GalleryScroll() {
-  const [shuffled, setShuffled] = useState<string[]>([]);
-
-  useEffect(() => {
-    const arr = [...GALLERY_IMAGES].sort(() => Math.random() - 0.5);
-    setShuffled(arr);
-  }, []);
-
-  if (shuffled.length === 0) return null;
-
-  // Create 3 sets of images for seamless loop
-  const row1Images = [...shuffled.slice(0, 7), ...shuffled.slice(0, 7), ...shuffled.slice(0, 7)];
-  const row2Images = [...shuffled.slice(7, 13), ...shuffled.slice(7, 13), ...shuffled.slice(7, 13)];
-
+function GalleryGrid() {
   return (
-    <div className="ogl-gallery-scroll">
-      <div className="ogl-gallery-row ogl-scroll-ltr">
-        {row1Images.map((img, i) => (
-          <img key={`row1-${i}`} src={img} alt={`Gallery ${i}`} className="ogl-scroll-item" />
-        ))}
-      </div>
-      <div className="ogl-gallery-row ogl-scroll-rtl">
-        {row2Images.map((img, i) => (
-          <img key={`row2-${i}`} src={img} alt={`Gallery ${i}`} className="ogl-scroll-item" />
-        ))}
-      </div>
+    <div className="ogl-gallery-grid">
+      {GALLERY_IMAGES.map((item, i) => (
+        <div key={i} className="ogl-gallery-card ogl-reveal ogl-pop" style={{ transitionDelay: `${i * 50}ms` }}>
+          <div className="ogl-card-image">
+            <img src={item.img} alt={item.title} />
+            <div className="ogl-card-overlay">
+              <div className="ogl-card-content">
+                <h3 className="ogl-card-title">{item.title}</h3>
+                <p className="ogl-card-desc">{item.desc}</p>
+              </div>
+            </div>
+          </div>
+          <div className="ogl-card-info">
+            <span className="ogl-card-badge">Take Test</span>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -151,7 +145,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
           <h2 className="ogl-h2 ogl-serif">Meet the people finding clarity.</h2>
           <p className="ogl-sub">Students and professionals from across India discovering their best-fit careers.</p>
         </div>
-        <GalleryScroll />
+        <GalleryGrid />
         <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>Join our community <Icon name="chevronRight" size={16} /></button></div>
       </section>
 
@@ -727,17 +721,22 @@ const CSS = `
 .ogl-cta-t{font-size:clamp(25px,3.6vw,35px);font-weight:700;margin:0}
 .ogl-cta-s{font-size:16px;opacity:.85;margin:12px 0 26px}
 
-@keyframes scrollLeft{0%{transform:translateX(0)}100%{transform:translateX(calc(-100% / 3))}}
-@keyframes scrollRight{0%{transform:translateX(0)}100%{transform:translateX(calc(100% / 3))}}
-.ogl-gallery-scroll{display:flex;flex-direction:column;gap:28px;margin:48px 0;width:100%}
-.ogl-gallery-row{display:flex;gap:18px;width:100%;height:280px;overflow:hidden;padding:8px 0}
-.ogl-scroll-ltr{animation:scrollLeft 80s linear infinite}
-.ogl-scroll-rtl{animation:scrollRight 80s linear infinite}
-.ogl-scroll-item{min-width:280px;width:280px;height:280px;object-fit:cover;border-radius:18px;box-shadow:0 12px 28px rgba(21,26,36,.15);flex-shrink:0;transition:transform .2s,box-shadow .2s}
-.ogl-scroll-item:hover{transform:scale(1.04);box-shadow:0 16px 40px rgba(21,26,36,.2)}
-@media(max-width:1200px){.ogl-scroll-item{min-width:240px;width:240px;height:240px}.ogl-gallery-row{height:240px}}
-@media(max-width:768px){.ogl-scroll-item{min-width:180px;width:180px;height:180px}.ogl-gallery-row{height:180px;gap:12px}}
-@media(max-width:480px){.ogl-scroll-item{min-width:140px;width:140px;height:140px}.ogl-gallery-row{height:140px;gap:10px}}
+.ogl-gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin:40px 0}
+@media(max-width:1200px){.ogl-gallery-grid{grid-template-columns:repeat(3,1fr);gap:18px}}
+@media(max-width:768px){.ogl-gallery-grid{grid-template-columns:repeat(2,1fr);gap:16px}}
+@media(max-width:480px){.ogl-gallery-grid{grid-template-columns:1fr;gap:14px}}
+.ogl-gallery-card{position:relative;border:2px solid #e5e8ee;border-radius:16px;overflow:hidden;aspect-ratio:1;transition:transform .3s,box-shadow .3s,border-color .3s;box-shadow:0 8px 20px rgba(21,26,36,.08)}
+.ogl-gallery-card:hover{transform:translateY(-6px);box-shadow:0 12px 32px rgba(21,26,36,.16);border-color:${PRIMARY}}
+.ogl-card-image{position:relative;width:100%;height:100%;overflow:hidden}
+.ogl-card-image img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.ogl-gallery-card:hover .ogl-card-image img{transform:scale(1.05)}
+.ogl-card-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(21,26,36,.2) 0%,rgba(21,26,36,.8) 100%);display:flex;align-items:flex-end;padding:20px;opacity:0;transition:opacity .3s}
+.ogl-gallery-card:hover .ogl-card-overlay{opacity:1}
+.ogl-card-content{width:100%;color:#fff}
+.ogl-card-title{font-size:16px;font-weight:700;margin:0 0 6px;line-height:1.2}
+.ogl-card-desc{font-size:13px;color:#e0e7ff;margin:0;line-height:1.4}
+.ogl-card-info{position:absolute;top:12px;right:12px;background:${PRIMARY};color:#fff;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;opacity:0;transition:opacity .3s;transform:scale(.8);transform-origin:top right}
+.ogl-gallery-card:hover .ogl-card-info{opacity:1;transform:scale(1)}
 
 .ogl-foot{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:26px 24px;color:#8a919c;font-size:13px;flex-wrap:wrap}
 .ogl-foot a{color:#5b6470;text-decoration:none;font-weight:600}
