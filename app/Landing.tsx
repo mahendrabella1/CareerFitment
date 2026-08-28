@@ -337,45 +337,22 @@ export default function Landing({ onStart }: { onStart: () => void }) {
       </section>
 
       <footer className="ogl-footer">
-        <div className="ogl-footer-cta ogl-reveal">
-          <h2 className="ogl-footer-headline">Your clearest career decision starts here.</h2>
-          <p className="ogl-footer-subtext">Take 25 minutes today to save years of second-guessing.</p>
-          <button className="ogl-btn ogl-btn-lg" onClick={onStart}>Start the assessment <Icon name="chevronRight" size={17} /></button>
-        </div>
         <div className="ogl-footer-content">
-          <div className="ogl-footer-section">
+          <div className="ogl-footer-left">
             <img src={LOGO} alt="OneGrasp" className="ogl-footer-logo" />
-            <p className="ogl-footer-tagline">Career fitment, backed by science</p>
+            <p>Career fitment, backed by science</p>
           </div>
-          <div className="ogl-footer-section">
-            <h4>Quick Links</h4>
-            <ul>
-              <li><a href="/signin">Sign In</a></li>
-              <li><a href="#measure">What We Measure</a></li>
-              <li><a href="#science">The Science</a></li>
-              <li><a href="#reviews">Reviews</a></li>
-            </ul>
+          <div className="ogl-footer-links">
+            <a href="/signin">Sign In</a>
+            <a href="tel:+918977760442">+91 8977760442</a>
+            <a href="mailto:support@onegrasp.com">support@onegrasp.com</a>
+            <a href="https://careerfitment.onegrasp.com" target="_blank">careerfitment.onegrasp.com</a>
           </div>
-          <div className="ogl-footer-section">
-            <h4>Contact Us</h4>
-            <ul>
-              <li><a href="tel:+918977760442">+91 8977760442</a></li>
-              <li><a href="mailto:support@onegrasp.com">support@onegrasp.com</a></li>
-              <li><a href="https://careerfitment.onegrasp.com" target="_blank">careerfitment.onegrasp.com</a></li>
-            </ul>
+          <div className="ogl-footer-right">
+            <span>© {new Date().getFullYear()} OneGrasp</span>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
           </div>
-          <div className="ogl-footer-section">
-            <h4>About</h4>
-            <ul>
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Terms of Service</a></li>
-              <li><a href="#">FAQ</a></li>
-              <li><a href="#">Contact</a></li>
-            </ul>
-          </div>
-        </div>
-        <div className="ogl-footer-bottom">
-          <span>© {new Date().getFullYear()} OneGrasp. All rights reserved.</span>
         </div>
       </footer>
     </div>
@@ -789,18 +766,19 @@ const CSS = `
 .ogl-flip-btn:hover{transform:scale(1.08);box-shadow:0 8px 20px rgba(0,0,0,.25)}
 @media(prefers-reduced-motion:reduce){.ogl-flip-inner{transition:none}}
 
-.ogl-footer{background:#151a24;color:#d1d5db}
-.ogl-footer-cta{background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);text-align:center;padding:80px 40px;max-width:1180px;margin:0 auto}
-.ogl-footer-headline{font-size:clamp(28px,4vw,42px);font-weight:800;color:#fff;margin:0 0 16px;font-family:'Poppins',Inter,sans-serif;letter-spacing:-.02em;max-width:900px;margin-left:auto;margin-right:auto}
-.ogl-footer-subtext{font-size:16px;color:#94a3b8;margin:0 0 28px;line-height:1.6;max-width:600px;margin-left:auto;margin-right:auto}
-.ogl-footer-content{max-width:1180px;margin:60px auto;padding:0 24px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px}
-@media(max-width:1024px){.ogl-footer-content{grid-template-columns:1fr 1fr}}
-@media(max-width:640px){.ogl-footer-content{grid-template-columns:1fr}}
-.ogl-footer-section h4{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#fff;margin:0 0 16px}
-.ogl-footer-section ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px}
-.ogl-footer-section a{color:#94a3b8;text-decoration:none;font-size:13.5px;transition:color .2s}
-.ogl-footer-section a:hover{color:#fff}
-.ogl-footer-logo{height:40px;width:auto;margin-bottom:12px}
-.ogl-footer-tagline{font-size:13px;color:#64748b;line-height:1.6;margin:0}
-.ogl-footer-bottom{max-width:1180px;margin:0 auto;padding:24px 24px;border-top:1px solid #334155;text-align:center;font-size:12.5px;color:#64748b}
+.ogl-footer{background:#151a24;color:#94a3b8;padding:40px 24px;margin-top:80px}
+.ogl-footer-content{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap}
+@media(max-width:768px){.ogl-footer-content{flex-direction:column;text-align:center;gap:24px}}
+.ogl-footer-left{display:flex;align-items:center;gap:16px;flex:1;min-width:200px}
+@media(max-width:768px){.ogl-footer-left{flex-direction:column;gap:8px}}
+.ogl-footer-left p{margin:0;font-size:13px;color:#64748b}
+.ogl-footer-logo{height:32px;width:auto}
+.ogl-footer-links{display:flex;gap:20px;flex:1;justify-content:center;flex-wrap:wrap}
+@media(max-width:768px){.ogl-footer-links{flex-direction:column;gap:12px}}
+.ogl-footer-links a{color:#94a3b8;text-decoration:none;font-size:13px;transition:color .2s}
+.ogl-footer-links a:hover{color:#fff}
+.ogl-footer-right{display:flex;gap:24px;align-items:center;font-size:12px;flex-wrap:wrap}
+@media(max-width:768px){.ogl-footer-right{flex-direction:column;gap:8px}}
+.ogl-footer-right a{color:#94a3b8;text-decoration:none;transition:color .2s}
+.ogl-footer-right a:hover{color:#fff}
 `;
