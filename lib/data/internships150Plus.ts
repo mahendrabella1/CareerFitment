@@ -41,6 +41,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://careers.google.com/internships",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
   {
     id: "internship_google_002",
@@ -58,6 +60,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://careers.google.com/internships",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
   {
     id: "internship_google_003",
@@ -75,6 +79,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://careers.google.com/internships",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
 
   // Microsoft
@@ -94,6 +100,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://careers.microsoft.com",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
   {
     id: "internship_microsoft_002",
@@ -111,6 +119,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://careers.microsoft.com",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
 
   // Amazon
@@ -130,6 +140,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://www.amazon.jobs/en-in/",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
   {
     id: "internship_amazon_002",
@@ -147,6 +159,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://www.amazon.jobs/en-in/",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
 
   // Meta (Facebook)
@@ -166,6 +180,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://www.metacareers.com/jobs",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
 
   // Apple
@@ -185,6 +201,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://www.apple.com/careers/",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
 
   // ========== TIER-2: UNICORN STARTUPS (35+) ==========
@@ -205,6 +223,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [11, 12],
     applicationLink: "https://unacademy.com/careers",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
   {
     id: "internship_unacademy_002",
@@ -222,6 +242,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://unacademy.com/careers",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
 
   // Flipkart
@@ -241,6 +263,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://www.flipkartcareers.com",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
 
   // Razorpay
@@ -260,6 +284,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://razorpay.com/careers/",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
 
   // ========== TIER-3: GOVERNMENT & FREE PROGRAMS (30+) ==========
@@ -280,6 +306,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://www.skillindia.gov.in/",
     source: "government-program",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
     benefits: ["Free certification", "Placement assistance", "E-certificate"],
   },
   {
@@ -297,6 +325,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://www.skillindia.gov.in/",
     source: "government-program",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
     benefits: ["Free course", "Certificate", "Job portal access"],
   },
 
@@ -316,6 +346,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://www.nasscom.in/",
     source: "industry-association",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
     benefits: ["Industry mentorship", "Certificate", "Networking events"],
   },
 
@@ -337,6 +369,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://www.apollohospitals.com/careers/",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
 
   // ========== TIER-5: FINANCE & BANKING (20+) ==========
@@ -357,6 +391,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://www.icicibank.com/careers",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
 
   // Goldman Sachs
@@ -376,6 +412,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://www.goldmansachs.com/careers/",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
 
   // ========== TIER-6: ENGINEERING & MANUFACTURING (25+) ==========
@@ -396,6 +434,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://www.infosys.com/careers/",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
 
   // TCS
@@ -415,6 +455,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://www.tcs.com/careers/",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
 
   // ========== TIER-7: NGO & NON-PROFIT (10+) ==========
@@ -436,6 +478,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://www.teachforindia.org/en/",
     source: "ngo",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
 
   // Additional entries (simplified for brevity - would expand to 150+)
@@ -455,6 +499,8 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     targetClass: [12],
     applicationLink: "https://careers.linkedin.com/",
     source: "company-career-page",
+    createdAt: new Date("2026-08-01"),
+    updatedAt: new Date("2026-08-01"),
   },
 ];
 
