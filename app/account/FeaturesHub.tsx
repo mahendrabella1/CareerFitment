@@ -488,6 +488,8 @@ const styles = {
 
   featureDetailContainer: {
     animation: "fadeIn 0.3s",
+    width: "100%",
+    overflow: "visible",
   } as React.CSSProperties,
 
   categoryBtn: {
