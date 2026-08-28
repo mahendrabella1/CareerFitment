@@ -18,44 +18,76 @@ const PRIMARY = "#3b5bdb";
 const INK = "#151a24";
 
 const GALLERY_IMAGES = [
-  "/gallery/IMG-20260420-WA0060.jpg",
-  "/gallery/IMG20260418103653_01.jpg",
-  "/gallery/IMG20260418112244.jpg",
-  "/gallery/IMG_20260418_103613991.jpg",
-  "/gallery/IMG_20260418_105125190_HDR.jpg",
-  "/gallery/IMG_20260418_120203457_PORTRAIT.jpg",
-  "/gallery/IMG_20260418_120614298.jpg",
-  "/gallery/IMG_20260418_120615426.jpg",
-  "/gallery/IMG_20260418_122233827.jpg",
-  "/gallery/WhatsApp_Image_2026-08-28_at_10.41.13_AM_(1).jpeg",
-  "/gallery/WhatsApp_Image_2026-08-28_at_10.41.13_AM.jpeg",
-  "/gallery/WhatsApp_Image_2026-08-28_at_10.41.14_AM.jpeg",
-  "/gallery/WhatsApp_Image_2026-08-28_at_10.41.36_AM_(1).jpeg",
-  "/gallery/WhatsApp_Image_2026-08-28_at_10.41.36_AM.jpeg",
-  "/gallery/WhatsApp_Image_2026-08-28_at_10.42.01_AM.jpeg",
-  "/gallery/WhatsApp_Image_2026-08-28_at_10.42.02_AM_(1).jpeg",
-  "/gallery/WhatsApp_Image_2026-08-28_at_10.42.02_AM.jpeg",
-  "/gallery/WhatsApp_Image_2026-08-28_at_10.42.15_AM.jpeg",
+  "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_103613991-scaled.jpg",
+  "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_105125190_HDR-scaled.jpg",
+  "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120203457_PORTRAIT-scaled.jpg",
+  "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120614298-scaled.jpg",
+  "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120615426-scaled.jpg",
+  "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_122233827-scaled.jpg",
+  "https://onegrasp.com/wp-content/uploads/2026/08/IMG-20260420-WA0060.jpg",
+  "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418103653_01-scaled.jpg",
+  "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418112244-scaled.jpg",
+  "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM-1.jpeg",
+  "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM.jpeg",
+  "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.36-AM.jpeg",
+  "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.02-AM.jpeg",
 ];
 
 function GalleryScroll() {
   const [shuffled, setShuffled] = useState<string[]>([]);
+  const row1Ref = useRef<HTMLDivElement>(null);
+  const row2Ref = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const arr = [...GALLERY_IMAGES].sort(() => Math.random() - 0.5);
     setShuffled(arr);
   }, []);
 
+  useEffect(() => {
+    if (!row1Ref.current || !row2Ref.current) return;
+
+    // Auto-scroll animation
+    const scroll = (element: HTMLDivElement, reverse: boolean) => {
+      let scrollPos = 0;
+      const scroll_step = 1;
+      const scroll_interval = 30;
+
+      const interval = setInterval(() => {
+        if (!element) return;
+        scrollPos += reverse ? -scroll_step : scroll_step;
+        element.scrollLeft = scrollPos;
+
+        // Loop back to start
+        if (scrollPos >= element.scrollWidth - element.clientWidth) {
+          scrollPos = 0;
+        } else if (scrollPos <= 0) {
+          scrollPos = element.scrollWidth - element.clientWidth;
+        }
+      }, scroll_interval);
+
+      return interval;
+    };
+
+    const int1 = scroll(row1Ref.current, false);
+    const int2 = scroll(row2Ref.current, true);
+
+    return () => {
+      clearInterval(int1);
+      clearInterval(int2);
+    };
+  }, []);
+
   if (shuffled.length === 0) return null;
   return (
     <div className="ogl-gallery-scroll">
-      <div className="ogl-gallery-row">
-        {shuffled.slice(0, 9).map((img, i) => (
-          <img key={`row1-${i}`} src={img} alt={`Community ${i + 1}`} className="ogl-scroll-item ogl-reveal" loading="lazy" />
+      <div className="ogl-gallery-row" ref={row1Ref}>
+        {shuffled.slice(0, 7).map((img, i) => (
+          <img key={`row1-${i}`} src={img} alt={`Community ${i + 1}`} className="ogl-scroll-item" />
         ))}
       </div>
-      <div className="ogl-gallery-row">
-        {shuffled.slice(9, 18).map((img, i) => (
-          <img key={`row2-${i}`} src={img} alt={`Community ${i + 10}`} className="ogl-scroll-item ogl-reveal" loading="lazy" />
+      <div className="ogl-gallery-row" ref={row2Ref}>
+        {shuffled.slice(7, 13).map((img, i) => (
+          <img key={`row2-${i}`} src={img} alt={`Community ${i + 8}`} className="ogl-scroll-item" />
         ))}
       </div>
     </div>
@@ -726,17 +758,17 @@ const CSS = `
 .ogl-cta-t{font-size:clamp(25px,3.6vw,35px);font-weight:700;margin:0}
 .ogl-cta-s{font-size:16px;opacity:.85;margin:12px 0 26px}
 
-.ogl-gallery-scroll{display:flex;flex-direction:column;gap:20px;margin:40px 0;width:100%}
-.ogl-gallery-row{display:flex;gap:14px;overflow-x:auto;scroll-behavior:smooth;padding:8px 0;-webkit-overflow-scrolling:touch;width:100%;height:240px}
-.ogl-gallery-row::-webkit-scrollbar{height:8px}
+.ogl-gallery-scroll{display:flex;flex-direction:column;gap:24px;margin:40px 0;width:100%}
+.ogl-gallery-row{display:flex;gap:16px;overflow-x:hidden;padding:12px 0;width:100%;height:260px;align-items:center}
+.ogl-gallery-row::-webkit-scrollbar{height:10px}
 .ogl-gallery-row::-webkit-scrollbar-track{background:#f0f2f5;border-radius:10px;margin:4px 0}
 .ogl-gallery-row::-webkit-scrollbar-thumb{background:#c0c7cf;border-radius:10px}
 .ogl-gallery-row::-webkit-scrollbar-thumb:hover{background:#a8aeb8}
-.ogl-scroll-item{min-width:240px;width:240px;height:240px;object-fit:cover;border-radius:14px;box-shadow:0 8px 20px rgba(21,26,36,.12);transition:transform .3s,box-shadow .3s;display:block;flex-shrink:0;background:#f0f2f5}
-.ogl-scroll-item:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 14px 32px rgba(21,26,36,.18)}
-@media(max-width:1024px){.ogl-gallery-row{height:200px}.ogl-scroll-item{min-width:200px;width:200px;height:200px}}
-@media(max-width:768px){.ogl-gallery-row{height:160px}.ogl-scroll-item{min-width:160px;width:160px;height:160px}}
-@media(max-width:480px){.ogl-gallery-row{height:140px}.ogl-scroll-item{min-width:140px;width:140px;height:140px}}
+.ogl-scroll-item{min-width:240px;width:240px;height:240px;object-fit:cover;border-radius:16px;box-shadow:0 10px 24px rgba(21,26,36,.14);transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s;display:block;flex-shrink:0;background:#e5e8ee;border:none}
+.ogl-scroll-item:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 16px 36px rgba(21,26,36,.2);cursor:pointer}
+@media(max-width:1024px){.ogl-gallery-row{height:220px}.ogl-scroll-item{min-width:200px;width:200px;height:200px}}
+@media(max-width:768px){.ogl-gallery-row{height:180px}.ogl-scroll-item{min-width:160px;width:160px;height:160px}}
+@media(max-width:480px){.ogl-gallery-row{height:150px;gap:12px}.ogl-scroll-item{min-width:140px;width:140px;height:140px}}
 
 .ogl-foot{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:26px 24px;color:#8a919c;font-size:13px;flex-wrap:wrap}
 .ogl-foot a{color:#5b6470;text-decoration:none;font-weight:600}
