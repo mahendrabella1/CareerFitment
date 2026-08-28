@@ -741,7 +741,7 @@ const CSS = `
 .ogl-review-role{font-size:12.5px;color:#8a919c}
 
 .ogl-cta{background:${INK};color:#fff;text-align:center;padding:66px 24px}
-.ogl-cta-t{font-size:clamp(25px,3.6vw,35px);font-weight:700;margin:0}
+.ogl-cta-t{font-size:clamp(28px,5vw,48px);font-weight:800;margin:0 0 16px;color:#fff;line-height:1.2;letter-spacing:-.02em}
 .ogl-cta-s{font-size:16px;opacity:.85;margin:12px 0 26px}
 
 .ogl-gallery-flip{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin:48px 0;perspective:1000px}
