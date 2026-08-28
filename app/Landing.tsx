@@ -17,6 +17,51 @@ const IMG = (id: string, w = 720) => `https://images.unsplash.com/${id}?auto=for
 const PRIMARY = "#3b5bdb";
 const INK = "#151a24";
 
+const GALLERY_IMAGES = [
+  "/gallery/IMG-20260420-WA0060.jpg",
+  "/gallery/IMG20260418103653_01.jpg",
+  "/gallery/IMG20260418112244.jpg",
+  "/gallery/IMG_20260418_103613991.jpg",
+  "/gallery/IMG_20260418_105125190_HDR.jpg",
+  "/gallery/IMG_20260418_120203457_PORTRAIT.jpg",
+  "/gallery/IMG_20260418_120614298.jpg",
+  "/gallery/IMG_20260418_120615426.jpg",
+  "/gallery/IMG_20260418_122233827.jpg",
+  "/gallery/WhatsApp%20Image%202026-08-28%20at%2010.41.13%20AM%20(1).jpeg",
+  "/gallery/WhatsApp%20Image%202026-08-28%20at%2010.41.13%20AM.jpeg",
+  "/gallery/WhatsApp%20Image%202026-08-28%20at%2010.41.14%20AM.jpeg",
+  "/gallery/WhatsApp%20Image%202026-08-28%20at%2010.41.36%20AM%20(1).jpeg",
+  "/gallery/WhatsApp%20Image%202026-08-28%20at%2010.41.36%20AM.jpeg",
+  "/gallery/WhatsApp%20Image%202026-08-28%20at%2010.42.01%20AM.jpeg",
+  "/gallery/WhatsApp%20Image%202026-08-28%20at%2010.42.02%20AM%20(1).jpeg",
+  "/gallery/WhatsApp%20Image%202026-08-28%20at%2010.42.02%20AM.jpeg",
+  "/gallery/WhatsApp%20Image%202026-08-28%20at%2010.42.15%20AM.jpeg",
+];
+
+function GalleryScroll() {
+  const [shuffled, setShuffled] = useState<string[]>([]);
+  useEffect(() => {
+    const arr = [...GALLERY_IMAGES].sort(() => Math.random() - 0.5);
+    setShuffled(arr);
+  }, []);
+
+  if (shuffled.length === 0) return null;
+  return (
+    <div className="ogl-gallery-scroll">
+      <div className="ogl-gallery-row">
+        {shuffled.slice(0, 9).map((img, i) => (
+          <img key={`row1-${i}`} src={img} alt={`Community ${i + 1}`} className="ogl-scroll-item ogl-reveal" loading="lazy" />
+        ))}
+      </div>
+      <div className="ogl-gallery-row">
+        {shuffled.slice(9, 18).map((img, i) => (
+          <img key={`row2-${i}`} src={img} alt={`Community ${i + 10}`} className="ogl-scroll-item ogl-reveal" loading="lazy" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Landing({ onStart }: { onStart: () => void }) {
   const root = useRef<HTMLDivElement>(null);
 
@@ -416,51 +461,6 @@ function Rotator({ words }: { words: string[] }) {
     return () => clearInterval(id);
   }, [words.length]);
   return <span key={i} className="ogl-rot">{words[i]}</span>;
-}
-
-const GALLERY_IMAGES = [
-  "/gallery/IMG-20260420-WA0060.jpg",
-  "/gallery/IMG20260418103653_01.jpg",
-  "/gallery/IMG20260418112244.jpg",
-  "/gallery/IMG_20260418_103613991.jpg",
-  "/gallery/IMG_20260418_105125190_HDR.jpg",
-  "/gallery/IMG_20260418_120203457_PORTRAIT.jpg",
-  "/gallery/IMG_20260418_120614298.jpg",
-  "/gallery/IMG_20260418_120615426.jpg",
-  "/gallery/IMG_20260418_122233827.jpg",
-  "/gallery/WhatsApp Image 2026-08-28 at 10.41.13 AM (1).jpeg",
-  "/gallery/WhatsApp Image 2026-08-28 at 10.41.13 AM.jpeg",
-  "/gallery/WhatsApp Image 2026-08-28 at 10.41.14 AM.jpeg",
-  "/gallery/WhatsApp Image 2026-08-28 at 10.41.36 AM (1).jpeg",
-  "/gallery/WhatsApp Image 2026-08-28 at 10.41.36 AM.jpeg",
-  "/gallery/WhatsApp Image 2026-08-28 at 10.42.01 AM.jpeg",
-  "/gallery/WhatsApp Image 2026-08-28 at 10.42.02 AM (1).jpeg",
-  "/gallery/WhatsApp Image 2026-08-28 at 10.42.02 AM.jpeg",
-  "/gallery/WhatsApp Image 2026-08-28 at 10.42.15 AM.jpeg",
-];
-
-function GalleryScroll() {
-  const [shuffled, setShuffled] = useState<string[]>([]);
-  useEffect(() => {
-    const arr = [...GALLERY_IMAGES].sort(() => Math.random() - 0.5);
-    setShuffled(arr);
-  }, []);
-
-  if (shuffled.length === 0) return null;
-  return (
-    <div className="ogl-gallery-scroll">
-      <div className="ogl-gallery-row">
-        {shuffled.slice(0, 9).map((img, i) => (
-          <img key={`row1-${i}`} src={img} alt={`Community ${i + 1}`} className="ogl-scroll-item ogl-reveal" loading="lazy" />
-        ))}
-      </div>
-      <div className="ogl-gallery-row">
-        {shuffled.slice(9, 18).map((img, i) => (
-          <img key={`row2-${i}`} src={img} alt={`Community ${i + 10}`} className="ogl-scroll-item ogl-reveal" loading="lazy" />
-        ))}
-      </div>
-    </div>
-  );
 }
 
 /** Uses the provided illustration (public/why-this-matters.png); if it isn't
