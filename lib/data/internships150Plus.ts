@@ -307,7 +307,6 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     source: "government-program",
     createdAt: new Date("2026-08-01"),
     updatedAt: new Date("2026-08-01"),
-    benefits: ["Free certification", "Placement assistance", "E-certificate"],
   },
   {
     id: "internship_skill_india_002",
@@ -326,7 +325,6 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     source: "government-program",
     createdAt: new Date("2026-08-01"),
     updatedAt: new Date("2026-08-01"),
-    benefits: ["Free course", "Certificate", "Job portal access"],
   },
 
   // NASSCOM
@@ -347,7 +345,6 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     source: "industry-association",
     createdAt: new Date("2026-08-01"),
     updatedAt: new Date("2026-08-01"),
-    benefits: ["Industry mentorship", "Certificate", "Networking events"],
   },
 
   // ========== TIER-4: HEALTHCARE & RESEARCH (20+) ==========
@@ -472,7 +469,6 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     remote: "onsite",
     paid: true,
     stipend: { amount: 15000, currency: "INR", perMonth: true },
-    benefits: ["Housing provided", "Training", "Mentorship", "Social impact"],
     eligibility: "Graduates or final year students",
     targetClass: [12],
     applicationLink: "https://www.teachforindia.org/en/",
