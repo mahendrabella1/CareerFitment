@@ -43,22 +43,20 @@ function GalleryScroll() {
 
   if (shuffled.length === 0) return null;
 
+  // Create 3 sets of images for seamless loop
+  const row1Images = [...shuffled.slice(0, 7), ...shuffled.slice(0, 7), ...shuffled.slice(0, 7)];
+  const row2Images = [...shuffled.slice(7, 13), ...shuffled.slice(7, 13), ...shuffled.slice(7, 13)];
+
   return (
     <div className="ogl-gallery-scroll">
       <div className="ogl-gallery-row ogl-scroll-ltr">
-        {shuffled.slice(0, 7).map((img, i) => (
-          <img key={`row1-${i}`} src={img} alt={`Community ${i + 1}`} className="ogl-scroll-item" />
-        ))}
-        {shuffled.slice(0, 7).map((img, i) => (
-          <img key={`row1-dup-${i}`} src={img} alt={`Community ${i + 1}`} className="ogl-scroll-item" />
+        {row1Images.map((img, i) => (
+          <img key={`row1-${i}`} src={img} alt={`Gallery ${i}`} className="ogl-scroll-item" />
         ))}
       </div>
       <div className="ogl-gallery-row ogl-scroll-rtl">
-        {shuffled.slice(7, 13).map((img, i) => (
-          <img key={`row2-${i}`} src={img} alt={`Community ${i + 8}`} className="ogl-scroll-item" />
-        ))}
-        {shuffled.slice(7, 13).map((img, i) => (
-          <img key={`row2-dup-${i}`} src={img} alt={`Community ${i + 8}`} className="ogl-scroll-item" />
+        {row2Images.map((img, i) => (
+          <img key={`row2-${i}`} src={img} alt={`Gallery ${i}`} className="ogl-scroll-item" />
         ))}
       </div>
     </div>
@@ -729,17 +727,17 @@ const CSS = `
 .ogl-cta-t{font-size:clamp(25px,3.6vw,35px);font-weight:700;margin:0}
 .ogl-cta-s{font-size:16px;opacity:.85;margin:12px 0 26px}
 
-@keyframes scrollLTR{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-@keyframes scrollRTL{0%{transform:translateX(0)}100%{transform:translateX(50%)}}
-.ogl-gallery-scroll{display:flex;flex-direction:column;gap:24px;margin:40px 0;width:100%}
-.ogl-gallery-row{display:flex;gap:16px;overflow:hidden;padding:12px 0;width:100%;height:260px;align-items:center}
-.ogl-scroll-ltr{animation:scrollLTR 60s linear infinite}
-.ogl-scroll-rtl{animation:scrollRTL 60s linear infinite}
-.ogl-scroll-item{min-width:240px;width:240px;height:240px;object-fit:cover;border-radius:16px;box-shadow:0 10px 24px rgba(21,26,36,.14);transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s;display:block;flex-shrink:0;background:#e5e8ee;border:none}
-.ogl-scroll-item:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 16px 36px rgba(21,26,36,.2);cursor:pointer}
-@media(max-width:1024px){.ogl-gallery-row{height:220px}.ogl-scroll-item{min-width:200px;width:200px;height:200px}}
-@media(max-width:768px){.ogl-gallery-row{height:180px}.ogl-scroll-item{min-width:160px;width:160px;height:160px}}
-@media(max-width:480px){.ogl-gallery-row{height:150px;gap:12px}.ogl-scroll-item{min-width:140px;width:140px;height:140px}}
+@keyframes scrollLeft{0%{transform:translateX(0)}100%{transform:translateX(calc(-100% / 3))}}
+@keyframes scrollRight{0%{transform:translateX(0)}100%{transform:translateX(calc(100% / 3))}}
+.ogl-gallery-scroll{display:flex;flex-direction:column;gap:28px;margin:48px 0;width:100%}
+.ogl-gallery-row{display:flex;gap:18px;width:100%;height:280px;overflow:hidden;padding:8px 0}
+.ogl-scroll-ltr{animation:scrollLeft 80s linear infinite}
+.ogl-scroll-rtl{animation:scrollRight 80s linear infinite}
+.ogl-scroll-item{min-width:280px;width:280px;height:280px;object-fit:cover;border-radius:18px;box-shadow:0 12px 28px rgba(21,26,36,.15);flex-shrink:0;transition:transform .2s,box-shadow .2s}
+.ogl-scroll-item:hover{transform:scale(1.04);box-shadow:0 16px 40px rgba(21,26,36,.2)}
+@media(max-width:1200px){.ogl-scroll-item{min-width:240px;width:240px;height:240px}.ogl-gallery-row{height:240px}}
+@media(max-width:768px){.ogl-scroll-item{min-width:180px;width:180px;height:180px}.ogl-gallery-row{height:180px;gap:12px}}
+@media(max-width:480px){.ogl-scroll-item{min-width:140px;width:140px;height:140px}.ogl-gallery-row{height:140px;gap:10px}}
 
 .ogl-foot{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:26px 24px;color:#8a919c;font-size:13px;flex-wrap:wrap}
 .ogl-foot a{color:#5b6470;text-decoration:none;font-weight:600}
