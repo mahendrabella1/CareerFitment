@@ -520,7 +520,6 @@ export function searchInternships(query: string): Internship[] {
     (i) =>
       i.title.toLowerCase().includes(lowerQuery) ||
       i.organization.toLowerCase().includes(lowerQuery) ||
-      i.category.toLowerCase().includes(lowerQuery) ||
       i.skills.some((s) => s.toLowerCase().includes(lowerQuery))
   );
 }
