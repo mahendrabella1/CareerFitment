@@ -21,7 +21,7 @@ const CLUSTERS = [
   { id: "education", label: "Education", icon: "🎓", color: "#3b82f6" },
 ];
 
-export default function CareerLibraryNew() {
+export default function CareerLibrary() {
   const allCareers = getAllCareers();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCluster, setSelectedCluster] = useState<string | null>(null);
