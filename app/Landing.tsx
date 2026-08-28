@@ -766,19 +766,19 @@ const CSS = `
 .ogl-flip-btn:hover{transform:scale(1.08);box-shadow:0 8px 20px rgba(0,0,0,.25)}
 @media(prefers-reduced-motion:reduce){.ogl-flip-inner{transition:none}}
 
-.ogl-footer{background:#151a24;color:#94a3b8;padding:40px 24px;margin-top:80px}
-.ogl-footer-content{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap}
-@media(max-width:768px){.ogl-footer-content{flex-direction:column;text-align:center;gap:24px}}
-.ogl-footer-left{display:flex;align-items:center;gap:16px;flex:1;min-width:200px}
+.ogl-footer{background:#151a24;color:#cbd5e1;padding:32px 24px;margin-top:0}
+.ogl-footer-content{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+@media(max-width:768px){.ogl-footer-content{flex-direction:column;text-align:center;gap:20px}}
+.ogl-footer-left{display:flex;align-items:center;gap:14px;flex:1;min-width:200px}
 @media(max-width:768px){.ogl-footer-left{flex-direction:column;gap:8px}}
-.ogl-footer-left p{margin:0;font-size:13px;color:#64748b}
+.ogl-footer-left p{margin:0;font-size:13px;color:#cbd5e1;font-weight:500}
 .ogl-footer-logo{height:32px;width:auto}
-.ogl-footer-links{display:flex;gap:20px;flex:1;justify-content:center;flex-wrap:wrap}
-@media(max-width:768px){.ogl-footer-links{flex-direction:column;gap:12px}}
-.ogl-footer-links a{color:#94a3b8;text-decoration:none;font-size:13px;transition:color .2s}
+.ogl-footer-links{display:flex;gap:18px;flex:1;justify-content:center;flex-wrap:wrap}
+@media(max-width:768px){.ogl-footer-links{flex-direction:column;gap:10px}}
+.ogl-footer-links a{color:#cbd5e1;text-decoration:none;font-size:13px;font-weight:500;transition:color .2s}
 .ogl-footer-links a:hover{color:#fff}
-.ogl-footer-right{display:flex;gap:24px;align-items:center;font-size:12px;flex-wrap:wrap}
+.ogl-footer-right{display:flex;gap:20px;align-items:center;font-size:12px;flex-wrap:wrap;color:#cbd5e1}
 @media(max-width:768px){.ogl-footer-right{flex-direction:column;gap:8px}}
-.ogl-footer-right a{color:#94a3b8;text-decoration:none;transition:color .2s}
+.ogl-footer-right a{color:#cbd5e1;text-decoration:none;font-weight:500;transition:color .2s}
 .ogl-footer-right a:hover{color:#fff}
 `;
