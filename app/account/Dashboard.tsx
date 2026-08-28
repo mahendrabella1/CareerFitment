@@ -48,7 +48,6 @@ import {
 } from "@/lib/report/knowledge";
 import StudyAbroad from "@/app/account/features/StudyAbroad";
 import FeaturesHub from "@/app/account/FeaturesHub";
-import SmallChat from "@/app/account/features/SmallChat";
 
 // Dashboard accent — OneGrasp red theme (white, black, grey, red #db3433).
 const IN = "#db3433", IN_STRONG = "#b82a2b", IN_TINT = "#fef0f0", IN_LINE = "#f5d5d5";
@@ -636,7 +635,6 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
           </div>
         </main>
       </div>
-      <SmallChat userId={(email || profile?.email || "guest").split("@")[0]} />
     </div>
   );
 }

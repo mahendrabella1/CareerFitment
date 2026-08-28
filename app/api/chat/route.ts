@@ -1,41 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const GROQ_API_KEY = process.env.GROQ_API_KEY || "";
-const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
-
-console.log("🔑 GROQ_API_KEY loaded:", GROQ_API_KEY ? "✅ YES" : "❌ NO");
-
 export async function POST(req: NextRequest) {
-  try {
-    const { messages } = await req.json();
-
-    if (!GROQ_API_KEY) {
-      console.error("GROQ_API_KEY not found in environment");
-      return NextResponse.json({ error: "API key not configured" }, { status: 500 });
-    }
-
-    const response = await fetch(GROQ_API_URL, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${GROQ_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "llama-3-70b-8192",
-        messages: messages,
-      }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Groq API error:", errorData);
-      return NextResponse.json(errorData, { status: response.status });
-    }
-
-    const data = await response.json();
-    return NextResponse.json(data);
-  } catch (error) {
-    console.error("Chat API error:", error);
-    return NextResponse.json({ error: `Server error: ${error instanceof Error ? error.message : "Unknown error"}` }, { status: 500 });
-  }
+  return NextResponse.json(
+    { error: "AI Chat feature is currently disabled" },
+    { status: 503 }
+  );
 }
