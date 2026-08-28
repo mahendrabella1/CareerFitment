@@ -46,34 +46,42 @@ function GalleryScroll() {
   useEffect(() => {
     if (!row1Ref.current || !row2Ref.current) return;
 
-    // Auto-scroll animation
-    const scroll = (element: HTMLDivElement, reverse: boolean) => {
-      let scrollPos = 0;
-      const scroll_step = 1;
-      const scroll_interval = 30;
+    const autoScroll = (element: HTMLDivElement, direction: 'ltr' | 'rtl') => {
+      let scrollPos = direction === 'ltr' ? 0 : element.scrollWidth;
+      const scrollSpeed = 0.5;
+      let animationFrameId: number;
 
-      const interval = setInterval(() => {
+      const animate = () => {
         if (!element) return;
-        scrollPos += reverse ? -scroll_step : scroll_step;
-        element.scrollLeft = scrollPos;
 
-        // Loop back to start
-        if (scrollPos >= element.scrollWidth - element.clientWidth) {
-          scrollPos = 0;
-        } else if (scrollPos <= 0) {
-          scrollPos = element.scrollWidth - element.clientWidth;
+        if (direction === 'ltr') {
+          // Left to right
+          scrollPos += scrollSpeed;
+          if (scrollPos >= element.scrollWidth - element.clientWidth) {
+            scrollPos = 0;
+          }
+        } else {
+          // Right to left
+          scrollPos -= scrollSpeed;
+          if (scrollPos <= 0) {
+            scrollPos = element.scrollWidth - element.clientWidth;
+          }
         }
-      }, scroll_interval);
 
-      return interval;
+        element.scrollLeft = scrollPos;
+        animationFrameId = requestAnimationFrame(animate);
+      };
+
+      animationFrameId = requestAnimationFrame(animate);
+      return () => cancelAnimationFrame(animationFrameId);
     };
 
-    const int1 = scroll(row1Ref.current, false);
-    const int2 = scroll(row2Ref.current, true);
+    const cleanup1 = autoScroll(row1Ref.current, 'ltr');
+    const cleanup2 = autoScroll(row2Ref.current, 'rtl');
 
     return () => {
-      clearInterval(int1);
-      clearInterval(int2);
+      cleanup1();
+      cleanup2();
     };
   }, []);
 
