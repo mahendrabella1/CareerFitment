@@ -338,20 +338,20 @@ export default function Landing({ onStart }: { onStart: () => void }) {
 
       <footer className="ogl-footer">
         <div className="ogl-footer-inner">
-          <div className="ogl-footer-brand">
+          <div className="ogl-footer-left">
             <img src={LOGO} alt="OneGrasp" />
-            <p>Career fitment, backed by science</p>
+            <span>Career fitment, backed by science</span>
           </div>
-          <div className="ogl-footer-contact">
+          <div className="ogl-footer-center">
             <a href="tel:+918977760442">+91 8977760442</a>
             <a href="mailto:support@onegrasp.com">support@onegrasp.com</a>
             <a href="https://careerfitment.onegrasp.com" target="_blank">careerfitment.onegrasp.com</a>
           </div>
-          <div className="ogl-footer-nav">
+          <div className="ogl-footer-right">
             <a href="/signin">Sign In</a>
             <a href="#">Privacy</a>
             <a href="#">Terms</a>
-            <span className="ogl-footer-copy">© {new Date().getFullYear()} OneGrasp</span>
+            <span>© {new Date().getFullYear()} OneGrasp</span>
           </div>
         </div>
       </footer>
@@ -766,18 +766,19 @@ const CSS = `
 .ogl-flip-btn:hover{transform:scale(1.08);box-shadow:0 8px 20px rgba(0,0,0,.25)}
 @media(prefers-reduced-motion:reduce){.ogl-flip-inner{transition:none}}
 
-.ogl-footer{background:#151a24;padding:48px 24px}
-.ogl-footer-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:60px;align-items:flex-start}
-@media(max-width:768px){.ogl-footer-inner{grid-template-columns:1fr;gap:40px;text-align:center}}
-.ogl-footer-brand{display:flex;flex-direction:column;gap:12px}
-.ogl-footer-brand img{height:50px;width:auto;display:block}
-.ogl-footer-brand p{margin:0;font-size:14px;color:#e2e8f0;line-height:1.5;font-weight:500}
-.ogl-footer-contact{display:flex;flex-direction:column;gap:12px}
-.ogl-footer-contact a{color:#e2e8f0;text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
-.ogl-footer-contact a:hover{color:#fff;text-decoration:underline}
-.ogl-footer-nav{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-@media(max-width:768px){.ogl-footer-nav{align-items:center}}
-.ogl-footer-nav a{color:#e2e8f0;text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
-.ogl-footer-nav a:hover{color:#fff;text-decoration:underline}
-.ogl-footer-copy{color:#94a3b8;font-size:12px;margin-top:8px;display:block}
+.ogl-footer{background:#151a24;padding:20px 24px}
+.ogl-footer-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+@media(max-width:768px){.ogl-footer-inner{flex-direction:column;gap:16px;text-align:center}}
+.ogl-footer-left{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.ogl-footer-left img{height:28px;width:auto}
+.ogl-footer-left span{font-size:12px;color:#cbd5e1}
+.ogl-footer-center{display:flex;gap:16px;flex:1;justify-content:center;flex-wrap:wrap}
+@media(max-width:768px){.ogl-footer-center{order:3;flex-basis:100%}}
+.ogl-footer-center a{font-size:12px;color:#cbd5e1;text-decoration:none;transition:color .2s}
+.ogl-footer-center a:hover{color:#fff}
+.ogl-footer-right{display:flex;gap:14px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+@media(max-width:768px){.ogl-footer-right{order:2;justify-content:center}}
+.ogl-footer-right a{font-size:12px;color:#cbd5e1;text-decoration:none;transition:color .2s}
+.ogl-footer-right a:hover{color:#fff}
+.ogl-footer-right span{font-size:11px;color:#64748b}
 `;
