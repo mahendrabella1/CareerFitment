@@ -36,20 +36,21 @@ const GALLERY_IMAGES = [
 
 function GalleryGrid() {
   return (
-    <div className="ogl-gallery-grid">
+    <div className="ogl-gallery-flip">
       {GALLERY_IMAGES.map((item, i) => (
-        <div key={i} className="ogl-gallery-card ogl-reveal ogl-pop" style={{ transitionDelay: `${i * 50}ms` }}>
-          <div className="ogl-card-image">
-            <img src={item.img} alt={item.title} />
-            <div className="ogl-card-overlay">
-              <div className="ogl-card-content">
-                <h3 className="ogl-card-title">{item.title}</h3>
-                <p className="ogl-card-desc">{item.desc}</p>
+        <div key={i} className="ogl-flip-card ogl-reveal" style={{ transitionDelay: `${i * 40}ms` }}>
+          <div className="ogl-flip-inner">
+            <div className="ogl-flip-front">
+              <img src={item.img} alt={item.title} />
+              <div className="ogl-flip-tag">{Math.floor(Math.random() * 5) + 1} min read</div>
+            </div>
+            <div className="ogl-flip-back">
+              <div className="ogl-flip-content">
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+                <button className="ogl-flip-btn">Take Test</button>
               </div>
             </div>
-          </div>
-          <div className="ogl-card-info">
-            <span className="ogl-card-badge">Take Test</span>
           </div>
         </div>
       ))}
@@ -721,22 +722,24 @@ const CSS = `
 .ogl-cta-t{font-size:clamp(25px,3.6vw,35px);font-weight:700;margin:0}
 .ogl-cta-s{font-size:16px;opacity:.85;margin:12px 0 26px}
 
-.ogl-gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin:40px 0}
-@media(max-width:1200px){.ogl-gallery-grid{grid-template-columns:repeat(3,1fr);gap:18px}}
-@media(max-width:768px){.ogl-gallery-grid{grid-template-columns:repeat(2,1fr);gap:16px}}
-@media(max-width:480px){.ogl-gallery-grid{grid-template-columns:1fr;gap:14px}}
-.ogl-gallery-card{position:relative;border:2px solid #e5e8ee;border-radius:16px;overflow:hidden;aspect-ratio:1;transition:transform .3s,box-shadow .3s,border-color .3s;box-shadow:0 8px 20px rgba(21,26,36,.08)}
-.ogl-gallery-card:hover{transform:translateY(-6px);box-shadow:0 12px 32px rgba(21,26,36,.16);border-color:${PRIMARY}}
-.ogl-card-image{position:relative;width:100%;height:100%;overflow:hidden}
-.ogl-card-image img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
-.ogl-gallery-card:hover .ogl-card-image img{transform:scale(1.05)}
-.ogl-card-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(21,26,36,.2) 0%,rgba(21,26,36,.8) 100%);display:flex;align-items:flex-end;padding:20px;opacity:0;transition:opacity .3s}
-.ogl-gallery-card:hover .ogl-card-overlay{opacity:1}
-.ogl-card-content{width:100%;color:#fff}
-.ogl-card-title{font-size:16px;font-weight:700;margin:0 0 6px;line-height:1.2}
-.ogl-card-desc{font-size:13px;color:#e0e7ff;margin:0;line-height:1.4}
-.ogl-card-info{position:absolute;top:12px;right:12px;background:${PRIMARY};color:#fff;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;opacity:0;transition:opacity .3s;transform:scale(.8);transform-origin:top right}
-.ogl-gallery-card:hover .ogl-card-info{opacity:1;transform:scale(1)}
+.ogl-gallery-flip{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin:48px 0;perspective:1000px}
+@media(max-width:1200px){.ogl-gallery-flip{grid-template-columns:repeat(3,1fr);gap:22px}}
+@media(max-width:768px){.ogl-gallery-flip{grid-template-columns:repeat(2,1fr);gap:20px}}
+@media(max-width:480px){.ogl-gallery-flip{grid-template-columns:1fr;gap:18px}}
+.ogl-flip-card{aspect-ratio:1;cursor:pointer;perspective:1000px;height:100%}
+.ogl-flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;box-shadow:0 10px 30px rgba(21,26,36,.12)}
+.ogl-flip-card:hover .ogl-flip-inner{transform:rotateY(180deg)}
+.ogl-flip-front,.ogl-flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;border-radius:18px;font-weight:700}
+.ogl-flip-front{background:#fff;border:2px solid #e5e8ee;overflow:hidden}
+.ogl-flip-front img{width:100%;height:100%;object-fit:cover}
+.ogl-flip-tag{position:absolute;top:12px;right:12px;background:${PRIMARY};color:#fff;padding:8px 14px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.ogl-flip-back{background:linear-gradient(135deg,${PRIMARY} 0%,#2f6bff 100%);color:#fff;transform:rotateY(180deg);padding:24px;text-align:center}
+.ogl-flip-content{display:flex;flex-direction:column;gap:16px;justify-content:center;align-items:center;height:100%;width:100%}
+.ogl-flip-content h3{font-size:18px;margin:0;line-height:1.2;font-weight:800}
+.ogl-flip-content p{font-size:13px;margin:0;opacity:.9;line-height:1.5}
+.ogl-flip-btn{background:#fff;color:${PRIMARY};border:none;padding:10px 20px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px rgba(21,26,36,.2)}
+.ogl-flip-btn:hover{transform:scale(1.05);box-shadow:0 6px 16px rgba(21,26,36,.3)}
+@media(prefers-reduced-motion:reduce){.ogl-flip-inner{transition:none}}
 
 .ogl-foot{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:26px 24px;color:#8a919c;font-size:13px;flex-wrap:wrap}
 .ogl-foot a{color:#5b6470;text-decoration:none;font-weight:600}
