@@ -52,7 +52,6 @@ function GalleryGrid({ onStart }: { onStart: () => void }) {
               <div className="ogl-flip-content">
                 <h3>{item.title}</h3>
                 <div className="ogl-flip-warning">
-                  <span className="ogl-warning-icon">⚠</span>
                   <p>{item.what}</p>
                 </div>
                 <button className="ogl-flip-btn" onClick={onStart}>Take Assessment</button>
