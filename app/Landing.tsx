@@ -23,20 +23,20 @@ const GALLERY_COLORS = [
 ];
 
 const GALLERY_IMAGES = [
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_103613991-scaled.jpg", title: "Personality Analysis", what: "Miss understanding your core traits & how you work best", color: GALLERY_COLORS[0] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_105125190_HDR-scaled.jpg", title: "Career Interests", what: "Stay blind to fields that genuinely excite you", color: GALLERY_COLORS[1] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120203457_PORTRAIT-scaled.jpg", title: "Multiple Intelligence", what: "Ignore your unique learning & thinking styles", color: GALLERY_COLORS[2] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120614298-scaled.jpg", title: "Emotional Intelligence", what: "Fail to develop self-awareness & relationships", color: GALLERY_COLORS[3] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120615426-scaled.jpg", title: "Learning Preferences", what: "Choose study methods that don't match your style", color: GALLERY_COLORS[4] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_122233827-scaled.jpg", title: "Motivators & Values", what: "Pick careers misaligned with what energizes you", color: GALLERY_COLORS[5] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG-20260420-WA0060.jpg", title: "Strengths Discovery", what: "Underutilize your greatest problem-solving abilities", color: GALLERY_COLORS[6] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418103653_01-scaled.jpg", title: "Aptitude Assessment", what: "Misjudge your logical & reasoning potential", color: GALLERY_COLORS[7] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418112244-scaled.jpg", title: "Career Matching", what: "Search blindly among 1000+ career options", color: GALLERY_COLORS[8] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM-1.jpeg", title: "Personal Profile", what: "Lack a science-backed career blueprint", color: GALLERY_COLORS[9] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM.jpeg", title: "Stream Guidance", what: "Make stream choices based on marks, not fit", color: GALLERY_COLORS[10] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.36-AM.jpeg", title: "College Planning", what: "Waste years on wrong degrees & careers", color: GALLERY_COLORS[11] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.02-AM.jpeg", title: "Career Clarity", what: "Stay confused about your professional path", color: GALLERY_COLORS[12] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.01-AM.jpeg", title: "Future Ready", what: "Delay clarity that changes your entire life", color: GALLERY_COLORS[13] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_103613991-scaled.jpg", title: "Personality Analysis", what: "Understand how you naturally think, behave, and make decisions", color: GALLERY_COLORS[0] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_105125190_HDR-scaled.jpg", title: "Career Interests", what: "Discover fields and work environments that genuinely excite you", color: GALLERY_COLORS[1] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120203457_PORTRAIT-scaled.jpg", title: "Multiple Intelligence", what: "Identify your unique ways of thinking and learning", color: GALLERY_COLORS[2] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120614298-scaled.jpg", title: "Emotional Intelligence", what: "Build self-awareness and stronger relationships", color: GALLERY_COLORS[3] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120615426-scaled.jpg", title: "Learning Preferences", what: "Find study methods that work best for you", color: GALLERY_COLORS[4] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_122233827-scaled.jpg", title: "Motivators & Values", what: "Align your career with what truly energizes you", color: GALLERY_COLORS[5] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG-20260420-WA0060.jpg", title: "Strengths Discovery", what: "Leverage your greatest talents and abilities", color: GALLERY_COLORS[6] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418103653_01-scaled.jpg", title: "Aptitude Assessment", what: "Know your logical, verbal, and spatial strengths", color: GALLERY_COLORS[7] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418112244-scaled.jpg", title: "Career Matching", what: "Find your best-fit careers from 1000+ options", color: GALLERY_COLORS[8] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM-1.jpeg", title: "Personal Profile", what: "Get a science-backed roadmap for your future", color: GALLERY_COLORS[9] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM.jpeg", title: "Stream Guidance", what: "Choose the right stream based on your fit", color: GALLERY_COLORS[10] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.36-AM.jpeg", title: "College Planning", what: "Pick colleges and degrees aligned with your goals", color: GALLERY_COLORS[11] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.02-AM.jpeg", title: "Career Clarity", what: "Know exactly what career path suits you best", color: GALLERY_COLORS[12] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.01-AM.jpeg", title: "Future Ready", what: "Take the first step toward your ideal career", color: GALLERY_COLORS[13] },
 ];
 
 function GalleryGrid({ onStart }: { onStart: () => void }) {
