@@ -35,67 +35,30 @@ const GALLERY_IMAGES = [
 
 function GalleryScroll() {
   const [shuffled, setShuffled] = useState<string[]>([]);
-  const row1Ref = useRef<HTMLDivElement>(null);
-  const row2Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const arr = [...GALLERY_IMAGES].sort(() => Math.random() - 0.5);
     setShuffled(arr);
   }, []);
 
-  useEffect(() => {
-    if (!row1Ref.current || !row2Ref.current) return;
-
-    const autoScroll = (element: HTMLDivElement, direction: 'ltr' | 'rtl') => {
-      let scrollPos = direction === 'ltr' ? 0 : element.scrollWidth;
-      const scrollSpeed = 0.5;
-      let animationFrameId: number;
-
-      const animate = () => {
-        if (!element) return;
-
-        if (direction === 'ltr') {
-          // Left to right
-          scrollPos += scrollSpeed;
-          if (scrollPos >= element.scrollWidth - element.clientWidth) {
-            scrollPos = 0;
-          }
-        } else {
-          // Right to left
-          scrollPos -= scrollSpeed;
-          if (scrollPos <= 0) {
-            scrollPos = element.scrollWidth - element.clientWidth;
-          }
-        }
-
-        element.scrollLeft = scrollPos;
-        animationFrameId = requestAnimationFrame(animate);
-      };
-
-      animationFrameId = requestAnimationFrame(animate);
-      return () => cancelAnimationFrame(animationFrameId);
-    };
-
-    const cleanup1 = autoScroll(row1Ref.current, 'ltr');
-    const cleanup2 = autoScroll(row2Ref.current, 'rtl');
-
-    return () => {
-      cleanup1();
-      cleanup2();
-    };
-  }, []);
-
   if (shuffled.length === 0) return null;
+
   return (
     <div className="ogl-gallery-scroll">
-      <div className="ogl-gallery-row" ref={row1Ref}>
+      <div className="ogl-gallery-row ogl-scroll-ltr">
         {shuffled.slice(0, 7).map((img, i) => (
           <img key={`row1-${i}`} src={img} alt={`Community ${i + 1}`} className="ogl-scroll-item" />
         ))}
+        {shuffled.slice(0, 7).map((img, i) => (
+          <img key={`row1-dup-${i}`} src={img} alt={`Community ${i + 1}`} className="ogl-scroll-item" />
+        ))}
       </div>
-      <div className="ogl-gallery-row" ref={row2Ref}>
+      <div className="ogl-gallery-row ogl-scroll-rtl">
         {shuffled.slice(7, 13).map((img, i) => (
           <img key={`row2-${i}`} src={img} alt={`Community ${i + 8}`} className="ogl-scroll-item" />
+        ))}
+        {shuffled.slice(7, 13).map((img, i) => (
+          <img key={`row2-dup-${i}`} src={img} alt={`Community ${i + 8}`} className="ogl-scroll-item" />
         ))}
       </div>
     </div>
@@ -766,12 +729,12 @@ const CSS = `
 .ogl-cta-t{font-size:clamp(25px,3.6vw,35px);font-weight:700;margin:0}
 .ogl-cta-s{font-size:16px;opacity:.85;margin:12px 0 26px}
 
+@keyframes scrollLTR{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes scrollRTL{0%{transform:translateX(0)}100%{transform:translateX(50%)}}
 .ogl-gallery-scroll{display:flex;flex-direction:column;gap:24px;margin:40px 0;width:100%}
-.ogl-gallery-row{display:flex;gap:16px;overflow-x:hidden;padding:12px 0;width:100%;height:260px;align-items:center}
-.ogl-gallery-row::-webkit-scrollbar{height:10px}
-.ogl-gallery-row::-webkit-scrollbar-track{background:#f0f2f5;border-radius:10px;margin:4px 0}
-.ogl-gallery-row::-webkit-scrollbar-thumb{background:#c0c7cf;border-radius:10px}
-.ogl-gallery-row::-webkit-scrollbar-thumb:hover{background:#a8aeb8}
+.ogl-gallery-row{display:flex;gap:16px;overflow:hidden;padding:12px 0;width:100%;height:260px;align-items:center}
+.ogl-scroll-ltr{animation:scrollLTR 60s linear infinite}
+.ogl-scroll-rtl{animation:scrollRTL 60s linear infinite}
 .ogl-scroll-item{min-width:240px;width:240px;height:240px;object-fit:cover;border-radius:16px;box-shadow:0 10px 24px rgba(21,26,36,.14);transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s;display:block;flex-shrink:0;background:#e5e8ee;border:none}
 .ogl-scroll-item:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 16px 36px rgba(21,26,36,.2);cursor:pointer}
 @media(max-width:1024px){.ogl-gallery-row{height:220px}.ogl-scroll-item{min-width:200px;width:200px;height:200px}}
