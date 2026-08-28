@@ -201,9 +201,9 @@ const styles = {
   pageContainer: {
     display: 'flex',
     gap: '24px',
-    minHeight: '100vh',
     backgroundColor: '#f8fafc',
     padding: '24px',
+    width: '100%',
   } as React.CSSProperties,
 
   sidebar: {
