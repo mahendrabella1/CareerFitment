@@ -56,7 +56,7 @@ function GalleryGrid({ onStart }: { onStart: () => void }) {
                   <span className="ogl-warning-icon">⚠</span>
                   <p>{item.what}</p>
                 </div>
-                <button className="ogl-flip-btn" style={{ color: item.color, borderColor: item.color }} onClick={onStart}>Take Assessment</button>
+                <button className="ogl-flip-btn" onClick={onStart}>Take Assessment</button>
               </div>
             </div>
           </div>
@@ -785,8 +785,8 @@ const CSS = `
 .ogl-flip-warning{display:flex;flex-direction:column;gap:8px;align-items:center;flex:1;justify-content:center}
 .ogl-warning-icon{font-size:28px;display:block}
 .ogl-flip-warning p{font-size:13px;margin:0;line-height:1.5;opacity:.85;font-weight:500;color:#374151}
-.ogl-flip-btn{background:#fff;border:2px solid;border-color:currentColor;padding:10px 20px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(0,0,0,.08)}
-.ogl-flip-btn:hover{transform:scale(1.06);box-shadow:0 6px 18px rgba(0,0,0,.25);background:#f0f2f5}
+.ogl-flip-btn{background:#fff;color:#0f172a;border:none;padding:12px 24px;border-radius:24px;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 6px 16px rgba(0,0,0,.15);text-transform:uppercase;letter-spacing:.5px}
+.ogl-flip-btn:hover{transform:scale(1.08);box-shadow:0 8px 20px rgba(0,0,0,.25)}
 @media(prefers-reduced-motion:reduce){.ogl-flip-inner{transition:none}}
 
 .ogl-footer{background:#151a24;color:#d1d5db}
