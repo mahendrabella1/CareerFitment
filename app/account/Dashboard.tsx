@@ -370,7 +370,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                         Access curated resources to shape your future — colleges, internships, scholarships, and proven career development strategies tailored to your profile.
                       </p>
                       <div style={{width: '80px', height: '3px', background: IN, marginTop: '16px', marginBottom: '24px', borderRadius: '2px'}}></div>
-                      <button style={{backgroundColor: IN, color: '#fff', padding: '12px 28px', border: 'none', borderRadius: '6px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', transition: 'all 200ms ease'}}>
+                      <button style={{backgroundColor: IN, color: '#fff', padding: '12px 28px', border: 'none', borderRadius: '6px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', transition: 'all 200ms ease'}} onClick={() => { setView("report"); window.scrollTo(0, 0); }}>
                         View Full Report
                       </button>
                     </div>
