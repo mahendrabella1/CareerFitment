@@ -98,6 +98,36 @@ export default function Landing({ onStart }: { onStart: () => void }) {
         </div>
       </section>
 
+      {/* gallery */}
+      <section className="ogl-sec">
+        <div className="ogl-sec-head ogl-reveal">
+          <span className="ogl-kicker">Our community</span>
+          <h2 className="ogl-h2 ogl-serif">Meet the people finding clarity.</h2>
+          <p className="ogl-sub">Students and professionals from across India discovering their best-fit careers.</p>
+        </div>
+        <div className="ogl-gallery">
+          <img src="/gallery/IMG-20260420-WA0060.jpg" alt="Gallery 1" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+          <img src="/gallery/IMG20260418103653_01.jpg" alt="Gallery 2" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+          <img src="/gallery/IMG20260418112244.jpg" alt="Gallery 3" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+          <img src="/gallery/IMG_20260418_103613991.jpg" alt="Gallery 4" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+          <img src="/gallery/IMG_20260418_105125190_HDR.jpg" alt="Gallery 5" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+          <img src="/gallery/IMG_20260418_120203457_PORTRAIT.jpg" alt="Gallery 6" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+          <img src="/gallery/IMG_20260418_120614298.jpg" alt="Gallery 7" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+          <img src="/gallery/IMG_20260418_120615426.jpg" alt="Gallery 8" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+          <img src="/gallery/IMG_20260418_122233827.jpg" alt="Gallery 9" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.41.13 AM (1).jpeg" alt="Gallery 10" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.41.13 AM.jpeg" alt="Gallery 11" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.41.14 AM.jpeg" alt="Gallery 12" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.41.36 AM (1).jpeg" alt="Gallery 13" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.41.36 AM.jpeg" alt="Gallery 14" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.42.01 AM.jpeg" alt="Gallery 15" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.42.02 AM (1).jpeg" alt="Gallery 16" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.42.02 AM.jpeg" alt="Gallery 17" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.42.15 AM.jpeg" alt="Gallery 18" className="ogl-gallery-item ogl-reveal" loading="lazy" />
+        </div>
+        <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>Join our community <Icon name="chevronRight" size={16} /></button></div>
+      </section>
+
       {/* why it matters — the story */}
       <section id="why" className="ogl-sec">
         <div className="ogl-why-top">
@@ -267,36 +297,6 @@ export default function Landing({ onStart }: { onStart: () => void }) {
           ))}
         </div>
         <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>Start your assessment <Icon name="chevronRight" size={16} /></button></div>
-      </section>
-
-      {/* gallery */}
-      <section className="ogl-sec ogl-alt">
-        <div className="ogl-sec-head ogl-reveal">
-          <span className="ogl-kicker">Our community</span>
-          <h2 className="ogl-h2 ogl-serif">Meet the people finding clarity.</h2>
-          <p className="ogl-sub">Students and professionals from across India discovering their best-fit careers.</p>
-        </div>
-        <div className="ogl-gallery">
-          <img src="/gallery/IMG-20260420-WA0060.jpg" alt="Gallery 1" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-          <img src="/gallery/IMG20260418103653_01.jpg" alt="Gallery 2" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-          <img src="/gallery/IMG20260418112244.jpg" alt="Gallery 3" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-          <img src="/gallery/IMG_20260418_103613991.jpg" alt="Gallery 4" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-          <img src="/gallery/IMG_20260418_105125190_HDR.jpg" alt="Gallery 5" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-          <img src="/gallery/IMG_20260418_120203457_PORTRAIT.jpg" alt="Gallery 6" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-          <img src="/gallery/IMG_20260418_120614298.jpg" alt="Gallery 7" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-          <img src="/gallery/IMG_20260418_120615426.jpg" alt="Gallery 8" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-          <img src="/gallery/IMG_20260418_122233827.jpg" alt="Gallery 9" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.41.13 AM (1).jpeg" alt="Gallery 10" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.41.13 AM.jpeg" alt="Gallery 11" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.41.14 AM.jpeg" alt="Gallery 12" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.41.36 AM (1).jpeg" alt="Gallery 13" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.41.36 AM.jpeg" alt="Gallery 14" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.42.01 AM.jpeg" alt="Gallery 15" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.42.02 AM (1).jpeg" alt="Gallery 16" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.42.02 AM.jpeg" alt="Gallery 17" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-          <img src="/gallery/WhatsApp Image 2026-08-28 at 10.42.15 AM.jpeg" alt="Gallery 18" className="ogl-gallery-item ogl-reveal" loading="lazy" />
-        </div>
-        <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>Join our community <Icon name="chevronRight" size={16} /></button></div>
       </section>
 
       {/* final CTA */}
@@ -700,10 +700,11 @@ const CSS = `
 .ogl-cta-t{font-size:clamp(25px,3.6vw,35px);font-weight:700;margin:0}
 .ogl-cta-s{font-size:16px;opacity:.85;margin:12px 0 26px}
 
-.ogl-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:40px 0}
-@media(max-width:768px){.ogl-gallery{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}}
-@media(max-width:480px){.ogl-gallery{grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px}}
-.ogl-gallery-item{width:100%;aspect-ratio:1;object-fit:cover;border-radius:16px;box-shadow:0 8px 20px rgba(21,26,36,.12);transition:transform .3s,box-shadow .3s;display:block}
+.ogl-gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:40px 0}
+@media(max-width:1024px){.ogl-gallery{grid-template-columns:repeat(3,1fr);gap:14px}}
+@media(max-width:768px){.ogl-gallery{grid-template-columns:repeat(2,1fr);gap:12px}}
+@media(max-width:480px){.ogl-gallery{grid-template-columns:1fr;gap:8px}}
+.ogl-gallery-item{width:100%;aspect-ratio:1;object-fit:cover;border-radius:14px;box-shadow:0 8px 20px rgba(21,26,36,.12);transition:transform .3s,box-shadow .3s;display:block}
 .ogl-gallery-item:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(21,26,36,.16)}
 
 .ogl-foot{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:26px 24px;color:#8a919c;font-size:13px;flex-wrap:wrap}
