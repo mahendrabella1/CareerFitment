@@ -18,8 +18,8 @@ const PRIMARY = "#3b5bdb";
 const INK = "#151a24";
 
 const GALLERY_COLORS = [
-  "#db3433", "#e08a0a", "#16a34a", "#7c3aed", "#2f6bff", "#14b8a6", "#f59e0b", "#06b6d4",
-  "#ec4899", "#8b5cf6", "#d97706", "#059669", "#0891b2", "#6366f1",
+  "#f5d5d5", "#fde8d1", "#d4f1d4", "#e8d5f2", "#d5e8f7", "#d5f1f0", "#fef3cd", "#d5f2fb",
+  "#f5d9f0", "#e8d5fb", "#fce4c6", "#d5ead5", "#d5e9f5", "#e8e0f7",
 ];
 
 const GALLERY_IMAGES = [
@@ -56,7 +56,7 @@ function GalleryGrid({ onStart }: { onStart: () => void }) {
                   <span className="ogl-warning-icon">⚠</span>
                   <p>{item.what}</p>
                 </div>
-                <button className="ogl-flip-btn" style={{ color: item.color }} onClick={onStart}>Take Assessment</button>
+                <button className="ogl-flip-btn" style={{ color: item.color, borderColor: item.color }} onClick={onStart}>Take Assessment</button>
               </div>
             </div>
           </div>
@@ -742,13 +742,13 @@ const CSS = `
 .ogl-flip-front img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
 .ogl-flip-card:hover .ogl-flip-front img{transform:scale(1.08)}
 .ogl-flip-tag{position:absolute;top:14px;right:14px;background:rgba(219,52,51,.95);color:#fff;padding:8px 14px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;backdrop-filter:blur(4px)}
-.ogl-flip-back{color:#fff;transform:rotateY(180deg);padding:28px 24px;text-align:center}
+.ogl-flip-back{color:#151a24;transform:rotateY(180deg);padding:28px 24px;text-align:center}
 .ogl-flip-content{display:flex;flex-direction:column;gap:14px;justify-content:center;align-items:center;height:100%;width:100%}
-.ogl-flip-content h3{font-size:17px;margin:0;line-height:1.2;font-weight:800;letter-spacing:-.3px}
+.ogl-flip-content h3{font-size:17px;margin:0;line-height:1.2;font-weight:800;letter-spacing:-.3px;color:#0f172a}
 .ogl-flip-warning{display:flex;flex-direction:column;gap:8px;align-items:center;flex:1;justify-content:center}
 .ogl-warning-icon{font-size:28px;display:block}
-.ogl-flip-warning p{font-size:13px;margin:0;line-height:1.5;opacity:.95;font-weight:500}
-.ogl-flip-btn{background:#fff;color:#db3433;border:none;padding:10px 20px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.ogl-flip-warning p{font-size:13px;margin:0;line-height:1.5;opacity:.85;font-weight:500;color:#374151}
+.ogl-flip-btn{background:#fff;border:2px solid;border-color:currentColor;padding:10px 20px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(0,0,0,.08)}
 .ogl-flip-btn:hover{transform:scale(1.06);box-shadow:0 6px 18px rgba(0,0,0,.25);background:#f0f2f5}
 @media(prefers-reduced-motion:reduce){.ogl-flip-inner{transition:none}}
 
