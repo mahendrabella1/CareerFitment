@@ -364,15 +364,18 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                   <div style={{display: 'flex', alignItems: 'center', padding: '48px 60px', gap: '48px', maxWidth: '100%', margin: '0 auto'}}>
                     <div style={{flex: 1}}>
                       <h2 style={{fontSize: '40px', fontWeight: '800', color: C.ink, margin: '0 0 12px 0', lineHeight: 1.2}}>
-                        Explore Your Opportunities
+                        Your Career Toolkit
                       </h2>
-                      <p style={{fontSize: '15px', color: C.ink3, margin: 0, lineHeight: 1.5}}>
-                        Discover pathways, resources and experiences. 40+ detailed careers, 100+ universities, internships, research, finance, and more.
+                      <p style={{fontSize: '16px', color: C.ink3, margin: 0, marginBottom: '20px', lineHeight: 1.6}}>
+                        Access curated resources to shape your future — colleges, internships, scholarships, and proven career development strategies tailored to your profile.
                       </p>
-                      <div style={{width: '80px', height: '3px', background: IN, marginTop: '16px', borderRadius: '2px'}}></div>
+                      <div style={{width: '80px', height: '3px', background: IN, marginTop: '16px', marginBottom: '24px', borderRadius: '2px'}}></div>
+                      <button style={{backgroundColor: IN, color: '#fff', padding: '12px 28px', border: 'none', borderRadius: '6px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', transition: 'all 200ms ease'}}>
+                        View Full Report
+                      </button>
                     </div>
-                    <div style={{flex: 0.8, textAlign: 'center', minWidth: 0}}>
-                      <img src="https://onegrasp.com/wp-content/uploads/2026/08/69045c6d-9060-4669-8cc6-b8cf030a3f35.png" alt="Explore" style={{maxWidth: '100%', height: 'auto', maxHeight: '280px'}} />
+                    <div style={{flex: 1.2, textAlign: 'center', minWidth: 0}}>
+                      <img src="https://onegrasp.com/wp-content/uploads/2026/08/69045c6d-9060-4669-8cc6-b8cf030a3f35.png" alt="Career Toolkit" style={{maxWidth: '100%', height: 'auto', maxHeight: '420px'}} />
                     </div>
                   </div>
 
