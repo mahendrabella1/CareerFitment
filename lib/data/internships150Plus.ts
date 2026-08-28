@@ -528,10 +528,6 @@ export function getInternshipsByType(paid: boolean): Internship[] {
   return INTERNSHIPS_150_PLUS.filter((i) => i.paid === paid);
 }
 
-export function getInternshipsByCategory(category: string): Internship[] {
-  return INTERNSHIPS_150_PLUS.filter((i) => i.category.toLowerCase() === category.toLowerCase());
-}
-
 export const INTERNSHIP_STATS = {
   total: INTERNSHIPS_150_PLUS.length,
   paid: INTERNSHIPS_150_PLUS.filter((i) => i.paid).length,
