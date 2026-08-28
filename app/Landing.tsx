@@ -47,7 +47,6 @@ function GalleryGrid({ onStart }: { onStart: () => void }) {
           <div className="ogl-flip-inner">
             <div className="ogl-flip-front">
               <img src={item.img} alt={item.title} />
-              <div className="ogl-flip-tag">Flip to learn</div>
             </div>
             <div className="ogl-flip-back" style={{ background: item.color }}>
               <div className="ogl-flip-content">
@@ -755,7 +754,6 @@ const CSS = `
 .ogl-flip-front{background:#fff;border:2px solid #e5e8ee;overflow:hidden}
 .ogl-flip-front img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
 .ogl-flip-card:hover .ogl-flip-front img{transform:scale(1.08)}
-.ogl-flip-tag{position:absolute;top:14px;right:14px;background:rgba(219,52,51,.95);color:#fff;padding:8px 14px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;backdrop-filter:blur(4px)}
 .ogl-flip-back{color:#151a24;transform:rotateY(180deg);padding:28px 24px;text-align:center}
 .ogl-flip-content{display:flex;flex-direction:column;gap:14px;justify-content:center;align-items:center;height:100%;width:100%}
 .ogl-flip-content h3{font-size:17px;margin:0;line-height:1.2;font-weight:800;letter-spacing:-.3px;color:#0f172a}
