@@ -18,20 +18,20 @@ const PRIMARY = "#3b5bdb";
 const INK = "#151a24";
 
 const GALLERY_IMAGES = [
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_103613991-scaled.jpg", title: "Discover Your Strengths", desc: "Find what makes you unique" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_105125190_HDR-scaled.jpg", title: "Career Clarity", desc: "Match your talents with careers" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120203457_PORTRAIT-scaled.jpg", title: "25-Minute Assessment", desc: "Quick & comprehensive" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120614298-scaled.jpg", title: "Science-Backed", desc: "Based on proven frameworks" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120615426-scaled.jpg", title: "Personalized Insights", desc: "Tailored to your profile" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_122233827-scaled.jpg", title: "8 Dimensions", desc: "Complete personality analysis" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG-20260420-WA0060.jpg", title: "Real Students", desc: "Success stories from peers" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418103653_01-scaled.jpg", title: "Expert Guidance", desc: "From career professionals" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418112244-scaled.jpg", title: "Clear Roadmap", desc: "See your path forward" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM-1.jpeg", title: "100% Confidential", desc: "Your data is secure" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM.jpeg", title: "Instant Results", desc: "Get your report immediately" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.36-AM.jpeg", title: "50K+ Students", desc: "Trusted by many" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.02-AM.jpeg", title: "Career Options", desc: "Explore 1000+ careers" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.01-AM.jpeg", title: "Start Today", desc: "Begin your journey now" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_103613991-scaled.jpg", title: "Personality Analysis", what: "Miss understanding your core traits & how you work best" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_105125190_HDR-scaled.jpg", title: "Career Interests", what: "Stay blind to fields that genuinely excite you" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120203457_PORTRAIT-scaled.jpg", title: "Multiple Intelligence", what: "Ignore your unique learning & thinking styles" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120614298-scaled.jpg", title: "Emotional Intelligence", what: "Fail to develop self-awareness & relationships" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120615426-scaled.jpg", title: "Learning Preferences", what: "Choose study methods that don't match your style" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_122233827-scaled.jpg", title: "Motivators & Values", what: "Pick careers misaligned with what energizes you" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG-20260420-WA0060.jpg", title: "Strengths Discovery", what: "Underutilize your greatest problem-solving abilities" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418103653_01-scaled.jpg", title: "Aptitude Assessment", what: "Misjudge your logical & reasoning potential" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418112244-scaled.jpg", title: "Career Matching", what: "Search blindly among 1000+ career options" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM-1.jpeg", title: "Personal Profile", what: "Lack a science-backed career blueprint" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM.jpeg", title: "Stream Guidance", what: "Make stream choices based on marks, not fit" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.36-AM.jpeg", title: "College Planning", what: "Waste years on wrong degrees & careers" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.02-AM.jpeg", title: "Career Clarity", what: "Stay confused about your professional path" },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.01-AM.jpeg", title: "Future Ready", what: "Delay clarity that changes your entire life" },
 ];
 
 function GalleryGrid() {
@@ -42,13 +42,16 @@ function GalleryGrid() {
           <div className="ogl-flip-inner">
             <div className="ogl-flip-front">
               <img src={item.img} alt={item.title} />
-              <div className="ogl-flip-tag">{Math.floor(Math.random() * 5) + 1} min read</div>
+              <div className="ogl-flip-tag">Flip to learn</div>
             </div>
             <div className="ogl-flip-back">
               <div className="ogl-flip-content">
                 <h3>{item.title}</h3>
-                <p>{item.desc}</p>
-                <button className="ogl-flip-btn">Take Test</button>
+                <div className="ogl-flip-warning">
+                  <span className="ogl-warning-icon">⚠</span>
+                  <p>{item.what}</p>
+                </div>
+                <button className="ogl-flip-btn">Take Assessment</button>
               </div>
             </div>
           </div>
@@ -727,18 +730,21 @@ const CSS = `
 @media(max-width:768px){.ogl-gallery-flip{grid-template-columns:repeat(2,1fr);gap:20px}}
 @media(max-width:480px){.ogl-gallery-flip{grid-template-columns:1fr;gap:18px}}
 .ogl-flip-card{aspect-ratio:1;cursor:pointer;perspective:1000px;height:100%}
-.ogl-flip-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;box-shadow:0 10px 30px rgba(21,26,36,.12)}
+.ogl-flip-inner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.68,-.55,.265,1.55);transform-style:preserve-3d;box-shadow:0 12px 32px rgba(21,26,36,.16)}
 .ogl-flip-card:hover .ogl-flip-inner{transform:rotateY(180deg)}
 .ogl-flip-front,.ogl-flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;border-radius:18px;font-weight:700}
 .ogl-flip-front{background:#fff;border:2px solid #e5e8ee;overflow:hidden}
-.ogl-flip-front img{width:100%;height:100%;object-fit:cover}
-.ogl-flip-tag{position:absolute;top:12px;right:12px;background:${PRIMARY};color:#fff;padding:8px 14px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.ogl-flip-back{background:linear-gradient(135deg,${PRIMARY} 0%,#2f6bff 100%);color:#fff;transform:rotateY(180deg);padding:24px;text-align:center}
-.ogl-flip-content{display:flex;flex-direction:column;gap:16px;justify-content:center;align-items:center;height:100%;width:100%}
-.ogl-flip-content h3{font-size:18px;margin:0;line-height:1.2;font-weight:800}
-.ogl-flip-content p{font-size:13px;margin:0;opacity:.9;line-height:1.5}
-.ogl-flip-btn{background:#fff;color:${PRIMARY};border:none;padding:10px 20px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px rgba(21,26,36,.2)}
-.ogl-flip-btn:hover{transform:scale(1.05);box-shadow:0 6px 16px rgba(21,26,36,.3)}
+.ogl-flip-front img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.ogl-flip-card:hover .ogl-flip-front img{transform:scale(1.08)}
+.ogl-flip-tag{position:absolute;top:14px;right:14px;background:rgba(219,52,51,.95);color:#fff;padding:8px 14px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;backdrop-filter:blur(4px)}
+.ogl-flip-back{background:linear-gradient(135deg,#db3433 0%,#a5211e 100%);color:#fff;transform:rotateY(180deg);padding:28px 24px;text-align:center}
+.ogl-flip-content{display:flex;flex-direction:column;gap:14px;justify-content:center;align-items:center;height:100%;width:100%}
+.ogl-flip-content h3{font-size:17px;margin:0;line-height:1.2;font-weight:800;letter-spacing:-.3px}
+.ogl-flip-warning{display:flex;flex-direction:column;gap:8px;align-items:center;flex:1;justify-content:center}
+.ogl-warning-icon{font-size:28px;display:block}
+.ogl-flip-warning p{font-size:13px;margin:0;line-height:1.5;opacity:.95;font-weight:500}
+.ogl-flip-btn{background:#fff;color:#db3433;border:none;padding:10px 20px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.ogl-flip-btn:hover{transform:scale(1.06);box-shadow:0 6px 18px rgba(0,0,0,.25);background:#f0f2f5}
 @media(prefers-reduced-motion:reduce){.ogl-flip-inner{transition:none}}
 
 .ogl-foot{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:26px 24px;color:#8a919c;font-size:13px;flex-wrap:wrap}
