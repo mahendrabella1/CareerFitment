@@ -17,24 +17,29 @@ const IMG = (id: string, w = 720) => `https://images.unsplash.com/${id}?auto=for
 const PRIMARY = "#3b5bdb";
 const INK = "#151a24";
 
-const GALLERY_IMAGES = [
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_103613991-scaled.jpg", title: "Personality Analysis", what: "Miss understanding your core traits & how you work best" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_105125190_HDR-scaled.jpg", title: "Career Interests", what: "Stay blind to fields that genuinely excite you" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120203457_PORTRAIT-scaled.jpg", title: "Multiple Intelligence", what: "Ignore your unique learning & thinking styles" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120614298-scaled.jpg", title: "Emotional Intelligence", what: "Fail to develop self-awareness & relationships" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120615426-scaled.jpg", title: "Learning Preferences", what: "Choose study methods that don't match your style" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_122233827-scaled.jpg", title: "Motivators & Values", what: "Pick careers misaligned with what energizes you" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG-20260420-WA0060.jpg", title: "Strengths Discovery", what: "Underutilize your greatest problem-solving abilities" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418103653_01-scaled.jpg", title: "Aptitude Assessment", what: "Misjudge your logical & reasoning potential" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418112244-scaled.jpg", title: "Career Matching", what: "Search blindly among 1000+ career options" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM-1.jpeg", title: "Personal Profile", what: "Lack a science-backed career blueprint" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM.jpeg", title: "Stream Guidance", what: "Make stream choices based on marks, not fit" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.36-AM.jpeg", title: "College Planning", what: "Waste years on wrong degrees & careers" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.02-AM.jpeg", title: "Career Clarity", what: "Stay confused about your professional path" },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.01-AM.jpeg", title: "Future Ready", what: "Delay clarity that changes your entire life" },
+const GALLERY_COLORS = [
+  "#db3433", "#e08a0a", "#16a34a", "#7c3aed", "#2f6bff", "#14b8a6", "#f59e0b", "#06b6d4",
+  "#ec4899", "#8b5cf6", "#d97706", "#059669", "#0891b2", "#6366f1",
 ];
 
-function GalleryGrid() {
+const GALLERY_IMAGES = [
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_103613991-scaled.jpg", title: "Personality Analysis", what: "Miss understanding your core traits & how you work best", color: GALLERY_COLORS[0] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_105125190_HDR-scaled.jpg", title: "Career Interests", what: "Stay blind to fields that genuinely excite you", color: GALLERY_COLORS[1] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120203457_PORTRAIT-scaled.jpg", title: "Multiple Intelligence", what: "Ignore your unique learning & thinking styles", color: GALLERY_COLORS[2] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120614298-scaled.jpg", title: "Emotional Intelligence", what: "Fail to develop self-awareness & relationships", color: GALLERY_COLORS[3] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120615426-scaled.jpg", title: "Learning Preferences", what: "Choose study methods that don't match your style", color: GALLERY_COLORS[4] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_122233827-scaled.jpg", title: "Motivators & Values", what: "Pick careers misaligned with what energizes you", color: GALLERY_COLORS[5] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG-20260420-WA0060.jpg", title: "Strengths Discovery", what: "Underutilize your greatest problem-solving abilities", color: GALLERY_COLORS[6] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418103653_01-scaled.jpg", title: "Aptitude Assessment", what: "Misjudge your logical & reasoning potential", color: GALLERY_COLORS[7] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418112244-scaled.jpg", title: "Career Matching", what: "Search blindly among 1000+ career options", color: GALLERY_COLORS[8] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM-1.jpeg", title: "Personal Profile", what: "Lack a science-backed career blueprint", color: GALLERY_COLORS[9] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM.jpeg", title: "Stream Guidance", what: "Make stream choices based on marks, not fit", color: GALLERY_COLORS[10] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.36-AM.jpeg", title: "College Planning", what: "Waste years on wrong degrees & careers", color: GALLERY_COLORS[11] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.02-AM.jpeg", title: "Career Clarity", what: "Stay confused about your professional path", color: GALLERY_COLORS[12] },
+  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.01-AM.jpeg", title: "Future Ready", what: "Delay clarity that changes your entire life", color: GALLERY_COLORS[13] },
+];
+
+function GalleryGrid({ onStart }: { onStart: () => void }) {
   return (
     <div className="ogl-gallery-flip">
       {GALLERY_IMAGES.map((item, i) => (
@@ -44,14 +49,14 @@ function GalleryGrid() {
               <img src={item.img} alt={item.title} />
               <div className="ogl-flip-tag">Flip to learn</div>
             </div>
-            <div className="ogl-flip-back">
+            <div className="ogl-flip-back" style={{ background: item.color }}>
               <div className="ogl-flip-content">
                 <h3>{item.title}</h3>
                 <div className="ogl-flip-warning">
                   <span className="ogl-warning-icon">⚠</span>
                   <p>{item.what}</p>
                 </div>
-                <button className="ogl-flip-btn">Take Assessment</button>
+                <button className="ogl-flip-btn" style={{ color: item.color }} onClick={onStart}>Take Assessment</button>
               </div>
             </div>
           </div>
@@ -149,7 +154,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
           <h2 className="ogl-h2 ogl-serif">Meet the people finding clarity.</h2>
           <p className="ogl-sub">Students and professionals from across India discovering their best-fit careers.</p>
         </div>
-        <GalleryGrid />
+        <GalleryGrid onStart={onStart} />
         <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>Join our community <Icon name="chevronRight" size={16} /></button></div>
       </section>
 
@@ -737,7 +742,7 @@ const CSS = `
 .ogl-flip-front img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
 .ogl-flip-card:hover .ogl-flip-front img{transform:scale(1.08)}
 .ogl-flip-tag{position:absolute;top:14px;right:14px;background:rgba(219,52,51,.95);color:#fff;padding:8px 14px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;backdrop-filter:blur(4px)}
-.ogl-flip-back{background:linear-gradient(135deg,#db3433 0%,#a5211e 100%);color:#fff;transform:rotateY(180deg);padding:28px 24px;text-align:center}
+.ogl-flip-back{color:#fff;transform:rotateY(180deg);padding:28px 24px;text-align:center}
 .ogl-flip-content{display:flex;flex-direction:column;gap:14px;justify-content:center;align-items:center;height:100%;width:100%}
 .ogl-flip-content h3{font-size:17px;margin:0;line-height:1.2;font-weight:800;letter-spacing:-.3px}
 .ogl-flip-warning{display:flex;flex-direction:column;gap:8px;align-items:center;flex:1;justify-content:center}
