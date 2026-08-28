@@ -726,17 +726,17 @@ const CSS = `
 .ogl-cta-t{font-size:clamp(25px,3.6vw,35px);font-weight:700;margin:0}
 .ogl-cta-s{font-size:16px;opacity:.85;margin:12px 0 26px}
 
-.ogl-gallery-scroll{display:flex;flex-direction:column;gap:18px;margin:40px 0}
-.ogl-gallery-row{display:flex;gap:14px;overflow-x:auto;scroll-behavior:smooth;padding:8px 0;-webkit-overflow-scrolling:touch}
-.ogl-gallery-row::-webkit-scrollbar{height:6px}
-.ogl-gallery-row::-webkit-scrollbar-track{background:#f0f2f5;border-radius:10px}
+.ogl-gallery-scroll{display:flex;flex-direction:column;gap:20px;margin:40px 0;width:100%}
+.ogl-gallery-row{display:flex;gap:14px;overflow-x:auto;scroll-behavior:smooth;padding:8px 0;-webkit-overflow-scrolling:touch;width:100%;height:240px}
+.ogl-gallery-row::-webkit-scrollbar{height:8px}
+.ogl-gallery-row::-webkit-scrollbar-track{background:#f0f2f5;border-radius:10px;margin:4px 0}
 .ogl-gallery-row::-webkit-scrollbar-thumb{background:#c0c7cf;border-radius:10px}
 .ogl-gallery-row::-webkit-scrollbar-thumb:hover{background:#a8aeb8}
-.ogl-scroll-item{min-width:240px;width:240px;height:240px;aspect-ratio:1;object-fit:cover;border-radius:14px;box-shadow:0 8px 20px rgba(21,26,36,.12);transition:transform .3s,box-shadow .3s;display:block;flex-shrink:0}
+.ogl-scroll-item{min-width:240px;width:240px;height:240px;object-fit:cover;border-radius:14px;box-shadow:0 8px 20px rgba(21,26,36,.12);transition:transform .3s,box-shadow .3s;display:block;flex-shrink:0;background:#f0f2f5}
 .ogl-scroll-item:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 14px 32px rgba(21,26,36,.18)}
-@media(max-width:1024px){.ogl-scroll-item{min-width:200px;width:200px;height:200px}}
-@media(max-width:768px){.ogl-scroll-item{min-width:160px;width:160px;height:160px}}
-@media(max-width:480px){.ogl-scroll-item{min-width:140px;width:140px;height:140px}}
+@media(max-width:1024px){.ogl-gallery-row{height:200px}.ogl-scroll-item{min-width:200px;width:200px;height:200px}}
+@media(max-width:768px){.ogl-gallery-row{height:160px}.ogl-scroll-item{min-width:160px;width:160px;height:160px}}
+@media(max-width:480px){.ogl-gallery-row{height:140px}.ogl-scroll-item{min-width:140px;width:140px;height:140px}}
 
 .ogl-foot{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:26px 24px;color:#8a919c;font-size:13px;flex-wrap:wrap}
 .ogl-foot a{color:#5b6470;text-decoration:none;font-weight:600}
