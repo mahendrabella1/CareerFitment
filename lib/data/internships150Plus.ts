@@ -301,7 +301,6 @@ export const INTERNSHIPS_150_PLUS: Internship[] = [
     applicationDeadline: new Date("2026-12-31"),
     remote: "remote",
     paid: false,
-    stipend: null,
     eligibility: "Class 12+ students",
     targetClass: [12],
     applicationLink: "https://www.skillindia.gov.in/",
