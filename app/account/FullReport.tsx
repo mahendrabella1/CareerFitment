@@ -385,38 +385,6 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
               </div>
               <p className="dimlede">{dd.meaning}</p>
 
-              {/* Personality is the one dimension students read as a verdict on
-                  who they are, so it gets the five traits spelled out in plain
-                  words — no Greek temperament labels, no jargon, and no trait
-                  written as a fault. */}
-              {d.key === "personality" ? (
-                <div className="temps">
-                  <div className="subhd">Your five traits — what each one actually means</div>
-                  <div className="temp-wheel-row">
-                    <RoseWheel small items={traits.reads.map((r) => ({ label: r.trait.name, score: r.score }))}
-                      accentIndex={0} />
-                    <div className="temp-grid">
-                      {traits.reads.map((r, i) => (
-                        <div className={`tcard${i === 0 ? " on" : ""}`} key={r.trait.key}>
-                          <div className="th">
-                            <span className={`tdot${i === 0 ? " on" : ""}`} />
-                            <span className="tn">{r.trait.emoji} {r.trait.name}</span>
-                            {traits.measured ? <span className="tsc">{r.score}</span> : null}
-                          </div>
-                          <div className="tt">{r.trait.about}</div>
-                          <div className="tw">{r.blurb}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="tnote">
-                    There is no good or bad score here. A high and a low score are
-                    two different strengths — what matters is picking study and work
-                    that suit the way you already are.
-                  </div>
-                </div>
-              ) : null}
-
               <div className="cols">
                 {subs.length ? (
                   <div>
