@@ -48,7 +48,12 @@ interface PsychometricDimension {
 interface Layer1Profile {
   dimensions: PsychometricDimension[];
   riasecCodes: string[];
-  aptitudeProfile: Record<string, number>;
+  riasecBreakdown: Array<{ code: string; name: string; percentage: number }>;
+  aptitudeProfile: {
+    verbal: { score: number; interpretation: string };
+    numerical: { score: number; interpretation: string };
+    logical: { score: number; interpretation: string };
+  };
   strengthDomains: string[];
   motivators: string[];
   learningPreference: string;
