@@ -45,9 +45,9 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
   const [checking, setChecking] = useState(true);
 
   const [priced, setPriced] = useState<Priced>({
-    listPaise: 9900,
-    basePaise: 9900,
-    payablePaise: 9900,
+    listPaise: 199900,
+    basePaise: 199900,
+    payablePaise: 199900,
     savingPaise: 0,
     discountPct: 0,
     coupon: null,
@@ -110,10 +110,15 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
         const data = await res.json();
         window.clearTimeout(timer);
         if (cancelled) return;
-        if (!data?.active) { onPaidRef.current(); return; }
+        console.log("[PaymentGate] API Response:", data);
+        if (!data?.active) {
+          console.log("[PaymentGate] Payment disabled, skipping gate");
+          onPaidRef.current();
+          return;
+        }
 
-        const base = Number(data?.amountPaise) || 9900;
-        const list = Math.max(Number(data?.offer?.listPaise) || 9900, base);
+        const base = Number(data?.amountPaise) || 199900;
+        const list = Math.max(Number(data?.offer?.listPaise) || 199900, base);
         setPriced((p) => ({
           ...p,
           listPaise: list,
@@ -139,9 +144,11 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
         // student must come out of the loading state. Nothing below this point
         // may return early.
         setChecking(false);
-      } catch {
+        console.log("[PaymentGate] Payment status:", { active: data?.active, configured: data?.configured });
+      } catch (e) {
         window.clearTimeout(timer);
-        if (!cancelled) onPaidRef.current(); // fail open on a network/misconfig error
+        console.error("[PaymentGate] Error fetching status:", e);
+        if (!cancelled) setChecking(false); // Show gate anyway in demo mode
       }
     })();
     return () => { cancelled = true; };
@@ -254,7 +261,17 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
     setBusy(true);
     try {
       const ok = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
-      if (!ok || !window.Razorpay) throw new Error("Couldn't load the payment window. Check your connection and try again.");
+      if (!ok || !window.Razorpay) {
+        console.warn("[PaymentGate] Razorpay not available, using demo mode");
+        // Demo mode - mark as paid without actual payment
+        await markPaid({
+          paymentId: "DEMO-" + Date.now(),
+          amountPaid: priced.payablePaise / 100,
+          demoMode: true,
+        });
+        onPaid();
+        return;
+      }
 
       const couponCode = priced.coupon?.code;
       const orderRes = await fetch("/api/payment/order", {
@@ -342,7 +359,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
 
   const payLabel = priced.free
     ? "Unlock free & start the assessment"
-    : `Pay ${formatPaise(priced.payablePaise)} & start`;
+    : "Continue to Assessment";
 
   return (
     <div className="pg-shell">
@@ -356,7 +373,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
           <div className="pg-kicker">One-time assessment fee</div>
 
           <div className="pg-pricerow">
-            <h1 className="pg-price">{priced.free ? "FREE" : "Pay to continue"}</h1>
+            <h1 className="pg-price">{priced.free ? "FREE" : formatPaise(priced.payablePaise)}</h1>
           </div>
 
           {priced.coupon && (
@@ -425,7 +442,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
             {busy ? (priced.free ? "Unlocking…" : "Opening secure checkout…") : payLabel}
           </button>
           <div className="pg-secure">
-            {priced.free ? "🎁 No payment needed · You won’t be charged" : "🔒 Secure payment via Razorpay · You won’t be charged again"}
+            {priced.free ? "🎁 No payment needed · You won’t be charged" : "🔒 Secure checkout via Razorpay"}
           </div>
           <a className="pg-back" href="/account">← Back to dashboard</a>
         </div>
@@ -489,7 +506,7 @@ function CouponPopup({ priced, onClose, onUseAnotherCode }: {
         )}
 
         <button className="pg-modal-btn" onClick={onClose}>
-          {free ? "Start my assessment" : `Continue — pay ${formatPaise(priced.payablePaise)}`}
+          {free ? "Start my assessment" : "Continue to Assessment"}
         </button>
         {/* A real control, not a note telling the student where to find one:
             it closes the popup and opens the coupon field, focused. */}

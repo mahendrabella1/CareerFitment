@@ -54,7 +54,7 @@ is described under defect 5; this is what remains after that.
 
 ```
 python scripts/build_demo_11_12.py      # question bank      -> data/demo-11-12/questions.json
-python scripts/build_demo_aptitude.py   # aptitude bank      -> data/demo-11-12/aptitude.json
+python scripts/build_demo_aptitude.py   # aptitude bank      -> data/demo-11-12/
 python scripts/build_demo_streams.py    # streams + degrees  -> data/demo-11-12/streams.json
 python scripts/build_demo_careers.py    # careers + roadmaps -> data/demo-11-12/careers.json
 python scripts/verify_demo_aptitude.py  # re-derives every aptitude answer

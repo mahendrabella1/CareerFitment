@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { colors, spacing, typography, radius, shadows } from "@/app/account/designTokens";
 import CareerLibrary from "@/app/account/features/CareerLibrary";
 import StudyAbroad from "@/app/account/features/StudyAbroad";
-import { getInternships, getWorkshops, getScholarships } from "@/lib/data/internshipsData";
 import { getFinancialTopics, getTopicsByCategory } from "@/lib/data/financialLiteracyData";
 import { getLegalResources, getResourcesByCategory } from "@/lib/data/legalResourcesData";
 import { getResearchOpportunities } from "@/lib/data/researchData";
@@ -66,6 +66,17 @@ export default function FeaturesHub() {
   const [activeFeature, setActiveFeature] = useState<string | null>(null);
 
   const handleFeatureClick = (featureId: string) => {
+    // Navigate directly to new pages instead of inline views
+    const routes: Record<string, string> = {
+      'careers': '/account/career-library',
+      'internships': '/account/internships',
+    };
+
+    if (routes[featureId]) {
+      window.location.href = routes[featureId];
+      return;
+    }
+
     if (activeFeature === featureId) {
       setActiveFeature(null);
     } else {
@@ -137,7 +148,25 @@ export default function FeaturesHub() {
 
       {activeFeature === "internships" && (
         <div style={styles.featureDetailContainer}>
-          <InternshipsPage />
+          <div style={{ textAlign: 'center', padding: '40px' }}>
+            <h3 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '16px' }}>
+              Forage Virtual Internships
+            </h3>
+            <p style={{ color: '#6b7280', marginBottom: '24px' }}>
+              150+ free virtual internships from leading companies
+            </p>
+            <Link href="/account/internships" style={{
+              display: 'inline-block',
+              padding: '12px 24px',
+              background: '#f59e0b',
+              color: '#fff',
+              borderRadius: '6px',
+              textDecoration: 'none',
+              fontWeight: '600'
+            }}>
+              Browse Internships →
+            </Link>
+          </div>
         </div>
       )}
 
@@ -164,56 +193,6 @@ export default function FeaturesHub() {
           <StartupsPage />
         </div>
       )}
-    </div>
-  );
-}
-
-// Quick placeholder pages for remaining features
-function InternshipsPage() {
-  const [activeTab, setActiveTab] = useState<"internships" | "workshops" | "scholarships">("internships");
-  const internships = getInternships();
-  const workshops = getWorkshops();
-  const scholarships = getScholarships();
-
-  const data = activeTab === "internships" ? internships : activeTab === "workshops" ? workshops : scholarships;
-
-  return (
-    <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
-      <h1 style={{ fontSize: 32, fontWeight: 800, marginBottom: spacing[4] }}>Opportunities & Scholarships</h1>
-
-      <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[6] }}>
-        {["internships", "workshops", "scholarships"].map(tab => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab as any)}
-            style={{
-              ...{ padding: `${spacing[2]} ${spacing[4]}`, border: "none", borderRadius: radius.md, fontSize: 14, fontWeight: 700, cursor: "pointer" },
-              ...(activeTab === tab ? { background: colors.success, color: "#fff" } : { background: colors.ink[90], color: colors.ink[80] }),
-            }}
-          >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
-          </button>
-        ))}
-      </div>
-
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[4] }}>
-        {data.slice(0, 12).map((item: any, idx: number) => (
-          <div key={idx} style={{ background: "#fff", border: `1px solid ${colors.ink[80]}`, borderRadius: radius.lg, padding: spacing[4], boxShadow: shadows.sm }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2] }}>{item.title || item.name}</h3>
-            <p style={{ fontSize: 13, color: colors.ink[60], lineHeight: 1.5, margin: 0, marginBottom: spacing[3] }}>
-              {item.description || item.provider || item.awardAmount?.min}
-            </p>
-            <div style={{ display: "flex", gap: spacing[2], flexWrap: "wrap", marginBottom: spacing[3] }}>
-              {item.organization && <span style={{ ...styles.badge, backgroundColor: colors.accent[40] }}>{item.organization}</span>}
-              {item.provider && <span style={{ ...styles.badge, backgroundColor: colors.info }}>{item.provider}</span>}
-              {item.paid !== undefined && <span style={{ ...styles.badge, backgroundColor: colors.success }}>{item.paid ? "Paid" : "Free"}</span>}
-              {item.free !== undefined && <span style={{ ...styles.badge, backgroundColor: colors.info }}>{item.free ? "Free" : "Paid"}</span>}
-            </div>
-            {item.stipend && <p style={{ fontSize: 13, fontWeight: 700, color: colors.accent[40], margin: 0 }}>₹{item.stipend.amount}/month</p>}
-            {item.awardAmount && <p style={{ fontSize: 13, fontWeight: 700, color: colors.success, margin: 0 }}>₹{item.awardAmount.min}-₹{item.awardAmount.max}/year</p>}
-          </div>
-        ))}
-      </div>
     </div>
   );
 }

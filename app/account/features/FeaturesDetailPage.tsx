@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { colors, spacing, typography, radius, shadows } from "@/app/account/designTokens";
-import CareerLibraryEnhanced from "./CareerLibraryEnhanced";
 import StudyAbroad from "./StudyAbroad";
 import { Icon } from "@/app/Icons";
 import {
@@ -85,12 +85,19 @@ const FEATURE_CONFIG = {
 };
 
 export default function FeaturesDetailPage({ featureId, onClose }: { featureId: string; onClose: () => void }) {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("all");
+
+  useEffect(() => {
+    if (featureId === "careers") {
+      router.push("/account/career-library");
+    }
+  }, [featureId, router]);
 
   const renderFeature = () => {
     switch (featureId) {
       case "careers":
-        return <CareerLibraryEnhanced />;
+        return <div style={{ padding: "48px", textAlign: "center", color: "#64748b" }}>Redirecting to Career Library...</div>;
 
       case "study-abroad":
         return <StudyAbroad />;

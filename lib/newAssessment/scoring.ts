@@ -178,7 +178,13 @@ export function scoreAssessment(
 
   // ---------- Learning styles: VARK ----------
   const ls = getSet("learning_styles", stage, chosenSets.learning_styles);
-  const varkTally: Record<string, number> = {};
+  // Initialize with all 4 VARK styles to ensure they all appear in output, even if not selected
+  const varkTally: Record<string, number> = {
+    "Visual": 0,
+    "Auditory": 0,
+    "Reading/Writing": 0,
+    "Kinesthetic": 0,
+  };
   ls.forEach((qq, i) => {
     const idx = parseInt(answers[`learning_styles:${i}`] ?? "", 10);
     const style = Array.isArray(qq.styles) ? qq.styles[idx] : null;

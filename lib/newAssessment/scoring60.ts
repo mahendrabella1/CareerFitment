@@ -307,7 +307,13 @@ export function scoreAssessment60(
 
   /* ---------------- 6. Learning styles -> VARK (advisory only) ----------- */
   const ls = getSet("learning_styles", stage, chosenSets.learning_styles);
-  const vark: Vec = {};
+  // Initialize with all 4 VARK styles to ensure they all appear in output, even if not selected
+  const vark: Vec = {
+    "Visual": 0,
+    "Auditory": 0,
+    "Reading/Writing": 0,
+    "Kinesthetic": 0,
+  };
   ls.forEach((q, i) => {
     const idx = parseInt(answers[`learning_styles:${i}`] ?? "", 10);
     const style = !Number.isNaN(idx) && Array.isArray(q.styles) ? q.styles[idx] : null;

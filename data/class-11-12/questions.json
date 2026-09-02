@@ -1,0 +1,1271 @@
+{
+  "personality": {
+    "11-12": {
+      "Set 1": [
+        {
+          "q": "Q1",
+          "text": "You are given a difficult problem for which your teacher has not provided a standard method. What would you most naturally do first?",
+          "type": "choice4",
+          "mainCategory": "Problem Solving Approach",
+          "options": [
+            "Think about it independently and develop my own approach.",
+            "Search for examples of how similar problems have been solved.",
+            "Discuss it with classmates and compare approaches.",
+            "Start experimenting and see what happens."
+          ]
+        },
+        {
+          "q": "Q2",
+          "text": "Suppose you are learning about artificial intelligence. Which part would interest you most?",
+          "type": "choice4",
+          "mainCategory": "Learning Preference",
+          "options": [
+            "Understanding the theory and principles behind AI.",
+            "Seeing how AI is used in real-world applications.",
+            "Trying an AI tool and experimenting with what it can do.",
+            "Discussing how AI could affect society and people's lives."
+          ]
+        },
+        {
+          "q": "Q3",
+          "text": "Your team must choose between two project ideas. One is safer and more likely to succeed; the other is more ambitious but uncertain. What would you most likely consider first?",
+          "type": "choice4",
+          "mainCategory": "Decision Making",
+          "options": [
+            "Which option has stronger evidence and logic.",
+            "Which option the team members feel more comfortable with.",
+            "Whether we can combine the strengths of both options.",
+            "Whether the ambitious option is worth taking the risk."
+          ]
+        },
+        {
+          "q": "Q4",
+          "text": "You have three major assignments, coaching/classes and an upcoming examination in the same week. Which approach sounds most like you?",
+          "type": "choice4",
+          "mainCategory": "Planning Style",
+          "options": [
+            "Create a detailed timetable and follow it.",
+            "Set priorities but adjust the plan as circumstances change.",
+            "Complete whichever task feels most urgent at the time.",
+            "Work intensely when deadlines become closer."
+          ]
+        },
+        {
+          "q": "Q5",
+          "text": "After spending a full day at school, which situation would generally make you feel more refreshed?",
+          "type": "choice4",
+          "mainCategory": "Energy Source",
+          "options": [
+            "Spending time talking or doing something with friends.",
+            "Having quiet time by myself.",
+            "Working on something that personally interests me.",
+            "It depends on the day."
+          ]
+        },
+        {
+          "q": "Q6",
+          "text": "You spend several days preparing a project and receive a much lower evaluation than expected. What would be your most natural response?",
+          "type": "choice4",
+          "mainCategory": "Response to Feedback",
+          "options": [
+            "Analyse exactly where I went wrong.",
+            "Ask the evaluator or teacher for detailed feedback.",
+            "Feel disappointed but try a different approach next time.",
+            "Move on quickly and focus on the next task."
+          ]
+        },
+        {
+          "q": "Q7",
+          "text": "On a scale of 1-10, how comfortable are you with making an important decision without simply following what your friends or family expect you to do?",
+          "type": "scale",
+          "mainCategory": "Self-Awareness - Independence",
+          "scaleOptions": [
+            "1 = Not comfortable at all",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10 = Very comfortable"
+          ]
+        }
+      ]
+    }
+  },
+  "career_interest": {
+    "11-12": {
+      "Set 1": [
+        {
+          "q": "Q8",
+          "text": "Which project would you choose?",
+          "type": "choice6",
+          "mainCategory": "RIASEC Interest",
+          "options": [
+            "Build and test an electronic device.",
+            "Investigate why an experiment produced a particular result.",
+            "Create a visual or multimedia presentation.",
+            "Design a programme to help other students.",
+            "Develop an idea into a business/project proposal.",
+            "Organise information, records and data into a systematic system."
+          ],
+          "riasec": ["R", "I", "A", "S", "E", "C"]
+        },
+        {
+          "q": "Q9",
+          "text": "Which challenge sounds most interesting?",
+          "type": "choice6",
+          "mainCategory": "RIASEC Interest",
+          "options": [
+            "Repairing or improving a machine.",
+            "Solving a scientific mystery.",
+            "Creating an original film, design or story.",
+            "Understanding why people behave differently.",
+            "Convincing people to support a new idea.",
+            "Finding errors in a financial or information system."
+          ],
+          "riasec": ["R", "I", "A", "S", "E", "C"]
+        },
+        {
+          "q": "Q10",
+          "text": "Your school gives you ₹10,000 to develop one project. What would you prefer?",
+          "type": "choice6",
+          "mainCategory": "RIASEC Interest",
+          "options": [
+            "Build something useful.",
+            "Conduct a research investigation.",
+            "Create a creative media/design project.",
+            "Develop a student/community initiative.",
+            "Start a small business experiment.",
+            "Develop a structured system for managing the project and its finances."
+          ],
+          "riasec": ["R", "I", "A", "S", "E", "C"]
+        },
+        {
+          "q": "Q11",
+          "text": "Which working environment attracts you most?",
+          "type": "choice6",
+          "mainCategory": "RIASEC Interest",
+          "options": [
+            "Workshop, engineering site or technical environment.",
+            "Laboratory, research centre or analytical environment.",
+            "Design studio, media or creative environment.",
+            "School, healthcare, counselling or community environment.",
+            "Business, leadership or entrepreneurial environment.",
+            "Banking, accounting, administration or organised data environment."
+          ],
+          "riasec": ["R", "I", "A", "S", "E", "C"]
+        },
+        {
+          "q": "Q12",
+          "text": "Which achievement would give you the greatest satisfaction?",
+          "type": "choice6",
+          "mainCategory": "RIASEC Interest",
+          "options": [
+            "Successfully making or fixing something.",
+            "Discovering something others had not understood.",
+            "Creating something original.",
+            "Helping someone significantly improve their life.",
+            "Turning an idea into a successful venture.",
+            "Creating an accurate, efficient and well-organised system."
+          ],
+          "riasec": ["R", "I", "A", "S", "E", "C"]
+        },
+        {
+          "q": "Q13",
+          "text": "Which extracurricular activity would you most likely choose?",
+          "type": "choice6",
+          "mainCategory": "RIASEC Interest",
+          "options": [
+            "Robotics/maker club.",
+            "Science/research club.",
+            "Photography/design/film club.",
+            "Social-service/peer-support club.",
+            "Entrepreneurship/business club.",
+            "Finance/data/quiz/organisation club."
+          ],
+          "riasec": ["R", "I", "A", "S", "E", "C"]
+        },
+        {
+          "q": "Q14",
+          "text": "Which problem would you most enjoy solving?",
+          "type": "choice6",
+          "mainCategory": "RIASEC Interest",
+          "options": [
+            "How can we make this physical device work better?",
+            "Why is this happening, and what evidence can explain it?",
+            "How can we communicate this idea creatively?",
+            "How can we help people cooperate better?",
+            "How can we persuade people to adopt this idea?",
+            "How can we organise the information so that errors are reduced?"
+          ],
+          "riasec": ["R", "I", "A", "S", "E", "C"]
+        },
+        {
+          "q": "Q15",
+          "text": "You get a free month to explore a career area. Which would you choose?",
+          "type": "choice6",
+          "mainCategory": "RIASEC Interest",
+          "options": [
+            "Engineering/technology projects.",
+            "Scientific research/data analysis.",
+            "Design/media/creative work.",
+            "Psychology/education/healthcare/community work.",
+            "Business/management/entrepreneurship.",
+            "Finance/accounting/business operations."
+          ],
+          "riasec": ["R", "I", "A", "S", "E", "C"]
+        },
+        {
+          "q": "Q16",
+          "text": "Which responsibility would you prefer in a major project?",
+          "type": "choice6",
+          "mainCategory": "RIASEC Interest",
+          "options": [
+            "Build the technical solution.",
+            "Conduct the research and analyse results.",
+            "Create the design/content.",
+            "Coordinate the people involved.",
+            "Lead the project and make strategic decisions.",
+            "Manage documentation, schedules and data."
+          ],
+          "riasec": ["R", "I", "A", "S", "E", "C"]
+        },
+        {
+          "q": "Q17",
+          "text": "Which type of internship would you be most interested in?",
+          "type": "choice6",
+          "mainCategory": "RIASEC Interest",
+          "options": [
+            "Engineering/technical internship.",
+            "Research/science/data internship.",
+            "Design/media/content internship.",
+            "Education/healthcare/social-impact internship.",
+            "Startup/business/marketing internship.",
+            "Accounting/finance/operations internship."
+          ],
+          "riasec": ["R", "I", "A", "S", "E", "C"]
+        },
+        {
+          "q": "Q18",
+          "text": "Which statement sounds most like you?",
+          "type": "choice6",
+          "mainCategory": "RIASEC Interest",
+          "options": [
+            "I like working with things.",
+            "I like understanding why things happen.",
+            "I like creating and expressing ideas.",
+            "I like working with and helping people.",
+            "I like influencing, leading or building things.",
+            "I like organising information and making systems work efficiently."
+          ],
+          "riasec": ["R", "I", "A", "S", "E", "C"]
+        },
+        {
+          "q": "Q19",
+          "text": "If you had to choose one professional skill to develop now:",
+          "type": "choice6",
+          "mainCategory": "RIASEC Interest",
+          "options": [
+            "Technical/making skills.",
+            "Research/analytical skills.",
+            "Creative/design skills.",
+            "Communication/helping skills.",
+            "Leadership/business skills.",
+            "Financial/data/organisational skills."
+          ],
+          "riasec": ["R", "I", "A", "S", "E", "C"]
+        }
+      ]
+    }
+  },
+  "aptitude": {
+    "11-12": {
+      "Set 1": [
+        {
+          "q": "Q20",
+          "text": "A product costing ₹2,000 is first discounted by 20% and then the discounted price is increased by 10%. What is the final price?",
+          "type": "mcq",
+          "domain": "Numerical",
+          "difficulty": "medium",
+          "options": [
+            "₹1,600",
+            "₹1,700",
+            "₹1,760",
+            "₹1,800"
+          ],
+          "correct": 2,
+          "explanation": "Cost 2000 → discount 20% = 1600 → increase 10% on 1600 = 1760"
+        },
+        {
+          "q": "Q21",
+          "text": "Find the next number: 2, 6, 12, 20, 30, ___",
+          "type": "mcq",
+          "domain": "Numerical",
+          "difficulty": "medium",
+          "options": [
+            "36",
+            "40",
+            "42",
+            "44"
+          ],
+          "correct": 2,
+          "explanation": "Pattern: 1×2=2, 2×3=6, 3×4=12, 4×5=20, 5×6=30, 6×7=42"
+        },
+        {
+          "q": "Q22",
+          "text": "The ratio of boys to girls in a class is 3:2. If there are 45 boys, how many girls are there?",
+          "type": "mcq",
+          "domain": "Numerical",
+          "difficulty": "easy",
+          "options": [
+            "20",
+            "25",
+            "30",
+            "35"
+          ],
+          "correct": 1,
+          "explanation": "3:2 ratio, 45 boys = 3 parts, so 1 part = 15, girls = 2 parts = 30"
+        },
+        {
+          "q": "Q23",
+          "text": "All engineers are problem-solvers. Some problem-solvers are entrepreneurs. Which statement must be true?",
+          "type": "mcq",
+          "domain": "Logical",
+          "difficulty": "medium",
+          "options": [
+            "All entrepreneurs are engineers.",
+            "Some engineers are entrepreneurs.",
+            "All engineers are problem-solvers.",
+            "No engineers are entrepreneurs."
+          ],
+          "correct": 2,
+          "explanation": "All engineers are problem-solvers (true). Whether any are entrepreneurs is not determined."
+        },
+        {
+          "q": "Q24",
+          "text": "Find the next letter: A, C, F, J, O, ___",
+          "type": "mcq",
+          "domain": "Logical",
+          "difficulty": "medium",
+          "options": [
+            "S",
+            "T",
+            "U",
+            "V"
+          ],
+          "correct": 2,
+          "explanation": "Pattern: A(0), C(2), F(5), J(9), O(14), U(20). Differences: 2, 3, 4, 5, 6"
+        },
+        {
+          "q": "Q25",
+          "text": "Every researcher studies evidence. Priya is a researcher. What must be true?",
+          "type": "mcq",
+          "domain": "Logical",
+          "difficulty": "easy",
+          "options": [
+            "Priya teaches science.",
+            "Priya studies evidence.",
+            "Priya works in a laboratory.",
+            "Priya is a scientist."
+          ],
+          "correct": 1,
+          "explanation": "If all researchers study evidence and Priya is a researcher, she must study evidence."
+        },
+        {
+          "q": "Q26",
+          "text": "Transparent : Clear :: Ambiguous : ?",
+          "type": "mcq",
+          "domain": "Verbal",
+          "difficulty": "medium",
+          "options": [
+            "Certain",
+            "Confusing",
+            "Accurate",
+            "Simple"
+          ],
+          "correct": 1,
+          "explanation": "Transparent means Clear (same meaning). Ambiguous means Confusing (same meaning)."
+        },
+        {
+          "q": "Q27",
+          "text": "Which word does NOT belong?",
+          "type": "mcq",
+          "domain": "Verbal",
+          "difficulty": "easy",
+          "options": [
+            "Physics",
+            "Chemistry",
+            "Biology",
+            "History"
+          ],
+          "correct": 3,
+          "explanation": "Physics, Chemistry, Biology are sciences. History is a humanities subject."
+        },
+        {
+          "q": "Q28",
+          "text": "Find the next symbol: ▲ ■ ▲ ■ ▲ ___",
+          "type": "mcq",
+          "domain": "Abstract",
+          "difficulty": "easy",
+          "options": [
+            "▲",
+            "■",
+            "●",
+            "◆"
+          ],
+          "correct": 1,
+          "explanation": "Alternating pattern: ▲ ■ ▲ ■ ▲ ■"
+        },
+        {
+          "q": "Q29",
+          "text": "You are facing East. You turn left, then turn right, then turn right again. Which direction are you facing?",
+          "type": "mcq",
+          "domain": "Spatial",
+          "difficulty": "medium",
+          "options": [
+            "North",
+            "South",
+            "East",
+            "West"
+          ],
+          "correct": 1,
+          "explanation": "East → turn left (North) → turn right (East) → turn right (South)"
+        },
+        {
+          "q": "Q30",
+          "text": "A student spends time as follows: Study 5h, Sleep 8h, School 7h, Travel 2h, Other 2h. How many hours are spent on activities other than study and sleep?",
+          "type": "mcq",
+          "domain": "Numerical",
+          "difficulty": "easy",
+          "options": [
+            "9",
+            "11",
+            "12",
+            "13"
+          ],
+          "correct": 1,
+          "explanation": "Total 24h - Study 5h - Sleep 8h = 11h (School 7h + Travel 2h + Other 2h = 11h)"
+        },
+        {
+          "q": "Q31",
+          "text": "A test has 80 questions. A student answers 60 correctly. What percentage did the student answer correctly?",
+          "type": "mcq",
+          "domain": "Numerical",
+          "difficulty": "easy",
+          "options": [
+            "70%",
+            "72.5%",
+            "75%",
+            "80%"
+          ],
+          "correct": 2,
+          "explanation": "60/80 × 100 = 75%"
+        }
+      ]
+    }
+  },
+  "strength_domains": {
+    "11-12": {
+      "Set 1": [
+        {
+          "q": "Q32",
+          "text": "Which activity are you naturally strongest at?",
+          "type": "choice4",
+          "mainCategory": "Strength Domains - Linguistic/Logical/Visual/Bodily",
+          "options": [
+            "Writing or explaining ideas clearly.",
+            "Solving numerical or logical problems.",
+            "Understanding diagrams, maps or visual information.",
+            "Demonstrating something through physical activity."
+          ],
+          "miDomain": ["Linguistic", "Logical-Mathematical", "Visual-Spatial", "Bodily-Kinesthetic"]
+        },
+        {
+          "q": "Q33",
+          "text": "Which activity would you most enjoy?",
+          "type": "choice4",
+          "mainCategory": "Strength Domains - Musical/Interpersonal/Intrapersonal/Naturalistic",
+          "options": [
+            "Understanding rhythm, music or melody.",
+            "Understanding how other people think or feel.",
+            "Reflecting on your own decisions and behaviour.",
+            "Observing animals, plants or the natural environment."
+          ],
+          "miDomain": ["Musical", "Interpersonal", "Intrapersonal", "Naturalistic"]
+        },
+        {
+          "q": "Q34",
+          "text": "When explaining a difficult concept to someone, what are you most likely to do?",
+          "type": "choice4",
+          "mainCategory": "Strength Domains - Communication Style",
+          "options": [
+            "Explain it using words and examples.",
+            "Draw a diagram or visual representation.",
+            "Demonstrate it practically.",
+            "Use an analogy or story."
+          ],
+          "miDomain": ["Linguistic", "Visual-Spatial", "Bodily-Kinesthetic", "Linguistic"]
+        },
+        {
+          "q": "Q35",
+          "text": "Which challenge would you choose?",
+          "type": "choice4",
+          "mainCategory": "Strength Domains - Problem Type",
+          "options": [
+            "Solve a difficult mathematical puzzle.",
+            "Design a 3D model or layout.",
+            "Analyse how a group of people is behaving.",
+            "Write an article explaining an issue."
+          ],
+          "miDomain": ["Logical-Mathematical", "Visual-Spatial", "Interpersonal", "Linguistic"]
+        },
+        {
+          "q": "Q36",
+          "text": "Which ability would you most like to develop further?",
+          "type": "choice4",
+          "mainCategory": "Strength Domains - Development",
+          "options": [
+            "Public speaking/writing.",
+            "Mathematical or analytical thinking.",
+            "Visual/design ability.",
+            "Practical/physical skills."
+          ],
+          "miDomain": ["Linguistic", "Logical-Mathematical", "Visual-Spatial", "Bodily-Kinesthetic"]
+        },
+        {
+          "q": "Q37",
+          "text": "Which activity would you choose for relaxation?",
+          "type": "choice4",
+          "mainCategory": "Strength Domains - Relaxation",
+          "options": [
+            "Listening to or creating music.",
+            "Talking with friends.",
+            "Reflecting, journaling or thinking privately.",
+            "Spending time in nature."
+          ],
+          "miDomain": ["Musical", "Interpersonal", "Intrapersonal", "Naturalistic"]
+        },
+        {
+          "q": "Q38",
+          "text": "In a team, what are you particularly good at?",
+          "type": "choice4",
+          "mainCategory": "Strength Domains - Team Role",
+          "options": [
+            "Explaining ideas clearly.",
+            "Analysing the problem.",
+            "Understanding different people.",
+            "Visualising what the final result should look like."
+          ],
+          "miDomain": ["Linguistic", "Logical-Mathematical", "Interpersonal", "Visual-Spatial"]
+        },
+        {
+          "q": "Q39",
+          "text": "Which task would feel most natural?",
+          "type": "choice4",
+          "mainCategory": "Strength Domains - Natural Task",
+          "options": [
+            "Create a presentation using strong language.",
+            "Identify patterns in a large amount of information.",
+            "Design a visual model of the idea.",
+            "Demonstrate how something works physically."
+          ],
+          "miDomain": ["Linguistic", "Logical-Mathematical", "Visual-Spatial", "Bodily-Kinesthetic"]
+        },
+        {
+          "q": "Q40",
+          "text": "Which experience would you enjoy most?",
+          "type": "choice4",
+          "mainCategory": "Strength Domains - Experience",
+          "options": [
+            "Performing or creating music.",
+            "Leading a group discussion.",
+            "Understanding your own strengths and weaknesses.",
+            "Exploring an ecosystem or natural environment."
+          ],
+          "miDomain": ["Musical", "Interpersonal", "Intrapersonal", "Naturalistic"]
+        },
+        {
+          "q": "Q41",
+          "text": "Rate your confidence from 1-10: 'I can understand and explain complex information when I have enough time to work through it.'",
+          "type": "scale",
+          "mainCategory": "Strength Domains - Confidence",
+          "scaleOptions": [
+            "1 = Very low confidence",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10 = Very high confidence"
+          ]
+        },
+        {
+          "q": "Q42",
+          "text": "Rate yourself from 1-10: 'I can identify what I am good at without depending entirely on other people's opinions.'",
+          "type": "scale",
+          "mainCategory": "Strength Domains - Self-Awareness",
+          "scaleOptions": [
+            "1 = Strongly disagree",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10 = Strongly agree"
+          ]
+        },
+        {
+          "q": "Q43",
+          "text": "Which combination sounds most like your natural strengths?",
+          "type": "choice8",
+          "mainCategory": "Strength Domains - Combined Profile",
+          "options": [
+            "Words + communication",
+            "Numbers + logic",
+            "Visualisation + design",
+            "People + relationships",
+            "Self-awareness + reflection",
+            "Nature + observation",
+            "Music + rhythm",
+            "Practical action + physical activity"
+          ],
+          "miDomain": ["Linguistic", "Logical-Mathematical", "Visual-Spatial", "Interpersonal", "Intrapersonal", "Naturalistic", "Musical", "Bodily-Kinesthetic"]
+        }
+      ]
+    }
+  },
+  "motivators": {
+    "11-12": {
+      "Set 1": [
+        {
+          "q": "Q44",
+          "text": "If you had to choose between these two opportunities, which would you prefer?",
+          "type": "choice2",
+          "mainCategory": "Motivators - Stability vs Innovation",
+          "options": [
+            "A stable career with predictable growth.",
+            "A less predictable career with greater opportunity to create something new."
+          ]
+        },
+        {
+          "q": "Q45",
+          "text": "Which achievement would mean more to you?",
+          "type": "choice2",
+          "mainCategory": "Motivators - Mastery vs Impact",
+          "options": [
+            "Becoming highly skilled and respected in my field.",
+            "Making a meaningful difference to other people."
+          ]
+        },
+        {
+          "q": "Q46",
+          "text": "Which would motivate you more?",
+          "type": "choice2",
+          "mainCategory": "Motivators - Independence vs Challenge",
+          "options": [
+            "Being given freedom to decide how to complete my work.",
+            "Being given a challenging target and having to prove that I can achieve it."
+          ]
+        },
+        {
+          "q": "Q47",
+          "text": "Which future situation would you prefer?",
+          "type": "choice2",
+          "mainCategory": "Motivators - Leadership vs Expertise",
+          "options": [
+            "Leading people and making important decisions.",
+            "Becoming an expert and solving complex problems."
+          ]
+        },
+        {
+          "q": "Q48",
+          "text": "Rate the importance of financial security in your future career.",
+          "type": "scale",
+          "mainCategory": "Motivators - Financial Security",
+          "scaleOptions": [
+            "1 = Not important",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10 = Extremely important"
+          ]
+        },
+        {
+          "q": "Q49",
+          "text": "Rate the importance of doing work that you genuinely find meaningful or interesting.",
+          "type": "scale",
+          "mainCategory": "Motivators - Meaning",
+          "scaleOptions": [
+            "1 = Not important",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10 = Extremely important"
+          ]
+        }
+      ]
+    }
+  },
+  "learning_styles": {
+    "11-12": {
+      "Set 1": [
+        {
+          "q": "Q50",
+          "text": "You have two weeks to master a difficult new topic. Which combination would you prefer?",
+          "type": "choice4",
+          "mainCategory": "Learning Preference - Methods",
+          "options": [
+            "Videos, diagrams and demonstrations.",
+            "Textbooks, notes and written explanations.",
+            "Discussion with teachers/classmates.",
+            "Practice problems, projects and application."
+          ],
+          "learningStyle": ["Visual", "Reading/Writing", "Auditory", "Kinesthetic"]
+        },
+        {
+          "q": "Q51",
+          "text": "When preparing for an important examination, which method usually helps you most?",
+          "type": "choice4",
+          "mainCategory": "Learning Preference - Exam Prep",
+          "options": [
+            "Visual summaries and concept maps.",
+            "Reading and rewriting important concepts.",
+            "Explaining the topic to someone or discussing it.",
+            "Solving many questions and practising."
+          ],
+          "learningStyle": ["Visual", "Reading/Writing", "Auditory", "Kinesthetic"]
+        },
+        {
+          "q": "Q52",
+          "text": "Rate how strongly you prefer learning by actually doing something rather than only reading or listening about it.",
+          "type": "scale",
+          "mainCategory": "Learning Preference - Hands-on",
+          "scaleOptions": [
+            "1 = Not at all",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10 = Very strongly"
+          ]
+        }
+      ]
+    }
+  },
+  "emotional_intelligence": {
+    "11-12": {
+      "Set 1": [
+        {
+          "q": "Q53",
+          "text": "Your marks suddenly fall in a subject you normally perform well in. What would you do first?",
+          "type": "choice4",
+          "mainCategory": "EI - Self-Awareness & Response",
+          "options": [
+            "Analyse what changed in my preparation or understanding.",
+            "Talk to my teacher about the problem.",
+            "Discuss it with someone I trust.",
+            "Give myself some time and then try again."
+          ]
+        },
+        {
+          "q": "Q54",
+          "text": "A close friend disagrees strongly with your opinion. What would you most likely do?",
+          "type": "choice4",
+          "mainCategory": "EI - Social Awareness & Communication",
+          "options": [
+            "Explain why I think I am correct.",
+            "Try to understand why they see it differently.",
+            "Avoid the disagreement.",
+            "Look for evidence that could help both of us understand the issue."
+          ]
+        },
+        {
+          "q": "Q55",
+          "text": "You have several important tasks and begin feeling overwhelmed. Which response is most likely?",
+          "type": "choice4",
+          "mainCategory": "EI - Stress Management",
+          "options": [
+            "Break the work into smaller priorities.",
+            "Take a short break and return with a clearer mind.",
+            "Ask someone for help or guidance.",
+            "Continue working and hope I catch up."
+          ]
+        },
+        {
+          "q": "Q56",
+          "text": "When I receive criticism, can I separate useful feedback from comments that I should not take personally?",
+          "type": "choice3",
+          "mainCategory": "EI - Feedback Processing",
+          "options": [
+            "Yes",
+            "No",
+            "Not sure"
+          ]
+        }
+      ]
+    }
+  },
+  "creativity": {
+    "11-12": {
+      "Set 1": [
+        {
+          "q": "Q57",
+          "text": "Your school wants to reduce students' dependence on last-minute exam preparation. Which idea would you most like to develop?",
+          "type": "choice5",
+          "mainCategory": "Creativity - Problem Solving",
+          "options": [
+            "A weekly progress-tracking system.",
+            "A peer-learning programme.",
+            "A digital study-planning tool.",
+            "A completely new approach to exam preparation.",
+            "A system combining several of these ideas."
+          ]
+        },
+        {
+          "q": "Q58",
+          "text": "You are given a problem but very little information about how to solve it. What would you prefer?",
+          "type": "choice5",
+          "mainCategory": "Creativity - Approach to Uncertainty",
+          "options": [
+            "Find examples of existing solutions.",
+            "Generate several possible solutions before choosing one.",
+            "Experiment with different approaches.",
+            "Ask different people for ideas.",
+            "Combine existing ideas into something new."
+          ]
+        },
+        {
+          "q": "Q59",
+          "text": "Your first solution fails. What does this situation make you want to do?",
+          "type": "choice5",
+          "mainCategory": "Creativity - Learning from Failure",
+          "options": [
+            "Understand exactly why it failed.",
+            "Modify the original idea.",
+            "Try an entirely different approach.",
+            "Ask others to challenge my thinking.",
+            "Start again using what I learned."
+          ]
+        },
+        {
+          "q": "Q60",
+          "text": "Rate yourself from 1-10: How comfortable are you with proposing an idea that is different from what everyone else in your group is suggesting?",
+          "type": "scale",
+          "mainCategory": "Creativity - Originality",
+          "scaleOptions": [
+            "1 = Very uncomfortable",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10 = Very comfortable"
+          ]
+        },
+        {
+          "q": "Q61",
+          "text": "Which statement best describes you?",
+          "type": "choice5",
+          "mainCategory": "Creativity - Style",
+          "options": [
+            "I often think of different ways of doing ordinary things.",
+            "I enjoy improving existing ideas.",
+            "I enjoy inventing completely new possibilities.",
+            "I enjoy experimenting even when I am not sure what will happen.",
+            "I enjoy connecting ideas from different subjects."
+          ]
+        }
+      ]
+    }
+  },
+  "subject_fit": {
+    "11-12": {
+      "Set 1": [
+        {
+          "q": "Q62",
+          "text": "What is your current Class 11 stream?",
+          "type": "choice8",
+          "mainCategory": "Current Academic Stream",
+          "options": [
+            "MPC / PCM",
+            "BiPC / PCB",
+            "PCMB",
+            "MEC",
+            "CEC",
+            "Humanities / Arts",
+            "Vocational / Diploma",
+            "Other"
+          ]
+        },
+        {
+          "q": "Q63",
+          "text": "Which subjects are you currently studying?",
+          "type": "multiple",
+          "mainCategory": "Current Subjects",
+          "options": [
+            "Mathematics",
+            "Physics",
+            "Chemistry",
+            "Biology",
+            "Computer Science",
+            "Informatics Practices",
+            "Accountancy",
+            "Business Studies",
+            "Economics",
+            "History",
+            "Political Science",
+            "Geography",
+            "Psychology",
+            "Sociology",
+            "Languages"
+          ]
+        },
+        {
+          "q": "Q64",
+          "text": "Which subject do you enjoy the most?",
+          "type": "multiple",
+          "mainCategory": "Favourite Subject",
+          "instruction": "Select ONE",
+          "options": [
+            "Mathematics",
+            "Physics",
+            "Chemistry",
+            "Biology",
+            "Computer Science",
+            "Informatics Practices",
+            "Accountancy",
+            "Business Studies",
+            "Economics",
+            "History",
+            "Political Science",
+            "Geography",
+            "Psychology",
+            "Sociology",
+            "Languages"
+          ]
+        },
+        {
+          "q": "Q65",
+          "text": "Which subject do you find most difficult?",
+          "type": "multiple",
+          "mainCategory": "Difficult Subject",
+          "instruction": "Select ONE",
+          "options": [
+            "Mathematics",
+            "Physics",
+            "Chemistry",
+            "Biology",
+            "Computer Science",
+            "Informatics Practices",
+            "Accountancy",
+            "Business Studies",
+            "Economics",
+            "History",
+            "Political Science",
+            "Geography",
+            "Psychology",
+            "Sociology",
+            "Languages"
+          ]
+        },
+        {
+          "q": "Q66",
+          "text": "Rate your current academic confidence.",
+          "type": "scale",
+          "mainCategory": "Academic Confidence",
+          "scaleOptions": [
+            "1 = Very low",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10 = Very high"
+          ]
+        },
+        {
+          "q": "Q67",
+          "text": "How satisfied are you with your current stream?",
+          "type": "scale",
+          "mainCategory": "Stream Satisfaction",
+          "scaleOptions": [
+            "1 = Extremely dissatisfied",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10 = Extremely satisfied"
+          ]
+        },
+        {
+          "q": "Q68",
+          "text": "Why did you choose your current stream?",
+          "type": "multiple",
+          "mainCategory": "Stream Selection Reason",
+          "instruction": "Select up to TWO",
+          "options": [
+            "My own interest",
+            "My academic strengths",
+            "Parents/family recommendation",
+            "Teacher/counsellor recommendation",
+            "Career opportunities",
+            "Friends/peer influence",
+            "Expected salary/status",
+            "I was unsure what else to choose",
+            "It was the natural choice after Class 10",
+            "Other"
+          ]
+        },
+        {
+          "q": "Q69",
+          "text": "If your assessment showed that another academic/career pathway could suit you better, how open would you be to exploring it?",
+          "type": "scale",
+          "mainCategory": "Openness to Pathway Change",
+          "scaleOptions": [
+            "1 = Not open at all",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10 = Completely open"
+          ]
+        }
+      ]
+    }
+  },
+  "career_fit": {
+    "11-12": {
+      "Set 1": [
+        {
+          "q": "Q70",
+          "text": "How clear are you about what you want to study after Class 12?",
+          "type": "scale",
+          "mainCategory": "Career Clarity",
+          "scaleOptions": [
+            "1 = I have no idea",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10 = I know exactly what I want"
+          ]
+        },
+        {
+          "q": "Q71",
+          "text": "Which areas are you currently considering?",
+          "type": "multiple",
+          "mainCategory": "Career Areas Under Consideration",
+          "instruction": "Select up to THREE",
+          "options": [
+            "Engineering",
+            "Computer Science / IT",
+            "AI / Data Science",
+            "Medicine",
+            "Healthcare",
+            "Biotechnology / Life Sciences",
+            "Pure Science",
+            "Mathematics / Statistics",
+            "Commerce / Accounting",
+            "Finance / Investment",
+            "Economics",
+            "Business / Management",
+            "Entrepreneurship",
+            "Law",
+            "Psychology",
+            "Social Sciences",
+            "Humanities",
+            "Design",
+            "Architecture",
+            "Media / Communication",
+            "Government / Public Service",
+            "Defence",
+            "Research",
+            "Other"
+          ]
+        },
+        {
+          "q": "Q72",
+          "text": "Do you already have a specific degree/course in mind?",
+          "type": "choice4",
+          "mainCategory": "Degree Clarity",
+          "options": [
+            "Yes — I am quite certain.",
+            "I have 2–3 possibilities.",
+            "I know the field but not the degree.",
+            "No."
+          ]
+        },
+        {
+          "q": "Q73",
+          "text": "If your preferred career requires a degree different from what you currently expect to study, how willing are you to investigate alternative pathways?",
+          "type": "scale",
+          "mainCategory": "Flexibility to Investigate",
+          "scaleOptions": [
+            "1 = Not willing",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10 = Very willing"
+          ]
+        },
+        {
+          "q": "Q74",
+          "text": "What concerns you most when thinking about your degree choice?",
+          "type": "multiple",
+          "mainCategory": "Degree Choice Concerns",
+          "instruction": "Choose TWO",
+          "options": [
+            "Choosing the wrong course",
+            "Entrance examinations",
+            "Academic difficulty",
+            "College quality",
+            "Cost/affordability",
+            "Future employment",
+            "Salary",
+            "Competition",
+            "Parents' expectations",
+            "Location",
+            "I have too many choices",
+            "I have too few choices",
+            "I don't know enough about the options"
+          ]
+        },
+        {
+          "q": "Q75",
+          "text": "Which statement best describes your current career decision?",
+          "type": "choice6",
+          "mainCategory": "Career Decision Status",
+          "options": [
+            "I know the career and degree I want.",
+            "I know the career area but not the exact degree.",
+            "I know the degree but not the career.",
+            "I have several careers in mind.",
+            "I am still exploring.",
+            "I feel pressure to choose something without being certain."
+          ]
+        },
+        {
+          "q": "Q76",
+          "text": "If you had to choose today, how confident would you be about your post-Class-12 direction?",
+          "type": "scale",
+          "mainCategory": "Post-Class-12 Confidence",
+          "scaleOptions": [
+            "1 = Not confident at all",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10 = Extremely confident"
+          ]
+        },
+        {
+          "q": "Q77",
+          "text": "What kind of future pathway interests you most?",
+          "type": "choice8",
+          "mainCategory": "Pathway Type",
+          "options": [
+            "Professional degree → specialised career",
+            "Degree → postgraduate specialisation",
+            "Degree → research/academia",
+            "Degree → corporate career",
+            "Degree → entrepreneurship",
+            "Degree → public service",
+            "Flexible degree with multiple career possibilities",
+            "I don't know yet"
+          ]
+        }
+      ]
+    }
+  },
+  "career_selector": {
+    "11-12": {
+      "Set 1": [
+        {
+          "q": "Q78",
+          "text": "Which career would you most like to explore if you had the opportunity?",
+          "type": "text",
+          "mainCategory": "Primary Career Interest",
+          "instruction": "Select ONE"
+        },
+        {
+          "q": "Q79",
+          "text": "What are your other top career choices?",
+          "type": "text",
+          "mainCategory": "Alternative Career Interests",
+          "instruction": "Select up to THREE"
+        },
+        {
+          "q": "Q80",
+          "text": "Which career areas would you NOT want to pursue?",
+          "type": "text",
+          "mainCategory": "Career Exclusions",
+          "instruction": "Select up to THREE"
+        },
+        {
+          "q": "Q81",
+          "text": "What do you most want this assessment to help you understand?",
+          "type": "choice6",
+          "mainCategory": "Assessment Focus",
+          "options": [
+            "Which careers fit my personality and strengths?",
+            "Whether my current Class 11 stream suits me.",
+            "Which degrees/courses I should consider after Class 12.",
+            "Whether my dream career matches my profile.",
+            "What alternative careers I should explore.",
+            "What I should do during Classes 11–12 to prepare for my future career."
+          ]
+        }
+      ]
+    }
+  }
+}

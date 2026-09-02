@@ -27,8 +27,8 @@ export function razorpayKeySecret(): string {
   return (process.env.RAZORPAY_KEY_SECRET || "").trim();
 }
 
-/** Assessment fee in paise, fixed server-side (9900 = ₹99). */
+/** Assessment fee in paise, fixed server-side (199900 = ₹1999). */
 export function razorpayAmountPaise(): number {
-  const n = Number(process.env.RAZORPAY_AMOUNT_PAISE || 9900);
-  return Number.isFinite(n) && n > 0 ? n : 9900;
+  const n = Number(process.env.RAZORPAY_AMOUNT_PAISE || 199900);
+  return Number.isFinite(n) && n > 0 ? n : 199900;
 }

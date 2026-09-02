@@ -28,6 +28,7 @@ import { C, Ring, RadarChart, SkillBar, dimColor, type RadarDatum } from "@/app/
 import { Scene } from "@/app/account/illustrations";
 import { CareerCard, getCareerVisual, CareerImageWithSVG } from "@/app/account/careerVisuals";
 import { getImageForRole } from "@/app/account/careerRoleImages";
+import { PersonalityMBTI } from "@/app/account/PersonalityMBTI";
 import {
   categoryDeepDive, roadmap, stageLabelOf, DOMAINS,
   archetype, percentileOf, subTraits, actionPlan, type Domain,
@@ -71,9 +72,9 @@ const BENCH: Record<string, number> = {
 
 const clamp = (n: number) => Math.max(3, Math.min(100, Math.round(n)));
 const bandOf = (p: number) =>
-  p >= 80 ? { label: "Standout", tone: "hi" } : p >= 65 ? { label: "Strength", tone: "hi" }
-  : p >= 50 ? { label: "Solid", tone: "mid" } : p >= 35 ? { label: "Emerging", tone: "lo" }
-  : { label: "Developing", tone: "lo" };
+  p >= 75 ? { label: "Very High", tone: "hi" } : p >= 65 ? { label: "High", tone: "hi" }
+  : p >= 50 ? { label: "Medium", tone: "mid" } : p >= 35 ? { label: "Low", tone: "lo" }
+  : { label: "Weak", tone: "lo" };
 
 /**
  * Extra report sheets, appended before the closing page.
@@ -127,9 +128,10 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
   const fit = Math.max(a.overallFitmentPct ?? 0, topDomain.fit);
   const roles = coherentRoles(a, fits);
   const traits = traitProfile(a);
-  const acad = academicPath(a, a.journeyCode);
-  const workEnv = workEnvironment(a);
-  const topLetter = (a.themes ?? [])[0]?.letter ?? "B";
+  const acad = academicPath(a, a.journeyCode, topDomain.name);
+  const workEnv = workEnvironment(a, topDomain.name);
+  // Derive topLetter from topDomain for consistent role model selection
+  const topLetter = Object.entries(DOMAINS).find(([_, d]) => d.name === topDomain.name)?.[0] ?? (a.themes ?? [])[0]?.letter ?? "B";
   const models = ROLE_MODELS[topLetter] ?? ROLE_MODELS.B;
   const strongest = radar.slice().sort((x, y) => y.score - x.score)[0];
   const weakest = radar.slice().filter((r) => r.score > 0).sort((x, y) => x.score - y.score)[0];
@@ -161,43 +163,13 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
           <div className="kick">Career Fitment Report</div>
           <h1>Who you are, <span>and where it can take you.</span></h1>
           <p className="lede">A complete map of your strengths, interests and natural wiring — built from your responses across eight established frameworks.</p>
-          <div className="cover-hero">
-            <div className="cover-preview">
-              <div className="cp-head">
-                <span className="cp-kick">Your profile · at a glance</span>
-                {/* "Profile alignment", never "fit %". A percentage invites
-                    "96% = I'm 96% likely to succeed", which this number has
-                    never meant — see the note in scoring60.ts. */}
-                <span className="cp-fit"><b>{fit}</b>/100 profile alignment</span>
-              </div>
-              <div className="cp-body">
-                <div className="cp-radar"><RadarChart data={radar} color={C.red} abbr={CATEGORY_ABBR} /></div>
-                <div className="cp-side">
-                  <div className="cp-arch-k">Career archetype</div>
-                  <div className="cp-arch">{arch.name}</div>
-                  <div className="cp-bars">
-                    {radar.slice().sort((x, y) => y.score - x.score).slice(0, 4).map((d) => (
-                      <div className="cp-bar" key={d.key}>
-                        <span className="cp-bar-l">{CAT[d.key]?.label || d.label}</span>
-                        <span className="cp-bar-t"><i style={{ width: `${clamp(d.score)}%` }} /></span>
-                        <b>{Math.round(d.score)}</b>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
           <div className="cover-foot">
             <div className="cover-name">
               <span className="rl">Prepared for</span>
               <span className="nm">{name || "You"}</span>
               {a.journeyName ? <span className="sub">{a.journeyName}</span> : null}
             </div>
-            <div className="cover-chips">
-              {dateStr ? <span className="c">{dateStr}</span> : null}
-              <span className="c">Overall fit · <b>{fit}%</b></span>
-            </div>
+            {dateStr && <div className="cover-chips"><span className="c">{dateStr}</span></div>}
           </div>
         </div>
       </section>
@@ -240,7 +212,7 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
               <h2 className="arch">{arch.name}</h2>
               <p className="one">{a.summary || arch.tagline}</p>
               <div className="exec-cards">
-                <div className="ec"><span className="ec-k">Top interest</span><span className="ec-v">{themes[0]?.title || "—"}</span></div>
+                <div className="ec"><span className="ec-k">Top interest</span><span className="ec-v">{topDomain.name || "—"}</span></div>
                 <div className="ec"><span className="ec-k">Core driver</span><span className="ec-v">{a.topValues?.[0]?.tag || "—"}</span></div>
                 <div className="ec"><span className="ec-k">Strongest area</span><span className="ec-v">{strongest ? CAT[strongest.key].label : "—"}</span></div>
                 <div className="ec"><span className="ec-k">Learns best via</span><span className="ec-v">{a.learningStyles?.[0]?.name || "—"}</span></div>
@@ -248,7 +220,7 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
             </div>
             <div className="exec-r">
               <Ring value={fit} size={150} stroke={14} color={C.red}>
-                <div className="ring-num" style={{ fontSize: 34 }}>{fit}<small>/100</small></div>
+                <div className="ring-num" style={{ fontSize: 24 }}>{bandOf(fit).label}</div>
                 <div className="ring-den">profile alignment</div>
               </Ring>
               <div className="exec-legend">
@@ -274,17 +246,19 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
           <div className="dna-hero">
             <div className="radar-wrap"><RadarChart data={radar} color={C.red} abbr={CATEGORY_ABBR} /></div>
             <div className="band-v">
-              {domainList.slice(0, 3).map((d, i) => (
-                // One colour per rank rather than three identical red cards:
-                // three bars in the same red read as one repeated result, and
-                // the eye has nothing to separate first from third.
-                <div className="dcard" key={d.key} style={{ ["--rc" as string]: RANK_COLOURS[i] } as React.CSSProperties}>
-                  <div className="rk">BEST-FIT DOMAIN 0{i + 1}</div>
-                  <div className="nm">{d.name}</div>
-                  <div className="ds">{d.tagline}</div>
-                  <div className="mt"><span className="t"><i style={{ width: `${clamp(d.fit)}%` }} /></span><span className="v">{d.fit}</span></div>
-                </div>
-              ))}
+              {Array.from(new Set(roles.map(r => r.domain))).slice(0, 3).map((domain, i) => {
+                const domainRoles = roles.filter(r => r.domain === domain);
+                const avgFit = Math.round(domainRoles.reduce((sum, r) => sum + r.fit, 0) / domainRoles.length);
+                const domainBand = bandOf(avgFit);
+                return (
+                  <div className="dcard" key={domain} style={{ ["--rc" as string]: RANK_COLOURS[i] } as React.CSSProperties}>
+                    <div className="rk">TOP DOMAIN 0{i + 1}</div>
+                    <div className="nm">{domain}</div>
+                    <div className="ds">{domainRoles.length} roles • {domainBand.label}</div>
+                    <div className="mt"><span className="t"><i style={{ width: `${clamp(avgFit)}%` }} /></span><span className="v">{avgFit}%</span></div>
+                  </div>
+                );
+              })}
             </div>
           </div>
           <RF name={name} />
@@ -329,7 +303,7 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
               return (
                 <div className="vrow" key={d.key}>
                   <span className="vname"><span style={{ color: dimColor(d.key), display: "inline-flex" }}><Icon name={CAT[d.key].icon} size={15} /></span> {CAT[d.key].label}</span>
-                  <span className="vbar"><SkillBar value={d.score} color={dimColor(d.key)} benchmark={BENCH[d.key]} /><b>{Math.round(d.score)}</b></span>
+                  <span className="vbar"><SkillBar value={d.score} color={dimColor(d.key)} benchmark={BENCH[d.key]} /><b className="text-xs">{bandOf(d.score).label}</b></span>
                   <span className={`vpill ${b.tone}`}>{b.label}</span>
                   {/* Never hidden: on a phone this wraps to its own line rather
                       than dropping, so all eight dimensions keep their verdict. */}
@@ -339,9 +313,9 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
             })}
           </div>
           <div className="vlegend">
-            <span><i className="d hi" /> Strength (65+)</span>
-            <span><i className="d mid" /> Solid (50–64)</span>
-            <span><i className="d lo" /> Developing (&lt;50)</span>
+            <span><i className="d hi" /> Very High (75+) / High (65–74)</span>
+            <span><i className="d mid" /> Medium (50–64)</span>
+            <span><i className="d lo" /> Low (35–49) / Weak (&lt;35)</span>
             <span className="vlegend-bench"><i className="tick" /> tick = typical student at your stage</span>
           </div>
           <RF name={name} />
@@ -352,6 +326,22 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
       {radar.map((d) => {
         const m = CAT[d.key];
         const col = dimColor(d.key);
+        const isClass910 = a.journeyCode === "9-10";
+        const isMBTIPersonality = d.key === "personality" && isClass910;
+
+        if (isMBTIPersonality) {
+          const sheetNum = N();
+          return (
+            <section className="sheet param rv" key={d.key} style={{ borderTopColor: col, ["--dc" as string]: col, ["--dc-tint" as string]: col + "14", ["--dc-line" as string]: col + "40" } as React.CSSProperties}>
+              <div className="pad">
+                <RH n={sheetNum} kick={`Dimension ${m.dim} — ${m.label}`} accent />
+                <PersonalityMBTI a={a} sheetNum={sheetNum} name={name} />
+                <RF name={name} />
+              </div>
+            </section>
+          );
+        }
+
         const dd = categoryDeepDive(d.key, a);
         const subs = subTraits(d.key, a);
         const pct = percentileOf(d.score);
@@ -361,6 +351,15 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
         return (
           <section className="sheet param rv" key={d.key} style={{ borderTopColor: col, ["--dc" as string]: col, ["--dc-tint" as string]: col + "14", ["--dc-line" as string]: col + "40" } as React.CSSProperties}>
             <div className="pad">
+              {/* Big dimension heading */}
+              <div style={{ marginBottom: '32px' }}>
+                <div style={{ fontSize: '12px', fontWeight: '600', color: col, textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.5px' }}>
+                  Dimension {m.dim}
+                </div>
+                <h2 style={{ fontSize: '32px', fontWeight: '700', color: '#1f2937', margin: '0 0 8px 0', lineHeight: '1.2' }}>
+                  {m.label}
+                </h2>
+              </div>
               <RH n={N()} kick={`Dimension ${m.dim} — ${m.label}`} accent />
               <div className="dimhero">
                 <div className="dimhero-img" style={{ background: col + "12" }}>
@@ -370,7 +369,7 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
                 </div>
                 <div className="dimhero-meta">
                   <Ring value={d.score} size={96} stroke={10} color={col}>
-                    <div className="ring-num">{d.score}</div><div className="ring-den">/100</div>
+                    <div className="ring-num text-sm">{bandOf(d.score).label}</div><div className="ring-den">Score</div>
                   </Ring>
                   <div>
                     {res ? <div className="resultchip"><span>{res.label}</span><b>{res.value}</b></div> : null}
@@ -378,7 +377,7 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
                     <div className="dimtags">
                       <span className={`vpill ${bandOf(d.score).tone}`}>{bandOf(d.score).label}</span>
                       {d.score > 0 ? <span className="tagpct">Higher than {pct}% of peers</span> : null}
-                      <span className={`tagdelta ${delta >= 0 ? "up" : "down"}`}>{delta >= 0 ? "+" : ""}{delta} vs typical</span>
+                      <span className={`tagdelta ${delta >= 0 ? "up" : "down"}`}>{delta >= 0 ? "Well above" : delta < -10 ? "Below" : "About"} typical</span>
                     </div>
                   </div>
                 </div>
@@ -390,19 +389,22 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
                   <div>
                     <div className="subhd">Your breakdown</div>
                     <div className="bars">
-                      {subs.map((sub) => (
-                        <div className="brow" key={sub.label}>
-                          <span className="lb">{sub.label}</span>
-                          <span className="bk"><SkillBar value={sub.value} color={col} height={9} /></span>
-                          <span className="vv">{Math.round(sub.value)}</span>
-                        </div>
-                      ))}
+                      {subs.map((sub) => {
+                        const subBand = bandOf(sub.value);
+                        return (
+                          <div className="brow" key={sub.label}>
+                            <span className="lb">{sub.label}</span>
+                            <span className="bk"><SkillBar value={sub.value} color={col} height={9} /></span>
+                            <span className="vv text-xs">{subBand.label}</span>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 ) : <div />}
                 <div className="prose">
                   <div className="subhd">What this means for you</div>
-                  <p className="lead">{dd.strengths[0] || dd.meaning}</p>
+                  <p className="lead">{dd.strengths[0] || `This dimension shows how ${CAT[d.key]?.label.toLowerCase()} impacts your choices and strengths.`}</p>
                   {dd.strengths[1] ? <p>{dd.strengths[1]}</p> : null}
                   {dd.grow[0] ? <p>{dd.grow[0]}</p> : null}
                 </div>
@@ -443,11 +445,12 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
                   const t = riasec.find((x) => x.letter === L);
                   const sc = t ? Math.round(t.score) : 0;
                   const top = (a.riasecCode || riasec.slice(0, 3).map((x) => x.letter).join("")).includes(L);
+                  const riasecBand = bandOf(sc);
                   return (
                     <div className={`rb-row${top ? " top" : ""}`} key={L}>
                       <span className="rb-l">{RIASEC_NAME[L]}</span>
                       <span className="rb-track"><SkillBar value={sc} color={top ? C.red : C.faint} height={9} /></span>
-                      <span className="rb-v">{sc}</span>
+                      <span className="rb-v text-xs">{riasecBand.label}</span>
                     </div>
                   );
                 })}
@@ -469,41 +472,80 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
         </div>
       </section>
 
-      {/* ===== CAREERS WHERE YOU FIT — metric badge cards ===== */}
+      {/* ===== RECOMMENDED DOMAINS (NOT SPECIFIC ROLES) ===== */}
       <section className="sheet rv">
         <div className="pad">
-          <RH n={N()} kick="Careers where you fit" />
-          <SecHead eyebrow="Specific roles your whole profile points to" title="Your top career matches"
-            sub="Ranked by fit, with the signals that matter: our recommendation, outlook, pay, automation-resistance and future demand." />
-          <div className="cardgrid">
-            {roles.map((r, i) => {
-              const mt = roleMetric(r.role);
-              // Was a whole extra table of its own; it is one pill's worth of
-              // information, so it lives on the card it describes.
-              const v = r.fit >= 75 ? { t: "Top Choice", c: "hi" } : r.fit >= 60 ? { t: "Good Choice", c: "mid" } : { t: "Explore", c: "lo" };
-              const Visual = getCareerVisual(r.role);
+          <RH n={N()} kick="Domains that fit you" />
+          <SecHead eyebrow="Career domains aligned with your profile" title="Your recommended domains"
+            sub="Based on your interests, abilities, intelligences, and values. These are your best-fit fields—not a ranked hierarchy, but fields where you have genuine strength. Below each domain are specific roles you can explore in that field." />
+
+          {/* Explanation of what fit scores mean */}
+          <div style={{ background: '#f0f9ff', border: '1px solid #bfdbfe', borderRadius: '8px', padding: '16px', marginBottom: '32px' }}>
+            <div style={{ fontSize: '12px', color: '#1e40af', fontWeight: '600', marginBottom: '8px' }}>📊 How to read these fits</div>
+            <div style={{ fontSize: '13px', color: '#1e3a8a', lineHeight: '1.5' }}>
+              Each domain shows how well your profile aligns with it. <strong>50%+ fit means this is a genuine strength</strong> — you have real interest, ability, and values alignment. Higher percentages (70%+) indicate especially strong alignment. The specific job roles listed show which careers within that domain match you best.
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
+            {domainList.map((d, i) => {
+              const domainRoles = roles.filter(r => r.domain === d.name);
+              const confidenceLabel = d.breakdown.confidence === 4 ? "Strong" : d.breakdown.confidence === 3 ? "Good" : "Moderate";
+              const verdict = d.fit >= 75 ? { t: "Top Match", c: "hi" } : d.fit >= 60 ? { t: "Good Match", c: "mid" } : { t: "Explore", c: "lo" };
+
               return (
-                <div className="ccard" key={r.role + i}>
-                  <div style={{ height: '150px', marginBottom: '12px', borderRadius: '8px', background: '#F9FAFB', overflow: 'hidden' }}>
-                    <CareerImageWithSVG careerTitle={r.role} svgComponent={<Visual />} />
+                <div key={d.key} style={{ padding: '20px', border: '1px solid #e5e7eb', borderRadius: '12px', background: '#f9fafb' }}>
+                  {/* Header */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
+                    <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#1f2937', margin: 0 }}>{d.name}</h3>
+                    <span style={{ fontSize: '12px', fontWeight: '600', color: '#fff', background: '#7c3aed', padding: '4px 8px', borderRadius: '4px' }}>{domainRoles.length} roles</span>
                   </div>
-                  <div className="ccard-top">
-                    <span className="ccard-rk">{i + 1}</span>
-                    <div className="ccard-main">
-                      <div className="ccard-nm">{r.role}</div>
-                      <div className="ccard-dm">{r.domain} · <span className={`ccard-verdict ${v.c}`}>{v.t}</span></div>
+
+                  {/* Main Score */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                    <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#7c3aed' }}>{d.fit}%</div>
+                    <div>
+                      <div style={{ fontSize: '12px', color: '#9ca3af', fontWeight: '500' }}>Domain Fit</div>
+                      <div style={{ display: 'inline-block', paddingTop: '4px', padding: '4px 12px', borderRadius: '6px', fontSize: '12px', fontWeight: '600',
+                        background: verdict.c === 'hi' ? '#dcfce7' : verdict.c === 'mid' ? '#fef3c7' : '#fee2e2',
+                        color: verdict.c === 'hi' ? '#15803d' : verdict.c === 'mid' ? '#92400e' : '#991b1b' }}>
+                        {verdict.t}
+                      </div>
                     </div>
-                    <div className="ccard-fit"><b>{r.fit}%</b><span>fit</span></div>
                   </div>
-                  <div className="ccard-badges">
-                    <Badge on={mt.brightOutlook} label="Bright Outlook" icon="star" />
-                    <Badge label="Salary" value={mt.salary} icon="briefcase" tone={salaryTone(mt.salary)} />
-                    <Badge label="Automation" value={mt.automation} icon="cpu" tone={mt.automation === "Low" ? "good" : mt.automation === "High" ? "warn" : "mid"} />
-                    <Badge on={mt.future} label="Future-ready" icon="pulse" />
+
+                  {/* Breakdown */}
+                  <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '12px', marginBottom: '16px', fontSize: '13px' }}>
+                    <div style={{ fontWeight: '600', color: '#6b7280', marginBottom: '8px' }}>What aligns:</div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                      <div><span style={{ color: '#9ca3af' }}>Interest:</span> <span style={{ fontWeight: '600', color: '#1f2937' }}>{d.breakdown.interest}%</span></div>
+                      {d.breakdown.aptitude !== null && <div><span style={{ color: '#9ca3af' }}>Aptitude:</span> <span style={{ fontWeight: '600', color: '#1f2937' }}>{d.breakdown.aptitude}%</span></div>}
+                      {d.breakdown.mi !== null && <div><span style={{ color: '#9ca3af' }}>Intelligence:</span> <span style={{ fontWeight: '600', color: '#1f2937' }}>{d.breakdown.mi}%</span></div>}
+                      {d.breakdown.values !== null && <div><span style={{ color: '#9ca3af' }}>Values:</span> <span style={{ fontWeight: '600', color: '#1f2937' }}>{d.breakdown.values}%</span></div>}
+                    </div>
                   </div>
-                  {r.salaryIndia ? (
-                    <div className="ccard-sal"><span>India {r.salaryIndia}</span><span>Abroad {r.salaryAbroad}</span></div>
-                  ) : null}
+
+                  {/* Confidence indicator */}
+                  <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #e5e7eb' }}>
+                    <span style={{ fontWeight: '600' }}>Confidence:</span> {confidenceLabel} ({d.breakdown.confidence}/4 dimensions align)
+                  </div>
+
+                  {/* Job Roles */}
+                  <div>
+                    <p style={{ fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', marginBottom: '8px' }}>Popular Job Roles:</p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      {domainRoles.slice(0, 4).map((role) => {
+                        const roleBand = bandOf(role.fit);
+                        const bandColor = roleBand.tone === 'hi' ? '#10b981' : roleBand.tone === 'mid' ? '#f59e0b' : '#ef4444';
+                        return (
+                          <div key={role.role} style={{ fontSize: '13px', color: '#1f2937', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span>{role.role}</span>
+                            <span style={{ fontSize: '12px', fontWeight: '600', color: bandColor, background: bandColor + '15', padding: '4px 8px', borderRadius: '4px' }}>{roleBand.label}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               );
             })}
@@ -581,6 +623,10 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
         <div className="pad">
           <SecHead eyebrow="From today to a career you’re built for" title="Phase by phase"
             sub={`A realistic timeline tuned to your profile and your best-fit domain, ${topDomain.name}.`} />
+          <div style={{ marginBottom: "20px", padding: "12px 16px", background: "#f3f4f6", borderRadius: "8px", borderLeft: "4px solid var(--red)" }}>
+            <span style={{ fontSize: "12px", fontWeight: "600", color: "#64748b", textTransform: "uppercase", letterSpacing: "0.05em" }}>Your path in</span>
+            <div style={{ fontSize: "18px", fontWeight: "800", color: "#151a24", marginTop: "4px" }}>{topDomain.name}</div>
+          </div>
           <JourneyGraphic phases={phases} />
           <div className="road">
             {phases.map((p) => (
@@ -649,7 +695,51 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
         </section>
       ))}
 
+      {/* ===== AVAILABLE ROLES IN RECOMMENDED DOMAIN ===== */}
+      {topDomain && (
+        <section className="sheet rv">
+          <div className="pad">
+            <RH n={N()} kick={`Careers in ${topDomain.name}`} />
+            <SecHead eyebrow="Specific job roles to explore" title={`All careers in ${topDomain.name}`}
+              sub={`These are the specific job roles available in your recommended domain. Explore each role to understand responsibilities, required skills, salary expectations, and career growth paths.`} />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '16px', marginTop: '24px' }}>
+              {roles.filter(r => r.domain === topDomain.name).map((role, i) => (
+                <div key={role.role} style={{ padding: '16px', border: '1px solid #e5e7eb', borderRadius: '10px', background: '#f9fafb' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '8px' }}>
+                    <h4 style={{ fontSize: '16px', fontWeight: '700', color: '#1f2937', margin: 0 }}>{role.role}</h4>
+                    <span style={{ fontSize: '12px', fontWeight: '600', color: '#fff', background: '#7c3aed', padding: '4px 8px', borderRadius: '4px' }}>{role.fit}% fit</span>
+                  </div>
+                  <p style={{ fontSize: '13px', color: '#6b7280', margin: '8px 0' }}>{role.domain}</p>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '12px' }}>
+                    <div>
+                      <span style={{ color: '#9ca3af' }}>Salary (India)</span><br />
+                      <strong style={{ color: '#1f2937', fontSize: '13px' }}>{role.salaryIndia || 'N/A'}</strong>
+                    </div>
+                    <div>
+                      <span style={{ color: '#9ca3af' }}>Salary (Abroad)</span><br />
+                      <strong style={{ color: '#1f2937', fontSize: '13px' }}>{role.salaryAbroad || 'N/A'}</strong>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <RF name={name} />
+          </div>
+        </section>
+      )}
+
       {/* ===== FOR PARENTS + CLOSING ===== */}
+      {/* ===== DOWNLOAD REPORT ===== */}
+      <section className="sheet rv">
+        <div className="pad">
+          <RH n={N()} kick="Download your report" />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
+            <DownloadButton format="pdf" name={name} />
+            <DownloadButton format="html" name={name} />
+          </div>
+        </div>
+      </section>
+
       <section className="sheet rv">
         <div className="pad">
           <RH n={N()} kick="For parents & mentors" />
@@ -734,29 +824,17 @@ type ReportRole = { role: string; domain: string; fit: number; why: string; sala
  * roles from the top domains, so older banks still render.
  */
 function coherentRoles(a: AssessmentSummary, fits: DomainFit[]): ReportRole[] {
-  const byName = Object.fromEntries(Object.values(DOMAINS).map((d) => [d.name, d]));
-  const named = (a.matches ?? []).filter((m) => m.title);
-  if (named.length) {
-    const seenDomain = new Set<string>();
-    return named.slice(0, 6).map((m) => {
-      const dom = byName[m.blurb ?? ""] ?? byName[m.roles?.[0] ?? ""];
-      // salary is a domain-level range — print it once per domain
-      const first = dom ? !seenDomain.has(dom.name) : false;
-      if (dom) seenDomain.add(dom.name);
-      return {
-        role: m.title,
-        domain: dom?.name ?? m.blurb ?? "",
-        fit: Math.max(40, Math.min(96, Math.round(m.fitmentPct ?? 0))),
-        why: fits.find((f) => f.name === dom?.name)?.why ?? "",
-        salaryIndia: first && dom ? dom.salaryIndia : "",
-        salaryAbroad: first && dom ? dom.salaryAbroad : "",
-      };
-    });
-  }
+  // Priority 0 fix: always use `fits` as the canonical source, computed fresh from assessment data.
+  // This ensures career recommendations are consistent with domainFit and top-domain logic elsewhere.
+  // If a.matches existed from an older backend run, it may contradict the current fits —
+  // prefer current data over stale precomputed matches.
   const out: ReportRole[] = [];
-  fits.slice(0, 3).forEach((d) => {
+  // Sort by actual fit score descending to ensure top-recommended domains appear first
+  fits.slice().sort((x, y) => y.fit - x.fit).slice(0, 3).forEach((d) => {
     (d.roles ?? []).slice(0, 2).forEach((role, ri) => {
-      out.push({ role, domain: d.name, fit: Math.max(45, Math.min(95, d.fit - ri * 3)), why: d.why, salaryIndia: d.salaryIndia, salaryAbroad: d.salaryAbroad });
+      // Use actual domain fit score, slight variation per role to show diversity
+      const roleFit = Math.max(25, Math.min(100, d.fit - ri * 2));
+      out.push({ role, domain: d.name, fit: roleFit, why: d.why, salaryIndia: d.salaryIndia, salaryAbroad: d.salaryAbroad });
     });
   });
   return out.slice(0, 6);
@@ -863,7 +941,7 @@ function RiasecHex({ themes }: { themes: { letter: string; title?: string; score
   );
 }
 
-function DomainCard({ d, rank }: { d: Domain & { fit: number; why?: string }; rank: number }) {
+function DomainCard({ d, rank }: { d: DomainFit; rank: number }) {
   return (
     // Same rank colour as the Career DNA cards, so a domain that is 2nd in one
     // section is not green there and red here.
@@ -871,9 +949,27 @@ function DomainCard({ d, rank }: { d: Domain & { fit: number; why?: string }; ra
       <div className="dom-hd">
         <span className="rk">{rank}</span>
         <div><div className="nm">{d.name}</div><div className="tl">{d.tagline}{d.why ? <span className="why"> · {d.why}</span> : null}</div></div>
-        {d.fit ? <div className="fit"><b>{d.fit}%</b><span>Fit</span></div> : null}
+        {d.fit ? (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
+            <div className="fit"><b>{d.fit}%</b><span>Fit</span></div>
+            <div style={{ fontSize: '11px', fontWeight: '600', color: '#6b7280' }}>
+              {d.breakdown?.confidence === 4 ? '★★★★ Strong' : d.breakdown?.confidence === 3 ? '★★★ Good' : '★★ Moderate'}
+            </div>
+          </div>
+        ) : null}
       </div>
       <div className="dom-bd">
+        {d.breakdown && (
+          <div className="dcell" style={{ background: '#f9fafb', padding: '12px', borderRadius: '6px', gridColumn: "1 / -1" }}>
+            <div className="h" style={{ marginBottom: '8px' }}>What aligns with your profile</div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '13px' }}>
+              <div><span style={{ color: '#6b7280' }}>Interest:</span> <span style={{ fontWeight: '600', color: '#1f2937' }}>{d.breakdown.interest}%</span></div>
+              {d.breakdown.aptitude !== null && <div><span style={{ color: '#6b7280' }}>Aptitude:</span> <span style={{ fontWeight: '600', color: '#1f2937' }}>{d.breakdown.aptitude}%</span></div>}
+              {d.breakdown.mi !== null && <div><span style={{ color: '#6b7280' }}>Intelligence:</span> <span style={{ fontWeight: '600', color: '#1f2937' }}>{d.breakdown.mi}%</span></div>}
+              {d.breakdown.values !== null && <div><span style={{ color: '#6b7280' }}>Values:</span> <span style={{ fontWeight: '600', color: '#1f2937' }}>{d.breakdown.values}%</span></div>}
+            </div>
+          </div>
+        )}
         <div className="dcell"><div className="h">What it is</div><p>{d.whatItIs}</p></div>
         <div className="dcell"><div className="h">How to join</div><p>{d.howToJoin.join(" · ")}</p></div>
         <div className="dcell" style={{ gridColumn: "1 / -1" }}>
@@ -884,6 +980,48 @@ function DomainCard({ d, rank }: { d: Domain & { fit: number; why?: string }; ra
         <div className="dcell"><div className="h">Explore</div><div className="dlinks">{d.links.slice(0, 3).map((l) => <a key={l.url} href={l.url} target="_blank" rel="noreferrer">{l.label}</a>)}</div></div>
       </div>
     </div>
+  );
+}
+
+function DownloadButton({ format, name }: { format: "pdf" | "html"; name?: string }) {
+  const handleDownload = () => {
+    const element = document.querySelector(".frx");
+    if (!element) {
+      alert("Report not found");
+      return;
+    }
+
+    const filename = `${name || "Assessment-Report"}-${new Date().toISOString().split("T")[0]}`;
+
+    if (format === "html") {
+      const htmlContent = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${filename}</title><style>body{font-family:system-ui,sans-serif;margin:20px}.frx{max-width:900px;margin:0 auto}</style></head><body>${element.outerHTML}</body></html>`;
+      const blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${filename}.html`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } else if (format === "pdf") {
+      const printWindow = window.open("", "", "height=600,width=800");
+      if (printWindow) {
+        printWindow.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${filename}</title><style>@page{margin:10mm}body{font-family:system-ui,sans-serif}</style></head><body>${element.outerHTML}</body></html>`);
+        printWindow.document.close();
+        setTimeout(() => { printWindow.print(); }, 250);
+      }
+    }
+  };
+
+  const icon = format === "pdf" ? "📄" : "📋";
+  const label = format === "pdf" ? "Download as PDF" : "Download as HTML";
+  const desc = format === "pdf" ? "Print to PDF" : "View in browser";
+
+  return (
+    <button onClick={handleDownload} style={{ padding: "20px", border: "1px solid #e5e7eb", borderRadius: "12px", background: "#f9fafb", cursor: "pointer", textAlign: "left", fontFamily: "inherit" }}>
+      <div style={{ fontSize: "24px", marginBottom: "8px" }}>{icon}</div>
+      <div style={{ fontSize: "16px", fontWeight: "600", color: "#1f2937" }}>{label}</div>
+      <div style={{ fontSize: "13px", color: "#6b7280" }}>{desc}</div>
+    </button>
   );
 }
 
@@ -935,7 +1073,7 @@ const CSS = `
 
 .frx .rh{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px}
 .frx .rh .brandmark img{height:30px;width:auto;display:block}
-.frx .rh .rh-dim{font-size:22px;font-weight:800;color:var(--faint)}
+.frx .rh .rh-dim{font-size:26px;font-weight:800;color:var(--dc,var(--red))}
 .frx .rh .ey{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;color:var(--ink-2)}
 .frx .rh .ey .k{width:8px;height:8px;border-radius:50%;background:var(--red)}
 .frx .rh .rh-n{font-style:normal;color:var(--faint);font-weight:800}
@@ -1014,8 +1152,8 @@ const CSS = `
 .frx .ec-k{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);display:block}
 .frx .ec-v{font-size:14px;font-weight:800;color:var(--ink);margin-top:3px;display:block}
 .frx .exec-r{display:flex;flex-direction:column;align-items:center;gap:14px}
-.frx .exec-legend{font-size:12px;color:var(--ink-2);display:flex;flex-direction:column;gap:6px;text-align:center}
-.frx .exec-caveat{margin-top:10px;max-width:230px;font-size:10.5px;line-height:1.5;color:var(--muted);text-align:center}
+.frx .exec-legend{font-size:14px;color:var(--ink-2);display:flex;flex-direction:column;gap:6px;text-align:center}
+.frx .exec-caveat{margin-top:10px;max-width:230px;font-size:12px;line-height:1.5;color:var(--muted);text-align:center}
 .frx .exec-legend b{font-weight:800}
 
 /* dna */
@@ -1095,26 +1233,28 @@ const CSS = `
 .frx .brow .lb{font-size:12.5px;color:var(--ink-2);font-weight:600}
 .frx .brow .bk{display:block}
 .frx .brow .vv{font-size:12.5px;font-weight:800;text-align:right}
+.frx .prose .subhd{color:var(--dc,var(--red));font-size:12px;font-weight:800;letter-spacing:.08em}
 .frx .prose .lead{font-size:14.5px;color:var(--ink)}
 .frx .prose p{font-size:13.5px;line-height:1.65;color:var(--ink-2)}
 .frx .prose p+p{margin-top:11px}
 .frx .twocard{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px}
 @media(max-width:560px){.frx .twocard{grid-template-columns:1fr}}
 .frx .lc{border:1px solid var(--line);border-radius:13px;padding:17px 17px 15px;background:#fff}
-.frx .lc.good{background:var(--red-tint);border-color:var(--red-line)}
-.frx .lc.grow{background:${C.bg}}
+.frx .lc.good{background:#dcf5e9;border-color:#b1e8d4}
+.frx .lc.grow{background:#fef3c7;border-color:#fde68a}
 .frx .lc h4{margin:0 0 11px;font-size:13px;font-weight:800;display:flex;align-items:center;gap:8px}
 .frx .lc h4::before{content:"";width:8px;height:8px;border-radius:2px}
-.frx .lc.good h4{color:var(--red-strong)}.frx .lc.good h4::before{background:var(--red)}
-.frx .lc.grow h4{color:var(--ink-2)}.frx .lc.grow h4::before{background:var(--faint)}
+.frx .lc.good h4{color:#1f7a55}.frx .lc.good h4::before{background:#10b981}
+.frx .lc.grow h4{color:#d97706}.frx .lc.grow h4::before{background:#f59e0b}
 .frx .lc ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
 .frx .lc li{position:relative;padding-left:23px;font-size:12.5px;line-height:1.5;color:var(--ink-2)}
 .frx .lc li::before{position:absolute;left:0;top:0;font-weight:800}
-.frx .lc.good li::before{content:"✓";color:var(--red)}.frx .lc.grow li::before{content:"→";color:var(--muted)}
+.frx .lc.good li::before{content:"✓";color:#10b981}.frx .lc.grow li::before{content:"→";color:#f59e0b}
 .frx .recos{margin-top:26px}
+.frx .recos .subhd{color:#d97706;font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .frx .recos ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;counter-reset:r}
-.frx .recos li{counter-increment:r;position:relative;padding:14px 16px 14px 54px;border:1px solid var(--line);border-left:3px solid var(--red);border-radius:12px;background:#fff;font-size:13px;line-height:1.55;color:var(--ink-2)}
-.frx .recos li::before{content:counter(r);position:absolute;left:14px;top:50%;transform:translateY(-50%);width:27px;height:27px;border-radius:8px;background:var(--red-tint);color:var(--red);display:grid;place-items:center;font-weight:800;font-size:13px}
+.frx .recos li{counter-increment:r;position:relative;padding:16px 18px 16px 56px;border:1px solid var(--line);border-left:3px solid #f59e0b;border-radius:12px;background:#fffbeb;font-size:14px;line-height:1.55;color:var(--ink-2)}
+.frx .recos li::before{content:counter(r);position:absolute;left:16px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:8px;background:#fef3c7;color:#d97706;display:grid;place-items:center;font-weight:800;font-size:14px;border:1px solid #fde68a}
 
 /* per-dimension category colour — each of the 8 pages reads in its own hue */
 .frx .param{--red:var(--dc);--red-strong:var(--dc);--red-tint:var(--dc-tint);--red-line:var(--dc-line)}

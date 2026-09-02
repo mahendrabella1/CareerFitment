@@ -48,6 +48,8 @@ export const firebaseReady = Boolean(
     config.authDomain
 );
 
+console.log("Firebase client config - Ready:", firebaseReady, "Config:", { apiKey: config.apiKey ? "***" : "MISSING", projectId: config.projectId, authDomain: config.authDomain });
+
 let app: FirebaseApp | null = null;
 let authInstance: Auth | null = null;
 let dbInstance: Firestore | null = null;

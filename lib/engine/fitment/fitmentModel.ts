@@ -5,6 +5,15 @@ import { MatchCategory } from "./types";
 // "how much does each category drive the career match?" and must sum to 1.
 // Learning Style is deliberately 0% — it is advisory, not a matcher.
 //
+// ⚠️ IMPORTANT: These career-specific weights differ from DOMAIN-level weights.
+// Career-specific matching (used for individual job recommendations) includes more
+// dimensions (personality, EI, academic) because specific roles have specific trait
+// requirements. Domain-level matching (used for broad field recommendations) uses
+// only core 4: interest (42%), aptitude (26%), MI (22%), values (10%).
+//
+// When a student is shown career matches, these weights apply with family-specific
+// multipliers. When shown domain recommendations, the domain weights apply.
+//
 // Kept as plain data (not in code paths) so it can later move to a
 // `fitment_model` table and be tuned per age-group/family without a redeploy.
 export const DEFAULT_MATCH_WEIGHTS: Record<MatchCategory, number> = {

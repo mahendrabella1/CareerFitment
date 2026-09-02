@@ -242,8 +242,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function signIn(email: string, password: string) {
     const auth = getFirebaseAuth();
+    console.log("AuthProvider.signIn called. Auth ready:", !!auth);
     if (!auth) throw new Error("Accounts are not configured yet.");
-    await signInWithEmailAndPassword(auth, email.trim(), password);
+    try {
+      console.log("Calling Firebase signInWithEmailAndPassword...");
+      await signInWithEmailAndPassword(auth, email.trim(), password);
+      console.log("Firebase signInWithEmailAndPassword succeeded");
+    } catch (err) {
+      console.error("Firebase signInWithEmailAndPassword failed:", err);
+      throw err;
+    }
   }
 
   // Firebase stores only a hash of the password, so there is nothing to "look

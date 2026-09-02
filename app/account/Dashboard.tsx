@@ -63,8 +63,8 @@ const KPI = [
 
 // Left-sidebar navigation → scrolls to the matching section id.
 const NAV = [
-  { id: "dimensions", label: "8 Dimensions", icon: "radar" },
   { id: "overview", label: "Overview", icon: "clusters" },
+  { id: "dimensions", label: "8 Dimensions", icon: "radar" },
   { id: "fields", label: "Best-fit Fields", icon: "compass" },
   { id: "mind", label: "How You Think", icon: "multiple_intelligence" },
   { id: "plan", label: "My Plan", icon: "check" },
@@ -143,7 +143,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
   const router = useRouter();
   const [view, setView] = useState<"dashboard" | "report" | "feature">("dashboard");
   const [navOpen, setNavOpen] = useState(false);
-  const [active, setActive] = useState("dimensions");
+  const [active, setActive] = useState("overview");
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
   const [toolkitTab, setToolkitTab] = useState(TOOLKIT_TABS[0].id);
   const [dimKey, setDimKey] = useState<string>(() => {
@@ -198,10 +198,10 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
     setNavOpen(false);
     // Feature navigation map
     const featureRoutes: Record<string, string> = {
-      "careers": "/account/features/careers",
+      "careers": "/account/career-library",
       "study-abroad": "/account/features/study-abroad",
       "exams": "/account/features/entrance-exams",
-      "internships": "/account/features/internships",
+      "internships": "/account/internships-new",
       "financial": "/account/features/financial-literacy",
       "legal": "/account/features/legal-resources",
       "research": "/account/features/research",

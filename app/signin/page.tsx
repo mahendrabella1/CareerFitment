@@ -2,7 +2,7 @@
 
 /** /signin — email + password sign-in, then go to the dashboard. */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "@/app/Logo";
@@ -12,12 +12,28 @@ import { emailIsValid } from "@/lib/auth/formOptions";
 export default function SignInPage() {
   const router = useRouter();
   const { ready, signIn, resetPassword } = useAuth();
+
+  useEffect(() => {
+    console.log("SignInPage mounted. Firebase ready:", ready);
+  }, [ready]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [resetting, setResetting] = useState(false);
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    console.log("Email changed to:", val);
+    setEmail(val);
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    console.log("Password changed to:", val ? "***" : "");
+    setPassword(val);
+  };
 
   // Nobody can look a password up — Firebase stores only a hash — so a student
   // who has forgotten theirs needs this to be one click away, not a support
@@ -52,21 +68,27 @@ export default function SignInPage() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    console.log("Form submitted. Ready:", ready, "Email:", email, "Password:", password ? "***" : "");
     setError("");
     setNotice("");
     if (!emailIsValid(email) || !password) {
+      console.log("Validation failed: email valid?", emailIsValid(email), "password?", !!password);
       setError("Enter your email and password.");
       return;
     }
     if (!ready) {
+      console.log("Not ready for signin");
       setError("Accounts aren’t configured on this deployment yet.");
       return;
     }
     setSubmitting(true);
     try {
+      console.log("Calling signIn...");
       await signIn(email, password);
+      console.log("SignIn successful, redirecting...");
       router.push("/account");
     } catch (err) {
+      console.error("SignIn error:", err);
       setError(authErrorMessage(err));
     } finally {
       setSubmitting(false);
@@ -93,12 +115,13 @@ export default function SignInPage() {
             </div>
           </div>
 
+          {!ready && <div style={{...S.errorBox, background: '#fff3cd', border: '1px solid #ffc107', color: '#856404'}}>⚠️ Firebase is not configured yet. Check browser console for details.</div>}
           {error && <div style={S.errorBox}>{error}</div>}
           {notice && <div style={S.noticeBox}>{notice}</div>}
 
           <form onSubmit={onSubmit} noValidate style={S.form}>
-            <input style={S.input} type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-            <input style={S.input} type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+            <input style={S.input} type="email" value={email} onChange={handleEmailChange} placeholder="Email" />
+            <input style={S.input} type="password" value={password} onChange={handlePasswordChange} placeholder="Password" />
             <button type="submit" style={{ ...S.submit, ...(submitting ? S.submitDisabled : {}) }} disabled={submitting}>
               {submitting ? "Signing in…" : "Sign in"}
             </button>
