@@ -103,7 +103,7 @@ export async function shareReportViaEmail(
  */
 export async function getReport(assessmentId: string) {
   try {
-    const response = await fetch(`/api/assessment/${assessmentId}`);
+    const response = await fetch(`/api/report-generator/${assessmentId}`);
 
     if (!response.ok) {
       throw new Error("Failed to fetch assessment");

@@ -26,7 +26,7 @@ export default function AssessmentReportPage() {
         }
 
         // Fetch assessment responses from database
-        const response = await fetch(`/api/assessment/${assessmentId}`);
+        const response = await fetch(`/api/report-generator/${assessmentId}`);
 
         if (!response.ok) {
           throw new Error('Failed to fetch assessment data');
