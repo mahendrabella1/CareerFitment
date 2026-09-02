@@ -1,4 +1,13 @@
 {
+  "metadata": {
+    "assessment": "Class 11-12 Career & Psychometric Assessment",
+    "totalQuestions": 78,
+    "sections": 11,
+    "version": "1.0-FINAL",
+    "source": "Class 11th Psychometric test.docx.pdf",
+    "updated": "2026-09-03",
+    "notes": "78 questions from PDF - NO text inputs, NO audio, NO fill-in-the-blanks"
+  },
   "personality": {
     "11-12": {
       "Set 1": [
