@@ -121,7 +121,7 @@ export const ENTRANCE_EXAM_DATABASE: Record<string, EntranceExamProfile> = {
     successRate: 2.5,
     topColleges: ["IIT Delhi", "IIT Bombay", "IIT Kanpur", "IIT Madras", "IIT Roorkee"],
     avgPackage: "20-30 LPA",
-    wfhAvailability: "Very High",
+    wfhAvailability: "High",
     demandTrend: "Increasing",
     prepMaterials: [
       "Advanced coaching materials",
@@ -213,7 +213,7 @@ export const ENTRANCE_EXAM_DATABASE: Record<string, EntranceExamProfile> = {
     successRate: 8,
     topColleges: ["BITS Pilani", "BITS Goa", "BITS Hyderabad"],
     avgPackage: "15-20 LPA",
-    wfhAvailability: "Very High",
+    wfhAvailability: "High",
     demandTrend: "Stable",
     prepMaterials: [
       "BITSAT previous papers",
@@ -344,7 +344,7 @@ export const ENTRANCE_EXAM_DATABASE: Record<string, EntranceExamProfile> = {
       "IIM Kozhikode"
     ],
     avgPackage: "25-35 LPA",
-    wfhAvailability: "Very High",
+    wfhAvailability: "High",
     demandTrend: "Stable",
     prepMaterials: [
       "CAT previous papers",
@@ -387,7 +387,7 @@ export const ENTRANCE_EXAM_DATABASE: Record<string, EntranceExamProfile> = {
     successRate: 4,
     topColleges: ["Institute of Chartered Accountants of India"],
     avgPackage: "8-15 LPA",
-    wfhAvailability: "Very High",
+    wfhAvailability: "High",
     demandTrend: "Increasing",
     prepMaterials: [
       "ICAI study materials",
@@ -473,7 +473,7 @@ export const ENTRANCE_EXAM_DATABASE: Record<string, EntranceExamProfile> = {
     successRate: 5,
     topColleges: ["Institute of Cost Accountants of India"],
     avgPackage: "7-13 LPA",
-    wfhAvailability: "Very High",
+    wfhAvailability: "High",
     demandTrend: "Increasing",
     prepMaterials: [
       "ICMAI study materials",
@@ -511,7 +511,7 @@ export const ENTRANCE_EXAM_DATABASE: Record<string, EntranceExamProfile> = {
     examFee: 100,
     successRate: 0.12,
     topColleges: ["LBSNAA", "AICTE"],
-    avgPackage: "56000,
+    avgPackage: "56000",
     wfhAvailability: "Low",
     demandTrend: "Stable",
     prepMaterials: [

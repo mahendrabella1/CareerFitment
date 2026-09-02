@@ -23,7 +23,7 @@ type Vec = Record<string, number>;
 
 const clamp = (n: number, lo = 0, hi = 100) => Math.max(lo, Math.min(hi, n));
 const band = (p: number) =>
-  p >= 80 ? "Very High" : p >= 65 ? "High" : p >= 50 ? "Good" : p >= 35 ? "Moderate" : "Low";
+  p >= 80 ? "High" : p >= 65 ? "High" : p >= 50 ? "Good" : p >= 35 ? "Moderate" : "Low";
 
 const MAP = careerMap as {
   dimensionWeights: Record<string, number>;

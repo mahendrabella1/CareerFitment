@@ -12,16 +12,16 @@ export interface CareerMarketData {
   // Current Market Status (2025-2026)
   currentMarket: {
     jobOpenings: number; // Annual in India
-    competitionLevel: "Very Low" | "Low" | "Medium" | "High" | "Very High";
+    competitionLevel: "Low" | "Low" | "Medium" | "High" | "High";
     demandTrend: "Increasing" | "Stable" | "Decreasing";
-    saturationLevel: "Low" | "Medium" | "High" | "Very High";
+    saturationLevel: "Low" | "Medium" | "High" | "High";
     hiringVolume: number; // Companies actively hiring
   };
 
   // Regional Availability in India
   regionalDemand: {
     region: string;
-    availability: "Very High" | "High" | "Medium" | "Low" | "Very Low";
+    availability: "High" | "High" | "Medium" | "Low" | "Low";
     topCities: string[];
     avgSalary: number; // INR
     companies: number; // Number of companies hiring
@@ -38,7 +38,7 @@ export interface CareerMarketData {
 
   // AI/Automation Threat
   automationThreat: {
-    threatLevel: "Very Low" | "Low" | "Medium" | "High" | "Very High"; // 1-5 scale
+    threatLevel: "Low" | "Low" | "Medium" | "High" | "High"; // 1-5 scale
     riskScore: number; // 0-100
     affectedTasks: string[]; // What will be automated
     safeActivities: string[]; // What won't be automated
@@ -75,7 +75,7 @@ export interface CareerMarketData {
 
   // Global vs India Context
   globalVsIndia: {
-    globalDemand: "Very High" | "High" | "Medium" | "Low";
+    globalDemand: "High" | "High" | "Medium" | "Low";
     indiaVsGlobal: string;
     outsourcingRisk: string;
     expatriateDemand: string;
@@ -107,7 +107,7 @@ export const CAREER_MARKET_REALITY: CareerMarketData[] = [
 
     currentMarket: {
       jobOpenings: 150000,
-      competitionLevel: "Very High",
+      competitionLevel: "High",
       demandTrend: "Increasing",
       saturationLevel: "High",
       hiringVolume: 5000
@@ -116,14 +116,14 @@ export const CAREER_MARKET_REALITY: CareerMarketData[] = [
     regionalDemand: [
       {
         region: "Bangalore",
-        availability: "Very High",
+        availability: "High",
         topCities: ["Bangalore", "Koramangala", "Whitefield"],
         avgSalary: 1200000,
         companies: 1500
       },
       {
         region: "Hyderabad",
-        availability: "Very High",
+        availability: "High",
         topCities: ["Hyderabad", "HITEC City"],
         avgSalary: 1100000,
         companies: 1200
@@ -236,7 +236,7 @@ export const CAREER_MARKET_REALITY: CareerMarketData[] = [
     },
 
     globalVsIndia: {
-      globalDemand: "Very High",
+      globalDemand: "High",
       indiaVsGlobal: "Similar",
       outsourcingRisk: "High",
       expatriateDemand: "Very easy to work in US/EU/Singapore",
@@ -271,7 +271,7 @@ export const CAREER_MARKET_REALITY: CareerMarketData[] = [
     regionalDemand: [
       {
         region: "Bangalore",
-        availability: "Very High",
+        availability: "High",
         topCities: ["Bangalore", "Whitefield"],
         avgSalary: 1500000,
         companies: 800
@@ -377,7 +377,7 @@ export const CAREER_MARKET_REALITY: CareerMarketData[] = [
     },
 
     globalVsIndia: {
-      globalDemand: "Very High",
+      globalDemand: "High",
       indiaVsGlobal: "Higher in India (outsourcing hub)",
       outsourcingRisk: "High",
       expatriateDemand: "Very easy to work abroad",
@@ -405,7 +405,7 @@ export const CAREER_MARKET_REALITY: CareerMarketData[] = [
 
     currentMarket: {
       jobOpenings: 80000,
-      competitionLevel: "Very High",
+      competitionLevel: "High",
       demandTrend: "Increasing",
       saturationLevel: "High",
       hiringVolume: 3000
@@ -435,7 +435,7 @@ export const CAREER_MARKET_REALITY: CareerMarketData[] = [
       },
       {
         region: "Rural Areas",
-        availability: "Very High",
+        availability: "High",
         topCities: ["Government health posts"],
         avgSalary: 400000,
         companies: 5000
@@ -484,7 +484,7 @@ export const CAREER_MARKET_REALITY: CareerMarketData[] = [
       totalProfessionals: 1300000,
       growthVsSupply: "Supply > Demand",
       competitionIntensity: 9,
-      barrierToEntry: "Very High",
+      barrierToEntry: "High",
       easeToDifferentiate: "Difficult"
     },
 
@@ -512,9 +512,9 @@ export const CAREER_MARKET_REALITY: CareerMarketData[] = [
     },
 
     globalVsIndia: {
-      globalDemand: "Very High",
+      globalDemand: "High",
       indiaVsGlobal: "Lower in India",
-      outsourcingRisk: "Very Low",
+      outsourcingRisk: "Low",
       expatriateDemand:
         "High; can work in US/UK/Gulf with additional qualification",
       remotePossible: false
@@ -539,16 +539,16 @@ export const CAREER_MARKET_REALITY: CareerMarketData[] = [
 
     currentMarket: {
       jobOpenings: 0,
-      competitionLevel: "Very High",
+      competitionLevel: "High",
       demandTrend: "Increasing",
-      saturationLevel: "Very High",
+      saturationLevel: "High",
       hiringVolume: 0
     },
 
     regionalDemand: [
       {
         region: "Bangalore",
-        availability: "Very High",
+        availability: "High",
         topCities: ["Bangalore", "Electronic City"],
         avgSalary: 500000,
         companies: 5000
@@ -597,7 +597,7 @@ export const CAREER_MARKET_REALITY: CareerMarketData[] = [
     },
 
     automationThreat: {
-      threatLevel: "Very Low",
+      threatLevel: "Low",
       riskScore: 10,
       affectedTasks: [
         "Automation affects what you're building (not the role itself)"
@@ -646,9 +646,9 @@ export const CAREER_MARKET_REALITY: CareerMarketData[] = [
     },
 
     globalVsIndia: {
-      globalDemand: "Very High",
+      globalDemand: "High",
       indiaVsGlobal: "Similar",
-      outsourcingRisk: "Very Low",
+      outsourcingRisk: "Low",
       expatriateDemand: "Can start in any country",
       remotePossible: true
     },
@@ -747,7 +747,7 @@ export const CAREER_MARKET_REALITY: CareerMarketData[] = [
       totalProfessionals: 1500000,
       growthVsSupply: "Supply > Demand",
       competitionIntensity: 8,
-      barrierToEntry: "Very High",
+      barrierToEntry: "High",
       easeToDifferentiate: "Difficult"
     },
 
@@ -874,11 +874,9 @@ export function getCareersWithStrongestGrowth(): CareerMarketData[] {
  */
 export function getCareersRankedByAutomationThreat(): CareerMarketData[] {
   const threatRank = {
-    "Very Low": 1,
-    Low: 2,
-    Medium: 3,
-    High: 4,
-    "Very High": 5
+    "Low": 1,
+    "Medium": 2,
+    "High": 3
   };
 
   return [...CAREER_MARKET_REALITY].sort(

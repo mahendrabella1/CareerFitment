@@ -115,7 +115,7 @@ export interface CareerMatch {
   roles: string[];
   blurb: string;
   fitmentPct: number; // 0-100
-  band: "Very High" | "High" | "Good" | "Moderate" | "Low";
+  band: "High" | "High" | "Good" | "Moderate" | "Low";
   contributions: CategoryContribution[];
   gaps: string[]; // e.g. "Numerical aptitude 45 vs ~70 typical → build foundations"
 }

@@ -2,23 +2,28 @@ import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getFirestore, type Firestore, type Query } from 'firebase-admin/firestore';
 import { NextRequest, NextResponse } from 'next/server';
 
-const apps = getApps();
+export const dynamic = 'force-dynamic';
+
 let db: Firestore | undefined;
 
-if (apps.length === 0) {
-  initializeApp({
-    credential: cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    }),
-  });
+function initializeFirebase() {
+  if (db) return;
+  const apps = getApps();
+  if (apps.length === 0) {
+    initializeApp({
+      credential: cert({
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      }),
+    });
+  }
+  db = getFirestore();
 }
-
-db = getFirestore();
 
 export async function GET(request: NextRequest) {
   try {
+    initializeFirebase();
     const searchParams = request.nextUrl.searchParams;
     const limit = parseInt(searchParams.get('limit') || '50');
     const offset = parseInt(searchParams.get('offset') || '0');

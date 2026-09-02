@@ -21,7 +21,7 @@ export interface IndustryProfile {
   jobOpenings: {
     total: number;
     annual: number;
-    competitionLevel: "Low" | "Medium" | "High" | "Very High";
+    competitionLevel: "Low" | "Medium" | "High" | "High";
   };
   topEmployers: {
     name: string;
@@ -47,7 +47,7 @@ export interface IndustryProfile {
   };
   futureOutlook: string;
   regionalDemand: {
-    [region: string]: "Very High" | "High" | "Medium" | "Low";
+    [region: string]: "High" | "High" | "Medium" | "Low";
   };
   certifications: string[];
 }
@@ -76,7 +76,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
     jobOpenings: {
       total: 150000,
       annual: 45000,
-      competitionLevel: "Very High"
+      competitionLevel: "High"
     },
     topEmployers: [
       {
@@ -159,8 +159,8 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
     futureOutlook:
       "Strong growth expected. AI/ML, Cloud, and Cybersecurity skills in highest demand. Remote work becoming permanent.",
     regionalDemand: {
-      "Bangalore": "Very High",
-      "Hyderabad": "Very High",
+      "Bangalore": "High",
+      "Hyderabad": "High",
       "Pune": "High",
       "Delhi NCR": "High",
       "Mumbai": "High",
@@ -194,7 +194,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
     jobOpenings: {
       total: 80000,
       annual: 20000,
-      competitionLevel: "Very High"
+      competitionLevel: "High"
     },
     topEmployers: [
       {
@@ -264,7 +264,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
     futureOutlook:
       "Digital transformation, fintech disruption, and regulatory focus on fintech. Cryptocurrency emerging. Data science increasingly important.",
     regionalDemand: {
-      "Mumbai": "Very High",
+      "Mumbai": "High",
       "Delhi NCR": "High",
       "Bangalore": "High",
       "Hyderabad": "Medium"
@@ -358,8 +358,8 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
     futureOutlook:
       "Aging population, increased healthcare demand. Telemedicine growing. Digital health solutions expanding. AI in diagnostics emerging.",
     regionalDemand: {
-      "Hyderabad": "Very High",
-      "Delhi NCR": "Very High",
+      "Hyderabad": "High",
+      "Delhi NCR": "High",
       "Bangalore": "High",
       "Mumbai": "High",
       "Chennai": "High"
@@ -455,7 +455,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
     futureOutlook:
       "EdTech revolution transforming education. Online learning accelerating. Personalized learning gaining traction. Hybrid models becoming norm.",
     regionalDemand: {
-      "Bangalore": "Very High",
+      "Bangalore": "High",
       "Delhi NCR": "High",
       "Mumbai": "High",
       "Hyderabad": "High",
@@ -550,8 +550,8 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
     futureOutlook:
       "Rapid e-commerce growth in India. Supply chain optimization critical. AI/ML for personalization emerging. Logistics becoming core differentiator.",
     regionalDemand: {
-      "Bangalore": "Very High",
-      "Delhi NCR": "Very High",
+      "Bangalore": "High",
+      "Delhi NCR": "High",
       "Mumbai": "High",
       "Hyderabad": "High",
       "Pune": "Medium"
@@ -583,7 +583,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
     jobOpenings: {
       total: 25000,
       annual: 7000,
-      competitionLevel: "Very High"
+      competitionLevel: "High"
     },
     topEmployers: [
       {
@@ -646,8 +646,8 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
     futureOutlook:
       "Digital transformation driving consulting demand. ESG consulting growing. Data-driven advisory becoming standard. Remote consulting accelerating.",
     regionalDemand: {
-      "Mumbai": "Very High",
-      "Bangalore": "Very High",
+      "Mumbai": "High",
+      "Bangalore": "High",
       "Delhi NCR": "High",
       "Hyderabad": "High"
     },
@@ -740,7 +740,7 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
     futureOutlook:
       "India's manufacturing growth story. Make in India boosting demand. Automation increasing in factories. EV transition creating new roles.",
     regionalDemand: {
-      "Pune": "Very High",
+      "Pune": "High",
       "Delhi NCR": "High",
       "Tamil Nadu": "High",
       "Karnataka": "High",
@@ -829,8 +829,8 @@ export const INDUSTRY_PROFILES: IndustryProfile[] = [
     futureOutlook:
       "Urban development accelerating. Smart cities initiative growing. Green building becoming standard. Real estate tech disrupting sector.",
     regionalDemand: {
-      "Delhi NCR": "Very High",
-      "Mumbai": "Very High",
+      "Delhi NCR": "High",
+      "Mumbai": "High",
       "Bangalore": "High",
       "Hyderabad": "High",
       "Pune": "High"
@@ -898,7 +898,7 @@ export function getIndustriesByGrowth(): IndustryProfile[] {
  */
 export function getHighDemandIndustries(): IndustryProfile[] {
   return INDUSTRY_PROFILES.filter(
-    i => i.demandTrend === "Increasing" && i.jobOpenings.competitionLevel !== "Very High"
+    i => i.demandTrend === "Increasing" && i.jobOpenings.competitionLevel !== "High"
   );
 }
 

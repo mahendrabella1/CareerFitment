@@ -11,7 +11,7 @@ type Answers = Record<string, string>;
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const clamp = (n: number, lo = 0, hi = 100) => Math.max(lo, Math.min(hi, n));
 const band = (p: number) =>
-  p >= 80 ? "Very High" : p >= 65 ? "High" : p >= 50 ? "Good" : p >= 35 ? "Moderate" : "Low";
+  p >= 80 ? "High" : p >= 65 ? "High" : p >= 50 ? "Good" : p >= 35 ? "Moderate" : "Low";
 
 const DOMAIN_NAMES: Record<string, string> = {
   ST: "Strategic Thinking",

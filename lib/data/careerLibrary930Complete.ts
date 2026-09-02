@@ -165,7 +165,7 @@ export const CAREER_LIBRARY_930_COMPLETE: Career[] = [
     600000, 1300000, 1000000, 1900000, 85, 130, 130, 190,
     ["Master backend language", "Learn SQL deeply", "Build API projects", "Understand REST", "Learn Docker"],
     ["Master system design", "High-scale systems", "Lead architecture", "Mentor developers", "Tech lead role"],
-    ["high_demand", "stable"]
+    ["high_demand", "traditional"]
   ),
 
   createCareer(
@@ -270,7 +270,7 @@ export const CAREER_LIBRARY_930_COMPLETE: Career[] = [
     600000, 1200000, 1000000, 1700000, 80, 130, 120, 180,
     ["Master SQL deeply", "Learn database design", "Study performance tuning", "Backup strategies", "Get certified"],
     ["Optimize large-scale DBs", "Design data architecture", "Lead database team", "Implement sharding"],
-    ["high_demand", "stable"]
+    ["high_demand", "traditional"]
   ),
 
   createCareer(
@@ -404,7 +404,7 @@ export const CAREER_LIBRARY_930_COMPLETE: Career[] = [
     500000, 1100000, 850000, 1600000, 70, 120, 110, 180,
     ["Master CAD", "Learn MATLAB", "Build projects", "Internship", "GATE for higher studies"],
     ["Specialize in domain", "Lead design teams", "Become engineering manager"],
-    ["stable"]
+    ["traditional"]
   ),
 
   createCareer(
@@ -425,7 +425,7 @@ export const CAREER_LIBRARY_930_COMPLETE: Career[] = [
     400000, 900000, 700000, 1400000, 60, 110, 85, 155,
     ["Master civil concepts", "Learn design software", "Site experience", "Internship"],
     ["Lead large projects", "Specialize in domain", "Management"],
-    ["stable"]
+    ["traditional"]
   ),
 
   createCareer(
@@ -446,7 +446,7 @@ export const CAREER_LIBRARY_930_COMPLETE: Career[] = [
     500000, 1100000, 850000, 1600000, 70, 120, 110, 180,
     ["Master electrical concepts", "Learn design tools", "Lab experience", "Internship"],
     ["Lead design teams", "Specialize in power systems", "Management"],
-    ["stable"]
+    ["traditional"]
   ),
 
   // ========== More engineering careers continue...
@@ -581,7 +581,7 @@ export const CAREER_LIBRARY_930_COMPLETE: Career[] = [
     300000, 700000, 450000, 900000, 35, 65, 50, 95,
     ["Complete B.Ed", "Study subject deeply", "Pass TET/CTET", "Get teaching license"],
     ["Specialize in subject", "Leadership role", "Curriculum design"],
-    ["stable"]
+    ["traditional"]
   ),
 
   createCareer(
@@ -650,7 +650,7 @@ export const CAREER_LIBRARY_930_COMPLETE: Career[] = [
     300000, 700000, 450000, 900000, 40, 75, 60, 110,
     ["Complete 10th", "ITI training", "Apprenticeship"],
     ["Specialization in solar", "Business owner", "Master electrician"],
-    ["stable"]
+    ["traditional"]
   ),
 
   // ========== MORE TRADES...

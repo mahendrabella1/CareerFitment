@@ -664,7 +664,7 @@ function generateTopCareers(riasec: RIASECScore[], profile: PsychometricProfile,
       matchedDimensions: ["RIASEC-I", "Logical Aptitude", "Problem-solving"],
       requiredEducation: "B.Tech CS / BCA",
       salaryRange: "₹4-10 LPA (entry), ₹15-35 LPA (mid)",
-      growthPotential: "Very High",
+      growthPotential: "High",
       actionItems: ["Learn programming", "Build projects", "Competitive coding"]
     }
   ];

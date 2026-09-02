@@ -19,7 +19,7 @@ import {
 import { analyzeCareerAlignment, AlignmentAnalysis } from "@/lib/newAssessment/careerAlignmentEngine";
 
 import {
-  getCareerProgressionPathways,
+  getCareerProgression,
   calculateCumulativeSalary,
   getSalaryAtStage
 } from "@/lib/data/careerProgressionPathways";
@@ -92,6 +92,8 @@ export interface ReportData {
       careerTitle: string;
       fitScore: number;
       reasoning: string;
+      futureScope: string;
+      marketDemand: "High" | "High" | "Medium" | "Low";
     }>;
   };
 
@@ -101,21 +103,21 @@ export interface ReportData {
     fitScore: number;
     reasoning: string;
     futureScope: string;
-    marketDemand: "Very High" | "High" | "Medium" | "Low";
+    marketDemand: "High" | "High" | "Medium" | "Low";
   }>;
   output2: Array<{
     careerTitle: string;
     fitScore: number;
     reasoning: string;
     futureScope: string;
-    marketDemand: "Very High" | "High" | "Medium" | "Low";
+    marketDemand: "High" | "High" | "Medium" | "Low";
   }>;
   output3: Array<{
     careerTitle: string;
     fitScore: number;
     reasoning: string;
     futureScope: string;
-    marketDemand: "Very High" | "High" | "Medium" | "Low";
+    marketDemand: "High" | "High" | "Medium" | "Low";
   }>;
   output4: {
     alignmentScore: number;
@@ -334,11 +336,19 @@ function generateLayer4Data(
     "Start building portfolio/projects early"
   ];
 
-  const alternativeCareers = aspiration.alternativeOptions.slice(0, 3).map((career, idx) => ({
-    careerTitle: career,
-    fitScore: overallFitment - (idx + 1) * 5,
-    reasoning: `Alternative career aligned with your strengths`
-  }));
+  const alternativeCareers = aspiration.alternativeOptions.slice(0, 3).map((career, idx) => {
+    const marketData = getCareerMarketData(career);
+    const jobOpenings = marketData?.currentMarket?.jobOpenings || 0;
+    const demandLevel = jobOpenings > 5000 ? "High" : jobOpenings > 2000 ? "High" : "Medium";
+    const growthRate = marketData?.futureOutlook?.growthCAGR || 8;
+    return {
+      careerTitle: career,
+      fitScore: overallFitment - (idx + 1) * 5,
+      reasoning: `Alternative career aligned with your strengths`,
+      futureScope: `${growthRate}% projected growth over 5 years`,
+      marketDemand: demandLevel as "High" | "High" | "Medium" | "Low"
+    };
+  });
 
   return {
     careerAlignmentScore: overallFitment,
@@ -358,14 +368,14 @@ function generateOutput1(psychometric: PsychometricProfile) {
       fitScore: 85,
       reasoning: "Your logical reasoning and problem-solving skills are exceptional",
       futureScope: "High demand in IT sector, 15% annual growth",
-      marketDemand: "Very High" as const
+      marketDemand: "High" as const
     },
     {
       careerTitle: "Data Scientist",
       fitScore: 82,
       reasoning: "Strong analytical aptitude matches data-driven role requirements",
       futureScope: "Fastest growing tech role with 18% CAGR",
-      marketDemand: "Very High" as const
+      marketDemand: "High" as const
     },
     {
       careerTitle: "Engineer",
@@ -390,7 +400,7 @@ function generateOutput2(academic: AcademicRealityAnalysis, aspiringCareer: stri
       fitScore: 100 - idx * 10,
       reasoning: `Direct pathway from ${academic.currentStream} stream`,
       futureScope: "Accessible through your chosen stream",
-      marketDemand: idx === 0 ? ("Very High" as const) : ("High" as const)
+      marketDemand: idx === 0 ? ("High" as const) : ("High" as const)
     }));
 
   return compatibleCareers;

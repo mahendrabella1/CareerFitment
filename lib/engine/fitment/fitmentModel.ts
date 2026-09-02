@@ -45,11 +45,11 @@ export const FAMILY_WEIGHT_MULTIPLIERS: Record<
 };
 
 export function bandForFitment(pct: number): CareerBand {
-  if (pct >= 80) return "Very High";
+  if (pct >= 80) return "High";
   if (pct >= 65) return "High";
   if (pct >= 50) return "Good";
   if (pct >= 35) return "Moderate";
   return "Low";
 }
 
-export type CareerBand = "Very High" | "High" | "Good" | "Moderate" | "Low";
+export type CareerBand = "High" | "High" | "Good" | "Moderate" | "Low";

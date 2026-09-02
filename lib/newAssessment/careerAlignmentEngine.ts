@@ -50,7 +50,7 @@ export interface AlignmentAnalysis {
   // The Decision Framework
   decisionFramework: {
     shouldPursue: boolean;
-    confidenceLevel: "Very High" | "High" | "Moderate" | "Low";
+    confidenceLevel: "High" | "High" | "Moderate" | "Low";
     actionPlan: {
       immediate: string[]; // What to do in Class 11-12 (now)
       nextPhase: string[]; // What to do during entrance exams
@@ -72,7 +72,7 @@ export interface AlignmentAnalysis {
   realisticPicture: {
     bestCaseScenario: string; // If everything goes right
     worstCaseScenario: string; // If they struggle
-    likelihoodOfSuccess: "Very High" | "High" | "Moderate" | "Low";
+    likelihoodOfSuccess: "High" | "High" | "Moderate" | "Low";
     timeToDecision: string; // How long to decide if this is right?
   };
 
@@ -154,7 +154,7 @@ export function analyzeCareerAlignment(
       shouldPursue: overallScore >= 55,
       confidenceLevel:
         overallScore >= 80
-          ? "Very High"
+          ? "High"
           : overallScore >= 65
           ? "High"
           : overallScore >= 50
@@ -171,7 +171,7 @@ export function analyzeCareerAlignment(
       worstCaseScenario: `${studentCareerChoice} proves harder than expected. You struggle with key aspects, consider switching, or plateau in your career because it doesn't leverage your strengths.`,
       likelihoodOfSuccess:
         overallScore >= 75
-          ? "Very High"
+          ? "High"
           : overallScore >= 60
           ? "High"
           : overallScore >= 45

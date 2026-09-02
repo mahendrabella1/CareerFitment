@@ -93,7 +93,7 @@ export interface CareerSuccessPrediction {
   // Career satisfaction by personality
   satisfactionByType: {
     profileType: string; // e.g., "Independent, High Innovation, High Impact"
-    satisfaction: "Very High" | "High" | "Moderate" | "Low";
+    satisfaction: "High" | "High" | "Moderate" | "Low";
     reasoning: string;
   }[];
 
@@ -212,7 +212,7 @@ export const CAREER_COMPATIBILITY_MATRIX: CareerSuccessPrediction[] = [
     satisfactionByType: [
       {
         profileType: "Independent, High Innovation, High Mastery",
-        satisfaction: "Very High",
+        satisfaction: "High",
         reasoning: "Can work autonomously on complex problems, continuously learn new tech"
       },
       {
@@ -335,7 +335,7 @@ export const CAREER_COMPATIBILITY_MATRIX: CareerSuccessPrediction[] = [
     satisfactionByType: [
       {
         profileType: "High logical + High numerical + High independence",
-        satisfaction: "Very High",
+        satisfaction: "High",
         reasoning: "Can work autonomously, solve complex problems, see tangible impact"
       },
       {
@@ -461,7 +461,7 @@ export const CAREER_COMPATIBILITY_MATRIX: CareerSuccessPrediction[] = [
     satisfactionByType: [
       {
         profileType: "High I+S, High EI, High impact motivation",
-        satisfaction: "Very High",
+        satisfaction: "High",
         reasoning: "Help people directly; intellectual challenge; team environment"
       },
       {
@@ -476,7 +476,7 @@ export const CAREER_COMPATIBILITY_MATRIX: CareerSuccessPrediction[] = [
       },
       {
         profileType: "Low emotional stability",
-        satisfaction: "Very Low",
+        satisfaction: "Low",
         reasoning: "Will be overwhelmed; high suicide rate in medical profession"
       }
     ],
@@ -592,7 +592,7 @@ export const CAREER_COMPATIBILITY_MATRIX: CareerSuccessPrediction[] = [
     satisfactionByType: [
       {
         profileType: "High independence + High risk tolerance + High innovation",
-        satisfaction: "Very High",
+        satisfaction: "High",
         reasoning: "Building something from nothing; autonomy; creating impact"
       },
       {
@@ -607,7 +607,7 @@ export const CAREER_COMPATIBILITY_MATRIX: CareerSuccessPrediction[] = [
       },
       {
         profileType: "High stability need",
-        satisfaction: "Very Low",
+        satisfaction: "Low",
         reasoning: "Startups are inherently unstable; will be constantly anxious"
       }
     ],
@@ -645,8 +645,7 @@ export const CAREER_COMPATIBILITY_MATRIX: CareerSuccessPrediction[] = [
       problematicRIASEC: ["R", "A"],
       aptitudeLimits: {
         lowVerbal: "Cannot argue cases effectively",
-        lowLogical: "Cannot analyze complex legal arguments",
-        lowReading: "Cannot process law volumes efficiently"
+        lowLogical: "Cannot analyze complex legal arguments"
       },
       personalityMismatches: [
         "Very low detail orientation → miss critical legal points",
@@ -723,7 +722,7 @@ export const CAREER_COMPATIBILITY_MATRIX: CareerSuccessPrediction[] = [
     satisfactionByType: [
       {
         profileType: "High I+E, High verbal, High mastery, Strong advocacy",
-        satisfaction: "Very High",
+        satisfaction: "High",
         reasoning: "Master complex law; help people; win cases; intellectual challenge"
       },
       {
@@ -738,7 +737,7 @@ export const CAREER_COMPATIBILITY_MATRIX: CareerSuccessPrediction[] = [
       },
       {
         profileType: "Creative, artistic personality",
-        satisfaction: "Very Low",
+        satisfaction: "Low",
         reasoning: "Law's rigidity and precedent-focus will be frustrating"
       }
     ],

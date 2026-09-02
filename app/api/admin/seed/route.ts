@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { seedAllData } from '@/lib/firebase/seedData';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     // Simple auth check - replace with proper auth in production

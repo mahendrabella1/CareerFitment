@@ -18,8 +18,8 @@ export interface CareerStage {
   skills: string[];
   skillsToAcquire: string[];
   typicalCompanies: string[];
-  demandLevel: "Very High" | "High" | "Medium" | "Low";
-  jobSecurity: "Very High" | "High" | "Medium" | "Low";
+  demandLevel: "High" | "High" | "Medium" | "Low";
+  jobSecurity: "High" | "High" | "Medium" | "Low";
   workLifeBalance: "Excellent" | "Good" | "Fair" | "Poor";
   advancementOpportunity: string;
   alternativePaths: string[];
@@ -29,7 +29,7 @@ export interface CareerProgression {
   careerTitle: string;
   careerId: string;
   domain: string;
-  currentDemand: "Very High" | "High" | "Medium" | "Low";
+  currentDemand: "High" | "High" | "Medium" | "Low";
   growthOutlook: "Strong" | "Moderate" | "Stable" | "Declining";
   averageTenureYears: number;
   stages: CareerStage[];
@@ -57,7 +57,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
     careerTitle: "Software Engineer",
     careerId: "software-engineer-001",
     domain: "Technology",
-    currentDemand: "Very High",
+    currentDemand: "High",
     growthOutlook: "Strong",
     averageTenureYears: 15,
     stages: [
@@ -97,7 +97,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "Accenture",
           "Startup"
         ],
-        demandLevel: "Very High",
+        demandLevel: "High",
         jobSecurity: "High",
         workLifeBalance: "Good",
         advancementOpportunity:
@@ -145,8 +145,8 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "Goldman Sachs",
           "Startups (scaling)"
         ],
-        demandLevel: "Very High",
-        jobSecurity: "Very High",
+        demandLevel: "High",
+        jobSecurity: "High",
         workLifeBalance: "Fair",
         advancementOpportunity:
           "Move to Tech Lead or Manager track",
@@ -193,7 +193,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "Established tech firms"
         ],
         demandLevel: "High",
-        jobSecurity: "Very High",
+        jobSecurity: "High",
         workLifeBalance: "Poor",
         advancementOpportunity:
           "Progress to Senior Engineering Manager or VP Engineering",
@@ -239,7 +239,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "Fortune 500"
         ],
         demandLevel: "Medium",
-        jobSecurity: "Very High",
+        jobSecurity: "High",
         workLifeBalance: "Poor",
         advancementOpportunity:
           "Move to CTO or Co-founder role",
@@ -282,8 +282,8 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "Unicorns pre-IPO"
         ],
         demandLevel: "Low",
-        jobSecurity: "Very High",
-        workLifeBalance: "Very Poor",
+        jobSecurity: "High",
+        workLifeBalance: "Poor",
         advancementOpportunity:
           "Move to CEO or founding your own company",
         alternativePaths: [
@@ -353,7 +353,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
     careerTitle: "Data Scientist",
     careerId: "data-scientist-001",
     domain: "Technology / Analytics",
-    currentDemand: "Very High",
+    currentDemand: "High",
     growthOutlook: "Strong",
     averageTenureYears: 12,
     stages: [
@@ -393,8 +393,8 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "Fintech",
           "Analytics firms"
         ],
-        demandLevel: "Very High",
-        jobSecurity: "Very High",
+        demandLevel: "High",
+        jobSecurity: "High",
         workLifeBalance: "Good",
         advancementOpportunity:
           "Senior Data Scientist within 3-4 years",
@@ -439,8 +439,8 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "Unicorns",
           "Top analytics firms"
         ],
-        demandLevel: "Very High",
-        jobSecurity: "Very High",
+        demandLevel: "High",
+        jobSecurity: "High",
         workLifeBalance: "Fair",
         advancementOpportunity:
           "Manager or Principal Data Scientist",
@@ -484,7 +484,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "E-commerce leaders"
         ],
         demandLevel: "High",
-        jobSecurity: "Very High",
+        jobSecurity: "High",
         workLifeBalance: "Poor",
         advancementOpportunity:
           "VP Analytics or Chief Data Officer",
@@ -589,7 +589,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "Medical colleges"
         ],
         demandLevel: "High",
-        jobSecurity: "Very High",
+        jobSecurity: "High",
         workLifeBalance: "Poor",
         advancementOpportunity:
           "Specialize in MD/MS within 5-6 years",
@@ -635,7 +635,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "Private practice"
         ],
         demandLevel: "High",
-        jobSecurity: "Very High",
+        jobSecurity: "High",
         workLifeBalance: "Fair",
         advancementOpportunity:
           "Super-specialist or private practice",
@@ -680,7 +680,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "Healthcare startups"
         ],
         demandLevel: "Medium",
-        jobSecurity: "Very High",
+        jobSecurity: "High",
         workLifeBalance: "Good",
         advancementOpportunity:
           "Hospital director or Chief Medical Officer",
@@ -785,7 +785,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "Mid-size audit firms",
           "Corporate finance teams"
         ],
-        demandLevel: "Very High",
+        demandLevel: "High",
         jobSecurity: "High",
         workLifeBalance: "Poor",
         advancementOpportunity:
@@ -832,7 +832,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "In-house finance"
         ],
         demandLevel: "High",
-        jobSecurity: "Very High",
+        jobSecurity: "High",
         workLifeBalance: "Fair",
         advancementOpportunity:
           "Senior manager or Partner track",
@@ -876,7 +876,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "Sole practice"
         ],
         demandLevel: "Medium",
-        jobSecurity: "Very High",
+        jobSecurity: "High",
         workLifeBalance: "Poor",
         advancementOpportunity:
           "Firm leader or founder of own practice",
@@ -1027,7 +1027,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "Judicial appointments"
         ],
         demandLevel: "Medium",
-        jobSecurity: "Very High",
+        jobSecurity: "High",
         workLifeBalance: "Poor",
         advancementOpportunity:
           "Law firm founder or judicial appointment",
@@ -1071,7 +1071,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "Corporate boardrooms"
         ],
         demandLevel: "Low",
-        jobSecurity: "Very High",
+        jobSecurity: "High",
         workLifeBalance: "Fair",
         advancementOpportunity:
           "Supreme Court Judge or law firm founder",
@@ -1177,7 +1177,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "Private institutions"
         ],
         demandLevel: "High",
-        jobSecurity: "Very High",
+        jobSecurity: "High",
         workLifeBalance: "Good",
         advancementOpportunity:
           "Senior teacher within 5-7 years",
@@ -1221,7 +1221,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "Educational institutions"
         ],
         demandLevel: "Medium",
-        jobSecurity: "Very High",
+        jobSecurity: "High",
         workLifeBalance: "Good",
         advancementOpportunity:
           "Principal or higher education",
@@ -1265,7 +1265,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "EdTech founder"
         ],
         demandLevel: "Low",
-        jobSecurity: "Very High",
+        jobSecurity: "High",
         workLifeBalance: "Poor",
         advancementOpportunity:
           "Founder of educational institution or EdTech",
@@ -1332,7 +1332,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
     careerTitle: "Entrepreneur",
     careerId: "entrepreneur-001",
     domain: "Business / Startups",
-    currentDemand: "Very High",
+    currentDemand: "High",
     growthOutlook: "Strong",
     averageTenureYears: 10,
     stages: [
@@ -1368,9 +1368,9 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
         typicalCompanies: [
           "Self-founded startup"
         ],
-        demandLevel: "N/A",
+        demandLevel: "Low",
         jobSecurity: "Low",
-        workLifeBalance: "Very Poor",
+        workLifeBalance: "Poor",
         advancementOpportunity:
           "Scale to Series A/B within 2-3 years",
         alternativePaths: [
@@ -1410,7 +1410,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
         typicalCompanies: [
           "Series A/B startup"
         ],
-        demandLevel: "N/A",
+        demandLevel: "Low",
         jobSecurity: "Medium",
         workLifeBalance: "Poor",
         advancementOpportunity:
@@ -1454,7 +1454,7 @@ export const CAREER_PROGRESSIONS: CareerProgression[] = [
           "Public company",
           "Unicorn startup"
         ],
-        demandLevel: "N/A",
+        demandLevel: "Low",
         jobSecurity: "High",
         workLifeBalance: "Poor",
         advancementOpportunity:

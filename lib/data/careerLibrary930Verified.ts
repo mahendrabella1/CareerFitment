@@ -194,7 +194,7 @@ export const CAREER_LIBRARY_930_VERIFIED: Career[] = [
       steps: ["Master system design", "Specialize in high-scale systems", "Lead backend architecture", "Mentor developers", "Expert in chosen language ecosystem", "Tech lead role"],
       duration: "5-7 years"
     },
-    tags: ["high_demand", "stable"],
+    tags: ["high_demand", "traditional"],
     source: "onet-30.2",
     createdAt: new Date(),
     updatedAt: new Date()
