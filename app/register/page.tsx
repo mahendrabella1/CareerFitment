@@ -20,11 +20,11 @@ import { trackEvent } from "@/lib/metaPixel";
 const NAVY = "#2f3f9e";
 const BG = "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1600&q=70";
 
-// Only Class 9–10 is open for now; the rest are shown but disabled ("Soon").
+// Class 9–10 and Class 11–12 are now open; the rest are shown but disabled ("Soon").
 const MILESTONES = [
   { value: "class_6_8", label: "Class 6 – 8", icon: "school", color: "#2f6bff", soft: "#e9f0ff", enabled: false },
   { value: "class_9_10", label: "Class 9 – 10", icon: "route", color: "#16a34a", soft: "#e6f6ec", enabled: true },
-  { value: "class_11_12", label: "Class 11 – 12", icon: "compass", color: "#7c3aed", soft: "#f1e9fd", enabled: false },
+  { value: "class_11_12", label: "Class 11 – 12", icon: "compass", color: "#7c3aed", soft: "#f1e9fd", enabled: true },
   { value: "graduate", label: "Graduates", icon: "cap", color: "#e08a0a", soft: "#fdf1dd", enabled: false },
   { value: "experienced_professional", label: "Professionals", icon: "briefcase", color: "#0d9488", soft: "#dff5f2", enabled: false },
 ];
