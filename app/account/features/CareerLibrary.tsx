@@ -21,10 +21,14 @@ const CLUSTERS = [
   { id: "education", label: "Education", icon: "🎓", color: "#3b82f6" },
 ];
 
+const ITEMS_PER_PAGE = 20;
+
 export default function CareerLibrary() {
   const allCareers = getAllCareers();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCluster, setSelectedCluster] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [showAllCareers, setShowAllCareers] = useState(false);
 
   const filtered = useMemo(() => {
     let result = searchQuery ? searchCareers(searchQuery) : allCareers;
@@ -33,6 +37,20 @@ export default function CareerLibrary() {
     }
     return result.sort((a, b) => a.name.localeCompare(b.name));
   }, [searchQuery, selectedCluster, allCareers]);
+
+  const paginatedCareers = useMemo(() => {
+    if (showAllCareers) return filtered;
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filtered.slice(start, start + ITEMS_PER_PAGE);
+  }, [filtered, currentPage, showAllCareers]);
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+
+  const handleClusterClick = (id: string) => {
+    setSelectedCluster(selectedCluster === id ? null : id);
+    setCurrentPage(1);
+    setShowAllCareers(false);
+  };
 
   return (
     <div style={styles.pageContainer}>
@@ -45,7 +63,7 @@ export default function CareerLibrary() {
             return (
               <button
                 key={cluster.id}
-                onClick={() => setSelectedCluster(selectedCluster === cluster.id ? null : cluster.id)}
+                onClick={() => handleClusterClick(cluster.id)}
                 style={{
                   ...styles.clusterItem,
                   ...(selectedCluster === cluster.id ? {...styles.clusterItemActive, borderLeftColor: cluster.color, backgroundColor: '#f8fafc'} : {}),
@@ -191,6 +209,74 @@ export default function CareerLibrary() {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* Browse All Careers */}
+        <section style={styles.allCareersSection}>
+          <div style={styles.sectionHeader}>
+            <h2 style={styles.sectionTitle}>
+              {selectedCluster ? `Browse ${CLUSTERS.find(c => c.id === selectedCluster)?.label || 'Careers'}` : 'Browse All Careers'}
+            </h2>
+            <div>{filtered.length} roles found</div>
+          </div>
+
+          <div style={styles.careersGrid}>
+            {paginatedCareers.map((career) => (
+              <Link key={career.id} href={`/careers/${career.id}`} style={styles.careerCard}>
+                <div style={styles.careerCardTitle}>{career.name}</div>
+                <div style={styles.careerCardCluster}>{career.clusterId}</div>
+                <div style={{fontSize: '12px', color: '#64748b', marginTop: '8px'}}>
+                  {career.currentDemand === 'high' ? '🔥 High Demand' : '📈 Growing'}
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && !showAllCareers && (
+            <div style={styles.paginationContainer}>
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                disabled={currentPage === 1}
+                style={{...styles.paginationBtn, ...(currentPage === 1 ? {opacity: 0.5, cursor: 'not-allowed'} : {})}}
+              >
+                ← Previous
+              </button>
+              <div style={styles.paginationInfo}>
+                Page {currentPage} of {totalPages}
+              </div>
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                disabled={currentPage === totalPages}
+                style={{...styles.paginationBtn, ...(currentPage === totalPages ? {opacity: 0.5, cursor: 'not-allowed'} : {})}}
+              >
+                Next →
+              </button>
+            </div>
+          )}
+
+          {/* Load All Button */}
+          {!showAllCareers && filtered.length > ITEMS_PER_PAGE && (
+            <div style={{textAlign: 'center', marginTop: '24px'}}>
+              <button
+                onClick={() => setShowAllCareers(true)}
+                style={styles.loadAllBtn}
+              >
+                Load all {filtered.length} careers
+              </button>
+            </div>
+          )}
+
+          {showAllCareers && filtered.length > ITEMS_PER_PAGE && (
+            <div style={{textAlign: 'center', marginTop: '24px'}}>
+              <button
+                onClick={() => {setShowAllCareers(false); setCurrentPage(1);}}
+                style={styles.loadAllBtn}
+              >
+                Show paginated view
+              </button>
+            </div>
+          )}
         </section>
       </main>
     </div>
@@ -557,5 +643,85 @@ const styles = {
     fontSize: '14px',
     fontWeight: '600',
     color: '#1e293b',
+  } as React.CSSProperties,
+
+  allCareersSection: {
+    marginTop: '48px',
+  } as React.CSSProperties,
+
+  careersGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+    gap: '16px',
+    marginBottom: '24px',
+  } as React.CSSProperties,
+
+  careerCard: {
+    backgroundColor: '#fff',
+    padding: '16px',
+    borderRadius: '8px',
+    border: '1px solid #e2e8f0',
+    cursor: 'pointer',
+    transition: 'all 200ms ease',
+    textDecoration: 'none',
+    display: 'block',
+    ':hover': {
+      borderColor: '#3b5bdb',
+      boxShadow: '0 4px 12px rgba(59, 91, 219, 0.1)',
+    }
+  } as React.CSSProperties,
+
+  careerCardTitle: {
+    fontSize: '14px',
+    fontWeight: '700',
+    color: '#1e293b',
+    marginBottom: '6px',
+  } as React.CSSProperties,
+
+  careerCardCluster: {
+    fontSize: '12px',
+    color: '#64748b',
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.05em',
+  } as React.CSSProperties,
+
+  paginationContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '16px',
+    marginTop: '32px',
+    paddingTop: '24px',
+    borderTop: '1px solid #e2e8f0',
+  } as React.CSSProperties,
+
+  paginationBtn: {
+    padding: '8px 16px',
+    border: '1px solid #e2e8f0',
+    borderRadius: '6px',
+    backgroundColor: '#fff',
+    color: '#3b5bdb',
+    fontWeight: '600',
+    cursor: 'pointer',
+    transition: 'all 200ms ease',
+  } as React.CSSProperties,
+
+  paginationInfo: {
+    fontSize: '14px',
+    color: '#64748b',
+    fontWeight: '600',
+    minWidth: '120px',
+    textAlign: 'center' as const,
+  } as React.CSSProperties,
+
+  loadAllBtn: {
+    padding: '12px 28px',
+    backgroundColor: '#3b5bdb',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '8px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    transition: 'all 200ms ease',
   } as React.CSSProperties,
 };

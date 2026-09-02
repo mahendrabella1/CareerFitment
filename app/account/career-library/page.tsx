@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Search, Bookmark, TrendingUp, ArrowRight } from 'lucide-react';
 import { getCareers } from '@/lib/data/careerLoader';
 
@@ -36,14 +37,18 @@ const typeColorMap: Record<string, string> = {
   Professional: '#3B82F6',
 };
 
+const ITEMS_PER_PAGE = 20;
+
 export default function CareerLibraryPage() {
+  const router = useRouter();
   const [search, setSearch] = useState('');
   const [selectedDomain, setSelectedDomain] = useState('All');
   const [careerType, setCareerType] = useState('All');
   const [educationLevel, setEducationLevel] = useState('All');
   const [sort, setSort] = useState('A to Z');
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const careers = useMemo(() => {
+  const allCareers = useMemo(() => {
     const { data } = getCareers(0, 1000); // Get all careers
     let filtered = data.filter((c) => {
       const matchSearch = (c.name + ' ' + c.cluster + ' ' + c.overview + ' ' + (c.skills?.join(' ') || '')).toLowerCase().includes(search.toLowerCase());
@@ -61,13 +66,24 @@ export default function CareerLibraryPage() {
     return filtered;
   }, [search, selectedDomain, careerType, sort]);
 
+  const totalPages = Math.ceil(allCareers.length / ITEMS_PER_PAGE);
+  const paginatedCareers = allCareers.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  const handleFilterChange = () => {
+    setCurrentPage(1);
+  };
+
   return (
     <div style={{ minHeight: '100vh', background: '#f8f9fa', padding: 0 }}>
-      {/* Header */}
-      <div style={{ background: '#fff', borderBottom: '1px solid #e5e7eb', padding: '16px 24px' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <h1 style={{ fontSize: '20px', fontWeight: 600, color: '#1f2937' }}>Career Library</h1>
-        </div>
+      {/* Header with Back Button */}
+      <div style={{ background: '#fff', borderBottom: '1px solid #e5e7eb', padding: '12px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1 style={{ fontSize: '20px', fontWeight: 600, color: '#1f2937', margin: 0 }}>Career Library</h1>
+        <button
+          onClick={() => router.back()}
+          style={{ padding: '8px 16px', background: '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '6px', cursor: 'pointer', fontSize: 13, fontWeight: 600, color: '#6b7280' }}
+        >
+          ← Back to Dashboard
+        </button>
       </div>
 
       {/* Hero Section */}
@@ -92,7 +108,7 @@ export default function CareerLibraryPage() {
                 <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', width: '18px', height: '18px', color: '#9ca3af' }} />
                 <input
                   value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={(e) => { setSearch(e.target.value); handleFilterChange(); }}
                   placeholder="Search careers by title, keyword or domain…"
                   style={{
                     width: '100%',
@@ -160,7 +176,7 @@ export default function CareerLibraryPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px', marginBottom: '32px', alignItems: 'flex-end' }}>
           <div>
             <label style={{ fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>Sub Domain</label>
-            <select value={selectedDomain} onChange={(e) => setSelectedDomain(e.target.value)}
+            <select value={selectedDomain} onChange={(e) => { setSelectedDomain(e.target.value); handleFilterChange(); }}
               style={{ width: '100%', padding: '10px', border: '1px solid #e5e7eb', borderRadius: '6px', fontSize: '14px', background: '#fff' }}>
               <option value="All">All</option>
               {DOMAIN_CARDS.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
@@ -168,7 +184,7 @@ export default function CareerLibraryPage() {
           </div>
           <div>
             <label style={{ fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>Career Type</label>
-            <select value={careerType} onChange={(e) => setCareerType(e.target.value)}
+            <select value={careerType} onChange={(e) => { setCareerType(e.target.value); handleFilterChange(); }}
               style={{ width: '100%', padding: '10px', border: '1px solid #e5e7eb', borderRadius: '6px', fontSize: '14px', background: '#fff' }}>
               <option value="All">All</option>
               <option value="Technical">Technical</option>
@@ -179,20 +195,20 @@ export default function CareerLibraryPage() {
           </div>
           <div>
             <label style={{ fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>Education Level</label>
-            <select value={educationLevel} onChange={(e) => setEducationLevel(e.target.value)}
+            <select value={educationLevel} onChange={(e) => { setEducationLevel(e.target.value); handleFilterChange(); }}
               style={{ width: '100%', padding: '10px', border: '1px solid #e5e7eb', borderRadius: '6px', fontSize: '14px', background: '#fff' }}>
               <option value="All">All</option>
             </select>
           </div>
           <div>
             <label style={{ fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>Sort By</label>
-            <select value={sort} onChange={(e) => setSort(e.target.value)}
+            <select value={sort} onChange={(e) => { setSort(e.target.value); handleFilterChange(); }}
               style={{ width: '100%', padding: '10px', border: '1px solid #e5e7eb', borderRadius: '6px', fontSize: '14px', background: '#fff' }}>
               <option value="A to Z">A to Z</option>
               <option value="Salary (High to Low)">Salary (High to Low)</option>
             </select>
           </div>
-          <button onClick={() => { setSearch(''); setSelectedDomain('All'); setCareerType('All'); }}
+          <button onClick={() => { setSearch(''); setSelectedDomain('All'); setCareerType('All'); handleFilterChange(); }}
             style={{ color: '#7c3aed', background: 'none', border: 'none', fontSize: '14px', fontWeight: '600', cursor: 'pointer', textDecoration: 'underline' }}>
             Clear Filters
           </button>
@@ -200,7 +216,12 @@ export default function CareerLibraryPage() {
 
         {/* Results */}
         <div style={{ marginBottom: '24px' }}>
-          <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1f2937', marginBottom: '16px' }}>All Careers ({careers.length}+)</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1f2937', margin: 0 }}>All Careers ({allCareers.length})</h3>
+            <div style={{ fontSize: '13px', color: '#6b7280', fontWeight: 500 }}>
+              Showing {Math.min((currentPage - 1) * ITEMS_PER_PAGE + 1, allCareers.length)}-{Math.min(currentPage * ITEMS_PER_PAGE, allCareers.length)} of {allCareers.length}
+            </div>
+          </div>
 
           {/* Table */}
           <div style={{ overflowX: 'auto', background: '#fff', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
@@ -216,7 +237,7 @@ export default function CareerLibraryPage() {
                 </tr>
               </thead>
               <tbody>
-                {careers.slice(0, 20).map((career, idx) => {
+                {paginatedCareers.map((career, idx) => {
                   const cType = getCareerType(career.name);
                   const outlook = getGrowthOutlook(career.name);
                   const color = typeColorMap[cType] || '#6366F1';
@@ -258,15 +279,38 @@ export default function CareerLibraryPage() {
         </div>
 
         {/* Pagination */}
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', marginTop: '32px' }}>
-          <button style={{ padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: '6px', background: '#fff', cursor: 'pointer' }}>←</button>
-          <button style={{ padding: '8px 12px', border: '1px solid #7c3aed', borderRadius: '6px', background: '#7c3aed', color: '#fff', fontWeight: '600', cursor: 'pointer' }}>1</button>
-          <button style={{ padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: '6px', background: '#fff', cursor: 'pointer' }}>2</button>
-          <button style={{ padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: '6px', background: '#fff', cursor: 'pointer' }}>3</button>
-          <span style={{ color: '#9ca3af' }}>...</span>
-          <button style={{ padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: '6px', background: '#fff', cursor: 'pointer' }}>30</button>
-          <button style={{ padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: '6px', background: '#fff', cursor: 'pointer' }}>→</button>
-        </div>
+        {totalPages > 1 && (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', marginTop: '32px', flexWrap: 'wrap' }}>
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+              style={{ padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: '6px', background: '#fff', cursor: currentPage === 1 ? 'not-allowed' : 'pointer', opacity: currentPage === 1 ? 0.5 : 1 }}
+            >
+              ←
+            </button>
+            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+              const pageNum = currentPage <= 3 ? i + 1 : currentPage >= totalPages - 2 ? totalPages - 4 + i : currentPage - 2 + i;
+              if (pageNum < 1 || pageNum > totalPages) return null;
+              return (
+                <button
+                  key={pageNum}
+                  onClick={() => setCurrentPage(pageNum)}
+                  style={{ padding: '8px 12px', border: currentPage === pageNum ? '1px solid #7c3aed' : '1px solid #e5e7eb', borderRadius: '6px', background: currentPage === pageNum ? '#7c3aed' : '#fff', color: currentPage === pageNum ? '#fff' : '#1f2937', fontWeight: currentPage === pageNum ? '600' : '400', cursor: 'pointer' }}
+                >
+                  {pageNum}
+                </button>
+              );
+            })}
+            {totalPages > 5 && <span style={{ color: '#9ca3af' }}>...</span>}
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages}
+              style={{ padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: '6px', background: '#fff', cursor: currentPage === totalPages ? 'not-allowed' : 'pointer', opacity: currentPage === totalPages ? 0.5 : 1 }}
+            >
+              →
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

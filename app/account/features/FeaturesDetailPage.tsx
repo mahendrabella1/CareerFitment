@@ -86,7 +86,9 @@ const FEATURE_CONFIG = {
 
 export default function FeaturesDetailPage({ featureId, onClose }: { featureId: string; onClose: () => void }) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState("internships");
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 30;
 
   useEffect(() => {
     if (featureId === "careers") {
@@ -183,12 +185,21 @@ function EntranceExamsPage() {
 
 // Internships Detail Page
 function InternshipsDetailPage({ activeTab, setActiveTab }: { activeTab: string; setActiveTab: (tab: string) => void }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 30;
   const config = FEATURE_CONFIG.internships;
   const internships = getInternships();
   const workshops = getWorkshops();
   const scholarships = getScholarships();
 
   const data = activeTab === "internships" ? internships : activeTab === "workshops" ? workshops : scholarships;
+  const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
+  const paginatedData = data.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    setCurrentPage(1);
+  };
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
@@ -202,24 +213,29 @@ function InternshipsDetailPage({ activeTab, setActiveTab }: { activeTab: string;
         {config.subtitle}
       </p>
 
-      <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[6], flexWrap: "wrap" }}>
-        {["internships", "workshops", "scholarships"].map((tab) => (
-          <button
-            key={tab}
-            type="button"
-            onClick={() => setActiveTab(tab)}
-            style={{
-              ...styles.tabBtn,
-              ...(activeTab === tab ? { ...styles.tabBtnActive, background: config.accentColor, borderColor: config.accentColor } : {}),
-            }}
-          >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
-          </button>
-        ))}
+      <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[6], flexWrap: "wrap", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: spacing[2], flexWrap: "wrap" }}>
+          {["internships", "workshops", "scholarships"].map((tab) => (
+            <button
+              key={tab}
+              type="button"
+              onClick={() => handleTabChange(tab)}
+              style={{
+                ...styles.tabBtn,
+                ...(activeTab === tab ? { ...styles.tabBtnActive, background: config.accentColor, borderColor: config.accentColor } : {}),
+              }}
+            >
+              {tab.charAt(0).toUpperCase() + tab.slice(1)} ({(tab === "internships" ? getInternships() : tab === "workshops" ? getWorkshops() : getScholarships()).length})
+            </button>
+          ))}
+        </div>
+        <div style={{ fontSize: 13, color: colors.ink[30], fontWeight: 600 }}>
+          Showing {Math.min((currentPage - 1) * ITEMS_PER_PAGE + 1, data.length)}-{Math.min(currentPage * ITEMS_PER_PAGE, data.length)} of {data.length}
+        </div>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
-        {data.slice(0, 20).map((item: any, idx: number) => (
+        {paginatedData.map((item: any, idx: number) => (
           <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[10] }}>{item.title || item.name}</h3>
             <p style={{ fontSize: 14, color: colors.ink[30], lineHeight: 1.6, margin: 0, marginBottom: spacing[3] }}>
@@ -237,6 +253,29 @@ function InternshipsDetailPage({ activeTab, setActiveTab }: { activeTab: string;
           </div>
         ))}
       </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: spacing[3], marginTop: spacing[8] }}>
+          <button
+            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+            disabled={currentPage === 1}
+            style={{ ...styles.tabBtn, opacity: currentPage === 1 ? 0.5 : 1, cursor: currentPage === 1 ? 'not-allowed' : 'pointer' }}
+          >
+            ← Previous
+          </button>
+          <div style={{ fontSize: 14, fontWeight: 600, color: colors.ink[30], minWidth: '120px', textAlign: 'center' }}>
+            Page {currentPage} of {totalPages}
+          </div>
+          <button
+            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+            disabled={currentPage === totalPages}
+            style={{ ...styles.tabBtn, opacity: currentPage === totalPages ? 0.5 : 1, cursor: currentPage === totalPages ? 'not-allowed' : 'pointer' }}
+          >
+            Next →
+          </button>
+        </div>
+      )}
     </div>
   );
 }
