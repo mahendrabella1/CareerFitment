@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import { app } from '@/lib/firebase/client';
+import { doc, getDoc } from 'firebase/firestore';
+import { getDb } from '@/lib/firebase/client';
 
 /**
  * GET /api/report-generator/[assessmentId]
@@ -21,7 +21,14 @@ export async function GET(
     }
 
     // Initialize Firestore
-    const db = getFirestore(app);
+    const db = getDb();
+
+    if (!db) {
+      return NextResponse.json(
+        { error: 'Firebase not initialized' },
+        { status: 500 }
+      );
+    }
 
     // Fetch assessment document
     const assessmentRef = doc(db, 'assessments', assessmentId);
