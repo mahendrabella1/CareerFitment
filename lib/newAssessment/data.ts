@@ -10,6 +10,7 @@ import clustersData from "@/data/career-clusters.json";
 // flow: nothing maps a paying category to "11-12-demo".
 import demoBank from "@/data/demo-11-12/questions.json";
 import demoAptitude from "@/data/demo-11-12/aptitude.json";
+import class1112Bank from "@/data/class-11-12/questions.json";
 
 export type Category =
   | "personality"
@@ -19,7 +20,10 @@ export type Category =
   | "learning_styles"
   | "motivators"
   | "strengths"
-  | "aptitude";
+  | "aptitude"
+  | "subject_fit"
+  | "career_fit"
+  | "career_selector";
 
 
 export type StageKey = "6-8" | "9-10" | "11-12" | "11-12-demo" | "grad" | "early" | "prof";
@@ -71,9 +75,25 @@ const ORDER_11_12_DEMO: Category[] = [
   "aptitude",
 ];
 
+// Class 11-12 order: Psychometric first (8 dimensions), then contextual questions
+const ORDER_11_12: Category[] = [
+  "personality",
+  "career_interest",
+  "multiple_intelligence",
+  "emotional_intelligence",
+  "learning_styles",
+  "motivators",
+  "strengths",
+  "aptitude",
+  "subject_fit",
+  "career_fit",
+  "career_selector",
+];
+
 export function categoryOrder(stage: StageKey): Category[] {
   if (stage === "9-10") return ORDER_9_10;
   if (stage === DEMO_STAGE) return ORDER_11_12_DEMO;
+  if (stage === "11-12") return ORDER_11_12;
   return CATEGORY_ORDER;
 }
 
@@ -86,16 +106,19 @@ export const CATEGORY_META: Record<Category, { title: string; blurb: string }> =
   motivators: { title: "Motivators", blurb: "For each situation, choose the option that feels MOST like you." },
   strengths: { title: "Strengths", blurb: "Situations that reveal how you naturally work. There are no wrong answers." },
   aptitude: { title: "Aptitude", blurb: "Reasoning across words, numbers, logic and shapes. Pick the single best answer." },
+  subject_fit: { title: "Subject & Academic Fit", blurb: "Tell us about your current stream, subjects, and how confident you feel." },
+  career_fit: { title: "Career & Stream Fit", blurb: "Understand how your current education aligns with available careers." },
+  career_selector: { title: "Your Career Aspiration", blurb: "What career are you thinking about? Share your thoughts." },
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type RawQ = Record<string, any>;
 type Bank = Record<string, Record<string, Record<string, RawQ[]>>>;
-const BANK: Bank = mergeDemo({
+const BANK: Bank = mergeClass1112(mergeDemo({
   ...(bank as unknown as Bank),
   aptitude: aptitudeBank as unknown as Bank[string],
   strengths: strengthsBank as unknown as Bank[string],
-});
+}));
 
 /**
  * Adds the "11-12-demo" stage to each category without touching any existing
@@ -113,6 +136,19 @@ function mergeDemo(base: Bank): Bank {
     ...(out.aptitude ?? {}),
     ...(demoAptitude as unknown as Bank[string]),
   };
+  return out;
+}
+
+/**
+ * Adds the "11-12" stage with actual Class 11-12 questions from the user's Excel.
+ * The class1112Bank contains 81 questions across 11 categories.
+ */
+function mergeClass1112(base: Bank): Bank {
+  const class1112 = class1112Bank as unknown as Bank;
+  const out: Bank = { ...base };
+  for (const [cat, stages] of Object.entries(class1112)) {
+    out[cat] = { ...(out[cat] ?? {}), ...stages };
+  }
   return out;
 }
 export const CLUSTERS = clustersData as Record<string, { cluster: string; careers: string[] }>;
