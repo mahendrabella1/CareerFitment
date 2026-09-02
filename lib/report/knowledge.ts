@@ -707,7 +707,17 @@ export function careerRoles(a: AssessmentSummary): RoleFit[] {
  * coherent (an interest with no supporting ability drops down) and the numbers
  * read sensibly. This is the "map more data, clearly" step over the raw tally.
  */
-export type DomainFit = Domain & { fit: number; why: string };
+export type DomainFit = Domain & {
+  fit: number;
+  why: string;
+  breakdown: {
+    interest: number;
+    aptitude: number | null;
+    mi: number | null;
+    values: number | null;
+    confidence: number; // 1-4: how many dimensions support this fit
+  };
+};
 
 // Which abilities/intelligences/values reinforce each domain (keyword match,
 // robust to exact wording differences in the question banks).
@@ -727,6 +737,49 @@ const AFFINITY: Record<string, { apt: string[]; mi: string[]; val: string[]; lab
   H: { label: "energy & people-skills", apt: ["psychomotor", "spatial", "perceptual", "mechanical"], mi: ["bodily", "kinesth", "interpersonal"], val: ["adventure", "recognition", "social", "impact"] },
 };
 
+/**
+ * DOMAIN FIT CALCULATION
+ *
+ * Produces a score 0–99 representing how well a student's profile aligns with each domain.
+ *
+ * WEIGHTING (sum = 1.0):
+ * - Interest (42%): What pulls the student. Dominant but not sufficient alone.
+ * - Aptitude (26%): Can they actually do it? Added only if student has relevant skills.
+ * - MI (22%): Multiple intelligences backup. Added only if student shows relevant intelligence.
+ * - Values (10%): Work environment fit. Added only if values align with domain.
+ *
+ * SCORE RANGE EXPLANATION (why most students see 40–80%):
+ *
+ * A student with 100% interest in a domain but 0% alignment on aptitude/MI/values:
+ *   fit = (0.42 × 100) / 0.42 = 100% (not realistic, but ceiling).
+ *
+ * A student with 50% interest (scattered across multiple domains):
+ *   fit = (0.42 × 50) + (0.26 × 70) + (0.22 × 60) + (0.10 × 50)
+ *       = 21 + 18.2 + 13.2 + 5 = 57.4%
+ *   → Shows as 57%, which is LEGITIMATE ("good fit," not weak).
+ *
+ * A student with weak interest in a domain but strong abilities/values:
+ *   fit = (0.42 × 25) + (0.26 × 85) + (0.22 × 75) + (0.10 × 80)
+ *       = 10.5 + 22.1 + 16.5 + 8 = 57.1%
+ *   → Still ~57%, showing that interest gates the domain.
+ *
+ * WHY INTEREST DOMINATES:
+ * Career satisfaction research shows interest (what pulls you) is the strongest
+ * predictor. A student can develop skills (aptitude), but if they don't have
+ * genuine interest, the field won't engage them long-term. This is intentional design.
+ *
+ * WHAT DOES 50%+ MEAN?
+ * A domain with 50%+ fit means "this is a genuine match for your profile."
+ * It doesn't mean "best possible fit" — it means "best fit among actual options."
+ * Just like a job ranked #1 with 70% fit is still a legitimate recommendation
+ * if #2 is 62% and #3 is 58%.
+ *
+ * CONFIDENCE LEVELS:
+ * A fit score is stronger when backed by more dimensions:
+ * - 1 dimension (interest only): Moderate confidence. Domain aligns on interests but not tested on ability.
+ * - 2 dimensions (interest + 1): Good confidence. Backed by both interest and one ability.
+ * - 3–4 dimensions: Strong confidence. Multiple factors reinforce the match.
+ */
 export function domainFit(a: AssessmentSummary): DomainFit[] {
   const apt = (a.topAptitudes ?? []).map((x) => ({ n: String(x.skill || "").toLowerCase(), s: x.score }));
   const mi = (a.topIntelligences ?? []).map((x) => ({ n: String(x.name || "").toLowerCase(), s: x.score }));
@@ -782,7 +835,26 @@ export function domainFit(a: AssessmentSummary): DomainFit[] {
       const why = reinforcedBy.length
         ? `Backed by your ${reinforcedBy.slice(0, 2).join(" and ")}.`
         : `Aligned with your ${AFFINITY[key]?.label ?? "overall profile"}.`;
-      return { ...DOMAINS[key], fit, why };
+
+      const confidenceCount = [
+        true, // interest always counts
+        aScore !== null,
+        mScore !== null,
+        vScore !== null,
+      ].filter(Boolean).length;
+
+      return {
+        ...DOMAINS[key],
+        fit,
+        why,
+        breakdown: {
+          interest: Math.round(interest),
+          aptitude: aScore !== null ? Math.round(aScore) : null,
+          mi: mScore !== null ? Math.round(mScore) : null,
+          values: vScore !== null ? Math.round(vScore) : null,
+          confidence: confidenceCount as 1 | 2 | 3 | 4,
+        },
+      };
     })
     // Ties break on interest, so the order can never contradict the interest
     // headline shown beside it.
@@ -859,8 +931,14 @@ const DOMAIN_ACADEMICS: Record<string, { stream: string; subjects: string[]; exa
 
 export type AcademicPath = { stream: string; subjects: string[]; exams: string[]; skills: string[]; note: string; isSchool: boolean };
 
-export function academicPath(a: AssessmentSummary, journeyCode: string): AcademicPath {
-  const topLetter = (a.themes ?? []).filter((t) => t.score > 0 && DOMAINS[t.letter])[0]?.letter ?? "B";
+export function academicPath(a: AssessmentSummary, journeyCode: string, topDomainName?: string): AcademicPath {
+  // Use topDomainName if provided (passed from FullReport), else fall back to theme-based detection
+  let topLetter = "B";
+  if (topDomainName) {
+    topLetter = Object.entries(DOMAINS).find(([_, d]) => d.name === topDomainName)?.[0] ?? "B";
+  } else {
+    topLetter = (a.themes ?? []).filter((t) => t.score > 0 && DOMAINS[t.letter])[0]?.letter ?? "B";
+  }
   const d = DOMAIN_ACADEMICS[topLetter] ?? DOMAIN_ACADEMICS.B;
   const dom = DOMAINS[topLetter] ?? DOMAINS.B;
   const isSchool = ["6-8", "9-10"].includes(journeyCode);
@@ -873,9 +951,9 @@ export function academicPath(a: AssessmentSummary, journeyCode: string): Academi
 }
 
 /* ------------------------- work-environment fit ------------------------ */
-export function workEnvironment(a: AssessmentSummary): { fit: string; blurb: string; tags: string[] } {
+export function workEnvironment(a: AssessmentSummary, topDomainName?: string): { fit: string; blurb: string; tags: string[] } {
   // Driven by the trait that stands out most, so this section and the
-  // personality section can never describe two different people.
+  // personality section can never describe two different people. Optionally scoped to topDomainName.
   const { reads, measured } = traitProfile(a);
   const top = reads[0];
   const val = a.topValues?.[0]?.tag;
