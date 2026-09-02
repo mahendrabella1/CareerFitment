@@ -270,6 +270,597 @@ SECTION E: Resources
 
 ---
 
+## 📊 VISUAL ELEMENTS & CHARTS SPECIFICATION
+
+### LAYER 1 VISUALIZATIONS
+
+#### Page 4: Personality Radar Chart
+```
+Chart Type: 7-point Radar/Spider Chart
+Data: Q1-Q7 responses mapped to 7 personality dimensions
+Dimensions:
+  1. Problem Solving (Independent ↔ Experimental)
+  2. Thinking Style (Theory ↔ Practical)
+  3. Decision Making (Evidence-based ↔ Risk-taking)
+  4. Planning Style (Detailed ↔ Flexible)
+  5. Social Energy (Introvert ↔ Extrovert)
+  6. Challenge Response (Analysis ↔ Pivot)
+  7. Independence Level (1-10 scale)
+
+Visual Details:
+- Color: Blue (#2563eb) - Main polygon fill with 20% opacity
+- Accent: Teal outline (#14b8a6) - 2px border
+- Grid: Light gray (#e5e7eb) concentric circles
+- Labels: Black (#1f2937) at each point, 12px font
+- Scale: 0-10 for each axis
+- Hover: Show exact value at each point
+- Size: Full width container (600px min)
+```
+
+#### Page 5: RIASEC Hexagon/Wheel Chart
+```
+Chart Type: 6-point Hexagon/Wheel Chart (Holland Code)
+Data: R, I, A, S, E, C scores (0-100% each)
+Hexagon Points:
+  - Top Left: R (Realistic) - Red (#ef4444)
+  - Top Right: I (Investigative) - Blue (#3b82f6)
+  - Right: A (Artistic) - Purple (#a855f7)
+  - Bottom Right: S (Social) - Green (#22c55e)
+  - Bottom Left: E (Enterprising) - Orange (#f97316)
+  - Left: C (Conventional) - Gray (#6b7280)
+
+Visual Details:
+- Primary polygon: Colored fill (20% opacity) for student's scores
+- Overlay polygon: Light gray dotted for "ideal" profile (if applicable)
+- Score labels: Inside hexagon at each point (0-100%)
+- Ranking badge: "Top 3: RIE" displayed above chart
+- Subtitle: "Your Career Interest Profile"
+- Legend: Show what each letter means (1 line each)
+- Size: 500x500px centered
+
+Recommended Careers (Below chart):
+- List format: "Top careers matching your profile:"
+  1. Career 1 (Fitment: 92%)
+  2. Career 2 (Fitment: 88%)
+  3. Career 3 (Fitment: 85%)
+```
+
+#### Page 6: Aptitude Score Cards (3 Cards)
+```
+3 Horizontal Score Cards (Side by side)
+
+CARD 1: Verbal Reasoning
+├─ Score: XX/100
+├─ Percentile: Top XX%
+├─ Status Bar: Green (#22c55e) if ≥70%, Yellow (#eab308) if 50-70%, Red (#ef4444) if <50%
+├─ Interpretation: "Strong / Average / Needs improvement"
+└─ Guidance: "[Specific action based on score]"
+
+CARD 2: Numerical Reasoning
+├─ Score: XX/100
+├─ Percentile: Top XX%
+├─ Status Bar: [Color based on score]
+├─ Interpretation: "[Result]"
+└─ Guidance: "[Specific action]"
+
+CARD 3: Logical Reasoning
+├─ Score: XX/100
+├─ Percentile: Top XX%
+├─ Status Bar: [Color based on score]
+├─ Interpretation: "[Result]"
+└─ Guidance: "[Specific action]"
+
+Visual Details:
+- Card background: Light blue (#f0f9ff)
+- Card border: Blue (#2563eb) 2px left border
+- Score font: Bold, 28px, color matches bar
+- Shadow: Light drop shadow on cards
+- Spacing: Equal 15px gaps between cards
+- Mobile: Stack vertically
+```
+
+#### Page 7: Strength Domains Bar Chart
+```
+Chart Type: Horizontal Bar Chart (8 intelligences ranked)
+Data: Scores for 8 strength domains (0-100)
+
+Bars (sorted highest → lowest):
+1. [Top Domain] ███████████████████ 92%
+2. [2nd Domain] █████████████████ 88%
+3. [3rd Domain] ████████████████ 84%
+4. [4th Domain] ██████████████ 78%
+5. [5th Domain] ████████████ 72%
+6. [6th Domain] ██████████ 65%
+7. [7th Domain] ████████ 58%
+8. [8th Domain] ██████ 52%
+
+Visual Details:
+- Bar color gradient: Green (#22c55e) → Blue (#3b82f6) → Purple (#a855f7)
+- Bar height: 30px each
+- Spacing: 12px between bars
+- Percentage label: Right-aligned at end of bar
+- Domain name: Left-aligned before bar, 11px bold
+- Background: Alternating light gray rows for clarity
+- Icon: Small icon for each intelligence type (left side)
+- Size: Full width (500px+)
+- Hover: Show domain description + relevant careers
+```
+
+#### Page 8: Motivators Bullet Chart
+```
+Chart Type: Bullet Chart (4 motivator dimensions)
+
+DIMENSION 1: Stability vs Innovation
+━━━━━━━━━━━━━━ [Your Position at 65%]
+Stability ◄─────────●─────────► Innovation
+"You value both stability and innovative thinking"
+
+DIMENSION 2: Mastery vs Impact
+━━━━━━━━━━━━━━ [Your Position at 72%]
+Mastery ◄────────●──────────► Impact
+"You prefer making visible impact in your work"
+
+DIMENSION 3: Independence vs Collaboration
+━━━━━━━━━━━━━━ [Your Position at 58%]
+Independence ◄──────●─────────► Collaboration
+"You balance working alone and with teams"
+
+DIMENSION 4: Security vs Advancement
+━━━━━━━━━━━━━━ [Your Position at 68%]
+Security ◄─────────●────────► Career Growth
+"You seek both stability and advancement"
+
+Financial Importance: ⭐⭐⭐⭐⭐ (Q48 score: 8/10)
+Meaning/Interest: ⭐⭐⭐⭐⭐ (Q49 score: 9/10)
+
+Visual Details:
+- Scale: 0-100% left to right
+- Position indicator: Colored dot (●) at their score
+- Colors: Blue (#3b82f6) for lower end, Green (#22c55e) for higher end
+- Star ratings: Yellow (#fbbf24) stars filled based on scores
+- Font: 13px, Gray (#4b5563) for scale, Black (#1f2937) for labels
+```
+
+#### Page 9: Learning Style Profile
+```
+Chart Type: Pie Chart + Recommendation Cards
+
+PIE CHART: Learning Style Distribution
+- Visual (30%) - Blue (#3b82f6)
+- Auditory (25%) - Green (#22c55e)
+- Read-Write (25%) - Purple (#a855f7)
+- Kinesthetic (20%) - Orange (#f97316)
+
+Dominant Style: VISUAL LEARNER
+"You learn best through diagrams, charts, videos, and visual demonstrations"
+
+Recommendation Cards (Below pie):
+┌─────────────────────────────────┐
+│ 📊 Best Study Methods            │
+│ • Use concept maps & mind maps   │
+│ • Watch educational videos      │
+│ • Create visual notes with colors│
+│ • Use flashcards with diagrams   │
+└─────────────────────────────────┘
+
+┌─────────────────────────────────┐
+│ 🏫 Best Learning Environment     │
+│ • Bright, well-lit study space  │
+│ • Visual aids on walls          │
+│ • Organized desk with color     │
+│ • Minimal auditory distractions │
+└─────────────────────────────────┘
+
+┌─────────────────────────────────┐
+│ 📚 Subject-Specific Tips         │
+│ [Subject 1]: Use visuals...     │
+│ [Subject 2]: Create charts...   │
+│ [Subject 3]: Use diagrams...    │
+└─────────────────────────────────┘
+
+Visual Details:
+- Pie chart: Full 3D effect with shadow
+- Cards: Icons + text, card shadow, hover lift effect
+- Color consistency: Match learning style colors
+```
+
+### LAYER 2 VISUALIZATIONS
+
+#### Page 10: Stream Fit Gauge & Matrices
+```
+CIRCULAR GAUGE CHART:
+Stream Fit Score: 78%
+┌─────────────────┐
+│    MPC Stream   │
+│      78%        │ ════════●═════ Well-matched
+│   Well-Fit      │
+└─────────────────┘
+
+Color zones:
+- Red zone: 0-40% (Misaligned)
+- Yellow zone: 40-70% (Partially-matched)
+- Green zone: 70-100% (Well-matched)
+
+Needle position: Based on fitment score
+Arc thickness: 8px
+Size: 200x200px
+
+SUBJECT SUITABILITY MATRIX (2x2 Grid):
+            High Interest
+                 ▲
+                 │
+Weak ────────────┼────────── Strong
+Aptitude         │           Aptitude
+                 │
+                 ▼
+            Low Interest
+
+Quadrants:
+- Top Right (HIGH INTEREST + STRONG): ⭐⭐⭐ Focus here
+- Top Left (HIGH INTEREST + WEAK): ⚠️ Develop skills
+- Bottom Right (LOW INTEREST + STRONG): Consider alternatives
+- Bottom Left (LOW INTEREST + WEAK): Deprioritize
+
+Subject positions: Math, Physics, Chemistry, Biology plotted as colored dots
+Legend: Subject colors and names
+
+Visual Details:
+- Grid lines: Light gray (#e5e7eb) 1px
+- Quadrant backgrounds: Subtle colors with 5% opacity
+- Dot size: 20px with subject icon
+- Labels: Bold at axis endpoints
+- Hover: Show subject name + score details
+```
+
+#### Page 11: Stream Decision Flowchart
+```
+Visual Flowchart:
+
+┌──────────────────────────┐
+│ Is your stream satisfied?│ (Q67 score shown)
+└────────────┬─────────────┘
+             │
+      ┌──────┴─────────┐
+      │                │
+    YES              NO
+      │                │
+      ▼                ▼
+┌────────────┐  ┌────────────────────┐
+│ CONTINUE   │  │ EXPLORE OPTIONS    │
+│ Stream     │  │ - Stream change?   │
+│ ✓ Master  │  │ - Alternative path?│
+│   subjects│  │ - Career counseling│
+└────────────┘  └────────────────────┘
+
+Success Timeline:
+Class 11 → Master subjects → Class 12 exams → Entrance exams → College
+
+Visual Details:
+- Boxes: Rounded corners, colored backgrounds (green for continue, yellow for explore)
+- Arrows: Curved arrows with direction
+- Timeline: Horizontal bar below with milestones
+- Icons: Check marks, lightbulbs, alert signs as appropriate
+- Color coding: Green (positive) → Yellow (caution)
+```
+
+### LAYER 3 VISUALIZATIONS
+
+#### Page 12: Degree Compatibility Bars
+```
+Chart Type: Horizontal Bar Chart (Top 4 degrees)
+
+DEGREE 1: B.Tech Computer Science
+Compatibility: ███████████████████ 92%
+├─ RIASEC Match: 95%
+├─ Stream Fit: 90%
+├─ Aptitude: 88%
+└─ Interest Alignment: 92%
+
+DEGREE 2: B.Tech Electronics & Communication
+Compatibility: █████████████████ 88%
+├─ RIASEC Match: 85%
+├─ Stream Fit: 88%
+├─ Aptitude: 90%
+└─ Interest Alignment: 88%
+
+DEGREE 3: B.Sc Physics
+Compatibility: ████████████████ 84%
+├─ RIASEC Match: 82%
+├─ Stream Fit: 86%
+├─ Aptitude: 85%
+└─ Interest Alignment: 83%
+
+DEGREE 4: B.Tech Mechanical Engineering
+Compatibility: ███████████████ 81%
+├─ RIASEC Match: 80%
+├─ Stream Fit: 82%
+├─ Aptitude: 80%
+└─ Interest Alignment: 81%
+
+Visual Details:
+- Main bar: Gradient Green (#22c55e) to Blue (#3b82f6)
+- Sub-bars: Smaller bars below showing component scores
+- Ranking badges: 1st, 2nd, 3rd, 4th badges on left
+- Recommended tag: "✓ BEST FIT" for top choice (green)
+- Size: Full width with 400px min height
+- Hover: Show full details including colleges offering, entrance exam, salary
+```
+
+#### Page 12: Entrance Exam Timeline
+```
+Chart Type: Horizontal Timeline
+
+┌───────────────────────────────────────────────────┐
+│ RECOMMENDED PATHWAY: JEE Main → JEE Advanced      │
+└───────────────────────────────────────────────────┘
+
+Timeline View:
+NOW         │ +3 months    │ +6 months    │ +9 months
+(Class 11)  │ (Start       │ (Test        │ (Final
+            │  Intensive)  │  Series)     │  Prep)
+│           │              │              │
+├─●─────────┼──────●───────┼─────●────────┼──●────────┤
+│           │              │              │           │
+Fundamentals│ Focused Prep │ Mock Tests   │ Last Min  │
+Complete   │ Begins       │ Monthly      │ Revision  │
+           │              │              │           │
+           └──────────────────────────────┘
+           ← 12-18 months total prep →
+
+Key Milestones:
+Week 1: Syllabus review, study plan
+Month 1: Complete fundamentals
+Month 3: Begin mock testing
+Month 6: Take JEE Main
+Month 7: Prepare for JEE Advanced
+Month 9: Take JEE Advanced
+Month 12: Results & college selection
+
+Visual Details:
+- Timeline bar: Horizontal with milestone markers (●)
+- Color phases: Blue (#3b82f6) for planning, Green (#22c55e) for execution
+- Milestone dots: 8px circles, colored by phase
+- Text labels: Centered above and below timeline
+- Phase blocks: Colored background sections showing different prep phases
+- Critical dates: Highlighted in red (#ef4444)
+```
+
+#### Page 13: Skills Development Table + Progress Bars
+```
+Chart Type: Detailed Table with Progress Bars
+
+┌─────────────────────────────────────────────────────────────┐
+│ PRIORITY SKILLS FOR YOUR CAREER PATH                        │
+├────────────┬──────────────┬──────────────┬──────────────────┤
+│ Skill Name │ Current Level│ Target Level │ Development Path │
+├────────────┼──────────────┼──────────────┼──────────────────┤
+│ Problem    │ ████░░░░░░   │ █████████░   │ 6-month online  │
+│ Solving    │ 40% → Target │ 90% Target   │ course + projects│
+│            │              │              │ Effort: 10 hrs/w │
+├────────────┼──────────────┼──────────────┼──────────────────┤
+│ Data       │ ███░░░░░░░   │ ████████░░   │ Real-world projects
+│ Analysis   │ 30% → Target │ 80% Target   │ + Kaggle competitions
+│            │              │              │ Effort: 8 hrs/w  │
+├────────────┼──────────────┼──────────────┼──────────────────┤
+│ Communication
+│ Skills     │ ██████░░░░   │ █████████░   │ Presentation +
+│            │ 60% → Target │ 90% Target   │ Public speaking
+│            │              │              │ Effort: 5 hrs/w  │
+├────────────┼──────────────┼──────────────┼──────────────────┤
+│ Technical  │ ████░░░░░░   │ █████████░░  │ Coding bootcamp
+│ Coding     │ 40% → Target │ 80% Target   │ + Side projects
+│            │              │              │ Effort: 12 hrs/w │
+└────────────┴──────────────┴──────────────┴──────────────────┘
+
+Visual Details:
+- Progress bars: Blue (#3b82f6) with 20% opacity background
+- Current level bar: Solid color (shorter)
+- Target level bar: With checkmark at end
+- Timeline badges: "3-6 months", "6-12 months" shown
+- Priority level: Stars (⭐⭐⭐) indicating urgency
+- Color coding: Red (urgent) → Yellow (medium) → Green (low priority)
+- Expandable rows: Click to show details + resources
+```
+
+### LAYER 4 VISUALIZATIONS
+
+#### Page 14: Career Alignment Radar
+```
+Chart Type: 3-point Radar (Alignment Analysis)
+
+          PSYCHOMETRIC
+                ▲
+               ╱ ╲
+              ╱   ╲ 78%
+             ╱     ╲
+            ╱ 85%   ╲
+           ╱─────────╲
+          ╱           ╲
+    APTITUDE        PRACTICAL
+    82%              ╲ 72%
+         ╲           ╱
+          ╲─────────╱
+           ╲       ╱
+            ╲     ╱
+             ╲   ╱
+              ╲ ╱
+               ▼
+
+OVERALL FITMENT SCORE: 79%
+VERDICT: Good Fit ✓
+
+Color zones:
+- Green triangle (80-100%): Excellent fit
+- Yellow triangle (60-79%): Good fit
+- Orange triangle (40-59%): Moderate fit
+- Red triangle (0-39%): Needs exploration
+
+Visual Details:
+- 3-axis radar with 100% max on each axis
+- Filled polygon: Slightly transparent colored fill
+- Axis labels: Bold, 12px, at vertices
+- Gridlines: Light gray concentric
+- Score labels: Inside polygon at each point
+- Center badge: Overall fitment % with color
+- Interpretation box: "Good Fit - Realistic to pursue" + reason
+- Size: 400x400px centered
+```
+
+#### Page 14: Top 3 Careers Comparison Cards
+```
+CARD 1: PRIMARY CAREER (From Q78)
+┌────────────────────────────────┐
+│ 🎯 CAREER: Software Engineer   │
+├────────────────────────────────┤
+│ Fitment Score: 87% ✓           │
+│ Your Interest Level: Very High │
+│ Aptitude Alignment: 85%        │
+│ Stream Fit: 90%                │
+├────────────────────────────────┤
+│ Why It Fits:                   │
+│ • Strong logical & analytical  │
+│ • High investigative interest  │
+│ • Tech aptitude demonstrated  │
+│ • Problem-solving strength     │
+├────────────────────────────────┤
+│ Path to This Career:           │
+│ Class 12 → JEE Main/Advanced   │
+│ → B.Tech CSE/IT → Internships  │
+│ → Company hire (avg: ₹8-12 LPA)│
+├────────────────────────────────┤
+│ Timeline: 4 years (college)    │
+│ Difficulty: Moderate-High      │
+│ Recommendation: HIGHLY PURSUE  │
+└────────────────────────────────┘
+
+CARD 2: ALTERNATIVE 1
+┌────────────────────────────────┐
+│ 🔄 ALTERNATIVE: Data Science   │
+├────────────────────────────────┤
+│ Fitment Score: 84%             │
+│ Your Interest Level: High      │
+│ Aptitude Alignment: 88%        │
+│ Stream Fit: 85%                │
+├────────────────────────────────┤
+│ Why It Could Work:             │
+│ • Even higher analytical bent  │
+│ • Growing demand field         │
+│ • Salary potential: ₹10-15 LPA │
+├────────────────────────────────┤
+│ Path: Similar to Software Eng  │
+│ + Specialized master's degree  │
+│ Timeline: 5-6 years (with MS)  │
+│ Recommendation: STRONG OPTION  │
+└────────────────────────────────┘
+
+CARD 3: ALTERNATIVE 2
+┌────────────────────────────────┐
+│ 🔄 ALTERNATIVE: AI Engineer    │
+├────────────────────────────────┤
+│ Fitment Score: 82%             │
+│ Your Interest Level: High      │
+│ Aptitude Alignment: 86%        │
+│ Stream Fit: 82%                │
+├────────────────────────────────┤
+│ Why It Could Work:             │
+│ • Cutting-edge field           │
+│ • Strong math & logic needed   │
+│ • Salary potential: ₹12-18 LPA │
+├────────────────────────────────┤
+│ Path: B.Tech CSE + AI courses  │
+│ + Internships in AI labs       │
+│ Timeline: 4-5 years            │
+│ Recommendation: GOOD OPTION    │
+└────────────────────────────────┘
+
+Visual Details:
+- Card backgrounds: White (#ffffff) with light shadow
+- Card borders: Left 4px border in different colors:
+  - Primary: Green (#22c55e)
+  - Alt 1: Blue (#3b82f6)
+  - Alt 2: Purple (#a855f7)
+- Fitment score: Large bold number with colored background
+- Icons: Career-related emoji or icon
+- Badge recommendations: Green "HIGHLY PURSUE" vs Blue "CONSIDER"
+- Hover effect: Slight lift and shadow increase
+- Cards arrangement: 3 cards side-by-side on desktop, stacked on mobile
+```
+
+#### Page 15: Student & Parent Visual Checklists
+```
+STUDENT CHECKLIST (Visual Progress Tracker):
+
+┌─────────────────────────────────────────────┐
+│ YOUR 3-MONTH ACTION PLAN                    │
+├─────────────────────────────────────────────┤
+│                                             │
+│ WEEK 1: Foundation                          │
+│ ☐ Read full report (This guide)            │
+│ ☐ Discuss with parents & counselor         │
+│ ☐ Identify top 2 focus subjects            │
+│ ☐ Set study goals for this month           │
+│                                             │
+│ MONTH 1: Build                              │
+│ ☐ Research top 3 career options            │
+│ ☐ Enroll in 1 online course for skills     │
+│ ☐ Complete entrance exam research          │
+│ ☐ Start daily exam prep (if applicable)    │
+│ ☐ Mid-month check-in with counselor        │
+│                                             │
+│ MONTH 3: Review                             │
+│ ☐ Complete first online course             │
+│ ☐ Assess progress vs. baseline             │
+│ ☐ Adjust study plan if needed              │
+│ ☐ Schedule career counseling session       │
+│                                             │
+└─────────────────────────────────────────────┘
+
+Progress visualization:
+Month 1: ████░░░░░░ 40% Complete
+Month 2: ████████░░ 75% Complete
+Month 3: ██████████ 100% Complete ✓
+
+PARENT SUPPORT CHECKLIST:
+
+┌─────────────────────────────────────────────┐
+│ HOW TO SUPPORT YOUR CHILD                   │
+├─────────────────────────────────────────────┤
+│                                             │
+│ IMMEDIATE (This Week)                       │
+│ ☑ Celebrate their strengths                │
+│ ☐ Schedule family discussion on results    │
+│ ☐ Read parent guide (pages 14-15)          │
+│ ☑ Ask about their career interests         │
+│                                             │
+│ ONGOING SUPPORT                             │
+│ ☐ Create distraction-free study space     │
+│ ☐ Check academic progress monthly          │
+│ ☐ Monitor emotional well-being             │
+│ ☑ Research colleges together                │
+│ ☐ Arrange entrance exam coaching           │
+│ ☐ Plan informational interviews            │
+│                                             │
+│ RED FLAGS TO WATCH                          │
+│ ⚠ Sudden grade drop → Talk + Counselor    │
+│ ⚠ Career anxiety → Reassure + Support     │
+│ ⚠ Stream dissatisfaction → Explore options│
+│ ⚠ Social withdrawal → Immediate counseling│
+│                                             │
+└─────────────────────────────────────────────┘
+
+Visual Details:
+- Checkboxes: Interactive, clickable
+- Completed items: Gray with checkmark
+- Pending items: Blue with empty box
+- Critical items: Red with warning icon
+- Progress bar: Shows overall completion percentage
+- Color coding: Green (done), Blue (in progress), Red (needs attention)
+- Icons: Task type icons (calendar, book, chat, etc.)
+- Responsive: Stack on mobile, side-by-side on desktop
+```
+
+---
+
 ## 📐 Data Points to Calculate
 
 ### Scoring Dimensions (Based on 78 Questions)
