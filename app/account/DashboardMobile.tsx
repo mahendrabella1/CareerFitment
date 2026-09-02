@@ -340,7 +340,7 @@ export default function DashboardMobile({
           <button
             onClick={() => setNavOpen(!navOpen)}
             style={{
-              display: "none", "@media (maxWidth: 768px)": { display: "block" },
+              display: "none",
               background: "none", border: "none", cursor: "pointer", fontSize: "18px"
             }}
             className="dashboard-burger"
