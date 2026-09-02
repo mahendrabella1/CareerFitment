@@ -529,7 +529,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
                   <button style={S.next} onClick={() => go(cur + 1)}>Next <Icon name="chevronRight" size={16} /></button>
                 )}
               </div>
-              {cur < total - 1 && !(q.type === "slider" || q.type === "open") && <div style={S.tapHint}>Tap an answer to continue, or use Next to come back to it later</div>}
+              {cur < total - 1 && !(q.type === "slider" || q.type === "scale" || q.type === "open" || q.type === "multiple" || q.type === "multiple_with_grouping") && <div style={S.tapHint}>Tap an answer to continue, or use Next to come back to it later</div>}
               {!allDone && cur === total - 1 && <div style={S.hint}>Answer all {requiredTotal} questions to finish ({notAnswered} left).</div>}
               {err && <div style={S.err}>{err}</div>}
             </div>
@@ -676,11 +676,13 @@ function Donut({ pct }: { pct: number }) {
 
 /* ------------------------- per-type question input ---------------------- */
 function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: (v: string) => void }) {
-  if (q.type === "slider") {
+  if (q.type === "slider" || q.type === "scale") {
     const v = value === "" ? 0 : parseInt(value, 10);
+    const minLabel = (q as any).scaleLabel_min || "Not like me";
+    const maxLabel = (q as any).scaleLabel_max || "Exactly like me";
     return (
       <div>
-        <div style={S.sliderTop}><span style={S.sliderEnd}>1 · Not like me</span><span style={S.sliderVal}>{v ? v : "—"}</span><span style={S.sliderEnd}>Exactly like me · 10</span></div>
+        <div style={S.sliderTop}><span style={S.sliderEnd}>1 · {minLabel}</span><span style={S.sliderVal}>{v ? v : "—"}</span><span style={S.sliderEnd}>{maxLabel} · 10</span></div>
         <input type="range" min={1} max={10} step={1} value={v || 1} onChange={(e) => onChange(e.target.value)} style={S.slider} className="og-range" />
         <div style={S.sliderTicks}>{Array.from({ length: 10 }, (_, i) => <span key={i}>{i + 1}</span>)}</div>
       </div>
@@ -705,6 +707,39 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
             </button>
           );
         })}
+      </div>
+    );
+  }
+
+  if (q.type === "multiple" || q.type === "multiple_with_grouping") {
+    const opts = q.options ?? [];
+    const limits: Record<string, number> = { "Q63": Infinity, "Q64": 1, "Q65": 1, "Q68": 2, "Q71": 3, "Q74": 2 };
+    const maxSelections = limits[q.id] ?? 1;
+    const currentSelections = value ? JSON.parse(value) : [];
+    const canSelect = currentSelections.length < maxSelections;
+    return (
+      <div style={S.optList}>
+        {opts.map((o, i) => {
+          const isSelected = currentSelections.includes(String(i));
+          const label = o?.replace(/^\d+\)\s*/, "") ?? "";
+          return (
+            <button key={i} className="og-opt" style={{ ...S.optRow, ...(isSelected ? S.optRowOn : {}), opacity: !isSelected && !canSelect ? 0.5 : 1, pointerEvents: !isSelected && !canSelect ? "none" : "auto" }} onMouseDown={(e) => e.preventDefault()} onClick={() => {
+              if (isSelected) {
+                const newSelections = currentSelections.filter((x: string) => x !== String(i));
+                onChange(JSON.stringify(newSelections));
+              } else if (canSelect) {
+                const newSelections = [...currentSelections, String(i)];
+                onChange(JSON.stringify(newSelections));
+              } else {
+                alert(`Maximum ${maxSelections} selection${maxSelections > 1 ? "s" : ""} allowed`);
+              }
+            }}>
+              <Checkbox on={isSelected} />
+              <span style={{ ...S.optLabel, ...(isSelected ? S.optLabelOn : {}) }}>{label}</span>
+            </button>
+          );
+        })}
+        {maxSelections !== Infinity && <div style={{ padding: "8px 16px", fontSize: 12, color: "#666" }}>{currentSelections.length} of {maxSelections} selected</div>}
       </div>
     );
   }
@@ -742,6 +777,14 @@ function Radio({ on }: { on: boolean }) {
   return (
     <span className={`og-radio${on ? " on" : ""}`} style={{ ...S.radio, ...(on ? S.radioOn : {}) }}>
       {on && <span style={S.radioDot} />}
+    </span>
+  );
+}
+
+function Checkbox({ on }: { on: boolean }) {
+  return (
+    <span style={{ width: 18, height: 18, border: `2px solid ${on ? "#2563eb" : "#e6e9f0"}`, borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, background: on ? "#2563eb" : "white", transition: "all 0.2s" }}>
+      {on && <span style={{ color: "white", fontSize: 12, fontWeight: "bold" }}>✓</span>}
     </span>
   );
 }
