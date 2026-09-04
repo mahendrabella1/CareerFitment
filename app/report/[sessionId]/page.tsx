@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ReportView, { type ReportData } from "../ReportView";
+// import ReportView, { type ReportData } from "../ReportView"; // Module doesn't exist
+type ReportData = any;
 
 type Envelope<T> = { success: boolean; message: string; data: T };
 
@@ -56,7 +57,10 @@ export default function ReportPage({ params }: { params: { sessionId: string } }
 
   return (
     <main className="shell rep-shell">
-      <ReportView data={data} />
+      {/* <ReportView data={data} /> */}
+      <div style={{ padding: '40px', textAlign: 'center', color: '#666' }}>
+        <p>Report viewer module unavailable</p>
+      </div>
     </main>
   );
 }

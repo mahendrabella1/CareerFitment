@@ -22,15 +22,16 @@ const ComprehensiveReport = dynamic(() => import("@/app/account/FullReport"), {
   loading: () => <LoadingPlaceholder />,
 });
 
-const CareerFitReportComponent = dynamic(() => import("@/app/account/CareerFitReport"), {
-  ssr: false,
-  loading: () => <LoadingPlaceholder />,
-});
+// Removed broken imports - modules don't exist
+// const CareerFitReportComponent = dynamic(() => import("@/app/account/CareerFitReport"), {
+//   ssr: false,
+//   loading: () => <LoadingPlaceholder />,
+// });
 
-const CareerRoadmapReportComponent = dynamic(() => import("@/app/account/CareerRoadmapReport"), {
-  ssr: false,
-  loading: () => <LoadingPlaceholder />,
-});
+// const CareerRoadmapReportComponent = dynamic(() => import("@/app/account/CareerRoadmapReport"), {
+//   ssr: false,
+//   loading: () => <LoadingPlaceholder />,
+// });
 
 const AIAssistant = dynamic(
   () => import("@/app/account/components/AIEducationAssistant").then((m) => ({ default: m.AIEducationAssistant })),
@@ -65,18 +66,19 @@ const REPORTS: ReportTabProps[] = [
     icon: "📋",
     description: "30+ sections with full profile analysis",
   },
-  {
-    id: "career_fit",
-    label: "Career Fit",
-    icon: "🎯",
-    description: "Top careers matched to your profile",
-  },
-  {
-    id: "roadmap",
-    label: "Roadmap",
-    icon: "🗺️",
-    description: "8-phase personalized career timeline",
-  },
+  // Removed career_fit and roadmap - modules don't exist
+  // {
+  //   id: "career_fit",
+  //   label: "Career Fit",
+  //   icon: "🎯",
+  //   description: "Top careers matched to your profile",
+  // },
+  // {
+  //   id: "roadmap",
+  //   label: "Roadmap",
+  //   icon: "🗺️",
+  //   description: "8-phase personalized career timeline",
+  // },
   {
     id: "ai_assistant",
     label: "Ask AI",
@@ -262,128 +264,15 @@ export default function ReportsHub({
         )}
 
         {/* Career Fit Report */}
-        {activeReport === "career_fit" && (
-          <div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: spacing[4],
-              }}
-            >
-              <div>
-                <h2
-                  style={{
-                    fontSize: typography.scale.h2.fontSize,
-                    fontWeight: 700,
-                    color: colors.ink[10],
-                    margin: 0,
-                  }}
-                >
-                  Career Fit Report
-                </h2>
-                <p
-                  style={{
-                    fontSize: typography.scale.sm.fontSize,
-                    color: colors.ink[40],
-                    margin: "4px 0 0",
-                  }}
-                >
-                  Top careers matched to your profile
-                </p>
-              </div>
-              <div style={{ display: "flex", gap: spacing[2] }}>
-                <button
-                  onClick={() => window.print()}
-                  style={{
-                    padding: `${spacing[2]} ${spacing[3]}`,
-                    backgroundColor: colors.accent[40],
-                    color: colors.ink[100],
-                    border: "none",
-                    borderRadius: radius.md,
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    fontSize: "12px",
-                  }}
-                >
-                  🖨️ Print/PDF
-                </button>
-              </div>
-            </div>
-            <div
-              style={{
-                backgroundColor: colors.ink[100],
-                borderRadius: radius.lg,
-                overflow: "hidden",
-              }}
-            >
-              <CareerFitReportComponent a={a} name={studentName} />
-            </div>
-          </div>
-        )}
+        {/* Removed career_fit section - CareerFitReport module doesn't exist */}
+        {/* {activeReport === "career_fit" && (
+          <div>...</div>
+        )} */}
 
-        {/* Career Roadmap Report */}
-        {activeReport === "roadmap" && (
-          <div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: spacing[4],
-              }}
-            >
-              <div>
-                <h2
-                  style={{
-                    fontSize: typography.scale.h2.fontSize,
-                    fontWeight: 700,
-                    color: colors.ink[10],
-                    margin: 0,
-                  }}
-                >
-                  Career Roadmap
-                </h2>
-                <p
-                  style={{
-                    fontSize: typography.scale.sm.fontSize,
-                    color: colors.ink[40],
-                    margin: "4px 0 0",
-                  }}
-                >
-                  8-phase personalized timeline from Class 9 to career
-                </p>
-              </div>
-              <div style={{ display: "flex", gap: spacing[2] }}>
-                <button
-                  onClick={() => window.print()}
-                  style={{
-                    padding: `${spacing[2]} ${spacing[3]}`,
-                    backgroundColor: colors.accent[40],
-                    color: colors.ink[100],
-                    border: "none",
-                    borderRadius: radius.md,
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    fontSize: "12px",
-                  }}
-                >
-                  🖨️ Print/PDF
-                </button>
-              </div>
-            </div>
-            <div
-              style={{
-                backgroundColor: colors.ink[100],
-                borderRadius: radius.lg,
-                overflow: "hidden",
-              }}
-            >
-              <CareerRoadmapReportComponent a={a} name={studentName} />
-            </div>
-          </div>
-        )}
+        {/* Removed roadmap section - CareerRoadmapReport module doesn't exist */}
+        {/* {activeReport === "roadmap" && (
+          <div>...</div>
+        )} */}
 
         {/* AI Assistant */}
         {activeReport === "ai_assistant" && (

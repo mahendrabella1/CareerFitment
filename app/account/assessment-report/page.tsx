@@ -2,14 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Class1112FullReportNew from '@/app/report/Class1112FullReportNew';
-import { generateClass1112Report } from '@/lib/report/generateClass1112Report';
+// import Class1112FullReportNew from '@/app/report/Class1112FullReportNew'; // Module doesn't exist
+// import { generateClass1112Report } from '@/lib/report/generateClass1112Report'; // Module doesn't exist
 import { scoreClass11Assessment } from '@/lib/newAssessment/scoring11_12';
-import type { ReportData } from '@/lib/report/generateClass1112Report';
+// import type { ReportData } from '@/lib/report/generateClass1112Report'; // Type doesn't exist
 
 export default function AssessmentReportPage() {
   const searchParams = useSearchParams();
-  const [reportData, setReportData] = useState<ReportData | null>(null);
+  const [reportData, setReportData] = useState<any | null>(null); // ReportData type unavailable
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -37,14 +37,16 @@ export default function AssessmentReportPage() {
         // Score the assessment
         const scoreOutput = scoreClass11Assessment(assessmentData.responses);
 
-        // Generate report
-        const report = generateClass1112Report(
-          assessmentData.studentName,
-          assessmentData.grade,
-          scoreOutput
-        );
+        // Generate report - generateClass1112Report module doesn't exist
+        // const report = generateClass1112Report(
+        //   assessmentData.studentName,
+        //   assessmentData.grade,
+        //   scoreOutput
+        // );
+        // setReportData(report);
 
-        setReportData(report);
+        // Placeholder - module unavailable
+        setReportData(null);
         setError(null);
       } catch (err) {
         console.error('Error generating report:', err);
@@ -130,7 +132,10 @@ export default function AssessmentReportPage() {
       </div>
 
       {/* Report Content */}
-      <Class1112FullReportNew data={reportData} />
+      {/* <Class1112FullReportNew data={reportData} /> */}
+      <div className="max-w-6xl mx-auto px-4 md:px-8 py-8 text-center">
+        <p className="text-gray-600">Report module unavailable</p>
+      </div>
 
       {/* Footer */}
       <div className="bg-white border-t border-gray-200 mt-8">
