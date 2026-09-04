@@ -269,7 +269,66 @@ export function scoreAssessment(
     .map(([skill, { c, n }]) => ({ skill, score: Math.round((c / n) * 100) }))
     .sort((a, b) => b.score - a.score);
 
-  // ---------- 8-category radar (single overview chart) ----------
+  // ---------- Creativity (11-12 only) ----------
+  let creativityScore = 0;
+  if (stage === "11-12" && chosenSets.creativity) {
+    const cre = getSet("creativity", stage, chosenSets.creativity);
+    let creSum = 0, creMax = 0;
+    cre.forEach((qq, i) => {
+      const idx = parseInt(answers[`creativity:${i}`] ?? "", 10);
+      const scores = (Array.isArray(qq.scores) ? qq.scores : []).filter((x: unknown) => typeof x === "number") as number[];
+      const max = scores.length ? Math.max(...scores) : 10;
+      const val = !Number.isNaN(idx) && typeof qq.scores?.[idx] === "number" ? qq.scores[idx] : 0;
+      creSum += val;
+      creMax += max;
+    });
+    creativityScore = creMax ? Math.round((creSum / creMax) * 100) : 0;
+  }
+
+  // ---------- Subject Fit (11-12 only) ----------
+  let subjectFitData: Record<string, unknown> = {};
+  if (stage === "11-12" && chosenSets.subject_fit) {
+    const subf = getSet("subject_fit", stage, chosenSets.subject_fit);
+    // Subject fit questions capture stream, subjects, and confidence
+    // Store raw responses for later report generation
+    subf.forEach((qq, i) => {
+      const key = `subject_fit:${i}`;
+      const answer = answers[key];
+      if (answer) {
+        subjectFitData[`q${i}`] = answer;
+      }
+    });
+  }
+
+  // ---------- Career Fit (11-12 only) ----------
+  let careerFitData: Record<string, unknown> = {};
+  if (stage === "11-12" && chosenSets.career_fit) {
+    const carf = getSet("career_fit", stage, chosenSets.career_fit);
+    // Career fit questions capture clarity and career areas under consideration
+    carf.forEach((qq, i) => {
+      const key = `career_fit:${i}`;
+      const answer = answers[key];
+      if (answer) {
+        careerFitData[`q${i}`] = answer;
+      }
+    });
+  }
+
+  // ---------- Career Selector (11-12 only) ----------
+  let careerSelectorData: Record<string, unknown> = {};
+  if (stage === "11-12" && chosenSets.career_selector) {
+    const cars = getSet("career_selector", stage, chosenSets.career_selector);
+    // Career selector captures desired career and thoughts
+    cars.forEach((qq, i) => {
+      const key = `career_selector:${i}`;
+      const answer = answers[key];
+      if (answer) {
+        careerSelectorData[`q${i}`] = answer;
+      }
+    });
+  }
+
+  // ---------- 8+ category radar (single overview chart) ----------
   const radar = [
     { key: "personality", label: "Personality", score: personalityScore },
     { key: "career_interest", label: "Career Interest", score: careerInterestScore },
@@ -279,11 +338,12 @@ export function scoreAssessment(
     { key: "motivators", label: "Motivators", score: motivatorScore },
     { key: "strengths", label: "Strengths", score: strengthsScore },
     { key: "aptitude", label: "Aptitude", score: aptitudePct ?? 0 },
+    ...(stage === "11-12" ? [{ key: "creativity", label: "Creativity", score: creativityScore }] : []),
   ];
 
   const topCluster = rankedClusters[0] && rankedClusters[0][1] > 0 ? CLUSTERS[rankedClusters[0][0]]?.cluster : null;
 
-  return {
+  const result: any = {
     journeyCode: stage,
     journeyName: "Career Assessment",
     completedAt: new Date().toISOString(),
@@ -328,4 +388,14 @@ export function scoreAssessment(
     strengthsBreakdown,
     aptitudePct,
   };
+
+  // Add 11-12 specific data
+  if (stage === "11-12") {
+    result.creativityScore = creativityScore;
+    result.subjectFitData = subjectFitData;
+    result.careerFitData = careerFitData;
+    result.careerSelectorData = careerSelectorData;
+  }
+
+  return result;
 }
