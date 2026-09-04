@@ -20,6 +20,7 @@ import { useRef } from "react";
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { archetype, domainFit } from "@/lib/report/knowledge";
 import { C } from "@/app/account/viz";
+import { getTopCareersPerDomain, DOMAIN_LABELS, DOMAIN_COLORS, DOMAIN_EMOJIS } from "@/lib/data/topCareersPerDomain";
 
 interface RoadmapPhase {
   phase: number;
@@ -82,6 +83,18 @@ const CSS = `
 .crr-footer-text { font-size: 13px; color: #63636f; margin: 0 0 12px; line-height: 1.6; }
 
 .crr-page-num { font-size: 12px; color: #9a9aa6; text-align: center; margin-top: 24px; }
+
+/* Top Careers Section */
+.crr-careers-section { margin: 40px 0; page-break-inside: avoid; }
+.crr-careers-title { font-size: 20px; font-weight: 700; color: #0f0f13; margin: 0 0 24px; padding-bottom: 12px; border-bottom: 2px solid #db3433; }
+.crr-domain-careers { margin-bottom: 32px; }
+.crr-domain-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.crr-domain-emoji { font-size: 24px; }
+.crr-domain-name { font-size: 16px; font-weight: 600; color: #0f0f13; margin: 0; }
+.crr-careers-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.crr-career-card { padding: 12px; border: 1px solid #ececef; border-radius: 6px; background: #fafbfc; }
+.crr-career-name { font-size: 13px; font-weight: 600; color: #0f0f13; margin: 0 0 4px; }
+.crr-career-skills { font-size: 11px; color: #63636f; margin: 0; }
 `;
 
 export default function CareerRoadmapReport({
@@ -408,6 +421,34 @@ export default function CareerRoadmapReport({
             </div>
           </div>
         </div>
+
+        {/* Top 10 Careers Per Domain */}
+        {(() => {
+          const topCareers = getTopCareersPerDomain();
+          return (
+            <div className="crr-careers-section">
+              <h2 className="crr-section-title">🌟 Top Career Opportunities by Field</h2>
+              <p className="crr-section-subtitle">Explore top 10 careers in each domain based on current job market demand and growth</p>
+
+              {Object.entries(topCareers).slice(0, 3).map(([domain, careers]) => (
+                <div key={domain} className="crr-domain-careers">
+                  <div className="crr-domain-header">
+                    <span className="crr-domain-emoji">{DOMAIN_EMOJIS[domain] || '💼'}</span>
+                    <h3 className="crr-domain-name">{DOMAIN_LABELS[domain] || domain}</h3>
+                  </div>
+                  <div className="crr-careers-grid">
+                    {careers.slice(0, 10).map((career) => (
+                      <div key={career.id} className="crr-career-card">
+                        <div className="crr-career-name">{career.name}</div>
+                        <div className="crr-career-skills">{career.skills.join(' • ')}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          );
+        })()}
 
         {/* Critical Factors */}
         <div className="crr-section">

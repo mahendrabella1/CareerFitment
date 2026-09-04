@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search, Bookmark, TrendingUp, ArrowRight } from 'lucide-react';
-import { generateCareers } from '@/lib/data/careerData';
+import { CAREER_LIBRARY_930_PLUS } from '@/lib/data/careerLibrary930Plus';
 
 const DOMAIN_CARDS = [
   { id: 'tech', name: 'Technology', icon: '💻', count: 150 },
@@ -50,7 +50,7 @@ export default function CareerLibraryPage() {
 
   const allCareers = useMemo(() => {
     try {
-      const allData = generateCareers(); // Get all careers directly
+      const allData = CAREER_LIBRARY_930_PLUS; // Use existing 930+ careers
       let filtered = allData.filter((c: any) => {
         const matchSearch = (c.name + ' ' + (c.clusterId || '') + ' ' + c.overview + ' ' + (c.skills?.join(' ') || '')).toLowerCase().includes(search.toLowerCase());
         const matchDomain = selectedDomain === 'All' || c.clusterId === selectedDomain;

@@ -37,6 +37,7 @@ import {
 } from "recharts";
 import { Icon } from "@/app/Icons";
 import { C, Ring, RadarChart as RadarChartViz, SkillBar, dimColor, type RadarDatum } from "@/app/account/viz";
+import { getTopCareersPerDomain, DOMAIN_LABELS, DOMAIN_EMOJIS } from "@/lib/data/topCareersPerDomain";
 
 interface PsychometricDimension {
   dimension: string;
