@@ -1492,7 +1492,7 @@ export default function AssessmentExperience() {
                   className="agecard"
                   onClick={() => {
                     setLead((l) => ({ ...l, journeyCode: a.j }));
-                    startFlow();
+                    setView("details");
                   }}
                   type="button"
                 >
