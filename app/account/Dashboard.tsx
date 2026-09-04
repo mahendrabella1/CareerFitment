@@ -429,7 +429,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
               </section>
 
               {/* ===== DIMENSIONS ===== */}
-              <section id="dimensions" className="ash-sec" style={{display: 'none'}}>
+              <section id="dimensions" className="ash-sec">
                 <div className="ogd-card">
                   <CardHead icon="radar" title="Your eight dimensions"
                     sub="Tap a dimension below to see its full breakdown — everything from your report, right here." />

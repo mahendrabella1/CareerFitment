@@ -4,7 +4,8 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search, Bookmark, TrendingUp, ArrowRight } from 'lucide-react';
-import { getCareers } from '@/lib/data/careerLoader';
+import { getCareers, getCareersByCluster } from '@/lib/data/careerLoader';
+import { generateCareers } from '@/lib/data/careerLibrary930';
 
 const DOMAIN_CARDS = [
   { id: 'tech', name: 'Technology', icon: '💻', count: 150 },
@@ -49,21 +50,26 @@ export default function CareerLibraryPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const allCareers = useMemo(() => {
-    const { data } = getCareers(0, 1000); // Get all careers
-    let filtered = data.filter((c) => {
-      const matchSearch = (c.name + ' ' + c.cluster + ' ' + c.overview + ' ' + (c.skills?.join(' ') || '')).toLowerCase().includes(search.toLowerCase());
-      const matchDomain = selectedDomain === 'All' || c.cluster === selectedDomain;
-      const matchCareerType = careerType === 'All' || getCareerType(c.name) === careerType;
-      return matchSearch && matchDomain && matchCareerType;
-    });
+    try {
+      const allData = generateCareers(); // Get all careers directly
+      let filtered = allData.filter((c: any) => {
+        const matchSearch = (c.name + ' ' + (c.clusterId || '') + ' ' + c.overview + ' ' + (c.skills?.join(' ') || '')).toLowerCase().includes(search.toLowerCase());
+        const matchDomain = selectedDomain === 'All' || c.clusterId === selectedDomain;
+        const matchCareerType = careerType === 'All' || getCareerType(c.name) === careerType;
+        return matchSearch && matchDomain && matchCareerType;
+      });
 
-    if (sort === 'A to Z') {
-      filtered.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (sort === 'Salary (High to Low)') {
-      filtered.sort((a, b) => (b.salaryUSDMid || 0) - (a.salaryUSDMid || 0));
+      if (sort === 'A to Z') {
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+      } else if (sort === 'Salary (High to Low)') {
+        filtered.sort((a, b) => (b.salaryRange?.[0]?.max || 0) - (a.salaryRange?.[0]?.max || 0));
+      }
+
+      return filtered;
+    } catch (error) {
+      console.error('Error loading careers:', error);
+      return [];
     }
-
-    return filtered;
   }, [search, selectedDomain, careerType, sort]);
 
   const totalPages = Math.ceil(allCareers.length / ITEMS_PER_PAGE);
