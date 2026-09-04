@@ -1,20 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Edit3, Plus, Trash2, Eye, Share2, Copy, Check } from 'lucide-react';
+import { Edit3, Plus, Copy, Check, Eye } from 'lucide-react';
 import type { PortfolioProfile, PortfolioExperience, PortfolioEducation, PortfolioCertification, PortfolioSkill } from '@/lib/data/portfolioSchema';
 
 const TABS = ['Overview', 'Experience', 'Education', 'Certifications', 'Skills', 'Settings'];
 
 export default function PortfolioPage() {
-  const router = useRouter();
   const [activeTab, setActiveTab] = useState('Overview');
   const [portfolio, setPortfolio] = useState<PortfolioProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
-  const [editingSection, setEditingSection] = useState<string | null>(null);
 
   useEffect(() => {
     loadPortfolio();
@@ -47,39 +44,14 @@ export default function PortfolioPage() {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8fafc' }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ width: 48, height: 48, borderRadius: '50%', border: '3px solid #e5e7eb', borderTopColor: '#3b82f6', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
-          <p style={{ color: '#6b7280', fontWeight: 500 }}>Loading your portfolio...</p>
+          <p style={{ color: '#6b7280', fontWeight: 500 }}>Loading portfolio...</p>
         </div>
       </div>
     );
   }
 
   if (!portfolio) {
-    return (
-      <div style={{ minHeight: '100vh', background: '#f8fafc', padding: '40px 20px' }}>
-        <div style={{ maxWidth: 600, margin: '0 auto', textAlign: 'center', padding: '60px 20px' }}>
-          <h1 style={{ fontSize: 28, fontWeight: 800, color: '#0f172a', marginBottom: 12 }}>Build Your Professional Profile</h1>
-          <p style={{ fontSize: 16, color: '#64748b', marginBottom: 32, lineHeight: 1.6 }}>
-            Create a LinkedIn-like profile to showcase your skills, experience, and achievements. Share it with employers, collaborators, and your network.
-          </p>
-          <button
-            onClick={() => window.location.href = '/api/portfolio/create'}
-            style={{
-              padding: '12px 32px',
-              background: '#3b82f6',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 8,
-              fontSize: 16,
-              fontWeight: 600,
-              cursor: 'pointer'
-            }}
-          >
-            Create Portfolio
-          </button>
-        </div>
-      </div>
-    );
+    return <CreatePortfolio onSuccess={loadPortfolio} />;
   }
 
   return (
@@ -225,6 +197,156 @@ function OverviewSection({ portfolio }: { portfolio: PortfolioProfile }) {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function CreatePortfolio({ onSuccess }: { onSuccess: () => void }) {
+  const [headline, setHeadline] = useState('');
+  const [bio, setBio] = useState('');
+  const [location, setLocation] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleCreate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!headline.trim() || !bio.trim()) {
+      setError('Headline and bio are required');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch('/api/portfolio/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ headline, bio, location })
+      });
+
+      if (res.ok) {
+        onSuccess();
+      } else {
+        setError('Failed to create portfolio');
+      }
+    } catch (err) {
+      setError('Error creating portfolio');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div style={{ minHeight: '100vh', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+      <div style={{ background: '#fff', borderRadius: 12, padding: '40px 32px', maxWidth: 500, width: '100%', border: '1px solid #e5e7eb', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+        <h1 style={{ fontSize: 28, fontWeight: 800, color: '#0f172a', margin: 0, marginBottom: 12 }}>Build Your Portfolio</h1>
+        <p style={{ fontSize: 14, color: '#64748b', margin: 0, marginBottom: 32, lineHeight: 1.6 }}>
+          Create a professional profile to showcase your skills and experience. Share it with employers and your network.
+        </p>
+
+        {error && (
+          <div style={{ background: '#fee2e2', border: '1px solid #fecaca', borderRadius: 8, padding: 12, marginBottom: 24, color: '#991b1b', fontSize: 14 }}>
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleCreate} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <div>
+            <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#0f172a', marginBottom: 8 }}>
+              Professional Headline *
+            </label>
+            <input
+              type="text"
+              value={headline}
+              onChange={(e) => setHeadline(e.target.value)}
+              placeholder="e.g. Full Stack Developer | Problem Solver"
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: '1px solid #e5e7eb',
+                borderRadius: 6,
+                fontSize: 14,
+                fontFamily: 'inherit',
+                boxSizing: 'border-box',
+                transition: 'border-color 0.2s'
+              }}
+              onFocus={(e) => e.currentTarget.style.borderColor = '#3b82f6'}
+              onBlur={(e) => e.currentTarget.style.borderColor = '#e5e7eb'}
+            />
+          </div>
+
+          <div>
+            <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#0f172a', marginBottom: 8 }}>
+              Professional Bio *
+            </label>
+            <textarea
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              placeholder="Tell us about yourself, your experience, and what makes you unique..."
+              rows={4}
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: '1px solid #e5e7eb',
+                borderRadius: 6,
+                fontSize: 14,
+                fontFamily: 'inherit',
+                boxSizing: 'border-box',
+                resize: 'vertical',
+                transition: 'border-color 0.2s'
+              }}
+              onFocus={(e) => e.currentTarget.style.borderColor = '#3b82f6'}
+              onBlur={(e) => e.currentTarget.style.borderColor = '#e5e7eb'}
+            />
+          </div>
+
+          <div>
+            <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#0f172a', marginBottom: 8 }}>
+              Location
+            </label>
+            <input
+              type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="e.g. Bangalore, India"
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: '1px solid #e5e7eb',
+                borderRadius: 6,
+                fontSize: 14,
+                fontFamily: 'inherit',
+                boxSizing: 'border-box',
+                transition: 'border-color 0.2s'
+              }}
+              onFocus={(e) => e.currentTarget.style.borderColor = '#3b82f6'}
+              onBlur={(e) => e.currentTarget.style.borderColor = '#e5e7eb'}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              padding: '12px 24px',
+              background: loading ? '#94a3b8' : '#3b82f6',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 6,
+              fontSize: 15,
+              fontWeight: 600,
+              cursor: loading ? 'not-allowed' : 'pointer',
+              transition: 'background-color 0.2s'
+            }}
+          >
+            {loading ? 'Creating...' : 'Create Portfolio'}
+          </button>
+        </form>
+
+        <p style={{ fontSize: 12, color: '#94a3b8', margin: '24px 0 0', textAlign: 'center' }}>
+          You can edit these details anytime in your portfolio settings.
+        </p>
       </div>
     </div>
   );
