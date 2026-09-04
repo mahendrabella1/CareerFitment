@@ -26,7 +26,6 @@ import { OFFER, formatPaise } from "@/lib/offer";
 // the whole summary as a prop and fetches nothing, so the admin view is the
 // student's view — there is no second rendering path to drift out of step.
 import FullReport from "@/app/account/FullReport";
-import { demoReportSheets } from "@/app/demo-test/reportSections";
 
 /**
  * ⚠️ DEV-ONLY admin shortcut. Lets the redesigned /admin be reviewed with a
@@ -356,14 +355,10 @@ export default function AdminPage() {
             )}
           </div>
         </div>
-        {/* A class 11-12 demo student's report includes their chosen career,
-            the career they were matched to and both roadmaps. Rendering the
-            bare report here meant an admin reviewed something different from
-            what the student saw, and then emailed it. */}
         <FullReport
           a={a}
           name={viewing.name}
-          extraSheets={viewing.demoReport?.desiredCareer ? demoReportSheets(viewing.demoReport) : []}
+          extraSheets={[]}
         />
       </div>
     );

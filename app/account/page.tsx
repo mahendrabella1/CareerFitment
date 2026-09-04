@@ -13,7 +13,6 @@ import Link from "next/link";
 import { Logo } from "@/app/Logo";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import Dashboard from "@/app/account/Dashboard";
-import { demoExtraSections } from "@/app/demo-test/reportSections";
 import ViewOnlyReport from "@/app/ReportViewOnly";
 import { StudentHero } from "@/app/account/illustrations";
 import { C } from "@/app/account/viz";
