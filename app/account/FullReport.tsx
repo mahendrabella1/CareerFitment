@@ -144,6 +144,14 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
     : themes.filter((t) => "RIASEC".includes(t.letter));
   const dateStr = (() => { try { return new Date(a.completedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }); } catch { return ""; } })();
   const first = (name || "").trim().split(/\s+/)[0] || "you";
+  // Check if this is a "new" Class 9-10 report with MBTI data
+  const hasMBTIData = !!(
+    (a as any).mbtiEI !== undefined ||
+    (a as any).mbtiSN !== undefined ||
+    (a as any).mbtiTF !== undefined ||
+    (a as any).mbtiJP !== undefined
+  );
+  const isNewReport = a.journeyCode === "9-10" && hasMBTIData;
 
   let sheet = 0;
   const N = () => String(++sheet).padStart(2, "0");
@@ -153,7 +161,7 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
       {/* ===== COVER ===== */}
-      <section className="sheet cover rv">
+      <section className={`sheet cover rv ${isNewReport ? "cover-new" : "cover-old"}`}>
         <div className="cover-in">
           <div className="cover-top">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -1140,20 +1148,36 @@ const CSS = `
 .frx .sechd p{font-size:14px;color:var(--ink-3);margin-top:8px;max-width:64ch;line-height:1.6}
 .frx .subhd{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
 
-/* cover */
-.frx .cover{border-top:none;background:linear-gradient(135deg,#2f6bff 0%,#1a4d9e 50%,#12996b 100%);min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden}
-.frx .cover::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:url(${LOGO}) center/contain no-repeat;opacity:0.08;z-index:1;pointer-events:none}
-.frx .cover-in{padding:80px 60px;color:#fff;position:relative;z-index:2}
-@media(max-width:720px){.frx .cover-in{padding:50px 24px}}
-.frx .cover-top{display:flex;align-items:center;justify-content:flex-start;gap:14px;margin-bottom:40px}
-.frx .cover-logo{height:50px;width:auto;filter:brightness(0) invert(1)}
-.frx .cover .badge{font-size:11px;font-weight:700;color:rgba(255,255,255,.8);background:transparent;border:1px solid rgba(255,255,255,.3);padding:7px 13px;border-radius:999px;box-shadow:none}
-.frx .cover .kick{font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#fff}
-.frx .cover h1{color:#fff;font-size:clamp(28px,5vw,52px);line-height:1.06;font-weight:800;margin:12px 0 0;max-width:17ch}
-.frx .cover h1 span{color:#fff}
-.frx .cover .lede{font-size:15px;line-height:1.6;margin-top:14px;max-width:52ch;color:rgba(255,255,255,.95)}
+/* cover - NEW (with MBTI) */
+.frx .cover-new{border-top:none;background:linear-gradient(135deg,#2f6bff 0%,#1a4d9e 50%,#12996b 100%);min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden}
+.frx .cover-new::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:url(${LOGO}) center/contain no-repeat;opacity:0.08;z-index:1;pointer-events:none}
+
+/* cover - OLD (without MBTI) */
+.frx .cover-old{border-top:none;background:#fff;border:1px solid var(--line);border-top:3px solid var(--red)}
+
+/* shared cover styles */
+.frx .cover{border-top:none}
+.frx .cover-new .cover-in{padding:80px 60px;color:#fff;position:relative;z-index:2}
+.frx .cover-old .cover-in{padding:40px 44px 36px}
+@media(max-width:720px){.frx .cover-new .cover-in{padding:50px 24px}.frx .cover-old .cover-in{padding:26px 18px}}
+.frx .cover-top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:30px}
+.frx .cover-new .cover-top{justify-content:flex-start;margin-bottom:40px}
+.frx .cover-logo{height:52px;width:auto}
+.frx .cover-new .cover-logo{height:50px;filter:brightness(0) invert(1)}
+.frx .cover .badge{font-size:11px;font-weight:700;color:var(--ink-2);background:#fff;border:1px solid var(--line);padding:7px 13px;border-radius:999px;box-shadow:var(--shadow-sm)}
+.frx .cover-new .badge{color:rgba(255,255,255,.8);background:transparent;border:1px solid rgba(255,255,255,.3);box-shadow:none}
+.frx .cover .kick{font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--red)}
+.frx .cover-new .kick{color:#fff}
+.frx .cover h1{color:var(--ink);font-size:clamp(28px,5vw,42px);line-height:1.06;font-weight:800;margin:12px 0 0;max-width:17ch}
+.frx .cover-new h1{color:#fff;font-size:clamp(28px,5vw,52px)}
+.frx .cover h1 span{color:var(--red)}
+.frx .cover-new h1 span{color:#fff}
+.frx .cover .lede{font-size:15px;line-height:1.6;margin-top:14px;max-width:52ch}
+.frx .cover-new .lede{color:rgba(255,255,255,.95)}
 .frx .cover-hero{margin:22px 0 4px}
+.frx .cover-new .cover-hero{margin:22px 0 4px}
 .frx .cover-preview{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 40px rgba(20,20,25,.08);overflow:hidden}
+.frx .cover-old .cover-preview{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 40px rgba(20,20,25,.08)}
 .frx .cp-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;background:${C.bg};border-bottom:1px solid var(--line)}
 .frx .cp-kick{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .frx .cp-fit{font-size:12.5px;font-weight:700;color:var(--ink-2)}
@@ -1172,14 +1196,20 @@ const CSS = `
 .frx .cp-bar b{font-size:11.5px;font-weight:800;text-align:right}
 .frx .dims8{margin:0 0 18px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:${C.bg}}
 .frx .dims8 img{width:100%;display:block}
-.frx .cover-foot{margin-top:40px;padding:20px;border-top:1px solid rgba(255,255,255,.2);border-left:4px solid #e08a1e;display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;background:#fff;border-radius:8px}
+.frx .cover-foot{margin-top:22px;padding-top:20px;border-top:1px solid var(--line);display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.frx .cover-new .cover-foot{margin-top:40px;padding:20px;border-top:1px solid rgba(255,255,255,.2);border-left:4px solid #e08a1e;background:#fff;border-radius:8px}
 .frx .cover-name{display:flex;flex-direction:column;gap:3px}
-.frx .cover-name .rl{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#999}
-.frx .cover-name .nm{font-size:26px;font-weight:800;color:#1a1a1a}
-.frx .cover-name .sub{font-size:13px;color:#555}
+.frx .cover-name .rl{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.frx .cover-new .cover-name .rl{color:#999}
+.frx .cover-name .nm{font-size:22px;font-weight:800;color:var(--ink)}
+.frx .cover-new .cover-name .nm{font-size:26px;color:#1a1a1a}
+.frx .cover-name .sub{font-size:13px;color:var(--ink-3)}
+.frx .cover-new .cover-name .sub{color:#555}
 .frx .cover-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
-.frx .cover-chips .c{font-size:12px;font-weight:600;color:#666;background:#f8f8f8;border:1px solid #e0e0e0;padding:8px 12px;border-radius:10px;box-shadow:none}
-.frx .cover-chips .c b{color:#e08a1e;font-weight:800}
+.frx .cover-chips .c{font-size:12px;font-weight:600;color:var(--ink-2);background:#fff;border:1px solid var(--line);padding:8px 12px;border-radius:10px;box-shadow:var(--shadow-sm)}
+.frx .cover-new .cover-chips .c{color:#666;background:#f8f8f8;border:1px solid #e0e0e0;box-shadow:none}
+.frx .cover-chips .c b{color:var(--red);font-weight:800}
+.frx .cover-new .cover-chips .c b{color:#e08a1e}
 
 /* illustration band */
 .frx .sband{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:18px;padding:22px 44px;
