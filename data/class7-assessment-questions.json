@@ -282,9 +282,9 @@
         "Study what needs improvement",
         "Design a new space",
         "Organise students to help",
-        "Lead the improvement project"
+        "Coordinate and manage the project"
       ],
-      "mapping": ["R", "I", "A", "S", "E"],
+      "mapping": ["R", "I", "A", "S", "C"],
       "code": "riasec"
     },
     {

@@ -24,6 +24,21 @@ export async function POST(req: Request) {
     );
   }
 
+  // IMPORTANT: Class 6/7 (career_discovery) should use Class6Assessment/Class7Assessment components
+  // which load from JSON files directly. This API should NEVER be called for career_discovery.
+  if (body.journeyCode === "career_discovery") {
+    console.warn("⚠️ API /assessment/generate called for career_discovery journey - should use JSON files instead");
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Career Discovery assessment should use dedicated components, not API",
+        statusCode: 400,
+        data: null,
+      },
+      { status: 400 }
+    );
+  }
+
   try {
     const session = isLocalAssessmentMode()
       ? await generateLocalSession(body.journeyCode, body.userId ?? null)

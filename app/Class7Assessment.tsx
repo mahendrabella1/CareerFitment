@@ -29,7 +29,17 @@ export default function Class7Assessment() {
   const [results, setResults] = useState<Class7ScoreOutput | null>(null);
 
   const allQuestions = useMemo(() => {
-    return (questions as any).questions.map((q: any, idx: number) => ({
+    const loadedQuestions = (questions as any).questions || [];
+
+    // Safety check: Class 7 assessment should have exactly 60 questions
+    if (loadedQuestions.length !== 60) {
+      console.warn(`⚠️ Class 7 Assessment loaded ${loadedQuestions.length} questions, expected 60`);
+    }
+
+    // Only use the first 60 questions to prevent loading extra questions
+    const validQuestions = loadedQuestions.slice(0, 60);
+
+    return validQuestions.map((q: any, idx: number) => ({
       ...q,
       originalIndex: idx,
     }));

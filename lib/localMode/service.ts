@@ -227,16 +227,18 @@ const DEFAULT_SUBTRAIT_RULES = {
 };
 
 const BLUEPRINTS: Record<string, BlueprintDefinition[]> = {
+  // IMPORTANT: Class 6/7 Career Discovery Assessment uses dedicated Class6Assessment/Class7Assessment components
+  // which load exactly 60 questions from JSON files. This blueprint is ONLY for fallback if API is called.
+  // Blueprint total must match JOURNEYS[0].total_questions = 60
   career_discovery: [
-    { name: "Personality", weightPct: 15, questionCount: 18, sortOrder: 0, ...DEFAULT_SUBTRAIT_RULES },
-    { name: "Career Interests", weightPct: 20, questionCount: 24, sortOrder: 1, ...DEFAULT_SUBTRAIT_RULES },
-    { name: "Aptitude / Cognitive Ability", weightPct: 20, questionCount: 24, sortOrder: 2, ...DEFAULT_SUBTRAIT_RULES },
-    { name: "Learning Style", weightPct: 10, questionCount: 12, sortOrder: 3, ...DEFAULT_SUBTRAIT_RULES },
-    { name: "Multiple Intelligences", weightPct: 10, questionCount: 12, sortOrder: 4, ...DEFAULT_SUBTRAIT_RULES },
-    { name: "Academic Strengths & Weaknesses", weightPct: 10, questionCount: 12, sortOrder: 5, ...DEFAULT_SUBTRAIT_RULES },
-    { name: "Subject Preference Mapping", weightPct: 5, questionCount: 6, sortOrder: 6, ...DEFAULT_SUBTRAIT_RULES },
-    { name: "Creativity & Innovation", weightPct: 5, questionCount: 6, sortOrder: 7, ...DEFAULT_SUBTRAIT_RULES },
-    { name: "Self-Esteem & Self-Concept", weightPct: 5, questionCount: 6, sortOrder: 8, ...DEFAULT_SUBTRAIT_RULES },
+    { name: "Personality", weightPct: 17, questionCount: 10, sortOrder: 0, ...DEFAULT_SUBTRAIT_RULES },
+    { name: "Career Interests", weightPct: 17, questionCount: 10, sortOrder: 1, ...DEFAULT_SUBTRAIT_RULES },
+    { name: "Aptitude / Cognitive Ability", weightPct: 17, questionCount: 10, sortOrder: 2, ...DEFAULT_SUBTRAIT_RULES },
+    { name: "Multiple Intelligences", weightPct: 13, questionCount: 8, sortOrder: 3, ...DEFAULT_SUBTRAIT_RULES },
+    { name: "Values / Motivators", weightPct: 12, questionCount: 7, sortOrder: 4, ...DEFAULT_SUBTRAIT_RULES },
+    { name: "Learning Style", weightPct: 8, questionCount: 5, sortOrder: 5, ...DEFAULT_SUBTRAIT_RULES },
+    { name: "Emotional Intelligence", weightPct: 8, questionCount: 5, sortOrder: 6, ...DEFAULT_SUBTRAIT_RULES },
+    { name: "Creativity & Innovation", weightPct: 8, questionCount: 5, sortOrder: 7, ...DEFAULT_SUBTRAIT_RULES },
   ],
   stream_selection: [
     { name: "Personality", weightPct: 15, questionCount: 18, sortOrder: 0, ...DEFAULT_SUBTRAIT_RULES },

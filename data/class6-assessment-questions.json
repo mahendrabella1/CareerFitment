@@ -282,9 +282,9 @@
         "Researching a question",
         "Writing or designing",
         "Helping classmates",
-        "Organising a competition"
+        "Organizing and coordinating tasks"
       ],
-      "mapping": ["R", "I", "A", "S", "E"],
+      "mapping": ["R", "I", "A", "S", "C"],
       "code": "riasec"
     },
     {
