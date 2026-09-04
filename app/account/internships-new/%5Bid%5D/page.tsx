@@ -3,10 +3,11 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowLeft, ExternalLink, Clock, BarChart3, Award, Target, Zap, Users, CheckCircle, TrendingUp } from 'lucide-react';
-import { INTERNSHIP_PROGRAMS_200 } from '@/lib/data/internships200Plus';
+import { getAllInternships } from '@/lib/data/careerLoader';
 
 export default function InternshipDetailPage({ params }: { params: { id: string } }) {
-  const internship = INTERNSHIP_PROGRAMS_200.find((p) => p.id === params.id);
+  const allInternships = getAllInternships();
+  const internship = allInternships.find((p: any) => p.id === params.id);
 
   if (!internship) {
     return (
