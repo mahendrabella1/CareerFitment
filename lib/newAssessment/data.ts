@@ -114,9 +114,9 @@ export const CLUSTERS = clustersData as Record<string, { cluster: string; career
 /** Register category value -> question-bank life-stage tab. */
 export function stageForCategory(cat: string): StageKey {
   switch (cat) {
-    case "class_6_8":
     case "class_6":
-    case "class_7_8": return "6-8";
+    case "class_7":
+    case "class_8": return "6-8";
     case "class_9_10":
     case "class_9":
     case "class_10": return "9-10";

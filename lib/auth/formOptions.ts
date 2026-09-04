@@ -5,7 +5,9 @@
  * Granular classes are offered but several collapse onto the same journey.
  */
 export const CATEGORY_OPTIONS: { value: string; label: string; journey: string }[] = [
-  { value: "class_6_8", label: "Class 6 – 8", journey: "career_discovery" },
+  { value: "class_6", label: "Class 6", journey: "career_discovery" },
+  { value: "class_7", label: "Class 7", journey: "career_discovery" },
+  { value: "class_8", label: "Class 8", journey: "career_discovery" },
   { value: "class_9_10", label: "Class 9 – 10", journey: "stream_selection" },
   { value: "class_11_12", label: "Class 11 – 12", journey: "career_planning" },
   { value: "graduate", label: "Graduate (18 – 21)", journey: "graduate_readiness" },
