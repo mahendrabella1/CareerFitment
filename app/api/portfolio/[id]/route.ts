@@ -1,42 +1,55 @@
 /**
- * Portfolio API - Get/Update Portfolio
+ * Portfolio API - Get/Update/Delete Portfolio
  * GET /api/portfolio/[id] - Get portfolio by ID
  * PATCH /api/portfolio/[id] - Update portfolio
+ * DELETE /api/portfolio/[id] - Delete portfolio
  *
- * Requires authentication for updates
+ * Uses Firestore for persistence
+ * Requires authentication for updates/deletes
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { initializeApp, getApps, cert } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
+
+export const dynamic = 'force-dynamic';
+
+function initFirebase() {
+  const apps = getApps();
+  if (apps.length === 0) {
+    initializeApp({
+      credential: cert({
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      }),
+    });
+  }
+  return getFirestore();
+}
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    // Mock: Return portfolio details
-    const mockPortfolio = {
-      id: params.id,
-      userId: 'user-123',
-      profileSlug: 'john-doe-engineer',
-      headline: 'Full Stack Developer | Problem Solver',
-      bio: 'Passionate about building scalable applications.',
-      location: 'Bangalore, India',
-      experience: [],
-      education: [],
-      certifications: [],
-      skills: [],
-      isPublic: false,
-      views: 0,
-      lastUpdated: new Date().toISOString(),
-      createdAt: '2024-01-01'
-    };
+    const db = initFirebase();
+    const portfolioRef = db.collection('portfolios').doc(params.id);
+    const portfolio = await portfolioRef.get();
 
-    return NextResponse.json(mockPortfolio);
+    if (!portfolio.exists) {
+      return NextResponse.json(
+        { error: 'Portfolio not found' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(portfolio.data());
   } catch (error) {
     console.error('Error fetching portfolio:', error);
     return NextResponse.json(
-      { error: 'Portfolio not found' },
-      { status: 404 }
+      { error: 'Failed to fetch portfolio', details: error instanceof Error ? error.message : 'Unknown error' },
+      { status: 500 }
     );
   }
 }
@@ -46,35 +59,27 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
-    // TODO: Add authentication check
-    // const userId = await getCurrentUserId(request);
-    // if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
+    const userId = request.headers.get('x-user-id') || params.id; // TODO: Add auth check
     const body = await request.json();
-    const { headline, bio, location, experience, education, certifications, skills, isPublic } = body;
 
-    // Mock: Update portfolio
-    const updatedPortfolio = {
-      id: params.id,
-      userId: 'user-123',
-      profileSlug: 'john-doe-engineer',
-      headline: headline || 'Full Stack Developer',
-      bio: bio || 'Professional profile',
-      location: location || '',
-      experience: experience || [],
-      education: education || [],
-      certifications: certifications || [],
-      skills: skills || [],
-      isPublic: isPublic ?? false,
-      lastUpdated: new Date().toISOString(),
-      createdAt: '2024-01-01'
+    const db = initFirebase();
+    const portfolioRef = db.collection('portfolios').doc(params.id);
+
+    // Update with new data and lastUpdated timestamp
+    const updateData = {
+      ...body,
+      lastUpdated: new Date()
     };
 
-    return NextResponse.json(updatedPortfolio);
+    await portfolioRef.update(updateData);
+
+    // Return updated portfolio
+    const updatedDoc = await portfolioRef.get();
+    return NextResponse.json(updatedDoc.data());
   } catch (error) {
     console.error('Error updating portfolio:', error);
     return NextResponse.json(
-      { error: 'Failed to update portfolio' },
+      { error: 'Failed to update portfolio', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
@@ -85,11 +90,23 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    // TODO: Add authentication check
-    // const userId = await getCurrentUserId(request);
-    // if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const userId = request.headers.get('x-user-id') || params.id; // TODO: Add auth check
 
-    // Mock: Delete portfolio
+    const db = initFirebase();
+    const portfolioRef = db.collection('portfolios').doc(params.id);
+
+    // Check if exists
+    const portfolio = await portfolioRef.get();
+    if (!portfolio.exists) {
+      return NextResponse.json(
+        { error: 'Portfolio not found' },
+        { status: 404 }
+      );
+    }
+
+    // Delete the portfolio
+    await portfolioRef.delete();
+
     return NextResponse.json(
       { message: 'Portfolio deleted successfully' },
       { status: 200 }
@@ -97,7 +114,7 @@ export async function DELETE(
   } catch (error) {
     console.error('Error deleting portfolio:', error);
     return NextResponse.json(
-      { error: 'Failed to delete portfolio' },
+      { error: 'Failed to delete portfolio', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }

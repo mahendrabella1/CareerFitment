@@ -2,85 +2,69 @@
  * Portfolio API - Get User's Portfolio
  * GET /api/portfolio/my-portfolio
  *
- * Returns the current user's portfolio profile
+ * Returns the current user's portfolio profile from Firestore
  * Requires authentication
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { initializeApp, getApps, cert } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
+
+export const dynamic = 'force-dynamic';
+
+function initFirebase() {
+  const apps = getApps();
+  if (apps.length === 0) {
+    initializeApp({
+      credential: cert({
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      }),
+    });
+  }
+  return getFirestore();
+}
 
 export async function GET(request: NextRequest) {
   try {
-    // TODO: Add authentication check
-    // const userId = await getCurrentUserId(request);
-    // if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    // TODO: Add authentication - extract userId from session/token
+    // For now, use a demo user ID from query params or headers
+    const userId = request.headers.get('x-user-id') || 'demo-user-123';
 
-    // For now, return mock data
-    const mockPortfolio = {
-      userId: 'user-123',
-      profileSlug: 'john-doe-engineer',
-      headline: 'Full Stack Developer | Problem Solver',
-      bio: 'Passionate about building scalable applications and mentoring junior developers.',
-      location: 'Bangalore, India',
-      website: 'https://johndoe.dev',
-      email: 'john@example.com',
-      careerFit: 'Software Developer',
-      careerScore: 92,
-      experience: [
-        {
-          id: 'exp-1',
-          title: 'Senior Developer',
-          company: 'Tech Company',
-          location: 'Bangalore',
-          startDate: '2021-01',
-          currentlyWorking: true,
-          description: 'Led development of microservices architecture',
-          skills: ['Node.js', 'React', 'Docker', 'AWS']
-        }
-      ],
-      education: [
-        {
-          id: 'edu-1',
-          institution: 'University Name',
-          degree: 'B.Tech',
-          field: 'Computer Science',
-          startDate: '2017-07',
-          endDate: '2021-05',
-          currentlyStudying: false
-        }
-      ],
-      certifications: [
-        {
-          id: 'cert-1',
-          name: 'AWS Certified Solutions Architect',
-          issuer: 'Amazon',
-          issueDate: '2023-01-15',
-          credentialUrl: 'https://example.com'
-        }
-      ],
-      skills: [
-        { id: 'sk-1', name: 'JavaScript', endorsements: 45, category: 'technical' },
-        { id: 'sk-2', name: 'React', endorsements: 38, category: 'technical' },
-        { id: 'sk-3', name: 'Node.js', endorsements: 42, category: 'technical' },
-        { id: 'sk-4', name: 'Leadership', endorsements: 28, category: 'professional' }
-      ],
-      linkedin: 'https://linkedin.com/in/johndoe',
-      github: 'https://github.com/johndoe',
-      twitter: 'https://twitter.com/johndoe',
-      isPublic: true,
-      shareToken: 'share-token-abc123',
-      views: 142,
-      lastUpdated: new Date().toISOString(),
-      createdAt: '2024-01-01',
-      showEmail: true,
-      showPhone: false,
-      showCareerScore: true
-    };
+    const db = initFirebase();
+    const portfolioRef = db.collection('portfolios').doc(userId);
+    const portfolio = await portfolioRef.get();
 
-    return NextResponse.json(mockPortfolio);
+    if (!portfolio.exists) {
+      // Return empty portfolio template for new users
+      return NextResponse.json({
+        userId,
+        profileSlug: '',
+        headline: '',
+        bio: '',
+        location: '',
+        website: '',
+        email: '',
+        experience: [],
+        education: [],
+        certifications: [],
+        skills: [],
+        isPublic: false,
+        views: 0,
+        lastUpdated: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+        showEmail: false,
+        showPhone: false,
+        showCareerScore: true
+      });
+    }
+
+    return NextResponse.json(portfolio.data());
   } catch (error) {
     console.error('Error fetching portfolio:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch portfolio' },
+      { error: 'Failed to fetch portfolio', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
