@@ -327,7 +327,14 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
         const m = CAT[d.key];
         const col = dimColor(d.key);
         const isClass910 = a.journeyCode === "9-10";
-        const isMBTIPersonality = d.key === "personality" && isClass910;
+        // Only show MBTI if this assessment actually has MBTI data
+        const hasMBTIData = !!(
+          (a as any).mbtiEI !== undefined ||
+          (a as any).mbtiSN !== undefined ||
+          (a as any).mbtiTF !== undefined ||
+          (a as any).mbtiJP !== undefined
+        );
+        const isMBTIPersonality = d.key === "personality" && isClass910 && hasMBTIData;
 
         if (isMBTIPersonality) {
           const sheetNum = N();
