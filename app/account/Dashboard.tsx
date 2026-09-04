@@ -35,7 +35,7 @@ const FullReport = dynamic(() => import("@/app/account/FullReport"), {
     <div style={{ padding: 48, textAlign: "center", color: "#64748b", fontSize: 14 }}>Preparing your report…</div>
   ),
 });
-const Class1112FullReportNew = dynamic(() => import("@/app/report/Class1112FullReportNew"), {
+const Class11ReportComprehensive = dynamic(() => import("@/app/account/Class11ReportComprehensive"), {
   ssr: false,
   loading: () => (
     <div style={{ padding: 48, textAlign: "center", color: "#64748b", fontSize: 14 }}>Preparing your report…</div>
@@ -272,13 +272,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
   }
 
   if (view === "report") {
-    // Use new Class 11-12 report for Class 11-12 students
     const isClass1112 = a.journeyCode === "11-12";
-
-    if (isClass1112) {
-      // TODO: Import and use Class1112FullReportNew when available
-      // For now, use FullReport with extra sheets
-    }
 
     return (
       <div className="ogd-reportwrap">
@@ -287,19 +281,27 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
           <button className="ogd-btn ghost" onClick={() => { setView("dashboard"); window.scrollTo(0, 0); }}>
             <Icon name="chevronLeft" size={16} /> Back to dashboard
           </button>
-          {/* No download here by design — the PDF is delivered by email, so the
-              inbox holds the one canonical copy. See <ViewOnlyReport/>. */}
           <span className="ogd-mailnote">
             <Icon name="bell" size={14} /> A PDF copy has been emailed to you
           </span>
         </div>
-        <FullReport
-          a={a}
-          name={name}
-          extraSheets={extraSections
-            .filter((x) => x.inFullReport)
-            .map((x) => ({ id: x.id, kicker: x.label, node: x.reportNode ?? x.node }))}
-        />
+        {isClass1112 ? (
+          <Class11ReportComprehensive
+            studentName={name}
+            studentEmail={email || ""}
+            studentClass="11"
+            completedDate={a.completedAt ? new Date(a.completedAt) : new Date()}
+            output={a.class11Output || {} as any}
+          />
+        ) : (
+          <FullReport
+            a={a}
+            name={name}
+            extraSheets={extraSections
+              .filter((x) => x.inFullReport)
+              .map((x) => ({ id: x.id, kicker: x.label, node: x.reportNode ?? x.node }))}
+          />
+        )}
       </div>
     );
   }
