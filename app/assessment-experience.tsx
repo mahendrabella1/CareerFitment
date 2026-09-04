@@ -992,8 +992,8 @@ export default function AssessmentExperience() {
   }, [authLoading, user, beginHandled, hasBegin, router]);
 
   // Prefill the lead form from the signed-in profile.
-  // CRITICAL: Don't pre-fill journeyCode if the user hasn't explicitly selected a Class button
-  // This prevents old profile journeyCode from overriding the user's current selection
+  // NOTE: We only pre-fill if the user hasn't manually selected a journey code yet
+  // This preserves the user's selection from the milestone buttons
   useEffect(() => {
     if (!profile) return;
     setLead((l) => ({
@@ -1001,9 +1001,9 @@ export default function AssessmentExperience() {
       name: l.name || profile.name || "",
       email: l.email || profile.email || "",
       phone: l.phone || profile.phone || "",
-      // Only pre-fill journeyCode if user hasn't selected anything yet
-      // Don't override with old profile data
-      journeyCode: l.journeyCode ? l.journeyCode : "",
+      // CRITICAL: Never override an explicitly selected journeyCode
+      // Empty string means user hasn't selected yet, so it's safe to use profile's
+      journeyCode: l.journeyCode || "",
       dreamCareer: l.dreamCareer || profile.desiredCareer || "",
     }));
   }, [profile]);
@@ -1495,7 +1495,20 @@ export default function AssessmentExperience() {
                   key={a.t}
                   className="agecard"
                   onClick={() => {
-                    setLead((l) => ({ ...l, journeyCode: a.j }));
+                    // CRITICAL FIX: Reset form to empty state
+                    // For Class 6-8, DON'T set journeyCode - let form's milestone buttons handle it
+                    // For others, set their specific journeyCode
+                    setLead({
+                      name: "",
+                      email: "",
+                      phone: "",
+                      city: "",
+                      age: "",
+                      journeyCode: a.j === "career_discovery" ? "" : a.j,
+                      category: "",
+                      stage: "",
+                      dreamCareer: "",
+                    });
                     setView("details");
                   }}
                   type="button"
