@@ -716,6 +716,7 @@ export default function AssessmentExperience() {
   }
 
   async function selectJourney(code: string) {
+    console.log("🔍 selectJourney called with code:", code);
     setSelectedJourneyCode(code);
     setBlueprint(null);
     setSession(null);
@@ -729,6 +730,7 @@ export default function AssessmentExperience() {
 
     // Career discovery (Class 6-8) doesn't need blueprint - uses dedicated assessment components
     if (code === "career_discovery") {
+      console.log("🔍 career_discovery detected - returning early, no blueprint needed");
       setLoadingBlueprint(false);
       return;
     }
@@ -760,6 +762,8 @@ export default function AssessmentExperience() {
       return;
     }
 
+    console.log("🔍 SUBMIT DEBUG:", { journeyCode: lead.journeyCode, category: lead.category });
+
     setStarting(true);
     try {
       const created = await fetchJson<{ id: string }>("/api/leads", {
@@ -779,8 +783,11 @@ export default function AssessmentExperience() {
         }),
       });
       setLeadId(created.id);
+      console.log("🔍 AFTER setLeadId");
       await selectJourney(lead.journeyCode);
+      console.log("🔍 AFTER selectJourney, selectedJourneyCode will be set");
       await startAssessment(lead.journeyCode);
+      console.log("🔍 AFTER startAssessment");
     } catch (error) {
       setErrorMessage(
         error instanceof Error ? error.message : "Unable to start the assessment."
@@ -791,11 +798,13 @@ export default function AssessmentExperience() {
 
   async function startAssessment(journeyCode?: string) {
     const code = journeyCode ?? selectedJourneyCode;
+    console.log("🔍 startAssessment called with code:", code, "selectedJourneyCode state:", selectedJourneyCode);
     if (!code) return;
 
     // Career discovery (Class 6-8) uses the dedicated Class6Assessment component
     // which doesn't need a session. Just clear the state and the component will render.
     if (code === "career_discovery") {
+      console.log("🔍 career_discovery startAssessment - returning early, no session needed");
       setStarting(false);
       return;
     }
@@ -1667,7 +1676,10 @@ export default function AssessmentExperience() {
                     key={`${m.value}-${m.category}`}
                     type="button"
                     className={`og-milestone${active ? " active" : ""}`}
-                    onClick={() => setLead({ ...lead, journeyCode: m.value, category: m.category })}
+                    onClick={() => {
+                      console.log("🔍 BUTTON CLICKED:", { value: m.value, category: m.category });
+                      setLead({ ...lead, journeyCode: m.value, category: m.category });
+                    }}
                   >
                     <strong>{m.label}</strong>
                     <span>{m.hint}</span>
@@ -1715,15 +1727,32 @@ export default function AssessmentExperience() {
         </div>
       ) : null}
 
-      {selectedJourneyCode === "career_discovery" && leadId && !results ? (
-        lead.category === "class_7" ? (
-          <Class7Assessment />
-        ) : (
-          <Class6Assessment />
-        )
-      ) : null}
+      {(() => {
+        const show = selectedJourneyCode === "career_discovery" && leadId && !results;
+        console.log("🔍 RENDER CHECK - Class6/7 conditional:", {
+          selectedJourneyCode,
+          leadId,
+          results,
+          show,
+          category: lead.category
+        });
+        return show ? (
+          lead.category === "class_7" ? (
+            <Class7Assessment />
+          ) : (
+            <Class6Assessment />
+          )
+        ) : null;
+      })()}
 
-      {session && !results && !instructionsAccepted && !starting && selectedJourneyCode !== "career_discovery" ? (
+      {(() => {
+        const show = session && !results && !instructionsAccepted && !starting && selectedJourneyCode !== "career_discovery";
+        if (show) {
+          console.log("🔍 OLD ASSESSMENT SHOWING - session exists, something is wrong!");
+          console.log("   state:", {session: !!session, results, instructionsAccepted, starting, selectedJourneyCode});
+        }
+        return show;
+      })() ? (
         <section style={EX.insWrap}>
           <div style={EX.insCard}>
             <div style={EX.insBadge}>📋</div>
