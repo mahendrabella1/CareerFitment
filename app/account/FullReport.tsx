@@ -1141,17 +1141,17 @@ const CSS = `
 .frx .subhd{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
 
 /* cover */
-.frx .cover{border-top:none}
-.frx .cover::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--red),var(--red-strong))}
-.frx .cover-in{padding:40px 44px 36px}
-@media(max-width:720px){.frx .cover-in{padding:26px 18px}}
-.frx .cover-top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:30px}
-.frx .cover-logo{height:52px;width:auto}
-.frx .cover .badge{font-size:11px;font-weight:700;color:var(--ink-2);background:#fff;border:1px solid var(--line);padding:7px 13px;border-radius:999px;box-shadow:var(--shadow-sm)}
-.frx .cover .kick{font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--red)}
-.frx .cover h1{color:var(--ink);font-size:clamp(28px,5vw,42px);line-height:1.06;font-weight:800;margin:12px 0 0;max-width:17ch}
-.frx .cover h1 span{color:var(--red)}
-.frx .cover .lede{font-size:15px;line-height:1.6;margin-top:14px;max-width:52ch}
+.frx .cover{border-top:none;background:linear-gradient(135deg,#2f6bff 0%,#1a4d9e 50%,#12996b 100%);min-height:100vh;display:flex;align-items:center}
+.frx .cover::before{content:"";position:absolute;top:0;left:0;right:0;height:0px}
+.frx .cover-in{padding:80px 60px;color:#fff}
+@media(max-width:720px){.frx .cover-in{padding:50px 24px}}
+.frx .cover-top{display:flex;align-items:center;justify-content:flex-start;gap:14px;margin-bottom:40px}
+.frx .cover-logo{height:50px;width:auto;filter:brightness(0) invert(1)}
+.frx .cover .badge{font-size:11px;font-weight:700;color:rgba(255,255,255,.8);background:transparent;border:1px solid rgba(255,255,255,.3);padding:7px 13px;border-radius:999px;box-shadow:none}
+.frx .cover .kick{font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#fff}
+.frx .cover h1{color:#fff;font-size:clamp(28px,5vw,52px);line-height:1.06;font-weight:800;margin:12px 0 0;max-width:17ch}
+.frx .cover h1 span{color:#fff}
+.frx .cover .lede{font-size:15px;line-height:1.6;margin-top:14px;max-width:52ch;color:rgba(255,255,255,.95)}
 .frx .cover-hero{margin:22px 0 4px}
 .frx .cover-preview{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 40px rgba(20,20,25,.08);overflow:hidden}
 .frx .cp-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;background:${C.bg};border-bottom:1px solid var(--line)}
@@ -1172,14 +1172,14 @@ const CSS = `
 .frx .cp-bar b{font-size:11.5px;font-weight:800;text-align:right}
 .frx .dims8{margin:0 0 18px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:${C.bg}}
 .frx .dims8 img{width:100%;display:block}
-.frx .cover-foot{margin-top:22px;padding-top:20px;border-top:1px solid var(--line);display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.frx .cover-foot{margin-top:40px;padding:20px;border-top:1px solid rgba(255,255,255,.2);border-left:4px solid #e08a1e;display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;background:#fff;border-radius:8px}
 .frx .cover-name{display:flex;flex-direction:column;gap:3px}
-.frx .cover-name .rl{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.frx .cover-name .nm{font-size:22px;font-weight:800;color:var(--ink)}
-.frx .cover-name .sub{font-size:13px;color:var(--ink-3)}
+.frx .cover-name .rl{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#999}
+.frx .cover-name .nm{font-size:26px;font-weight:800;color:#1a1a1a}
+.frx .cover-name .sub{font-size:13px;color:#555}
 .frx .cover-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
-.frx .cover-chips .c{font-size:12px;font-weight:600;color:var(--ink-2);background:#fff;border:1px solid var(--line);padding:8px 12px;border-radius:10px;box-shadow:var(--shadow-sm)}
-.frx .cover-chips .c b{color:var(--red);font-weight:800}
+.frx .cover-chips .c{font-size:12px;font-weight:600;color:#666;background:#f8f8f8;border:1px solid #e0e0e0;padding:8px 12px;border-radius:10px;box-shadow:none}
+.frx .cover-chips .c b{color:#e08a1e;font-weight:800}
 
 /* illustration band */
 .frx .sband{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:18px;padding:22px 44px;

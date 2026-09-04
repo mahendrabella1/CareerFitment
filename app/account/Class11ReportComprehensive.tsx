@@ -1127,123 +1127,141 @@ const Class11ComprehensiveStyles = `
   margin: 0 auto;
 }
 
-/* Cover Sheet */
+/* Cover Sheet - Professional Gradient Design */
 .cover-sheet {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
   overflow: hidden;
+  background: linear-gradient(135deg, #2f6bff 0%, #1a4d9e 50%, #12996b 100%);
+  padding: 80px 60px !important;
+  color: white;
+  margin: 0 !important;
+  min-height: 100vh !important;
 }
 
 .cover-container {
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .cover-accent {
   position: absolute;
-  opacity: 0.04;
+  opacity: 0.08;
 }
 
 .accent-1 {
-  width: 400px;
-  height: 400px;
-  background: #2f6bff;
+  width: 500px;
+  height: 500px;
+  background: white;
   border-radius: 50%;
-  top: -150px;
-  right: -100px;
+  top: -200px;
+  right: -150px;
 }
 
 .accent-2 {
-  width: 300px;
-  height: 300px;
-  background: #12996b;
+  width: 400px;
+  height: 400px;
+  background: white;
   border-radius: 50%;
-  bottom: 100px;
-  left: -80px;
+  bottom: -100px;
+  left: -100px;
 }
 
 .accent-3 {
-  width: 350px;
-  height: 350px;
-  background: #e08a1e;
+  width: 300px;
+  height: 300px;
+  background: white;
   border-radius: 50%;
-  bottom: -100px;
-  right: -50px;
+  bottom: 200px;
+  right: 50px;
 }
 
 .cover-header {
-  text-align: center;
-  margin-bottom: 60px;
+  text-align: left;
+  margin-bottom: 40px;
 }
 
 .cover-logo {
-  height: 80px;
+  height: 50px;
   width: auto;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
+  filter: brightness(0) invert(1);
 }
 
 .cover-tagline {
-  font-size: 14px;
-  color: #666;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
   margin: 0;
   letter-spacing: 0.5px;
+  font-weight: 500;
 }
 
 .cover-main {
-  text-align: center;
+  text-align: left;
   margin-bottom: 80px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .cover-title {
-  font-size: 52px;
+  font-size: 48px;
   font-weight: 800;
-  margin: 0 0 8px 0;
+  margin: 0 0 24px 0;
+  color: white;
+  letter-spacing: -1px;
 }
 
 .cover-subtitle {
-  font-size: 26px;
-  color: #2f6bff;
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.95);
   font-weight: 700;
-  margin: 0 0 20px 0;
+  margin: 0 0 40px 0;
 }
 
 .cover-divider {
-  width: 60px;
-  height: 4px;
-  background: linear-gradient(90deg, #2f6bff, #12996b);
+  width: 80px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 2px;
-  margin: 0 auto 20px;
+  margin: 0 0 30px 0;
 }
 
 .cover-description {
-  font-size: 16px;
-  color: #666;
-  max-width: 500px;
-  margin: 0 auto;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 600px;
+  margin: 0;
   line-height: 1.6;
 }
 
 .cover-details {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
   margin-bottom: 40px;
-  padding-bottom: 40px;
-  border-bottom: 1px solid #e0e0e0;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .detail-card {
-  background: #f8f8f8;
-  padding: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
   border-radius: 8px;
-  border-left: 4px solid #2f6bff;
+  border-left: 4px solid #e08a1e;
+  color: #1a1a1a;
 }
 
 .detail-label {
   display: block;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   color: #999;
@@ -1259,9 +1277,16 @@ const Class11ComprehensiveStyles = `
 }
 
 .cover-footer {
-  text-align: center;
-  font-size: 12px;
-  color: #999;
+  text-align: left;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cover-footer p {
+  margin: 0;
+  font-weight: 500;
 }
 
 /* TOC */
