@@ -713,7 +713,7 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
                   {domainRoles.map((role) => {
                     const fitBand = bandOf(role.fit);
                     return (
-                      <div key={role.role} style={{ padding: '16px', border: '1px solid #e5e7eb', borderRadius: '10px', background: '#f9fafb', transition: 'all 200ms ease', ':hover': { borderColor: C.red, boxShadow: '0 4px 12px rgba(242,85,90,0.1)' } }}>
+                      <div key={role.role} style={{ padding: '16px', border: '1px solid #e5e7eb', borderRadius: '10px', background: '#f9fafb', transition: 'all 200ms ease', cursor: 'pointer' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '8px' }}>
                           <h4 style={{ fontSize: '14px', fontWeight: '700', color: C.ink, margin: 0, flex: 1 }}>{role.role}</h4>
                           <span style={{ fontSize: '12px', fontWeight: '700', color: fitBand.tone === 'hi' ? '#1f7a55' : fitBand.tone === 'mid' ? '#d97706' : '#6b7280', background: fitBand.tone === 'hi' ? '#dcfce7' : fitBand.tone === 'mid' ? '#fef3c7' : '#f3f4f6', padding: '3px 8px', borderRadius: '4px', whiteSpace: 'nowrap' }}>
