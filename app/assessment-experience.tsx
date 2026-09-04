@@ -1745,14 +1745,7 @@ export default function AssessmentExperience() {
         ) : null;
       })()}
 
-      {(() => {
-        const show = session && !results && !instructionsAccepted && !starting && selectedJourneyCode !== "career_discovery";
-        if (show) {
-          console.log("🔍 OLD ASSESSMENT SHOWING - session exists, something is wrong!");
-          console.log("   state:", {session: !!session, results, instructionsAccepted, starting, selectedJourneyCode});
-        }
-        return show;
-      })() ? (
+      {session && !results && !instructionsAccepted && !starting && selectedJourneyCode !== "career_discovery" ? (
         <section style={EX.insWrap}>
           <div style={EX.insCard}>
             <div style={EX.insBadge}>📋</div>
