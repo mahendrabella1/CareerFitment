@@ -74,6 +74,7 @@ const NAV = [
   { id: "fields", label: "Best-fit Fields", icon: "compass" },
   { id: "mind", label: "How You Think", icon: "multiple_intelligence" },
   { id: "plan", label: "My Plan", icon: "check" },
+  { id: "portfolio", label: "Build Your Website", icon: "user", external: true, href: "/account/portfolio" },
   { id: "careers", label: "Career Library", icon: "briefcase" },
   { id: "study-abroad", label: "Study Abroad", icon: "signpost" },
   { id: "exams", label: "Entrance Exams", icon: "edit" },
