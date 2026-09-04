@@ -15,6 +15,7 @@ export function navigateToReport(assessmentId: string, router: any) {
  * Generate report data directly (no API call)
  * Usage: When you have scoring output in memory
  */
+/*
 export async function generateReportInMemory(
   studentName: string,
   grade: "11" | "12",
@@ -31,6 +32,7 @@ export async function generateReportInMemory(
 
   return report;
 }
+*/
 
 /**
  * Export report as PDF
@@ -83,6 +85,7 @@ export async function shareReportViaEmail(
  * Get report by assessment ID
  * Usage: For re-viewing reports
  */
+/*
 export async function getReport(assessmentId: string) {
   try {
     const response = await fetch(`/api/report-generator/${assessmentId}`);
@@ -109,6 +112,7 @@ export async function getReport(assessmentId: string) {
     throw error;
   }
 }
+*/
 
 /**
  * Track report viewing/interaction

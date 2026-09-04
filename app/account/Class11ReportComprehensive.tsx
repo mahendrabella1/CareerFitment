@@ -156,6 +156,8 @@ export function Class11ComprehensiveReport({
   );
 }
 
+export default Class11ComprehensiveReport;
+
 // ============================================================================
 // PAGE COMPONENTS (Each ~1-2 pages)
 // ============================================================================

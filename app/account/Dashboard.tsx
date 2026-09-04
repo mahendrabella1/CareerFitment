@@ -291,7 +291,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
             studentEmail={email || ""}
             studentClass="11"
             completedDate={a.completedAt ? new Date(a.completedAt) : new Date()}
-            output={a.class11Output || {} as any}
+            output={(a as any).class11Output || {} as any}
           />
         ) : (
           <FullReport
