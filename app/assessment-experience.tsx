@@ -766,6 +766,7 @@ export default function AssessmentExperience() {
           city: lead.city,
           age: lead.age,
           journeyCode: lead.journeyCode,
+          category: lead.category,
           stage: lead.stage,
           dreamCareer: lead.dreamCareer,
           ...utm,
