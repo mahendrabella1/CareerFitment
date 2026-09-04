@@ -727,6 +727,12 @@ export default function AssessmentExperience() {
     setErrorMessage(null);
     setLoadingBlueprint(true);
 
+    // Career discovery (Class 6-8) doesn't need blueprint - uses dedicated assessment components
+    if (code === "career_discovery") {
+      setLoadingBlueprint(false);
+      return;
+    }
+
     try {
       const data = await fetchJson<BlueprintData>(`/api/journeys/${code}/blueprint`);
       setBlueprint(data);
