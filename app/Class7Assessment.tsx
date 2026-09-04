@@ -20,7 +20,7 @@ const DIMENSIONS = [
   { id: "creativity", name: "Future Readiness", qs: [56, 57, 58, 59, 60] },
 ];
 
-export default function Class6Assessment() {
+export default function Class7Assessment() {
   const { profile } = useAuth();
   const [phase, setPhase] = useState<Phase>("intro");
   const [studentName, setStudentName] = useState(profile?.name || "");
