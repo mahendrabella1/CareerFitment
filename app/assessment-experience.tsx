@@ -1504,7 +1504,7 @@ export default function AssessmentExperience() {
                       phone: "",
                       city: "",
                       age: "",
-                      journeyCode: a.j === "career_discovery" ? "" : a.j,
+                      journeyCode: a.j,
                       category: "",
                       stage: "",
                       dreamCareer: "",
