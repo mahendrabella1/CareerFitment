@@ -15,6 +15,7 @@ import Landing from "@/app/Landing";
 // so there is nothing useful to render on the server.
 const NewExam = dynamic(() => import("@/app/NewExam"), { ssr: false, loading: () => <FullPageSpinner /> });
 const Class6Assessment = dynamic(() => import("@/app/Class6Assessment"), { ssr: false, loading: () => <FullPageSpinner /> });
+const Class7Assessment = dynamic(() => import("@/app/Class7Assessment"), { ssr: false, loading: () => <FullPageSpinner /> });
 // The fee gate is ON. A registered user reaches the exam only after a verified
 // payment (or if profile.paid is already true). Three places cooperate: this
 // import, the `paidNow` state, and the check just before <NewExam>.
@@ -235,13 +236,15 @@ const LIKERT_OPTIONS = [
 ];
 
 // Class / life-stage options shown in the lead form, each mapped to a journey.
-const MILESTONES: { value: string; label: string; hint: string }[] = [
-  { value: "career_discovery", label: "Class 6 – 8", hint: "Discover interests & multiple intelligences" },
-  { value: "stream_selection", label: "Class 9 – 10", hint: "Find the right stream & subjects" },
-  { value: "career_planning", label: "Class 11 – 12", hint: "Career road map & execution plan" },
-  { value: "graduate_readiness", label: "Graduate", hint: "Best-fit path & readiness" },
-  { value: "career_growth", label: "Early Professional", hint: "Early-career direction & growth" },
-  { value: "leadership_excellence", label: "Experienced Professional", hint: "Leadership & pivot planning" },
+const MILESTONES: { value: string; category: string; label: string; hint: string }[] = [
+  { value: "career_discovery", category: "class_6", label: "Class 6", hint: "Discover interests & multiple intelligences" },
+  { value: "career_discovery", category: "class_7", label: "Class 7", hint: "Discover interests & multiple intelligences" },
+  { value: "career_discovery", category: "class_8", label: "Class 8", hint: "Discover interests & multiple intelligences" },
+  { value: "stream_selection", category: "class_9_10", label: "Class 9 – 10", hint: "Find the right stream & subjects" },
+  { value: "career_planning", category: "class_11_12", label: "Class 11 – 12", hint: "Career road map & execution plan" },
+  { value: "graduate_readiness", category: "graduate", label: "Graduate", hint: "Best-fit path & readiness" },
+  { value: "career_growth", category: "early_professional", label: "Early Professional", hint: "Early-career direction & growth" },
+  { value: "leadership_excellence", category: "experienced_professional", label: "Experienced Professional", hint: "Leadership & pivot planning" },
 ];
 
 const CAREER_LIBRARY_SIZE = 36;
@@ -615,6 +618,7 @@ export default function AssessmentExperience() {
     city: "",
     age: "",
     journeyCode: "",
+    category: "",
     stage: "",
     dreamCareer: "",
   });
@@ -1650,13 +1654,13 @@ export default function AssessmentExperience() {
             <p className="og-field-label">Current class / stage *</p>
             <div className="og-milestone-grid">
               {MILESTONES.map((m) => {
-                const active = lead.journeyCode === m.value;
+                const active = lead.journeyCode === m.value && lead.category === m.category;
                 return (
                   <button
-                    key={m.value}
+                    key={`${m.value}-${m.category}`}
                     type="button"
                     className={`og-milestone${active ? " active" : ""}`}
-                    onClick={() => setLead({ ...lead, journeyCode: m.value })}
+                    onClick={() => setLead({ ...lead, journeyCode: m.value, category: m.category })}
                   >
                     <strong>{m.label}</strong>
                     <span>{m.hint}</span>
@@ -1705,7 +1709,11 @@ export default function AssessmentExperience() {
       ) : null}
 
       {selectedJourneyCode === "career_discovery" && leadId && !results ? (
-        <Class6Assessment />
+        lead.category === "class_7" ? (
+          <Class7Assessment />
+        ) : (
+          <Class6Assessment />
+        )
       ) : null}
 
       {session && !results && !instructionsAccepted && !starting && selectedJourneyCode !== "career_discovery" ? (
