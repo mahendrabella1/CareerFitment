@@ -3,29 +3,48 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Edit3, Plus, Copy, Check, Eye } from 'lucide-react';
+import { useAuth } from '@/lib/auth/AuthProvider';
 import type { PortfolioProfile, PortfolioExperience, PortfolioEducation, PortfolioCertification, PortfolioSkill } from '@/lib/data/portfolioSchema';
 
 const TABS = ['Overview', 'Experience', 'Education', 'Certifications', 'Skills', 'Settings'];
 
 export default function PortfolioPage() {
+  const auth = useAuth();
   const [activeTab, setActiveTab] = useState('Overview');
   const [portfolio, setPortfolio] = useState<PortfolioProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    loadPortfolio();
-  }, []);
+    if (auth?.user?.uid) {
+      loadPortfolio();
+    }
+  }, [auth?.user?.uid]);
 
   const loadPortfolio = async () => {
     try {
-      const res = await fetch('/api/portfolio/my-portfolio');
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json'
+      };
+      if (auth?.user?.uid) {
+        headers['x-user-id'] = auth.user.uid;
+      }
+
+      const res = await fetch('/api/portfolio/my-portfolio', { headers });
       if (res.ok) {
         const data = await res.json();
-        setPortfolio(data);
+        // Check if portfolio has actual content (headline is required)
+        if (data.headline && data.headline.trim()) {
+          setPortfolio(data);
+        } else {
+          setPortfolio(null);
+        }
+      } else {
+        setPortfolio(null);
       }
     } catch (error) {
       console.error('Error loading portfolio:', error);
+      setPortfolio(null);
     } finally {
       setLoading(false);
     }
@@ -203,6 +222,7 @@ function OverviewSection({ portfolio }: { portfolio: PortfolioProfile }) {
 }
 
 function CreatePortfolio({ onSuccess }: { onSuccess: () => void }) {
+  const auth = useAuth();
   const [headline, setHeadline] = useState('');
   const [bio, setBio] = useState('');
   const [location, setLocation] = useState('');
@@ -218,9 +238,16 @@ function CreatePortfolio({ onSuccess }: { onSuccess: () => void }) {
 
     setLoading(true);
     try {
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json'
+      };
+      if (auth?.user?.uid) {
+        headers['x-user-id'] = auth.user.uid;
+      }
+
       const res = await fetch('/api/portfolio/create', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ headline, bio, location })
       });
 
