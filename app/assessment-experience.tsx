@@ -14,6 +14,7 @@ import Landing from "@/app/Landing";
 // `ssr: false` because all three are interactive-only and gated on auth state,
 // so there is nothing useful to render on the server.
 const NewExam = dynamic(() => import("@/app/NewExam"), { ssr: false, loading: () => <FullPageSpinner /> });
+const Class6Assessment = dynamic(() => import("@/app/Class6Assessment"), { ssr: false, loading: () => <FullPageSpinner /> });
 // The fee gate is ON. A registered user reaches the exam only after a verified
 // payment (or if profile.paid is already true). Three places cooperate: this
 // import, the `paidNow` state, and the check just before <NewExam>.
@@ -780,6 +781,13 @@ export default function AssessmentExperience() {
   async function startAssessment(journeyCode?: string) {
     const code = journeyCode ?? selectedJourneyCode;
     if (!code) return;
+
+    // Career discovery (Class 6-8) uses the dedicated Class6Assessment component
+    // which doesn't need a session. Just clear the state and the component will render.
+    if (code === "career_discovery") {
+      setStarting(false);
+      return;
+    }
 
     setStarting(true);
     setErrorMessage(null);
@@ -1696,7 +1704,11 @@ export default function AssessmentExperience() {
         </div>
       ) : null}
 
-      {session && !results && !instructionsAccepted && !starting ? (
+      {selectedJourneyCode === "career_discovery" && leadId && !results ? (
+        <Class6Assessment />
+      ) : null}
+
+      {session && !results && !instructionsAccepted && !starting && selectedJourneyCode !== "career_discovery" ? (
         <section style={EX.insWrap}>
           <div style={EX.insCard}>
             <div style={EX.insBadge}>📋</div>
@@ -1727,7 +1739,7 @@ export default function AssessmentExperience() {
         </section>
       ) : null}
 
-      {session && !results && instructionsAccepted && currentQuestion ? (
+      {session && !results && instructionsAccepted && currentQuestion && selectedJourneyCode !== "career_discovery" ? (
         <div style={FS.overlay}>
           {/* header */}
           <div style={FS.topbar}>
