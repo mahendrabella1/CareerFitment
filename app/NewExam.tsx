@@ -17,11 +17,12 @@ import { useRouter } from "next/navigation";
 import { useAuth, type ExamSession } from "@/lib/auth/AuthProvider";
 import { getFirebaseAuth } from "@/lib/firebase/client";
 
-// Short chip labels so all 8 categories fit the bar without horizontal scroll.
+// Short chip labels so all categories fit the bar without horizontal scroll.
 const SHORT_CAT: Record<string, string> = {
   personality: "Personality", career_interest: "Interests", multiple_intelligence: "Intelligences",
   emotional_intelligence: "Emotional", learning_styles: "Learning", motivators: "Motivators",
-  strengths: "Strengths", aptitude: "Aptitude",
+  strengths: "Strengths", aptitude: "Aptitude", creativity: "Creativity",
+  subject_fit: "Subjects", career_fit: "Career Fit", career_selector: "Careers",
 };
 
 const TOTAL_SEC = 90 * 60; // 90-minute exam

@@ -23,7 +23,8 @@ export type Category =
   | "aptitude"
   | "subject_fit"
   | "career_fit"
-  | "career_selector";
+  | "career_selector"
+  | "creativity";
 
 
 export type StageKey = "6-8" | "9-10" | "11-12" | "11-12-demo" | "grad" | "early" | "prof";
@@ -85,6 +86,7 @@ const ORDER_11_12: Category[] = [
   "motivators",
   "strengths",
   "aptitude",
+  "creativity",
   "subject_fit",
   "career_fit",
   "career_selector",
@@ -106,6 +108,7 @@ export const CATEGORY_META: Record<Category, { title: string; blurb: string }> =
   motivators: { title: "Motivators", blurb: "For each situation, choose the option that feels MOST like you." },
   strengths: { title: "Strengths", blurb: "Situations that reveal how you naturally work. There are no wrong answers." },
   aptitude: { title: "Aptitude", blurb: "Reasoning across words, numbers, logic and shapes. Pick the single best answer." },
+  creativity: { title: "Creativity & Innovation", blurb: "Explore how you approach creative thinking and innovation." },
   subject_fit: { title: "Subject & Academic Fit", blurb: "Tell us about your current stream, subjects, and how confident you feel." },
   career_fit: { title: "Career & Stream Fit", blurb: "Understand how your current education aligns with available careers." },
   career_selector: { title: "Your Career Aspiration", blurb: "What career are you thinking about? Share your thoughts." },
