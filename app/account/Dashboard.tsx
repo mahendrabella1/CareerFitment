@@ -919,6 +919,8 @@ const CSS = `
 .ash-banner-t span{font-size:12.5px;color:${C.ink3}}
 .ash-banner-a{display:flex;gap:8px;flex-wrap:wrap}
 @media(max-width:560px){.ash-banner{flex-wrap:wrap}.ash-banner-a{width:100%}}
+@media(max-width:480px){.ash-top-h{font-size:20px}.ash-top-s{font-size:13px}}
+@media(max-width:375px){.ash-top-h{font-size:18px;margin-top:4px}.ash-top-s{font-size:12px}}
 .ash-rail{display:none}
 
 /* right rail */
@@ -957,6 +959,31 @@ const CSS = `
   .ash-body{margin-left:0}
   .ash-burger{display:grid}
   .ash-rail{flex-direction:column}
+}
+@media(max-width:640px){
+  .ash-main{padding:18px 14px}
+  .ash-top{padding:14px 16px}
+  .ash-top-t{flex-direction:column;align-items:flex-start}
+  .ash-grid{gap:10px}
+  .ogd-card{padding:16px 14px}
+}
+@media(max-width:480px){
+  .ash-main{padding:14px 10px}
+  .ash-top{padding:12px 12px}
+  .ogd-card{padding:12px 12px}
+  .ogd-hero{grid-template-columns:1fr !important;padding:18px 12px !important;gap:16px}
+  .ogd-kpis{gap:8px;grid-template-columns:1fr 1fr}
+  .ogd-rail{gap:8px}
+  .ogd-rail>.ogd-card{min-width:auto}
+  .ogd-learn{gap:6px}
+  .ogd-schol{gap:6px}
+}
+@media(max-width:375px){
+  .ash-main{padding:10px 8px}
+  .ogd-card{padding:10px 10px;border-radius:10px}
+  .ogd h1{font-size:20px}
+  .ogd h2{font-size:17px}
+  .tk-row{padding:10px 12px;gap:8px}
 }
 @media print{.ash-body{margin-left:0}.ash-main{padding:0}}
 
@@ -1063,6 +1090,7 @@ const CSS = `
 /* kpi strip */
 .ogd-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 @media(max-width:720px){.ogd-kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.ogd-kpis{grid-template-columns:1fr;gap:10px}}
 .ogd-kpi{background:${C.surface};border:1px solid ${C.line};border-radius:13px;padding:16px 17px;box-shadow:0 1px 2px rgba(20,20,25,.04)}
 .ogd-kpi-ic{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:${C.line2};color:${C.ink2};margin-bottom:12px}
 .ogd-kpi-label{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:${C.muted}}
@@ -1149,6 +1177,7 @@ const CSS = `
 .ogd-dimtab.on .ogd-dimtab-lab{color:${C.ink}}
 .ogd-dimtab-check{width:14px;height:14px;border-radius:50%;flex:none;display:grid;place-items:center;background:${C.good};color:#fff}
 @media(max-width:700px){.ogd-dimtab{flex:none;min-width:92px}}
+@media(max-width:480px){.ogd-dimtab{min-width:80px;font-size:11px;padding:8px 10px}.ogd-dimtab-ic{width:16px;height:16px}}
 
 .ogd-dimpanel{border-top:1px solid ${C.line2};padding-top:16px;animation:ogdslide .2s ease}
 @keyframes ogdslide{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
@@ -1195,6 +1224,7 @@ const CSS = `
 .ogd-goal-prog small{font-size:11px;color:${C.muted};font-weight:700}
 .ogd-goal-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}
 @media(max-width:560px){.ogd-goal-cols{grid-template-columns:1fr}}
+@media(max-width:480px){.ogd-goal-cols{gap:14px}.ogd-goal-item{padding:6px 0}.ogd-goal-text{font-size:12px}}
 .ogd-goal-tag{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:6px 11px;border-radius:8px;
   display:inline-block;margin-bottom:12px}
 .ogd-goal-tag.n30{background:${IN_TINT};color:${IN_STRONG}}
@@ -1210,6 +1240,7 @@ const CSS = `
 /* learn + scholarships */
 .ogd-learn{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
 @media(max-width:640px){.ogd-learn{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.ogd-learn{grid-template-columns:1fr;gap:6px}.ogd-learn-chip{padding:9px 11px;border-radius:9px}.ogd-learn-chip b{font-size:12px}.ogd-learn-chip span{font-size:10px}}
 @media(max-width:400px){.ogd-learn{grid-template-columns:1fr}}
 .ogd-learn-chip{display:block;border:1px solid ${C.line};border-radius:12px;padding:11px 13px;text-decoration:none;background:#fff;transition:border-color .15s}
 .ogd-learn-chip:hover{border-color:${IN_LINE}}
