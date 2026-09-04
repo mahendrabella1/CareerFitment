@@ -716,7 +716,6 @@ export default function AssessmentExperience() {
   }
 
   async function selectJourney(code: string) {
-    console.log("🔍 selectJourney called with code:", code);
     setSelectedJourneyCode(code);
     setBlueprint(null);
     setSession(null);
@@ -730,7 +729,6 @@ export default function AssessmentExperience() {
 
     // Career discovery (Class 6-8) doesn't need blueprint - uses dedicated assessment components
     if (code === "career_discovery") {
-      console.log("🔍 career_discovery detected - returning early, no blueprint needed");
       setLoadingBlueprint(false);
       return;
     }
@@ -762,9 +760,6 @@ export default function AssessmentExperience() {
       return;
     }
 
-    console.log("🔍 SUBMIT DEBUG:", { journeyCode: lead.journeyCode, category: lead.category });
-    console.log("🔍 lead object at submit:", JSON.stringify(lead));
-
     setStarting(true);
     try {
       const created = await fetchJson<{ id: string }>("/api/leads", {
@@ -784,11 +779,8 @@ export default function AssessmentExperience() {
         }),
       });
       setLeadId(created.id);
-      console.log("🔍 AFTER setLeadId, about to call selectJourney with:", lead.journeyCode);
       await selectJourney(lead.journeyCode);
-      console.log("🔍 AFTER selectJourney, about to call startAssessment with:", lead.journeyCode);
       await startAssessment(lead.journeyCode);
-      console.log("🔍 AFTER startAssessment - if you see this, flow completed successfully");
     } catch (error) {
       setErrorMessage(
         error instanceof Error ? error.message : "Unable to start the assessment."
@@ -799,13 +791,11 @@ export default function AssessmentExperience() {
 
   async function startAssessment(journeyCode?: string) {
     const code = journeyCode ?? selectedJourneyCode;
-    console.log("🔍 startAssessment called with code:", code, "selectedJourneyCode state:", selectedJourneyCode);
     if (!code) return;
 
     // Career discovery (Class 6-8) uses the dedicated Class6Assessment component
     // which doesn't need a session. Just clear the state and the component will render.
     if (code === "career_discovery") {
-      console.log("🔍 career_discovery startAssessment - returning early, no session needed");
       setStarting(false);
       return;
     }
@@ -1002,6 +992,8 @@ export default function AssessmentExperience() {
   }, [authLoading, user, beginHandled, hasBegin, router]);
 
   // Prefill the lead form from the signed-in profile.
+  // CRITICAL: Don't pre-fill journeyCode if the user hasn't explicitly selected a Class button
+  // This prevents old profile journeyCode from overriding the user's current selection
   useEffect(() => {
     if (!profile) return;
     setLead((l) => ({
@@ -1009,7 +1001,9 @@ export default function AssessmentExperience() {
       name: l.name || profile.name || "",
       email: l.email || profile.email || "",
       phone: l.phone || profile.phone || "",
-      journeyCode: l.journeyCode || profile.journeyCode || "",
+      // Only pre-fill journeyCode if user hasn't selected anything yet
+      // Don't override with old profile data
+      journeyCode: l.journeyCode ? l.journeyCode : "",
       dreamCareer: l.dreamCareer || profile.desiredCareer || "",
     }));
   }, [profile]);
@@ -1677,10 +1671,7 @@ export default function AssessmentExperience() {
                     key={`${m.value}-${m.category}`}
                     type="button"
                     className={`og-milestone${active ? " active" : ""}`}
-                    onClick={() => {
-                      console.log("🔍 BUTTON CLICKED:", { value: m.value, category: m.category });
-                      setLead({ ...lead, journeyCode: m.value, category: m.category });
-                    }}
+                    onClick={() => setLead({ ...lead, journeyCode: m.value, category: m.category })}
                   >
                     <strong>{m.label}</strong>
                     <span>{m.hint}</span>
@@ -1728,23 +1719,13 @@ export default function AssessmentExperience() {
         </div>
       ) : null}
 
-      {(() => {
-        const show = selectedJourneyCode === "career_discovery" && leadId && !results;
-        console.log("🔍 RENDER CHECK - Class6/7 conditional:", {
-          selectedJourneyCode,
-          leadId,
-          results,
-          show,
-          category: lead.category
-        });
-        return show ? (
-          lead.category === "class_7" ? (
-            <Class7Assessment />
-          ) : (
-            <Class6Assessment />
-          )
-        ) : null;
-      })()}
+      {selectedJourneyCode === "career_discovery" && leadId && !results ? (
+        lead.category === "class_7" ? (
+          <Class7Assessment />
+        ) : (
+          <Class6Assessment />
+        )
+      ) : null}
 
       {session && !results && !instructionsAccepted && !starting && selectedJourneyCode !== "career_discovery" ? (
         <section style={EX.insWrap}>
