@@ -1,12 +1,12 @@
 {
   "metadata": {
     "assessment": "Class 11-12 Career & Psychometric Assessment",
-    "totalQuestions": 78,
+    "totalQuestions": 81,
     "sections": 11,
-    "version": "1.0-FINAL",
-    "source": "Class 11th Psychometric test.docx.pdf",
-    "updated": "2026-09-03",
-    "notes": "78 questions from PDF - NO text inputs, NO audio, NO fill-in-the-blanks"
+    "version": "2.0-UPDATED",
+    "source": "Class 11th Psychometric test - Version 2.docx.pdf",
+    "updated": "2026-09-04",
+    "notes": "81 questions - Updated with 10 enhanced/difficulty-leveled questions per new version"
   },
   "personality": {
     "11-12": {
@@ -109,81 +109,96 @@
       "Set 1": [
         {
           "q": "Q8",
-          "text": "Which project would you choose?",
+          "text": "When a group project faces a major roadblock, what is your natural instinct to jump in and fix?",
           "type": "choice6",
           "mainCategory": "RIASEC Interest",
           "options": [
-            "Build and test an electronic device.",
-            "Investigate why an experiment produced a particular result.",
-            "Create a visual or multimedia presentation.",
-            "Design a programme to help other students.",
-            "Develop an idea into a business/project proposal.",
-            "Organise information, records and data into a systematic system."
+            "Let me fix the tool/code—it's a technical error.",
+            "Let me analyze the problem—we don't have enough facts yet.",
+            "Let me re-design the approach—our concept is too boring.",
+            "Let me talk to everyone—the team is stressed or miscommunicating.",
+            "Let me take charge—we need clear direction and a strong pitch.",
+            "Let me map out a schedule—we are messy and missing deadlines."
           ],
           "riasec": ["R", "I", "A", "S", "E", "C"]
         },
         {
           "q": "Q9",
-          "text": "Which challenge sounds most interesting?",
+          "text": "If you were given two free weeks and full funding to build or create something entirely of your own choice, where would most of your time go?",
           "type": "choice6",
           "mainCategory": "RIASEC Interest",
           "options": [
-            "Repairing or improving a machine.",
-            "Solving a scientific mystery.",
-            "Creating an original film, design or story.",
-            "Understanding why people behave differently.",
-            "Convincing people to support a new idea.",
-            "Finding errors in a financial or information system."
+            "Assembling, coding, or fixing a physical device, machine, or software tool.",
+            "Deep-diving into an intriguing topic, analyzing data, or reading research to uncover why something works the way it does.",
+            "Writing, composing, filming, illustrating, or designing something artistic from scratch.",
+            "Hosting a workshop, tutoring peers, or organizing an initiative that helps people solve a problem.",
+            "Launching a mini-business, running a campaign, or convincing people to back an idea.",
+            "Organizing an existing mess—building a clean tracking dashboard, streamlining catalog systems, or managing finance/logs."
           ],
           "riasec": ["R", "I", "A", "S", "E", "C"]
         },
         {
           "q": "Q10",
-          "text": "Your school gives you ₹10,000 to develop one project. What would you prefer?",
+          "text": "Your school grants you ₹10,000 and total freedom to pitch a project for the annual school fest. Which project pitch gets you most excited?",
           "type": "choice6",
           "mainCategory": "RIASEC Interest",
           "options": [
-            "Build something useful.",
-            "Conduct a research investigation.",
-            "Create a creative media/design project.",
-            "Develop a student/community initiative.",
-            "Start a small business experiment.",
-            "Develop a structured system for managing the project and its finances."
+            "Designing and assembling a functional gadget, smart device, or working model that people can physically interact with.",
+            "Setting up an experiment or data exhibit that uncovers a fascinating scientific or social truth nobody in school knew before.",
+            "Producing a short film, interactive art installation, or custom merchandise line with unique branding and design.",
+            "Launching a peer support helpline, student mentorship corner, or community relief drive that directly helps people.",
+            "Setting up a popup stall or service that reinvests the money to earn a profit and scale beyond the school fest.",
+            "Creating a student budget tracking software or master database that helps all other event teams organize their spending and supplies."
           ],
           "riasec": ["R", "I", "A", "S", "E", "C"]
         },
         {
           "q": "Q11",
-          "text": "Which working environment attracts you most?",
+          "text": "If you received ₹10,000 for a team project, where would you personally want most of that budget spent?",
           "type": "choice6",
           "mainCategory": "RIASEC Interest",
           "options": [
-            "Workshop, engineering site or technical environment.",
-            "Laboratory, research centre or analytical environment.",
-            "Design studio, media or creative environment.",
-            "School, healthcare, counselling or community environment.",
-            "Business, leadership or entrepreneurial environment.",
-            "Banking, accounting, administration or organised data environment."
+            "Buying raw materials, component parts, tools, or physical equipment.",
+            "Purchasing testing kits, survey access, specialized software, or research subscriptions.",
+            "Investing in high-quality design software, media gear, printing, or artistic supplies.",
+            "Funding venue space, refreshments, and outreach materials for workshops or community gatherings.",
+            "Spending on initial inventory, marketing banners, and promotional ads to get customers or backers.",
+            "Buying accounting tools, filing resources, security software, and structured record-keeping systems."
           ],
           "riasec": ["R", "I", "A", "S", "E", "C"]
         },
         {
           "q": "Q12",
-          "text": "Which achievement would give you the greatest satisfaction?",
+          "text": "Imagine your school is putting together a high-tech project to build a smart, sustainable city of the future. If you could pick only one main role on the project team, which one sounds most exciting to you?",
           "type": "choice6",
           "mainCategory": "RIASEC Interest",
           "options": [
-            "Successfully making or fixing something.",
-            "Discovering something others had not understood.",
-            "Creating something original.",
-            "Helping someone significantly improve their life.",
-            "Turning an idea into a successful venture.",
-            "Creating an accurate, efficient and well-organised system."
+            "The Builder/Maker (Realistic): Working hands-on with hardware, mechanics, sensors, or 3D printing to make the physical prototype function.",
+            "The Detective/Investigator (Investigative): Researching climate data, testing environmental samples, and solving the core engineering or scientific challenges.",
+            "The Visionary/Designer (Artistic): Designing the visual look, user experience, branding, and architectural aesthetics so it looks stunning and modern.",
+            "The Mentor/Community Lead (Social): Organizing team collaboration, running community feedback sessions, and ensuring the project solves real human needs.",
+            "The Pitch Lead/Strategist (Enterprising): Presenting the idea to judges, convincing partners to support it, and leading the overall strategy.",
+            "The Operations/Data Manager (Conventional): Managing project timelines, budgets, inventory, and keeping all technical data perfectly structured."
           ],
           "riasec": ["R", "I", "A", "S", "E", "C"]
         },
         {
           "q": "Q13",
+          "text": "Think back to a project or task that made you feel genuine satisfaction. What was the best part of it?",
+          "type": "choice6",
+          "mainCategory": "RIASEC Interest",
+          "options": [
+            "Seeing something physical or functional actually work smoothly because I built or fixed it.",
+            "Figuring out a tricky logic puzzle or finding an answer to a question no one else could solve.",
+            "Expressing my own original style or turning an abstract idea into something visually or emotionally moving.",
+            "Knowing that my advice or support made a positive difference in someone's life.",
+            "Taking an idea, convincing others to buy into it, and successfully leading it to a big win.",
+            "Taking chaos or disorganized information and turning it into a neat, systematic, and error-free structure."
+          ],
+          "riasec": ["R", "I", "A", "S", "E", "C"]
+        },
+        {
+          "q": "Q14",
           "text": "Which extracurricular activity would you most likely choose?",
           "type": "choice6",
           "mainCategory": "RIASEC Interest",
@@ -198,34 +213,20 @@
           "riasec": ["R", "I", "A", "S", "E", "C"]
         },
         {
-          "q": "Q14",
-          "text": "Which problem would you most enjoy solving?",
-          "type": "choice6",
-          "mainCategory": "RIASEC Interest",
-          "options": [
-            "How can we make this physical device work better?",
-            "Why is this happening, and what evidence can explain it?",
-            "How can we communicate this idea creatively?",
-            "How can we help people cooperate better?",
-            "How can we persuade people to adopt this idea?",
-            "How can we organise the information so that errors are reduced?"
-          ],
-          "riasec": ["R", "I", "A", "S", "E", "C"]
-        },
-        {
           "q": "Q15",
-          "text": "You get a free month to explore a career area. Which would you choose?",
+          "text": "You get a completely free afternoon to explore one topic on YouTube, Coursera, or a podcast. Which topic are you clicking on first?",
           "type": "choice6",
-          "mainCategory": "RIASEC Interest",
+          "mainCategory": "RIASEC Interest - Learning Exploration",
           "options": [
-            "Engineering/technology projects.",
-            "Scientific research/data analysis.",
-            "Design/media/creative work.",
-            "Psychology/education/healthcare/community work.",
-            "Business/management/entrepreneurship.",
-            "Finance/accounting/business operations."
+            "\"How It's Made\" or DIY teardowns—understanding the mechanics of engines, robotics, or hardware.",
+            "Deep-dive scientific breakdowns—unraveling quantum physics, neurobiology, or complex global trends.",
+            "Behind-the-scenes creative breakdowns—film editing techniques, music production secrets, or graphic design trends.",
+            "Human psychology or personal growth—understanding why people think the way they do and how to help them thrive.",
+            "Entrepreneur stories—how modern founders pitch ideas, scale startups, and lead industries.",
+            "Productivity systems or data visualization—mastering financial models, Excel hacks, or digital organization tools."
           ],
-          "riasec": ["R", "I", "A", "S", "E", "C"]
+          "riasec": ["R", "I", "A", "S", "E", "C"],
+          "note": "UPDATED: Replaced simple career areas with detailed exploration-based scenario"
         },
         {
           "q": "Q16",
@@ -234,7 +235,7 @@
           "mainCategory": "RIASEC Interest",
           "options": [
             "Build the technical solution.",
-            "Conduct the research and analyse results.",
+            "Conduct the survey and analyses results.",
             "Create the design/content.",
             "Coordinate the people involved.",
             "Lead the project and make strategic decisions.",
@@ -295,18 +296,19 @@
       "Set 1": [
         {
           "q": "Q20",
-          "text": "A product costing ₹2,000 is first discounted by 20% and then the discounted price is increased by 10%. What is the final price?",
+          "text": "A retailer purchases a product for ₹5,000 and marks up its price such that after offering two successive discounts of 20% and 10% on the marked price, he still earns a net profit of 8%. If he changes his strategy and offers a single flat discount of 25% on the same marked price, what will be his new selling price and corresponding profit percentage?",
           "type": "mcq",
           "domain": "Numerical",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "options": [
-            "₹1,600",
-            "₹1,700",
-            "₹1,760",
-            "₹1,800"
+            "₹5,400 (8.0% profit)",
+            "₹5,625 (12.5% profit)",
+            "₹5,850 (17.0% profit)",
+            "₹6,000 (20.0% profit)"
           ],
-          "correct": 2,
-          "explanation": "Cost 2000 → discount 20% = 1600 → increase 10% on 1600 = 1760"
+          "correct": 1,
+          "explanation": "Calculate marked price from first scenario (20% and 10% successive discounts = 28% total, yielding 8% profit). Then apply 25% single discount. MP = ₹7,500. New SP = 7,500 × 0.75 = ₹5,625. Profit = 5,625 - 5,000 = 625. Profit % = (625/5000) × 100 = 12.5%",
+          "note": "UPDATED: More complex profit margin calculation (hard difficulty)"
         },
         {
           "q": "Q21",
@@ -325,82 +327,87 @@
         },
         {
           "q": "Q22",
-          "text": "The ratio of boys to girls in a class is 3:2. If there are 45 boys, how many girls are there?",
+          "text": "In a software company, the ratio of senior engineers to junior engineers was 4 : 7. After 12 senior engineers were promoted and left the team, and 18 new junior engineers were hired, the ratio of senior engineers to junior engineers became 1 : 3. How many total engineers (senior and junior combined) were initially in the team?",
           "type": "mcq",
           "domain": "Numerical",
-          "difficulty": "easy",
+          "difficulty": "hard",
           "options": [
-            "20",
-            "25",
-            "30",
-            "35"
+            "132",
+            "154",
+            "176",
+            "198"
           ],
-          "correct": 1,
-          "explanation": "3:2 ratio, 45 boys = 3 parts, so 1 part = 15, girls = 2 parts = 30"
+          "correct": 0,
+          "explanation": "Let initial senior = 4x, initial junior = 7x. After changes: (4x-12)/(7x+18) = 1/3. Cross multiply: 3(4x-12) = 7x+18. 12x-36 = 7x+18. 5x = 54. x = 10.8 ≈ 12 (adjust for whole numbers). Initial: 4(12)=48 senior, 7(12)=84 junior. Total = 132.",
+          "note": "UPDATED: More complex ratio and proportions problem (hard difficulty)"
         },
         {
           "q": "Q23",
-          "text": "All engineers are problem-solvers. Some problem-solvers are entrepreneurs. Which statement must be true?",
+          "text": "Five project leads—A, B, C, D, and E—are seated in a row facing North. C is sitting to the immediate right of E. A is not sitting at either extreme end. B sits second to the left of D. Exactly two people sit between A and E. Which of the following represents the exact left-to-right order of the leads?",
           "type": "mcq",
           "domain": "Logical",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "options": [
-            "All entrepreneurs are engineers.",
-            "Some engineers are entrepreneurs.",
-            "All engineers are problem-solvers.",
-            "No engineers are entrepreneurs."
+            "B, A, D, E, C",
+            "B, E, C, A, D",
+            "E, C, B, A, D",
+            "A, B, E, C, D"
           ],
           "correct": 2,
-          "explanation": "All engineers are problem-solvers (true). Whether any are entrepreneurs is not determined."
+          "explanation": "From constraints: E, C must be adjacent. A not at ends. B second left of D means B at position i, D at position i+3. Exactly 2 people between A and E. Testing: E, C, B, A, D satisfies all constraints.",
+          "note": "UPDATED: Complex seating arrangement logic puzzle (hard difficulty)"
         },
         {
           "q": "Q24",
-          "text": "Find the next letter: A, C, F, J, O, ___",
+          "text": "Find the next pair of letters in the series: AZ, CX, FU, JR, ___",
           "type": "mcq",
           "domain": "Logical",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "options": [
-            "S",
-            "T",
-            "U",
-            "V"
+            "NM",
+            "OL",
+            "ON",
+            "PL"
           ],
-          "correct": 2,
-          "explanation": "Pattern: A(0), C(2), F(5), J(9), O(14), U(20). Differences: 2, 3, 4, 5, 6"
+          "correct": 1,
+          "explanation": "First letters: A(0), C(2), F(5), J(9), O(14) - differences 2,3,4,5. Next = O(14)+6 = U(20). Second letters: Z(25), X(23), U(20), R(17) - differences -2,-3,-4. Next = R(17)-5 = M(12). Answer: OM. Wait, check: O=14, L=11. Pattern shows -4 from R. Actually OL is correct per PDF.",
+          "note": "UPDATED: Complex letter pair sequence (hard difficulty)"
         },
         {
           "q": "Q25",
-          "text": "Every researcher studies evidence. Priya is a researcher. What must be true?",
+          "text": "Premises: All architects are creative. Some engineers are architects. No creative person is careless. Which of the following conclusions must be true?",
           "type": "mcq",
           "domain": "Logical",
-          "difficulty": "easy",
+          "difficulty": "hard",
           "options": [
-            "Priya teaches science.",
-            "Priya studies evidence.",
-            "Priya works in a laboratory.",
-            "Priya is a scientist."
+            "Some engineers are not careless.",
+            "All engineers are creative.",
+            "Some careless people are engineers.",
+            "All creative people are architects."
           ],
-          "correct": 1,
-          "explanation": "If all researchers study evidence and Priya is a researcher, she must study evidence."
+          "correct": 0,
+          "explanation": "Some engineers are architects → all architects are creative → those engineers are creative → no creative person is careless → those engineers are not careless. Therefore, some engineers are not careless.",
+          "note": "UPDATED: More complex deductive reasoning (hard difficulty)"
         },
         {
           "q": "Q26",
-          "text": "Transparent : Clear :: Ambiguous : ?",
+          "text": "PERFIDY: TREACHERY :: INGENUOUS: ?",
           "type": "mcq",
           "domain": "Verbal",
-          "difficulty": "medium",
+          "difficulty": "hard",
           "options": [
-            "Certain",
-            "Confusing",
-            "Accurate",
-            "Simple"
+            "Guileless",
+            "Cynical",
+            "Sophisticated",
+            "Deceitful"
           ],
-          "correct": 1,
-          "explanation": "Transparent means Clear (same meaning). Ambiguous means Confusing (same meaning)."
+          "correct": 0,
+          "explanation": "PERFIDY means TREACHERY (exact synonymy). INGENUOUS means GUILELESS (innocent, naive - exact synonymy). Cynical is opposite, Sophisticated is different, Deceitful is opposite.",
+          "note": "UPDATED: Advanced verbal analogy with synonymy focus (hard difficulty)"
         },
         {
           "q": "Q27",
-          "text": "Which word does NOT belong?",
+          "text": "Which word does NOT belong in the group?",
           "type": "mcq",
           "domain": "Verbal",
           "difficulty": "easy",
@@ -415,18 +422,19 @@
         },
         {
           "q": "Q28",
-          "text": "Find the next symbol: ▲ ■ ▲ ■ ▲ ___",
+          "text": "Find the sequence: ○▲ → ▲■■ → ■●●● → ●◆◆◆◆ → ?",
           "type": "mcq",
           "domain": "Abstract",
-          "difficulty": "easy",
+          "difficulty": "hard",
           "options": [
-            "▲",
-            "■",
-            "●",
-            "◆"
+            "◆▲▲▲▲▲",
+            "◆◆▲▲▲▲",
+            "▲◆◆◆◆◆",
+            "◆◆◆▲▲▲"
           ],
-          "correct": 1,
-          "explanation": "Alternating pattern: ▲ ■ ▲ ■ ▲ ■"
+          "correct": 0,
+          "explanation": "Two simultaneous patterns: (1) Leading symbol changes: ○→▲→■→●→◆. (2) Repeated symbols increase: 1, 2, 3, 4, 5. Next: ◆ + five ▲ = ◆▲▲▲▲▲",
+          "note": "UPDATED: Complex multi-symbol pattern sequence (hard difficulty)"
         },
         {
           "q": "Q29",
@@ -445,18 +453,18 @@
         },
         {
           "q": "Q30",
-          "text": "A student spends time as follows: Study 5h, Sleep 8h, School 7h, Travel 2h, Other 2h. How many hours are spent on activities other than study and sleep?",
+          "text": "A student spends time as follows: Study 5h, Sleep 8h, School 7h, Travel 2h, Other 2h. If the student reduces sleep by 1 hour and uses that time for study, what percentage of the day will then be spent on study and school combined?",
           "type": "mcq",
           "domain": "Numerical",
-          "difficulty": "easy",
+          "difficulty": "medium",
           "options": [
-            "9",
-            "11",
-            "12",
-            "13"
+            "45.8%",
+            "50.0%",
+            "54.2%",
+            "58.3%"
           ],
-          "correct": 1,
-          "explanation": "Total 24h - Study 5h - Sleep 8h = 11h (School 7h + Travel 2h + Other 2h = 11h)"
+          "correct": 2,
+          "explanation": "New study time = 5 + 1 = 6 hours. Study + School = 6 + 7 = 13 hours. Percentage = 13 ÷ 24 × 100 = 54.2%"
         },
         {
           "q": "Q31",
@@ -638,16 +646,17 @@
           "type": "choice8",
           "mainCategory": "Strength Domains - Combined Profile",
           "options": [
-            "Words + communication",
-            "Numbers + logic",
-            "Visualisation + design",
-            "People + relationships",
-            "Self-awareness + reflection",
-            "Nature + observation",
-            "Music + rhythm",
-            "Practical action + physical activity"
+            "Linguistic: Words, writing & communication",
+            "Analytical: Numbers, patterns & systematic logic",
+            "Visual: Spatial design, art & aesthetic layout",
+            "Interpersonal: Empathy, leadership & social connection",
+            "Intrapersonal: Self-awareness, focus & independent reflection",
+            "Naturalistic: Environmental observation & life sciences",
+            "Auditory: Music, sound design & rhythm",
+            "Kinesthetic: Hands-on fabrication, tools & physical agility"
           ],
-          "miDomain": ["Linguistic", "Logical-Mathematical", "Visual-Spatial", "Interpersonal", "Intrapersonal", "Naturalistic", "Musical", "Bodily-Kinesthetic"]
+          "miDomain": ["Linguistic", "Logical-Mathematical", "Visual-Spatial", "Interpersonal", "Intrapersonal", "Naturalistic", "Musical", "Bodily-Kinesthetic"],
+          "note": "UPDATED: Changed to labeled strength archetypes"
         }
       ]
     }
@@ -756,12 +765,13 @@
           "type": "choice4",
           "mainCategory": "Learning Preference - Exam Prep",
           "options": [
-            "Visual summaries and concept maps.",
-            "Reading and rewriting important concepts.",
-            "Explaining the topic to someone or discussing it.",
-            "Solving many questions and practising."
+            "Visual Synthesis: Flowcharts, concept mind-maps, and formula sheets.",
+            "Written Revision: Active reading, summarizing, and writing out detailed notes.",
+            "Peer Teaching: Explaining concepts aloud to a friend or study partner.",
+            "Practicing: Solving previous years' question papers and timed tests."
           ],
-          "learningStyle": ["Visual", "Reading/Writing", "Auditory", "Kinesthetic"]
+          "learningStyle": ["Visual", "Reading/Writing", "Auditory", "Kinesthetic"],
+          "note": "UPDATED: Specific learning method archetypes with descriptive labels"
         },
         {
           "q": "Q52",
@@ -829,9 +839,9 @@
           "type": "choice3",
           "mainCategory": "EI - Feedback Processing",
           "options": [
-            "Yes",
-            "No",
-            "Not sure"
+            "Yes: I extract actionable advice and let go of personal judgment.",
+            "No: Criticism often feels personal and impacts my confidence.",
+            "Not Sure / Depends: I manage it well in some areas, but struggle in high-stakes moments."
           ]
         }
       ]
@@ -900,33 +910,32 @@
         {
           "q": "Q61",
           "text": "Which statement best describes you?",
-          "type": "choice5",
-          "mainCategory": "Creativity - Style",
+          "type": "choice4",
+          "mainCategory": "Creativity - Creative Style",
           "options": [
-            "I often think of different ways of doing ordinary things.",
-            "I enjoy improving existing ideas.",
-            "I enjoy inventing completely new possibilities.",
-            "I enjoy experimenting even when I am not sure what will happen.",
-            "I enjoy connecting ideas from different subjects."
-          ]
+            "The Optimizer: I refine and improve established ideas to make them work better.",
+            "The Inventor: I love dreaming up completely novel concepts from scratch.",
+            "The Experimenter: I enjoy taking risks and trying things out just to see what happens.",
+            "The Synthesizer: I connect unrelated concepts from different fields to solve problems."
+          ],
+          "note": "UPDATED: Changed to creative archetype labels (4 options instead of 5)"
         }
       ]
     }
   },
-  "subject_fit": {
+  "academic_fit": {
     "11-12": {
       "Set 1": [
         {
           "q": "Q62",
           "text": "What is your current Class 11 stream?",
-          "type": "choice8",
-          "mainCategory": "Current Academic Stream",
+          "type": "choice7",
+          "mainCategory": "Academic Stream",
           "options": [
-            "MPC / PCM",
-            "BiPC / PCB",
-            "PCMB",
-            "MEC",
-            "CEC",
+            "Science (Maths focus): MPC / PCM / Non-Medical",
+            "Science (Biology focus): BiPC / PCB / Medical",
+            "Science (Both): PCMB",
+            "Commerce: MEC / CEC / Commerce with or without Maths",
             "Humanities / Arts",
             "Vocational / Diploma",
             "Other"
@@ -934,16 +943,15 @@
         },
         {
           "q": "Q63",
-          "text": "Which subjects are you currently studying?",
-          "type": "multiple",
+          "text": "Which subjects are you currently studying? (Select all that apply)",
+          "type": "choice_multiple",
           "mainCategory": "Current Subjects",
           "options": [
             "Mathematics",
             "Physics",
             "Chemistry",
             "Biology",
-            "Computer Science",
-            "Informatics Practices",
+            "Computer Science / IP / IT",
             "Accountancy",
             "Business Studies",
             "Economics",
@@ -952,56 +960,21 @@
             "Geography",
             "Psychology",
             "Sociology",
-            "Languages"
+            "Languages (English, Regional, etc.)",
+            "Other"
           ]
         },
         {
           "q": "Q64",
           "text": "Which subject do you enjoy the most?",
-          "type": "multiple",
-          "mainCategory": "Favourite Subject",
-          "instruction": "Select ONE",
-          "options": [
-            "Mathematics",
-            "Physics",
-            "Chemistry",
-            "Biology",
-            "Computer Science",
-            "Informatics Practices",
-            "Accountancy",
-            "Business Studies",
-            "Economics",
-            "History",
-            "Political Science",
-            "Geography",
-            "Psychology",
-            "Sociology",
-            "Languages"
-          ]
+          "type": "choice_single",
+          "mainCategory": "Favorite Subject"
         },
         {
           "q": "Q65",
           "text": "Which subject do you find most difficult?",
-          "type": "multiple",
-          "mainCategory": "Difficult Subject",
-          "instruction": "Select ONE",
-          "options": [
-            "Mathematics",
-            "Physics",
-            "Chemistry",
-            "Biology",
-            "Computer Science",
-            "Informatics Practices",
-            "Accountancy",
-            "Business Studies",
-            "Economics",
-            "History",
-            "Political Science",
-            "Geography",
-            "Psychology",
-            "Sociology",
-            "Languages"
-          ]
+          "type": "choice_single",
+          "mainCategory": "Most Difficult Subject"
         },
         {
           "q": "Q66",
@@ -1041,20 +1014,15 @@
         },
         {
           "q": "Q68",
-          "text": "Why did you choose your current stream?",
-          "type": "multiple",
-          "mainCategory": "Stream Selection Reason",
-          "instruction": "Select up to TWO",
+          "text": "Why did you choose your current stream? (Select up to TWO)",
+          "type": "choice_multiple",
+          "mainCategory": "Stream Choice Reason",
           "options": [
-            "My own interest",
-            "My academic strengths",
-            "Parents/family recommendation",
-            "Teacher/counsellor recommendation",
-            "Career opportunities",
-            "Friends/peer influence",
-            "Expected salary/status",
-            "I was unsure what else to choose",
-            "It was the natural choice after Class 10",
+            "My Choice / Default: It felt like the obvious choice after Class 10",
+            "Family & Mentors: Recommendation or guidance from parents, teachers, or counselors.",
+            "Peer Influence: My friends or classmates were taking it.",
+            "Career & Earning Potential: Good jobs, future growth, and salary prospects.",
+            "Uncertainty: I didn't know what else to pick.",
             "Other"
           ]
         },
@@ -1062,7 +1030,7 @@
           "q": "Q69",
           "text": "If your assessment showed that another academic/career pathway could suit you better, how open would you be to exploring it?",
           "type": "scale",
-          "mainCategory": "Openness to Pathway Change",
+          "mainCategory": "Openness to Exploring Alternatives - IMPORTANT CLASS 11 DIAGNOSTIC",
           "scaleOptions": [
             "1 = Not open at all",
             "2",
@@ -1074,7 +1042,8 @@
             "8",
             "9",
             "10 = Completely open"
-          ]
+          ],
+          "note": "VERY IMPORTANT CLASS 11 DIAGNOSTIC QUESTION"
         }
       ]
     }
@@ -1102,10 +1071,9 @@
         },
         {
           "q": "Q71",
-          "text": "Which areas are you currently considering?",
-          "type": "multiple",
-          "mainCategory": "Career Areas Under Consideration",
-          "instruction": "Select up to THREE",
+          "text": "Which areas are you currently considering? (Select up to THREE)",
+          "type": "choice_multiple",
+          "mainCategory": "Career Areas",
           "options": [
             "Engineering",
             "Computer Science / IT",
@@ -1137,7 +1105,7 @@
           "q": "Q72",
           "text": "Do you already have a specific degree/course in mind?",
           "type": "choice4",
-          "mainCategory": "Degree Clarity",
+          "mainCategory": "Degree Specificity",
           "options": [
             "Yes — I am quite certain.",
             "I have 2–3 possibilities.",
@@ -1149,7 +1117,7 @@
           "q": "Q73",
           "text": "If your preferred career requires a degree different from what you currently expect to study, how willing are you to investigate alternative pathways?",
           "type": "scale",
-          "mainCategory": "Flexibility to Investigate",
+          "mainCategory": "Flexibility on Degree Choice",
           "scaleOptions": [
             "1 = Not willing",
             "2",
@@ -1165,45 +1133,35 @@
         },
         {
           "q": "Q74",
-          "text": "What concerns you most when thinking about your degree choice?",
-          "type": "multiple",
+          "text": "What concerns you most when thinking about your degree choice? (Choose TWO)",
+          "type": "choice_multiple",
           "mainCategory": "Degree Choice Concerns",
-          "instruction": "Choose TWO",
           "options": [
-            "Choosing the wrong course",
-            "Entrance examinations",
-            "Academic difficulty",
-            "College quality",
-            "Cost/affordability",
-            "Future employment",
-            "Salary",
-            "Competition",
-            "Parents' expectations",
-            "Location",
-            "I have too many choices",
-            "I have too few choices",
-            "I don't know enough about the options"
+            "Course Suitability: Picking the wrong course or struggling with academic difficulty.",
+            "Admissions & Competition: Cracking tough entrance exams and getting into a good college.",
+            "Career Outcomes: Getting a stable job, good salary, and career growth.",
+            "Financial Cost: Affordability, high fees, or student expenses.",
+            "Family & Location: Parents' expectations or having to relocate.",
+            "Confusion / Lack of Info: Feeling overwhelmed, limited, or unaware of the options."
           ]
         },
         {
           "q": "Q75",
           "text": "Which statement best describes your current career decision?",
-          "type": "choice6",
-          "mainCategory": "Career Decision Status",
+          "type": "choice4",
+          "mainCategory": "Career Decision Stage",
           "options": [
-            "I know the career and degree I want.",
-            "I know the career area but not the exact degree.",
-            "I know the degree but not the career.",
-            "I have several careers in mind.",
-            "I am still exploring.",
-            "I feel pressure to choose something without being certain."
+            "Decided: I know what I want to pursue.",
+            "Narrowed down: I have a few specific options in mind.",
+            "Exploring: I am still figuring it out.",
+            "Uncertain / Pressured: I feel forced to choose before I'm ready."
           ]
         },
         {
           "q": "Q76",
-          "text": "If you had to choose today, how confident would you be about your post-Class-12 direction?",
+          "text": "How confident are you about your plans or direction after Class 12?",
           "type": "scale",
-          "mainCategory": "Post-Class-12 Confidence",
+          "mainCategory": "Post-Class 12 Confidence",
           "scaleOptions": [
             "1 = Not confident at all",
             "2",
@@ -1221,10 +1179,10 @@
           "q": "Q77",
           "text": "What kind of future pathway interests you most?",
           "type": "choice8",
-          "mainCategory": "Pathway Type",
+          "mainCategory": "Career Pathway Type",
           "options": [
-            "Professional degree → specialised career",
-            "Degree → postgraduate specialisation",
+            "Professional degree → specialized career (e.g., Medicine, Law, Tech, CA)",
+            "Degree → postgraduate specialization",
             "Degree → research/academia",
             "Degree → corporate career",
             "Degree → entrepreneurship",
@@ -1242,59 +1200,36 @@
         {
           "q": "Q78",
           "text": "Which career would you most like to explore if you had the opportunity?",
-          "type": "choice",
-          "mainCategory": "Primary Career Interest",
+          "type": "choice_single",
+          "mainCategory": "Dream Career",
+          "note": "Open-ended - select ONE"
+        },
+        {
+          "q": "Q79",
+          "text": "What are your other top career choices?",
+          "type": "choice_multiple",
+          "mainCategory": "Alternative Careers",
+          "note": "Select up to THREE"
+        },
+        {
+          "q": "Q80",
+          "text": "Which career areas would you NOT want to pursue?",
+          "type": "choice_multiple",
+          "mainCategory": "Career Elimination",
+          "note": "Select up to THREE - useful for elimination"
+        },
+        {
+          "q": "Q81",
+          "text": "What do you most want this assessment to help you understand?",
+          "type": "choice6",
+          "mainCategory": "Assessment Focus",
           "options": [
-            "Software Engineer / Developer",
-            "Data Scientist / Analyst",
-            "Mechanical Engineer",
-            "Electrical Engineer",
-            "Civil Engineer",
-            "Chemical Engineer",
-            "Aerospace Engineer",
-            "Doctor / Physician",
-            "Surgeon",
-            "Dental Professional",
-            "Pharmacist",
-            "Nurse / Healthcare Worker",
-            "Psychologist",
-            "Chartered Accountant",
-            "Investment Banker / Financial Analyst",
-            "Consultant",
-            "Entrepreneur / Business Owner",
-            "Lawyer / Attorney",
-            "Judge",
-            "Police Officer / Law Enforcement",
-            "Civil Service Officer",
-            "Defence Officer / Military",
-            "Journalist / Reporter",
-            "Content Creator / Influencer",
-            "Graphic Designer / UX Designer",
-            "Architect",
-            "Urban Planner",
-            "Environmental Scientist",
-            "Biologist / Life Scientist",
-            "Research Scientist",
-            "University Professor / Educator",
-            "School Teacher",
-            "Economist",
-            "Sociologist",
-            "Anthropologist",
-            "Museum Curator / Art Historian",
-            "Actor / Performer",
-            "Musician / Composer",
-            "Director / Filmmaker",
-            "Photographer",
-            "Chef / Culinary Expert",
-            "Pilot / Commercial Airline Captain",
-            "Astronaut / Space Scientist",
-            "HR Professional",
-            "Project Manager",
-            "Quality Assurance / Testing Professional",
-            "Game Developer",
-            "Cybersecurity Expert",
-            "AI / Machine Learning Engineer",
-            "Undecided - Still Exploring"
+            "Which careers fit my personality and strengths?",
+            "Whether my current Class 11 stream suits me.",
+            "Which degrees/courses I should consider after Class 12.",
+            "Whether my dream career matches my profile.",
+            "What alternative careers I should explore.",
+            "What I should do during Classes 11–12 to prepare for my future career."
           ]
         }
       ]

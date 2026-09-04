@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowLeft, ExternalLink, Clock, BarChart3, Award, Target, Zap, Users, CheckCircle, TrendingUp } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Clock, BarChart3, Award, Users, CheckCircle, TrendingUp } from 'lucide-react';
 import { getAllInternships } from '@/lib/data/careerLoader';
 
 export default function InternshipDetailPage({ params }: { params: { id: string } }) {
@@ -29,7 +29,6 @@ export default function InternshipDetailPage({ params }: { params: { id: string 
   };
 
   const difficultyColor = difficultyColors[internship.difficulty as keyof typeof difficultyColors];
-  const commitmentEmojis = { Low: '⚡', Medium: '⚡⚡', High: '⚡⚡⚡' };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
@@ -88,8 +87,6 @@ export default function InternshipDetailPage({ params }: { params: { id: string 
               {[
                 { icon: Clock, label: 'Duration', value: internship.duration },
                 { icon: BarChart3, label: 'Difficulty', value: internship.difficulty },
-                { icon: Zap, label: 'Commitment', value: `${commitmentEmojis[internship.commitment as keyof typeof commitmentEmojis]} ${internship.commitment}` },
-                { icon: Target, label: 'Format', value: internship.format },
               ].map((stat, i) => (
                 <div key={i} className="bg-slate-700/50 border border-slate-600 rounded-lg p-3">
                   <div className="flex items-center gap-2 mb-1">
@@ -135,21 +132,22 @@ export default function InternshipDetailPage({ params }: { params: { id: string 
                 <p className="text-slate-300 leading-relaxed">{internship.overview}</p>
               </div>
 
-              {/* What You'll Do */}
-              <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-lg p-8">
-                <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                  <Target className="text-blue-400" size={24} />
-                  What You'll Do
-                </h2>
-                <div className="space-y-2">
-                  {internship.whatYouWillDo.split('|').map((item, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <CheckCircle size={20} className="text-green-400 flex-shrink-0 mt-0.5" />
-                      <p className="text-slate-300">{item.trim()}</p>
-                    </div>
-                  ))}
+              {/* What You'll Do - if available */}
+              {(internship as any).whatYouWillDo && (
+                <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-lg p-8">
+                  <h2 className="text-2xl font-bold text-white mb-4">
+                    What You'll Do
+                  </h2>
+                  <div className="space-y-2">
+                    {(internship as any).whatYouWillDo.split('|').map((item: string, i: number) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <CheckCircle size={20} className="text-green-400 flex-shrink-0 mt-0.5" />
+                        <p className="text-slate-300">{item.trim()}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Skills Gained */}
               <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-lg p-8">
@@ -167,11 +165,11 @@ export default function InternshipDetailPage({ params }: { params: { id: string 
               </div>
 
               {/* Prerequisites */}
-              {internship.prerequisites.length > 0 && (
+              {(internship as any).prerequisites && (internship as any).prerequisites.length > 0 && (
                 <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-lg p-8">
                   <h2 className="text-2xl font-bold text-white mb-4">Prerequisites</h2>
                   <ul className="space-y-2">
-                    {internship.prerequisites.map((prereq) => (
+                    {(internship as any).prerequisites.map((prereq: string) => (
                       <li key={prereq} className="flex items-start gap-3 text-slate-300">
                         <span className="text-blue-400 font-bold flex-shrink-0">•</span>
                         {prereq}
@@ -182,29 +180,33 @@ export default function InternshipDetailPage({ params }: { params: { id: string 
               )}
 
               {/* Outcomes */}
-              <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-lg p-8">
-                <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                  <TrendingUp className="text-green-400" size={24} />
-                  What You'll Get
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {internship.outcomes.map((outcome) => (
-                    <div key={outcome} className="bg-green-500/20 border border-green-500/30 rounded-lg p-3 flex items-center gap-2">
-                      <CheckCircle size={20} className="text-green-400 flex-shrink-0" />
-                      <p className="text-sm text-green-300 font-medium">{outcome}</p>
-                    </div>
-                  ))}
+              {(internship as any).outcomes && (internship as any).outcomes.length > 0 && (
+                <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-lg p-8">
+                  <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                    <TrendingUp className="text-green-400" size={24} />
+                    What You'll Get
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {(internship as any).outcomes.map((outcome: string) => (
+                      <div key={outcome} className="bg-green-500/20 border border-green-500/30 rounded-lg p-3 flex items-center gap-2">
+                        <CheckCircle size={20} className="text-green-400 flex-shrink-0" />
+                        <p className="text-sm text-green-300 font-medium">{outcome}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Company Info */}
-              <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-lg p-8">
-                <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                  <Users className="text-blue-400" size={24} />
-                  About {internship.company}
-                </h2>
-                <p className="text-slate-300 leading-relaxed">{internship.companyInfo}</p>
-              </div>
+              {(internship as any).companyInfo && (
+                <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-lg p-8">
+                  <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                    <Users className="text-blue-400" size={24} />
+                    About {internship.company}
+                  </h2>
+                  <p className="text-slate-300 leading-relaxed">{(internship as any).companyInfo}</p>
+                </div>
+              )}
             </motion.div>
 
             {/* Right Column - Sidebar */}
@@ -225,32 +227,37 @@ export default function InternshipDetailPage({ params }: { params: { id: string 
                     </div>
                   </div>
 
-                  <div>
-                    <p className="text-xs text-slate-400 mb-1">Time Commitment</p>
-                    <p className="text-white font-semibold">{internship.commitment}</p>
-                    <p className="text-xs text-slate-400">{commitmentEmojis[internship.commitment as keyof typeof commitmentEmojis]}</p>
-                  </div>
+                  {(internship as any).commitment && (
+                    <div>
+                      <p className="text-xs text-slate-400 mb-1">Time Commitment</p>
+                      <p className="text-white font-semibold">{(internship as any).commitment}</p>
+                    </div>
+                  )}
 
-                  <div>
-                    <p className="text-xs text-slate-400 mb-1">Learning Style</p>
-                    <p className="text-white font-semibold">{internship.learningStyle}</p>
-                  </div>
+                  {(internship as any).learningStyle && (
+                    <div>
+                      <p className="text-xs text-slate-400 mb-1">Learning Style</p>
+                      <p className="text-white font-semibold">{(internship as any).learningStyle}</p>
+                    </div>
+                  )}
 
                   <div>
                     <p className="text-xs text-slate-400 mb-1">Duration</p>
                     <p className="text-white font-semibold">{internship.duration}</p>
                   </div>
 
-                  <div>
-                    <p className="text-xs text-slate-400 mb-1">Start Date</p>
-                    <p className="text-white font-semibold">{internship.startDate || 'Flexible'}</p>
-                  </div>
+                  {(internship as any).startDate && (
+                    <div>
+                      <p className="text-xs text-slate-400 mb-1">Start Date</p>
+                      <p className="text-white font-semibold">{(internship as any).startDate}</p>
+                    </div>
+                  )}
 
-                  {internship.certifications && internship.certifications.length > 0 && (
+                  {(internship as any).certifications && (internship as any).certifications.length > 0 && (
                     <div>
                       <p className="text-xs text-slate-400 mb-1">Certification</p>
                       <div className="space-y-1">
-                        {internship.certifications.map((cert) => (
+                        {(internship as any).certifications.map((cert: string) => (
                           <p key={cert} className="text-sm text-yellow-300 font-semibold">{cert}</p>
                         ))}
                       </div>
@@ -260,17 +267,19 @@ export default function InternshipDetailPage({ params }: { params: { id: string 
               </div>
 
               {/* Ideal For */}
-              <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-lg p-6">
-                <h3 className="text-lg font-bold text-white mb-4">Ideal For</h3>
-                <div className="space-y-2">
-                  {internship.idealFor.map((ideal) => (
-                    <div key={ideal} className="flex items-center gap-2 text-slate-300">
-                      <span className="text-blue-400">→</span>
-                      {ideal}
-                    </div>
-                  ))}
+              {(internship as any).idealFor && (internship as any).idealFor.length > 0 && (
+                <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-lg p-6">
+                  <h3 className="text-lg font-bold text-white mb-4">Ideal For</h3>
+                  <div className="space-y-2">
+                    {(internship as any).idealFor.map((ideal: string) => (
+                      <div key={ideal} className="flex items-center gap-2 text-slate-300">
+                        <span className="text-blue-400">→</span>
+                        {ideal}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Free Badge */}
               <div className="bg-gradient-to-br from-green-600/20 to-emerald-600/20 border border-green-500/30 rounded-lg p-6 text-center">
