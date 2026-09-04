@@ -38,6 +38,7 @@ import {
 import { Icon } from "@/app/Icons";
 import { C, Ring, RadarChart as RadarChartViz, SkillBar, dimColor, type RadarDatum } from "@/app/account/viz";
 import { getTopCareersPerDomain, DOMAIN_LABELS, DOMAIN_EMOJIS } from "@/lib/data/topCareersPerDomain";
+import ReportCoverPage from "@/app/components/ReportCoverPage";
 
 interface PsychometricDimension {
   dimension: string;
@@ -377,6 +378,35 @@ export default function Class1112FullReportNew({ data, name }: { data: ReportDat
                 </div>
               )}
             </div>
+          </div>
+
+          {/* Top 10 Careers for Top 3 Domains */}
+          <div style={{ marginTop: "32px", paddingTop: "28px", borderTop: "1px solid var(--line)" }}>
+            <SecHead eyebrow="Top Career Opportunities" title="Top 10 careers in your best-fit domains"
+              sub="Based on your assessment, here are the most in-demand careers in your strongest domains." />
+
+            {(() => {
+              const topCareers = getTopCareersPerDomain();
+              return (
+                <div style={{ display: "grid", gap: "24px" }}>
+                  {Object.entries(topCareers).slice(0, 3).map(([domain, careers]) => (
+                    <div key={domain} style={{ padding: "20px", background: "var(--line2)", borderRadius: "12px" }}>
+                      <div style={{ fontSize: "13px", fontWeight: "700", color: "var(--ink)", marginBottom: "14px", display: "flex", alignItems: "center", gap: "8px" }}>
+                        <span style={{ fontSize: "18px" }}>{DOMAIN_EMOJIS[domain] || '💼'}</span>
+                        {DOMAIN_LABELS[domain] || domain}
+                      </div>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px" }}>
+                        {careers.slice(0, 10).map((career, idx) => (
+                          <div key={career.id} style={{ fontSize: "12px", color: "var(--ink-2)", padding: "8px 10px", background: "#fff", borderRadius: "6px" }}>
+                            <div style={{ fontWeight: "600", color: "var(--ink)" }}>{idx + 1}. {career.name}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
           </div>
 
           <RF name={name} />

@@ -21,6 +21,7 @@ import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { archetype, domainFit } from "@/lib/report/knowledge";
 import { C } from "@/app/account/viz";
 import { getTopCareersPerDomain, DOMAIN_LABELS, DOMAIN_COLORS, DOMAIN_EMOJIS } from "@/lib/data/topCareersPerDomain";
+import ReportCoverPage from "@/app/components/ReportCoverPage";
 
 interface RoadmapPhase {
   phase: number;
@@ -289,21 +290,13 @@ export default function CareerRoadmapReport({
     <div ref={root} className="crr">
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
-      {/* COVER */}
-      <section className="crr-sheet crr-cover">
-        <div className="crr-cover-badge">Career Roadmap · Personalized Timeline</div>
-        <h1 className="crr-cover-title">Your Career Roadmap</h1>
-        <p className="crr-cover-lede">
-          A complete personalized timeline from Class 9 through career establishment as a {careerName}.
-        </p>
-        <div style={{ marginTop: 40 }}>
-          <p style={{ fontSize: 14, color: C.ink3, margin: "0 0 12px" }}>Prepared for</p>
-          <p style={{ fontSize: 20, fontWeight: 700, color: C.ink, margin: "0" }}>{name || "You"}</p>
-          <p style={{ fontSize: 13, color: C.ink3, margin: "8px 0 0" }}>
-            Career: <b>{careerName}</b>
-          </p>
-        </div>
-      </section>
+      {/* PROFESSIONAL COVER PAGE */}
+      <ReportCoverPage
+        studentName={name || "Student"}
+        studentAge={15}
+        studentEmail="your.email@onegrasp.com"
+        reportType="Career Roadmap"
+      />
 
       {/* CONTENT */}
       <section className="crr-sheet crr-content">
