@@ -146,12 +146,14 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
   const first = (name || "").trim().split(/\s+/)[0] || "you";
   // Check if this is a "new" Class 9-10 report with MBTI data
   const hasMBTIData = !!(
-    (a as any).mbtiEI !== undefined ||
-    (a as any).mbtiSN !== undefined ||
-    (a as any).mbtiTF !== undefined ||
-    (a as any).mbtiJP !== undefined
+    a && (
+      (a as any).mbtiEI !== undefined ||
+      (a as any).mbtiSN !== undefined ||
+      (a as any).mbtiTF !== undefined ||
+      (a as any).mbtiJP !== undefined
+    )
   );
-  const isNewReport = a.journeyCode === "9-10" && hasMBTIData;
+  const isNewReport = a && a.journeyCode === "9-10" && hasMBTIData;
 
   let sheet = 0;
   const N = () => String(++sheet).padStart(2, "0");
@@ -1150,7 +1152,7 @@ const CSS = `
 
 /* cover - NEW (with MBTI) */
 .frx .cover-new{border-top:none;background:linear-gradient(135deg,#2f6bff 0%,#1a4d9e 50%,#12996b 100%);min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden}
-.frx .cover-new::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:url(${LOGO}) center/contain no-repeat;opacity:0.08;z-index:1;pointer-events:none}
+.frx .cover-new::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:url('/onegrasp-logo-tight.png') center/contain no-repeat;opacity:0.08;z-index:1;pointer-events:none}
 
 /* cover - OLD (without MBTI) */
 .frx .cover-old{border-top:none;background:#fff;border:1px solid var(--line);border-top:3px solid var(--red)}
