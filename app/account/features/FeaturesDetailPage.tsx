@@ -153,7 +153,7 @@ function EntranceExamsPage() {
   ];
 
   return (
-    <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
+    <div style={{ maxWidth: 1400, margin: "0 auto", padding: `${spacing[8]} ${spacing[4]}` }}>
       {config.image && (
         <div style={{ marginBottom: spacing[6], borderRadius: radius.lg, overflow: "hidden", maxHeight: "320px" }}>
           <img src={config.image} alt={config.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
@@ -164,12 +164,12 @@ function EntranceExamsPage() {
         {config.subtitle}
       </p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: spacing[5] }}>
         {exams.map((exam, idx) => (
           <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm, transition: "all 0.3s" }}>
             <h3 style={{ fontSize: 18, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[10] }}>{exam.name}</h3>
             <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3], flexWrap: "wrap" }}>
-              <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>{exam.field}</span>
+              <span style={{ ...styles.badge, backgroundColor: config.accentColor, color: "#fff" }}>{exam.field}</span>
               <span style={{ ...styles.badge, background: exam.difficulty === "Very High" ? "#DC2626" : "#FBBF24", color: "#000" }}>{exam.difficulty}</span>
             </div>
             <p style={{ fontSize: 14, color: colors.ink[30], margin: 0, marginBottom: spacing[3], lineHeight: 1.5 }}>📅 <strong>{exam.date}</strong></p>
@@ -202,7 +202,7 @@ function InternshipsDetailPage({ activeTab, setActiveTab }: { activeTab: string;
   };
 
   return (
-    <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
+    <div style={{ maxWidth: 1400, margin: "0 auto", padding: `${spacing[8]} ${spacing[4]}` }}>
       {config.image && (
         <div style={{ marginBottom: spacing[6], borderRadius: radius.lg, overflow: "hidden", maxHeight: "320px" }}>
           <img src={config.image} alt={config.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
@@ -234,7 +234,7 @@ function InternshipsDetailPage({ activeTab, setActiveTab }: { activeTab: string;
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: spacing[5] }}>
         {paginatedData.map((item: any, idx: number) => (
           <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[10] }}>{item.title || item.name}</h3>
@@ -242,10 +242,10 @@ function InternshipsDetailPage({ activeTab, setActiveTab }: { activeTab: string;
               {item.description || item.provider || item.organizationName}
             </p>
             <div style={{ display: "flex", gap: spacing[2], flexWrap: "wrap", marginBottom: spacing[3] }}>
-              {item.organization && <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>{item.organization}</span>}
-              {item.provider && <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>{item.provider}</span>}
+              {item.organization && <span style={{ ...styles.badge, backgroundColor: config.accentColor, color: "#fff" }}>{item.organization}</span>}
+              {item.provider && <span style={{ ...styles.badge, backgroundColor: config.accentColor, color: "#fff" }}>{item.provider}</span>}
               {item.domain && <span style={{ ...styles.badge }}>{item.domain}</span>}
-              {item.paid !== undefined && <span style={{ ...styles.badge, background: item.paid ? "#10B981" : "#6B7280", color: "#fff" }}>{item.paid ? "💰 Paid" : "Free"}</span>}
+              {item.paid !== undefined && <span style={{ ...styles.badge, backgroundColor: item.paid ? "#10B981" : "#6B7280", color: "#fff" }}>{item.paid ? "💰 Paid" : "Free"}</span>}
             </div>
             {item.stipend && <p style={{ fontSize: 13, fontWeight: 700, color: config.accentColor, margin: 0 }}>💵 ₹{item.stipend.amount}/month</p>}
             {item.awardAmount && <p style={{ fontSize: 13, fontWeight: 700, color: config.accentColor, margin: 0 }}>🏆 ₹{item.awardAmount.min}-₹{item.awardAmount.max}</p>}
@@ -256,7 +256,7 @@ function InternshipsDetailPage({ activeTab, setActiveTab }: { activeTab: string;
 
       {/* Pagination Controls */}
       {totalPages > 1 && (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: spacing[3], marginTop: spacing[8] }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: spacing[3], marginTop: spacing[8], flexWrap: "wrap" }}>
           <button
             onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
             disabled={currentPage === 1}
@@ -289,7 +289,7 @@ function FinancialLiteracyDetailPage() {
   const filtered = selectedCategory ? getTopicsByCategory(selectedCategory as any) : topics;
 
   return (
-    <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
+    <div style={{ maxWidth: 1400, margin: "0 auto", padding: `${spacing[8]} ${spacing[4]}` }}>
       {config.image && (
         <div style={{ marginBottom: spacing[6], borderRadius: radius.lg, overflow: "hidden", maxHeight: "320px" }}>
           <img src={config.image} alt={config.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
@@ -316,12 +316,12 @@ function FinancialLiteracyDetailPage() {
         ))}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: spacing[5] }}>
         {filtered.slice(0, 20).map((topic: any, idx: number) => (
           <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[10] }}>{topic.title}</h3>
             <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3] }}>
-              <span style={{ ...styles.badge, background: config.accentColor, color: "#000" }}>📚 {topic.difficulty}</span>
+              <span style={{ ...styles.badge, backgroundColor: config.accentColor, color: "#000" }}>📚 {topic.difficulty}</span>
               <span style={{ ...styles.badge, background: config.borderColor, color: colors.ink[80] }}>⏱️ {topic.duration}</span>
             </div>
             <p style={{ fontSize: 14, color: colors.ink[30], lineHeight: 1.6, margin: 0, marginBottom: spacing[3] }}>{topic.description}</p>
@@ -344,7 +344,7 @@ function LegalResourcesDetailPage() {
   const filtered = selectedCategory ? getResourcesByCategory(selectedCategory as any) : resources;
 
   return (
-    <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
+    <div style={{ maxWidth: 1400, margin: "0 auto", padding: `${spacing[8]} ${spacing[4]}` }}>
       {config.image && (
         <div style={{ marginBottom: spacing[6], borderRadius: radius.lg, overflow: "hidden", maxHeight: "320px" }}>
           <img src={config.image} alt={config.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
@@ -371,7 +371,7 @@ function LegalResourcesDetailPage() {
         ))}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: spacing[5] }}>
         {filtered.slice(0, 20).map((resource: any, idx: number) => (
           <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[10] }}>{resource.title}</h3>
@@ -400,7 +400,7 @@ function ResearchDetailPage() {
   const opportunities = getResearchOpportunities();
 
   return (
-    <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
+    <div style={{ maxWidth: 1400, margin: "0 auto", padding: `${spacing[8]} ${spacing[4]}` }}>
       {config.image && (
         <div style={{ marginBottom: spacing[6], borderRadius: radius.lg, overflow: "hidden", maxHeight: "320px" }}>
           <img src={config.image} alt={config.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
@@ -411,13 +411,13 @@ function ResearchDetailPage() {
         {config.subtitle}
       </p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: spacing[5] }}>
         {opportunities.slice(0, 20).map((opp: any, idx: number) => (
           <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[10] }}>{opp.title}</h3>
             <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3], flexWrap: "wrap" }}>
-              <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>📌 {opp.type}</span>
-              <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>📍 {opp.level}</span>
+              <span style={{ ...styles.badge, backgroundColor: config.accentColor, color: "#fff" }}>📌 {opp.type}</span>
+              <span style={{ ...styles.badge, backgroundColor: config.accentColor, color: "#fff" }}>📍 {opp.level}</span>
               <span style={{ ...styles.badge, background: config.borderColor, color: colors.ink[80] }}>🔬 {opp.field}</span>
             </div>
             <p style={{ fontSize: 14, color: colors.ink[30], lineHeight: 1.6, margin: 0, marginBottom: spacing[3] }}>{opp.description}</p>
@@ -436,7 +436,7 @@ function StartupsDetailPage() {
   const startups = showUnicorns ? getUnicorns() : getAllStartups();
 
   return (
-    <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
+    <div style={{ maxWidth: 1400, margin: "0 auto", padding: `${spacing[8]} ${spacing[4]}` }}>
       {config.image && (
         <div style={{ marginBottom: spacing[6], borderRadius: radius.lg, overflow: "hidden", maxHeight: "320px" }}>
           <img src={config.image} alt={config.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
@@ -456,14 +456,14 @@ function StartupsDetailPage() {
         </button>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: spacing[5] }}>
         {startups.slice(0, 20).map((startup: any, idx: number) => (
           <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[1], color: colors.ink[10] }}>{startup.name}</h3>
             <p style={{ fontSize: 13, color: colors.ink[20], margin: 0, marginBottom: spacing[3] }}>📅 Founded {startup.foundedYear} • 📍 {startup.location}</p>
             <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3], flexWrap: "wrap" }}>
-              <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>{startup.industry}</span>
-              <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>{startup.stage}</span>
+              <span style={{ ...styles.badge, backgroundColor: config.accentColor, color: "#fff" }}>{startup.industry}</span>
+              <span style={{ ...styles.badge, backgroundColor: config.accentColor, color: "#fff" }}>{startup.stage}</span>
               {startup.isUnicorn && <span style={{ ...styles.badge, background: "#FCD34D", color: "#000", fontWeight: 800 }}>🦄 Unicorn</span>}
             </div>
             <p style={{ fontSize: 14, color: colors.ink[30], lineHeight: 1.6, margin: 0, marginBottom: spacing[3] }}>{startup.description}</p>
@@ -481,7 +481,7 @@ function ScholarshipsDetailPage() {
   const scholarships = getScholarships();
 
   return (
-    <div style={{ maxWidth: 1400, margin: "0 auto", padding: spacing[8] }}>
+    <div style={{ maxWidth: 1400, margin: "0 auto", padding: `${spacing[8]} ${spacing[4]}` }}>
       {config.image && (
         <div style={{ marginBottom: spacing[6], borderRadius: radius.lg, overflow: "hidden", maxHeight: "320px" }}>
           <img src={config.image} alt={config.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
@@ -492,14 +492,14 @@ function ScholarshipsDetailPage() {
         {config.subtitle}
       </p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: spacing[5] }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: spacing[5] }}>
         {scholarships.slice(0, 20).map((scholarship: any, idx: number) => (
           <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[10] }}>{scholarship.name}</h3>
             <p style={{ fontSize: 14, color: colors.ink[30], lineHeight: 1.6, margin: 0, marginBottom: spacing[3] }}>🏢 {scholarship.provider}</p>
             <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3], flexWrap: "wrap" }}>
-              {scholarship.category && <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>📁 {scholarship.category}</span>}
-              {scholarship.level && <span style={{ ...styles.badge, background: config.accentColor, color: "#fff" }}>🎓 {scholarship.level}</span>}
+              {scholarship.category && <span style={{ ...styles.badge, backgroundColor: config.accentColor, color: "#fff" }}>📁 {scholarship.category}</span>}
+              {scholarship.level && <span style={{ ...styles.badge, backgroundColor: config.accentColor, color: "#fff" }}>🎓 {scholarship.level}</span>}
             </div>
             <p style={{ fontSize: 13, fontWeight: 700, color: config.accentColor, margin: 0 }}>
               💵 ₹{scholarship.awardAmount?.min || 0}-₹{scholarship.awardAmount?.max || 0}
