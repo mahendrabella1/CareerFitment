@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Briefcase, TrendingUp, Users, Target, Zap, BookOpen, Code2, Award } from 'lucide-react';
-import { CAREER_LIBRARY_930 } from '@/lib/data/careerLibrary930';
+import { generateCareers } from '@/lib/data/careerLibrary930';
 
 const clusterIcons: Record<string, string> = {
   tech: '💻', engineering: '⚙️', business: '💼', health: '🏥',
@@ -30,7 +30,12 @@ export default function CareerDetailPage() {
 
   const title = Array.isArray(params.title) ? params.title[0] : params.title;
   const decodedTitle = decodeURIComponent(title);
-  const career = CAREER_LIBRARY_930.find(c => c.name.toLowerCase() === decodedTitle.toLowerCase());
+
+  const allCareers = useMemo(() => generateCareers(), []);
+  const career = useMemo(() =>
+    allCareers.find(c => c.name.toLowerCase() === decodedTitle.toLowerCase()),
+    [allCareers, decodedTitle]
+  );
 
   if (!career) {
     return (
