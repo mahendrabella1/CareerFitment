@@ -1141,9 +1141,9 @@ const CSS = `
 .frx .subhd{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
 
 /* cover */
-.frx .cover{border-top:none;background:linear-gradient(135deg,#2f6bff 0%,#1a4d9e 50%,#12996b 100%);min-height:100vh;display:flex;align-items:center}
-.frx .cover::before{content:"";position:absolute;top:0;left:0;right:0;height:0px}
-.frx .cover-in{padding:80px 60px;color:#fff}
+.frx .cover{border-top:none;background:linear-gradient(135deg,#2f6bff 0%,#1a4d9e 50%,#12996b 100%);min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden}
+.frx .cover::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:url(${LOGO}) center/contain no-repeat;opacity:0.08;z-index:1;pointer-events:none}
+.frx .cover-in{padding:80px 60px;color:#fff;position:relative;z-index:2}
 @media(max-width:720px){.frx .cover-in{padding:50px 24px}}
 .frx .cover-top{display:flex;align-items:center;justify-content:flex-start;gap:14px;margin-bottom:40px}
 .frx .cover-logo{height:50px;width:auto;filter:brightness(0) invert(1)}
