@@ -763,6 +763,7 @@ export default function AssessmentExperience() {
     }
 
     console.log("🔍 SUBMIT DEBUG:", { journeyCode: lead.journeyCode, category: lead.category });
+    console.log("🔍 lead object at submit:", JSON.stringify(lead));
 
     setStarting(true);
     try {
@@ -783,11 +784,11 @@ export default function AssessmentExperience() {
         }),
       });
       setLeadId(created.id);
-      console.log("🔍 AFTER setLeadId");
+      console.log("🔍 AFTER setLeadId, about to call selectJourney with:", lead.journeyCode);
       await selectJourney(lead.journeyCode);
-      console.log("🔍 AFTER selectJourney, selectedJourneyCode will be set");
+      console.log("🔍 AFTER selectJourney, about to call startAssessment with:", lead.journeyCode);
       await startAssessment(lead.journeyCode);
-      console.log("🔍 AFTER startAssessment");
+      console.log("🔍 AFTER startAssessment - if you see this, flow completed successfully");
     } catch (error) {
       setErrorMessage(
         error instanceof Error ? error.message : "Unable to start the assessment."
