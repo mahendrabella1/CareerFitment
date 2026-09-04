@@ -1,0 +1,47 @@
+<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Title -->
+  <text x="300" y="25" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Education Roadmap: Class 11 to Career</text>
+
+  <!-- Main timeline line -->
+  <line x1="50" y1="80" x2="550" y2="80" stroke="#2f6bff" stroke-width="3"/>
+
+  <!-- Class 11 -->
+  <circle cx="100" cy="80" r="18" fill="#2f6bff"/>
+  <text x="100" y="130" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Class 11</text>
+  <text x="100" y="148" font-size="11" text-anchor="middle" fill="#666">Stream Selection</text>
+  <text x="100" y="163" font-size="11" text-anchor="middle" fill="#666">Subject Focus</text>
+
+  <!-- Class 12 -->
+  <circle cx="200" cy="80" r="18" fill="#2f6bff"/>
+  <text x="200" y="130" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Class 12</text>
+  <text x="200" y="148" font-size="11" text-anchor="middle" fill="#666">Board Exams</text>
+  <text x="200" y="163" font-size="11" text-anchor="middle" fill="#666">College Prep</text>
+
+  <!-- Bachelor's Degree -->
+  <circle cx="300" cy="80" r="18" fill="#12996b"/>
+  <text x="300" y="130" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Bachelor's</text>
+  <text x="300" y="148" font-size="11" text-anchor="middle" fill="#666">4 Years</text>
+  <text x="300" y="163" font-size="11" text-anchor="middle" fill="#666">Specialization</text>
+
+  <!-- Master's/Professional -->
+  <circle cx="400" cy="80" r="18" fill="#12996b"/>
+  <text x="400" y="130" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Master's</text>
+  <text x="400" y="148" font-size="11" text-anchor="middle" fill="#666">2 Years</text>
+  <text x="400" y="163" font-size="11" text-anchor="middle" fill="#666">Advanced Skills</text>
+
+  <!-- Career -->
+  <circle cx="500" cy="80" r="18" fill="#e08a1e"/>
+  <text x="500" y="130" font-size="13" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Career</text>
+  <text x="500" y="148" font-size="11" text-anchor="middle" fill="#666">Professional</text>
+  <text x="500" y="163" font-size="11" text-anchor="middle" fill="#666">Growth</text>
+
+  <!-- Timeline segments -->
+  <text x="150" y="220" font-size="11" text-anchor="middle" fill="#2f6bff">2 years</text>
+  <text x="250" y="220" font-size="11" text-anchor="middle" fill="#2f6bff">4 years</text>
+  <text x="350" y="220" font-size="11" text-anchor="middle" fill="#12996b">2+ years</text>
+  <text x="450" y="220" font-size="11" text-anchor="middle" fill="#e08a1e">Ongoing</text>
+
+  <!-- Bottom note -->
+  <rect x="50" y="250" width="500" height="40" fill="#f0f0f0" rx="5"/>
+  <text x="300" y="275" font-size="12" text-anchor="middle" fill="#666">Your journey from secondary education through professional development</text>
+</svg>

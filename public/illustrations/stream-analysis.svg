@@ -1,0 +1,49 @@
+<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="streamGood" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#12996b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0a6b47;stop-opacity:0.8" />
+    </linearGradient>
+    <linearGradient id="streamModerate" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2f6bff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0050d8;stop-opacity:0.8" />
+    </linearGradient>
+  </defs>
+
+  <!-- Title -->
+  <text x="300" y="30" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Stream Suitability Analysis</text>
+
+  <!-- Science Stream -->
+  <g>
+    <rect x="50" y="70" width="140" height="120" fill="#f0f0f0" rx="8" stroke="#e0e0e0" stroke-width="2"/>
+    <text x="120" y="95" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Science</text>
+    <circle cx="120" cy="140" r="25" fill="url(#streamGood)"/>
+    <text x="120" y="147" font-size="14" font-weight="bold" text-anchor="middle" fill="white">92%</text>
+    <text x="120" y="175" font-size="12" text-anchor="middle" fill="#12996b">Excellent Fit</text>
+  </g>
+
+  <!-- Commerce Stream -->
+  <g>
+    <rect x="230" y="70" width="140" height="120" fill="#f0f0f0" rx="8" stroke="#e0e0e0" stroke-width="2"/>
+    <text x="300" y="95" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Commerce</text>
+    <circle cx="300" cy="140" r="25" fill="url(#streamModerate)"/>
+    <text x="300" y="147" font-size="14" font-weight="bold" text-anchor="middle" fill="white">78%</text>
+    <text x="300" y="175" font-size="12" text-anchor="middle" fill="#2f6bff">Good Fit</text>
+  </g>
+
+  <!-- Humanities Stream -->
+  <g>
+    <rect x="410" y="70" width="140" height="120" fill="#f0f0f0" rx="8" stroke="#e0e0e0" stroke-width="2"/>
+    <text x="480" y="95" font-size="16" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Humanities</text>
+    <circle cx="480" cy="140" r="25" fill="#e0e0e0"/>
+    <text x="480" y="147" font-size="14" font-weight="bold" text-anchor="middle" fill="#666">54%</text>
+    <text x="480" y="175" font-size="12" text-anchor="middle" fill="#999">Moderate Fit</text>
+  </g>
+
+  <!-- Recommendation box -->
+  <rect x="50" y="230" width="500" height="90" fill="#f0f0f0" rx="8" stroke="#12996b" stroke-width="2"/>
+  <text x="70" y="255" font-size="13" font-weight="bold" fill="#12996b">✓ RECOMMENDED</text>
+  <text x="70" y="275" font-size="12" fill="#1a1a1a">Based on your profile, <strong>Science Stream</strong> offers the best alignment with your</text>
+  <text x="70" y="293" font-size="12" fill="#1a1a1a">aptitudes, interests, and strengths. Your analytical and investigative nature</text>
+  <text x="70" y="311" font-size="12" fill="#1a1a1a">makes this the optimal path for your career aspirations.</text>
+</svg>

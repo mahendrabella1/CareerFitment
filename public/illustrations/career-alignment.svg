@@ -1,0 +1,43 @@
+<svg viewBox="0 0 600 380" xmlns="http://www.w3.org/2000/svg">
+  <!-- Title -->
+  <text x="300" y="30" font-size="20" font-weight="bold" text-anchor="middle" fill="#1a1a1a">Career Alignment & Match Score</text>
+
+  <!-- Software Engineer -->
+  <g>
+    <text x="50" y="85" font-size="14" font-weight="bold" fill="#1a1a1a">Software Engineer</text>
+    <rect x="50" y="95" width="500" height="25" fill="#f0f0f0" rx="3"/>
+    <rect x="50" y="95" width="460" height="25" fill="#2f6bff" rx="3"/>
+    <text x="560" y="115" font-size="13" font-weight="bold" fill="#2f6bff">92%</text>
+  </g>
+
+  <!-- Data Scientist -->
+  <g>
+    <text x="50" y="165" font-size="14" font-weight="bold" fill="#1a1a1a">Data Scientist</text>
+    <rect x="50" y="175" width="500" height="25" fill="#f0f0f0" rx="3"/>
+    <rect x="50" y="175" width="425" height="25" fill="#12996b" rx="3"/>
+    <text x="560" y="195" font-size="13" font-weight="bold" fill="#12996b">85%</text>
+  </g>
+
+  <!-- Product Manager -->
+  <g>
+    <text x="50" y="245" font-size="14" font-weight="bold" fill="#1a1a1a">Product Manager</text>
+    <rect x="50" y="255" width="500" height="25" fill="#f0f0f0" rx="3"/>
+    <rect x="50" y="255" width="350" height="25" fill="#e08a1e" rx="3"/>
+    <text x="560" y="275" font-size="13" font-weight="bold" fill="#e08a1e">70%</text>
+  </g>
+
+  <!-- Legend -->
+  <g>
+    <circle cx="60" cy="330" r="6" fill="#2f6bff"/>
+    <text x="75" y="335" font-size="11" fill="#1a1a1a">Excellent Match (85-100%)</text>
+
+    <circle cx="300" cy="330" r="6" fill="#12996b"/>
+    <text x="315" y="335" font-size="11" fill="#1a1a1a">Good Match (70-84%)</text>
+
+    <circle cx="540" cy="330" r="6" fill="#e08a1e"/>
+    <text x="555" y="335" font-size="11" fill="#1a1a1a">Moderate Match (50-69%)</text>
+  </g>
+
+  <!-- Note -->
+  <text x="300" y="365" font-size="11" text-anchor="middle" fill="#666">Your profile matches these careers based on aptitudes, interests, and strengths</text>
+</svg>

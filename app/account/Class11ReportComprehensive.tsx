@@ -52,6 +52,16 @@ export function Class11ComprehensiveReport({
             <p className="cover-tagline">Advanced Career Discovery & Fitment Assessment</p>
           </div>
 
+          {/* Cover Illustration */}
+          <div className="illustration-container" style={{ marginTop: 20, marginBottom: 20 }}>
+            <img
+              src="/illustrations/cover-hero.svg"
+              alt="Career Discovery Journey"
+              className="report-illustration"
+              style={{ maxWidth: "300px", height: "auto" }}
+            />
+          </div>
+
           {/* Main Title */}
           <div className="cover-main">
             <h1 className="cover-title">Career Discovery Report</h1>
@@ -261,6 +271,16 @@ function Layer1PersonalityProfile({ output }: { output: Class11ScoreOutput }) {
         <h2 className="section-title">Personality & Work Style</h2>
       </div>
 
+      {/* Personality Wheel Illustration */}
+      <div className="illustration-container">
+        <img
+          src="/illustrations/personality-wheel.svg"
+          alt="8 Personality Dimensions Wheel"
+          className="report-illustration"
+        />
+        <p className="illustration-caption">Your personality profile across 8 key dimensions</p>
+      </div>
+
       <div className="content-box">
         <div className="trait-grid">
           <div className="trait-item">
@@ -304,6 +324,16 @@ function Layer1RIASECProfile({ output }: { output: Class11ScoreOutput }) {
       <div className="sheet-header">
         <div className="kicker">LAYER 1 · PART 2</div>
         <h2 className="section-title">Career Interests (RIASEC Profile)</h2>
+      </div>
+
+      {/* Career Interests Illustration */}
+      <div className="illustration-container">
+        <img
+          src="/illustrations/career-interests.svg"
+          alt="RIASEC Career Interest Distribution"
+          className="report-illustration"
+        />
+        <p className="illustration-caption">Your interest distribution across the six Holland codes</p>
       </div>
 
       <div className="content-box">
@@ -610,6 +640,16 @@ function Layer2StreamAssessment({ output }: { output: Class11ScoreOutput }) {
         <h2 className="section-title">Your Stream & Subject Fit</h2>
       </div>
 
+      {/* Stream Analysis Illustration */}
+      <div className="illustration-container">
+        <img
+          src="/illustrations/stream-analysis.svg"
+          alt="Stream Suitability Analysis"
+          className="report-illustration"
+        />
+        <p className="illustration-caption">Your stream fit analysis across Science, Commerce, and Humanities</p>
+      </div>
+
       <div className="content-box">
         <h3>Current Stream: {output.layer2.currentStream}</h3>
         <div className={`suitability-badge ${output.layer2.streamSuitability.toLowerCase().replace(" ", "-")}`}>
@@ -716,6 +756,16 @@ function Layer3Roadmap({ output }: { output: Class11ScoreOutput }) {
       <div className="sheet-header">
         <div className="kicker">LAYER 3 · ROADMAP</div>
         <h2 className="section-title">Your Timeline & Roadmap</h2>
+      </div>
+
+      {/* Education Timeline Illustration */}
+      <div className="illustration-container">
+        <img
+          src="/illustrations/education-timeline.svg"
+          alt="Education Roadmap from Class 11 to Career"
+          className="report-illustration"
+        />
+        <p className="illustration-caption">Your educational journey timeline</p>
       </div>
 
       <div className="content-box">
@@ -832,6 +882,16 @@ function Layer4AlignmentCheck({ output }: { output: Class11ScoreOutput }) {
       <div className="sheet-header">
         <div className="kicker">LAYER 4 · ALIGNMENT</div>
         <h2 className="section-title">How Realistic Is Your Goal?</h2>
+      </div>
+
+      {/* Career Alignment Chart Illustration */}
+      <div className="illustration-container">
+        <img
+          src="/illustrations/career-alignment.svg"
+          alt="Career Alignment and Match Scores"
+          className="report-illustration"
+        />
+        <p className="illustration-caption">Your alignment with recommended career paths</p>
       </div>
 
       <div className="content-box">
@@ -2149,10 +2209,58 @@ const Class11ComprehensiveStyles = `
   color: #1a1a1a;
 }
 
+/* Illustration Styles */
+.illustration-container,
+.illustration-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+  page-break-inside: avoid;
+}
+
+.report-illustration {
+  max-width: 100%;
+  height: auto;
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  margin-bottom: 24px;
+  border-radius: 8px;
+}
+
+.illustration-caption {
+  font-size: 12px;
+  color: #999;
+  text-align: center;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
 /* Print Styles */
 @media print {
   .sheet {
     page-break-after: always;
+    page-break-inside: avoid;
+    width: 210mm;
+    min-height: 297mm;
+    padding: 60px 50px;
+    margin: 0;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: white;
+  }
+
+  .illustration-container,
+  .illustration-wrapper {
+    page-break-inside: avoid;
   }
 }
 
