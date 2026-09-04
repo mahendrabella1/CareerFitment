@@ -695,9 +695,59 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
         </section>
       ))}
 
+      {/* ===== ALL JOB ROLES IN TOP 3 DOMAINS ===== */}
+      <section className="sheet rv">
+        <div className="pad">
+          <RH n={N()} kick="Careers to explore" />
+          <SecHead eyebrow="Job roles across your top 3 domains" title="All careers that fit you"
+            sub="Explore the specific roles available in your top three recommended domains. Each role shows its fit score, salary range, and growth potential." />
+
+          {domainList.map((domain, domainIndex) => {
+            const domainRoles = roles.filter(r => r.domain === domain.name).slice(0, 8);
+            return (
+              <div key={domain.key} style={{ marginBottom: '40px' }}>
+                <h3 style={{ fontSize: '20px', fontWeight: '800', color: C.ink, marginBottom: '20px', paddingBottom: '12px', borderBottom: `2px solid ${C.redLine}` }}>
+                  0{domainIndex + 1}. {domain.name}
+                </h3>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
+                  {domainRoles.map((role) => {
+                    const fitBand = bandOf(role.fit);
+                    return (
+                      <div key={role.role} style={{ padding: '16px', border: '1px solid #e5e7eb', borderRadius: '10px', background: '#f9fafb', transition: 'all 200ms ease', ':hover': { borderColor: C.red, boxShadow: '0 4px 12px rgba(242,85,90,0.1)' } }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '8px' }}>
+                          <h4 style={{ fontSize: '14px', fontWeight: '700', color: C.ink, margin: 0, flex: 1 }}>{role.role}</h4>
+                          <span style={{ fontSize: '12px', fontWeight: '700', color: fitBand.tone === 'hi' ? '#1f7a55' : fitBand.tone === 'mid' ? '#d97706' : '#6b7280', background: fitBand.tone === 'hi' ? '#dcfce7' : fitBand.tone === 'mid' ? '#fef3c7' : '#f3f4f6', padding: '3px 8px', borderRadius: '4px', whiteSpace: 'nowrap' }}>
+                            {role.fit}% fit
+                          </span>
+                        </div>
+                        <p style={{ fontSize: '12px', color: C.muted, margin: '0 0 10px 0' }}>{fitBand.label} match</p>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', fontSize: '11px' }}>
+                          <div>
+                            <div style={{ color: C.muted, marginBottom: '3px', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: '600' }}>India</div>
+                            <div style={{ color: C.ink, fontWeight: '700', fontSize: '13px' }}>{role.salaryIndia || '—'}</div>
+                          </div>
+                          <div>
+                            <div style={{ color: C.muted, marginBottom: '3px', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: '600' }}>Abroad</div>
+                            <div style={{ color: C.ink, fontWeight: '700', fontSize: '13px' }}>{role.salaryAbroad || '—'}</div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div style={{ textAlign: 'center', marginTop: '16px' }}>
+                  <span style={{ fontSize: '12px', color: C.muted }}>Showing {Math.min(8, domainRoles.length)} of {roles.filter(r => r.domain === domain.name).length} roles</span>
+                </div>
+              </div>
+            );
+          })}
+          <RF name={name} />
+        </div>
+      </section>
+
       {/* ===== AVAILABLE ROLES IN RECOMMENDED DOMAIN ===== */}
       {topDomain && (
-        <section className="sheet rv">
+        <section className="sheet rv" style={{ display: 'none' }}>
           <div className="pad">
             <RH n={N()} kick={`Careers in ${topDomain.name}`} />
             <SecHead eyebrow="Specific job roles to explore" title={`All careers in ${topDomain.name}`}

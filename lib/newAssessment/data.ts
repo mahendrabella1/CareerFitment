@@ -10,7 +10,7 @@ import clustersData from "@/data/career-clusters.json";
 // flow: nothing maps a paying category to "11-12-demo".
 import demoBank from "@/data/demo-11-12/questions.json";
 import demoAptitude from "@/data/demo-11-12/aptitude.json";
-import class1112Bank from "@/data/class-11-12/questions.json";
+import class1112Bank from "@/data/class-11-12/questions-corrected.json";
 
 export type Category =
   | "personality"
