@@ -5,9 +5,78 @@ import Link from 'next/link';
 import { ArrowLeft, ExternalLink, Clock, BarChart3, Award, Users, CheckCircle, TrendingUp } from 'lucide-react';
 import { getAllInternships } from '@/lib/data/careerLoader';
 
+// Unified internship interface combining fields from multiple sources
+interface UnifiedInternship {
+  id: string;
+  title: string;
+  company: string;
+  overview?: string;
+  description?: string;
+  difficulty?: string;
+  duration: string;
+  skillsGained: string[];
+  skills?: string[];
+  url?: string;
+  applicationLink?: string;
+  rating?: number;
+  reviews?: number;
+
+  // Optional fields (may not exist on all internship types)
+  whatYouWillDo?: string;
+  prerequisites?: string[];
+  outcomes?: string[];
+  companyInfo?: string;
+  commitment?: string;
+  learningStyle?: string;
+  startDate?: Date | string;
+  paid?: boolean;
+  stipend?: { amount: number; currency: string };
+  remote?: string;
+  industry?: string[];
+  certifications?: string[];
+  idealFor?: string[];
+}
+
+// Type guard helper
+function hasWhatYouWillDo(internship: any): internship is UnifiedInternship & { whatYouWillDo: string } {
+  return internship && typeof internship.whatYouWillDo === 'string';
+}
+
+function hasPrerequisites(internship: any): internship is UnifiedInternship & { prerequisites: string[] } {
+  return internship && Array.isArray(internship.prerequisites) && internship.prerequisites.length > 0;
+}
+
+function hasOutcomes(internship: any): internship is UnifiedInternship & { outcomes: string[] } {
+  return internship && Array.isArray(internship.outcomes) && internship.outcomes.length > 0;
+}
+
+function hasCompanyInfo(internship: any): internship is UnifiedInternship & { companyInfo: string } {
+  return internship && typeof internship.companyInfo === 'string';
+}
+
+function hasCommitment(internship: any): internship is UnifiedInternship & { commitment: string } {
+  return internship && typeof internship.commitment === 'string';
+}
+
+function hasLearningStyle(internship: any): internship is UnifiedInternship & { learningStyle: string } {
+  return internship && typeof internship.learningStyle === 'string';
+}
+
+function hasStartDate(internship: any): internship is UnifiedInternship & { startDate: Date | string } {
+  return internship && (internship.startDate instanceof Date || typeof internship.startDate === 'string');
+}
+
+function hasCertifications(internship: any): internship is UnifiedInternship & { certifications: string[] } {
+  return internship && Array.isArray(internship.certifications) && internship.certifications.length > 0;
+}
+
+function hasIdealFor(internship: any): internship is UnifiedInternship & { idealFor: string[] } {
+  return internship && Array.isArray(internship.idealFor) && internship.idealFor.length > 0;
+}
+
 export default function InternshipDetailPage({ params }: { params: { id: string } }) {
   const allInternships = getAllInternships();
-  const internship = allInternships.find((p: any) => p.id === params.id);
+  const internship = allInternships.find((p: any) => p.id === params.id) as UnifiedInternship | undefined;
 
   if (!internship) {
     return (
@@ -133,13 +202,13 @@ export default function InternshipDetailPage({ params }: { params: { id: string 
               </div>
 
               {/* What You'll Do - if available */}
-              {(internship as any).whatYouWillDo && (
+              {hasWhatYouWillDo(internship) && (
                 <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-lg p-8">
                   <h2 className="text-2xl font-bold text-white mb-4">
                     What You'll Do
                   </h2>
                   <div className="space-y-2">
-                    {(internship as any).whatYouWillDo.split('|').map((item: string, i: number) => (
+                    {internship.whatYouWillDo.split('|').map((item: string, i: number) => (
                       <div key={i} className="flex items-start gap-3">
                         <CheckCircle size={20} className="text-green-400 flex-shrink-0 mt-0.5" />
                         <p className="text-slate-300">{item.trim()}</p>
@@ -165,11 +234,11 @@ export default function InternshipDetailPage({ params }: { params: { id: string 
               </div>
 
               {/* Prerequisites */}
-              {(internship as any).prerequisites && (internship as any).prerequisites.length > 0 && (
+              {hasPrerequisites(internship) && (
                 <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-lg p-8">
                   <h2 className="text-2xl font-bold text-white mb-4">Prerequisites</h2>
                   <ul className="space-y-2">
-                    {(internship as any).prerequisites.map((prereq: string) => (
+                    {internship.prerequisites.map((prereq: string) => (
                       <li key={prereq} className="flex items-start gap-3 text-slate-300">
                         <span className="text-blue-400 font-bold flex-shrink-0">•</span>
                         {prereq}
@@ -180,14 +249,14 @@ export default function InternshipDetailPage({ params }: { params: { id: string 
               )}
 
               {/* Outcomes */}
-              {(internship as any).outcomes && (internship as any).outcomes.length > 0 && (
+              {hasOutcomes(internship) && (
                 <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-lg p-8">
                   <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
                     <TrendingUp className="text-green-400" size={24} />
                     What You'll Get
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {(internship as any).outcomes.map((outcome: string) => (
+                    {internship.outcomes.map((outcome: string) => (
                       <div key={outcome} className="bg-green-500/20 border border-green-500/30 rounded-lg p-3 flex items-center gap-2">
                         <CheckCircle size={20} className="text-green-400 flex-shrink-0" />
                         <p className="text-sm text-green-300 font-medium">{outcome}</p>
@@ -198,13 +267,13 @@ export default function InternshipDetailPage({ params }: { params: { id: string 
               )}
 
               {/* Company Info */}
-              {(internship as any).companyInfo && (
+              {hasCompanyInfo(internship) && (
                 <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-lg p-8">
                   <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
                     <Users className="text-blue-400" size={24} />
                     About {internship.company}
                   </h2>
-                  <p className="text-slate-300 leading-relaxed">{(internship as any).companyInfo}</p>
+                  <p className="text-slate-300 leading-relaxed">{internship.companyInfo}</p>
                 </div>
               )}
             </motion.div>
@@ -227,17 +296,17 @@ export default function InternshipDetailPage({ params }: { params: { id: string 
                     </div>
                   </div>
 
-                  {(internship as any).commitment && (
+                  {hasCommitment(internship) && (
                     <div>
                       <p className="text-xs text-slate-400 mb-1">Time Commitment</p>
-                      <p className="text-white font-semibold">{(internship as any).commitment}</p>
+                      <p className="text-white font-semibold">{internship.commitment}</p>
                     </div>
                   )}
 
-                  {(internship as any).learningStyle && (
+                  {hasLearningStyle(internship) && (
                     <div>
                       <p className="text-xs text-slate-400 mb-1">Learning Style</p>
-                      <p className="text-white font-semibold">{(internship as any).learningStyle}</p>
+                      <p className="text-white font-semibold">{internship.learningStyle}</p>
                     </div>
                   )}
 
@@ -246,18 +315,18 @@ export default function InternshipDetailPage({ params }: { params: { id: string 
                     <p className="text-white font-semibold">{internship.duration}</p>
                   </div>
 
-                  {(internship as any).startDate && (
+                  {hasStartDate(internship) && (
                     <div>
                       <p className="text-xs text-slate-400 mb-1">Start Date</p>
-                      <p className="text-white font-semibold">{(internship as any).startDate}</p>
+                      <p className="text-white font-semibold">{String(internship.startDate)}</p>
                     </div>
                   )}
 
-                  {(internship as any).certifications && (internship as any).certifications.length > 0 && (
+                  {hasCertifications(internship) && (
                     <div>
                       <p className="text-xs text-slate-400 mb-1">Certification</p>
                       <div className="space-y-1">
-                        {(internship as any).certifications.map((cert: string) => (
+                        {internship.certifications.map((cert: string) => (
                           <p key={cert} className="text-sm text-yellow-300 font-semibold">{cert}</p>
                         ))}
                       </div>
@@ -267,11 +336,11 @@ export default function InternshipDetailPage({ params }: { params: { id: string 
               </div>
 
               {/* Ideal For */}
-              {(internship as any).idealFor && (internship as any).idealFor.length > 0 && (
+              {hasIdealFor(internship) && (
                 <div className="bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-lg p-6">
                   <h3 className="text-lg font-bold text-white mb-4">Ideal For</h3>
                   <div className="space-y-2">
-                    {(internship as any).idealFor.map((ideal: string) => (
+                    {internship.idealFor.map((ideal: string) => (
                       <div key={ideal} className="flex items-center gap-2 text-slate-300">
                         <span className="text-blue-400">→</span>
                         {ideal}

@@ -4,8 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search, Bookmark, TrendingUp, ArrowRight } from 'lucide-react';
-import { getCareers, getCareersByCluster } from '@/lib/data/careerLoader';
-import { generateCareers } from '@/lib/data/careerLibrary930';
+import { generateCareers } from '@/lib/data/careerData';
 
 const DOMAIN_CARDS = [
   { id: 'tech', name: 'Technology', icon: '💻', count: 150 },

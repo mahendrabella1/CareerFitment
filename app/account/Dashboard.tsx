@@ -1340,4 +1340,107 @@ const CSS = `
 .rail-feature{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid ${C.line2};align-items:flex-start}
 .rail-feature:last-child{border-bottom:none}
 .rail-feature svg{flex:none;margin-top:2px}
+
+/* COMPREHENSIVE MOBILE RESPONSIVENESS ENHANCEMENTS */
+
+/* Ensure no horizontal scroll */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Touch target minimum sizes (WCAG 2.5.5 - 44x44px) */
+button, a[href], input[type="button"], input[type="submit"], .ogd-btn, .tk-row, .ogd-goal-item, .rail-act, .ash-bell, .ash-top-ava {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Extra padding on ultra-small screens (320px - 375px) */
+@media(max-width:375px){
+  .ash-main{padding:8px 6px !important}
+  .ash-top{padding:10px 10px !important}
+  .ogd-card{padding:12px 10px !important;border-radius:10px}
+  .ogd-hero{padding:16px 12px !important;gap:12px}
+  .ogd-hero.dark{padding:20px 16px !important}
+  .ogd-kpi{padding:14px 12px !important}
+  .ogd-btn{padding:10px 14px;font-size:12px}
+  .ogd-btn.lg{padding:12px 18px;font-size:13px}
+
+  /* Font scaling */
+  .ogd h1{font-size:18px !important}
+  .ogd h2{font-size:15px !important}
+  .ogd-arch{font-size:clamp(20px,3.5vw,28px) !important}
+  .ogd-ring-pct{font-size:28px !important}
+
+  /* Grid adjustments */
+  .ogd-explore{grid-template-columns:1fr !important}
+  .ogd-mind{grid-template-columns:1fr !important}
+  .ogd-learn{grid-template-columns:1fr !important;gap:6px}
+  .ogd-schol{grid-template-columns:1fr !important}
+  .ogd-details{grid-template-columns:1fr !important}
+  .ogd-goal-cols{grid-template-columns:1fr !important}
+  .toolkit-grid{grid-template-columns:1fr !important}
+
+  /* Reduce gaps */
+  .ogd-kpis{gap:8px}
+  .ogd-hero-chips{gap:6px}
+  .ogd-hero-actions{gap:8px}
+
+  /* Sidebar optimization */
+  .rail-card{padding:12px 14px !important}
+
+  /* Text adjustments */
+  .tk-tab{font-size:11px;padding:6px 10px}
+  .rail-act{font-size:12px;padding:9px 11px;min-height:40px}
+}
+
+/* Small phones (376px - 480px) */
+@media(max-width:480px){
+  .toolkit-grid{grid-template-columns:1fr !important}
+  .ogd-dimtab{min-width:70px;padding:6px 8px;font-size:10px}
+  .ogd-dimtab-ic{width:14px;height:14px}
+
+  /* Ensure KPI section uses single column */
+  .ogd-kpis{grid-template-columns:1fr !important}
+
+  /* Sidebar drawer optimization */
+  .ash-side{max-height:100vh;overflow-y:auto}
+  .ash-rail{max-height:calc(100vh - 140px);overflow-y:auto}
+
+  /* Menu positioning */
+  .ash-menu{max-width:280px;right:8px}
+}
+
+/* Medium phones (481px - 640px) */
+@media(max-width:640px){
+  .ogd-grid-radar{grid-template-columns:1fr !important}
+  .ogd-dim-lists{grid-template-columns:1fr !important}
+
+  /* Better spacing */
+  .ogd-card{margin:0 auto;width:100%}
+}
+
+/* Landscape mode adjustments for small phones */
+@media(max-height:500px) and (orientation:landscape){
+  .ash-main{padding:12px 14px}
+  .ogd-card{padding:14px 12px}
+  .ogd-hero{padding:16px 18px;gap:14px}
+}
+
+/* Prevent overflow on all elements */
+.ogd, .ash-main, .ogd-card {
+  overflow-x: hidden;
+}
+
+/* Responsive images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Ensure sidebar buttons stay accessible on mobile */
+@media(max-width:860px){
+  .rail-act{padding:12px 12px;min-height:44px}
+}
 `;

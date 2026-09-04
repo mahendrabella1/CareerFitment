@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Briefcase, TrendingUp, Users, Target, Zap, BookOpen, Code2, Award } from 'lucide-react';
-import { generateCareers } from '@/lib/data/careerLibrary930';
+import { generateCareers } from '@/lib/data/careerData';
 
 const clusterIcons: Record<string, string> = {
   tech: '💻', engineering: '⚙️', business: '💼', health: '🏥',
