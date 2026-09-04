@@ -370,11 +370,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="pg-logo" src="/onegrasp-logo-tight.png" alt="OneGrasp" />
 
-          <div className="pg-kicker">One-time assessment fee</div>
-
-          <div className="pg-pricerow">
-            <h1 className="pg-price">{priced.free ? "FREE" : formatPaise(priced.payablePaise)}</h1>
-          </div>
+          <div className="pg-kicker">Complete your assessment</div>
 
           {priced.coupon && (
             <div className={`pg-chip${priced.free ? " pg-chip-free" : ""}`}>
