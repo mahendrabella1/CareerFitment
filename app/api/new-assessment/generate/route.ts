@@ -8,6 +8,8 @@ import {
   type Category,
   type StageKey,
 } from "@/lib/newAssessment/data";
+import class6Data from "@/data/class6-assessment-questions.json";
+import class7Data from "@/data/class7-assessment-questions.json";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,6 +21,85 @@ export async function POST(req: Request) {
   } catch {
     /* empty body ok */
   }
+
+  // SPECIAL CASE: Career Discovery (Class 6/7/8)
+  // These use dedicated JSON files with 60 questions across 8 dimensions,
+  // formatted to work with the NewExam UI.
+  if (body.category === "class_6" || body.category === "class_7" || body.category === "class_8") {
+    const classData = body.category === "class_7" ? class7Data : class6Data;
+    const questions = (classData as any).questions || [];
+
+    // Map dimensions to NewExam categories
+    const dimensionMap: Record<string, Category> = {
+      "Personality Preferences": "personality",
+      "Career Interests - RIASEC": "career_interest",
+      "Aptitude & Reasoning": "aptitude",
+      "MI-Inspired Strength Domains": "multiple_intelligence",
+      "Motivators & Values": "motivators",
+      "Learning Preferences": "learning_styles",
+      "Emotional & Social Awareness": "emotional_intelligence",
+      "Creativity & Future Readiness": "creativity",
+    };
+
+    // Group questions by section/dimension
+    const sections: any[] = [];
+    const sectionMap: Record<string, any> = {};
+
+    questions.forEach((q: any) => {
+      const section = q.section as string;
+      const category = dimensionMap[section] || "personality";
+
+      if (!sectionMap[category]) {
+        sectionMap[category] = {
+          category,
+          title: CATEGORY_META[category]?.title || section,
+          blurb: CATEGORY_META[category]?.blurb || "",
+          questions: [],
+        };
+      }
+
+      sectionMap[category].questions.push({
+        id: `${category}:${sectionMap[category].questions.length}`,
+        type: q.options?.length === 2 ? "yes_no" : "mcq",
+        text: q.text,
+        options: q.options || null,
+        styles: null,
+        format: null,
+        svgOptions: false,
+        media: null,
+        optional: false,
+      });
+    });
+
+    // Add sections in the correct order
+    const order: Category[] = [
+      "personality",
+      "career_interest",
+      "aptitude",
+      "multiple_intelligence",
+      "motivators",
+      "learning_styles",
+      "emotional_intelligence",
+      "creativity",
+    ];
+
+    order.forEach((cat) => {
+      if (sectionMap[cat]) {
+        sections.push(sectionMap[cat]);
+      }
+    });
+
+    return NextResponse.json({
+      success: true,
+      message: "ok",
+      data: {
+        stage: "6-8",
+        chosenSets: { personality: "Set 1", career_interest: "Set 1", aptitude: "Set 1", multiple_intelligence: "Set 1", motivators: "Set 1", learning_styles: "Set 1", emotional_intelligence: "Set 1", creativity: "Set 1" },
+        sections,
+      },
+    });
+  }
+
   // Resume: if a saved stage + chosenSets is supplied, reuse them so the user
   // gets the exact same questions. Otherwise pick a fresh random set per category.
   //

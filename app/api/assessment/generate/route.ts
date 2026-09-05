@@ -24,6 +24,7 @@ export async function POST(req: Request) {
     );
   }
 
+  
   // IMPORTANT: Class 6/7 (career_discovery) should use Class6Assessment/Class7Assessment components
   // which load from JSON files directly. This API should NEVER be called for career_discovery.
   if (body.journeyCode === "career_discovery") {
