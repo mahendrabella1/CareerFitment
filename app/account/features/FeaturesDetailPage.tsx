@@ -144,12 +144,118 @@ export default function FeaturesDetailPage({ featureId, onClose }: { featureId: 
 function EntranceExamsPage() {
   const config = FEATURE_CONFIG.exams;
   const exams = [
-    { name: "JEE Main", field: "Engineering", difficulty: "High", date: "Jan-Apr", website: "jeemain.nta.ac.in" },
-    { name: "JEE Advanced", field: "Engineering", difficulty: "Very High", date: "May", website: "jeeadv.ac.in" },
-    { name: "NEET", field: "Medical", difficulty: "High", date: "May", website: "neet.nta.ac.in" },
-    { name: "CAT", field: "MBA", difficulty: "High", date: "Nov-Dec", website: "iimcat.ac.in" },
-    { name: "GATE", field: "Engineering", difficulty: "High", date: "Feb", website: "gate.iitkgp.ac.in" },
-    { name: "UPSC Civil Services", field: "Government Services", difficulty: "Very High", date: "May-Jun", website: "upsc.gov.in" },
+    {
+      name: "JEE Main",
+      field: "Engineering",
+      difficulty: "High",
+      examDates: "Jan, Apr, Jul, Oct",
+      regDeadline: "3 weeks before exam",
+      duration: "3 hours",
+      questions: "90 MCQs",
+      syllabus: "Physics, Chemistry, Mathematics",
+      prepTime: "12-18 months",
+      topColleges: ["NIT Trichy", "NIT Warangal", "BITS Pilani", "Delhi Tech"],
+      website: "jeemain.nta.ac.in",
+      resources: ["NCERT Books", "Previous Year Papers", "Online Coaching: Unacademy, Physics Wallah"]
+    },
+    {
+      name: "JEE Advanced",
+      field: "Engineering",
+      difficulty: "Very High",
+      examDates: "June",
+      regDeadline: "May",
+      duration: "3 hours (2 papers)",
+      questions: "162 MCQs + Numeric",
+      syllabus: "Advanced Physics, Chemistry, Mathematics",
+      prepTime: "18-24 months",
+      topColleges: ["IIT Bombay", "IIT Delhi", "IIT Kanpur", "IIT Madras"],
+      website: "jeeadv.ac.in",
+      resources: ["Advanced Level Books", "JEE Advanced Papers", "Coaching: Resonance, Aakash"]
+    },
+    {
+      name: "NEET",
+      field: "Medical",
+      difficulty: "High",
+      examDates: "May",
+      regDeadline: "March",
+      duration: "3 hours",
+      questions: "180 MCQs",
+      syllabus: "Biology, Chemistry, Physics (11-12 NCERT)",
+      prepTime: "12-18 months",
+      topColleges: ["AIIMS", "CMC Vellore", "JIPMER", "MAMC Delhi"],
+      website: "neet.nta.ac.in",
+      resources: ["NCERT Biology", "Coaching: Allen, Aakash", "Online: Vedantu, Byju's"]
+    },
+    {
+      name: "CAT (MBA Entrance)",
+      field: "MBA",
+      difficulty: "High",
+      examDates: "November",
+      regDeadline: "September",
+      duration: "2 hours",
+      questions: "66 questions",
+      syllabus: "Quant, VARC, DILR",
+      prepTime: "6-12 months",
+      topColleges: ["IIM ABC", "XLRI Jamshedpur", "ISB Hyderabad", "NMIMS"],
+      website: "iimcat.ac.in",
+      resources: ["Official CAT Guide", "Coaching: TIME, Career Launcher", "Mock Tests"]
+    },
+    {
+      name: "GATE (Engineering Post-Grad)",
+      field: "Engineering Masters",
+      difficulty: "High",
+      examDates: "February",
+      regDeadline: "December",
+      duration: "3 hours",
+      questions: "65 questions",
+      syllabus: "BE/BTech Core + Advanced topics",
+      prepTime: "4-6 months",
+      topColleges: ["IIT Bombay", "IIT Kharagpur", "IIT Madras", "IISc Bangalore"],
+      website: "gate.iitkgp.ac.in",
+      resources: ["NPTEL Videos", "Made Easy/Ace Academy", "Previous Papers"]
+    },
+    {
+      name: "UPSC Civil Services",
+      field: "Government Services",
+      difficulty: "Very High",
+      examDates: "June (Prelims)",
+      regDeadline: "February",
+      duration: "Multiple stages",
+      questions: "200 (Prelims)",
+      syllabus: "General Studies, Optional Subject",
+      prepTime: "12-24 months",
+      topColleges: ["LBSNAA Mussoorie", "Delhi University", "Lucknow University"],
+      website: "upsc.gov.in",
+      resources: ["Lucent's History", "Coaching: Vision IAS, Byju's", "Newspaper Reading"]
+    },
+    {
+      name: "BITSAT",
+      field: "Engineering/Science",
+      difficulty: "High",
+      examDates: "May-Jun",
+      regDeadline: "March",
+      duration: "3 hours",
+      questions: "130 MCQs",
+      syllabus: "JEE Main Level",
+      prepTime: "10-15 months",
+      topColleges: ["BITS Pilani", "BITS Hyderabad", "BITS Dubai"],
+      website: "bitsadmission.com",
+      resources: ["NCERT Books", "JEE prep materials", "Official BITSAT Guide"]
+    },
+    {
+      name: "CLAT (Law Entrance)",
+      field: "Law",
+      difficulty: "High",
+      examDates: "December",
+      regDeadline: "October",
+      duration: "2 hours",
+      questions: "120 MCQs",
+      syllabus: "Legal Reasoning, Quantitative, English",
+      prepTime: "6-9 months",
+      topColleges: ["Delhi University Law", "Gujarat National Law", "NALSAR Hyderabad"],
+      website: "consortiumofnlus.ac.in",
+      resources: ["Legal Awareness Books", "Coaching: Legalstudy.in", "Mock Papers"]
+    },
   ];
 
   return (
@@ -164,7 +270,7 @@ function EntranceExamsPage() {
         {config.subtitle}
       </p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: spacing[5] }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))", gap: spacing[5] }}>
         {exams.map((exam, idx) => (
           <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm, transition: "all 0.3s" }}>
             <h3 style={{ fontSize: 18, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[10] }}>{exam.name}</h3>
@@ -172,8 +278,21 @@ function EntranceExamsPage() {
               <span style={{ ...styles.badge, backgroundColor: config.accentColor, color: "#fff" }}>{exam.field}</span>
               <span style={{ ...styles.badge, background: exam.difficulty === "Very High" ? "#DC2626" : "#FBBF24", color: "#000" }}>{exam.difficulty}</span>
             </div>
-            <p style={{ fontSize: 14, color: colors.ink[30], margin: 0, marginBottom: spacing[3], lineHeight: 1.5 }}>📅 <strong>{exam.date}</strong></p>
-            <a href={`https://${exam.website}`} target="_blank" rel="noopener" style={{ fontSize: 13, color: config.accentColor, textDecoration: "none", fontWeight: 700, display: "inline-block", marginTop: spacing[2] }}>
+
+            <div style={{ fontSize: 13, color: colors.ink[30], lineHeight: 1.7, marginBottom: spacing[3] }}>
+              <p style={{ margin: "4px 0" }}>📅 <strong>Exam:</strong> {exam.examDates}</p>
+              <p style={{ margin: "4px 0" }}>⏱️ <strong>Duration:</strong> {exam.duration}</p>
+              <p style={{ margin: "4px 0" }}>📝 <strong>Format:</strong> {exam.questions}</p>
+              <p style={{ margin: "4px 0" }}>📚 <strong>Prep:</strong> {exam.prepTime}</p>
+              <p style={{ margin: "4px 0" }}>🎓 <strong>Colleges:</strong> {exam.topColleges.slice(0, 2).join(", ")}</p>
+            </div>
+
+            <div style={{ borderTop: `1px solid ${config.borderColor}`, paddingTop: spacing[3], marginBottom: spacing[3] }}>
+              <p style={{ fontSize: 12, fontWeight: 700, color: config.accentColor, margin: "0 0 6px 0" }}>📖 Resources:</p>
+              <p style={{ fontSize: 12, color: colors.ink[30], margin: 0, lineHeight: 1.6 }}>{exam.resources.slice(0, 2).join(" • ")}</p>
+            </div>
+
+            <a href={`https://${exam.website}`} target="_blank" rel="noopener" style={{ fontSize: 13, color: config.accentColor, textDecoration: "none", fontWeight: 700, display: "inline-block" }}>
               Official Website →
             </a>
           </div>
@@ -479,6 +598,11 @@ function StartupsDetailPage() {
 function ScholarshipsDetailPage() {
   const config = FEATURE_CONFIG.resources;
   const scholarships = getScholarships();
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 30;
+
+  const totalPages = Math.ceil(scholarships.length / ITEMS_PER_PAGE);
+  const paginatedData = scholarships.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   return (
     <div style={{ maxWidth: 1400, margin: "0 auto", padding: `${spacing[8]} ${spacing[4]}` }}>
@@ -492,21 +616,65 @@ function ScholarshipsDetailPage() {
         {config.subtitle}
       </p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: spacing[5] }}>
-        {scholarships.slice(0, 20).map((scholarship: any, idx: number) => (
-          <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[2], color: colors.ink[10] }}>{scholarship.name}</h3>
-            <p style={{ fontSize: 14, color: colors.ink[30], lineHeight: 1.6, margin: 0, marginBottom: spacing[3] }}>🏢 {scholarship.provider}</p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: spacing[6], flexWrap: "wrap", gap: spacing[3] }}>
+        <div style={{ fontSize: 14, fontWeight: 600, color: colors.ink[30] }}>
+          Showing <span style={{ fontWeight: 800, color: config.accentColor }}>{Math.min((currentPage - 1) * ITEMS_PER_PAGE + 1, scholarships.length)}-{Math.min(currentPage * ITEMS_PER_PAGE, scholarships.length)}</span> of <span style={{ fontWeight: 800, color: config.accentColor }}>{scholarships.length}</span> scholarships
+        </div>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))", gap: spacing[5] }}>
+        {paginatedData.map((scholarship: any, idx: number) => (
+          <div key={idx} style={{ background: "#fff", border: `2px solid ${config.borderColor}`, borderRadius: radius.lg, padding: spacing[5], boxShadow: shadows.sm, display: "flex", flexDirection: "column" }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0, marginBottom: spacing[1], color: colors.ink[10] }}>{scholarship.name}</h3>
+            <p style={{ fontSize: 13, color: colors.ink[20], margin: 0, marginBottom: spacing[3] }}>🏢 {scholarship.provider}</p>
+
             <div style={{ display: "flex", gap: spacing[2], marginBottom: spacing[3], flexWrap: "wrap" }}>
               {scholarship.category && <span style={{ ...styles.badge, backgroundColor: config.accentColor, color: "#fff" }}>📁 {scholarship.category}</span>}
               {scholarship.level && <span style={{ ...styles.badge, backgroundColor: config.accentColor, color: "#fff" }}>🎓 {scholarship.level}</span>}
             </div>
-            <p style={{ fontSize: 13, fontWeight: 700, color: config.accentColor, margin: 0 }}>
-              💵 ₹{scholarship.awardAmount?.min || 0}-₹{scholarship.awardAmount?.max || 0}
-            </p>
+
+            {scholarship.description && (
+              <p style={{ fontSize: 13, color: colors.ink[30], lineHeight: 1.5, margin: "0 0 8px 0" }}>
+                {scholarship.description}
+              </p>
+            )}
+
+            <div style={{ marginTop: "auto", paddingTop: spacing[3], borderTop: `1px solid ${config.borderColor}` }}>
+              <p style={{ fontSize: 14, fontWeight: 800, color: config.accentColor, margin: 0 }}>
+                💵 ₹{scholarship.awardAmount?.min || scholarship.awardAmount || 0}-₹{scholarship.awardAmount?.max || scholarship.awardAmount || 0}
+              </p>
+              {scholarship.deadline && (
+                <p style={{ fontSize: 12, color: colors.ink[30], margin: "6px 0 0 0" }}>
+                  ⏱️ Deadline: {scholarship.deadline}
+                </p>
+              )}
+            </div>
           </div>
         ))}
       </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: spacing[3], marginTop: spacing[8], flexWrap: "wrap" }}>
+          <button
+            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+            disabled={currentPage === 1}
+            style={{ ...styles.tabBtn, opacity: currentPage === 1 ? 0.5 : 1, cursor: currentPage === 1 ? 'not-allowed' : 'pointer' }}
+          >
+            ← Previous
+          </button>
+          <div style={{ fontSize: 14, fontWeight: 600, color: colors.ink[30], minWidth: '120px', textAlign: 'center' }}>
+            Page {currentPage} of {totalPages}
+          </div>
+          <button
+            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+            disabled={currentPage === totalPages}
+            style={{ ...styles.tabBtn, opacity: currentPage === totalPages ? 0.5 : 1, cursor: currentPage === totalPages ? 'not-allowed' : 'pointer' }}
+          >
+            Next →
+          </button>
+        </div>
+      )}
     </div>
   );
 }
