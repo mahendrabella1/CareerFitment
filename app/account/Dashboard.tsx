@@ -41,6 +41,18 @@ const Class11ReportComprehensive = dynamic(() => import("@/app/account/Class11Re
     <div style={{ padding: 48, textAlign: "center", color: "#64748b", fontSize: 14 }}>Preparing your report…</div>
   ),
 });
+const Class6ReportComponent = dynamic(() => import("@/app/account/Class6Report").then(m => ({ default: m.Class6Report })), {
+  ssr: false,
+  loading: () => (
+    <div style={{ padding: 48, textAlign: "center", color: "#64748b", fontSize: 14 }}>Preparing your report…</div>
+  ),
+});
+const Class7ReportComponent = dynamic(() => import("@/app/account/Class7Report").then(m => ({ default: m.Class7Report })), {
+  ssr: false,
+  loading: () => (
+    <div style={{ padding: 48, textAlign: "center", color: "#64748b", fontSize: 14 }}>Preparing your report…</div>
+  ),
+});
 const FeaturesDetailPage = dynamic(() => import("@/app/account/features/FeaturesDetailPage"), {
   ssr: false,
   loading: () => (
@@ -273,7 +285,11 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
   }
 
   if (view === "report") {
-    const isClass1112 = a.journeyCode === "11-12";
+    const journeyCode = a.journeyCode || "";
+    const isClass6 = journeyCode === "6";
+    const isClass7 = journeyCode === "7";
+    const isClass910 = journeyCode === "9-10";
+    const isClass1112 = journeyCode === "11-12";
 
     return (
       <div className="ogd-reportwrap">
@@ -286,7 +302,12 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
             <Icon name="bell" size={14} /> A PDF copy has been emailed to you
           </span>
         </div>
-        {isClass1112 ? (
+
+        {isClass6 ? (
+          <Class6ReportComponent a={a} name={name} />
+        ) : isClass7 ? (
+          <Class7ReportComponent a={a} name={name} />
+        ) : isClass1112 ? (
           <Class11ReportComprehensive
             studentName={name}
             studentEmail={email || ""}
@@ -295,6 +316,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
             output={(a as any).class11Output || {} as any}
           />
         ) : (
+          // Class 9-10 and any other class uses FullReport
           <FullReport
             a={a}
             name={name}
