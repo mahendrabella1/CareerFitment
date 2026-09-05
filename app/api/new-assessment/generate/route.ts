@@ -66,7 +66,7 @@ export async function POST(req: Request) {
         styles: null,
         format: null,
         svgOptions: false,
-        media: null,
+        media: q.media || null,
         optional: false,
       });
     });

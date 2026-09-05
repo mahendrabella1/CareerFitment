@@ -214,6 +214,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
       "research": "/account/features/research",
       "startups": "/account/features/startups",
       "resources": "/account/features/scholarships",
+      "portfolio": "/account/portfolio",
     };
 
     // Check if it's a feature ID and navigate to its page
