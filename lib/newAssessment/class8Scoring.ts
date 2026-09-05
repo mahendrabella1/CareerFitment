@@ -919,14 +919,16 @@ function calculateDomainAffinities(data: any): DomainAffinity[] {
   reasoning.A.push(`Aptitude: Engineering/Math capability`);
 
   // Convert to array and sort
-  return Object.entries(affinities)
+  const result: DomainAffinity[] = Object.entries(affinities)
     .map(([domain, score]) => ({
       domain: CAREER_DOMAINS[domain],
       domainCode: domain,
       affinity: Math.min(100, Math.round(score)),
-      reasoning: reasoning[domain].slice(0, 3), // Top 3 reasons
+      reasoning: reasoning[domain].slice(0, 3),
     }))
     .sort((a, b) => b.affinity - a.affinity);
+
+  return result;
 }
 
 function generateSummary(data: any): AssessmentSummary {

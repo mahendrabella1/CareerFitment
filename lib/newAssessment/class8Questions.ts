@@ -611,7 +611,7 @@ export const CLASS8_QUESTIONS: AssessmentQuestion[] = [
     dimension: 'EmotionalAwareness',
     options: [
       'Understand your own feelings first',
-      'Understand the other person's perspective',
+      "Understand the other person's perspective",
       'Control your emotions and respond calmly',
       'Work to restore trust and connection',
     ],
