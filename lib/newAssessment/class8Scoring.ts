@@ -930,11 +930,31 @@ function calculateDomainAffinities(data: any): DomainAffinity[] {
 }
 
 function generateSummary(data: any): AssessmentSummary {
+  const topStrengths = data.strengths?.slice(0, 3).map((s: any) => s.domain) || ["Analytical thinking"];
+  const topRiasec = data.topRiasec?.code || "R";
+  const topRiasecName = data.topRiasec?.name || "Realistic";
+
   return {
-    overallProfile: `${data.personality.dominantType} with strong ${data.topRiasec.code} interests`,
-    keyStrengths: [data.topStrength?.domain || "Analytical thinking"],
-    suggestedPathways: data.topRiasec.name.toLowerCase(),
-    nextSteps: ["Explore recommended careers", "Develop identified strengths", "Consider internship opportunities"],
+    profileTitle: `${data.personality.dominantType} - ${topRiasecName} Oriented`,
+    profileDescription: `You are a ${data.personality.dominantType} with strong interests in ${topRiasecName} activities. Your assessment shows you have excellent potential in ${topStrengths[0]?.toLowerCase() || "multiple areas"}. With your natural abilities and drive, you're well-positioned to excel in careers that combine these strengths.`,
+    topStrengths: topStrengths,
+    developmentAreas: [
+      "Developing technical skills further",
+      "Expanding your knowledge in emerging fields",
+      "Building leadership capabilities"
+    ],
+    careerDirections: [
+      `${topRiasecName}-focused careers`,
+      "Entrepreneurial opportunities",
+      "Leadership roles",
+      "Technical specialization"
+    ],
+    nextSteps: [
+      "Explore careers aligned with your RIASEC profile",
+      "Develop skills in your strength domains",
+      "Seek mentorship in fields of interest",
+      "Take on projects that challenge your abilities"
+    ],
   };
 }
 
@@ -964,8 +984,10 @@ function generateLearningRecommendations(style: string): string[] {
 // ============================================================================
 
 export interface AssessmentSummary {
-  overallProfile: string;
-  keyStrengths: string[];
-  suggestedPathways: string;
+  profileTitle: string;
+  profileDescription: string;
+  topStrengths: string[];
+  developmentAreas: string[];
+  careerDirections: string[];
   nextSteps: string[];
 }
