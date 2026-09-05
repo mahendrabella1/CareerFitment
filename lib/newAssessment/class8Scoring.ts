@@ -852,13 +852,11 @@ function calculateDomainAffinities(data: any): DomainAffinity[] {
   const affinities: Record<string, number> = {};
   const reasoning: Record<string, string[]> = {};
 
-  // Initialize all domains
   Object.keys(CAREER_DOMAINS).forEach((domain) => {
     affinities[domain] = 0;
     reasoning[domain] = [];
   });
 
-  // Factor 1: RIASEC (40% weight) - Higher ranks get more weight
   data.riasec.forEach((r: RIASECScore, idx: number) => {
     const domainList = RIASEC_TO_DOMAINS[r.code] || [];
     const weight = (40 * (5 - idx)) / 15;
@@ -868,10 +866,8 @@ function calculateDomainAffinities(data: any): DomainAffinity[] {
     });
   });
 
-  // Factor 2: Strengths (30% weight)
   data.strengths.slice(0, 3).forEach((s: StrengthDomain, idx: number) => {
     const weight = (30 * (3 - idx)) / 6;
-    // Map intelligences to domains logically
     const domainMaps: Record<string, string[]> = {
       "Logical-Mathematical": ["B"],
       Spatial: ["D", "A"],
@@ -890,10 +886,8 @@ function calculateDomainAffinities(data: any): DomainAffinity[] {
     });
   });
 
-  // Factor 3: Motivators (20% weight)
   data.motivators.slice(0, 3).forEach((m: MotivatorScore, idx: number) => {
     const weight = (20 * (3 - idx)) / 6;
-    // Leadership → E, G; Helping → C, F; Curiosity → B; Innovation → G, D
     const motivatorMaps: Record<string, string[]> = {
       Leadership: ["E", "G"],
       Helping: ["C", "F"],
@@ -911,24 +905,21 @@ function calculateDomainAffinities(data: any): DomainAffinity[] {
     });
   });
 
-  // Factor 4: Aptitude (10% weight)
   const aptWeight = 10;
   affinities.B += (data.aptitude.overallScore / 100) * (aptWeight / 2);
   affinities.A += (data.aptitude.numericReasoning.score / 100) * (aptWeight / 2);
   reasoning.B.push(`Aptitude: Strong technical skills`);
   reasoning.A.push(`Aptitude: Engineering/Math capability`);
 
-  // Convert to array and sort
-  const result: DomainAffinity[] = Object.entries(affinities)
-    .map(([domain, score]) => ({
-      domain: CAREER_DOMAINS[domain],
-      domainCode: domain,
-      affinity: Math.min(100, Math.round(score)),
-      reasoning: reasoning[domain].slice(0, 3),
-    }))
-    .sort((a, b) => b.affinity - a.affinity);
-
-  return result;
+  const entries = Object.entries(affinities);
+  const mapped: DomainAffinity[] = entries.map(([domain, score]) => ({
+    domain: CAREER_DOMAINS[domain],
+    domainCode: domain,
+    affinity: Math.min(100, Math.round(score)),
+    reasoning: reasoning[domain].slice(0, 3),
+  }));
+  const sorted: DomainAffinity[] = mapped.sort((a, b) => b.affinity - a.affinity);
+  return sorted;
 }
 
 function generateSummary(data: any): AssessmentSummary {
