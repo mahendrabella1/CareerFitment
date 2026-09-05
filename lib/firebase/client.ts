@@ -73,7 +73,6 @@ export function getDb(): Firestore | null {
   if (!dbInstance) {
     try {
       dbInstance = getFirestore(a);
-      disablePersistence(dbInstance).catch(() => {});
     } catch (err) {
       console.warn("Firestore initialization failed, returning null:", err);
       return null;
