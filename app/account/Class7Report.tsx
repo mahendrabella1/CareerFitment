@@ -26,11 +26,11 @@ export function Class7Report({
       <style>{Class7CSS}</style>
 
       {/* ===== COVER PAGE ===== */}
-      <section className="c7-sheet c6-cover">
+      <section className="c7-sheet c7-cover">
         <div className="c7-cover-content">
           <img src="/onegrasp-logo-tight.png" alt="OneGrasp" className="c7-logo" />
           <h1 className="c7-title">Career Discovery Journey</h1>
-          <p className="c7-subtitle">Class 6 Exploration Assessment</p>
+          <p className="c7-subtitle">Class 7 Exploration Assessment</p>
           <div className="c7-cover-divider"></div>
 
           <div className="c7-student-info">
