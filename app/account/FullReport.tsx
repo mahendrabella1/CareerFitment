@@ -25,6 +25,7 @@ import { useEffect, useMemo, useRef, type ReactNode } from "react";
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { Icon, CATEGORY_ABBR } from "@/app/Icons";
 import { C, Ring, RadarChart, SkillBar, dimColor, type RadarDatum } from "@/app/account/viz";
+import { Radar3D, RIASECHexagon3D } from "@/app/account/viz3d";
 import { Scene } from "@/app/account/illustrations";
 import { CareerCard, getCareerVisual, CareerImageWithSVG } from "@/app/account/careerVisuals";
 import { getImageForRole } from "@/app/account/careerRoleImages";
@@ -254,7 +255,7 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
           <SecHead eyebrow="How your eight dimensions come together" title="Your profile, on one map"
             sub="No single test defines you — the shape of all eight together is what makes this read accurate." />
           <div className="dna-hero">
-            <div className="radar-wrap"><RadarChart data={radar} color={C.red} abbr={CATEGORY_ABBR} /></div>
+            <div className="radar-wrap" style={{ display: 'flex', justifyContent: 'center' }}><Radar3D data={radar} color={C.red} size={300} /></div>
             <div className="band-v">
               {Array.from(new Set(roles.map(r => r.domain))).slice(0, 3).map((domain, i) => {
                 const domainRoles = roles.filter(r => r.domain === domain);
@@ -985,26 +986,21 @@ function RoseWheel({ items, accentIndex = -1, small }: { items: { label: string;
   );
 }
 
-/** The classic RIASEC hexagon with the profile plotted inside. */
+/** The classic RIASEC hexagon with the profile plotted inside — now in stunning 3D. */
 function RiasecHex({ themes }: { themes: { letter: string; title?: string; score: number }[] }) {
+  const scores: Record<string, number> = {};
   const order = ["R", "I", "A", "S", "E", "C"];
-  const cx = 150, cy = 150, R = 108;
-  const ang = (i: number) => -Math.PI / 2 + (i * 2 * Math.PI) / 6;
-  const pt = (i: number, r: number): [number, number] => [cx + r * Math.cos(ang(i)), cy + r * Math.sin(ang(i))];
-  const outline = order.map((_, i) => pt(i, R)).map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`).join("") + "Z";
-  const poly = order.map((L, i) => { const t = themes.find((x) => x.letter === L); return pt(i, (R * clamp(t?.score ?? 0)) / 100); });
-  const polyD = poly.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`).join("") + "Z";
+  const labels = ["Realistic", "Investigative", "Artistic", "Social", "Enterprising", "Conventional"];
+
+  order.forEach((letter, i) => {
+    const theme = themes.find(t => t.letter === letter);
+    scores[labels[i]] = theme?.score ?? 0;
+  });
+
   return (
-    <svg viewBox="0 0 300 300" role="img" aria-label="RIASEC hexagon" style={{ width: "100%", maxWidth: 300, height: "auto", overflow: "visible" }}>
-      {[0.33, 0.66, 1].map((f) => <path key={f} d={order.map((_, i) => pt(i, R * f)).map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`).join("") + "Z"} fill="none" stroke={C.line} strokeWidth={1} />)}
-      <path d={outline} fill="none" stroke={C.faint} strokeWidth={1.5} />
-      <path d={polyD} fill="rgba(242,85,90,.14)" stroke={C.red} strokeWidth={2} strokeLinejoin="round" />
-      {order.map((L, i) => { const [x, y] = pt(i, (R * clamp(themes.find((t) => t.letter === L)?.score ?? 0)) / 100); return <circle key={L} cx={x} cy={y} r={3.4} fill={C.red} />; })}
-      {order.map((L, i) => {
-        const [x, y] = pt(i, R + 20);
-        return <text key={L} x={x.toFixed(1)} y={(y + 5).toFixed(1)} textAnchor="middle" fontSize="15" fontWeight="800" fill={C.ink}>{L}</text>;
-      })}
-    </svg>
+    <div style={{ display: 'flex', justifyContent: 'center', width: '100%', maxWidth: 350, margin: '0 auto' }}>
+      <RIASECHexagon3D scores={scores} size={320} />
+    </div>
   );
 }
 

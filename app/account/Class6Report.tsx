@@ -8,6 +8,7 @@
 
 import { format } from "date-fns";
 import type { Class6ScoreOutput } from "@/lib/newAssessment/class6Scoring";
+import { Radar3D, RIASECHexagon3D } from "@/app/account/viz3d";
 
 export function Class6Report({
   studentName,
@@ -104,6 +105,20 @@ export function Class6Report({
           <p className="c6-description">
             Here's what kinds of activities excite you most. These are your top interests:
           </p>
+          {/* 3D RIASEC Hexagon */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <RIASECHexagon3D
+              scores={output.riasecScores.reduce((acc, r) => {
+                const labels: Record<string, string> = {
+                  'R': 'Realistic', 'I': 'Investigative', 'A': 'Artistic',
+                  'S': 'Social', 'E': 'Enterprising', 'C': 'Conventional'
+                };
+                acc[labels[r.letter]] = r.score;
+                return acc;
+              }, {} as Record<string, number>)}
+              size={280}
+            />
+          </div>
           <div className="c6-interest-grid">
             {output.riasecScores.slice(0, 3).map((r, idx) => (
               <div key={r.letter} className="c6-interest-card">
@@ -127,6 +142,17 @@ export function Class6Report({
           <p className="c6-description">
             Different people are smart in different ways. Here are your strongest areas:
           </p>
+          {/* 3D Strength Radar */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <Radar3D
+              data={output.strengthDomains.map(s => ({
+                label: s.name.split(" ").slice(0, 2).join(" "),
+                value: s.score
+              }))}
+              color="#3b82f6"
+              size={280}
+            />
+          </div>
           <div className="c6-strengths-list">
             {output.strengthDomains.slice(0, 3).map((s) => (
               <div key={s.name} className="c6-strength-item">

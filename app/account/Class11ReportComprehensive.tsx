@@ -13,6 +13,7 @@
 import { ReactNode } from "react";
 import { format } from "date-fns";
 import type { Class11ScoreOutput } from "@/lib/newAssessment/scoring11_12";
+import { Radar3D, RIASECHexagon3D, CareerSphere3D } from "@/app/account/viz3d";
 
 interface ComprehensiveReportProps {
   studentName: string;
@@ -321,6 +322,16 @@ function Layer1PersonalityProfile({ output }: { output: Class11ScoreOutput }) {
 }
 
 function Layer1RIASECProfile({ output }: { output: Class11ScoreOutput }) {
+  // Build RIASEC scores object for 3D hexagon
+  const riasecScores = output.layer1.riasec.reduce((acc, code) => {
+    const labels: Record<string, string> = {
+      'R': 'Realistic', 'I': 'Investigative', 'A': 'Artistic',
+      'S': 'Social', 'E': 'Enterprising', 'C': 'Conventional'
+    };
+    acc[labels[code.code]] = code.percentile;
+    return acc;
+  }, {} as Record<string, number>);
+
   return (
     <section className="sheet">
       <div className="sheet-header">
@@ -328,14 +339,12 @@ function Layer1RIASECProfile({ output }: { output: Class11ScoreOutput }) {
         <h2 className="section-title">Career Interests (RIASEC Profile)</h2>
       </div>
 
-      {/* Career Interests Illustration */}
-      <div className="illustration-container">
-        <img
-          src="/illustrations/career-interests.svg"
-          alt="RIASEC Career Interest Distribution"
-          className="report-illustration"
-        />
-        <p className="illustration-caption">Your interest distribution across the six Holland codes</p>
+      {/* Career Interests 3D Visualization */}
+      <div className="illustration-container" style={{ padding: '20px 0' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
+          <RIASECHexagon3D scores={riasecScores} size={340} />
+        </div>
+        <p className="illustration-caption">Your interest distribution across the six Holland codes (3D Interactive View)</p>
       </div>
 
       <div className="content-box">
@@ -417,6 +426,12 @@ function Layer1AptitudeProfile({ output }: { output: Class11ScoreOutput }) {
 }
 
 function Layer1StrengthDomains({ output }: { output: Class11ScoreOutput }) {
+  // Build radar data for 3D visualization (normalize score from /5 to /100)
+  const radarData = output.layer1.strengthDomains.map((domain) => ({
+    label: domain.domain.split(" ").slice(0, 2).join(" "), // Shorten for chart
+    value: Math.round((domain.score / 5) * 100)
+  }));
+
   return (
     <section className="sheet">
       <div className="sheet-header">
@@ -428,6 +443,11 @@ function Layer1StrengthDomains({ output }: { output: Class11ScoreOutput }) {
         <p className="intro-text">
           Your natural strengths across eight intelligences. These reveal areas where you naturally feel capable, interested, and comfortable.
         </p>
+
+        {/* 3D Strength Radar Visualization */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}>
+          <Radar3D data={radarData} color="#2f6bff" size={320} />
+        </div>
 
         <div className="strength-domains">
           {output.layer1.strengthDomains.map((domain) => (
