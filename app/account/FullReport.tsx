@@ -255,7 +255,9 @@ export default function FullReport({ a, name, extraSheets = [] }: { a: Assessmen
           <SecHead eyebrow="How your eight dimensions come together" title="Your profile, on one map"
             sub="No single test defines you — the shape of all eight together is what makes this read accurate." />
           <div className="dna-hero">
-            <div className="radar-wrap" style={{ display: 'flex', justifyContent: 'center' }}><Radar3D data={radar} color={C.red} size={300} /></div>
+            <div className="radar-wrap" style={{ display: 'flex', justifyContent: 'center' }}>
+              <Radar3D data={radar.map(r => ({ label: r.label, value: r.score }))} color={C.red} size={300} />
+            </div>
             <div className="band-v">
               {Array.from(new Set(roles.map(r => r.domain))).slice(0, 3).map((domain, i) => {
                 const domainRoles = roles.filter(r => r.domain === domain);

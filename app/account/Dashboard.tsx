@@ -304,9 +304,17 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
         </div>
 
         {isClass6 ? (
-          <Class6ReportComponent a={a} name={name} />
+          <Class6ReportComponent
+            studentName={name}
+            studentEmail={email || ""}
+            output={(a as any).class6Output || {} as any}
+          />
         ) : isClass7 ? (
-          <Class7ReportComponent a={a} name={name} />
+          <Class7ReportComponent
+            studentName={name}
+            studentEmail={email || ""}
+            output={(a as any).class7Output || {} as any}
+          />
         ) : isClass1112 ? (
           <Class11ReportComprehensive
             studentName={name}
