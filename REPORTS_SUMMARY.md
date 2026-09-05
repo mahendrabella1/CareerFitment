@@ -157,14 +157,16 @@ Dashboard Display
 
 ## Report Features
 
-### Visualization Components
-- **Radar Chart** - 8 dimensions profile
-- **RIASEC Hexagon** - Interest mapping
+### Visualization Components (Now with 3D!)
+- **3D Radar Chart** - 8 dimensions profile (rotating, interactive)
+- **3D RIASEC Hexagon** - Interest mapping with 3D perspective
 - **Donut Charts** - Percentage breakdowns
 - **Bar Charts** - Comparative analysis
 - **Traffic Light Scores** - Quick visual status
 - **Career Cards** - Best-fit careers with metrics
 - **Timeline Roadmaps** - 3-5 year progression
+- **3D Career Sphere** - Career cluster visualization
+- **Animated 3D Surfaces** - Real-time mesh rendering with lighting
 
 ### Export Options
 - 📱 **View Online** - Interactive HTML
@@ -212,6 +214,19 @@ Dashboard Display
 ✅ **Legal Resources** - 20+ guides  
 ✅ **Research Opportunities** - 50+ programs  
 ✅ **Startups Ecosystem** - 100+ companies (including unicorns)  
+
+## 3D Visualization Enhancements (Latest)
+
+✨ **Three.js Integration** - Professional 3D graphics library  
+✨ **3D Radar Charts** - Rotating dimension profiles with 8-point visualization  
+✨ **3D RIASEC Hexagons** - Interactive career interest hexagons with perspective  
+✨ **3D Career Sphere** - Cluster visualization for career exploration  
+✨ **Animated Surfaces** - Real-time mesh rendering with dynamic lighting  
+✨ **Applied to All Reports:**
+  - **FullReport**: 3D Radar + 3D RIASEC Hexagon
+  - **Class 11-12**: 3D Radar for 8 strengths + 3D RIASEC Hexagon
+  - **Class 6**: 3D RIASEC + 3D Strength Radar
+  - **Class 7**: 3D RIASEC + 3D Strength Radar
 
 ---
 
