@@ -1107,6 +1107,18 @@ export default function AssessmentExperience() {
       if (!(profile.paid || paidNow)) {
         return <PaymentGate profile={profile} onPaid={() => setPaidNow(true)} />;
       }
+
+      // IMPORTANT: Class 6/7/8 (career_discovery) must use dedicated components
+      // which load from JSON files directly, NOT the generic NewExam engine.
+      if (profile.journeyCode === "career_discovery") {
+        const category = profile.category || "";
+        if (category === "class_7") {
+          return <Class7Assessment />;
+        }
+        // class_6, class_8, and any other career_discovery variant use Class6Assessment
+        return <Class6Assessment />;
+      }
+
       return (
         <NewExam
           category={profile.category || ""}
