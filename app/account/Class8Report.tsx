@@ -119,10 +119,10 @@ export default function Class8Report({ studentName, output, assessmentDate = new
           {expandedSections.personality && (
             <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50">
               <div className="grid grid-cols-2 gap-6 mb-6">
-                {Object.entries(output.personalityProfile.scores).map(([type, score]) => (
+                {Object.entries(output.personalityProfile.typeScores).map(([type, score]) => (
                   <div key={type} className="print:page-break-inside-avoid">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="font-medium text-white print:text-black">{type}</span>
+                      <span className="font-medium text-white print:text-black capitalize">{type}</span>
                       <span className={`font-bold text-lg ${getColorClassForScore(score)}`}>{score}%</span>
                     </div>
                     <div className="w-full bg-slate-700/30 rounded-full h-2">
@@ -137,7 +137,7 @@ export default function Class8Report({ studentName, output, assessmentDate = new
 
               <div className="p-4 bg-slate-700/30 rounded-lg">
                 <p className="text-sm font-semibold text-slate-300 uppercase mb-2">Your Primary Type</p>
-                <p className="text-lg font-bold text-cyan-400">{output.personalityProfile.primaryType}</p>
+                <p className="text-lg font-bold text-cyan-400">{output.personalityProfile.dominantType}</p>
               </div>
             </div>
           )}
@@ -192,15 +192,7 @@ export default function Class8Report({ studentName, output, assessmentDate = new
 
           {expandedSections.aptitude && (
             <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50">
-              <div className="grid grid-cols-3 gap-4 mb-6">
-                <div className="p-4 bg-slate-700/30 rounded-lg text-center print:border print:border-black">
-                  <p className="text-xs text-slate-400 print:text-gray-600 uppercase">Correct Answers</p>
-                  <p className="text-3xl font-bold text-emerald-400">{output.aptitudeProfile.correct}</p>
-                </div>
-                <div className="p-4 bg-slate-700/30 rounded-lg text-center print:border print:border-black">
-                  <p className="text-xs text-slate-400 print:text-gray-600 uppercase">Incorrect</p>
-                  <p className="text-3xl font-bold text-rose-400">{output.aptitudeProfile.incorrect}</p>
-                </div>
+              <div className="grid grid-cols-1 gap-4 mb-6">
                 <div className="p-4 bg-slate-700/30 rounded-lg text-center print:border print:border-black">
                   <p className="text-xs text-slate-400 print:text-gray-600 uppercase">Overall Score</p>
                   <p className={`text-3xl font-bold ${getColorClassForScore(output.aptitudeProfile.overallScore)}`}>
@@ -209,26 +201,28 @@ export default function Class8Report({ studentName, output, assessmentDate = new
                 </div>
               </div>
 
-              <div className="mb-6 print:border print:border-black print:p-4">
-                <p className="font-semibold text-white print:text-black mb-3">Mastery Level: {output.aptitudeProfile.masteryLevel}</p>
-              </div>
-
               <div className="space-y-3">
-                {['Numeric', 'Logic', 'Pattern', 'Spatial'].map((category) => {
-                  const score = output.aptitudeProfile[category.toLowerCase() as keyof typeof output.aptitudeProfile] as number;
-                  if (typeof score !== 'number') return null;
+                {[
+                  { label: 'Numeric Reasoning', key: 'numericReasoning' },
+                  { label: 'Logical Deduction', key: 'logicalDeduction' },
+                  { label: 'Pattern Recognition', key: 'patternRecognition' },
+                  { label: 'Spatial Reasoning', key: 'spatialReasoning' },
+                ].map(({ label, key }) => {
+                  const category = output.aptitudeProfile[key as keyof typeof output.aptitudeProfile] as any;
+                  if (!category || typeof category.score !== 'number') return null;
                   return (
-                    <div key={category} className="print:page-break-inside-avoid">
+                    <div key={key} className="print:page-break-inside-avoid">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="font-medium text-white print:text-black">{category} Reasoning</span>
-                        <span className={`font-bold ${getColorClassForScore(score)}`}>{score}%</span>
+                        <span className="font-medium text-white print:text-black">{label}</span>
+                        <span className={`font-bold ${getColorClassForScore(category.score)}`}>{category.score}%</span>
                       </div>
                       <div className="w-full bg-slate-700/30 rounded-full h-2">
                         <div
-                          className={`h-full rounded-full bg-gradient-to-r ${getColorForScore(score)}`}
-                          style={{ width: `${score}%` }}
+                          className={`h-full rounded-full bg-gradient-to-r ${getColorForScore(category.score)}`}
+                          style={{ width: `${category.score}%` }}
                         />
                       </div>
+                      <p className="text-xs text-slate-400 mt-1">{category.level}</p>
                     </div>
                   );
                 })}
@@ -254,7 +248,7 @@ export default function Class8Report({ studentName, output, assessmentDate = new
               {output.strengthDomains.map((domain) => (
                 <div key={domain.code} className="print:page-break-inside-avoid">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-white print:text-black">{domain.code}</span>
+                    <span className="font-medium text-white print:text-black">{domain.domain}</span>
                     <span className={`font-bold text-lg ${getColorClassForScore(domain.score)}`}>{domain.score}%</span>
                   </div>
                   <div className="w-full bg-slate-700/30 rounded-full h-2">
@@ -263,7 +257,7 @@ export default function Class8Report({ studentName, output, assessmentDate = new
                       style={{ width: `${domain.score}%` }}
                     />
                   </div>
-                  <p className="text-xs text-slate-400 mt-1">Level: {domain.proficiencyLevel}</p>
+                  <p className="text-xs text-slate-400 mt-1">Level: {domain.level}</p>
                 </div>
               ))}
             </div>
@@ -285,9 +279,9 @@ export default function Class8Report({ studentName, output, assessmentDate = new
           {expandedSections.motivators && (
             <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4">
               {output.motivators.map((motivator) => (
-                <div key={motivator.type} className="print:page-break-inside-avoid">
+                <div key={motivator.motivator} className="print:page-break-inside-avoid">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-white print:text-black">{motivator.type}</span>
+                    <span className="font-medium text-white print:text-black">{motivator.motivator}</span>
                     <span className={`font-bold text-lg ${getColorClassForScore(motivator.score)}`}>{motivator.score}%</span>
                   </div>
                   <div className="w-full bg-slate-700/30 rounded-full h-2">
@@ -296,7 +290,7 @@ export default function Class8Report({ studentName, output, assessmentDate = new
                       style={{ width: `${motivator.score}%` }}
                     />
                   </div>
-                  <p className="text-xs text-slate-400 mt-1">{motivator.intensityLevel} Intensity</p>
+                  <p className="text-xs text-slate-400 mt-1">{motivator.level} Intensity</p>
                 </div>
               ))}
             </div>
@@ -331,7 +325,7 @@ export default function Class8Report({ studentName, output, assessmentDate = new
               <div className="mb-4">
                 <p className="font-semibold text-white print:text-black mb-3">Recommended Strategies:</p>
                 <ul className="space-y-2">
-                  {output.learningStyle.recommendedStrategies.map((strategy, idx) => (
+                  {output.learningStyle.recommendations.map((strategy, idx) => (
                     <li key={idx} className="text-sm text-slate-200 print:text-gray-800 flex gap-2">
                       <span className="text-cyan-400">✓</span>
                       <span>{strategy}</span>
@@ -369,7 +363,7 @@ export default function Class8Report({ studentName, output, assessmentDate = new
                       style={{ width: `${component.score}%` }}
                     />
                   </div>
-                  <p className="text-xs text-slate-400 mt-1">{component.proficiencyLevel}</p>
+                  <p className="text-xs text-slate-400 mt-1">{component.level}</p>
                 </div>
               ))}
             </div>
