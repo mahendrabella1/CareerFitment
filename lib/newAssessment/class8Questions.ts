@@ -10,6 +10,7 @@ export interface AssessmentQuestion {
   dimension: string;
   dimensionCode: string;
   options: { label: string; text: string; mapping: string }[];
+  hint?: string;
 }
 
 export const DIMENSION_ORDER = [
@@ -22,6 +23,39 @@ export const DIMENSION_ORDER = [
   'Emotional & Social Awareness',
   'Creativity & Future Readiness',
 ];
+
+export const DIMENSION_LABELS = {
+  Personality: 'Personality Preferences',
+  RIASEC: 'Career Interests',
+  Aptitude: 'Aptitude & Reasoning',
+  StrengthDomains: 'Strength Domains',
+  Motivators: 'Motivators & Values',
+  LearningStyle: 'Learning Style',
+  EmotionalAwareness: 'Emotional Awareness',
+  Creativity: 'Creativity & Future Readiness',
+};
+
+export const DIMENSION_DESCRIPTIONS = {
+  Personality: 'Understand your work style and preferences',
+  RIASEC: 'Discover career interests aligned with your passions',
+  Aptitude: 'Assess your reasoning and problem-solving abilities',
+  StrengthDomains: 'Identify your natural intelligences and strengths',
+  Motivators: 'Learn what drives and motivates you',
+  LearningStyle: 'Find out how you learn best',
+  EmotionalAwareness: 'Explore your emotional and social skills',
+  Creativity: 'Assess your creative thinking and adaptability',
+};
+
+export const QUESTIONS_PER_DIMENSION = {
+  Personality: { start: 1, end: 10, count: 10 },
+  RIASEC: { start: 11, end: 20, count: 10 },
+  Aptitude: { start: 21, end: 30, count: 10 },
+  StrengthDomains: { start: 31, end: 38, count: 8 },
+  Motivators: { start: 39, end: 45, count: 7 },
+  LearningStyle: { start: 46, end: 50, count: 5 },
+  EmotionalAwareness: { start: 51, end: 55, count: 5 },
+  Creativity: { start: 56, end: 60, count: 5 },
+};
 
 export const CLASS8_QUESTIONS: AssessmentQuestion[] = [
   {
