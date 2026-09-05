@@ -70,6 +70,14 @@ export function getFirebaseAuth(): Auth | null {
 export function getDb(): Firestore | null {
   const a = ensureApp();
   if (!a) return null;
-  if (!dbInstance) dbInstance = getFirestore(a);
+  if (!dbInstance) {
+    try {
+      dbInstance = getFirestore(a);
+      disablePersistence(dbInstance).catch(() => {});
+    } catch (err) {
+      console.warn("Firestore initialization failed, returning null:", err);
+      return null;
+    }
+  }
   return dbInstance;
 }
