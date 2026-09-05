@@ -852,21 +852,24 @@ function calculateDomainAffinities(data: any): DomainAffinity[] {
   const affinities: Record<string, number> = {};
   const reasoning: Record<string, string[]> = {};
 
-  Object.keys(CAREER_DOMAINS).forEach((domain) => {
+  for (const domain of Object.keys(CAREER_DOMAINS)) {
     affinities[domain] = 0;
     reasoning[domain] = [];
-  });
+  }
 
-  data.riasec.forEach((r: RIASECScore, idx: number) => {
-    const domainList = RIASEC_TO_DOMAINS[r.code] || [];
-    const weight = (40 * (5 - idx)) / 15;
-    domainList.forEach((domain: string) => {
-      affinities[domain] += (r.score / 100) * weight;
-      reasoning[domain].push(`RIASEC: ${r.name} (${r.score}%)`);
-    });
-  });
+  for (const r of data.riasec) {
+    const rScore = r as RIASECScore;
+    const domainList = RIASEC_TO_DOMAINS[rScore.code] || [];
+    const weight = (40 * (5 - data.riasec.indexOf(r))) / 15;
+    for (const domain of domainList) {
+      affinities[domain] += (rScore.score / 100) * weight;
+      reasoning[domain].push(`RIASEC: ${rScore.name} (${rScore.score}%)`);
+    }
+  }
 
-  data.strengths.slice(0, 3).forEach((s: StrengthDomain, idx: number) => {
+  const strengths = data.strengths.slice(0, 3);
+  for (let idx = 0; idx < strengths.length; idx++) {
+    const s = strengths[idx] as StrengthDomain;
     const weight = (30 * (3 - idx)) / 6;
     const domainMaps: Record<string, string[]> = {
       "Logical-Mathematical": ["B"],
@@ -874,19 +877,20 @@ function calculateDomainAffinities(data: any): DomainAffinity[] {
       Linguistic: ["D", "F"],
       Interpersonal: ["C", "E", "F"],
       Intrapersonal: ["G"],
-      Bodily-Kinesthetic: ["A", "H"],
+      "Bodily-Kinesthetic": ["A", "H"],
       Musical: ["D"],
       Naturalistic: ["H", "C"],
     };
-
     const domains = domainMaps[s.domain] || [];
-    domains.forEach((domain: string) => {
+    for (const domain of domains) {
       affinities[domain] += (s.score / 100) * (weight / domains.length);
       reasoning[domain].push(`Strength: ${s.domain}`);
-    });
-  });
+    }
+  }
 
-  data.motivators.slice(0, 3).forEach((m: MotivatorScore, idx: number) => {
+  const motivators = data.motivators.slice(0, 3);
+  for (let idx = 0; idx < motivators.length; idx++) {
+    const m = motivators[idx] as MotivatorScore;
     const weight = (20 * (3 - idx)) / 6;
     const motivatorMaps: Record<string, string[]> = {
       Leadership: ["E", "G"],
@@ -897,13 +901,12 @@ function calculateDomainAffinities(data: any): DomainAffinity[] {
       Freedom: ["G"],
       Stability: ["B", "E", "F"],
     };
-
     const domains = motivatorMaps[m.motivator] || [];
-    domains.forEach((domain: string) => {
+    for (const domain of domains) {
       affinities[domain] += (m.score / 100) * (weight / domains.length);
       reasoning[domain].push(`Motivator: ${m.motivator}`);
-    });
-  });
+    }
+  }
 
   const aptWeight = 10;
   affinities.B += (data.aptitude.overallScore / 100) * (aptWeight / 2);
@@ -911,15 +914,18 @@ function calculateDomainAffinities(data: any): DomainAffinity[] {
   reasoning.B.push(`Aptitude: Strong technical skills`);
   reasoning.A.push(`Aptitude: Engineering/Math capability`);
 
-  const entries = Object.entries(affinities);
-  const mapped: DomainAffinity[] = entries.map(([domain, score]) => ({
-    domain: CAREER_DOMAINS[domain],
-    domainCode: domain,
-    affinity: Math.min(100, Math.round(score)),
-    reasoning: reasoning[domain].slice(0, 3),
-  }));
-  const sorted: DomainAffinity[] = mapped.sort((a, b) => b.affinity - a.affinity);
-  return sorted;
+  const result: DomainAffinity[] = [];
+  for (const [domain, score] of Object.entries(affinities)) {
+    result.push({
+      domain: CAREER_DOMAINS[domain],
+      domainCode: domain,
+      affinity: Math.min(100, Math.round(score)),
+      reasoning: reasoning[domain].slice(0, 3),
+    });
+  }
+
+  result.sort((a, b) => b.affinity - a.affinity);
+  return result;
 }
 
 function generateSummary(data: any): AssessmentSummary {
