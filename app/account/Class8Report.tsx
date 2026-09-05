@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { Class8ScoreOutput } from '@/lib/newAssessment/class8Scoring';
-import html2pdf from 'html2pdf.js';
 
 interface Class8ReportProps {
   studentName: string;
@@ -34,20 +33,6 @@ export default function Class8Report({ studentName, output, assessmentDate = new
     window.print();
   };
 
-  const handleDownloadPDF = async () => {
-    const element = document.getElementById('report-content');
-    if (!element) return;
-
-    const opt = {
-      margin: 10,
-      filename: `Class8_Assessment_${studentName}_${new Date().getTime()}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' },
-    };
-
-    html2pdf().set(opt).from(element).save();
-  };
 
   const getColorForScore = (score: number): string => {
     if (score >= 80) return 'from-emerald-400 to-green-500';
@@ -70,20 +55,12 @@ export default function Class8Report({ studentName, output, assessmentDate = new
         <div className="max-w-5xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-white">Class 8 Assessment Report</h1>
-            <div className="flex gap-3">
-              <button
-                onClick={handlePrint}
-                className="px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium transition-all"
-              >
-                🖨️ Print
-              </button>
-              <button
-                onClick={handleDownloadPDF}
-                className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white text-sm font-medium transition-all"
-              >
-                📥 Download PDF
-              </button>
-            </div>
+            <button
+              onClick={handlePrint}
+              className="px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium transition-all"
+            >
+              🖨️ Print or Save as PDF
+            </button>
           </div>
         </div>
       </div>
