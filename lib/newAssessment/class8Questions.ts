@@ -521,7 +521,7 @@ export const CLASS8_QUESTIONS: AssessmentQuestion[] = [
   },
   {
     id: 38,
-    question: 'You feel most 'in flow' when:',
+    question: 'You feel most \'in flow\' when:',
     dimension: 'MI-Inspired Strength Domains',
     dimensionCode: 'MI',
     options: [
