@@ -8,6 +8,7 @@ import {
   type Category,
   type StageKey,
 } from "@/lib/newAssessment/data";
+import { CLASS8_QUESTIONS } from "@/lib/newAssessment/class8Questions";
 import class6Data from "@/data/class6-assessment-questions.json";
 import class7Data from "@/data/class7-assessment-questions.json";
 
@@ -26,8 +27,21 @@ export async function POST(req: Request) {
   // These use dedicated JSON files with 60 questions across 8 dimensions,
   // formatted to work with the NewExam UI.
   if (body.category === "class_6" || body.category === "class_7" || body.category === "class_8") {
-    const classData = body.category === "class_7" ? class7Data : class6Data;
-    const questions = (classData as any).questions || [];
+    let questions: any[] = [];
+
+    if (body.category === "class_8") {
+      // Class 8 uses TypeScript-defined questions
+      questions = CLASS8_QUESTIONS.map((q) => ({
+        section: q.dimension,
+        text: q.question,
+        options: q.options.map((opt) => opt.text),
+        media: null,
+      }));
+    } else {
+      // Class 6 and 7 use JSON files
+      const classData = body.category === "class_7" ? class7Data : class6Data;
+      questions = (classData as any).questions || [];
+    }
 
     // Map dimensions to NewExam categories
     const dimensionMap: Record<string, Category> = {
