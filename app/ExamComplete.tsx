@@ -178,14 +178,14 @@ const CSS = `
 .xc-mail-ic{color:#3b5bdb;flex:none;margin-top:1px}
 .xc-mail b{color:#0f172a;word-break:break-all}
 
-.xc-actions{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;align-items:stretch}
-@media(max-width:640px){.xc-actions{grid-template-columns:1fr;gap:12px}}
+.xc-actions{display:flex;gap:16px;margin:24px 0;align-items:center;justify-content:center}
+@media(max-width:640px){.xc-actions{flex-direction:column;gap:12px}}
 
-.xc-action-item{display:flex;align-items:center}
+.xc-action-item{display:flex;align-items:center;justify-content:center}
 
-.xc-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px;
-  background:#171624;color:#fff;border:none;border-radius:13px;font-size:15px;font-weight:800;cursor:pointer;
-  font-family:inherit;box-shadow:0 12px 26px rgba(23,22,36,.22);transition:background .15s}
+.xc-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;
+  background:#171624;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;
+  font-family:inherit;box-shadow:0 8px 18px rgba(23,22,36,.18);transition:background .15s;white-space:nowrap}
 .xc-cta:hover{background:#2b2a3f}
 .xc-cta-primary{margin:0}
 
