@@ -43,13 +43,13 @@ export default function InternshipsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-x-hidden">
       {/* Hero Section */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="relative py-20 px-4 sm:px-6 lg:px-8 border-b border-slate-700"
+        className="relative py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-b border-slate-700"
       >
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -116,32 +116,32 @@ export default function InternshipsPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.8 }}
-        className="py-12 px-4 sm:px-6 lg:px-8 border-b border-slate-700"
+        className="py-10 sm:py-12 px-4 sm:px-6 lg:px-8 border-b border-slate-700"
       >
         <div className="max-w-6xl mx-auto">
           {/* Search Bar */}
-          <div className="mb-8">
+          <div className="mb-6 sm:mb-8">
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400" size={20} />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 flex-shrink-0" size={18} />
               <input
                 type="text"
                 placeholder="Search programs, companies, skills..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 transition-all"
+                className="w-full pl-12 pr-4 py-2 sm:py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 text-sm sm:text-base focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 transition-all"
               />
             </div>
           </div>
 
           {/* Filters */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {/* Difficulty Filter */}
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-2">Difficulty Level</label>
+              <label className="block text-xs sm:text-sm font-semibold text-slate-300 mb-2">Difficulty Level</label>
               <select
                 value={selectedDifficulty || ''}
                 onChange={(e) => setSelectedDifficulty(e.target.value || null)}
-                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
               >
                 <option value="">All Levels</option>
                 <option value="Beginner">Beginner</option>
@@ -152,11 +152,11 @@ export default function InternshipsPage() {
 
             {/* Category Filter */}
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-2">Industry/Category</label>
+              <label className="block text-xs sm:text-sm font-semibold text-slate-300 mb-2">Industry/Category</label>
               <select
                 value={selectedCategory || ''}
                 onChange={(e) => setSelectedCategory(e.target.value || null)}
-                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
               >
                 <option value="">All Categories</option>
                 {INTERNSHIP_CATEGORIES.map((cat) => (
@@ -167,11 +167,11 @@ export default function InternshipsPage() {
 
             {/* View Toggle */}
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-2">View Mode</label>
+              <label className="block text-xs sm:text-sm font-semibold text-slate-300 mb-2">View Mode</label>
               <div className="flex gap-2">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`flex-1 py-2 px-3 rounded-lg font-medium transition-all ${
+                  className={`flex-1 py-2 px-2 sm:px-3 rounded-lg font-medium text-sm transition-all ${
                     viewMode === 'grid'
                       ? 'bg-blue-600 text-white'
                       : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
@@ -181,7 +181,7 @@ export default function InternshipsPage() {
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`flex-1 py-2 px-3 rounded-lg font-medium transition-all ${
+                  className={`flex-1 py-2 px-2 sm:px-3 rounded-lg font-medium text-sm transition-all ${
                     viewMode === 'list'
                       ? 'bg-blue-600 text-white'
                       : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
@@ -194,7 +194,7 @@ export default function InternshipsPage() {
           </div>
 
           {/* Results Count */}
-          <p className="text-slate-400 mt-4">
+          <p className="text-slate-400 text-sm mt-4">
             Showing <span className="font-semibold text-white">{filteredInternships.length}</span> of {allPrograms.length} programs
           </p>
         </div>
@@ -305,15 +305,16 @@ export default function InternshipsPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8, duration: 0.8 }}
-        className="py-12 px-4 sm:px-6 lg:px-8 border-t border-slate-700 bg-slate-900/50"
+        className="py-10 sm:py-12 px-4 sm:px-6 lg:px-8 border-t border-slate-700 bg-slate-900/50"
       >
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">Ready to Start Learning?</h2>
-          <p className="text-slate-300 mb-6 max-w-2xl mx-auto">
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">Ready to Start Learning?</h2>
+          <p className="text-sm sm:text-base text-slate-300 mb-4 sm:mb-6 max-w-2xl mx-auto leading-relaxed">
             Pick any program above and start your journey today. All programs are completely free and can be completed at your own pace.
           </p>
-          <p className="text-sm text-slate-500">
-            200+ verified programs • 150+ certifications available • Trusted by millions of learners • Industry-recognized credentials
+          <p className="text-xs sm:text-sm text-slate-500">
+            <span className="block sm:inline">200+ verified programs • 150+ certifications available</span>
+            <span className="block sm:inline"> • Trusted by millions • Industry-recognized credentials</span>
           </p>
         </div>
       </motion.section>
