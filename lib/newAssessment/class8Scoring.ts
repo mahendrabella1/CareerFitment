@@ -390,9 +390,65 @@ const RIASEC_TO_DOMAINS: Record<string, string[]> = {
 // MAIN SCORING FUNCTION
 // ============================================================================
 
+export function validateResponses(responses: number[]): { valid: boolean; errors: string[] } {
+  const errors: string[] = [];
+
+  if (responses.length !== 60) {
+    errors.push('Assessment requires exactly 60 responses');
+  }
+
+  for (let i = 0; i < responses.length; i++) {
+    const response = responses[i];
+    if (typeof response !== 'number' || response < 0 || response > 4) {
+      errors.push(`Question ${i + 1}: Invalid response (must be 0-4)`);
+    }
+  }
+
+  return { valid: errors.length === 0, errors };
+}
+
+export function class8Scorer(responses: number[]): Class8ScoreOutput {
+  // Validate
+  const validation = validateResponses(responses);
+  if (!validation.valid) {
+    throw new Error(validation.errors.join('; '));
+  }
+
+  // Convert to internal format
+  const responsesRecord: Record<number, number> = {};
+  responses.forEach((r, i) => {
+    responsesRecord[i + 1] = r;
+  });
+
+  return scoreClass8Assessment({ studentName: '', responses: responsesRecord });
+}
+
+function validateResponsesObject(responses: Class8Response): void {
+  if (!responses.responses || typeof responses.responses !== "object") {
+    throw new Error("Invalid responses object");
+  }
+
+  // Check all 60 questions are answered
+  const answered = Object.keys(responses.responses).length;
+  if (answered < 60) {
+    throw new Error(`Only ${answered}/60 questions answered`);
+  }
+
+  // Validate option ranges
+  for (let i = 1; i <= 60; i++) {
+    const option = responses.responses[i];
+    if (option === undefined || option === null) {
+      throw new Error(`Question ${i} not answered`);
+    }
+    if (typeof option !== "number" || option < 0 || option > 4) {
+      throw new Error(`Question ${i}: Invalid option index ${option}`);
+    }
+  }
+}
+
 export function scoreClass8Assessment(responses: Class8Response): Class8ScoreOutput {
   // Validate responses
-  validateResponses(responses);
+  validateResponsesObject(responses);
 
   // Score all dimensions
   const personalityProfile = scorePersonality(responses);
@@ -441,28 +497,6 @@ export function scoreClass8Assessment(responses: Class8Response): Class8ScoreOut
 // SCORING IMPLEMENTATIONS
 // ============================================================================
 
-function validateResponses(responses: Class8Response): void {
-  if (!responses.responses || typeof responses.responses !== "object") {
-    throw new Error("Invalid responses object");
-  }
-
-  // Check all 60 questions are answered
-  const answered = Object.keys(responses.responses).length;
-  if (answered < 60) {
-    throw new Error(`Only ${answered}/60 questions answered`);
-  }
-
-  // Validate option ranges
-  for (let i = 1; i <= 60; i++) {
-    const option = responses.responses[i];
-    if (option === undefined || option === null) {
-      throw new Error(`Question ${i} not answered`);
-    }
-    if (typeof option !== "number" || option < 0 || option > 4) {
-      throw new Error(`Question ${i}: Invalid option index ${option}`);
-    }
-  }
-}
 
 function scorePersonality(responses: Class8Response): PersonalityProfile {
   const scores = { D: 0, S: 0, A: 0, C: 0 };
