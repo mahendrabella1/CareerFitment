@@ -2,9 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { Search, Zap, Award, Clock, TrendingUp, Users, AlertCircle } from 'lucide-react';
-import { getAllInternships, getStats } from '@/lib/data/careerLoader';
+import { Search, Clock } from 'lucide-react';
+import { getAllInternships } from '@/lib/data/careerLoader';
 import { INTERNSHIP_CATEGORIES } from '@/lib/data/internships200Plus';
 
 export default function InternshipsPage() {
@@ -13,7 +12,6 @@ export default function InternshipsPage() {
   const [selectedDifficulty, setSelectedDifficulty] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
-  // Get all programs from loader
   const allPrograms = getAllInternships();
 
   const filteredInternships = useMemo(() => {
@@ -30,118 +28,100 @@ export default function InternshipsPage() {
     });
   }, [searchTerm, selectedCategory, selectedDifficulty]);
 
-  const difficultyStyles = {
+  const difficultyStyles: Record<string, any> = {
     Beginner: { bg: '#dcfce7', text: '#166534', border: '#86efac' },
     Intermediate: { bg: '#dbeafe', text: '#1e40af', border: '#60a5fa' },
     Advanced: { bg: '#f3e8ff', text: '#7e22ce', border: '#d8b4fe' },
   };
 
-  const commitmentIcons = {
-    Low: '⚡',
-    Medium: '⚡⚡',
-    High: '⚡⚡⚡',
-  };
-
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-x-hidden">
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(to right bottom, #0f172a, #1e293b, #0f172a)', overflow: 'hidden', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
       {/* Hero Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="relative py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-b border-slate-700"
-      >
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <motion.h1
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.8 }}
-              className="text-5xl font-bold text-white mb-4"
-            >
+      <section style={{ padding: '40px 20px', borderBottom: '1px solid #334155' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+            <h1 style={{ fontSize: '42px', fontWeight: 'bold', color: '#fff', margin: '0 0 16px 0', lineHeight: 1.2 }}>
               200+ Free Internships & Learning Programs
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-              className="text-xl text-slate-300 max-w-2xl mx-auto"
-            >
+            </h1>
+            <p style={{ fontSize: '18px', color: '#cbd5e1', maxWidth: '700px', margin: '0 auto' }}>
               Gain real-world experience from industry leaders. Hands-on projects, certifications, and portfolio building. 100% FREE.
-            </motion.p>
+            </p>
           </div>
 
           {/* Alert Box */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-lg p-4 mb-8 flex items-start gap-4"
-          >
-            <AlertCircle className="text-amber-400 flex-shrink-0 mt-0.5" size={20} />
+          <div style={{ background: 'rgba(217, 119, 6, 0.15)', border: '1px solid rgba(217, 119, 6, 0.3)', borderRadius: '8px', padding: '16px', marginBottom: '30px', display: 'flex', gap: '12px' }}>
+            <div style={{ fontSize: '20px' }}>⚠️</div>
             <div>
-              <p className="text-amber-100 font-semibold mb-1">100% FREE Programs</p>
-              <p className="text-amber-100/80 text-sm">All internships and learning programs on this page are completely free. No hidden costs, no subscription fees.</p>
+              <p style={{ color: '#fef3c7', fontWeight: '600', margin: '0 0 4px 0' }}>100% FREE Programs</p>
+              <p style={{ color: '#fde68a', fontSize: '14px', margin: 0 }}>All internships and learning programs on this page are completely free. No hidden costs, no subscription fees.</p>
             </div>
-          </motion.div>
+          </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '20px' }}>
             {[
-              { icon: Users, label: 'Programs', value: '210+', bgClass: 'bg-gradient-to-br from-blue-500 to-cyan-500' },
-              { icon: Zap, label: 'Self-Paced', value: '99%', bgClass: 'bg-gradient-to-br from-yellow-500 to-orange-500' },
-              { icon: Award, label: 'Certifications', value: '150+', bgClass: 'bg-gradient-to-br from-green-500 to-emerald-500' },
-              { icon: TrendingUp, label: 'Avg Rating', value: '4.75★', bgClass: 'bg-gradient-to-br from-purple-500 to-pink-500' },
+              { label: 'Programs', value: '210+', icon: '👥' },
+              { label: 'Self-Paced', value: '99%', icon: '⚡' },
+              { label: 'Certifications', value: '150+', icon: '🏆' },
+              { label: 'Avg Rating', value: '4.75★', icon: '⭐' },
             ].map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + i * 0.1, duration: 0.6 }}
-                className={`${stat.bgClass} rounded-lg p-4 text-white`}
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <stat.icon size={20} className="opacity-80" />
-                  <span className="text-sm opacity-90">{stat.label}</span>
-                </div>
-                <p className="text-2xl font-bold">{stat.value}</p>
-              </motion.div>
+              <div key={i} style={{ background: 'rgba(59, 130, 246, 0.1)', borderRadius: '8px', padding: '16px', border: '1px solid #0369a1' }}>
+                <div style={{ fontSize: '24px', marginBottom: '8px' }}>{stat.icon}</div>
+                <div style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '4px' }}>{stat.label}</div>
+                <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#fff' }}>{stat.value}</div>
+              </div>
             ))}
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Search & Filter Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6, duration: 0.8 }}
-        className="py-10 sm:py-12 px-4 sm:px-6 lg:px-8 border-b border-slate-700"
-      >
-        <div className="max-w-6xl mx-auto">
+      <section style={{ padding: '30px 20px', borderBottom: '1px solid #334155' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           {/* Search Bar */}
-          <div className="mb-6 sm:mb-8">
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 flex-shrink-0" size={18} />
+          <div style={{ marginBottom: '20px' }}>
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+              <Search size={18} style={{ position: 'absolute', left: '12px', color: '#64748b', pointerEvents: 'none' }} />
               <input
                 type="text"
                 placeholder="Search programs, companies, skills..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-2 sm:py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 text-sm sm:text-base focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 transition-all"
+                style={{
+                  width: '100%',
+                  paddingLeft: '40px',
+                  paddingRight: '12px',
+                  paddingTop: '10px',
+                  paddingBottom: '10px',
+                  background: '#1e293b',
+                  border: '1px solid #334155',
+                  borderRadius: '6px',
+                  color: '#fff',
+                  fontSize: '14px',
+                  fontFamily: 'inherit'
+                }}
               />
             </div>
           </div>
 
           {/* Filters */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '12px', marginBottom: '16px' }}>
             {/* Difficulty Filter */}
             <div>
-              <label className="block text-xs sm:text-sm font-semibold text-slate-300 mb-2">Difficulty Level</label>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#cbd5e1', marginBottom: '6px' }}>Difficulty Level</label>
               <select
                 value={selectedDifficulty || ''}
                 onChange={(e) => setSelectedDifficulty(e.target.value || null)}
-                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
+                style={{
+                  width: '100%',
+                  padding: '8px',
+                  background: '#1e293b',
+                  border: '1px solid #334155',
+                  borderRadius: '6px',
+                  color: '#fff',
+                  fontSize: '13px',
+                  fontFamily: 'inherit'
+                }}
               >
                 <option value="">All Levels</option>
                 <option value="Beginner">Beginner</option>
@@ -152,11 +132,20 @@ export default function InternshipsPage() {
 
             {/* Category Filter */}
             <div>
-              <label className="block text-xs sm:text-sm font-semibold text-slate-300 mb-2">Industry/Category</label>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#cbd5e1', marginBottom: '6px' }}>Industry/Category</label>
               <select
                 value={selectedCategory || ''}
                 onChange={(e) => setSelectedCategory(e.target.value || null)}
-                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
+                style={{
+                  width: '100%',
+                  padding: '8px',
+                  background: '#1e293b',
+                  border: '1px solid #334155',
+                  borderRadius: '6px',
+                  color: '#fff',
+                  fontSize: '13px',
+                  fontFamily: 'inherit'
+                }}
               >
                 <option value="">All Categories</option>
                 {INTERNSHIP_CATEGORIES.map((cat) => (
@@ -167,25 +156,37 @@ export default function InternshipsPage() {
 
             {/* View Toggle */}
             <div>
-              <label className="block text-xs sm:text-sm font-semibold text-slate-300 mb-2">View Mode</label>
-              <div className="flex gap-2">
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#cbd5e1', marginBottom: '6px' }}>View Mode</label>
+              <div style={{ display: 'flex', gap: '8px' }}>
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`flex-1 py-2 px-2 sm:px-3 rounded-lg font-medium text-sm transition-all ${
-                    viewMode === 'grid'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
-                  }`}
+                  style={{
+                    flex: 1,
+                    padding: '8px',
+                    borderRadius: '6px',
+                    fontWeight: '600',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    background: viewMode === 'grid' ? '#2563eb' : '#334155',
+                    color: '#fff'
+                  }}
                 >
                   Grid
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`flex-1 py-2 px-2 sm:px-3 rounded-lg font-medium text-sm transition-all ${
-                    viewMode === 'list'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
-                  }`}
+                  style={{
+                    flex: 1,
+                    padding: '8px',
+                    borderRadius: '6px',
+                    fontWeight: '600',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    background: viewMode === 'list' ? '#2563eb' : '#334155',
+                    color: '#fff'
+                  }}
                 >
                   List
                 </button>
@@ -194,130 +195,133 @@ export default function InternshipsPage() {
           </div>
 
           {/* Results Count */}
-          <p className="text-slate-400 text-sm mt-4">
-            Showing <span className="font-semibold text-white">{filteredInternships.length}</span> of {allPrograms.length} programs
+          <p style={{ fontSize: '13px', color: '#94a3b8', margin: 0 }}>
+            Showing <span style={{ fontWeight: '600', color: '#fff' }}>{filteredInternships.length}</span> of {allPrograms.length} programs
           </p>
         </div>
-      </motion.section>
+      </section>
 
       {/* Results Section */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
+      <section style={{ padding: '30px 20px', minHeight: '400px' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           {filteredInternships.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-12"
-            >
-              <p className="text-slate-400 text-lg">No internships found matching your criteria.</p>
-            </motion.div>
+            <div style={{ textAlign: 'center', paddingTop: '40px' }}>
+              <p style={{ color: '#64748b', fontSize: '16px' }}>No internships found matching your criteria.</p>
+            </div>
           ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}
-            >
-              {filteredInternships.map((internship, idx) => (
-                <motion.div
-                  key={internship.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.05, duration: 0.6 }}
-                  whileHover={{ y: -4, transition: { duration: 0.3 } }}
-                  className="group"
-                >
-                  <Link href={`/account/internships-new/${internship.id}`}>
-                    <div className="h-full bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-lg p-6 hover:border-blue-500 transition-all cursor-pointer">
-                      {/* Header */}
-                      <div className="mb-4">
-                        <div className="flex items-start justify-between mb-2">
-                          <h3 className="text-lg font-bold text-white group-hover:text-blue-400 transition-colors line-clamp-2">
-                            {internship.title}
-                          </h3>
-                          {internship.rating && (
-                            <div className="flex items-center gap-1 text-yellow-400 ml-2 flex-shrink-0">
-                              <span className="text-sm font-semibold">{internship.rating}</span>
-                              <span>★</span>
-                            </div>
-                          )}
-                        </div>
-                        <p className="text-sm text-slate-300">{internship.company}</p>
+            <div style={{
+              display: viewMode === 'grid' ? 'grid' : 'block',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+              gap: '20px'
+            }}>
+              {filteredInternships.map((internship: any, idx: number) => (
+                <Link key={internship.id} href={`/account/internships-new/${internship.id}`} style={{ textDecoration: 'none' }}>
+                  <div style={{
+                    background: 'linear-gradient(135deg, #1e293b, #0f172a)',
+                    border: '1px solid #334155',
+                    borderRadius: '8px',
+                    padding: '16px',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s',
+                    marginBottom: viewMode === 'list' ? '12px' : '0',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as any).style.borderColor = '#0ea5e9';
+                    (e.currentTarget as any).style.transform = 'translateY(-2px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as any).style.borderColor = '#334155';
+                    (e.currentTarget as any).style.transform = 'translateY(0)';
+                  }}
+                  >
+                    {/* Header */}
+                    <div style={{ marginBottom: '12px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '6px', gap: '8px' }}>
+                        <h3 style={{ fontSize: '15px', fontWeight: 'bold', color: '#fff', margin: 0, flex: 1, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                          {internship.title}
+                        </h3>
+                        {internship.rating && (
+                          <div style={{ color: '#fbbf24', fontSize: '12px', fontWeight: '600', flexShrink: 0 }}>
+                            {internship.rating}★
+                          </div>
+                        )}
                       </div>
+                      <p style={{ fontSize: '12px', color: '#cbd5e1', margin: 0 }}>{internship.company}</p>
+                    </div>
 
-                      {/* Description */}
-                      <p className="text-sm text-slate-400 mb-4 line-clamp-2">
-                        {internship.description}
-                      </p>
+                    {/* Description */}
+                    <p style={{ fontSize: '13px', color: '#94a3b8', margin: '0 0 12px 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      {internship.description || internship.overview}
+                    </p>
 
-                      {/* Meta Info */}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        <span
-                          className="px-2 py-1 text-xs font-semibold rounded border"
-                          style={{
-                            backgroundColor: difficultyStyles[internship.difficulty as keyof typeof difficultyStyles].bg,
-                            color: difficultyStyles[internship.difficulty as keyof typeof difficultyStyles].text,
-                            borderColor: difficultyStyles[internship.difficulty as keyof typeof difficultyStyles].border,
-                          }}
-                        >
+                    {/* Meta Info */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
+                      {internship.difficulty && (
+                        <span style={{
+                          padding: '4px 8px',
+                          fontSize: '11px',
+                          fontWeight: '600',
+                          borderRadius: '4px',
+                          background: difficultyStyles[internship.difficulty]?.bg || '#334155',
+                          color: difficultyStyles[internship.difficulty]?.text || '#94a3b8',
+                          border: `1px solid ${difficultyStyles[internship.difficulty]?.border || '#334155'}`
+                        }}>
                           {internship.difficulty}
                         </span>
-                        <span className="px-2 py-1 text-xs font-semibold bg-slate-600 text-slate-200 rounded border border-slate-500 flex items-center gap-1">
-                          <Clock size={12} />
-                          {internship.duration}
+                      )}
+                      {internship.duration && (
+                        <span style={{ padding: '4px 8px', fontSize: '11px', fontWeight: '600', borderRadius: '4px', background: '#334155', color: '#cbd5e1', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <Clock size={12} /> {internship.duration}
                         </span>
-                      </div>
+                      )}
+                    </div>
 
-                      {/* Skills */}
-                      <div className="mb-4">
-                        <p className="text-xs text-slate-400 mb-2">Top Skills:</p>
-                        <div className="flex flex-wrap gap-1">
-                          {internship.skillsGained.slice(0, 3).map((skill) => (
-                            <span key={skill} className="px-2 py-1 text-xs bg-blue-500/20 text-blue-300 rounded">
+                    {/* Skills */}
+                    {internship.skillsGained && (
+                      <div style={{ marginBottom: '12px' }}>
+                        <p style={{ fontSize: '11px', color: '#64748b', margin: '0 0 6px 0' }}>Top Skills:</p>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                          {internship.skillsGained.slice(0, 3).map((skill: string) => (
+                            <span key={skill} style={{ padding: '3px 6px', fontSize: '11px', background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa', borderRadius: '4px' }}>
                               {skill}
                             </span>
                           ))}
                           {internship.skillsGained.length > 3 && (
-                            <span className="px-2 py-1 text-xs bg-slate-600 text-slate-300 rounded">
+                            <span style={{ padding: '3px 6px', fontSize: '11px', background: '#334155', color: '#94a3b8', borderRadius: '4px' }}>
                               +{internship.skillsGained.length - 3} more
                             </span>
                           )}
                         </div>
                       </div>
+                    )}
 
-
-                      {/* CTA */}
-                      <div className="pt-4 border-t border-slate-600 flex items-center gap-2 text-blue-400 group-hover:gap-3 transition-all">
-                        <span className="text-sm font-semibold">Explore Program</span>
-                        <span className="text-lg">→</span>
-                      </div>
+                    {/* CTA */}
+                    <div style={{ marginTop: 'auto', paddingTop: '12px', borderTop: '1px solid #334155', display: 'flex', alignItems: 'center', gap: '8px', color: '#60a5fa' }}>
+                      <span style={{ fontSize: '13px', fontWeight: '600' }}>Explore Program</span>
+                      <span>→</span>
                     </div>
-                  </Link>
-                </motion.div>
+                  </div>
+                </Link>
               ))}
-            </motion.div>
+            </div>
           )}
         </div>
       </section>
 
       {/* Footer Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8, duration: 0.8 }}
-        className="py-10 sm:py-12 px-4 sm:px-6 lg:px-8 border-t border-slate-700 bg-slate-900/50"
-      >
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">Ready to Start Learning?</h2>
-          <p className="text-sm sm:text-base text-slate-300 mb-4 sm:mb-6 max-w-2xl mx-auto leading-relaxed">
+      <section style={{ padding: '30px 20px', borderTop: '1px solid #334155', background: 'rgba(15, 23, 42, 0.5)' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
+          <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: '#fff', margin: '0 0 12px 0' }}>Ready to Start Learning?</h2>
+          <p style={{ fontSize: '14px', color: '#cbd5e1', maxWidth: '700px', margin: '0 auto 16px', lineHeight: 1.6 }}>
             Pick any program above and start your journey today. All programs are completely free and can be completed at your own pace.
           </p>
-          <p className="text-xs sm:text-sm text-slate-500">
-            <span className="block sm:inline">200+ verified programs • 150+ certifications available</span>
-            <span className="block sm:inline"> • Trusted by millions • Industry-recognized credentials</span>
+          <p style={{ fontSize: '12px', color: '#64748b', margin: 0 }}>
+            200+ verified programs • 150+ certifications available • Trusted by millions of learners • Industry-recognized credentials
           </p>
         </div>
-      </motion.section>
+      </section>
     </div>
   );
 }
