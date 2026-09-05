@@ -173,7 +173,7 @@ export default function Class8Assessment({ studentName, onComplete, onCancel }: 
                                 <span className="text-slate-900 font-bold">✓</span>
                               )}
                             </div>
-                            <span>{option}</span>
+                            <span>{typeof option === 'string' ? option : option.text}</span>
                           </div>
                         </button>
                       ))}
