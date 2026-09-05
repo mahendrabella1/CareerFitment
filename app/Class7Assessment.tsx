@@ -121,7 +121,7 @@ export default function Class7Assessment() {
         </div>
         <div style={styles.introCard}>
           <h1 style={styles.title}>Career Discovery Assessment</h1>
-          <p style={styles.subtitle}>Class 6</p>
+          <p style={styles.subtitle}>Class 7</p>
           <p style={styles.description}>
             Explore your personality, interests, strengths, and learning style to discover career areas that align with you.
           </p>
