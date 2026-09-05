@@ -1,847 +1,1273 @@
 {
-  "metadata": {
-    "version": "1.0",
-    "targetGrade": "7",
-    "totalQuestions": 60,
-    "assessmentType": "Developmental Career Discovery",
-    "description": "Class 7 Career Discovery Assessment - 60 questions across 8 dimensions"
-  },
-  "dimensions": [
-    {
-      "id": "personality",
-      "name": "Personality Preferences",
-      "questions": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      "type": "self-report",
-      "options": 4,
-      "scoring": "MBTI-style (E/I, S/N, T/F, J/P)"
-    },
-    {
-      "id": "riasec",
-      "name": "Career Interests - RIASEC",
-      "questions": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-      "type": "interest",
-      "options": 5,
-      "scoring": "RIASEC domain ranking"
-    },
-    {
-      "id": "aptitude",
-      "name": "Aptitude & Reasoning",
-      "questions": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
-      "type": "performance",
-      "options": 4,
-      "scoring": "Correct/Incorrect (1/0)"
-    },
-    {
-      "id": "strengths",
-      "name": "MI-Inspired Strength Domains",
-      "questions": [31, 32, 33, 34, 35, 36, 37, 38],
-      "type": "self-report",
-      "options": 5,
-      "scoring": "8 MI domains: Linguistic, Logical-Math, Spatial, Bodily-Kinesthetic, Musical, Interpersonal, Intrapersonal, Naturalistic"
-    },
-    {
-      "id": "motivators",
-      "name": "Motivators & Values",
-      "questions": [39, 40, 41, 42, 43, 44, 45],
-      "type": "self-report",
-      "options": 5,
-      "scoring": "5 motivator types: Achievement, Curiosity, Helping, Independence, Recognition"
-    },
-    {
-      "id": "learning",
-      "name": "Learning Preferences",
-      "questions": [46, 47, 48, 49, 50],
-      "type": "self-report",
-      "options": 4,
-      "scoring": "4 learning preferences: Visual, Reading, Auditory, Kinesthetic"
-    },
-    {
-      "id": "emotional",
-      "name": "Emotional & Social Awareness",
-      "questions": [51, 52, 53, 54, 55],
-      "type": "self-report",
-      "options": 4,
-      "scoring": "Developmental tendencies: Self-Awareness, Empathy, Cooperation, Regulation"
-    },
-    {
-      "id": "creativity",
-      "name": "Creativity & Future Readiness",
-      "questions": [56, 57, 58, 59, 60],
-      "type": "self-report",
-      "options": 4,
-      "scoring": "Future-readiness indicators: Exploration, Experimentation, Adaptability, Career Openness"
-    }
-  ],
-  "questions": [
-    {
-      "id": 1,
-      "section": "Personality Preferences",
-      "text": "Your teacher puts you in a group with students you don't know well. What do you naturally do?",
-      "options": [
-        "Start a conversation",
-        "Talk when someone speaks to me",
-        "Observe the group first",
-        "Prefer to work quietly"
-      ],
-      "mapping": ["E", "E", "I", "I"],
-      "code": "mbti_ei"
-    },
-    {
-      "id": 2,
-      "section": "Personality Preferences",
-      "text": "After spending most of the day with friends, you usually feel…",
-      "options": [
-        "Energised and ready for more interaction",
-        "Happy to continue with a few friends",
-        "Ready for some quiet time",
-        "Very ready to be alone"
-      ],
-      "mapping": ["E", "E", "I", "I"],
-      "code": "mbti_ei"
-    },
-    {
-      "id": 3,
-      "section": "Personality Preferences",
-      "text": "When you learn a new topic, what attracts you more?",
-      "options": [
-        "Facts and real examples",
-        "Knowing how it works",
-        "Thinking about different possibilities",
-        "Imagining what it could become"
-      ],
-      "mapping": ["S", "S", "N", "N"],
-      "code": "mbti_sn"
-    },
-    {
-      "id": 4,
-      "section": "Personality Preferences",
-      "text": "Your teacher asks you to improve an existing project. You would rather…",
-      "options": [
-        "Follow the example closely",
-        "Make a small improvement",
-        "Try a different approach",
-        "Create a completely new idea"
-      ],
-      "mapping": ["S", "S", "N", "N"],
-      "code": "mbti_sn"
-    },
-    {
-      "id": 5,
-      "section": "Personality Preferences",
-      "text": "Two students disagree about who should get credit for a project. You would first consider…",
-      "options": [
-        "What is fair according to the facts",
-        "What each person actually did",
-        "Both sides of the situation",
-        "How each person feels"
-      ],
-      "mapping": ["T", "T", "F", "F"],
-      "code": "mbti_tf"
-    },
-    {
-      "id": 6,
-      "section": "Personality Preferences",
-      "text": "Your friend is struggling with a difficult task. You are more likely to…",
-      "options": [
-        "Show them how to solve it",
-        "Suggest a practical solution",
-        "Ask what kind of help they need",
-        "Listen and encourage them"
-      ],
-      "mapping": ["T", "T", "F", "F"],
-      "code": "mbti_tf"
-    },
-    {
-      "id": 7,
-      "section": "Personality Preferences",
-      "text": "You have a large project due in three weeks. You prefer to…",
-      "options": [
-        "Finish it well before the deadline",
-        "Make a clear plan",
-        "Start and adjust the plan later",
-        "Work on it when I feel ready"
-      ],
-      "mapping": ["J", "J", "P", "P"],
-      "code": "mbti_jp"
-    },
-    {
-      "id": 8,
-      "section": "Personality Preferences",
-      "text": "Your teacher unexpectedly changes the activity you were prepared for. You usually…",
-      "options": [
-        "Want to know the new plan",
-        "Take some time to adjust",
-        "Adapt without much trouble",
-        "Enjoy trying something unexpected"
-      ],
-      "mapping": ["J", "J", "P", "P"],
-      "code": "mbti_jp"
-    },
-    {
-      "id": 9,
-      "section": "Personality Preferences",
-      "text": "You get an interesting idea during class. You usually…",
-      "options": [
-        "Tell someone about it",
-        "Discuss it with a friend",
-        "Think about it first",
-        "Develop it on your own"
-      ],
-      "mapping": ["E", "E", "I", "I"],
-      "code": "mbti_ei"
-    },
-    {
-      "id": 10,
-      "section": "Personality Preferences",
-      "text": "You are given a free afternoon with no fixed plans. You would rather…",
-      "options": [
-        "Plan what you will do",
-        "Choose from a few activities",
-        "Decide as the day continues",
-        "Do whatever interests you at the moment"
-      ],
-      "mapping": ["J", "J", "P", "P"],
-      "code": "mbti_jp"
-    },
-    {
-      "id": 11,
-      "section": "Career Interests - RIASEC",
-      "text": "Your school gives you a week-long project. Which would you choose?",
-      "options": [
-        "Build or repair something",
-        "Investigate a scientific question",
-        "Design a creative presentation",
-        "Help students with a problem",
-        "Organise the whole project"
-      ],
-      "mapping": ["R", "I", "A", "S", "E"],
-      "code": "riasec"
-    },
-    {
-      "id": 12,
-      "section": "Career Interests - RIASEC",
-      "text": "Which activity sounds most interesting?",
-      "options": [
-        "Work with tools or materials",
-        "Conduct an experiment",
-        "Create artwork or a story",
-        "Teach someone a new skill",
-        "Plan a school event"
-      ],
-      "mapping": ["R", "I", "A", "S", "E"],
-      "code": "riasec"
-    },
-    {
-      "id": 13,
-      "section": "Career Interests - RIASEC",
-      "text": "Your class receives a mystery to solve. You would enjoy…",
-      "options": [
-        "Examining objects and clues",
-        "Testing different explanations",
-        "Creating a story about the mystery",
-        "Discussing it with classmates",
-        "Taking charge of the investigation"
-      ],
-      "mapping": ["R", "I", "A", "S", "E"],
-      "code": "riasec"
-    },
-    {
-      "id": 14,
-      "section": "Career Interests - RIASEC",
-      "text": "Which club would you be most interested in joining?",
-      "options": [
-        "Robotics or model building",
-        "Science and discovery",
-        "Art, drama or creative writing",
-        "Community service",
-        "Young leaders or entrepreneurship"
-      ],
-      "mapping": ["R", "I", "A", "S", "E"],
-      "code": "riasec"
-    },
-    {
-      "id": 15,
-      "section": "Career Interests - RIASEC",
-      "text": "Which challenge sounds most enjoyable?",
-      "options": [
-        "Make something that works",
-        "Find out why something happens",
-        "Create something original",
-        "Find a way to help someone",
-        "Persuade others to support an idea"
-      ],
-      "mapping": ["R", "I", "A", "S", "E"],
-      "code": "riasec"
-    },
-    {
-      "id": 16,
-      "section": "Career Interests - RIASEC",
-      "text": "Your school wants students to improve the campus. You would rather…",
-      "options": [
-        "Build or install something",
-        "Study what needs improvement",
-        "Design a new space",
-        "Organise students to help",
-        "Coordinate and manage the project"
-      ],
-      "mapping": ["R", "I", "A", "S", "C"],
-      "code": "riasec"
-    },
-    {
-      "id": 17,
-      "section": "Career Interests - RIASEC",
-      "text": "Which role sounds most interesting in a group project?",
-      "options": [
-        "Builder",
-        "Researcher",
-        "Designer",
-        "Team supporter",
-        "Team coordinator"
-      ],
-      "mapping": ["R", "I", "A", "S", "E"],
-      "code": "riasec"
-    },
-    {
-      "id": 18,
-      "section": "Career Interests - RIASEC",
-      "text": "You get to spend an afternoon exploring one area. You choose…",
-      "options": [
-        "Machines and how things are made",
-        "Science and discovery",
-        "Art and creative expression",
-        "People and communication",
-        "Business and leadership"
-      ],
-      "mapping": ["R", "I", "A", "S", "E"],
-      "code": "riasec"
-    },
-    {
-      "id": 19,
-      "section": "Career Interests - RIASEC",
-      "text": "Which activity would you enjoy doing regularly?",
-      "options": [
-        "Making or fixing things",
-        "Solving questions through investigation",
-        "Creating stories, designs or performances",
-        "Helping and teaching people",
-        "Organising projects and activities"
-      ],
-      "mapping": ["R", "I", "A", "S", "E"],
-      "code": "riasec"
-    },
-    {
-      "id": 20,
-      "section": "Career Interests - RIASEC",
-      "text": "Imagine you can try a different type of work for one day. Which sounds best?",
-      "options": [
-        "Work with equipment",
-        "Work in a research setting",
-        "Work on a creative project",
-        "Work with people",
-        "Lead a small project"
-      ],
-      "mapping": ["R", "I", "A", "S", "E"],
-      "code": "riasec"
-    },
-    {
-      "id": 21,
-      "section": "Aptitude & Reasoning",
-      "text": "What number comes next? 4, 8, 12, 16, ___",
-      "options": ["18", "20", "22", "24"],
-      "correctAnswer": 1,
-      "code": "numerical"
-    },
-    {
-      "id": 22,
-      "section": "Aptitude & Reasoning",
-      "text": "What comes next? ■ ■ ■ ■ ■ ___",
-      "options": ["■", "■", "■", "★"],
-      "correctAnswer": 2,
-      "code": "pattern"
-    },
-    {
-      "id": 23,
-      "section": "Aptitude & Reasoning",
-      "text": "Which word is most different from the others?",
-      "options": ["Rose", "Lily", "Mango", "Jasmine"],
-      "correctAnswer": 2,
-      "code": "verbal"
-    },
-    {
-      "id": 24,
-      "section": "Aptitude & Reasoning",
-      "text": "A class has 24 students. They are divided equally into 4 groups. How many students are in each group?",
-      "options": ["4", "5", "6", "8"],
-      "correctAnswer": 2,
-      "code": "numerical"
-    },
-    {
-      "id": 25,
-      "section": "Aptitude & Reasoning",
-      "text": "All reptiles are cold-blooded animals. A snake is a reptile. What follows?",
-      "options": [
-        "A snake is cold-blooded",
-        "A snake is a bird",
-        "A snake has feathers",
-        "A snake lives only in water"
-      ],
-      "correctAnswer": 0,
-      "code": "logical"
-    },
-    {
-      "id": 26,
-      "section": "Aptitude & Reasoning",
-      "text": "A cube has a star drawn on its top surface. If the cube is turned upside down, where will the star be?",
-      "options": [
-        "On the bottom",
-        "On the left",
-        "On the right",
-        "It disappears"
-      ],
-      "correctAnswer": 0,
-      "code": "spatial"
-    },
-    {
-      "id": 27,
-      "section": "Aptitude & Reasoning",
-      "text": "If 3 → 9, 4 → 16, 5 → 25, then 6 → ?",
-      "options": ["30", "32", "36", "42"],
-      "correctAnswer": 2,
-      "code": "numerical"
-    },
-    {
-      "id": 28,
-      "section": "Aptitude & Reasoning",
-      "text": "Which pair is most closely related?",
-      "options": [
-        "Doctor – Hospital",
-        "Teacher – Bicycle",
-        "Pilot – Garden",
-        "Chef – Library"
-      ],
-      "correctAnswer": 0,
-      "code": "verbal"
-    },
-    {
-      "id": 29,
-      "section": "Aptitude & Reasoning",
-      "text": "Which comes next? Seed → Plant → Flower → Fruit → ___",
-      "options": ["Seed", "Root", "Soil", "Leaf"],
-      "correctAnswer": 0,
-      "code": "logical"
-    },
-    {
-      "id": 30,
-      "section": "Aptitude & Reasoning",
-      "text": "A book costs ₹80. If you buy 3 books, how much will you pay?",
-      "options": ["₹160", "₹200", "₹240", "₹260"],
-      "correctAnswer": 2,
-      "code": "numerical"
-    },
-    {
-      "id": 31,
-      "section": "MI-Inspired Strength Domains",
-      "text": "Which activity would you enjoy most?",
-      "options": [
-        "Writing a story",
-        "Solving a number puzzle",
-        "Designing a poster",
-        "Building a model",
-        "Helping a classmate"
-      ],
-      "mapping": ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
-      "code": "strength"
-    },
-    {
-      "id": 32,
-      "section": "MI-Inspired Strength Domains",
-      "text": "Which task feels most natural to you?",
-      "options": [
-        "Explaining an idea with words",
-        "Finding patterns",
-        "Imagining how something looks",
-        "Performing or moving",
-        "Observing plants or animals"
-      ],
-      "mapping": ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Naturalistic"],
-      "code": "strength"
-    },
-    {
-      "id": 33,
-      "section": "MI-Inspired Strength Domains",
-      "text": "When you have to explain something, you prefer to…",
-      "options": [
-        "Tell it clearly using words",
-        "Explain the logic behind it",
-        "Draw a diagram",
-        "Demonstrate it",
-        "Discuss it with someone"
-      ],
-      "mapping": ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
-      "code": "strength"
-    },
-    {
-      "id": 34,
-      "section": "MI-Inspired Strength Domains",
-      "text": "Which activity attracts you most?",
-      "options": [
-        "Reading and writing",
-        "Mathematics and puzzles",
-        "Drawing and design",
-        "Music, movement or acting",
-        "Working with people"
-      ],
-      "mapping": ["Linguistic", "Logical-Mathematical", "Spatial", "Musical", "Interpersonal"],
-      "code": "strength"
-    },
-    {
-      "id": 35,
-      "section": "MI-Inspired Strength Domains",
-      "text": "Your teacher gives you an open project. You would like to…",
-      "options": [
-        "Write or present something",
-        "Investigate a problem",
-        "Create a visual design",
-        "Make or perform something",
-        "Work with a team"
-      ],
-      "mapping": ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
-      "code": "strength"
-    },
-    {
-      "id": 36,
-      "section": "MI-Inspired Strength Domains",
-      "text": "Which would you choose for a free activity?",
-      "options": [
-        "Writing",
-        "Brain games",
-        "Photography/design",
-        "Music or physical activity",
-        "Caring for animals or plants"
-      ],
-      "mapping": ["Linguistic", "Logical-Mathematical", "Spatial", "Musical", "Naturalistic"],
-      "code": "strength"
-    },
-    {
-      "id": 37,
-      "section": "MI-Inspired Strength Domains",
-      "text": "When you have an idea, you usually like to…",
-      "options": [
-        "Explain it",
-        "Work out whether it makes sense",
-        "Picture it in your mind",
-        "Show it through action",
-        "Share it with others"
-      ],
-      "mapping": ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
-      "code": "strength"
-    },
-    {
-      "id": 38,
-      "section": "MI-Inspired Strength Domains",
-      "text": "Which statement sounds most like you?",
-      "options": [
-        "I enjoy expressing ideas.",
-        "I enjoy figuring things out.",
-        "I enjoy imagining and designing.",
-        "I enjoy doing, making or performing.",
-        "I enjoy understanding people or the natural world."
-      ],
-      "mapping": ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Intrapersonal"],
-      "code": "strength"
-    },
-    {
-      "id": 39,
-      "section": "Motivators & Values",
-      "text": "After completing a difficult project, what would make you happiest?",
-      "options": [
-        "Knowing I did it very well",
-        "Discovering something new",
-        "Knowing I helped someone",
-        "Knowing I did it my own way",
-        "Having others appreciate my work"
-      ],
-      "mapping": ["Achievement", "Curiosity", "Helping", "Independence", "Recognition"],
-      "code": "motivator"
-    },
-    {
-      "id": 40,
-      "section": "Motivators & Values",
-      "text": "Which challenge would motivate you most?",
-      "options": [
-        "Becoming excellent at a skill",
-        "Solving a mystery",
-        "Helping someone overcome a problem",
-        "Creating something independently",
-        "Leading others toward a goal"
-      ],
-      "mapping": ["Achievement", "Curiosity", "Helping", "Independence", "Recognition"],
-      "code": "motivator"
-    },
-    {
-      "id": 41,
-      "section": "Motivators & Values",
-      "text": "What would make a project exciting?",
-      "options": [
-        "A chance to improve",
-        "A chance to investigate",
-        "A chance to make a difference",
-        "A chance to choose my own approach",
-        "A chance to take responsibility"
-      ],
-      "mapping": ["Achievement", "Curiosity", "Helping", "Independence", "Recognition"],
-      "code": "motivator"
-    },
-    {
-      "id": 42,
-      "section": "Motivators & Values",
-      "text": "Which reward would mean the most to you?",
-      "options": [
-        "Getting better at something",
-        "Learning something fascinating",
-        "Helping someone succeed",
-        "Having freedom to decide",
-        "Receiving recognition"
-      ],
-      "mapping": ["Achievement", "Curiosity", "Helping", "Independence", "Recognition"],
-      "code": "motivator"
-    },
-    {
-      "id": 43,
-      "section": "Motivators & Values",
-      "text": "When a task becomes difficult, what keeps you going?",
-      "options": [
-        "Wanting to improve",
-        "Wanting to know the answer",
-        "Wanting to help someone",
-        "Wanting to prove my idea",
-        "Wanting to achieve the goal"
-      ],
-      "mapping": ["Achievement", "Curiosity", "Helping", "Independence", "Recognition"],
-      "code": "motivator"
-    },
-    {
-      "id": 44,
-      "section": "Motivators & Values",
-      "text": "Which achievement would make you most proud?",
-      "options": [
-        "Mastering something difficult",
-        "Discovering something new",
-        "Helping others",
-        "Creating something original",
-        "Successfully leading a project"
-      ],
-      "mapping": ["Achievement", "Curiosity", "Helping", "Independence", "Recognition"],
-      "code": "motivator"
-    },
-    {
-      "id": 45,
-      "section": "Motivators & Values",
-      "text": "If you could choose your next project, you would want…",
-      "options": [
-        "A challenging skill",
-        "Something you can investigate",
-        "Something that helps people",
-        "Freedom to choose what you do",
-        "Responsibility for an important task"
-      ],
-      "mapping": ["Achievement", "Curiosity", "Helping", "Independence", "Recognition"],
-      "code": "motivator"
-    },
-    {
-      "id": 46,
-      "section": "Learning Preferences",
-      "text": "Your teacher introduces a difficult topic. You would prefer to…",
-      "options": [
-        "See a demonstration",
-        "Read an explanation",
-        "Discuss it with someone",
-        "Try an activity"
-      ],
-      "mapping": ["Visual", "Reading", "Auditory", "Kinesthetic"],
-      "code": "learning"
-    },
-    {
-      "id": 47,
-      "section": "Learning Preferences",
-      "text": "You want to learn how to use a new tool or app. You would rather…",
-      "options": [
-        "Watch someone use it",
-        "Read instructions",
-        "Ask someone to explain it",
-        "Explore it yourself"
-      ],
-      "mapping": ["Visual", "Reading", "Auditory", "Kinesthetic"],
-      "code": "learning"
-    },
-    {
-      "id": 48,
-      "section": "Learning Preferences",
-      "text": "Before an important test, you prefer to…",
-      "options": [
-        "Look at examples or diagrams",
-        "Read your notes",
-        "Study with someone",
-        "Practise questions"
-      ],
-      "mapping": ["Visual", "Reading", "Auditory", "Kinesthetic"],
-      "code": "learning"
-    },
-    {
-      "id": 49,
-      "section": "Learning Preferences",
-      "text": "You don't understand a new idea. Your first choice is to…",
-      "options": [
-        "Look for an example",
-        "Read the explanation again",
-        "Ask a teacher/friend",
-        "Try solving an example yourself"
-      ],
-      "mapping": ["Visual", "Reading", "Auditory", "Kinesthetic"],
-      "code": "learning"
-    },
-    {
-      "id": 50,
-      "section": "Learning Preferences",
-      "text": "Which classroom activity do you enjoy most?",
-      "options": [
-        "Demonstrations",
-        "Reading and research",
-        "Group discussion",
-        "Practical activities"
-      ],
-      "mapping": ["Visual", "Reading", "Auditory", "Kinesthetic"],
-      "code": "learning"
-    },
-    {
-      "id": 51,
-      "section": "Emotional & Social Awareness",
-      "text": "You receive a lower mark than you expected. What do you usually do first?",
-      "options": [
-        "Think about what I could improve",
-        "Talk to someone about it",
-        "Take some time to calm down",
-        "Try not to think about it"
-      ],
-      "mapping": ["Self-Awareness", "Relationship-Building", "Regulation", "Avoidance"],
-      "code": "emotional"
-    },
-    {
-      "id": 52,
-      "section": "Emotional & Social Awareness",
-      "text": "You notice a classmate is sitting alone and looks upset. You would…",
-      "options": [
-        "Ask if they are okay",
-        "Give them some space",
-        "Invite them to join you",
-        "Tell a trusted adult if concerned"
-      ],
-      "mapping": ["Empathy", "Empathy", "Empathy", "Relationship-Building"],
-      "code": "emotional"
-    },
-    {
-      "id": 53,
-      "section": "Emotional & Social Awareness",
-      "text": "Your group cannot agree on an idea. You would most likely…",
-      "options": [
-        "Explain my opinion",
-        "Listen to everyone",
-        "Help find a compromise",
-        "Suggest taking a short break"
-      ],
-      "mapping": ["Self-Expression", "Empathy", "Cooperation", "Regulation"],
-      "code": "emotional"
-    },
-    {
-      "id": 54,
-      "section": "Emotional & Social Awareness",
-      "text": "Someone gives you feedback about something you could improve. You…",
-      "options": [
-        "Think carefully about it",
-        "Ask questions",
-        "Try the suggestion",
-        "Need some time before acting on it"
-      ],
-      "mapping": ["Self-Awareness", "Self-Awareness", "Growth-Orientation", "Regulation"],
-      "code": "emotional"
-    },
-    {
-      "id": 55,
-      "section": "Emotional & Social Awareness",
-      "text": "A friend tells you about a problem. You would usually…",
-      "options": [
-        "Give them a solution",
-        "Listen carefully",
-        "Ask how you can help",
-        "Encourage them to speak to a trusted adult if needed"
-      ],
-      "mapping": ["Problem-Solving", "Empathy", "Empathy", "Relationship-Building"],
-      "code": "emotional"
-    },
-    {
-      "id": 56,
-      "section": "Creativity & Future Readiness",
-      "text": "Your school gives you a problem with no single correct answer. What would you do?",
-      "options": [
-        "Look for an example",
-        "Ask others for ideas",
-        "Try several possible solutions",
-        "Create your own unusual solution"
-      ],
-      "mapping": ["Convergent-Thinking", "Collaborative", "Experimentation", "Innovation"],
-      "code": "creativity"
-    },
-    {
-      "id": 57,
-      "section": "Creativity & Future Readiness",
-      "text": "You are given paper, cardboard and other simple materials. What would you prefer to do?",
-      "options": [
-        "Follow an example",
-        "Make something useful",
-        "Experiment with different ideas",
-        "Invent something nobody has suggested"
-      ],
-      "mapping": ["Structured", "Practical", "Experimentation", "Innovation"],
-      "code": "creativity"
-    },
-    {
-      "id": 58,
-      "section": "Creativity & Future Readiness",
-      "text": "You discover a career you have never heard of. What do you do?",
-      "options": [
-        "Search for information",
-        "Ask someone about it",
-        "Imagine whether you would enjoy it",
-        "Compare it with other careers"
-      ],
-      "mapping": ["Research", "Social-Learning", "Exploration", "Analytical"],
-      "code": "creativity"
-    },
-    {
-      "id": 59,
-      "section": "Creativity & Future Readiness",
-      "text": "Your first idea for a project doesn't work. What would you do?",
-      "options": [
-        "Try the same idea again",
-        "Ask someone for help",
-        "Change part of the idea",
-        "Start again with a completely different idea"
-      ],
-      "mapping": ["Persistence", "Collaborative", "Adaptation", "Flexibility"],
-      "code": "creativity"
-    },
-    {
-      "id": 60,
-      "section": "Creativity & Future Readiness",
-      "text": "When you think about your future, which statement sounds most like you?",
-      "options": [
-        "I already have a few ideas",
-        "I want to explore many possibilities",
-        "I know the things I enjoy",
-        "I am still discovering what suits me"
-      ],
-      "mapping": ["Clear-Direction", "Open-Exploration", "Self-Awareness", "Growth-Mindset"],
-      "code": "creativity"
-    }
-  ]
+    "metadata":  {
+                     "version":  "1.0",
+                     "targetGrade":  "7",
+                     "totalQuestions":  60,
+                     "assessmentType":  "Developmental Career Discovery",
+                     "description":  "Class 7 Career Discovery Assessment - 60 questions across 8 dimensions"
+                 },
+    "dimensions":  [
+                       {
+                           "id":  "personality",
+                           "name":  "Personality Preferences",
+                           "questions":  [
+                                             1,
+                                             2,
+                                             3,
+                                             4,
+                                             5,
+                                             6,
+                                             7,
+                                             8,
+                                             9,
+                                             10
+                                         ],
+                           "type":  "self-report",
+                           "options":  4,
+                           "scoring":  "MBTI-style (E/I, S/N, T/F, J/P)"
+                       },
+                       {
+                           "id":  "riasec",
+                           "name":  "Career Interests - RIASEC",
+                           "questions":  [
+                                             11,
+                                             12,
+                                             13,
+                                             14,
+                                             15,
+                                             16,
+                                             17,
+                                             18,
+                                             19,
+                                             20
+                                         ],
+                           "type":  "interest",
+                           "options":  5,
+                           "scoring":  "RIASEC domain ranking"
+                       },
+                       {
+                           "id":  "aptitude",
+                           "name":  "Aptitude \u0026 Reasoning",
+                           "questions":  [
+                                             21,
+                                             22,
+                                             23,
+                                             24,
+                                             25,
+                                             26,
+                                             27,
+                                             28,
+                                             29,
+                                             30
+                                         ],
+                           "type":  "performance",
+                           "options":  4,
+                           "scoring":  "Correct/Incorrect (1/0)"
+                       },
+                       {
+                           "id":  "strengths",
+                           "name":  "MI-Inspired Strength Domains",
+                           "questions":  [
+                                             31,
+                                             32,
+                                             33,
+                                             34,
+                                             35,
+                                             36,
+                                             37,
+                                             38
+                                         ],
+                           "type":  "self-report",
+                           "options":  5,
+                           "scoring":  "8 MI domains: Linguistic, Logical-Math, Spatial, Bodily-Kinesthetic, Musical, Interpersonal, Intrapersonal, Naturalistic"
+                       },
+                       {
+                           "id":  "motivators",
+                           "name":  "Motivators \u0026 Values",
+                           "questions":  [
+                                             39,
+                                             40,
+                                             41,
+                                             42,
+                                             43,
+                                             44,
+                                             45
+                                         ],
+                           "type":  "self-report",
+                           "options":  5,
+                           "scoring":  "5 motivator types: Achievement, Curiosity, Helping, Independence, Recognition"
+                       },
+                       {
+                           "id":  "learning",
+                           "name":  "Learning Preferences",
+                           "questions":  [
+                                             46,
+                                             47,
+                                             48,
+                                             49,
+                                             50
+                                         ],
+                           "type":  "self-report",
+                           "options":  4,
+                           "scoring":  "4 learning preferences: Visual, Reading, Auditory, Kinesthetic"
+                       },
+                       {
+                           "id":  "emotional",
+                           "name":  "Emotional \u0026 Social Awareness",
+                           "questions":  [
+                                             51,
+                                             52,
+                                             53,
+                                             54,
+                                             55
+                                         ],
+                           "type":  "self-report",
+                           "options":  4,
+                           "scoring":  "Developmental tendencies: Self-Awareness, Empathy, Cooperation, Regulation"
+                       },
+                       {
+                           "id":  "creativity",
+                           "name":  "Creativity \u0026 Future Readiness",
+                           "questions":  [
+                                             56,
+                                             57,
+                                             58,
+                                             59,
+                                             60
+                                         ],
+                           "type":  "self-report",
+                           "options":  4,
+                           "scoring":  "Future-readiness indicators: Exploration, Experimentation, Adaptability, Career Openness"
+                       }
+                   ],
+    "questions":  [
+                      {
+                          "id":  1,
+                          "section":  "Personality Preferences",
+                          "text":  "Your teacher puts you in a group with students you don\u0027t know well. What do you naturally do?",
+                          "options":  [
+                                          "Start a conversation",
+                                          "Talk when someone speaks to me",
+                                          "Observe the group first",
+                                          "Prefer to work quietly"
+                                      ],
+                          "mapping":  [
+                                          "E",
+                                          "E",
+                                          "I",
+                                          "I"
+                                      ],
+                          "code":  "mbti_ei"
+                      },
+                      {
+                          "id":  2,
+                          "section":  "Personality Preferences",
+                          "text":  "After spending most of the day with friends, you usually feel…",
+                          "options":  [
+                                          "Energised and ready for more interaction",
+                                          "Happy to continue with a few friends",
+                                          "Ready for some quiet time",
+                                          "Very ready to be alone"
+                                      ],
+                          "mapping":  [
+                                          "E",
+                                          "E",
+                                          "I",
+                                          "I"
+                                      ],
+                          "code":  "mbti_ei"
+                      },
+                      {
+                          "id":  3,
+                          "section":  "Personality Preferences",
+                          "text":  "When you learn a new topic, what attracts you more?",
+                          "options":  [
+                                          "Facts and real examples",
+                                          "Knowing how it works",
+                                          "Thinking about different possibilities",
+                                          "Imagining what it could become"
+                                      ],
+                          "mapping":  [
+                                          "S",
+                                          "S",
+                                          "N",
+                                          "N"
+                                      ],
+                          "code":  "mbti_sn"
+                      },
+                      {
+                          "id":  4,
+                          "section":  "Personality Preferences",
+                          "text":  "Your teacher asks you to improve an existing project. You would rather…",
+                          "options":  [
+                                          "Follow the example closely",
+                                          "Make a small improvement",
+                                          "Try a different approach",
+                                          "Create a completely new idea"
+                                      ],
+                          "mapping":  [
+                                          "S",
+                                          "S",
+                                          "N",
+                                          "N"
+                                      ],
+                          "code":  "mbti_sn"
+                      },
+                      {
+                          "id":  5,
+                          "section":  "Personality Preferences",
+                          "text":  "Two students disagree about who should get credit for a project. You would first consider…",
+                          "options":  [
+                                          "What is fair according to the facts",
+                                          "What each person actually did",
+                                          "Both sides of the situation",
+                                          "How each person feels"
+                                      ],
+                          "mapping":  [
+                                          "T",
+                                          "T",
+                                          "F",
+                                          "F"
+                                      ],
+                          "code":  "mbti_tf"
+                      },
+                      {
+                          "id":  6,
+                          "section":  "Personality Preferences",
+                          "text":  "Your friend is struggling with a difficult task. You are more likely to…",
+                          "options":  [
+                                          "Show them how to solve it",
+                                          "Suggest a practical solution",
+                                          "Ask what kind of help they need",
+                                          "Listen and encourage them"
+                                      ],
+                          "mapping":  [
+                                          "T",
+                                          "T",
+                                          "F",
+                                          "F"
+                                      ],
+                          "code":  "mbti_tf"
+                      },
+                      {
+                          "id":  7,
+                          "section":  "Personality Preferences",
+                          "text":  "You have a large project due in three weeks. You prefer to…",
+                          "options":  [
+                                          "Finish it well before the deadline",
+                                          "Make a clear plan",
+                                          "Start and adjust the plan later",
+                                          "Work on it when I feel ready"
+                                      ],
+                          "mapping":  [
+                                          "J",
+                                          "J",
+                                          "P",
+                                          "P"
+                                      ],
+                          "code":  "mbti_jp"
+                      },
+                      {
+                          "id":  8,
+                          "section":  "Personality Preferences",
+                          "text":  "Your teacher unexpectedly changes the activity you were prepared for. You usually…",
+                          "options":  [
+                                          "Want to know the new plan",
+                                          "Take some time to adjust",
+                                          "Adapt without much trouble",
+                                          "Enjoy trying something unexpected"
+                                      ],
+                          "mapping":  [
+                                          "J",
+                                          "J",
+                                          "P",
+                                          "P"
+                                      ],
+                          "code":  "mbti_jp"
+                      },
+                      {
+                          "id":  9,
+                          "section":  "Personality Preferences",
+                          "text":  "You get an interesting idea during class. You usually…",
+                          "options":  [
+                                          "Tell someone about it",
+                                          "Discuss it with a friend",
+                                          "Think about it first",
+                                          "Develop it on your own"
+                                      ],
+                          "mapping":  [
+                                          "E",
+                                          "E",
+                                          "I",
+                                          "I"
+                                      ],
+                          "code":  "mbti_ei"
+                      },
+                      {
+                          "id":  10,
+                          "section":  "Personality Preferences",
+                          "text":  "You are given a free afternoon with no fixed plans. You would rather…",
+                          "options":  [
+                                          "Plan what you will do",
+                                          "Choose from a few activities",
+                                          "Decide as the day continues",
+                                          "Do whatever interests you at the moment"
+                                      ],
+                          "mapping":  [
+                                          "J",
+                                          "J",
+                                          "P",
+                                          "P"
+                                      ],
+                          "code":  "mbti_jp"
+                      },
+                      {
+                          "id":  11,
+                          "section":  "Career Interests - RIASEC",
+                          "text":  "Your school gives you a week-long project. Which would you choose?",
+                          "options":  [
+                                          "Build or repair something",
+                                          "Investigate a scientific question",
+                                          "Design a creative presentation",
+                                          "Help students with a problem",
+                                          "Organise the whole project"
+                                      ],
+                          "mapping":  [
+                                          "R",
+                                          "I",
+                                          "A",
+                                          "S",
+                                          "E"
+                                      ],
+                          "code":  "riasec"
+                      },
+                      {
+                          "id":  12,
+                          "section":  "Career Interests - RIASEC",
+                          "text":  "Which activity sounds most interesting?",
+                          "options":  [
+                                          "Work with tools or materials",
+                                          "Conduct an experiment",
+                                          "Create artwork or a story",
+                                          "Teach someone a new skill",
+                                          "Plan a school event"
+                                      ],
+                          "mapping":  [
+                                          "R",
+                                          "I",
+                                          "A",
+                                          "S",
+                                          "E"
+                                      ],
+                          "code":  "riasec"
+                      },
+                      {
+                          "id":  13,
+                          "section":  "Career Interests - RIASEC",
+                          "text":  "Your class receives a mystery to solve. You would enjoy…",
+                          "options":  [
+                                          "Examining objects and clues",
+                                          "Testing different explanations",
+                                          "Creating a story about the mystery",
+                                          "Discussing it with classmates",
+                                          "Taking charge of the investigation"
+                                      ],
+                          "mapping":  [
+                                          "R",
+                                          "I",
+                                          "A",
+                                          "S",
+                                          "E"
+                                      ],
+                          "code":  "riasec"
+                      },
+                      {
+                          "id":  14,
+                          "section":  "Career Interests - RIASEC",
+                          "text":  "Which club would you be most interested in joining?",
+                          "options":  [
+                                          "Robotics or model building",
+                                          "Science and discovery",
+                                          "Art, drama or creative writing",
+                                          "Community service",
+                                          "Young leaders or entrepreneurship"
+                                      ],
+                          "mapping":  [
+                                          "R",
+                                          "I",
+                                          "A",
+                                          "S",
+                                          "E"
+                                      ],
+                          "code":  "riasec"
+                      },
+                      {
+                          "id":  15,
+                          "section":  "Career Interests - RIASEC",
+                          "text":  "Which challenge sounds most enjoyable?",
+                          "options":  [
+                                          "Make something that works",
+                                          "Find out why something happens",
+                                          "Create something original",
+                                          "Find a way to help someone",
+                                          "Persuade others to support an idea"
+                                      ],
+                          "mapping":  [
+                                          "R",
+                                          "I",
+                                          "A",
+                                          "S",
+                                          "E"
+                                      ],
+                          "code":  "riasec"
+                      },
+                      {
+                          "id":  16,
+                          "section":  "Career Interests - RIASEC",
+                          "text":  "Your school wants students to improve the campus. You would rather…",
+                          "options":  [
+                                          "Build or install something",
+                                          "Study what needs improvement",
+                                          "Design a new space",
+                                          "Organise students to help",
+                                          "Coordinate and manage the project"
+                                      ],
+                          "mapping":  [
+                                          "R",
+                                          "I",
+                                          "A",
+                                          "S",
+                                          "C"
+                                      ],
+                          "code":  "riasec"
+                      },
+                      {
+                          "id":  17,
+                          "section":  "Career Interests - RIASEC",
+                          "text":  "Which role sounds most interesting in a group project?",
+                          "options":  [
+                                          "Builder",
+                                          "Researcher",
+                                          "Designer",
+                                          "Team supporter",
+                                          "Team coordinator"
+                                      ],
+                          "mapping":  [
+                                          "R",
+                                          "I",
+                                          "A",
+                                          "S",
+                                          "E"
+                                      ],
+                          "code":  "riasec"
+                      },
+                      {
+                          "id":  18,
+                          "section":  "Career Interests - RIASEC",
+                          "text":  "You get to spend an afternoon exploring one area. You choose…",
+                          "options":  [
+                                          "Machines and how things are made",
+                                          "Science and discovery",
+                                          "Art and creative expression",
+                                          "People and communication",
+                                          "Business and leadership"
+                                      ],
+                          "mapping":  [
+                                          "R",
+                                          "I",
+                                          "A",
+                                          "S",
+                                          "E"
+                                      ],
+                          "code":  "riasec"
+                      },
+                      {
+                          "id":  19,
+                          "section":  "Career Interests - RIASEC",
+                          "text":  "Which activity would you enjoy doing regularly?",
+                          "options":  [
+                                          "Making or fixing things",
+                                          "Solving questions through investigation",
+                                          "Creating stories, designs or performances",
+                                          "Helping and teaching people",
+                                          "Organising projects and activities"
+                                      ],
+                          "mapping":  [
+                                          "R",
+                                          "I",
+                                          "A",
+                                          "S",
+                                          "E"
+                                      ],
+                          "code":  "riasec"
+                      },
+                      {
+                          "id":  20,
+                          "section":  "Career Interests - RIASEC",
+                          "text":  "Imagine you can try a different type of work for one day. Which sounds best?",
+                          "options":  [
+                                          "Work with equipment",
+                                          "Work in a research setting",
+                                          "Work on a creative project",
+                                          "Work with people",
+                                          "Lead a small project"
+                                      ],
+                          "mapping":  [
+                                          "R",
+                                          "I",
+                                          "A",
+                                          "S",
+                                          "E"
+                                      ],
+                          "code":  "riasec"
+                      },
+                      {
+                          "id":  21,
+                          "section":  "Aptitude \u0026 Reasoning",
+                          "text":  "What number comes next? 4, 8, 12, 16, ___",
+                          "options":  [
+                                          "18",
+                                          "20",
+                                          "22",
+                                          "24"
+                                      ],
+                          "correctAnswer":  1,
+                          "code":  "numerical"
+                      },
+                      {
+                          "id":  22,
+                          "section":  "Aptitude \u0026 Reasoning",
+                          "text":  "What comes next? ■ ■ ■ ■ ■ ___",
+                          "options":  [
+                                          "■",
+                                          "■",
+                                          "■",
+                                          "★"
+                                      ],
+                          "correctAnswer":  2,
+                          "code":  "pattern"
+                      },
+                      {
+                          "id":  23,
+                          "section":  "Aptitude \u0026 Reasoning",
+                          "text":  "Identify the pattern and select what comes next.",
+                          "options":  [
+                                          "Circle",
+                                          "Square",
+                                          "Triangle",
+                                          "Diamond"
+                                      ],
+                          "correctAnswer":  2,
+                          "media":  {
+                                        "items":  [
+                                                      "?",
+                                                      "??",
+                                                      "??�",
+                                                      "??�?",
+                                                      "?"
+                                                  ],
+                                        "type":  "sequence"
+                                    },
+                          "code":  "spatial_pattern"
+                      },
+                      {
+                          "id":  24,
+                          "section":  "Aptitude \u0026 Reasoning",
+                          "text":  "A class has 24 students. They are divided equally into 4 groups. How many students are in each group?",
+                          "options":  [
+                                          "4",
+                                          "5",
+                                          "6",
+                                          "8"
+                                      ],
+                          "correctAnswer":  2,
+                          "code":  "numerical"
+                      },
+                      {
+                          "id":  25,
+                          "section":  "Aptitude \u0026 Reasoning",
+                          "text":  "Study this 3�3 matrix carefully. What should replace the question mark?",
+                          "options":  [
+                                          "Triangle",
+                                          "Circle",
+                                          "Square",
+                                          "Diamond"
+                                      ],
+                          "correctAnswer":  0,
+                          "media":  {
+                                        "cells":  [
+                                                      "?",
+                                                      "?",
+                                                      "�",
+                                                      "?",
+                                                      "�",
+                                                      "?",
+                                                      "�",
+                                                      "?",
+                                                      "?"
+                                                  ],
+                                        "type":  "grid"
+                                    },
+                          "code":  "matrix_logic"
+                      },
+                      {
+                          "id":  26,
+                          "section":  "Aptitude \u0026 Reasoning",
+                          "text":  "A cube has a star drawn on its top surface. If the cube is turned upside down, where will the star be?",
+                          "options":  [
+                                          "On the bottom",
+                                          "On the left",
+                                          "On the right",
+                                          "It disappears"
+                                      ],
+                          "correctAnswer":  0,
+                          "code":  "spatial"
+                      },
+                      {
+                          "id":  27,
+                          "section":  "Aptitude \u0026 Reasoning",
+                          "text":  "If 3 → 9, 4 → 16, 5 → 25, then 6 → ?",
+                          "options":  [
+                                          "30",
+                                          "32",
+                                          "36",
+                                          "42"
+                                      ],
+                          "correctAnswer":  2,
+                          "code":  "numerical"
+                      },
+                      {
+                          "id":  28,
+                          "section":  "Aptitude \u0026 Reasoning",
+                          "text":  "Which shape completes this rotation pattern?",
+                          "options":  [
+                                          "Shape1",
+                                          "Shape2",
+                                          "Shape3",
+                                          "Shape4"
+                                      ],
+                          "correctAnswer":  0,
+                          "media":  {
+                                        "items":  [
+                                                      "?",
+                                                      "?",
+                                                      "?",
+                                                      "?",
+                                                      "?"
+                                                  ],
+                                        "type":  "sequence"
+                                    },
+                          "code":  "spatial_rotation_adv"
+                      },
+                      {
+                          "id":  29,
+                          "section":  "Aptitude \u0026 Reasoning",
+                          "text":  "Which comes next? Seed → Plant → Flower → Fruit → ___",
+                          "options":  [
+                                          "Seed",
+                                          "Root",
+                                          "Soil",
+                                          "Leaf"
+                                      ],
+                          "correctAnswer":  0,
+                          "code":  "logical"
+                      },
+                      {
+                          "id":  30,
+                          "section":  "Aptitude \u0026 Reasoning",
+                          "text":  "Study the pattern across rows and columns. What belongs in the empty space?",
+                          "options":  [
+                                          "Filled",
+                                          "Striped",
+                                          "Dotted",
+                                          "Outlined"
+                                      ],
+                          "correctAnswer":  2,
+                          "media":  {
+                                        "cells":  [
+                                                      "?",
+                                                      "?",
+                                                      "?",
+                                                      "?",
+                                                      "?",
+                                                      "?",
+                                                      "?",
+                                                      "?",
+                                                      "?"
+                                                  ],
+                                        "type":  "grid"
+                                    },
+                          "code":  "grid_completion_adv"
+                      },
+                      {
+                          "id":  31,
+                          "section":  "MI-Inspired Strength Domains",
+                          "text":  "Which activity would you enjoy most?",
+                          "options":  [
+                                          "Writing a story",
+                                          "Solving a number puzzle",
+                                          "Designing a poster",
+                                          "Building a model",
+                                          "Helping a classmate"
+                                      ],
+                          "mapping":  [
+                                          "Linguistic",
+                                          "Logical-Mathematical",
+                                          "Spatial",
+                                          "Bodily-Kinesthetic",
+                                          "Interpersonal"
+                                      ],
+                          "code":  "strength"
+                      },
+                      {
+                          "id":  32,
+                          "section":  "MI-Inspired Strength Domains",
+                          "text":  "Which task feels most natural to you?",
+                          "options":  [
+                                          "Explaining an idea with words",
+                                          "Finding patterns",
+                                          "Imagining how something looks",
+                                          "Performing or moving",
+                                          "Observing plants or animals"
+                                      ],
+                          "mapping":  [
+                                          "Linguistic",
+                                          "Logical-Mathematical",
+                                          "Spatial",
+                                          "Bodily-Kinesthetic",
+                                          "Naturalistic"
+                                      ],
+                          "code":  "strength"
+                      },
+                      {
+                          "id":  33,
+                          "section":  "MI-Inspired Strength Domains",
+                          "text":  "When you have to explain something, you prefer to…",
+                          "options":  [
+                                          "Tell it clearly using words",
+                                          "Explain the logic behind it",
+                                          "Draw a diagram",
+                                          "Demonstrate it",
+                                          "Discuss it with someone"
+                                      ],
+                          "mapping":  [
+                                          "Linguistic",
+                                          "Logical-Mathematical",
+                                          "Spatial",
+                                          "Bodily-Kinesthetic",
+                                          "Interpersonal"
+                                      ],
+                          "code":  "strength"
+                      },
+                      {
+                          "id":  34,
+                          "section":  "MI-Inspired Strength Domains",
+                          "text":  "Which activity attracts you most?",
+                          "options":  [
+                                          "Reading and writing",
+                                          "Mathematics and puzzles",
+                                          "Drawing and design",
+                                          "Music, movement or acting",
+                                          "Working with people"
+                                      ],
+                          "mapping":  [
+                                          "Linguistic",
+                                          "Logical-Mathematical",
+                                          "Spatial",
+                                          "Musical",
+                                          "Interpersonal"
+                                      ],
+                          "code":  "strength"
+                      },
+                      {
+                          "id":  35,
+                          "section":  "MI-Inspired Strength Domains",
+                          "text":  "Your teacher gives you an open project. You would like to…",
+                          "options":  [
+                                          "Write or present something",
+                                          "Investigate a problem",
+                                          "Create a visual design",
+                                          "Make or perform something",
+                                          "Work with a team"
+                                      ],
+                          "mapping":  [
+                                          "Linguistic",
+                                          "Logical-Mathematical",
+                                          "Spatial",
+                                          "Bodily-Kinesthetic",
+                                          "Interpersonal"
+                                      ],
+                          "code":  "strength"
+                      },
+                      {
+                          "id":  36,
+                          "section":  "MI-Inspired Strength Domains",
+                          "text":  "Which would you choose for a free activity?",
+                          "options":  [
+                                          "Writing",
+                                          "Brain games",
+                                          "Photography/design",
+                                          "Music or physical activity",
+                                          "Caring for animals or plants"
+                                      ],
+                          "mapping":  [
+                                          "Linguistic",
+                                          "Logical-Mathematical",
+                                          "Spatial",
+                                          "Musical",
+                                          "Naturalistic"
+                                      ],
+                          "code":  "strength"
+                      },
+                      {
+                          "id":  37,
+                          "section":  "MI-Inspired Strength Domains",
+                          "text":  "When you have an idea, you usually like to…",
+                          "options":  [
+                                          "Explain it",
+                                          "Work out whether it makes sense",
+                                          "Picture it in your mind",
+                                          "Show it through action",
+                                          "Share it with others"
+                                      ],
+                          "mapping":  [
+                                          "Linguistic",
+                                          "Logical-Mathematical",
+                                          "Spatial",
+                                          "Bodily-Kinesthetic",
+                                          "Interpersonal"
+                                      ],
+                          "code":  "strength"
+                      },
+                      {
+                          "id":  38,
+                          "section":  "MI-Inspired Strength Domains",
+                          "text":  "Which statement sounds most like you?",
+                          "options":  [
+                                          "I enjoy expressing ideas.",
+                                          "I enjoy figuring things out.",
+                                          "I enjoy imagining and designing.",
+                                          "I enjoy doing, making or performing.",
+                                          "I enjoy understanding people or the natural world."
+                                      ],
+                          "mapping":  [
+                                          "Linguistic",
+                                          "Logical-Mathematical",
+                                          "Spatial",
+                                          "Bodily-Kinesthetic",
+                                          "Intrapersonal"
+                                      ],
+                          "code":  "strength"
+                      },
+                      {
+                          "id":  39,
+                          "section":  "Motivators \u0026 Values",
+                          "text":  "After completing a difficult project, what would make you happiest?",
+                          "options":  [
+                                          "Knowing I did it very well",
+                                          "Discovering something new",
+                                          "Knowing I helped someone",
+                                          "Knowing I did it my own way",
+                                          "Having others appreciate my work"
+                                      ],
+                          "mapping":  [
+                                          "Achievement",
+                                          "Curiosity",
+                                          "Helping",
+                                          "Independence",
+                                          "Recognition"
+                                      ],
+                          "code":  "motivator"
+                      },
+                      {
+                          "id":  40,
+                          "section":  "Motivators \u0026 Values",
+                          "text":  "Which challenge would motivate you most?",
+                          "options":  [
+                                          "Becoming excellent at a skill",
+                                          "Solving a mystery",
+                                          "Helping someone overcome a problem",
+                                          "Creating something independently",
+                                          "Leading others toward a goal"
+                                      ],
+                          "mapping":  [
+                                          "Achievement",
+                                          "Curiosity",
+                                          "Helping",
+                                          "Independence",
+                                          "Recognition"
+                                      ],
+                          "code":  "motivator"
+                      },
+                      {
+                          "id":  41,
+                          "section":  "Motivators \u0026 Values",
+                          "text":  "What would make a project exciting?",
+                          "options":  [
+                                          "A chance to improve",
+                                          "A chance to investigate",
+                                          "A chance to make a difference",
+                                          "A chance to choose my own approach",
+                                          "A chance to take responsibility"
+                                      ],
+                          "mapping":  [
+                                          "Achievement",
+                                          "Curiosity",
+                                          "Helping",
+                                          "Independence",
+                                          "Recognition"
+                                      ],
+                          "code":  "motivator"
+                      },
+                      {
+                          "id":  42,
+                          "section":  "Motivators \u0026 Values",
+                          "text":  "Which reward would mean the most to you?",
+                          "options":  [
+                                          "Getting better at something",
+                                          "Learning something fascinating",
+                                          "Helping someone succeed",
+                                          "Having freedom to decide",
+                                          "Receiving recognition"
+                                      ],
+                          "mapping":  [
+                                          "Achievement",
+                                          "Curiosity",
+                                          "Helping",
+                                          "Independence",
+                                          "Recognition"
+                                      ],
+                          "code":  "motivator"
+                      },
+                      {
+                          "id":  43,
+                          "section":  "Motivators \u0026 Values",
+                          "text":  "When a task becomes difficult, what keeps you going?",
+                          "options":  [
+                                          "Wanting to improve",
+                                          "Wanting to know the answer",
+                                          "Wanting to help someone",
+                                          "Wanting to prove my idea",
+                                          "Wanting to achieve the goal"
+                                      ],
+                          "mapping":  [
+                                          "Achievement",
+                                          "Curiosity",
+                                          "Helping",
+                                          "Independence",
+                                          "Recognition"
+                                      ],
+                          "code":  "motivator"
+                      },
+                      {
+                          "id":  44,
+                          "section":  "Motivators \u0026 Values",
+                          "text":  "Which achievement would make you most proud?",
+                          "options":  [
+                                          "Mastering something difficult",
+                                          "Discovering something new",
+                                          "Helping others",
+                                          "Creating something original",
+                                          "Successfully leading a project"
+                                      ],
+                          "mapping":  [
+                                          "Achievement",
+                                          "Curiosity",
+                                          "Helping",
+                                          "Independence",
+                                          "Recognition"
+                                      ],
+                          "code":  "motivator"
+                      },
+                      {
+                          "id":  45,
+                          "section":  "Motivators \u0026 Values",
+                          "text":  "If you could choose your next project, you would want…",
+                          "options":  [
+                                          "A challenging skill",
+                                          "Something you can investigate",
+                                          "Something that helps people",
+                                          "Freedom to choose what you do",
+                                          "Responsibility for an important task"
+                                      ],
+                          "mapping":  [
+                                          "Achievement",
+                                          "Curiosity",
+                                          "Helping",
+                                          "Independence",
+                                          "Recognition"
+                                      ],
+                          "code":  "motivator"
+                      },
+                      {
+                          "id":  46,
+                          "section":  "Learning Preferences",
+                          "text":  "Your teacher introduces a difficult topic. You would prefer to…",
+                          "options":  [
+                                          "See a demonstration",
+                                          "Read an explanation",
+                                          "Discuss it with someone",
+                                          "Try an activity"
+                                      ],
+                          "mapping":  [
+                                          "Visual",
+                                          "Reading",
+                                          "Auditory",
+                                          "Kinesthetic"
+                                      ],
+                          "code":  "learning"
+                      },
+                      {
+                          "id":  47,
+                          "section":  "Learning Preferences",
+                          "text":  "You want to learn how to use a new tool or app. You would rather…",
+                          "options":  [
+                                          "Watch someone use it",
+                                          "Read instructions",
+                                          "Ask someone to explain it",
+                                          "Explore it yourself"
+                                      ],
+                          "mapping":  [
+                                          "Visual",
+                                          "Reading",
+                                          "Auditory",
+                                          "Kinesthetic"
+                                      ],
+                          "code":  "learning"
+                      },
+                      {
+                          "id":  48,
+                          "section":  "Learning Preferences",
+                          "text":  "Before an important test, you prefer to…",
+                          "options":  [
+                                          "Look at examples or diagrams",
+                                          "Read your notes",
+                                          "Study with someone",
+                                          "Practise questions"
+                                      ],
+                          "mapping":  [
+                                          "Visual",
+                                          "Reading",
+                                          "Auditory",
+                                          "Kinesthetic"
+                                      ],
+                          "code":  "learning"
+                      },
+                      {
+                          "id":  49,
+                          "section":  "Learning Preferences",
+                          "text":  "You don\u0027t understand a new idea. Your first choice is to…",
+                          "options":  [
+                                          "Look for an example",
+                                          "Read the explanation again",
+                                          "Ask a teacher/friend",
+                                          "Try solving an example yourself"
+                                      ],
+                          "mapping":  [
+                                          "Visual",
+                                          "Reading",
+                                          "Auditory",
+                                          "Kinesthetic"
+                                      ],
+                          "code":  "learning"
+                      },
+                      {
+                          "id":  50,
+                          "section":  "Learning Preferences",
+                          "text":  "Which classroom activity do you enjoy most?",
+                          "options":  [
+                                          "Demonstrations",
+                                          "Reading and research",
+                                          "Group discussion",
+                                          "Practical activities"
+                                      ],
+                          "mapping":  [
+                                          "Visual",
+                                          "Reading",
+                                          "Auditory",
+                                          "Kinesthetic"
+                                      ],
+                          "code":  "learning"
+                      },
+                      {
+                          "id":  51,
+                          "section":  "Emotional \u0026 Social Awareness",
+                          "text":  "You receive a lower mark than you expected. What do you usually do first?",
+                          "options":  [
+                                          "Think about what I could improve",
+                                          "Talk to someone about it",
+                                          "Take some time to calm down",
+                                          "Try not to think about it"
+                                      ],
+                          "mapping":  [
+                                          "Self-Awareness",
+                                          "Relationship-Building",
+                                          "Regulation",
+                                          "Avoidance"
+                                      ],
+                          "code":  "emotional"
+                      },
+                      {
+                          "id":  52,
+                          "section":  "Emotional \u0026 Social Awareness",
+                          "text":  "You notice a classmate is sitting alone and looks upset. You would…",
+                          "options":  [
+                                          "Ask if they are okay",
+                                          "Give them some space",
+                                          "Invite them to join you",
+                                          "Tell a trusted adult if concerned"
+                                      ],
+                          "mapping":  [
+                                          "Empathy",
+                                          "Empathy",
+                                          "Empathy",
+                                          "Relationship-Building"
+                                      ],
+                          "code":  "emotional"
+                      },
+                      {
+                          "id":  53,
+                          "section":  "Emotional \u0026 Social Awareness",
+                          "text":  "Your group cannot agree on an idea. You would most likely…",
+                          "options":  [
+                                          "Explain my opinion",
+                                          "Listen to everyone",
+                                          "Help find a compromise",
+                                          "Suggest taking a short break"
+                                      ],
+                          "mapping":  [
+                                          "Self-Expression",
+                                          "Empathy",
+                                          "Cooperation",
+                                          "Regulation"
+                                      ],
+                          "code":  "emotional"
+                      },
+                      {
+                          "id":  54,
+                          "section":  "Emotional \u0026 Social Awareness",
+                          "text":  "Someone gives you feedback about something you could improve. You…",
+                          "options":  [
+                                          "Think carefully about it",
+                                          "Ask questions",
+                                          "Try the suggestion",
+                                          "Need some time before acting on it"
+                                      ],
+                          "mapping":  [
+                                          "Self-Awareness",
+                                          "Self-Awareness",
+                                          "Growth-Orientation",
+                                          "Regulation"
+                                      ],
+                          "code":  "emotional"
+                      },
+                      {
+                          "id":  55,
+                          "section":  "Emotional \u0026 Social Awareness",
+                          "text":  "A friend tells you about a problem. You would usually…",
+                          "options":  [
+                                          "Give them a solution",
+                                          "Listen carefully",
+                                          "Ask how you can help",
+                                          "Encourage them to speak to a trusted adult if needed"
+                                      ],
+                          "mapping":  [
+                                          "Problem-Solving",
+                                          "Empathy",
+                                          "Empathy",
+                                          "Relationship-Building"
+                                      ],
+                          "code":  "emotional"
+                      },
+                      {
+                          "id":  56,
+                          "section":  "Creativity \u0026 Future Readiness",
+                          "text":  "Your school gives you a problem with no single correct answer. What would you do?",
+                          "options":  [
+                                          "Look for an example",
+                                          "Ask others for ideas",
+                                          "Try several possible solutions",
+                                          "Create your own unusual solution"
+                                      ],
+                          "mapping":  [
+                                          "Convergent-Thinking",
+                                          "Collaborative",
+                                          "Experimentation",
+                                          "Innovation"
+                                      ],
+                          "code":  "creativity"
+                      },
+                      {
+                          "id":  57,
+                          "section":  "Creativity \u0026 Future Readiness",
+                          "text":  "You are given paper, cardboard and other simple materials. What would you prefer to do?",
+                          "options":  [
+                                          "Follow an example",
+                                          "Make something useful",
+                                          "Experiment with different ideas",
+                                          "Invent something nobody has suggested"
+                                      ],
+                          "mapping":  [
+                                          "Structured",
+                                          "Practical",
+                                          "Experimentation",
+                                          "Innovation"
+                                      ],
+                          "code":  "creativity"
+                      },
+                      {
+                          "id":  58,
+                          "section":  "Creativity \u0026 Future Readiness",
+                          "text":  "You discover a career you have never heard of. What do you do?",
+                          "options":  [
+                                          "Search for information",
+                                          "Ask someone about it",
+                                          "Imagine whether you would enjoy it",
+                                          "Compare it with other careers"
+                                      ],
+                          "mapping":  [
+                                          "Research",
+                                          "Social-Learning",
+                                          "Exploration",
+                                          "Analytical"
+                                      ],
+                          "code":  "creativity"
+                      },
+                      {
+                          "id":  59,
+                          "section":  "Creativity \u0026 Future Readiness",
+                          "text":  "Your first idea for a project doesn\u0027t work. What would you do?",
+                          "options":  [
+                                          "Try the same idea again",
+                                          "Ask someone for help",
+                                          "Change part of the idea",
+                                          "Start again with a completely different idea"
+                                      ],
+                          "mapping":  [
+                                          "Persistence",
+                                          "Collaborative",
+                                          "Adaptation",
+                                          "Flexibility"
+                                      ],
+                          "code":  "creativity"
+                      },
+                      {
+                          "id":  60,
+                          "section":  "Creativity \u0026 Future Readiness",
+                          "text":  "When you think about your future, which statement sounds most like you?",
+                          "options":  [
+                                          "I already have a few ideas",
+                                          "I want to explore many possibilities",
+                                          "I know the things I enjoy",
+                                          "I am still discovering what suits me"
+                                      ],
+                          "mapping":  [
+                                          "Clear-Direction",
+                                          "Open-Exploration",
+                                          "Self-Awareness",
+                                          "Growth-Mindset"
+                                      ],
+                          "code":  "creativity"
+                      }
+                  ]
 }
