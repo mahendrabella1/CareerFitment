@@ -9,14 +9,9 @@ import { Class6ScoreOutput } from '@/lib/newAssessment/class6Scoring';
 import { Class7ScoreOutput } from '@/lib/newAssessment/class7Scoring';
 import { Class8ScoreOutput } from '@/lib/newAssessment/class8Scoring';
 
+// Sample data for all reports
 const SAMPLE_CLASS6: Class6ScoreOutput = {
-  personalityProfile: {
-    type: 'INFP',
-    ei: 'I',
-    sn: 'N',
-    tf: 'F',
-    jp: 'P',
-  },
+  personalityProfile: { type: 'INFP', ei: 'I', sn: 'N', tf: 'F', jp: 'P' },
   riasecScores: [
     { letter: 'A', name: 'Artistic (Creative)', score: 85, level: 'High' },
     { letter: 'S', name: 'Social (People-oriented)', score: 72, level: 'High' },
@@ -43,10 +38,7 @@ const SAMPLE_CLASS6: Class6ScoreOutput = {
     { name: 'Collaboration', score: 76, level: 'High' },
     { name: 'Recognition', score: 68, level: 'Good' },
   ],
-  learningStyle: {
-    primary: 'Visual',
-    secondary: 'Auditory',
-  },
+  learningStyle: { primary: 'Visual', secondary: 'Auditory' },
   emotionalAwareness: [
     { dimension: 'Self-Awareness', score: 76, level: 'Good' },
     { dimension: 'Self-Management', score: 72, level: 'Good' },
@@ -61,23 +53,17 @@ const SAMPLE_CLASS6: Class6ScoreOutput = {
     { indicator: 'Artistic Expression', score: 84, level: 'High' },
   ],
   domainAffinities: [
-    { domain: '1', domainName: 'Creative Arts & Design', affinity: 87, reasoning: ['Strong artistic interest', 'High creativity scores', 'Spatial-visual strength', 'Artistic expression'] },
-    { domain: '2', domainName: 'Social Services & Counseling', affinity: 76, reasoning: ['High interpersonal skills', 'Strong social awareness', 'Empathetic nature', 'People-focused'] },
-    { domain: '3', domainName: 'Writing & Communication', affinity: 83, reasoning: ['Excellent verbal skills', 'Creative expression', 'Linguistic strength', 'Storytelling ability'] },
-    { domain: '4', domainName: 'Education & Teaching', affinity: 74, reasoning: ['Strong people skills', 'Love of learning', 'Patience with others', 'Collaborative nature'] },
-    { domain: '5', domainName: 'Performing Arts', affinity: 79, reasoning: ['Musical interests', 'Creative talents', 'Expression abilities', 'Emotional depth'] },
+    { domain: '1', domainName: 'Creative Arts & Design', affinity: 87, reasoning: ['Strong artistic interest', 'High creativity scores'] },
+    { domain: '2', domainName: 'Social Services & Counseling', affinity: 76, reasoning: ['High interpersonal skills'] },
+    { domain: '3', domainName: 'Writing & Communication', affinity: 83, reasoning: ['Excellent verbal skills'] },
+    { domain: '4', domainName: 'Education & Teaching', affinity: 74, reasoning: ['Strong people skills'] },
+    { domain: '5', domainName: 'Performing Arts', affinity: 79, reasoning: ['Creative talents'] },
   ],
-  summary: 'You are a creative, thoughtful individual who thrives in collaborative environments. Your strong interpersonal skills combined with innovative thinking make you well-suited for careers that value human connection and creative expression. Your introspective nature helps you understand your own emotions and empathize with others.',
+  summary: 'Creative, thoughtful individual with strong interpersonal skills.',
 };
 
 const SAMPLE_CLASS7: Class7ScoreOutput = {
-  personalityProfile: {
-    type: 'ENTJ',
-    ei: 'E',
-    sn: 'N',
-    tf: 'T',
-    jp: 'J',
-  },
+  personalityProfile: { type: 'ENTJ', ei: 'E', sn: 'N', tf: 'T', jp: 'J' },
   riasecScores: [
     { letter: 'E', name: 'Enterprising', score: 88, level: 'Very High' },
     { letter: 'I', name: 'Investigative', score: 76, level: 'High' },
@@ -104,10 +90,7 @@ const SAMPLE_CLASS7: Class7ScoreOutput = {
     { name: 'Status', score: 80, level: 'High' },
     { name: 'Autonomy', score: 82, level: 'High' },
   ],
-  learningStyle: {
-    primary: 'Reading/Writing',
-    secondary: 'Kinesthetic',
-  },
+  learningStyle: { primary: 'Reading/Writing', secondary: 'Kinesthetic' },
   emotionalAwareness: [
     { dimension: 'Self-Awareness', score: 78, level: 'Good' },
     { dimension: 'Self-Management', score: 82, level: 'Excellent' },
@@ -123,32 +106,27 @@ const SAMPLE_CLASS7: Class7ScoreOutput = {
     { indicator: 'Risk Assessment', score: 81, level: 'High' },
   ],
   domainAffinities: [
-    { domain: '1', domainName: 'Business & Management', affinity: 89, reasoning: ['Strong leadership', 'Strategic thinking', 'Decision-making ability', 'Competitive nature'] },
-    { domain: '2', domainName: 'Engineering & Technology', affinity: 81, reasoning: ['Logical thinking', 'Problem-solving', 'Systematic approach', 'Innovation drive'] },
-    { domain: '3', domainName: 'Law & Policy', affinity: 78, reasoning: ['Analytical skills', 'Decision-making', 'Debating ability', 'Justice-oriented'] },
-    { domain: '4', domainName: 'Finance & Economics', affinity: 76, reasoning: ['Numerical skills', 'Strategic planning', 'Market analysis', 'Competitive advantage'] },
-    { domain: '5', domainName: 'Entrepreneurship', affinity: 87, reasoning: ['Visionary planning', 'Risk-taking capability', 'Leadership strength', 'Independence drive'] },
+    { domain: '1', domainName: 'Business & Management', affinity: 89, reasoning: ['Strong leadership', 'Strategic thinking'] },
+    { domain: '2', domainName: 'Engineering & Technology', affinity: 81, reasoning: ['Logical thinking'] },
+    { domain: '3', domainName: 'Law & Policy', affinity: 78, reasoning: ['Analytical skills'] },
+    { domain: '4', domainName: 'Finance & Economics', affinity: 76, reasoning: ['Numerical skills'] },
+    { domain: '5', domainName: 'Entrepreneurship', affinity: 87, reasoning: ['Visionary planning'] },
   ],
-  summary: 'You are a natural leader with strong analytical and strategic thinking skills. Your drive for achievement and ability to influence others position you well for executive and decision-making roles in dynamic organizations. You excel at setting ambitious goals and mobilizing teams to achieve them.',
+  summary: 'Natural leader with strong analytical and strategic thinking skills.',
 };
 
 const SAMPLE_CLASS8: Class8ScoreOutput = {
   personalityProfile: {
-    typeScores: {
-      introversion_extroversion: 65,
-      sensing_intuition: 72,
-      thinking_feeling: 58,
-      judging_perceiving: 68,
-    },
+    typeScores: { introversion_extroversion: 65, sensing_intuition: 72, thinking_feeling: 58, judging_perceiving: 68 },
     dominantType: 'Strategic Thinker with Analytical Focus',
   },
   riasecScores: [
-    { code: 'I', name: 'Investigative', score: 82, description: 'Strong interest in research, analysis, and intellectual pursuits' },
-    { code: 'E', name: 'Enterprising', score: 76, description: 'Natural leadership abilities and entrepreneurial initiatives' },
-    { code: 'A', name: 'Artistic', score: 65, description: 'Creative expression interests and aesthetic appreciation' },
-    { code: 'S', name: 'Social', score: 72, description: 'Strong people-oriented skills and helping abilities' },
-    { code: 'C', name: 'Conventional', score: 58, description: 'Moderate interest in organization and structure' },
-    { code: 'R', name: 'Realistic', score: 61, description: 'Practical problem-solving and hands-on work' },
+    { code: 'I', name: 'Investigative', score: 82, description: 'Research and analysis' },
+    { code: 'E', name: 'Enterprising', score: 76, description: 'Leadership abilities' },
+    { code: 'A', name: 'Artistic', score: 65, description: 'Creative interests' },
+    { code: 'S', name: 'Social', score: 72, description: 'People skills' },
+    { code: 'C', name: 'Conventional', score: 58, description: 'Organization' },
+    { code: 'R', name: 'Realistic', score: 61, description: 'Hands-on work' },
   ],
   aptitudeProfile: {
     overallScore: 78,
@@ -179,14 +157,14 @@ const SAMPLE_CLASS8: Class8ScoreOutput = {
     primaryStyle: 'Visual',
     secondaryStyle: 'Reading/Writing',
     recommendations: [
-      'Use diagrams, flowcharts, and visual models to understand complex concepts',
-      'Take detailed, organized notes with color coding and visual hierarchy',
-      'Create mind maps and concept maps to connect ideas and relationships',
-      'Watch demonstrations, tutorials, and educational videos before hands-on practice',
-      'Break down complex topics into smaller visual chunks for better comprehension',
-      'Use whiteboards and digital sketching tools to work through problems',
-      'Engage with infographics and data visualizations to grasp information quickly',
-      'Read textbooks and reference materials to build foundational knowledge',
+      'Use diagrams and flowcharts',
+      'Take detailed notes',
+      'Create mind maps',
+      'Watch tutorials',
+      'Use visual models',
+      'Engage with infographics',
+      'Read reference materials',
+      'Whiteboard problem-solving',
     ],
   },
   emotionalAwareness: [
@@ -204,46 +182,18 @@ const SAMPLE_CLASS8: Class8ScoreOutput = {
     { indicator: 'Innovation Index', score: 80, level: 'High' },
   ],
   domainAffinities: [
-    { domain: 'STEM Fields', affinity: 85, reasoning: 'Strong analytical and logical skills with excellent pattern recognition abilities' },
-    { domain: 'Research & Academia', affinity: 82, reasoning: 'Deep investigative interests and love of intellectual challenges' },
-    { domain: 'Technology & Innovation', affinity: 80, reasoning: 'Creative problem-solving combined with technical aptitude' },
-    { domain: 'Business Analysis', affinity: 76, reasoning: 'Strategic thinking abilities and numerical reasoning strengths' },
-    { domain: 'Engineering', affinity: 79, reasoning: 'Spatial reasoning and hands-on problem-solving capabilities' },
+    { domain: 'STEM Fields', affinity: 85, reasoning: 'Strong analytical and logical skills' },
+    { domain: 'Research & Academia', affinity: 82, reasoning: 'Deep investigative interests' },
+    { domain: 'Technology & Innovation', affinity: 80, reasoning: 'Creative problem-solving' },
+    { domain: 'Business Analysis', affinity: 76, reasoning: 'Strategic thinking abilities' },
+    { domain: 'Engineering', affinity: 79, reasoning: 'Spatial reasoning strengths' },
   ],
   summary: {
-    profileDescription: 'You are an analytical thinker with exceptional problem-solving abilities and a keen interest in understanding how things work. Your combination of strong logical reasoning, creative thinking, and people skills positions you uniquely to make significant contributions in intellectually demanding fields. You have a natural drive to master complex systems and innovate new solutions.',
-    topStrengths: [
-      'Logical reasoning and mathematical ability',
-      'Analytical thinking and pattern recognition',
-      'Creative problem-solving approaches',
-      'Leadership potential and team coordination',
-      'Spatial visualization and visual learning',
-      'Self-motivation and drive for excellence',
-    ],
-    developmentAreas: [
-      'Public speaking and presentation skills',
-      'Emotional expression and vulnerability',
-      'Networking and relationship building',
-      'Work-life balance and stress management',
-      'Collaborative listening skills',
-    ],
-    careerDirections: [
-      'STEM careers (Physics, Chemistry, Computer Science)',
-      'Research and Development roles',
-      'Data analysis and business intelligence',
-      'Software engineering and technology',
-      'Engineering (Mechanical, Civil, Electrical)',
-      'Academic research and professorship',
-      'Management consulting',
-    ],
-    nextSteps: [
-      'Explore STEM clubs, competitions, and coding challenges to deepen technical skills',
-      'Work on developing public speaking and presentation skills through debate or clubs',
-      'Seek mentorship from professionals in your areas of interest',
-      'Balance analytical work with collaborative team projects to build social skills',
-      'Consider internships in research labs or tech companies to gain practical experience',
-      'Develop entrepreneurial thinking by working on personal projects and innovations',
-    ],
+    profileDescription: 'Analytical thinker with strong problem-solving abilities.',
+    topStrengths: ['Logical reasoning', 'Analytical thinking', 'Problem-solving', 'Leadership', 'Spatial visualization'],
+    developmentAreas: ['Public speaking', 'Emotional expression', 'Networking', 'Work-life balance'],
+    careerDirections: ['STEM careers', 'Research', 'Data analysis', 'Software engineering', 'Engineering'],
+    nextSteps: ['Explore STEM clubs', 'Develop leadership skills', 'Seek mentorship', 'Work on projects'],
   },
 };
 
@@ -251,134 +201,114 @@ export default function ReportsPage() {
   const [selectedClass, setSelectedClass] = useState<'6' | '7' | '8' | 'full'>('8');
 
   return (
-    <div className="min-h-screen" style={{ background: '#f3f4f6' }}>
-      {/* Navigation */}
-      <div style={{ position: 'sticky', top: 0, zIndex: 50, background: 'white', borderBottom: '1px solid #d1d5db', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-        <div style={{ maxWidth: '100%', padding: '1rem', paddingLeft: '1rem', paddingRight: '1rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-            <h1 style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#111827' }}>📊 Sample Assessment Reports</h1>
-            <a href="/" style={{ fontSize: '0.875rem', color: '#2563eb', textDecoration: 'underline' }}>← Back</a>
+    <div style={{ minHeight: '100vh', backgroundColor: '#f3f4f6' }}>
+      {/* Header/Navigation */}
+      <div style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
+        backgroundColor: 'white',
+        borderBottom: '1px solid #d1d5db',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+        padding: '1.5rem',
+      }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#000' }}>📊 Assessment Reports</h1>
+            <a href="/" style={{ fontSize: '0.95rem', color: '#2563eb', textDecoration: 'none' }}>← Back</a>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <button
-              onClick={() => setSelectedClass('6')}
-              style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '0.5rem',
-                fontWeight: '500',
-                background: selectedClass === '6' ? '#2563eb' : '#e2e8f0',
-                color: selectedClass === '6' ? 'white' : '#111827',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              Class 6 Report
-            </button>
-            <button
-              onClick={() => setSelectedClass('7')}
-              style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '0.5rem',
-                fontWeight: '500',
-                background: selectedClass === '7' ? '#2563eb' : '#e2e8f0',
-                color: selectedClass === '7' ? 'white' : '#111827',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              Class 7 Report
-            </button>
-            <button
-              onClick={() => setSelectedClass('8')}
-              style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '0.5rem',
-                fontWeight: '500',
-                background: selectedClass === '8' ? '#2563eb' : '#e2e8f0',
-                color: selectedClass === '8' ? 'white' : '#111827',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              Class 8 Report (Refactored)
-            </button>
-            <button
-              onClick={() => setSelectedClass('full')}
-              style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '0.5rem',
-                fontWeight: '500',
-                background: selectedClass === 'full' ? '#2563eb' : '#e2e8f0',
-                color: selectedClass === 'full' ? 'white' : '#111827',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              Class 11-12 Report
-            </button>
+          {/* Navigation Tabs */}
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            {['6', '7', '8', 'full'].map((cls) => (
+              <button
+                key={cls}
+                onClick={() => setSelectedClass(cls as any)}
+                style={{
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '0.5rem',
+                  border: 'none',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  backgroundColor: selectedClass === cls ? '#2563eb' : '#e5e7eb',
+                  color: selectedClass === cls ? 'white' : '#000',
+                  fontSize: '0.95rem',
+                  transition: 'all 0.3s ease',
+                }}
+              >
+                {cls === 'full' ? 'Class 11-12' : `Class ${cls}`}
+              </button>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Report Display */}
-      <div style={{ padding: '2rem 0' }}>
+      {/* Content Area */}
+      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '2rem 1rem' }}>
+        {/* Class 6 */}
         {selectedClass === '6' && (
-          <Class6Report
-            studentName="Sarah Johnson"
-            studentEmail="sarah.johnson@school.edu"
-            output={SAMPLE_CLASS6}
-          />
+          <div key="class6">
+            <Class6Report
+              studentName="Sarah Johnson"
+              studentEmail="sarah.johnson@school.edu"
+              output={SAMPLE_CLASS6}
+            />
+          </div>
         )}
 
+        {/* Class 7 */}
         {selectedClass === '7' && (
-          <Class7Report
-            studentName="Michael Chen"
-            studentEmail="michael.chen@school.edu"
-            output={SAMPLE_CLASS7}
-          />
+          <div key="class7">
+            <Class7Report
+              studentName="Michael Chen"
+              studentEmail="michael.chen@school.edu"
+              output={SAMPLE_CLASS7}
+            />
+          </div>
         )}
 
+        {/* Class 8 */}
         {selectedClass === '8' && (
-          <Class8Report
-            studentName="Emma Williams"
-            output={SAMPLE_CLASS8}
-            assessmentDate="September 8, 2026"
-            studentEmail="emma.williams@school.edu"
-          />
+          <div key="class8">
+            <Class8Report
+              studentName="Emma Williams"
+              output={SAMPLE_CLASS8}
+              assessmentDate="September 8, 2026"
+              studentEmail="emma.williams@school.edu"
+            />
+          </div>
         )}
 
+        {/* Class 11-12 */}
         {selectedClass === 'full' && (
-          <FullReport
-            studentName="Aditya Patel"
-            output={SAMPLE_CLASS8}
-            assessmentDate="September 8, 2026"
-            studentEmail="aditya.patel@school.edu"
-          />
+          <div key="full">
+            <FullReport
+              studentName="Aditya Patel"
+              output={SAMPLE_CLASS8}
+              assessmentDate="September 8, 2026"
+              studentEmail="aditya.patel@school.edu"
+            />
+          </div>
         )}
       </div>
 
-      {/* Footer Note */}
+      {/* Footer Tip */}
       <div style={{
         position: 'fixed',
-        bottom: '1rem',
-        left: '1rem',
-        right: '1rem',
-        background: 'white',
+        bottom: '2rem',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        backgroundColor: 'white',
         border: '1px solid #d1d5db',
         borderRadius: '0.5rem',
-        padding: '1rem',
-        boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
-        maxWidth: '28rem',
-        margin: '0 auto',
-        zIndex: 40
+        padding: '1rem 1.5rem',
+        boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+        zIndex: 50,
+        maxWidth: '400px',
+        textAlign: 'center',
       }}>
-        <p style={{ fontSize: '0.875rem', color: '#4b5563' }}>
-          💡 <strong>Tip:</strong> Use Ctrl+P (or Cmd+P on Mac) to print or save as PDF. Try the print button in Class 8 report!
+        <p style={{ fontSize: '0.9rem', color: '#4b5563', margin: 0 }}>
+          💡 <strong>Tip:</strong> Press <code style={{ backgroundColor: '#f3f4f6', padding: '0.2rem 0.4rem', borderRadius: '0.25rem' }}>Ctrl+P</code> to print/save as PDF
         </p>
       </div>
     </div>
