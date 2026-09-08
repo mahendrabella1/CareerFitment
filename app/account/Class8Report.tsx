@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Class8ScoreOutput } from '@/lib/newAssessment/class8Scoring';
+import { ProgressBar } from './ProgressBar';
 
 interface Class8ReportProps {
   studentName: string;
@@ -11,59 +12,16 @@ interface Class8ReportProps {
 }
 
 export default function Class8Report({ studentName, output, assessmentDate = new Date().toLocaleDateString(), studentEmail }: Class8ReportProps) {
-  const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
-    personality: true,
-    riasec: true,
-    strengths: false,
-    aptitude: false,
-    motivators: false,
-    learning: false,
-    emotional: false,
-    creativity: false,
-    careers: false,
-  });
-
-  const toggleSection = (section: string) => {
-    setExpandedSections((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
-  };
-
   const handlePrint = () => {
     window.print();
   };
 
-  // Colors for display (bright/saturated)
-  const getColorForScore = (score: number): string => {
-    if (score >= 80) return 'from-emerald-400 to-green-500';
-    if (score >= 60) return 'from-cyan-400 to-blue-500';
-    if (score >= 40) return 'from-amber-400 to-orange-500';
-    return 'from-rose-400 to-red-500';
-  };
-
-  // Colors for text (display only)
-  const getColorClassForScore = (score: number): string => {
-    if (score >= 80) return 'text-emerald-400';
-    if (score >= 60) return 'text-cyan-400';
-    if (score >= 40) return 'text-amber-400';
-    return 'text-rose-400';
-  };
-
-  // Print-safe colors (grayscale for better printing)
-  const getPrintColorClass = (score: number): string => {
-    if (score >= 80) return 'print:text-green-700';
-    if (score >= 60) return 'print:text-blue-700';
-    if (score >= 40) return 'print:text-orange-700';
-    return 'print:text-red-700';
-  };
-
-  // Print-safe progress bar colors (solid dark colors)
-  const getPrintProgressClass = (score: number): string => {
-    if (score >= 80) return 'print:bg-green-700';
-    if (score >= 60) return 'print:bg-blue-700';
-    if (score >= 40) return 'print:bg-orange-700';
-    return 'print:bg-red-700';
+  // Color scheme by score
+  const getColorScheme = (score: number): 'green' | 'blue' | 'amber' | 'red' => {
+    if (score >= 80) return 'green';
+    if (score >= 60) return 'blue';
+    if (score >= 40) return 'amber';
+    return 'red';
   };
 
   const printStyles = `
@@ -92,29 +50,16 @@ export default function Class8Report({ studentName, output, assessmentDate = new
         line-height: 1.5;
       }
 
-      /* Ensure text is black */
       body, p, span, li, div {
         color: black !important;
         background: white !important;
       }
 
-      /* Progress bars */
-      .progress-bar {
-        border: 1px solid #333;
-        background: #f0f0f0 !important;
-      }
-
-      .progress-fill {
-        background: #666 !important;
-      }
-
-      /* Section headers */
       h1, h2, h3 {
         color: black !important;
         page-break-after: avoid;
       }
 
-      /* Ensure spacing for readability */
       .mb-8 { page-break-inside: avoid; }
       .mb-6 { page-break-inside: avoid; }
     }
@@ -185,338 +130,202 @@ export default function Class8Report({ studentName, output, assessmentDate = new
         </div>
 
         {/* Personality Preferences */}
-        <div className="mb-8 print:page-break-inside-avoid">
-          <button
-            onClick={() => toggleSection('personality')}
-            className="w-full p-6 bg-gradient-to-r from-purple-900/50 to-indigo-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
-          >
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-white print:text-black">Personality Preferences</h2>
-              <span className="text-2xl print:hidden">{expandedSections.personality ? '▼' : '▶'}</span>
+        <section className="mb-8 print:page-break-inside-avoid">
+          <div className="p-6 bg-purple-900/30 rounded-xl border border-slate-700/50 print:bg-gray-100 print:border-gray-300">
+            <h2 className="text-2xl font-bold text-white print:text-black mb-6">Personality Preferences</h2>
+            <div className="grid grid-cols-2 gap-6 mb-6">
+              {Object.entries(output.personalityProfile.typeScores).map(([type, score]) => (
+                <ProgressBar
+                  key={type}
+                  label={type.charAt(0).toUpperCase() + type.slice(1)}
+                  score={score}
+                  colorScheme={getColorScheme(score)}
+                  showPercentage
+                />
+              ))}
             </div>
-          </button>
 
-          {expandedSections.personality && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 print:bg-white print:border-gray-300">
-              <div className="grid grid-cols-2 gap-6 mb-6">
-                {Object.entries(output.personalityProfile.typeScores).map(([type, score]) => (
-                  <div key={type} className="print:page-break-inside-avoid">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-medium text-white print:text-black capitalize">{type}</span>
-                      <span className={`font-bold text-lg ${getColorClassForScore(score)} ${getPrintColorClass(score)}`}>{score}%</span>
-                    </div>
-                    <div className="w-full bg-slate-700/30 rounded-full h-2 progress-bar print:bg-gray-300">
-                      <div
-                        className={`h-full rounded-full bg-gradient-to-r ${getColorForScore(score)} progress-fill ${getPrintProgressClass(score)}`}
-                        style={{ width: `${score}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="p-4 bg-slate-700/30 rounded-lg print:bg-gray-50 print:border print:border-gray-300">
-                <p className="text-sm font-semibold text-slate-300 print:text-gray-700 uppercase mb-2">Your Primary Type</p>
-                <p className="text-lg font-bold text-cyan-400 print:text-blue-700">{output.personalityProfile.dominantType}</p>
-              </div>
+            <div className="p-4 bg-slate-700/30 rounded-lg print:bg-gray-50 print:border print:border-gray-300">
+              <p className="text-sm font-semibold text-slate-300 print:text-gray-700 uppercase mb-2">Your Primary Type</p>
+              <p className="text-lg font-bold text-cyan-400 print:text-blue-700">{output.personalityProfile.dominantType}</p>
             </div>
-          )}
-        </div>
+          </div>
+        </section>
 
         {/* RIASEC Career Interests */}
-        <div className="mb-8 print:page-break-inside-avoid">
-          <button
-            onClick={() => toggleSection('riasec')}
-            className="w-full p-6 bg-gradient-to-r from-cyan-900/50 to-blue-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
-          >
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-white print:text-black">Career Interests (RIASEC)</h2>
-              <span className="text-2xl print:hidden">{expandedSections.riasec ? '▼' : '▶'}</span>
-            </div>
-          </button>
-
-          {expandedSections.riasec && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4 print:bg-white print:border-gray-300">
-              {output.riasecScores.map((score, idx) => (
-                <div key={score.code} className="print:page-break-inside-avoid">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-white print:text-black">
-                      {score.code} - {score.name}
-                    </span>
-                    <span className={`font-bold text-lg ${getColorClassForScore(score.score)} ${getPrintColorClass(score.score)}`}>{score.score}%</span>
-                  </div>
-                  <div className="w-full bg-slate-700/30 rounded-full h-2 progress-bar print:bg-gray-300">
-                    <div
-                      className={`h-full rounded-full bg-gradient-to-r ${getColorForScore(score.score)} progress-fill ${getPrintProgressClass(score.score)}`}
-                      style={{ width: `${score.score}%` }}
-                    />
-                  </div>
-                  <p className="text-xs text-slate-400 mt-2">{score.description}</p>
+        <section className="mb-8 print:page-break-inside-avoid">
+          <div className="p-6 bg-cyan-900/30 rounded-xl border border-slate-700/50 print:bg-gray-100 print:border-gray-300">
+            <h2 className="text-2xl font-bold text-white print:text-black mb-6">Career Interests (RIASEC)</h2>
+            <div className="space-y-6">
+              {output.riasecScores.map((score) => (
+                <div key={score.code}>
+                  <ProgressBar
+                    label={`${score.code} - ${score.name}`}
+                    score={score.score}
+                    colorScheme={getColorScheme(score.score)}
+                    description={score.description}
+                  />
                 </div>
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        </section>
 
         {/* Aptitude & Reasoning */}
-        <div className="mb-8 print:page-break-inside-avoid">
-          <button
-            onClick={() => toggleSection('aptitude')}
-            className="w-full p-6 bg-gradient-to-r from-orange-900/50 to-red-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
-          >
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-white print:text-black">Aptitude & Reasoning</h2>
-              <span className="text-2xl print:hidden">{expandedSections.aptitude ? '▼' : '▶'}</span>
-            </div>
-          </button>
+        <section className="mb-8 print:page-break-inside-avoid">
+          <div className="p-6 bg-orange-900/30 rounded-xl border border-slate-700/50 print:bg-gray-100 print:border-gray-300">
+            <h2 className="text-2xl font-bold text-white print:text-black mb-6">Aptitude & Reasoning</h2>
 
-          {expandedSections.aptitude && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 print:bg-white print:border-gray-300">
-              <div className="grid grid-cols-1 gap-4 mb-6">
-                <div className="p-4 bg-slate-700/30 rounded-lg text-center print:bg-gray-50 print:border print:border-gray-300">
-                  <p className="text-xs text-slate-400 print:text-gray-700 uppercase">Overall Score</p>
-                  <p className={`text-3xl font-bold ${getColorClassForScore(output.aptitudeProfile.overallScore)} ${getPrintColorClass(output.aptitudeProfile.overallScore)}`}>
-                    {output.aptitudeProfile.overallScore}%
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                {[
-                  { label: 'Numeric Reasoning', key: 'numericReasoning' },
-                  { label: 'Logical Deduction', key: 'logicalDeduction' },
-                  { label: 'Pattern Recognition', key: 'patternRecognition' },
-                  { label: 'Spatial Reasoning', key: 'spatialReasoning' },
-                ].map(({ label, key }) => {
-                  const category = output.aptitudeProfile[key as keyof typeof output.aptitudeProfile] as any;
-                  if (!category || typeof category.score !== 'number') return null;
-                  return (
-                    <div key={key} className="print:page-break-inside-avoid">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="font-medium text-white print:text-black">{label}</span>
-                        <span className={`font-bold ${getColorClassForScore(category.score)}`}>{category.score}%</span>
-                      </div>
-                      <div className="w-full bg-slate-700/30 rounded-full h-2">
-                        <div
-                          className={`h-full rounded-full bg-gradient-to-r ${getColorForScore(category.score)}`}
-                          style={{ width: `${category.score}%` }}
-                        />
-                      </div>
-                      <p className="text-xs text-slate-400 mt-1">{category.level}</p>
-                    </div>
-                  );
-                })}
-              </div>
+            <div className="p-4 bg-slate-700/30 rounded-lg text-center mb-6 print:bg-gray-50 print:border print:border-gray-300">
+              <p className="text-xs text-slate-400 print:text-gray-700 uppercase mb-2">Overall Score</p>
+              <p className="text-3xl font-bold text-orange-400 print:text-orange-700">
+                {output.aptitudeProfile.overallScore}%
+              </p>
             </div>
-          )}
-        </div>
+
+            <div className="space-y-6">
+              {[
+                { label: 'Numeric Reasoning', key: 'numericReasoning' },
+                { label: 'Logical Deduction', key: 'logicalDeduction' },
+                { label: 'Pattern Recognition', key: 'patternRecognition' },
+                { label: 'Spatial Reasoning', key: 'spatialReasoning' },
+              ].map(({ label, key }) => {
+                const category = output.aptitudeProfile[key as keyof typeof output.aptitudeProfile] as any;
+                if (!category || typeof category.score !== 'number') return null;
+                return (
+                  <ProgressBar
+                    key={key}
+                    label={label}
+                    score={category.score}
+                    colorScheme={getColorScheme(category.score)}
+                    description={category.level}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        </section>
 
         {/* Strength Domains */}
-        <div className="mb-8 print:page-break-inside-avoid">
-          <button
-            onClick={() => toggleSection('strengths')}
-            className="w-full p-6 bg-gradient-to-r from-green-900/50 to-emerald-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
-          >
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-white print:text-black">Strength Domains</h2>
-              <span className="text-2xl print:hidden">{expandedSections.strengths ? '▼' : '▶'}</span>
-            </div>
-          </button>
-
-          {expandedSections.strengths && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4 print:bg-white print:border-gray-300">
+        <section className="mb-8 print:page-break-inside-avoid">
+          <div className="p-6 bg-green-900/30 rounded-xl border border-slate-700/50 print:bg-gray-100 print:border-gray-300">
+            <h2 className="text-2xl font-bold text-white print:text-black mb-6">Strength Domains</h2>
+            <div className="space-y-6">
               {output.strengthDomains.map((domain) => (
-                <div key={domain.code} className="print:page-break-inside-avoid">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-white print:text-black">{domain.domain}</span>
-                    <span className={`font-bold text-lg ${getColorClassForScore(domain.score)}`}>{domain.score}%</span>
-                  </div>
-                  <div className="w-full bg-slate-700/30 rounded-full h-2">
-                    <div
-                      className={`h-full rounded-full bg-gradient-to-r ${getColorForScore(domain.score)}`}
-                      style={{ width: `${domain.score}%` }}
-                    />
-                  </div>
-                  <p className="text-xs text-slate-400 mt-1">Level: {domain.level}</p>
-                </div>
+                <ProgressBar
+                  key={domain.code}
+                  label={domain.domain}
+                  score={domain.score}
+                  colorScheme={getColorScheme(domain.score)}
+                  description={`Level: ${domain.level}`}
+                />
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        </section>
 
         {/* Motivators */}
-        <div className="mb-8 print:page-break-inside-avoid">
-          <button
-            onClick={() => toggleSection('motivators')}
-            className="w-full p-6 bg-gradient-to-r from-pink-900/50 to-rose-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
-          >
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-white print:text-black">Motivators & Values</h2>
-              <span className="text-2xl print:hidden">{expandedSections.motivators ? '▼' : '▶'}</span>
-            </div>
-          </button>
-
-          {expandedSections.motivators && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4 print:bg-white print:border-gray-300">
+        <section className="mb-8 print:page-break-inside-avoid">
+          <div className="p-6 bg-pink-900/30 rounded-xl border border-slate-700/50 print:bg-gray-100 print:border-gray-300">
+            <h2 className="text-2xl font-bold text-white print:text-black mb-6">Motivators & Values</h2>
+            <div className="space-y-6">
               {output.motivators.map((motivator) => (
-                <div key={motivator.motivator} className="print:page-break-inside-avoid">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-white print:text-black">{motivator.motivator}</span>
-                    <span className={`font-bold text-lg ${getColorClassForScore(motivator.score)}`}>{motivator.score}%</span>
-                  </div>
-                  <div className="w-full bg-slate-700/30 rounded-full h-2">
-                    <div
-                      className={`h-full rounded-full bg-gradient-to-r ${getColorForScore(motivator.score)}`}
-                      style={{ width: `${motivator.score}%` }}
-                    />
-                  </div>
-                  <p className="text-xs text-slate-400 mt-1">{motivator.level} Intensity</p>
-                </div>
+                <ProgressBar
+                  key={motivator.motivator}
+                  label={motivator.motivator}
+                  score={motivator.score}
+                  colorScheme={getColorScheme(motivator.score)}
+                  description={`${motivator.level} Intensity`}
+                />
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        </section>
 
         {/* Learning Style */}
-        <div className="mb-8 print:page-break-inside-avoid">
-          <button
-            onClick={() => toggleSection('learning')}
-            className="w-full p-6 bg-gradient-to-r from-teal-900/50 to-cyan-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
-          >
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-white print:text-black">Learning Style</h2>
-              <span className="text-2xl print:hidden">{expandedSections.learning ? '▼' : '▶'}</span>
-            </div>
-          </button>
+        <section className="mb-8 print:page-break-inside-avoid">
+          <div className="p-6 bg-teal-900/30 rounded-xl border border-slate-700/50 print:bg-gray-100 print:border-gray-300">
+            <h2 className="text-2xl font-bold text-white print:text-black mb-6">Learning Style</h2>
 
-          {expandedSections.learning && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 print:bg-white print:border-gray-300">
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="p-4 bg-slate-700/30 rounded-lg print:bg-gray-50 print:border print:border-gray-300">
-                  <p className="text-xs text-slate-400 print:text-gray-700 uppercase font-semibold">Primary Style</p>
-                  <p className="text-lg font-bold text-white print:text-black">{output.learningStyle.primaryStyle}</p>
-                </div>
-                <div className="p-4 bg-slate-700/30 rounded-lg print:bg-gray-50 print:border print:border-gray-300">
-                  <p className="text-xs text-slate-400 print:text-gray-700 uppercase font-semibold">Secondary Style</p>
-                  <p className="text-lg font-bold text-white print:text-black">{output.learningStyle.secondaryStyle}</p>
-                </div>
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="p-4 bg-slate-700/30 rounded-lg print:bg-gray-50 print:border print:border-gray-300">
+                <p className="text-xs text-slate-400 print:text-gray-700 uppercase font-semibold mb-2">Primary Style</p>
+                <p className="text-lg font-bold text-white print:text-black">{output.learningStyle.primaryStyle}</p>
               </div>
-
-              <div className="mb-4">
-                <p className="font-semibold text-white print:text-black mb-3">Recommended Strategies:</p>
-                <ul className="space-y-2">
-                  {output.learningStyle.recommendations.map((strategy, idx) => (
-                    <li key={idx} className="text-sm text-slate-200 print:text-gray-800 flex gap-2">
-                      <span className="text-cyan-400 print:text-blue-700">✓</span>
-                      <span>{strategy}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div className="p-4 bg-slate-700/30 rounded-lg print:bg-gray-50 print:border print:border-gray-300">
+                <p className="text-xs text-slate-400 print:text-gray-700 uppercase font-semibold mb-2">Secondary Style</p>
+                <p className="text-lg font-bold text-white print:text-black">{output.learningStyle.secondaryStyle}</p>
               </div>
             </div>
-          )}
-        </div>
+
+            <div>
+              <p className="font-semibold text-white print:text-black mb-3">Recommended Strategies:</p>
+              <ul className="space-y-2">
+                {output.learningStyle.recommendations.map((strategy, idx) => (
+                  <li key={idx} className="text-sm text-slate-200 print:text-gray-800 flex gap-2">
+                    <span className="text-cyan-400 print:text-blue-700">✓</span>
+                    <span>{strategy}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
 
         {/* Emotional & Social Awareness */}
-        <div className="mb-8 print:page-break-inside-avoid">
-          <button
-            onClick={() => toggleSection('emotional')}
-            className="w-full p-6 bg-gradient-to-r from-violet-900/50 to-purple-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
-          >
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-white print:text-black">Emotional Intelligence</h2>
-              <span className="text-2xl print:hidden">{expandedSections.emotional ? '▼' : '▶'}</span>
-            </div>
-          </button>
-
-          {expandedSections.emotional && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4 print:bg-white print:border-gray-300">
+        <section className="mb-8 print:page-break-inside-avoid">
+          <div className="p-6 bg-violet-900/30 rounded-xl border border-slate-700/50 print:bg-gray-100 print:border-gray-300">
+            <h2 className="text-2xl font-bold text-white print:text-black mb-6">Emotional Intelligence</h2>
+            <div className="space-y-6">
               {output.emotionalAwareness.map((component) => (
-                <div key={component.component} className="print:page-break-inside-avoid">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-white print:text-black">{component.component}</span>
-                    <span className={`font-bold text-lg ${getColorClassForScore(component.score)}`}>{component.score}%</span>
-                  </div>
-                  <div className="w-full bg-slate-700/30 rounded-full h-2">
-                    <div
-                      className={`h-full rounded-full bg-gradient-to-r ${getColorForScore(component.score)}`}
-                      style={{ width: `${component.score}%` }}
-                    />
-                  </div>
-                  <p className="text-xs text-slate-400 mt-1">{component.level}</p>
-                </div>
+                <ProgressBar
+                  key={component.component}
+                  label={component.component}
+                  score={component.score}
+                  colorScheme={getColorScheme(component.score)}
+                  description={component.level}
+                />
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        </section>
 
         {/* Creativity & Future Readiness */}
-        <div className="mb-8 print:page-break-inside-avoid">
-          <button
-            onClick={() => toggleSection('creativity')}
-            className="w-full p-6 bg-gradient-to-r from-indigo-900/50 to-blue-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
-          >
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-white print:text-black">Creativity & Future Readiness</h2>
-              <span className="text-2xl print:hidden">{expandedSections.creativity ? '▼' : '▶'}</span>
-            </div>
-          </button>
-
-          {expandedSections.creativity && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4 print:bg-white print:border-gray-300">
+        <section className="mb-8 print:page-break-inside-avoid">
+          <div className="p-6 bg-indigo-900/30 rounded-xl border border-slate-700/50 print:bg-gray-100 print:border-gray-300">
+            <h2 className="text-2xl font-bold text-white print:text-black mb-6">Creativity & Future Readiness</h2>
+            <div className="space-y-6">
               {output.creativity.map((indicator) => (
-                <div key={indicator.indicator} className="print:page-break-inside-avoid">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-white print:text-black">{indicator.indicator}</span>
-                    <span className={`font-bold text-lg ${getColorClassForScore(indicator.score)}`}>{indicator.score}%</span>
-                  </div>
-                  <div className="w-full bg-slate-700/30 rounded-full h-2">
-                    <div
-                      className={`h-full rounded-full bg-gradient-to-r ${getColorForScore(indicator.score)}`}
-                      style={{ width: `${indicator.score}%` }}
-                    />
-                  </div>
-                  <p className="text-xs text-slate-400 mt-1">Level: {indicator.level}</p>
-                </div>
+                <ProgressBar
+                  key={indicator.indicator}
+                  label={indicator.indicator}
+                  score={indicator.score}
+                  colorScheme={getColorScheme(indicator.score)}
+                  description={`Level: ${indicator.level}`}
+                />
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        </section>
 
-        {/* Career Domain Affinities */}
-        <div className="mb-8 print:page-break-inside-avoid">
-          <button
-            onClick={() => toggleSection('careers')}
-            className="w-full p-6 bg-gradient-to-r from-yellow-900/50 to-orange-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
-          >
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-white print:text-black">Career Domain Alignment</h2>
-              <span className="text-2xl print:hidden">{expandedSections.careers ? '▼' : '▶'}</span>
-            </div>
-          </button>
-
-          {expandedSections.careers && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4 print:bg-white print:border-gray-300">
+        {/* Career Domain Alignment */}
+        <section className="mb-8 print:page-break-inside-avoid">
+          <div className="p-6 bg-yellow-900/30 rounded-xl border border-slate-700/50 print:bg-gray-100 print:border-gray-300">
+            <h2 className="text-2xl font-bold text-white print:text-black mb-6">Career Domain Alignment</h2>
+            <div className="space-y-6">
               {output.domainAffinities.map((domain, idx) => (
-                <div key={domain.domain} className="print:page-break-inside-avoid">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-white print:text-black">
-                      {idx + 1}. {domain.domain}
-                    </span>
-                    <span className={`font-bold text-lg ${getColorClassForScore(domain.affinity)}`}>{domain.affinity}%</span>
-                  </div>
-                  <div className="w-full bg-slate-700/30 rounded-full h-2 mb-2">
-                    <div
-                      className={`h-full rounded-full bg-gradient-to-r ${getColorForScore(domain.affinity)}`}
-                      style={{ width: `${domain.affinity}%` }}
-                    />
-                  </div>
-                  <p className="text-xs text-slate-400 italic">{domain.reasoning}</p>
+                <div key={domain.domain}>
+                  <ProgressBar
+                    label={`${idx + 1}. ${domain.domain}`}
+                    score={domain.affinity}
+                    colorScheme={getColorScheme(domain.affinity)}
+                    description={domain.reasoning}
+                  />
                 </div>
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        </section>
 
         {/* Recommendations */}
         <div className="mb-8 p-6 bg-gradient-to-br from-cyan-900/30 to-blue-900/30 rounded-xl border border-slate-700/50 print:bg-gray-50 print:border-gray-300 print:page-break-inside-avoid">
