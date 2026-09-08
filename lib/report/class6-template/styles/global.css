@@ -1,0 +1,190 @@
+/* Class 6 Report Global Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 210mm;
+  height: 297mm;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  background: white;
+  color: #2C3E50;
+}
+
+/* Color Palette */
+:root {
+  --navy: #1F3A52;
+  --gold: #FFD700;
+  --white: #FFFFFF;
+  --light-gray: #F5F7FA;
+  --dark-gray: #2C3E50;
+  --text-gray: #475569;
+  --light-red: #FF6B6B;
+  --green: #2DCC71;
+  --blue: #3498DB;
+  --orange: #E67E22;
+}
+
+/* Page Container */
+.report-page {
+  width: 210mm;
+  height: 297mm;
+  padding: 0;
+  margin: 0;
+  background: white;
+  overflow: hidden;
+  position: relative;
+  font-size: 11pt;
+  line-height: 1.5;
+}
+
+/* Typography */
+h1 {
+  font-size: 32pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 12pt;
+  letter-spacing: -0.5pt;
+}
+
+h2 {
+  font-size: 18pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 12pt;
+  border-bottom: 3pt solid var(--gold);
+  padding-bottom: 8pt;
+}
+
+h3 {
+  font-size: 14pt;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 8pt;
+}
+
+p {
+  font-size: 11pt;
+  color: var(--text-gray);
+  line-height: 1.6;
+  margin-bottom: 12pt;
+}
+
+/* Header & Footer */
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16pt 26pt;
+  border-bottom: 1pt solid #e5e7eb;
+  margin-bottom: 16pt;
+}
+
+.student-name {
+  font-size: 12pt;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.ongrasp-logo {
+  font-size: 14pt;
+  font-weight: 700;
+  color: #E63946;
+  letter-spacing: 2pt;
+}
+
+.report-footer {
+  position: absolute;
+  bottom: 12pt;
+  left: 26pt;
+  right: 26pt;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 9pt;
+  color: #94a3b8;
+  padding-top: 12pt;
+  border-top: 1pt solid #e5e7eb;
+}
+
+/* Content Area */
+.report-content {
+  padding: 26pt;
+  height: calc(297mm - 120pt);
+  overflow: hidden;
+}
+
+/* Utility Classes */
+.text-center { text-align: center; }
+.text-bold { font-weight: 600; }
+.mt-20 { margin-top: 20pt; }
+.mt-12 { margin-top: 12pt; }
+.mb-12 { margin-bottom: 12pt; }
+.mb-20 { margin-bottom: 20pt; }
+
+/* Lists */
+ul {
+  margin-left: 20pt;
+  margin-bottom: 12pt;
+}
+
+li {
+  margin-bottom: 6pt;
+  color: var(--text-gray);
+  font-size: 11pt;
+  line-height: 1.5;
+}
+
+/* Grid & Flexbox */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20pt;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15pt;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+/* Cards */
+.skill-card {
+  padding: 16pt;
+  border-radius: 8pt;
+  color: white;
+  font-weight: 600;
+  margin-bottom: 12pt;
+}
+
+.card-adventure { background: #2DCC71; }
+.card-social { background: var(--navy); }
+.card-learning { background: var(--orange); }
+
+/* Print Styles */
+@media print {
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 210mm;
+    height: 297mm;
+  }
+
+  .report-page {
+    page-break-after: always;
+    margin: 0;
+  }
+}
+
+/* Prevent page breaks inside elements */
+h2, h3, .skill-card {
+  page-break-inside: avoid;
+}
