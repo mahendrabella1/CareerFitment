@@ -21,7 +21,7 @@ const DIMENSIONS = [
 ];
 
 export default function Class7Assessment() {
-  const { profile } = useAuth();
+  const { profile, saveAssessment } = useAuth();
   const [phase, setPhase] = useState<Phase>("intro");
   const [studentName, setStudentName] = useState(profile?.name || "");
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -63,7 +63,7 @@ export default function Class7Assessment() {
     }
   };
 
-  const submitAssessment = () => {
+  const submitAssessment = async () => {
     if (!studentName.trim()) {
       alert("Please enter your name");
       return;
@@ -78,6 +78,24 @@ export default function Class7Assessment() {
       const scored = scoreClass7Assessment(response);
       setResults(scored);
       setPhase("results");
+
+      // Save assessment to user profile
+      const summary = {
+        journeyCode: "7",
+        journeyName: "Class 7",
+        completedAt: new Date().toISOString(),
+        feedbackRating: null,
+        overallFitmentPct: null,
+        topCareer: null,
+        desiredCareer: null,
+        desiredCareerFitPct: null,
+        summary: null,
+        matches: [],
+        topStrengths: [],
+        class7Output: scored, // Store the full Class7 output
+      };
+
+      await saveAssessment(summary);
     } catch (err) {
       console.error("Scoring error:", err);
       alert("Error processing results. Please try again.");

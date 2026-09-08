@@ -72,6 +72,13 @@ export interface AssessmentSummary {
   // dimensions and interests as a full RIASEC vector, not just a code.
   eiBreakdown?: { name: string; score: number }[];
   riasecScores?: { letter: string; name: string; score: number }[];
+
+  // Class-specific output data (stored as JSON blobs for class-specific report rendering)
+  // These contain the full scoring output from each class's assessment
+  class6Output?: any; // Class6ScoreOutput from class6Scoring.ts
+  class7Output?: any; // Class7ScoreOutput from class7Scoring.ts
+  class8Output?: any; // Class8ScoreOutput from class8Scoring.ts
+  class11Output?: any; // Class11ScoreOutput from scoring11_12.ts
 }
 
 /** In-progress exam, persisted so the user can resume after closing/re-login. */
