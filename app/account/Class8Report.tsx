@@ -11,7 +11,7 @@ interface Class8ReportProps {
   studentEmail?: string;
 }
 
-export default function Class8Report({ studentName, output, assessmentDate = new Date().toLocaleDateString(), studentEmail }: Class8ReportProps) {
+export function Class8Report({ studentName, output, assessmentDate = new Date().toLocaleDateString(), studentEmail }: Class8ReportProps) {
   const handlePrint = () => {
     window.print();
   };
