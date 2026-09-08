@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { Class6Report } from '@/app/account/Class6Report';
 import { Class7Report } from '@/app/account/Class7Report';
 import Class8Report from '@/app/account/Class8Report';
-import FullReport from '@/app/account/FullReport';
 import { Class6ScoreOutput } from '@/lib/newAssessment/class6Scoring';
 import { Class7ScoreOutput } from '@/lib/newAssessment/class7Scoring';
 import { Class8ScoreOutput } from '@/lib/newAssessment/class8Scoring';
@@ -198,7 +197,7 @@ const SAMPLE_CLASS8: Class8ScoreOutput = {
 };
 
 export default function ReportsPage() {
-  const [selectedClass, setSelectedClass] = useState<'6' | '7' | '8' | 'full'>('8');
+  const [selectedClass, setSelectedClass] = useState<'6' | '7' | '8'>('8');
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f3f4f6' }}>
@@ -220,7 +219,7 @@ export default function ReportsPage() {
 
           {/* Navigation Tabs */}
           <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-            {['6', '7', '8', 'full'].map((cls) => (
+            {['6', '7', '8'].map((cls) => (
               <button
                 key={cls}
                 onClick={() => setSelectedClass(cls as any)}
@@ -279,17 +278,6 @@ export default function ReportsPage() {
           </div>
         )}
 
-        {/* Class 11-12 */}
-        {selectedClass === 'full' && (
-          <div key="full">
-            <FullReport
-              studentName="Aditya Patel"
-              output={SAMPLE_CLASS8}
-              assessmentDate="September 8, 2026"
-              studentEmail="aditya.patel@school.edu"
-            />
-          </div>
-        )}
       </div>
 
       {/* Footer Tip */}
