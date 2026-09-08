@@ -53,6 +53,12 @@ const Class7ReportComponent = dynamic(() => import("@/app/account/Class7Report")
     <div style={{ padding: 48, textAlign: "center", color: "#64748b", fontSize: 14 }}>Preparing your report…</div>
   ),
 });
+const Class8Report = dynamic(() => import("@/app/account/Class8Report").then(m => ({ default: m.Class8Report })), {
+  ssr: false,
+  loading: () => (
+    <div style={{ padding: 48, textAlign: "center", color: "#64748b", fontSize: 14 }}>Preparing your report…</div>
+  ),
+});
 const FeaturesDetailPage = dynamic(() => import("@/app/account/features/FeaturesDetailPage"), {
   ssr: false,
   loading: () => (
@@ -288,6 +294,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
     const journeyCode = a.journeyCode || "";
     const isClass6 = journeyCode === "6";
     const isClass7 = journeyCode === "7";
+    const isClass8 = journeyCode === "8";
     const isClass910 = journeyCode === "9-10";
     const isClass1112 = journeyCode === "11-12";
 
@@ -314,6 +321,12 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
             studentName={name}
             studentEmail={email || ""}
             output={(a as any).class7Output || {} as any}
+          />
+        ) : isClass8 ? (
+          <Class8Report
+            studentName={name}
+            studentEmail={email || ""}
+            output={(a as any).class8Output || {} as any}
           />
         ) : isClass1112 ? (
           <Class11ReportComprehensive

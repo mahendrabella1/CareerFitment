@@ -1739,6 +1739,7 @@ export default function AssessmentExperience() {
         lead.category === "class_7" ? (
           <Class7Assessment />
         ) : (
+          // Class 8 uses NewExam UI for both legacy and authenticated flows
           <Class6Assessment />
         )
       ) : null}

@@ -306,7 +306,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
       const res = await fetch(scoring?.url ?? "/api/new-assessment/score", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          stage: data.stage, chosenSets: data.chosenSets, answers,
+          stage: data.stage, chosenSets: data.chosenSets, answers, category,
           ...(scoring?.extraBody ?? {}),
         }),
       });
