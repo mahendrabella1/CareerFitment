@@ -319,7 +319,7 @@ export default function Class8Report({ studentName, output, assessmentDate = new
                     label={`${idx + 1}. ${domain.domain}`}
                     score={domain.affinity}
                     colorScheme={getColorScheme(domain.affinity)}
-                    description={domain.reasoning}
+                    description={typeof domain.reasoning === 'string' ? domain.reasoning : (Array.isArray(domain.reasoning) ? domain.reasoning[0] : '')}
                   />
                 </div>
               ))}
