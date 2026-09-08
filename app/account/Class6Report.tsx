@@ -230,6 +230,56 @@ export function Class6Report({
         </div>
       </section>
 
+      {/* ===== EMOTIONAL INTELLIGENCE ===== */}
+      <section className="c6-sheet">
+        <div className="c6-content">
+          <h2 className="c6-section-title">Your Emotional Intelligence</h2>
+          <p className="c6-description">
+            Understanding your emotions and how you relate to others is key to success. Here's how you're developing:
+          </p>
+          <div className="c6-ei-grid">
+            {output.emotionalAwareness.map((dimension) => (
+              <div key={dimension.dimension} className="c6-ei-item">
+                <div className="c6-ei-label">{dimension.dimension}</div>
+                <div className="c6-ei-bar">
+                  <div className="c6-ei-fill" style={{ width: `${dimension.score}%` }}></div>
+                </div>
+                <div className="c6-ei-score">{dimension.score}%</div>
+              </div>
+            ))}
+          </div>
+          <p className="c6-note">
+            These scores show your current strengths in emotional awareness. Everyone develops at their own pace—
+            keep exploring and growing!
+          </p>
+        </div>
+      </section>
+
+      {/* ===== CREATIVITY & FUTURE READINESS ===== */}
+      <section className="c6-sheet">
+        <div className="c6-content">
+          <h2 className="c6-section-title">Your Creativity & Future Readiness</h2>
+          <p className="c6-description">
+            Being creative and ready for the future means staying curious, adapting to change, and thinking in new ways.
+          </p>
+          <div className="c6-creativity-grid">
+            {output.creativity.map((indicator) => (
+              <div key={indicator.indicator} className="c6-creativity-item">
+                <div className="c6-creativity-label">{indicator.indicator}</div>
+                <div className="c6-creativity-bar">
+                  <div className="c6-creativity-fill" style={{ width: `${indicator.score}%` }}></div>
+                </div>
+                <div className="c6-creativity-score">{indicator.score}%</div>
+              </div>
+            ))}
+          </div>
+          <p className="c6-note">
+            These indicators show how you're developing creative thinking. The good news? Creativity is something
+            you can build with practice!
+          </p>
+        </div>
+      </section>
+
       {/* ===== RECOMMENDED CAREERS TO EXPLORE ===== */}
       <section className="c6-sheet">
         <div className="c6-content">
@@ -694,6 +744,103 @@ const Class6CSS = `
     color: #4b5563;
     margin: 15px 0;
     line-height: 1.6;
+  }
+
+  .c6-description {
+    font-size: 15px;
+    color: #6b7280;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  .c6-note {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 15px;
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  .c6-ei-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .c6-ei-item {
+    background: #f0f9ff;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #3b82f6;
+  }
+
+  .c6-ei-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #1f2937;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .c6-ei-bar {
+    background: #e0e7ff;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .c6-ei-fill {
+    background: #3b82f6;
+    height: 100%;
+  }
+
+  .c6-ei-score {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1f2937;
+  }
+
+  .c6-creativity-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .c6-creativity-item {
+    background: #fef3c7;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #f59e0b;
+  }
+
+  .c6-creativity-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #1f2937;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .c6-creativity-bar {
+    background: #fde68a;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .c6-creativity-fill {
+    background: #f59e0b;
+    height: 100%;
+  }
+
+  .c6-creativity-score {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1f2937;
   }
 
   @media print {
