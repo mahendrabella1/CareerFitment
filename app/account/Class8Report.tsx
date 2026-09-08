@@ -7,9 +7,10 @@ interface Class8ReportProps {
   studentName: string;
   output: Class8ScoreOutput;
   assessmentDate?: string;
+  studentEmail?: string;
 }
 
-export default function Class8Report({ studentName, output, assessmentDate = new Date().toLocaleDateString() }: Class8ReportProps) {
+export default function Class8Report({ studentName, output, assessmentDate = new Date().toLocaleDateString(), studentEmail }: Class8ReportProps) {
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
     personality: true,
     riasec: true,
@@ -33,7 +34,7 @@ export default function Class8Report({ studentName, output, assessmentDate = new
     window.print();
   };
 
-
+  // Colors for display (bright/saturated)
   const getColorForScore = (score: number): string => {
     if (score >= 80) return 'from-emerald-400 to-green-500';
     if (score >= 60) return 'from-cyan-400 to-blue-500';
@@ -41,6 +42,7 @@ export default function Class8Report({ studentName, output, assessmentDate = new
     return 'from-rose-400 to-red-500';
   };
 
+  // Colors for text (display only)
   const getColorClassForScore = (score: number): string => {
     if (score >= 80) return 'text-emerald-400';
     if (score >= 60) return 'text-cyan-400';
@@ -48,8 +50,80 @@ export default function Class8Report({ studentName, output, assessmentDate = new
     return 'text-rose-400';
   };
 
+  // Print-safe colors (grayscale for better printing)
+  const getPrintColorClass = (score: number): string => {
+    if (score >= 80) return 'print:text-green-700';
+    if (score >= 60) return 'print:text-blue-700';
+    if (score >= 40) return 'print:text-orange-700';
+    return 'print:text-red-700';
+  };
+
+  // Print-safe progress bar colors (solid dark colors)
+  const getPrintProgressClass = (score: number): string => {
+    if (score >= 80) return 'print:bg-green-700';
+    if (score >= 60) return 'print:bg-blue-700';
+    if (score >= 40) return 'print:bg-orange-700';
+    return 'print:bg-red-700';
+  };
+
+  const printStyles = `
+    @media print {
+      @page {
+        size: A4;
+        margin: 0.5in;
+      }
+
+      html, body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+        background: white;
+        color: black;
+      }
+
+      * {
+        background: transparent !important;
+        box-shadow: none !important;
+      }
+
+      body {
+        font-size: 11pt;
+        line-height: 1.5;
+      }
+
+      /* Ensure text is black */
+      body, p, span, li, div {
+        color: black !important;
+        background: white !important;
+      }
+
+      /* Progress bars */
+      .progress-bar {
+        border: 1px solid #333;
+        background: #f0f0f0 !important;
+      }
+
+      .progress-fill {
+        background: #666 !important;
+      }
+
+      /* Section headers */
+      h1, h2, h3 {
+        color: black !important;
+        page-break-after: avoid;
+      }
+
+      /* Ensure spacing for readability */
+      .mb-8 { page-break-inside: avoid; }
+      .mb-6 { page-break-inside: avoid; }
+    }
+  `;
+
   return (
-    <div className="min-h-screen" style={{ background: 'linear-gradient(to bottom, #0f172a, #1e293b)' }}>
+    <div className="min-h-screen print:min-h-0" style={{ background: 'linear-gradient(to bottom, #0f172a, #1e293b)' }}>
+      <style dangerouslySetInnerHTML={{ __html: printStyles }} />
+
       {/* Report Header - Not printed */}
       <div className="print:hidden sticky top-0 z-40 border-b border-slate-700/50 bg-slate-900/50 backdrop-blur">
         <div className="max-w-5xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
@@ -66,29 +140,35 @@ export default function Class8Report({ studentName, output, assessmentDate = new
       </div>
 
       {/* Report Content - Printable */}
-      <div id="report-content" className="max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:px-8 print:p-0">
+      <div id="report-content" className="max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:px-8 print:p-8 print:max-w-none print:bg-white">
         {/* Title Page / Header Section */}
-        <div className="mb-8 p-8 bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-xl border border-slate-700/50 print:border-0 print:bg-white print:text-black">
+        <div className="mb-8 p-8 bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-xl border border-slate-700/50 print:border print:border-gray-300 print:bg-white print:text-black print:rounded-none">
           <div className="text-center mb-6 print:border-b print:border-black print:pb-6">
             <h1 className="text-4xl font-bold text-white print:text-black mb-2">
               OneGrasp Assessment Report
             </h1>
-            <p className="text-lg text-slate-300 print:text-gray-600">Class 8 - Career & Personal Development</p>
+            <p className="text-lg text-slate-300 print:text-black">Class 8 - Career & Personal Development</p>
           </div>
 
           <div className="grid grid-cols-2 gap-6 mb-6 print:text-black print:border-t print:border-black print:pt-6">
             <div>
-              <p className="text-xs text-slate-400 print:text-gray-600 uppercase font-semibold">Student Name</p>
+              <p className="text-xs text-slate-400 print:text-gray-700 uppercase font-semibold">Student Name</p>
               <p className="text-xl font-bold text-white print:text-black">{studentName}</p>
             </div>
             <div>
-              <p className="text-xs text-slate-400 print:text-gray-600 uppercase font-semibold">Assessment Date</p>
+              <p className="text-xs text-slate-400 print:text-gray-700 uppercase font-semibold">Assessment Date</p>
               <p className="text-xl font-bold text-white print:text-black">{assessmentDate}</p>
             </div>
+            {studentEmail && (
+              <div className="col-span-2">
+                <p className="text-xs text-slate-400 print:text-gray-700 uppercase font-semibold">Email</p>
+                <p className="text-sm font-semibold text-white print:text-black">{studentEmail}</p>
+              </div>
+            )}
           </div>
 
-          <div className="p-4 bg-slate-700/30 rounded-lg print:bg-yellow-50 print:border print:border-yellow-200">
-            <p className="text-slate-200 print:text-gray-700 text-sm leading-relaxed">
+          <div className="p-4 bg-slate-700/30 rounded-lg print:bg-gray-50 print:border print:border-gray-300">
+            <p className="text-slate-200 print:text-gray-800 text-sm leading-relaxed">
               This comprehensive assessment evaluates your personality preferences, career interests, strengths, and
               learning style. The insights provided are designed to help you understand yourself better and make informed
               decisions about your future.
@@ -97,7 +177,7 @@ export default function Class8Report({ studentName, output, assessmentDate = new
         </div>
 
         {/* Profile Summary */}
-        <div className="mb-8 p-6 bg-slate-800/30 rounded-xl border border-slate-700/50 print:border-black print:page-break-after-avoid">
+        <div className="mb-8 p-6 bg-slate-800/30 rounded-xl border border-slate-700/50 print:border print:border-gray-300 print:bg-gray-50 print:page-break-after-avoid">
           <h2 className="text-2xl font-bold text-white print:text-black mb-4">Your Profile</h2>
           <p className="text-lg text-slate-200 print:text-gray-800 leading-relaxed">
             {output.summary.profileDescription}
@@ -108,26 +188,26 @@ export default function Class8Report({ studentName, output, assessmentDate = new
         <div className="mb-8 print:page-break-inside-avoid">
           <button
             onClick={() => toggleSection('personality')}
-            className="w-full p-6 bg-gradient-to-r from-purple-900/50 to-indigo-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left"
+            className="w-full p-6 bg-gradient-to-r from-purple-900/50 to-indigo-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
           >
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-white print:text-black">Personality Preferences</h2>
-              <span className="text-2xl">{expandedSections.personality ? '▼' : '▶'}</span>
+              <span className="text-2xl print:hidden">{expandedSections.personality ? '▼' : '▶'}</span>
             </div>
           </button>
 
           {expandedSections.personality && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50">
+            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 print:bg-white print:border-gray-300">
               <div className="grid grid-cols-2 gap-6 mb-6">
                 {Object.entries(output.personalityProfile.typeScores).map(([type, score]) => (
                   <div key={type} className="print:page-break-inside-avoid">
                     <div className="flex items-center justify-between mb-2">
                       <span className="font-medium text-white print:text-black capitalize">{type}</span>
-                      <span className={`font-bold text-lg ${getColorClassForScore(score)}`}>{score}%</span>
+                      <span className={`font-bold text-lg ${getColorClassForScore(score)} ${getPrintColorClass(score)}`}>{score}%</span>
                     </div>
-                    <div className="w-full bg-slate-700/30 rounded-full h-2">
+                    <div className="w-full bg-slate-700/30 rounded-full h-2 progress-bar print:bg-gray-300">
                       <div
-                        className={`h-full rounded-full bg-gradient-to-r ${getColorForScore(score)}`}
+                        className={`h-full rounded-full bg-gradient-to-r ${getColorForScore(score)} progress-fill ${getPrintProgressClass(score)}`}
                         style={{ width: `${score}%` }}
                       />
                     </div>
@@ -135,9 +215,9 @@ export default function Class8Report({ studentName, output, assessmentDate = new
                 ))}
               </div>
 
-              <div className="p-4 bg-slate-700/30 rounded-lg">
-                <p className="text-sm font-semibold text-slate-300 uppercase mb-2">Your Primary Type</p>
-                <p className="text-lg font-bold text-cyan-400">{output.personalityProfile.dominantType}</p>
+              <div className="p-4 bg-slate-700/30 rounded-lg print:bg-gray-50 print:border print:border-gray-300">
+                <p className="text-sm font-semibold text-slate-300 print:text-gray-700 uppercase mb-2">Your Primary Type</p>
+                <p className="text-lg font-bold text-cyan-400 print:text-blue-700">{output.personalityProfile.dominantType}</p>
               </div>
             </div>
           )}
@@ -147,27 +227,27 @@ export default function Class8Report({ studentName, output, assessmentDate = new
         <div className="mb-8 print:page-break-inside-avoid">
           <button
             onClick={() => toggleSection('riasec')}
-            className="w-full p-6 bg-gradient-to-r from-cyan-900/50 to-blue-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left"
+            className="w-full p-6 bg-gradient-to-r from-cyan-900/50 to-blue-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
           >
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-white print:text-black">Career Interests (RIASEC)</h2>
-              <span className="text-2xl">{expandedSections.riasec ? '▼' : '▶'}</span>
+              <span className="text-2xl print:hidden">{expandedSections.riasec ? '▼' : '▶'}</span>
             </div>
           </button>
 
           {expandedSections.riasec && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4">
+            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4 print:bg-white print:border-gray-300">
               {output.riasecScores.map((score, idx) => (
                 <div key={score.code} className="print:page-break-inside-avoid">
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-medium text-white print:text-black">
                       {score.code} - {score.name}
                     </span>
-                    <span className={`font-bold text-lg ${getColorClassForScore(score.score)}`}>{score.score}%</span>
+                    <span className={`font-bold text-lg ${getColorClassForScore(score.score)} ${getPrintColorClass(score.score)}`}>{score.score}%</span>
                   </div>
-                  <div className="w-full bg-slate-700/30 rounded-full h-2">
+                  <div className="w-full bg-slate-700/30 rounded-full h-2 progress-bar print:bg-gray-300">
                     <div
-                      className={`h-full rounded-full bg-gradient-to-r ${getColorForScore(score.score)}`}
+                      className={`h-full rounded-full bg-gradient-to-r ${getColorForScore(score.score)} progress-fill ${getPrintProgressClass(score.score)}`}
                       style={{ width: `${score.score}%` }}
                     />
                   </div>
@@ -182,20 +262,20 @@ export default function Class8Report({ studentName, output, assessmentDate = new
         <div className="mb-8 print:page-break-inside-avoid">
           <button
             onClick={() => toggleSection('aptitude')}
-            className="w-full p-6 bg-gradient-to-r from-orange-900/50 to-red-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left"
+            className="w-full p-6 bg-gradient-to-r from-orange-900/50 to-red-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
           >
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-white print:text-black">Aptitude & Reasoning</h2>
-              <span className="text-2xl">{expandedSections.aptitude ? '▼' : '▶'}</span>
+              <span className="text-2xl print:hidden">{expandedSections.aptitude ? '▼' : '▶'}</span>
             </div>
           </button>
 
           {expandedSections.aptitude && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50">
+            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 print:bg-white print:border-gray-300">
               <div className="grid grid-cols-1 gap-4 mb-6">
-                <div className="p-4 bg-slate-700/30 rounded-lg text-center print:border print:border-black">
-                  <p className="text-xs text-slate-400 print:text-gray-600 uppercase">Overall Score</p>
-                  <p className={`text-3xl font-bold ${getColorClassForScore(output.aptitudeProfile.overallScore)}`}>
+                <div className="p-4 bg-slate-700/30 rounded-lg text-center print:bg-gray-50 print:border print:border-gray-300">
+                  <p className="text-xs text-slate-400 print:text-gray-700 uppercase">Overall Score</p>
+                  <p className={`text-3xl font-bold ${getColorClassForScore(output.aptitudeProfile.overallScore)} ${getPrintColorClass(output.aptitudeProfile.overallScore)}`}>
                     {output.aptitudeProfile.overallScore}%
                   </p>
                 </div>
@@ -235,16 +315,16 @@ export default function Class8Report({ studentName, output, assessmentDate = new
         <div className="mb-8 print:page-break-inside-avoid">
           <button
             onClick={() => toggleSection('strengths')}
-            className="w-full p-6 bg-gradient-to-r from-green-900/50 to-emerald-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left"
+            className="w-full p-6 bg-gradient-to-r from-green-900/50 to-emerald-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
           >
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-white print:text-black">Strength Domains</h2>
-              <span className="text-2xl">{expandedSections.strengths ? '▼' : '▶'}</span>
+              <span className="text-2xl print:hidden">{expandedSections.strengths ? '▼' : '▶'}</span>
             </div>
           </button>
 
           {expandedSections.strengths && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4">
+            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4 print:bg-white print:border-gray-300">
               {output.strengthDomains.map((domain) => (
                 <div key={domain.code} className="print:page-break-inside-avoid">
                   <div className="flex items-center justify-between mb-2">
@@ -268,16 +348,16 @@ export default function Class8Report({ studentName, output, assessmentDate = new
         <div className="mb-8 print:page-break-inside-avoid">
           <button
             onClick={() => toggleSection('motivators')}
-            className="w-full p-6 bg-gradient-to-r from-pink-900/50 to-rose-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left"
+            className="w-full p-6 bg-gradient-to-r from-pink-900/50 to-rose-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
           >
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-white print:text-black">Motivators & Values</h2>
-              <span className="text-2xl">{expandedSections.motivators ? '▼' : '▶'}</span>
+              <span className="text-2xl print:hidden">{expandedSections.motivators ? '▼' : '▶'}</span>
             </div>
           </button>
 
           {expandedSections.motivators && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4">
+            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4 print:bg-white print:border-gray-300">
               {output.motivators.map((motivator) => (
                 <div key={motivator.motivator} className="print:page-break-inside-avoid">
                   <div className="flex items-center justify-between mb-2">
@@ -301,23 +381,23 @@ export default function Class8Report({ studentName, output, assessmentDate = new
         <div className="mb-8 print:page-break-inside-avoid">
           <button
             onClick={() => toggleSection('learning')}
-            className="w-full p-6 bg-gradient-to-r from-teal-900/50 to-cyan-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left"
+            className="w-full p-6 bg-gradient-to-r from-teal-900/50 to-cyan-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
           >
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-white print:text-black">Learning Style</h2>
-              <span className="text-2xl">{expandedSections.learning ? '▼' : '▶'}</span>
+              <span className="text-2xl print:hidden">{expandedSections.learning ? '▼' : '▶'}</span>
             </div>
           </button>
 
           {expandedSections.learning && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50">
+            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 print:bg-white print:border-gray-300">
               <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="p-4 bg-slate-700/30 rounded-lg print:border print:border-black">
-                  <p className="text-xs text-slate-400 print:text-gray-600 uppercase font-semibold">Primary Style</p>
+                <div className="p-4 bg-slate-700/30 rounded-lg print:bg-gray-50 print:border print:border-gray-300">
+                  <p className="text-xs text-slate-400 print:text-gray-700 uppercase font-semibold">Primary Style</p>
                   <p className="text-lg font-bold text-white print:text-black">{output.learningStyle.primaryStyle}</p>
                 </div>
-                <div className="p-4 bg-slate-700/30 rounded-lg print:border print:border-black">
-                  <p className="text-xs text-slate-400 print:text-gray-600 uppercase font-semibold">Secondary Style</p>
+                <div className="p-4 bg-slate-700/30 rounded-lg print:bg-gray-50 print:border print:border-gray-300">
+                  <p className="text-xs text-slate-400 print:text-gray-700 uppercase font-semibold">Secondary Style</p>
                   <p className="text-lg font-bold text-white print:text-black">{output.learningStyle.secondaryStyle}</p>
                 </div>
               </div>
@@ -327,7 +407,7 @@ export default function Class8Report({ studentName, output, assessmentDate = new
                 <ul className="space-y-2">
                   {output.learningStyle.recommendations.map((strategy, idx) => (
                     <li key={idx} className="text-sm text-slate-200 print:text-gray-800 flex gap-2">
-                      <span className="text-cyan-400">✓</span>
+                      <span className="text-cyan-400 print:text-blue-700">✓</span>
                       <span>{strategy}</span>
                     </li>
                   ))}
@@ -341,16 +421,16 @@ export default function Class8Report({ studentName, output, assessmentDate = new
         <div className="mb-8 print:page-break-inside-avoid">
           <button
             onClick={() => toggleSection('emotional')}
-            className="w-full p-6 bg-gradient-to-r from-violet-900/50 to-purple-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left"
+            className="w-full p-6 bg-gradient-to-r from-violet-900/50 to-purple-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
           >
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-white print:text-black">Emotional Intelligence</h2>
-              <span className="text-2xl">{expandedSections.emotional ? '▼' : '▶'}</span>
+              <span className="text-2xl print:hidden">{expandedSections.emotional ? '▼' : '▶'}</span>
             </div>
           </button>
 
           {expandedSections.emotional && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4">
+            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4 print:bg-white print:border-gray-300">
               {output.emotionalAwareness.map((component) => (
                 <div key={component.component} className="print:page-break-inside-avoid">
                   <div className="flex items-center justify-between mb-2">
@@ -374,16 +454,16 @@ export default function Class8Report({ studentName, output, assessmentDate = new
         <div className="mb-8 print:page-break-inside-avoid">
           <button
             onClick={() => toggleSection('creativity')}
-            className="w-full p-6 bg-gradient-to-r from-indigo-900/50 to-blue-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left"
+            className="w-full p-6 bg-gradient-to-r from-indigo-900/50 to-blue-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
           >
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-white print:text-black">Creativity & Future Readiness</h2>
-              <span className="text-2xl">{expandedSections.creativity ? '▼' : '▶'}</span>
+              <span className="text-2xl print:hidden">{expandedSections.creativity ? '▼' : '▶'}</span>
             </div>
           </button>
 
           {expandedSections.creativity && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4">
+            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4 print:bg-white print:border-gray-300">
               {output.creativity.map((indicator) => (
                 <div key={indicator.indicator} className="print:page-break-inside-avoid">
                   <div className="flex items-center justify-between mb-2">
@@ -407,16 +487,16 @@ export default function Class8Report({ studentName, output, assessmentDate = new
         <div className="mb-8 print:page-break-inside-avoid">
           <button
             onClick={() => toggleSection('careers')}
-            className="w-full p-6 bg-gradient-to-r from-yellow-900/50 to-orange-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left"
+            className="w-full p-6 bg-gradient-to-r from-yellow-900/50 to-orange-900/50 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-all text-left print:bg-gray-100 print:border-gray-300"
           >
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-white print:text-black">Career Domain Alignment</h2>
-              <span className="text-2xl">{expandedSections.careers ? '▼' : '▶'}</span>
+              <span className="text-2xl print:hidden">{expandedSections.careers ? '▼' : '▶'}</span>
             </div>
           </button>
 
           {expandedSections.careers && (
-            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4">
+            <div className="mt-4 p-6 bg-slate-800/20 rounded-lg border border-slate-700/50 space-y-4 print:bg-white print:border-gray-300">
               {output.domainAffinities.map((domain, idx) => (
                 <div key={domain.domain} className="print:page-break-inside-avoid">
                   <div className="flex items-center justify-between mb-2">
@@ -439,7 +519,7 @@ export default function Class8Report({ studentName, output, assessmentDate = new
         </div>
 
         {/* Recommendations */}
-        <div className="mb-8 p-6 bg-gradient-to-br from-cyan-900/30 to-blue-900/30 rounded-xl border border-slate-700/50 print:page-break-inside-avoid print:border-black">
+        <div className="mb-8 p-6 bg-gradient-to-br from-cyan-900/30 to-blue-900/30 rounded-xl border border-slate-700/50 print:bg-gray-50 print:border-gray-300 print:page-break-inside-avoid">
           <h2 className="text-2xl font-bold text-white print:text-black mb-4">Recommendations for Your Future</h2>
 
           <div className="space-y-6">
@@ -448,7 +528,7 @@ export default function Class8Report({ studentName, output, assessmentDate = new
               <ul className="space-y-1">
                 {output.summary.topStrengths.map((strength, idx) => (
                   <li key={idx} className="text-sm text-slate-200 print:text-gray-800 flex gap-2">
-                    <span className="text-emerald-400">★</span>
+                    <span className="text-emerald-400 print:text-green-700">★</span>
                     <span>{strength}</span>
                   </li>
                 ))}
@@ -460,7 +540,7 @@ export default function Class8Report({ studentName, output, assessmentDate = new
               <ul className="space-y-1">
                 {output.summary.developmentAreas.map((area, idx) => (
                   <li key={idx} className="text-sm text-slate-200 print:text-gray-800 flex gap-2">
-                    <span className="text-amber-400">→</span>
+                    <span className="text-amber-400 print:text-orange-700">→</span>
                     <span>{area}</span>
                   </li>
                 ))}
@@ -472,7 +552,7 @@ export default function Class8Report({ studentName, output, assessmentDate = new
               <ul className="space-y-1">
                 {output.summary.careerDirections.map((career, idx) => (
                   <li key={idx} className="text-sm text-slate-200 print:text-gray-800 flex gap-2">
-                    <span className="text-cyan-400">✓</span>
+                    <span className="text-cyan-400 print:text-blue-700">✓</span>
                     <span>{career}</span>
                   </li>
                 ))}
@@ -484,7 +564,7 @@ export default function Class8Report({ studentName, output, assessmentDate = new
               <ul className="space-y-1">
                 {output.summary.nextSteps.map((step, idx) => (
                   <li key={idx} className="text-sm text-slate-200 print:text-gray-800 flex gap-2">
-                    <span className="text-purple-400">{idx + 1}.</span>
+                    <span className="text-purple-400 print:text-purple-700 font-bold">{idx + 1}.</span>
                     <span>{step}</span>
                   </li>
                 ))}
@@ -494,8 +574,8 @@ export default function Class8Report({ studentName, output, assessmentDate = new
         </div>
 
         {/* Footer */}
-        <div className="mt-12 pt-6 border-t border-slate-700/50 print:border-black text-center">
-          <p className="text-xs text-slate-400 print:text-gray-600">
+        <div className="mt-12 pt-6 border-t border-slate-700/50 print:border-t print:border-gray-400 text-center">
+          <p className="text-xs text-slate-400 print:text-gray-700">
             OneGrasp Assessment System | Class 8 Career & Personal Development | {assessmentDate}
           </p>
         </div>
