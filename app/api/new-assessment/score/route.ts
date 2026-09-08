@@ -102,7 +102,7 @@ function convertAnswersToResponseFormat(answers: Record<string, string>): Record
 // Convert NewExam answer format for Class 11-12
 // Class11Response is structured by dimension, not sequential questions
 function convertAnswersToClass11Format(answers: Record<string, string>): Class11Response {
-  const dimensions: Record<string, Record<string, number>> = {
+  const dimensions: Record<string, Record<string, any>> = {
     personality: {},
     career_interest: {},
     aptitude: {},
@@ -128,7 +128,7 @@ function convertAnswersToClass11Format(answers: Record<string, string>): Class11
       } else if (category === "strengths") {
         dimensions.strength_domains[indexStr] = optionIndex;
       } else if (category === "motivators") {
-        dimensions.motivators[indexStr] = optionIndex > 0; // Convert to boolean
+        dimensions.motivators[indexStr] = optionIndex > 0;
       } else if (category === "learning_styles") {
         dimensions.learning_styles[indexStr] = optionIndex;
       } else if (category === "emotional_intelligence") {
