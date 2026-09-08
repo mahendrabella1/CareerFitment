@@ -84,10 +84,10 @@ export default function ReportsPage() {
 
           {/* Tabs */}
           <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-            {['6', '7', '8', '9', '10', '11-12'].map((cls) => (
+            {(['6', '7', '8', '9', '10', '11-12'] as const).map((cls) => (
               <button
                 key={cls}
-                onClick={() => setSelectedClass(cls as any)}
+                onClick={() => setSelectedClass(cls)}
                 style={{
                   padding: '0.75rem 1.5rem',
                   borderRadius: '0.5rem',
