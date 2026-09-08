@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 export default function ReportsPage() {
-  const [selectedClass, setSelectedClass] = useState<'6' | '7' | '8'>('8');
+  const [selectedClass, setSelectedClass] = useState<'6' | '7' | '8' | '9' | '10' | '11-12'>('8');
 
   const reportData = {
     '6': {
@@ -33,6 +33,33 @@ export default function ReportsPage() {
       motivators: 'Mastery & Excellence (88%), Innovation (82%)',
       careers: 'STEM, Research, Data Analysis, Engineering, Technology',
     },
+    '9': {
+      name: 'Priya Sharma',
+      type: 'Creative Analyst',
+      personality: 'Balanced combination of creativity and analytical thinking',
+      riasec: 'Artistic (80%), Investigative (78%), Enterprising (70%)',
+      strengths: 'Spatial-Visual (82%), Linguistic (81%), Interpersonal (76%)',
+      motivators: 'Innovation (85%), Autonomy (80%), Collaboration (75%)',
+      careers: 'Design, Architecture, Product Management, UX/UI, Creative Technology',
+    },
+    '10': {
+      name: 'Alex Thompson',
+      type: 'Enterprising Leader',
+      personality: 'Confident leader with strong interpersonal and strategic skills',
+      riasec: 'Enterprising (89%), Social (81%), Investigative (72%)',
+      strengths: 'Leadership (88%), Interpersonal (85%), Logical-Mathematical (79%)',
+      motivators: 'Achievement (91%), Status (83%), Power & Influence (86%)',
+      careers: 'Business, Management, Entrepreneurship, Sales, Project Leadership',
+    },
+    '11-12': {
+      name: 'Jordan Blake',
+      type: 'Advanced Strategist',
+      personality: 'Sophisticated thinker with comprehensive career vision',
+      riasec: 'Investigative (87%), Enterprising (85%), Artistic (68%)',
+      strengths: 'Logical-Mathematical (89%), Linguistic (84%), Intrapersonal (82%)',
+      motivators: 'Mastery (92%), Knowledge (88%), Achievement (87%)',
+      careers: 'Advanced STEM, Executive Leadership, Research, Policy, Consulting, Academic Research',
+    },
   };
 
   const data = reportData[selectedClass];
@@ -57,7 +84,7 @@ export default function ReportsPage() {
 
           {/* Tabs */}
           <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-            {['6', '7', '8'].map((cls) => (
+            {['6', '7', '8', '9', '10', '11-12'].map((cls) => (
               <button
                 key={cls}
                 onClick={() => setSelectedClass(cls as any)}
@@ -73,7 +100,7 @@ export default function ReportsPage() {
                   transition: 'all 0.3s ease',
                 }}
               >
-                Class {cls}
+                {cls === '11-12' ? 'Class 11-12' : `Class ${cls}`}
               </button>
             ))}
           </div>
