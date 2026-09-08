@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import Class6Report from '@/app/account/Class6Report';
-import Class7Report from '@/app/account/Class7Report';
+import { Class6Report } from '@/app/account/Class6Report';
+import { Class7Report } from '@/app/account/Class7Report';
 import Class8Report from '@/app/account/Class8Report';
 import FullReport from '@/app/account/FullReport';
 import { Class6ScoreOutput } from '@/lib/newAssessment/class6Scoring';
