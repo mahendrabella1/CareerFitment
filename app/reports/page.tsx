@@ -251,53 +251,73 @@ export default function ReportsPage() {
   const [selectedClass, setSelectedClass] = useState<'6' | '7' | '8' | 'full'>('8');
 
   return (
-    <div className="min-h-screen bg-slate-100">
+    <div className="min-h-screen" style={{ background: '#f3f4f6' }}>
       {/* Navigation */}
-      <div className="sticky top-0 z-50 bg-white border-b border-slate-300 shadow">
-        <div className="max-w-full px-4 py-4">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-2xl font-bold text-slate-900">📊 Sample Assessment Reports</h1>
-            <a href="/" className="text-sm text-blue-600 hover:text-blue-700 underline">← Back</a>
+      <div style={{ position: 'sticky', top: 0, zIndex: 50, background: 'white', borderBottom: '1px solid #d1d5db', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+        <div style={{ maxWidth: '100%', padding: '1rem', paddingLeft: '1rem', paddingRight: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+            <h1 style={{ fontSize: '1.875rem', fontWeight: 'bold', color: '#111827' }}>📊 Sample Assessment Reports</h1>
+            <a href="/" style={{ fontSize: '0.875rem', color: '#2563eb', textDecoration: 'underline' }}>← Back</a>
           </div>
 
-          <div className="flex gap-2 flex-wrap">
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
             <button
               onClick={() => setSelectedClass('6')}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                selectedClass === '6'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-slate-200 text-slate-900 hover:bg-slate-300'
-              }`}
+              style={{
+                padding: '0.5rem 1rem',
+                borderRadius: '0.5rem',
+                fontWeight: '500',
+                background: selectedClass === '6' ? '#2563eb' : '#e2e8f0',
+                color: selectedClass === '6' ? 'white' : '#111827',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
             >
               Class 6 Report
             </button>
             <button
               onClick={() => setSelectedClass('7')}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                selectedClass === '7'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-slate-200 text-slate-900 hover:bg-slate-300'
-              }`}
+              style={{
+                padding: '0.5rem 1rem',
+                borderRadius: '0.5rem',
+                fontWeight: '500',
+                background: selectedClass === '7' ? '#2563eb' : '#e2e8f0',
+                color: selectedClass === '7' ? 'white' : '#111827',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
             >
               Class 7 Report
             </button>
             <button
               onClick={() => setSelectedClass('8')}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                selectedClass === '8'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-slate-200 text-slate-900 hover:bg-slate-300'
-              }`}
+              style={{
+                padding: '0.5rem 1rem',
+                borderRadius: '0.5rem',
+                fontWeight: '500',
+                background: selectedClass === '8' ? '#2563eb' : '#e2e8f0',
+                color: selectedClass === '8' ? 'white' : '#111827',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
             >
               Class 8 Report (Refactored)
             </button>
             <button
               onClick={() => setSelectedClass('full')}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                selectedClass === 'full'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-slate-200 text-slate-900 hover:bg-slate-300'
-              }`}
+              style={{
+                padding: '0.5rem 1rem',
+                borderRadius: '0.5rem',
+                fontWeight: '500',
+                background: selectedClass === 'full' ? '#2563eb' : '#e2e8f0',
+                color: selectedClass === 'full' ? 'white' : '#111827',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
             >
               Class 11-12 Report
             </button>
@@ -306,7 +326,7 @@ export default function ReportsPage() {
       </div>
 
       {/* Report Display */}
-      <div className="py-8">
+      <div style={{ padding: '2rem 0' }}>
         {selectedClass === '6' && (
           <Class6Report
             studentName="Sarah Johnson"
@@ -343,8 +363,21 @@ export default function ReportsPage() {
       </div>
 
       {/* Footer Note */}
-      <div className="fixed bottom-4 left-4 right-4 bg-white border border-slate-300 rounded-lg p-4 shadow max-w-md mx-auto">
-        <p className="text-sm text-slate-600">
+      <div style={{
+        position: 'fixed',
+        bottom: '1rem',
+        left: '1rem',
+        right: '1rem',
+        background: 'white',
+        border: '1px solid #d1d5db',
+        borderRadius: '0.5rem',
+        padding: '1rem',
+        boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+        maxWidth: '28rem',
+        margin: '0 auto',
+        zIndex: 40
+      }}>
+        <p style={{ fontSize: '0.875rem', color: '#4b5563' }}>
           💡 <strong>Tip:</strong> Use Ctrl+P (or Cmd+P on Mac) to print or save as PDF. Try the print button in Class 8 report!
         </p>
       </div>
