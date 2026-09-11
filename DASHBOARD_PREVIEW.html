@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneGrasp Dashboard - Production SaaS Redesign Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ink-100: #ffffff;
+            --ink-95: #f9f9fa;
+            --ink-90: #f3f3f5;
+            --ink-80: #ececef;
+            --ink-60: #c4c4cd;
+            --ink-50: #9a9aa6;
+            --ink-40: #63636f;
+            --ink-30: #3d3d45;
+            --ink-10: #0f0f13;
+            --accent-100: #fef0f0;
+            --accent-40: #db3433;
+            --accent-30: #b82a2b;
+            --success: #059669;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-8: 32px;
+            --shadow-sm: 0 1px 2px rgba(15, 15, 19, 0.05);
+            --shadow-md: 0 2px 4px rgba(15, 15, 19, 0.08), 0 1px 2px rgba(15, 15, 19, 0.04);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background-color: var(--ink-95);
+            color: var(--ink-10);
+            line-height: 1.5;
+        }
+
+        /* Header */
+        header {
+            padding: var(--space-4);
+            border-bottom: 1px solid var(--ink-80);
+            background-color: var(--ink-100);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-40);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            font-size: 13px;
+            color: var(--ink-40);
+        }
+
+        button {
+            padding: var(--space-2) var(--space-3);
+            background-color: var(--accent-40);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 180ms ease-out;
+        }
+
+        button:hover {
+            background-color: var(--accent-30);
+        }
+
+        button.secondary {
+            background-color: var(--ink-95);
+            color: var(--ink-10);
+            border: 1px solid var(--ink-80);
+        }
+
+        button.secondary:hover {
+            background-color: var(--ink-80);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: var(--space-8) var(--space-6) var(--space-8) var(--space-6);
+        }
+
+        /* Hero Card */
+        .hero-card {
+            padding: var(--space-8);
+            border-radius: 8px;
+            background-color: var(--ink-100);
+            border: 1px solid var(--ink-80);
+            background-image: linear-gradient(135deg, rgba(219, 52, 51, 0.04) 0%, rgba(5, 150, 105, 0.02) 100%);
+            margin-bottom: var(--space-8);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-4);
+            margin-bottom: var(--space-4);
+        }
+
+        .hero-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--accent-100);
+            border-radius: 6px;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .hero-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: var(--space-2);
+        }
+
+        .hero-text p {
+            font-size: 14px;
+            color: var(--ink-40);
+            margin: 0;
+        }
+
+        .hero-metadata {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-3);
+            padding-top: var(--space-4);
+            border-top: 1px solid var(--ink-80);
+            margin-bottom: var(--space-4);
+        }
+
+        .metadata-item {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-1);
+        }
+
+        .metadata-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            color: var(--ink-50);
+        }
+
+        .metadata-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ink-10);
+        }
+
+        .metadata-value.accent {
+            color: var(--accent-40);
+            font-size: 16px;
+        }
+
+        /* Section Header */
+        .section-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: var(--space-4);
+            margin-bottom: var(--space-5);
+        }
+
+        .section-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            margin: 0;
+        }
+
+        .section-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-40);
+            font-size: 16px;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--ink-40);
+            margin-top: var(--space-1);
+        }
+
+        /* Card Grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-4);
+            margin-bottom: var(--space-8);
+        }
+
+        .card {
+            padding: var(--space-5);
+            border-radius: 8px;
+            background-color: var(--ink-100);
+            border: 1px solid var(--ink-80);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            gap: var(--space-3);
+        }
+
+        .card-rank {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--accent-100);
+            border-radius: 50%;
+            color: var(--accent-40);
+            font-weight: 700;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .card-content h3 {
+            margin: 0 0 var(--space-1) 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--ink-10);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background-color: rgba(5, 150, 105, 0.15);
+            color: var(--success);
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.01em;
+            margin-bottom: var(--space-2);
+        }
+
+        .fit-score {
+            margin-top: var(--space-2);
+        }
+
+        .fit-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            color: var(--ink-50);
+            margin-bottom: 4px;
+        }
+
+        .fit-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-40);
+        }
+
+        /* Radar/Chart Area */
+        .chart-card {
+            padding: var(--space-8);
+            border-radius: 8px;
+            background-color: var(--ink-100);
+            border: 1px solid var(--ink-80);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+            margin-bottom: var(--space-6);
+        }
+
+        .chart-placeholder {
+            text-align: center;
+            color: var(--ink-50);
+        }
+
+        .chart-placeholder-icon {
+            font-size: 48px;
+            margin-bottom: var(--space-2);
+            opacity: 0.5;
+        }
+
+        .chart-placeholder-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ink-40);
+        }
+
+        /* Dimension Grid */
+        .dimension-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-4);
+            margin-bottom: var(--space-8);
+        }
+
+        .dimension-box {
+            padding: var(--space-5);
+            border-radius: 8px;
+            background-color: var(--ink-95);
+            border: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-1);
+            cursor: pointer;
+            transition: background-color 180ms ease-out;
+        }
+
+        .dimension-box:hover {
+            background-color: var(--ink-90);
+        }
+
+        .dimension-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            color: var(--ink-50);
+        }
+
+        .dimension-score {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-40);
+        }
+
+        .dimension-band {
+            font-size: 11px;
+            color: var(--ink-40);
+        }
+
+        /* Action Plan */
+        .action-card {
+            padding: var(--space-8);
+            border-radius: 8px;
+            background-color: var(--ink-100);
+            border: 1px solid var(--ink-80);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--space-8);
+        }
+
+        .action-section {
+            margin-bottom: var(--space-6);
+        }
+
+        .action-section h3 {
+            margin: 0 0 var(--space-3) 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--ink-10);
+        }
+
+        .goal-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+
+        .goal-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            cursor: pointer;
+        }
+
+        .goal-checkbox {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent-40);
+            cursor: pointer;
+        }
+
+        .goal-text {
+            font-size: 14px;
+            color: var(--ink-10);
+        }
+
+        /* Toolkit Grid */
+        .toolkit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-4);
+            margin-bottom: var(--space-8);
+        }
+
+        .toolkit-card {
+            padding: var(--space-5);
+            border-radius: 8px;
+            background-color: var(--ink-95);
+            border: none;
+            display: flex;
+            gap: var(--space-3);
+            cursor: pointer;
+            transition: background-color 180ms ease-out;
+        }
+
+        .toolkit-card:hover {
+            background-color: var(--ink-90);
+        }
+
+        .toolkit-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--accent-100);
+            border-radius: 6px;
+            color: var(--accent-40);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .toolkit-content h4 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ink-10);
+        }
+
+        .toolkit-content p {
+            margin: var(--space-1) 0 0 0;
+            font-size: 12px;
+            color: var(--ink-40);
+        }
+
+        /* Footer */
+        .footer-cta {
+            text-align: center;
+            padding: var(--space-6);
+            border-top: 1px solid var(--ink-80);
+            margin-top: var(--space-8);
+        }
+
+        .footer-cta p {
+            margin-bottom: var(--space-2);
+            color: var(--ink-40);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .card-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: var(--space-4) var(--space-4);
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dimension-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .section-header {
+                flex-direction: column;
+            }
+
+            header {
+                padding: var(--space-3);
+            }
+
+            .header-right {
+                font-size: 12px;
+            }
+        }
+
+        .divider {
+            height: 1px;
+            background-color: var(--ink-80);
+            margin: var(--space-6) 0;
+        }
+
+        .note {
+            padding: var(--space-4);
+            background-color: var(--ink-95);
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--ink-40);
+            margin-top: var(--space-4);
+            border-left: 3px solid var(--accent-40);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">OneGrasp</div>
+            <div class="header-right">
+                <span>student@school.edu</span>
+                <button class="secondary">Sign out</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <div class="hero-card">
+            <div class="hero-content">
+                <div class="hero-icon">🎯</div>
+                <div class="hero-text">
+                    <h1>Software Engineer</h1>
+                    <p>You're analytical, creative, and driven by solving complex problems. Your interests align perfectly with building technology solutions.</p>
+                </div>
+            </div>
+            <div class="hero-metadata">
+                <div class="metadata-item">
+                    <span class="metadata-label">Top Strength</span>
+                    <span class="metadata-value">Career Interest</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Interest Strength</span>
+                    <span class="metadata-value accent">85%</span>
+                    <span class="metadata-label" style="font-size: 11px; margin-top: 2px;">Strength</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Profile Completion</span>
+                    <span class="metadata-value" style="color: var(--success);">100% Complete</span>
+                </div>
+            </div>
+            <button>View Full Report →</button>
+        </div>
+
+        <!-- Top Career Matches -->
+        <div class="section-header">
+            <div>
+                <h2><span class="section-icon">🎯</span>Your Top Career Matches</h2>
+                <p class="section-subtitle">Based on your career interest profile and assessment results</p>
+            </div>
+        </div>
+
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-rank">#1</div>
+                <div class="card-content">
+                    <h3>Software Developer</h3>
+                    <span class="badge">Top choice</span>
+                    <div class="fit-score">
+                        <div class="fit-label">Fit Score</div>
+                        <div class="fit-value">87%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-rank">#2</div>
+                <div class="card-content">
+                    <h3>Data Scientist</h3>
+                    <span class="badge">Strong fit</span>
+                    <div class="fit-score">
+                        <div class="fit-label">Fit Score</div>
+                        <div class="fit-value">81%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-rank">#3</div>
+                <div class="card-content">
+                    <h3>Product Manager</h3>
+                    <span class="badge">Strong fit</span>
+                    <div class="fit-score">
+                        <div class="fit-label">Fit Score</div>
+                        <div class="fit-value">76%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Your 8 Dimensions -->
+        <div class="section-header">
+            <div>
+                <h2><span class="section-icon">📊</span>Your 8 Dimensions</h2>
+                <p class="section-subtitle">How you think, work, and learn</p>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <div class="chart-placeholder">
+                <div class="chart-placeholder-icon">📈</div>
+                <div class="chart-placeholder-text">Radar Chart Visualization</div>
+                <p style="font-size: 12px; color: var(--ink-50); margin-top: 8px;">Hand-built SVG - All 8 dimensions</p>
+            </div>
+        </div>
+
+        <div class="dimension-grid">
+            <div class="dimension-box">
+                <div class="dimension-label">Personality</div>
+                <div class="dimension-score">72</div>
+                <div class="dimension-band">Strength vs. typical 55</div>
+            </div>
+            <div class="dimension-box">
+                <div class="dimension-label">Career Interest</div>
+                <div class="dimension-score">85</div>
+                <div class="dimension-band">Standout vs. typical 52</div>
+            </div>
+            <div class="dimension-box">
+                <div class="dimension-label">Intelligence</div>
+                <div class="dimension-score">78</div>
+                <div class="dimension-band">Strength vs. typical 54</div>
+            </div>
+            <div class="dimension-box">
+                <div class="dimension-label">EQ</div>
+                <div class="dimension-score">68</div>
+                <div class="dimension-band">Solid vs. typical 56</div>
+            </div>
+            <div class="dimension-box">
+                <div class="dimension-label">Learning</div>
+                <div class="dimension-score">81</div>
+                <div class="dimension-band">Strength vs. typical 58</div>
+            </div>
+            <div class="dimension-box">
+                <div class="dimension-label">Motivators</div>
+                <div class="dimension-score">75</div>
+                <div class="dimension-band">Strength vs. typical 55</div>
+            </div>
+            <div class="dimension-box">
+                <div class="dimension-label">Strengths</div>
+                <div class="dimension-score">79</div>
+                <div class="dimension-band">Strength vs. typical 50</div>
+            </div>
+            <div class="dimension-box">
+                <div class="dimension-label">Aptitude</div>
+                <div class="dimension-score">84</div>
+                <div class="dimension-band">Strength vs. typical 52</div>
+            </div>
+        </div>
+
+        <!-- Action Plan -->
+        <div class="section-header">
+            <div>
+                <h2><span class="section-icon">✓</span>30/90-Day Action Plan</h2>
+                <p class="section-subtitle">Build momentum with achievable goals</p>
+            </div>
+        </div>
+
+        <div class="action-card">
+            <div class="action-section">
+                <h3>30-Day Sprint</h3>
+                <div class="goal-list">
+                    <label class="goal-item">
+                        <input type="checkbox" class="goal-checkbox">
+                        <span class="goal-text">Research top tech companies and their tech stacks</span>
+                    </label>
+                    <label class="goal-item">
+                        <input type="checkbox" class="goal-checkbox" checked>
+                        <span class="goal-text">Complete beginner coding course (Python or JavaScript)</span>
+                    </label>
+                    <label class="goal-item">
+                        <input type="checkbox" class="goal-checkbox">
+                        <span class="goal-text">Build first portfolio project and push to GitHub</span>
+                    </label>
+                    <label class="goal-item">
+                        <input type="checkbox" class="goal-checkbox">
+                        <span class="goal-text">Join a coding community or meet-up group</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="action-section">
+                <h3>90-Day Roadmap</h3>
+                <div class="goal-list">
+                    <label class="goal-item">
+                        <input type="checkbox" class="goal-checkbox">
+                        <span class="goal-text">Complete intermediate programming course</span>
+                    </label>
+                    <label class="goal-item">
+                        <input type="checkbox" class="goal-checkbox">
+                        <span class="goal-text">Build 3 portfolio projects with increasing complexity</span>
+                    </label>
+                    <label class="goal-item">
+                        <input type="checkbox" class="goal-checkbox">
+                        <span class="goal-text">Start preparing for technical interviews</span>
+                    </label>
+                    <label class="goal-item">
+                        <input type="checkbox" class="goal-checkbox">
+                        <span class="goal-text">Network with professionals in target companies</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="note">
+                💡 Goals automatically saved to your browser
+            </div>
+        </div>
+
+        <!-- Career Resources -->
+        <div class="section-header">
+            <div>
+                <h2><span class="section-icon">🛠️</span>Career Toolkit</h2>
+                <p class="section-subtitle">Everything you need to explore careers and build your future</p>
+            </div>
+        </div>
+
+        <div class="toolkit-grid">
+            <div class="toolkit-card">
+                <div class="toolkit-icon">🎓</div>
+                <div class="toolkit-content">
+                    <h4>Best Colleges</h4>
+                    <p>Top universities for tech and CS programs</p>
+                </div>
+            </div>
+            <div class="toolkit-card">
+                <div class="toolkit-icon">📚</div>
+                <div class="toolkit-content">
+                    <h4>Study Resources</h4>
+                    <p>Free courses, tutorials, and learning materials</p>
+                </div>
+            </div>
+            <div class="toolkit-card">
+                <div class="toolkit-icon">🏆</div>
+                <div class="toolkit-content">
+                    <h4>Internships</h4>
+                    <p>Opportunities to gain real-world experience</p>
+                </div>
+            </div>
+            <div class="toolkit-card">
+                <div class="toolkit-icon">💰</div>
+                <div class="toolkit-content">
+                    <h4>Scholarships</h4>
+                    <p>Funding for your education and growth</p>
+                </div>
+            </div>
+            <div class="toolkit-card">
+                <div class="toolkit-icon">🚀</div>
+                <div class="toolkit-content">
+                    <h4>Startups</h4>
+                    <p>Early-stage companies hiring and growing</p>
+                </div>
+            </div>
+            <div class="toolkit-card">
+                <div class="toolkit-icon">🔬</div>
+                <div class="toolkit-content">
+                    <h4>Research</h4>
+                    <p>Deep insights into tech industry trends</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer CTA -->
+        <div class="footer-cta">
+            <p>Ready to explore your career path in detail?</p>
+            <button>View Full Report</button>
+        </div>
+    </main>
+
+    <script>
+        // Auto-save goals to localStorage
+        document.querySelectorAll('.goal-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const goals = [];
+                document.querySelectorAll('.goal-checkbox').forEach(cb => {
+                    goals.push(cb.checked);
+                });
+                localStorage.setItem('og_goals_preview', JSON.stringify(goals));
+            });
+        });
+
+        // Load saved goals
+        const saved = localStorage.getItem('og_goals_preview');
+        if (saved) {
+            const goals = JSON.parse(saved);
+            document.querySelectorAll('.goal-checkbox').forEach((cb, i) => {
+                cb.checked = goals[i] || false;
+            });
+        }
+    </script>
+</body>
+</html>

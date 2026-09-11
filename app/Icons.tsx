@@ -1,0 +1,74 @@
+/**
+ * Icons — a small set of professional, stroke-based line icons (24×24,
+ * currentColor) used across the app in place of emoji. Keyed by the eight
+ * assessment categories plus a few generic report/flow icons.
+ */
+import type { ReactNode } from "react";
+
+const P: Record<string, ReactNode> = {
+  // categories — thematically distinct, professional icons (fingerprint,
+  // target, brain, heart-pulse, book, summit flag, shield-star, gear).
+  personality: <><path d="M12 20.5c-2-2.3-3.2-4.8-3.2-7.5a3.2 3.2 0 1 1 6.4 0c0 1.6-.4 3-1.1 4.3" /><path d="M8.2 19c-1.4-2.3-2.2-4.6-2.2-7a6 6 0 0 1 12 0c0 .8-.1 1.6-.3 2.4" /><path d="M12 12.7v1.2" /></>,
+  career_interest: <><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5.2" /><path d="M12 3v3M21 12h-3M12 21v-3M3 12h3" /><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none" /></>,
+  multiple_intelligence: <><path d="M9 4.6a2.6 2.6 0 0 0-2.6 2.6c0 .3 0 .6.1.9A2.5 2.5 0 0 0 5 10.6c0 .8.3 1.6.9 2.1-.2.4-.3.8-.3 1.3a2.7 2.7 0 0 0 2.7 2.7c.2 0 .5 0 .7-.1a2.3 2.3 0 0 0 2.1 1.3V6.5A2 2 0 0 0 9 4.6z" /><path d="M15 4.6a2.6 2.6 0 0 1 2.6 2.6c0 .3 0 .6-.1.9a2.5 2.5 0 0 1 1.5 2.5c0 .8-.3 1.6-.9 2.1.2.4.3.8.3 1.3a2.7 2.7 0 0 1-2.7 2.7c-.2 0-.5 0-.7-.1a2.3 2.3 0 0 1-2.1 1.3V6.5a2 2 0 0 1 2.1-1.9z" /></>,
+  emotional_intelligence: <><path d="M12 19.4s-6.4-4-8.4-7.8A4.4 4.4 0 0 1 12 6.6a4.4 4.4 0 0 1 8.4 5c-2 3.8-8.4 7.8-8.4 7.8z" /><path d="M4.8 11.6h2.9l1.2-2.1 2 3.8 1.3-2.3h4.8" /></>,
+  learning_styles: <><path d="M3 5.3C4.7 4.4 6.8 4.1 8.7 4.5c1.1.2 2.1.6 3 1.2v13.7c-.9-.5-1.9-.9-3-1.1-1.9-.4-4-.1-5.7.8z" /><path d="M21 5.3C19.3 4.4 17.2 4.1 15.3 4.5c-1.1.2-2.1.6-3 1.2v13.7c.9-.5 1.9-.9 3-1.1 1.9-.4 4-.1 5.7.8z" /></>,
+  motivators: <><path d="M3 19h18" /><path d="M5 19 10.5 8.5l2.7 4.3L15 9l4 10z" /><path d="M13 6V3" /><path d="M13 3h3l-1.1 1.5L16 6h-3" /></>,
+  strengths: <><path d="M12 3 19 6v5.3c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z" /><path d="m12 8.4 1.1 2.3 2.5.4-1.8 1.8.4 2.5-2.2-1.2-2.2 1.2.4-2.5-1.8-1.8 2.5-.4z" /></>,
+  aptitude: <><circle cx="12" cy="12" r="3.2" /><path d="M12 3v2.3M12 18.7V21M3 12h2.3M18.7 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6" /></>,
+  // flow (how we evaluate)
+  answer: <><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></>,
+  score: <><line x1="12" y1="20" x2="12" y2="10" /><line x1="18" y1="20" x2="18" y2="4" /><line x1="6" y1="20" x2="6" y2="15" /></>,
+  combine: <><polygon points="12 2 2 7 12 12 22 7 12 2" /><polyline points="2 17 12 22 22 17" /><polyline points="2 12 12 17 22 12" /></>,
+  match: <><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="4.5" /><circle cx="12" cy="12" r="1" /></>,
+  explain: <><polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /><polyline points="16 7 22 7 22 13" /></>,
+  // generic report
+  radar: <><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1" opacity="0.5" /><circle cx="12" cy="12" r="9" /></>,
+  clusters: <><rect x="3" y="3" width="8" height="8" rx="1.5" /><rect x="13" y="3" width="8" height="8" rx="1.5" /><rect x="3" y="13" width="8" height="8" rx="1.5" /><rect x="13" y="13" width="8" height="8" rx="1.5" /></>,
+  check: <><path d="M20 6 9 17l-5-5" /></>,
+  audio: <><path d="M4 9.5v5h3.5L12 18V6L7.5 9.5H4z" /><path d="M16 8.5a4.5 4.5 0 0 1 0 7" /><path d="M18.5 6a8 8 0 0 1 0 12" /></>,
+  info: <><circle cx="12" cy="12" r="9" /><line x1="12" y1="11" x2="12" y2="16.5" /><line x1="12" y1="7.8" x2="12" y2="8" /></>,
+  expand: <><polyline points="15 3 21 3 21 9" /><polyline points="9 21 3 21 3 15" /><line x1="21" y1="3" x2="14" y2="10" /><line x1="3" y1="21" x2="10" y2="14" /></>,
+  lock: <><rect x="4.5" y="10.5" width="15" height="10" rx="2" /><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5" /></>,
+  // reference-matching category icons for the home hero grid
+  user: <><circle cx="12" cy="8" r="4" /><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0" /></>,
+  compass: <><circle cx="12" cy="12" r="9" /><polygon points="15.5 8.5 13.5 13.5 8.5 15.5 10.5 10.5" /></>,
+  bulb: <><path d="M9.5 17.5h5" /><path d="M10.5 21h3" /><path d="M12 3a6 6 0 0 0-3.7 10.7c.6.5.9 1 1 1.8h5.4c.1-.8.4-1.3 1-1.8A6 6 0 0 0 12 3z" /></>,
+  heart: <path d="M12 20s-7-4.6-9.3-9A5 5 0 0 1 12 5.5 5 5 0 0 1 21.3 11c-2.3 4.4-9.3 9-9.3 9z" />,
+  star: <polygon points="12 3.5 14.7 9 20.5 9.8 16.2 14 17.3 20 12 17.1 6.7 20 7.8 14 3.5 9.8 9.3 9" />,
+  cpu: <><rect x="6" y="6" width="12" height="12" rx="2" /><rect x="9.5" y="9.5" width="5" height="5" rx="1" /><path d="M9 2.5v2M15 2.5v2M9 19.5v2M15 19.5v2M2.5 9h2M2.5 15h2M19.5 9h2M19.5 15h2" /></>,
+  // exam controls
+  flag: <><path d="M5 21V4" /><path d="M5 4h12l-2.5 4L17 12H5" /></>,
+  chevronLeft: <polyline points="15 18 9 12 15 6" />,
+  chevronRight: <polyline points="9 18 15 12 9 6" />,
+  xcircle: <><circle cx="12" cy="12" r="9" /><path d="M15 9l-6 6M9 9l6 6" /></>,
+  play: <polygon points="7 4 20 12 7 20 7 4" />,
+  power: <><path d="M12 4v8" /><path d="M7 6.3a8 8 0 1 0 10 0" /></>,
+  clock: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>,
+  help: <><circle cx="12" cy="12" r="9" /><path d="M9.2 9.3a2.8 2.8 0 0 1 5.4 1c0 1.8-2.6 2.5-2.6 2.5" /><path d="M12 17.2v.01" /></>,
+  bookmark: <path d="M6.5 3.5h11a1 1 0 0 1 1 1v16l-6.5-3.8L5.5 20.5v-16a1 1 0 0 1 1-1z" />,
+  save: <><path d="M5 3.5h11l3 3v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1z" /><path d="M8 3.5v5h7v-5" /><rect x="8" y="13" width="8" height="6.5" rx="1" /></>,
+  pulse: <path d="M2.5 12h4l2.2-5.5 3.8 11 2.4-6 1.6 2.5h5" />,
+  shield: <><path d="M12 3l7 3v5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z" /><path d="M9 12l2 2 4-4" /></>,
+  cap: <><path d="M2.5 8.5 12 4.5l9.5 4-9.5 4z" /><path d="M6.5 10.3V15c0 1.4 2.5 2.6 5.5 2.6s5.5-1.2 5.5-2.6v-4.7" /><path d="M21.5 8.5v5" /></>,
+  school: <><path d="M3 21h18" /><path d="M5 21V9l7-4.5L19 9v12" /><path d="M9.5 21v-4.5h5V21" /><path d="M9.5 11.5h1.5M13 11.5h1.5" /></>,
+  briefcase: <><rect x="3" y="7.5" width="18" height="12" rx="2" /><path d="M8.5 7.5V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v1.5" /><path d="M3 12.5h18" /></>,
+  route: <><circle cx="6" cy="18" r="2.4" /><circle cx="18" cy="6" r="2.4" /><path d="M8 17h6a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h3" /></>,
+  signpost: <><path d="M12 3v3M12 20v-6" /><path d="M5 6h11l3 2.5L16 11H5z" /><path d="M19 14H8l-3 2.5L8 19h11z" /></>,
+  bell: <><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.7 21a2 2 0 0 1-3.4 0" /></>,
+  card: <><rect x="2.5" y="5.5" width="19" height="13" rx="2.5" /><path d="M2.5 10h19" /><path d="M6 14.5h3.5" /></>,
+};
+
+export function Icon({ name, size = 22, stroke = 1.7, style }: { name: string; size?: number; stroke?: number; style?: React.CSSProperties }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" style={style} aria-hidden>
+      {P[name] ?? P.match}
+    </svg>
+  );
+}
+
+export const CATEGORY_ABBR: Record<string, string> = {
+  personality: "P", career_interest: "CI", multiple_intelligence: "MI",
+  emotional_intelligence: "EI", learning_styles: "LS", motivators: "MO",
+  strengths: "ST", aptitude: "AP",
+};

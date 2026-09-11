@@ -1,0 +1,351 @@
+"use client";
+
+/**
+ * Auth context: wraps the app, tracks the signed-in Firebase user and their
+ * Firestore profile, and exposes register / signIn / logout + saveAssessment.
+ */
+
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  signOut,
+  updateProfile as updateFirebaseProfile,
+  onAuthStateChanged,
+  type User,
+} from "firebase/auth";
+import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { firebaseReady, getFirebaseAuth, getDb } from "@/lib/firebase/client";
+
+export interface CareerMatch {
+  title: string;
+  fitmentPct: number;
+  band: string;
+  blurb: string;
+  roles?: string[];
+}
+export interface ReportTheme {
+  letter: string;
+  title: string;
+  score: number;
+  meaning: string;
+}
+
+/** Report data saved under the user so the dashboard can render it. */
+export interface AssessmentSummary {
+  journeyCode: string;
+  journeyName: string;
+  completedAt: string;
+  feedbackRating: number | null;
+  overallFitmentPct: number | null;
+  topCareer: string | null;
+  desiredCareer: string | null;
+  desiredCareerFitPct: number | null; // fit of the desired career, if matched
+  summary: string | null;
+  outcomeLabel?: string | null;
+  confidence?: string | null;
+  matches: CareerMatch[];
+  topStrengths: { parameterName: string; subTraitName: string; normalizedScore: number }[];
+  riasecCode?: string | null;
+  themes?: ReportTheme[];
+  topIntelligences?: { name: string; score: number }[];
+  topValues?: { tag: string; score: number }[];
+  topAptitudes?: { skill: string; score: number }[];
+  ei?: number | null;
+  learningStyles?: { name: string; score: number }[];
+  clusters?: { cluster: string; score: number }[];
+  recommendations?: string[];
+  nextStep?: string | null;
+  // 8-category overview used by the single radar chart in the report. Each
+  // score is 0–100. `key` is a stable slug; `label` is the display name.
+  radar?: { key: string; label: string; score: number }[];
+  strengthsBreakdown?: { name: string; score: number }[];
+  aptitudePct?: number | null;
+  // 60-question bank (classes 9-10) only: EI is measured as five named
+  // dimensions and interests as a full RIASEC vector, not just a code.
+  eiBreakdown?: { name: string; score: number }[];
+  riasecScores?: { letter: string; name: string; score: number }[];
+  // 60-question bank (classes 9-10) only: MBTI axis scores, 0-10, where a
+  // higher number leans toward the first letter of the pair (E/S/T/J).
+  mbtiEI?: number;
+  mbtiSN?: number;
+  mbtiTF?: number;
+  mbtiJP?: number;
+
+  // Class-specific output data (stored as JSON blobs for class-specific report rendering)
+  // These contain the full scoring output from each class's assessment
+  class6Output?: any; // Class6ScoreOutput from class6Scoring.ts
+  class7Output?: any; // Class7ScoreOutput from class7Scoring.ts
+  class8Output?: any; // Class8ScoreOutput from class8Scoring.ts
+  class11Output?: any; // Class11ScoreOutput from scoring11_12.ts
+}
+
+/** In-progress exam, persisted so the user can resume after closing/re-login. */
+export interface ExamSession {
+  stage: string;
+  chosenSets: Record<string, string>;
+  answers: Record<string, string>;
+  review: Record<string, boolean>;
+  cur: number;
+  remainingSec: number;
+  status: "in_progress";
+  savedAt?: string;
+}
+
+export interface UserProfile {
+  uid: string;
+  name: string;
+  email: string;
+  phone: string;
+  institution: string; // school / college / company
+  desiredCareer: string; // e.g. Doctor, Engineer — also used in the report
+  category: string; // CATEGORY_OPTIONS value, e.g. "class_11"
+  journeyCode: string; // assessment journey derived from category
+  clarity: string; // "current status" = one of the 4 clarity stages
+  city?: string;
+  age?: string;
+  examSession?: ExamSession | null;
+  createdAt?: unknown;
+  latestAssessment?: AssessmentSummary;
+  /** Result of the free /demo-test paper, kept apart from the paid one. */
+  demoAssessment?: AssessmentSummary;
+  /**
+   * The demo report's own two sections - the wanted-vs-found comparison and
+   * the resolved roadmaps - stored so /account can show the SAME report the
+   * student saw straight after the paper. Without this the dashboard drops
+   * everything specific to the demo the moment they navigate away.
+   *
+   * Deliberately stores the resolved roadmaps rather than career ids: a report
+   * a student opens a year later should not depend on the catalogue still
+   * containing what it contained on the day they sat the paper.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  demoReport?: any;
+  // Payment gate: false/absent = registered but unpaid; true = paid (set
+  // server-side by /api/payment/verify after signature verification).
+  paid?: boolean;
+  paymentStatus?: string;
+}
+
+export type RegisterInput = {
+  name: string;
+  email: string;
+  phone: string;
+  institution?: string;
+  desiredCareer?: string;
+  category: string;
+  journeyCode: string;
+  clarity: string;
+  password: string;
+  city?: string;
+  age?: string;
+};
+
+interface AuthState {
+  ready: boolean; // firebase configured?
+  loading: boolean;
+  user: User | null;
+  profile: UserProfile | null;
+  register: (input: RegisterInput) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<void>;
+  /** Emails a Firebase reset link. The password itself is never recoverable. */
+  resetPassword: (email: string) => Promise<void>;
+  logout: () => Promise<void>;
+  saveAssessment: (summary: AssessmentSummary) => Promise<void>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  saveDemoAssessment: (summary: AssessmentSummary, extras?: any) => Promise<void>;
+  saveExamSession: (session: ExamSession) => Promise<void>;
+  clearExamSession: () => Promise<void>;
+}
+
+const AuthContext = createContext<AuthState | null>(null);
+
+/** Map Firebase auth error codes to friendly messages. */
+export function authErrorMessage(err: unknown): string {
+  const code = (err as { code?: string })?.code ?? "";
+  switch (code) {
+    case "auth/email-already-in-use":
+      return "That email is already registered. Try signing in instead.";
+    case "auth/invalid-email":
+      return "Please enter a valid email address.";
+    case "auth/weak-password":
+      return "Password is too weak — please meet all the rules below.";
+    case "auth/invalid-credential":
+    case "auth/wrong-password":
+    case "auth/user-not-found":
+      return "Incorrect email or password.";
+    case "auth/operation-not-allowed":
+      return "Email/password sign-in isn't enabled in Firebase yet.";
+    case "auth/too-many-requests":
+      return "Too many attempts. Please wait a moment and try again.";
+    case "auth/network-request-failed":
+      return "Couldn't reach the sign-up server — this is a network block, not your details. Many school/college and office Wi-Fi networks (and ad-blockers) block Google/Firebase. Try mobile data / a hotspot, turn off any ad-blocker or VPN, or use a different browser (or Incognito), then try again.";
+    default:
+      return (err as { message?: string })?.message || "Something went wrong. Please try again.";
+  }
+}
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+
+  useEffect(() => {
+    const auth = getFirebaseAuth();
+    if (!auth) {
+      setLoading(false);
+      return;
+    }
+    const unsub = onAuthStateChanged(auth, async (u) => {
+      setUser(u);
+      if (u) {
+        const db = getDb();
+        if (db) {
+          try {
+            const snap = await getDoc(doc(db, "users", u.uid));
+            setProfile(snap.exists() ? (snap.data() as UserProfile) : null);
+          } catch {
+            setProfile(null);
+          }
+        }
+      } else {
+        setProfile(null);
+      }
+      setLoading(false);
+    });
+    return () => unsub();
+  }, []);
+
+  async function register(input: RegisterInput) {
+    const auth = getFirebaseAuth();
+    const db = getDb();
+    if (!auth || !db) throw new Error("Accounts are not configured yet.");
+
+    const cred = await createUserWithEmailAndPassword(auth, input.email.trim(), input.password);
+    await updateFirebaseProfile(cred.user, { displayName: input.name.trim() });
+
+    const profileDoc: UserProfile = {
+      uid: cred.user.uid,
+      name: input.name.trim(),
+      email: input.email.trim(),
+      phone: input.phone.trim(),
+      institution: (input.institution || "").trim(),
+      desiredCareer: (input.desiredCareer || "").trim(),
+      category: input.category,
+      journeyCode: input.journeyCode,
+      clarity: input.clarity,
+      city: (input.city || "").trim(),
+      age: (input.age || "").trim(),
+      paid: false,
+      paymentStatus: "unpaid",
+    };
+    await setDoc(doc(db, "users", cred.user.uid), {
+      ...profileDoc,
+      createdAt: serverTimestamp(),
+    });
+    setProfile(profileDoc);
+  }
+
+  async function signIn(email: string, password: string) {
+    const auth = getFirebaseAuth();
+    console.log("AuthProvider.signIn called. Auth ready:", !!auth);
+    if (!auth) throw new Error("Accounts are not configured yet.");
+    try {
+      console.log("Calling Firebase signInWithEmailAndPassword...");
+      await signInWithEmailAndPassword(auth, email.trim(), password);
+      console.log("Firebase signInWithEmailAndPassword succeeded");
+    } catch (err) {
+      console.error("Firebase signInWithEmailAndPassword failed:", err);
+      throw err;
+    }
+  }
+
+  // Firebase stores only a hash of the password, so there is nothing to "look
+  // up" and show a student who has forgotten theirs — a reset link is the only
+  // route back in, and every screen that mentions the password points here.
+  async function resetPassword(email: string) {
+    const auth = getFirebaseAuth();
+    if (!auth) throw new Error("Accounts are not configured yet.");
+    await sendPasswordResetEmail(auth, email.trim());
+  }
+
+  async function logout() {
+    const auth = getFirebaseAuth();
+    if (auth) await signOut(auth);
+  }
+
+  async function saveAssessment(summary: AssessmentSummary) {
+    const db = getDb();
+    if (!db || !user) throw new Error("Not signed in.");
+    await setDoc(doc(db, "users", user.uid), { latestAssessment: summary }, { merge: true });
+    setProfile((p) => (p ? { ...p, latestAssessment: summary } : p));
+  }
+
+  /**
+   * Stores a /demo-test result without destroying a paid one.
+   *
+   * The demo writes through the same exam engine, so it used to call
+   * saveAssessment and overwrite `latestAssessment` - the field /account
+   * renders. A paying student who opened the demo link had their real report
+   * silently replaced by a free one.
+   *
+   * The demo result therefore lands in its own field, and only fills
+   * `latestAssessment` when nothing is there yet. That keeps both cases right:
+   * someone who registered THROUGH the demo still finds a report on their
+   * dashboard, and someone who already had one keeps it.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async function saveDemoAssessment(summary: AssessmentSummary, extras?: any) {
+    const db = getDb();
+    if (!db || !user) throw new Error("Not signed in.");
+    const isFirstReport = !profile?.latestAssessment;
+    const patch: Record<string, unknown> = { demoAssessment: summary };
+    if (extras) patch.demoReport = extras;
+    if (isFirstReport) patch.latestAssessment = summary;
+    await setDoc(doc(db, "users", user.uid), patch, { merge: true });
+    setProfile((p) =>
+      p
+        ? {
+            ...p,
+            demoAssessment: summary,
+            ...(extras ? { demoReport: extras } : {}),
+            ...(isFirstReport ? { latestAssessment: summary } : {}),
+          }
+        : p
+    );
+  }
+
+  async function saveExamSession(session: ExamSession) {
+    const db = getDb();
+    if (!db || !user) return;
+    await setDoc(doc(db, "users", user.uid), { examSession: session }, { merge: true });
+    setProfile((p) => (p ? { ...p, examSession: session } : p));
+  }
+  async function clearExamSession() {
+    const db = getDb();
+    if (!db || !user) return;
+    await setDoc(doc(db, "users", user.uid), { examSession: null }, { merge: true });
+    setProfile((p) => (p ? { ...p, examSession: null } : p));
+  }
+
+  return (
+    <AuthContext.Provider
+      value={{ ready: firebaseReady, loading, user, profile, register, signIn, resetPassword, logout, saveAssessment, saveDemoAssessment, saveExamSession, clearExamSession }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth(): AuthState {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuth must be used within <AuthProvider>");
+  return ctx;
+}

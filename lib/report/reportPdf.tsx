@@ -1,0 +1,323 @@
+// Server-side PDF of the career report, attached to the emailed report.
+// Uses @react-pdf/renderer primitives (not HTML) — a compact, branded, multi-page
+// layout that auto-paginates. Rendered to a Buffer for nodemailer.
+import { Document, Page, View, Text, Link, StyleSheet, renderToBuffer } from "@react-pdf/renderer";
+import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
+import { DOMAINS, categoryDeepDive, roadmap, stageLabelOf, archetype, actionPlan, opportunitiesFor } from "@/lib/report/knowledge";
+
+/** Render-time de-dup: any bullet whose normalized text already appeared
+ *  earlier in the report is silently dropped, so no advice prints twice. */
+function makeFresh() {
+  const seen = new Set<string>();
+  const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim();
+  return (lines: string[]) =>
+    lines.filter((l) => {
+      const k = norm(l);
+      if (!k || seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    });
+}
+
+const CAT_LABEL: Record<string, string> = {
+  personality: "Personality", career_interest: "Career Interest", multiple_intelligence: "Multiple Intelligence",
+  emotional_intelligence: "Emotional Intelligence", learning_styles: "Learning Preferences", motivators: "Motivators",
+  strengths: "Strengths", aptitude: "Aptitude",
+};
+
+// 2026 palette — near-black ink + single light-red accent (matches dashboard/report).
+const NAVY = "#141417", ACCENT = "#F2555A", INK = "#141417", MUTED = "#8a8a94", LINE = "#ececef";
+const clamp = (n: number) => Math.max(4, Math.min(100, Math.round(n)));
+
+const s = StyleSheet.create({
+  page: { paddingTop: 0, paddingBottom: 40, fontFamily: "Helvetica", color: INK, fontSize: 10 },
+  header: { backgroundColor: NAVY, color: "#fff", padding: 26 },
+  hKick: { fontSize: 8, letterSpacing: 1, color: "#f3b7b9", fontFamily: "Helvetica-Bold" },
+  hTitle: { fontSize: 18, fontFamily: "Helvetica-Bold", marginTop: 8, lineHeight: 1.25 },
+  hSub: { fontSize: 10, color: "#d9d9df", marginTop: 6 },
+  body: { padding: "20 26" },
+  summary: { fontSize: 10.5, color: "#475569", lineHeight: 1.55, marginBottom: 16 },
+  h3: { fontSize: 12.5, fontFamily: "Helvetica-Bold", color: "#0f172a", marginBottom: 8, marginTop: 6 },
+  barRow: { flexDirection: "row", alignItems: "center", marginBottom: 5 },
+  barLabel: { width: 120, fontSize: 9, color: "#334155" },
+  barTrack: { flex: 1, height: 7, backgroundColor: "#eef1f5", borderRadius: 4 },
+  barFill: { height: 7, borderRadius: 4, backgroundColor: ACCENT },
+  barScore: { width: 24, textAlign: "right", fontSize: 9, fontFamily: "Helvetica-Bold", color: "#0f172a" },
+  card: { border: `1 solid ${LINE}`, borderRadius: 8, padding: 12, marginBottom: 10 },
+  cardRank: { fontSize: 8, color: MUTED, fontFamily: "Helvetica-Bold" },
+  cardName: { fontSize: 13, fontFamily: "Helvetica-Bold", color: "#0f172a", marginTop: 2, marginBottom: 3 },
+  cardWhat: { fontSize: 9.5, color: "#475569", lineHeight: 1.5 },
+  salRow: { flexDirection: "row", marginTop: 6 },
+  salK: { width: 46, fontSize: 8.5, color: MUTED },
+  salV: { flex: 1, fontSize: 9, color: "#0f172a", fontFamily: "Helvetica-Bold" },
+  link: { fontSize: 8.5, color: "#E23B41", textDecoration: "none", marginRight: 12, marginTop: 6 },
+  li: { flexDirection: "row", marginBottom: 4 },
+  liDot: { width: 10, fontSize: 9, color: ACCENT },
+  liText: { flex: 1, fontSize: 9.5, color: "#475569", lineHeight: 1.45 },
+  phase: { flexDirection: "row", marginBottom: 8 },
+  phPeriod: { width: 84, fontSize: 9, fontFamily: "Helvetica-Bold", color: ACCENT },
+  phBody: { flex: 1 },
+  phTitle: { fontSize: 10, fontFamily: "Helvetica-Bold", color: "#0f172a" },
+  phPoint: { fontSize: 9, color: MUTED, marginTop: 2, lineHeight: 1.4 },
+  foot: { fontSize: 8, color: "#94a3b8", marginTop: 18, lineHeight: 1.5 },
+  archBox: { backgroundColor: "#FDECED", borderRadius: 6, padding: "10 12", marginTop: 12 },
+  archKick: { fontSize: 7.5, letterSpacing: 1, color: ACCENT, fontFamily: "Helvetica-Bold" },
+  archName: { fontSize: 13, fontFamily: "Helvetica-Bold", color: "#0f172a", marginTop: 3 },
+  archTag: { fontSize: 9.5, color: "#475569", marginTop: 3, lineHeight: 1.45 },
+  dim: { marginBottom: 9, paddingBottom: 9, borderBottom: `1 solid ${LINE}` },
+  dimTop: { flexDirection: "row", alignItems: "center", marginBottom: 3 },
+  dimName: { flex: 1, fontSize: 10.5, fontFamily: "Helvetica-Bold", color: "#0f172a" },
+  dimScore: { fontSize: 10.5, fontFamily: "Helvetica-Bold", color: ACCENT },
+  dimText: { fontSize: 9, color: "#475569", lineHeight: 1.45 },
+  dimNext: { fontSize: 8.5, color: NAVY, marginTop: 3, fontFamily: "Helvetica-Bold" },
+  twoCol: { flexDirection: "row", gap: 12 },
+  col: { flex: 1 },
+  colHd: { fontSize: 9, fontFamily: "Helvetica-Bold", color: "#0f172a", marginBottom: 4 },
+});
+
+function Bar({ label, score }: { label: string; score: number }) {
+  return (
+    <View style={s.barRow}>
+      <Text style={s.barLabel}>{label}</Text>
+      <View style={s.barTrack}><View style={{ ...s.barFill, width: `${clamp(score)}%` }} /></View>
+      <Text style={s.barScore}>{Math.round(score)}</Text>
+    </View>
+  );
+}
+
+function ReportDoc({ name, a, demo }: { name: string; a: AssessmentSummary; demo?: DemoReportForPdf }) {
+  const domains = (a.themes ?? [])
+    .filter((t) => t.score > 0 && DOMAINS[t.letter])
+    .slice(0, 3)
+    .map((t) => ({ ...DOMAINS[t.letter], fit: Math.round(t.score) }));
+  const top = domains[0] || DOMAINS.B;
+  const arch = archetype(a);
+  const fresh = makeFresh();
+  const plan = { days30: fresh(actionPlan(a, top.name).days30), days90: fresh(actionPlan(a, top.name).days90) };
+  const dims = (a.radar ?? []).map((r) => ({ ...r, dd: categoryDeepDive(r.key, a) }));
+  const phases = roadmap(stageLabelOf(a.journeyCode), top.name)
+    .map((p) => ({ ...p, points: fresh(p.points) }))
+    .filter((p) => p.points.length > 0);
+  const programs = opportunitiesFor(top.name);
+
+  return (
+    <Document title="OneGrasp Career Report" author="OneGrasp">
+      <Page size="A4" style={s.page}>
+        <View style={s.header}>
+          <Text style={s.hKick}>ONEGRASP · CAREER FITMENT REPORT</Text>
+          <Text style={s.hTitle}>{name || "Your"} career fitment report</Text>
+          <Text style={s.hSub}>
+            {a.overallFitmentPct != null ? `${a.overallFitmentPct}/100 profile alignment` : ""}
+            {`  ·  ${new Date(a.completedAt).toLocaleDateString()}`}
+          </Text>
+        </View>
+
+        <View style={s.body}>
+          <View style={s.archBox}>
+            <Text style={s.archKick}>YOUR CAREER DNA</Text>
+            <Text style={s.archName}>{arch.name}</Text>
+            <Text style={s.archTag}>{a.summary || arch.tagline}</Text>
+          </View>
+
+          <Text style={{ ...s.h3, marginTop: 14 }}>Your profile at a glance</Text>
+          {(a.radar ?? []).map((r) => <Bar key={r.key} label={CAT_LABEL[r.key] || r.label} score={r.score} />)}
+
+          <Text style={{ ...s.h3, marginTop: 16 }}>Your eight dimensions</Text>
+          {dims.map((r) => (
+            <View key={r.key} style={s.dim} wrap={false}>
+              <View style={s.dimTop}>
+                <Text style={s.dimName}>{CAT_LABEL[r.key] || r.label}</Text>
+                <Text style={s.dimScore}>{Math.round(r.score)}%</Text>
+              </View>
+              <Text style={s.dimText}>{r.dd.meaning}</Text>
+              {r.dd.next ? <Text style={s.dimNext}>Next: {r.dd.next}</Text> : null}
+            </View>
+          ))}
+
+          <Text style={{ ...s.h3, marginTop: 8 }}>Best-fit career domains</Text>
+          {domains.map((d, i) => (
+            <View key={d.key} style={s.card} wrap={false}>
+              <Text style={s.cardRank}>#{i + 1} best fit{d.fit ? `  ·  ${d.fit}%` : ""}</Text>
+              <Text style={s.cardName}>{d.name}</Text>
+              <Text style={s.cardWhat}>{d.whatItIs}</Text>
+              <View style={s.salRow}><Text style={s.salK}>India</Text><Text style={s.salV}>{d.salaryIndia}</Text></View>
+              <View style={s.salRow}><Text style={s.salK}>Abroad</Text><Text style={s.salV}>{d.salaryAbroad}</Text></View>
+              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                {d.links.slice(0, 2).map((l) => <Link key={l.url} src={l.url} style={s.link}>{l.label}</Link>)}
+              </View>
+            </View>
+          ))}
+
+          <Text style={{ ...s.h3, marginTop: 8 }}>Your action plan</Text>
+          <View style={s.twoCol}>
+            <View style={s.col}>
+              <Text style={s.colHd}>Next 30 days</Text>
+              {plan.days30.map((x, i) => (
+                <View key={i} style={s.li}><Text style={s.liDot}>•</Text><Text style={s.liText}>{x}</Text></View>
+              ))}
+            </View>
+            <View style={s.col}>
+              <Text style={s.colHd}>Next 90 days</Text>
+              {plan.days90.map((x, i) => (
+                <View key={i} style={s.li}><Text style={s.liDot}>•</Text><Text style={s.liText}>{x}</Text></View>
+              ))}
+            </View>
+          </View>
+
+          <Text style={{ ...s.h3, marginTop: 12 }}>Free programs to start this month</Text>
+          {programs.map((p) => (
+            <View key={p.url + p.label} style={s.li} wrap={false}>
+              <Text style={s.liDot}>•</Text>
+              <Text style={s.liText}>
+                <Link src={p.url} style={{ color: "#3f5b8b", textDecoration: "none" }}>{p.label}</Link>
+                {`  —  ${p.note}`}
+              </Text>
+            </View>
+          ))}
+
+          <Text style={{ ...s.h3, marginTop: 12 }}>Your next 20 years</Text>
+          {phases.map((p) => (
+            <View key={p.period} style={s.phase} wrap={false}>
+              <Text style={s.phPeriod}>{p.period}</Text>
+              <View style={s.phBody}>
+                <Text style={s.phTitle}>{p.title}</Text>
+                <Text style={s.phPoint}>{p.points[0]}</Text>
+              </View>
+            </View>
+          ))}
+
+          <Text style={s.foot}>
+            Generated from your OneGrasp career assessment. Sign in to your dashboard for the full interactive report.
+            This report is a guide, not a verdict. Salary figures are indicative 2025–26 ranges compiled from public
+            sources (AmbitionBox, Glassdoor and official pay scales) and vary by city, company and skill level.
+            All recommended programs are free and link to their official pages.
+          </Text>
+        </View>
+      </Page>
+
+      {/* The emailed PDF is the copy a student keeps. A class 11-12 student's
+          report is not complete without the career they chose, the career the
+          assessment pointed to, and the roadmap - so those go here too, not
+          only on screen. Omitted entirely for class 9-10. */}
+      {demo?.desiredCareer ? (
+        <Page size="A4" style={s.page}>
+          <View style={s.header}>
+            <Text style={s.hKick}>ONEGRASP · CAREER FITMENT REPORT</Text>
+            <Text style={s.hTitle}>Your choice vs your result</Text>
+          </View>
+          <View style={s.body}>
+            {demo.alignment ? (
+              <>
+                <View style={s.archBox}>
+                  <Text style={s.archKick}>WHAT WE COMPARED</Text>
+                  <Text style={s.archName}>{demo.alignment.headline}</Text>
+                </View>
+
+                <View style={s.twoCol}>
+                  <View style={s.col}>
+                    <Text style={s.colHd}>What you said you wanted</Text>
+                    <Text style={s.cardName}>{demo.alignment.desired?.title}</Text>
+                    <Text style={s.cardWhat}>{demo.alignment.desired?.clusterName}</Text>
+                    {demo.alignment.desiredClusterScore != null ? (
+                      <Text style={s.dimNext}>
+                        {Math.round(demo.alignment.desiredClusterScore)}% blended fit
+                        {demo.alignment.desiredRank ? `  ·  rank ${demo.alignment.desiredRank} of 8 fields` : ""}
+                      </Text>
+                    ) : null}
+                  </View>
+                  <View style={s.col}>
+                    <Text style={s.colHd}>What the assessment found</Text>
+                    <Text style={s.cardName}>{demo.alignment.measured?.title}</Text>
+                    <Text style={s.cardWhat}>{demo.alignment.measured?.clusterName}</Text>
+                    {demo.alignment.measured?.fitmentPct != null ? (
+                      <Text style={s.dimNext}>{demo.alignment.measured.fitmentPct}% blended fit</Text>
+                    ) : null}
+                  </View>
+                </View>
+
+                <Text style={{ ...s.cardWhat, marginTop: 10 }}>{demo.alignment.explanation}</Text>
+
+                <Text style={{ ...s.h3, marginTop: 14 }}>What to do about it</Text>
+                {(demo.alignment.nextSteps ?? []).map((x: string, i: number) => (
+                  <View key={i} style={s.li}><Text style={s.liDot}>•</Text><Text style={s.liText}>{x}</Text></View>
+                ))}
+              </>
+            ) : null}
+
+            <RoadmapPdf title={`Roadmap · ${demo.desiredCareer.title}`} career={demo.desiredCareer} />
+            {demo.measuredCareer ? (
+              <RoadmapPdf title={`Roadmap · ${demo.measuredCareer.title}`} career={demo.measuredCareer} />
+            ) : null}
+          </View>
+        </Page>
+      ) : null}
+    </Document>
+  );
+}
+
+/** One career's roadmap, in the PDF's own primitives. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function RoadmapPdf({ title, career }: { title: string; career: any }) {
+  const r = career?.roadmap;
+  if (!r) return null;
+  return (
+    <View style={s.card} wrap={false}>
+      <Text style={s.cardRank}>{title}</Text>
+      <Text style={s.cardName}>{career.title}</Text>
+      <Text style={s.cardWhat}>{career.blurb}</Text>
+
+      <Text style={{ ...s.colHd, marginTop: 8 }}>Entrance exams</Text>
+      {(r.entranceExams ?? []).slice(0, 4).map((e: { name: string; when: string }, i: number) => (
+        <View key={i} style={s.li}><Text style={s.liDot}>•</Text>
+          <Text style={s.liText}>{e.name} — {e.when}</Text></View>
+      ))}
+
+      <Text style={{ ...s.colHd, marginTop: 6 }}>The path</Text>
+      {(r.afterSchool ?? []).map((x: { stage: string; years: string }, i: number) => (
+        <View key={i} style={s.li}><Text style={s.liDot}>•</Text>
+          <Text style={s.liText}>{x.stage} ({x.years})</Text></View>
+      ))}
+
+      <Text style={{ ...s.colHd, marginTop: 6 }}>Start this year</Text>
+      {(r.buildNow ?? []).slice(0, 4).map((x: string, i: number) => (
+        <View key={i} style={s.li}><Text style={s.liDot}>•</Text><Text style={s.liText}>{x}</Text></View>
+      ))}
+
+      {r.salary ? (
+        <>
+          <View style={s.salRow}><Text style={s.salK}>Starting</Text><Text style={s.salV}>{r.salary.entry}</Text></View>
+          <View style={s.salRow}><Text style={s.salK}>Mid</Text><Text style={s.salV}>{r.salary.mid}</Text></View>
+          <View style={s.salRow}><Text style={s.salK}>Senior</Text><Text style={s.salV}>{r.salary.senior}</Text></View>
+          <Text style={{ ...s.dimNext, marginTop: 4 }}>
+            Indicative ranges, not quotes — check current figures before relying on them.
+          </Text>
+        </>
+      ) : null}
+
+      {r.realityCheck ? (
+        <>
+          <Text style={{ ...s.colHd, marginTop: 8 }}>The honest part</Text>
+          <Text style={s.cardWhat}>{r.realityCheck}</Text>
+        </>
+      ) : null}
+    </View>
+  );
+}
+
+/**
+ * The class 11-12 demo's own two sections, as saved on the profile.
+ *
+ * Typed loosely on purpose: this module is the PDF renderer and has no reason
+ * to depend on the demo catalogue's types. It renders whatever is present and
+ * omits the page entirely when nothing is.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type DemoReportForPdf = any;
+
+export async function renderReportPdf(
+  name: string,
+  a: AssessmentSummary,
+  demo?: DemoReportForPdf
+): Promise<Buffer> {
+  return renderToBuffer(<ReportDoc name={name} a={a} demo={demo} />);
+}

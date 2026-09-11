@@ -1,0 +1,17 @@
+{
+  "//": "Used only by scripts/run_verify_scoring60.mjs, to compile the scoring harness to runnable CommonJS.",
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "incremental": false,
+    "outDir": ".verify-out",
+    "isolatedModules": false,
+    "plugins": []
+  },
+  "include": ["scripts/verify_scoring60.ts", "scripts/analyse_bank_2026.ts",
+              "scripts/audit_career_coverage.ts", "scripts/audit_cluster_balance.ts",
+              "lib/newAssessment/**/*.ts", "lib/auth/AuthProvider.tsx",
+              "lib/report/knowledge.ts"]
+}
