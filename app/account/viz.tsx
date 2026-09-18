@@ -222,6 +222,56 @@ export function RadarChart({
   );
 }
 
+/* ---------------------------- MBTICompass ------------------------------- */
+/** One bipolar axis, its two opposite letters, and the label shown for each. */
+export type MBTIAxis = { key: string; angle: number; posLetter: string; posLabel: string; negLetter: string; negLabel: string; score: number };
+
+/** A compact "compass" — four crossed axes through a centre point, each with a
+ *  marker sitting closer to whichever letter actually won. Reads as one shape
+ *  instead of four disconnected bars, so the type feels like a single profile.
+ *  `score` on each axis is 0-10, midpoint 5: >=5 favours posLetter. */
+export function MBTICompass({ axes, size = 232, color = C.red, centerLabel }: { axes: MBTIAxis[]; size?: number; color?: string; /** e.g. the 4-letter type code — shown in the middle instead of a bare dot when given. */ centerLabel?: string }) {
+  const cx = size / 2, cy = size / 2, r = size / 2 - 46;
+  const toXY = (angleDeg: number, radius: number) => {
+    const rad = (angleDeg * Math.PI) / 180;
+    return { x: cx + radius * Math.cos(rad), y: cy + radius * Math.sin(rad) };
+  };
+  return (
+    <svg viewBox={`0 0 ${size} ${size}`} role="img" aria-label="Your four personality axes" style={{ width: "100%", maxWidth: 260, height: "auto", display: "block", margin: "0 auto" }}>
+      {[0.5, 1].map((f) => (
+        <circle key={f} cx={cx} cy={cy} r={r * f} fill="none" stroke={C.line} strokeWidth="1" />
+      ))}
+      {axes.map((ax) => {
+        const posEnd = toXY(ax.angle, r);
+        const negEnd = toXY(ax.angle + 180, r);
+        const frac = Math.max(0, Math.min(1, ax.score / 10));
+        const markerAngle = frac >= 0.5 ? ax.angle : ax.angle + 180;
+        const markerR = Math.abs(frac - 0.5) * 2 * r;
+        const marker = toXY(markerAngle, markerR);
+        const posLbl = toXY(ax.angle, r + 24);
+        const negLbl = toXY(ax.angle + 180, r + 24);
+        const posWins = frac >= 0.5;
+        return (
+          <g key={ax.key}>
+            <line x1={negEnd.x} y1={negEnd.y} x2={posEnd.x} y2={posEnd.y} stroke={C.line} strokeWidth="2" />
+            <circle cx={marker.x} cy={marker.y} r="7" fill={color} stroke="#fff" strokeWidth="2" />
+            <text x={posLbl.x} y={posLbl.y + 4} textAnchor="middle" fontSize="12" fontWeight={posWins ? 800 : 600} fill={posWins ? color : C.faint}>{ax.posLetter}</text>
+            <text x={negLbl.x} y={negLbl.y + 4} textAnchor="middle" fontSize="12" fontWeight={!posWins ? 800 : 600} fill={!posWins ? color : C.faint}>{ax.negLetter}</text>
+          </g>
+        );
+      })}
+      {centerLabel ? (
+        <>
+          <circle cx={cx} cy={cy} r={size * 0.145} fill="#fff" stroke={color} strokeWidth="2" />
+          <text x={cx} y={cy + size * 0.048} textAnchor="middle" fontSize={size * 0.1} fontWeight={900} fill={color}>{centerLabel}</text>
+        </>
+      ) : (
+        <circle cx={cx} cy={cy} r="4" fill={C.ink3} />
+      )}
+    </svg>
+  );
+}
+
 /* ------------------------------ helpers -------------------------------- */
 function hexToRgba(hex: string, a: number) {
   const h = hex.replace("#", "");

@@ -25,35 +25,19 @@ import type { AssessmentSummary, UserProfile } from "@/lib/auth/AuthProvider";
 import { Logo } from "@/app/Logo";
 import dynamic from "next/dynamic";
 import { Icon, CATEGORY_ABBR } from "@/app/Icons";
+import { categoryLabel } from "@/lib/auth/formOptions";
 import { C, Ring, SkillBar, RadarChart, type RadarDatum } from "@/app/account/viz";
+import { adaptClass11ToSummary, isCurrentClass11Shape } from "@/lib/report/adaptClass11";
+import { buildClass11ExtraSheets } from "@/lib/report/class11ExtraSheets";
+import { buildCareerFit1112Sheets } from "@/lib/report/careerFit1112Sheets";
+import {
+  adaptClass6ToSummary, adaptClass7ToSummary, adaptClass8ToSummary,
+  isCurrentClass6Shape, isCurrentClass7Shape, isCurrentClass8Shape,
+} from "@/lib/report/adaptClass678";
 // The full report is ~85KB of source behind a "Full report" click, and most
 // dashboard visits never open it. Loading it on demand keeps that weight off
 // the dashboard's own first paint.
 const FullReport = dynamic(() => import("@/app/account/FullReport"), {
-  ssr: false,
-  loading: () => (
-    <div style={{ padding: 48, textAlign: "center", color: "#64748b", fontSize: 14 }}>Preparing your report…</div>
-  ),
-});
-const Class11ReportComprehensive = dynamic(() => import("@/app/account/Class11ReportComprehensive"), {
-  ssr: false,
-  loading: () => (
-    <div style={{ padding: 48, textAlign: "center", color: "#64748b", fontSize: 14 }}>Preparing your report…</div>
-  ),
-});
-const Class6ReportComponent = dynamic(() => import("@/app/account/Class6Report").then(m => ({ default: m.Class6Report })), {
-  ssr: false,
-  loading: () => (
-    <div style={{ padding: 48, textAlign: "center", color: "#64748b", fontSize: 14 }}>Preparing your report…</div>
-  ),
-});
-const Class7ReportComponent = dynamic(() => import("@/app/account/Class7Report").then(m => ({ default: m.Class7Report })), {
-  ssr: false,
-  loading: () => (
-    <div style={{ padding: 48, textAlign: "center", color: "#64748b", fontSize: 14 }}>Preparing your report…</div>
-  ),
-});
-const Class8Report = dynamic(() => import("@/app/account/Class8Report").then(m => ({ default: m.Class8Report })), {
   ssr: false,
   loading: () => (
     <div style={{ padding: 48, textAlign: "center", color: "#64748b", fontSize: 14 }}>Preparing your report…</div>
@@ -295,8 +279,51 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
     const isClass6 = journeyCode === "6";
     const isClass7 = journeyCode === "7";
     const isClass8 = journeyCode === "8";
-    const isClass910 = journeyCode === "9-10";
-    const isClass1112 = journeyCode === "11-12";
+    // "11" and "12" are the current, separately-registered classes; "11-12"
+    // is the legacy combined category kept working for older accounts.
+    const isClass1112 = journeyCode === "11" || journeyCode === "12" || journeyCode === "11-12";
+    // A report saved before the class 11-12 question-bank/scoring rewrite is
+    // shaped like the old (partly fake/hardcoded) engine — not just missing
+    // a few fields, but scored by logic this whole pass replaced. Rendering
+    // it through the new adapter either crashes on the shape mismatch or
+    // silently shows stale numbers, so it's treated as "no report yet"
+    // instead, with a clear way forward.
+    const class11Output = (a as any).class11Output;
+    const class11Ready = isClass1112 && isCurrentClass11Shape(class11Output);
+    const class11Stale = isClass1112 && !!class11Output && !class11Ready;
+
+    // Same staleness guard for classes 6-8: a report saved before the
+    // 15-domain catalogue rebuild (see lib/report/knowledge.ts) has
+    // domainAffinities scored against the OLD, differently-meaning 8-letter
+    // domains — not a smaller version of the current data, but affinities
+    // for domains that no longer exist.
+    const class6Output = (a as any).class6Output;
+    const class7Output = (a as any).class7Output;
+    const class8Output = (a as any).class8Output;
+    const class6Ready = isClass6 && isCurrentClass6Shape(class6Output);
+    const class7Ready = isClass7 && isCurrentClass7Shape(class7Output);
+    const class8Ready = isClass8 && isCurrentClass8Shape(class8Output);
+    const class678Stale =
+      (isClass6 && !!class6Output && !class6Ready) ||
+      (isClass7 && !!class7Output && !class7Ready) ||
+      (isClass8 && !!class8Output && !class8Ready);
+
+    let reportSummary = a;
+    let reportExtraSheets: { id: string; kicker: string; node: ReactNode }[] = [];
+    if (class11Ready) {
+      reportSummary = adaptClass11ToSummary(class11Output, a);
+      const c1112Category = journeyCode === "11" ? "class_11" : journeyCode === "12" ? "class_12" : "class_11_12";
+      reportExtraSheets = [
+        ...buildCareerFit1112Sheets(class11Output, c1112Category),
+        ...buildClass11ExtraSheets(class11Output),
+      ];
+    } else if (class6Ready) {
+      reportSummary = adaptClass6ToSummary(class6Output, a);
+    } else if (class7Ready) {
+      reportSummary = adaptClass7ToSummary(class7Output, a);
+    } else if (class8Ready) {
+      reportSummary = adaptClass8ToSummary(class8Output, a);
+    }
 
     return (
       <div className="ogd-reportwrap">
@@ -310,40 +337,37 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
           </span>
         </div>
 
-        {isClass6 ? (
-          <Class6ReportComponent
-            studentName={name}
-            studentEmail={email || ""}
-            output={(a as any).class6Output || {} as any}
-          />
-        ) : isClass7 ? (
-          <Class7ReportComponent
-            studentName={name}
-            studentEmail={email || ""}
-            output={(a as any).class7Output || {} as any}
-          />
-        ) : isClass8 ? (
-          <Class8Report
-            studentName={name}
-            studentEmail={email || ""}
-            output={(a as any).class8Output || {} as any}
-          />
-        ) : isClass1112 ? (
-          <Class11ReportComprehensive
-            studentName={name}
-            studentEmail={email || ""}
-            studentClass="11"
-            completedDate={a.completedAt ? new Date(a.completedAt) : new Date()}
-            output={(a as any).class11Output || {} as any}
-          />
+        {class11Stale || class678Stale ? (
+          <div style={{ maxWidth: 560, margin: "80px auto", textAlign: "center", padding: "0 20px" }}>
+            <h2 style={{ fontSize: 20, fontWeight: 800, color: "#141417", marginBottom: 10 }}>
+              Your report needs a quick refresh
+            </h2>
+            <p style={{ fontSize: 14, color: "#63636f", lineHeight: 1.6, marginBottom: 20 }}>
+              This report was generated by an earlier version of the assessment. Retake the assessment
+              to see your updated report with the current question set and scoring.
+            </p>
+            <button className="ogd-btn solid" onClick={() => { setView("dashboard"); window.scrollTo(0, 0); }}>
+              Back to dashboard
+            </button>
+          </div>
         ) : (
-          // Class 9-10 and any other class uses FullReport
+          // Every class (6, 7, 8, 9-10, 11-12) shares the exact same
+          // FullReport — each class-specific engine's own score data is
+          // adapted into the same AssessmentSummary shape 9-10 uses, so the
+          // report is genuinely identical (same code, CSS, images) rather
+          // than a separately designed report per class that drifts from it.
           <FullReport
-            a={a}
+            a={reportSummary}
             name={name}
-            extraSheets={extraSections
-              .filter((x) => x.inFullReport)
-              .map((x) => ({ id: x.id, kicker: x.label, node: x.reportNode ?? x.node }))}
+            institution={profile?.institution || undefined}
+            studentClass={profile?.category ? categoryLabel(profile.category) : undefined}
+            hideCareerFitSections={class11Ready}
+            extraSheets={[
+              ...reportExtraSheets,
+              ...extraSections
+                .filter((x) => x.inFullReport)
+                .map((x) => ({ id: x.id, kicker: x.label, node: x.reportNode ?? x.node })),
+            ]}
           />
         )}
       </div>

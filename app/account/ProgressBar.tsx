@@ -16,27 +16,14 @@ interface ProgressBarProps {
   description?: string;
 }
 
+// Real hex values, not Tailwind utility classes — this project has no
+// Tailwind config, so `text-blue-600` etc. never applied anything and every
+// bar rendered with an invisible, uncoloured fill.
 const colorSchemes = {
-  blue: {
-    display: 'text-blue-600 print:text-blue-700',
-    bar: 'bg-blue-100 print:bg-blue-200',
-    fill: 'bg-blue-600 print:bg-blue-700',
-  },
-  green: {
-    display: 'text-green-600 print:text-green-700',
-    bar: 'bg-green-100 print:bg-green-200',
-    fill: 'bg-green-600 print:bg-green-700',
-  },
-  amber: {
-    display: 'text-amber-600 print:text-amber-700',
-    bar: 'bg-amber-100 print:bg-amber-200',
-    fill: 'bg-amber-600 print:bg-amber-700',
-  },
-  red: {
-    display: 'text-red-600 print:text-red-700',
-    bar: 'bg-red-100 print:bg-red-200',
-    fill: 'bg-red-600 print:bg-red-700',
-  },
+  blue: { display: '#2f6bff', bar: '#e8edff', fill: '#2f6bff' },
+  green: { display: '#12996b', bar: '#eaf6f0', fill: '#12996b' },
+  amber: { display: '#e08a1e', bar: '#fdf1e0', fill: '#e08a1e' },
+  red: { display: '#E23B41', bar: '#FDECED', fill: '#E23B41' },
 };
 
 function getColorScheme(score: number): 'green' | 'blue' | 'amber' | 'red' {
@@ -116,16 +103,16 @@ export function ProgressBar({
       <div className="progress-bar-label">
         <span>{label}</span>
         {showPercentage && (
-          <span className={`progress-bar-score ${colors.display}`}>
+          <span className="progress-bar-score" style={{ color: colors.display }}>
             {Math.round(score)}%
           </span>
         )}
       </div>
 
-      <div className={`progress-bar ${colors.bar}`}>
+      <div className="progress-bar" style={{ background: colors.bar }}>
         <div
-          className={`progress-bar-fill ${colors.fill}`}
-          style={{ width: `${Math.min(100, Math.max(0, score))}%` }}
+          className="progress-bar-fill"
+          style={{ width: `${Math.min(100, Math.max(0, score))}%`, background: colors.fill }}
         />
       </div>
 

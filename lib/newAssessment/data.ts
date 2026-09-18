@@ -51,16 +51,22 @@ const ORDER_9_10: Category[] = [
   "emotional_intelligence",
 ];
 
-// Class 11-12 order: Psychometric first (8 dimensions), then contextual questions
+// Class 11-12 order matches the source spec's own numbered sections exactly
+// (1 Personality ... 8 Creativity = the 61-question "CORE", then 9 Subject
+// Fit, 10 Career/Stream/Degree Fit, 11 Career Selector). No
+// "multiple_intelligence" here: Class 11-12 has no MI category in its own
+// bank (data/class-11-12/questions-corrected.json) or scorer (scoring11_12.ts)
+// — it used to fall through to a leftover "11-12" MI set in
+// assessment-questions.json, showing students 5 real questions whose answers
+// convertAnswersToClass11Format had no slot for and silently dropped.
 const ORDER_11_12: Category[] = [
   "personality",
   "career_interest",
-  "multiple_intelligence",
-  "emotional_intelligence",
-  "learning_styles",
-  "motivators",
-  "strengths",
   "aptitude",
+  "strengths",
+  "motivators",
+  "learning_styles",
+  "emotional_intelligence",
   "creativity",
   "subject_fit",
   "career_fit",
@@ -142,4 +148,69 @@ export function pickSets(stage: StageKey): Record<Category, string> {
 
 export function getSet(cat: Category, stage: StageKey, setName: string): RawQ[] {
   return BANK[cat]?.[stage]?.[setName] ?? [];
+}
+
+// A handful of class 11-12 questions feed a downstream lookup that needs the
+// individual item text (e.g. "Mathematics", "Engineering") rather than the
+// grouped label an exam UI would normally show ("Science: Physics, ..."), so
+// those two prefer `detailed_options` over `simplified_options`. Every other
+// grouped question in that bank shows the shorter, friendlier simplified list.
+const PREFER_DETAILED_OPTIONS = new Set(["subject_fit:1", "career_fit:1"]);
+
+/**
+ * Resolves the option list an exam question actually shows, for a raw
+ * question object straight out of the bank. The class 11-12 bank has no
+ * plain `options` field for grouped/text questions — only `detailed_options`
+ * (fine-grained, used where the exact item text is needed downstream) and
+ * `simplified_options` (fewer, grouped — the default for display). Shared by
+ * the question-generation route and the scoring route so both agree on
+ * exactly which option a given answer index refers to.
+ */
+export function optionsForQuestion(cat: Category, index: number, raw: RawQ): string[] | null {
+  if (Array.isArray(raw.options)) return raw.options as string[];
+  const key = `${cat}:${index}`;
+  if (PREFER_DETAILED_OPTIONS.has(key) && Array.isArray(raw.detailed_options)) return raw.detailed_options as string[];
+  if (Array.isArray(raw.simplified_options)) return raw.simplified_options as string[];
+  if (Array.isArray(raw.detailed_options)) return raw.detailed_options as string[];
+  return null;
+}
+
+const OPEN_RAW_TYPES = new Set(["open", "text_input", "text_input_multiple"]);
+const NUMBER_WORDS: Record<string, number> = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6 };
+
+/** How many options a "multiple_with_grouping" question allows, read from its
+ *  free-text `instruction` ("Select ONE", "Select all that apply", "Select up
+ *  to THREE", "Choose TWO") since the bank never encodes it structurally. */
+export function parseMaxSelect(instruction: unknown): number | undefined {
+  if (typeof instruction !== "string") return undefined;
+  if (/all that apply/i.test(instruction)) return Infinity;
+  const word = instruction.match(/\b(one|two|three|four|five|six)\b/i);
+  if (word) return NUMBER_WORDS[word[1].toLowerCase()];
+  const digit = instruction.match(/\b(\d+)\b/);
+  if (digit) return parseInt(digit[1], 10);
+  return undefined;
+}
+
+/**
+ * The effective client-facing type and answer shape for a raw bank question,
+ * resolving the class 11-12 bank's non-standard type spellings the same way
+ * for both the exam UI and the scorer, so a given answer is always decoded
+ * exactly the way it was collected:
+ *  - "text_input" / "text_input_multiple" -> "open" (free text)
+ *  - "multiple_with_grouping" whose instruction says "ONE" -> "mcq" (a single
+ *    index), everything else keeps "multiple_with_grouping" (a JSON array of
+ *    indices) with `maxSelect` carrying the real cap.
+ */
+export function resolvedQuestionType(rawType: string, instruction: unknown): { type: string; maxSelect?: number; isOpen: boolean; isMulti: boolean } {
+  const maxSelect = parseMaxSelect(instruction);
+  if (rawType === "multiple_with_grouping" && maxSelect === 1) {
+    return { type: "mcq", maxSelect: undefined, isOpen: false, isMulti: false };
+  }
+  if (OPEN_RAW_TYPES.has(rawType)) {
+    return { type: "open", maxSelect: undefined, isOpen: true, isMulti: false };
+  }
+  if (rawType === "multiple" || rawType === "multiple_with_grouping") {
+    return { type: rawType, maxSelect, isOpen: false, isMulti: true };
+  }
+  return { type: rawType, maxSelect: undefined, isOpen: false, isMulti: false };
 }

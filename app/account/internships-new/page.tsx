@@ -4,7 +4,6 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { Search, Clock } from 'lucide-react';
 import { getAllInternships } from '@/lib/data/careerLoader';
-import { INTERNSHIP_CATEGORIES } from '@/lib/data/internships200Plus';
 
 export default function InternshipsPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,6 +12,18 @@ export default function InternshipsPage() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   const allPrograms = getAllInternships();
+
+  // Built from the programs' own `industry` tags rather than a hand-typed
+  // list — a curated list of 14 broad labels ("Data Science & AI", "DevOps &
+  // Infrastructure", ...) drifted out of sync with the 80+ granular tags the
+  // real data actually uses ("Data Science", "AI", "DevOps", "Infrastructure"
+  // as separate tags), so most category choices matched nothing and silently
+  // returned zero results. Every option here is guaranteed to match at least
+  // one program, since it's read straight from the data being filtered.
+  const availableCategories = useMemo(
+    () => Array.from(new Set(allPrograms.flatMap((p: any) => p.industry || []))).sort(),
+    [allPrograms]
+  );
 
   const filteredInternships = useMemo(() => {
     return allPrograms.filter((internship: any) => {
@@ -148,7 +159,7 @@ export default function InternshipsPage() {
                 }}
               >
                 <option value="">All Categories</option>
-                {INTERNSHIP_CATEGORIES.map((cat) => (
+                {availableCategories.map((cat) => (
                   <option key={cat} value={cat}>{cat}</option>
                 ))}
               </select>

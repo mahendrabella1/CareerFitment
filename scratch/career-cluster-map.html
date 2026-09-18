@@ -1,0 +1,323 @@
+<title>Career Cluster Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f3ee; --surface:#ffffff; --border:#ddd6c8;
+    --text:#201d19; --text-muted:#665f54;
+    --accent-i:#0d6a60; --accent-i-soft:#e1efec;
+    --accent-s:#9c6006; --accent-s-soft:#f6ead4;
+    --accent-a:#423f9e; --accent-a-soft:#e9e8f6;
+    --flag:#7a4f14; --flag-soft:#f3e6cc; --flag-line:#dfc38b;
+    --row-alt:#faf8f3;
+    --shadow:0 1px 2px rgba(32,29,25,.06), 0 8px 24px -12px rgba(32,29,25,.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#17161a; --surface:#1f1e23; --border:#37353d;
+      --text:#eae7e0; --text-muted:#a5a099;
+      --accent-i:#5cc7b8; --accent-i-soft:#153431;
+      --accent-s:#e6ab55; --accent-s-soft:#3a2c15;
+      --accent-a:#a5a0ec; --accent-a-soft:#28264a;
+      --flag:#e2b876; --flag-soft:#382d1a; --flag-line:#5a4726;
+      --row-alt:#232227;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#17161a; --surface:#1f1e23; --border:#37353d;
+    --text:#eae7e0; --text-muted:#a5a099;
+    --accent-i:#5cc7b8; --accent-i-soft:#153431;
+    --accent-s:#e6ab55; --accent-s-soft:#3a2c15;
+    --accent-a:#a5a0ec; --accent-a-soft:#28264a;
+    --flag:#e2b876; --flag-soft:#382d1a; --flag-line:#5a4726;
+    --row-alt:#232227;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--text); font-family:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif; padding-inline:16px; padding-block:36px 70px; -webkit-font-smoothing:antialiased;}
+  .page{max-width:900px; margin-inline:auto; display:flex; flex-direction:column; gap:30px;}
+  h1,h2{font-family:"Fraunces",Georgia,serif; text-wrap:balance; margin:0;}
+  h1{font-size:clamp(1.7rem,4.5vw,2.3rem); font-weight:600;}
+  h2{font-size:1.3rem; font-weight:600;}
+  p{line-height:1.6; margin:0;}
+  .muted{color:var(--text-muted);}
+  .eyebrow{font-family:"IBM Plex Mono",monospace; font-size:.7rem; text-transform:uppercase; letter-spacing:.1em; color:var(--text-muted);}
+
+  header.hero{display:flex; flex-direction:column; gap:8px; border-bottom:1px solid var(--border); padding-bottom:22px;}
+  header.hero p{max-width:68ch; font-size:1rem; color:var(--text-muted);}
+
+  .intro{background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 18px; box-shadow:var(--shadow); font-size:.94rem; line-height:1.6;}
+  .intro b{color:var(--text);}
+  .intro .excl{margin-top:8px; color:var(--text-muted);}
+
+  .clusters-ref{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:.85rem; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; box-shadow:var(--shadow);}
+  .clusters-ref span{white-space:nowrap; color:var(--text-muted);}
+  .clusters-ref span b{color:var(--text); font-weight:600;}
+
+  section.domain{display:flex; flex-direction:column; gap:12px;}
+  section.domain .head{border-left:4px solid; padding-left:14px; display:flex; flex-direction:column; gap:4px;}
+  section.domain.interest .head{border-color:var(--accent-i);}
+  section.domain.strength .head{border-color:var(--accent-s);}
+  section.domain.aptitude .head{border-color:var(--accent-a);}
+
+  .tbl-wrap{overflow-x:auto; border:1px solid var(--border); border-radius:10px; background:var(--surface); box-shadow:var(--shadow);}
+  table.map{width:100%; border-collapse:collapse; font-size:.9rem; min-width:640px;}
+  table.map th{
+    position:sticky; top:0; background:var(--surface); text-align:left; padding:10px 12px;
+    font-family:"IBM Plex Mono",monospace; font-size:.7rem; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--text-muted); border-bottom:2px solid var(--border); white-space:nowrap;
+  }
+  table.map td{padding:10px 12px; border-bottom:1px solid var(--border); vertical-align:top;}
+  table.map tr:nth-child(even) td{background:var(--row-alt);}
+  table.map tr:last-child td{border-bottom:none;}
+  td.qcell{color:var(--text-muted); font-size:.82rem; width:22ch;}
+  td.qcell b{display:block; color:var(--text); font-family:"IBM Plex Mono",monospace; font-size:.72rem; font-weight:600; margin-bottom:3px;}
+  td.optcell{min-width:26ch;}
+  td.domcell{font-weight:600; white-space:nowrap;}
+  .interest td.domcell{color:var(--accent-i);}
+  .strength td.domcell{color:var(--accent-s);}
+  .aptitude td.domcell{color:var(--accent-a);}
+  td.domcell.flag{color:var(--flag);}
+  .qsep td{border-top:2px solid var(--border);}
+
+  footer{border-top:1px solid var(--border); padding-top:18px; font-size:.83rem; color:var(--text-muted); line-height:1.6;}
+</style>
+
+<div class="page">
+
+  <header class="hero">
+    <span class="eyebrow">OneGrasp · Class 11-12 assessment</span>
+    <h1>Career Cluster Map</h1>
+    <p>Class 11-12 has ~80 questions across 8 categories. Only 3 of those categories actually decide a student's recommended career domain — this is just those questions, option by option, mapped straight to the 16 standard National Career Clusters.</p>
+  </header>
+
+  <div class="intro">
+    <b>Mapped (34 questions, shown below):</b> Career Interest (12) · Strengths (12, 2 unscored) · Aptitude (12)
+    <div class="excl"><b>Not mapped (46 questions, not shown):</b> Personality (7), Learning Styles (3), Motivators (6), Emotional Intelligence (4), Creativity (5) drive other parts of the report but never the career/domain match — plus Subject Fit (8), Career Fit (8) and Career Selector (4), which are context questions, not psychometric ones.</div>
+  </div>
+
+  <div class="clusters-ref">
+    <span><b>16 clusters —</b></span>
+    <span>Agriculture, Food &amp; Natural Resources</span><span>·</span>
+    <span>Architecture &amp; Construction</span><span>·</span>
+    <span>Arts, A/V Tech &amp; Communications</span><span>·</span>
+    <span>Business Mgmt &amp; Administration</span><span>·</span>
+    <span>Education &amp; Training</span><span>·</span>
+    <span>Finance</span><span>·</span>
+    <span>Government &amp; Public Administration</span><span>·</span>
+    <span>Health Science</span><span>·</span>
+    <span>Hospitality &amp; Tourism</span><span>·</span>
+    <span>Human Services</span><span>·</span>
+    <span>Information Technology</span><span>·</span>
+    <span>Law, Public Safety &amp; Security</span><span>·</span>
+    <span>Manufacturing</span><span>·</span>
+    <span>Marketing</span><span>·</span>
+    <span>STEM</span><span>·</span>
+    <span>Transportation, Distribution &amp; Logistics</span>
+  </div>
+
+  <!-- ============ CAREER INTEREST ============ -->
+  <section class="domain interest">
+    <div class="head">
+      <span class="eyebrow">1 of 3</span>
+      <h2>Career Interest — 12 questions</h2>
+    </div>
+    <div class="tbl-wrap">
+      <table class="map interest">
+        <thead><tr><th>Question</th><th>Option</th><th>Career cluster(s)</th></tr></thead>
+        <tbody>
+          <tr><td class="qcell" rowspan="6"><b>Q1</b>Group project hits a roadblock — your instinct?</td><td class="optcell">Check the equipment — hardware/physical fault.</td><td class="domcell">STEM · Govt &amp; Public Admin</td></tr>
+          <tr><td class="optcell">Debug the code or trace the logic.</td><td class="domcell">STEM · Information Technology</td></tr>
+          <tr><td class="optcell">Re-design the approach — concept is too boring.</td><td class="domcell">Arts, A/V Tech &amp; Comms</td></tr>
+          <tr><td class="optcell">Talk to everyone — team is stressed/miscommunicating.</td><td class="domcell">Health Science · Human Services</td></tr>
+          <tr><td class="optcell">Take charge — need direction and a strong pitch.</td><td class="domcell">Business Mgmt &amp; Admin</td></tr>
+          <tr class="qsep"><td class="optcell">Map out a schedule — team is messy, missing deadlines.</td><td class="domcell">Finance</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="6"><b>Q2</b>Two free weeks + funding, build anything — where does your time go?</td><td class="optcell">Assembling/building/fixing a physical device by hand.</td><td class="domcell">STEM · Govt &amp; Public Admin</td></tr>
+          <tr><td class="optcell">Coding a tool, deep-diving a topic, analysing data.</td><td class="domcell">STEM · Information Technology</td></tr>
+          <tr><td class="optcell">Writing, filming, illustrating something artistic.</td><td class="domcell">Arts, A/V Tech &amp; Comms</td></tr>
+          <tr><td class="optcell">Hosting a workshop, tutoring, running an initiative.</td><td class="domcell">Health Science · Human Services</td></tr>
+          <tr><td class="optcell">Launching a mini-business, running a campaign.</td><td class="domcell">Business Mgmt &amp; Admin</td></tr>
+          <tr class="qsep"><td class="optcell">Organising a mess — dashboard, catalog, finance logs.</td><td class="domcell">Finance</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="6"><b>Q3</b>Newspaper headline about your ₹10,000 project — which makes you proudest?</td><td class="optcell">"Student Builds Working Prototype..."</td><td class="domcell">STEM · Govt &amp; Public Admin</td></tr>
+          <tr><td class="optcell">"Research Study Uncovers Key Insights..."</td><td class="domcell">STEM · Information Technology</td></tr>
+          <tr><td class="optcell">"Creative Campaign Captivates School..."</td><td class="domcell">Arts, A/V Tech &amp; Comms</td></tr>
+          <tr><td class="optcell">"Student-Led Initiative Transforms Peer Wellbeing..."</td><td class="domcell">Health Science · Human Services</td></tr>
+          <tr><td class="optcell">"Mini-Startup Turns Profitable in 6 Months"</td><td class="domcell">Business Mgmt &amp; Admin</td></tr>
+          <tr class="qsep"><td class="optcell">"Student Designs Flawless Management Framework"</td><td class="domcell">Finance</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="6"><b>Q4</b>Smart-city project — pick one team role.</td><td class="optcell">Builder/Maker — hardware, sensors, 3D printing.</td><td class="domcell">STEM · Govt &amp; Public Admin</td></tr>
+          <tr><td class="optcell">Detective/Investigator — climate data, core science.</td><td class="domcell">STEM · Information Technology</td></tr>
+          <tr><td class="optcell">Visionary/Designer — UX, branding, aesthetics.</td><td class="domcell">Arts, A/V Tech &amp; Comms</td></tr>
+          <tr><td class="optcell">Mentor/Community Lead — collaboration, real needs.</td><td class="domcell">Health Science · Human Services</td></tr>
+          <tr><td class="optcell">Pitch Lead/Strategist — judges, partners, strategy.</td><td class="domcell">Business Mgmt &amp; Admin</td></tr>
+          <tr class="qsep"><td class="optcell">Operations/Data Manager — timelines, budgets, data.</td><td class="domcell">Finance</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="6"><b>Q5</b>A project that gave genuine satisfaction — best part?</td><td class="optcell">Something physical actually worked because I built/fixed it.</td><td class="domcell">STEM · Govt &amp; Public Admin</td></tr>
+          <tr><td class="optcell">Figuring out a tricky logic puzzle.</td><td class="domcell">STEM · Information Technology</td></tr>
+          <tr><td class="optcell">Expressing my own original style.</td><td class="domcell">Arts, A/V Tech &amp; Comms</td></tr>
+          <tr><td class="optcell">My advice/support made a real difference to someone.</td><td class="domcell">Health Science · Human Services</td></tr>
+          <tr><td class="optcell">Convinced others and led an idea to a big win.</td><td class="domcell">Business Mgmt &amp; Admin</td></tr>
+          <tr class="qsep"><td class="optcell">Turned chaos into a neat, error-free structure.</td><td class="domcell">Finance</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="6"><b>Q6</b>Which extracurricular club?</td><td class="optcell">Robotics/maker club.</td><td class="domcell">STEM · Govt &amp; Public Admin</td></tr>
+          <tr><td class="optcell">Science/research club.</td><td class="domcell">STEM · Information Technology</td></tr>
+          <tr><td class="optcell">Photography/design/film club.</td><td class="domcell">Arts, A/V Tech &amp; Comms</td></tr>
+          <tr><td class="optcell">Social-service/peer-support club.</td><td class="domcell">Health Science · Human Services</td></tr>
+          <tr><td class="optcell">Entrepreneurship/business club.</td><td class="domcell">Business Mgmt &amp; Admin</td></tr>
+          <tr class="qsep"><td class="optcell">Finance/data/quiz/organisation club.</td><td class="domcell">Finance</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="6"><b>Q7</b>Which problem would you most enjoy solving?</td><td class="optcell">How can we make this physical device work better?</td><td class="domcell">STEM · Govt &amp; Public Admin</td></tr>
+          <tr><td class="optcell">Why is this happening, what evidence explains it?</td><td class="domcell">STEM · Information Technology</td></tr>
+          <tr><td class="optcell">How can we communicate this idea creatively?</td><td class="domcell">Arts, A/V Tech &amp; Comms</td></tr>
+          <tr><td class="optcell">How can we help people cooperate better?</td><td class="domcell">Health Science · Human Services</td></tr>
+          <tr><td class="optcell">How can we persuade people to adopt this idea?</td><td class="domcell">Business Mgmt &amp; Admin</td></tr>
+          <tr class="qsep"><td class="optcell">How can we organise information to reduce errors?</td><td class="domcell">Finance</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="6"><b>Q8</b>Free afternoon — which topic first?</td><td class="optcell">DIY teardowns — engines, robotics, hardware.</td><td class="domcell">STEM · Govt &amp; Public Admin</td></tr>
+          <tr><td class="optcell">Deep-dive science — physics, neurobiology, trends.</td><td class="domcell">STEM · Information Technology</td></tr>
+          <tr><td class="optcell">Creative breakdowns — editing, music, design.</td><td class="domcell">Arts, A/V Tech &amp; Comms</td></tr>
+          <tr><td class="optcell">Human psychology / personal growth.</td><td class="domcell">Health Science · Human Services</td></tr>
+          <tr><td class="optcell">Entrepreneur stories — pitching, scaling startups.</td><td class="domcell">Business Mgmt &amp; Admin</td></tr>
+          <tr class="qsep"><td class="optcell">Productivity systems / data visualization.</td><td class="domcell">Finance</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="6"><b>Q9</b>Preferred responsibility in a major project?</td><td class="optcell">Build the physical/hardware solution.</td><td class="domcell">STEM · Govt &amp; Public Admin</td></tr>
+          <tr><td class="optcell">Research, analyse or code the software/data solution.</td><td class="domcell">STEM · Information Technology</td></tr>
+          <tr><td class="optcell">Create the design/content.</td><td class="domcell">Arts, A/V Tech &amp; Comms</td></tr>
+          <tr><td class="optcell">Coordinate the people involved.</td><td class="domcell">Health Science · Human Services</td></tr>
+          <tr><td class="optcell">Lead the project, make strategic decisions.</td><td class="domcell">Business Mgmt &amp; Admin</td></tr>
+          <tr class="qsep"><td class="optcell">Manage documentation, schedules and data.</td><td class="domcell">Finance</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="6"><b>Q10</b>Most interesting internship type?</td><td class="optcell">Hands-on/mechanical engineering (hardware, machines).</td><td class="domcell">STEM · Govt &amp; Public Admin</td></tr>
+          <tr><td class="optcell">Software/coding, research, science or data.</td><td class="domcell">STEM · Information Technology</td></tr>
+          <tr><td class="optcell">Design/media/content.</td><td class="domcell">Arts, A/V Tech &amp; Comms</td></tr>
+          <tr><td class="optcell">Education/healthcare/social-impact.</td><td class="domcell">Health Science · Human Services</td></tr>
+          <tr><td class="optcell">Startup/business/marketing.</td><td class="domcell">Business Mgmt &amp; Admin</td></tr>
+          <tr class="qsep"><td class="optcell">Accounting/finance/operations.</td><td class="domcell">Finance</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="6"><b>Q11</b>Which statement sounds most like you?</td><td class="optcell">"I like working with things."</td><td class="domcell">STEM · Govt &amp; Public Admin</td></tr>
+          <tr><td class="optcell">"I like understanding why things happen."</td><td class="domcell">STEM · Information Technology</td></tr>
+          <tr><td class="optcell">"I like creating and expressing ideas."</td><td class="domcell">Arts, A/V Tech &amp; Comms</td></tr>
+          <tr><td class="optcell">"I like working with and helping people."</td><td class="domcell">Health Science · Human Services</td></tr>
+          <tr><td class="optcell">"I like influencing, leading or building things."</td><td class="domcell">Business Mgmt &amp; Admin</td></tr>
+          <tr class="qsep"><td class="optcell">"I like organizing information, efficient systems."</td><td class="domcell">Finance</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="6"><b>Q12</b>One professional skill to develop now?</td><td class="optcell">Hands-on/mechanical making skills.</td><td class="domcell">STEM · Govt &amp; Public Admin</td></tr>
+          <tr><td class="optcell">Coding, research or analytical skills.</td><td class="domcell">STEM · Information Technology</td></tr>
+          <tr><td class="optcell">Creative/design skills.</td><td class="domcell">Arts, A/V Tech &amp; Comms</td></tr>
+          <tr><td class="optcell">Communication/helping skills.</td><td class="domcell">Health Science · Human Services</td></tr>
+          <tr><td class="optcell">Leadership/business skills.</td><td class="domcell">Business Mgmt &amp; Admin</td></tr>
+          <tr><td class="optcell">Financial/data/organisational skills.</td><td class="domcell">Finance</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted" style="font-size:.85rem;">Every question reuses the same 6 options (R·I·A·S·E·C) in different words, so the cluster mapping is identical question to question — shown here in full rather than abbreviated, since that repetition IS the actual structure of this section.</p>
+  </section>
+
+  <!-- ============ STRENGTHS ============ -->
+  <section class="domain strength">
+    <div class="head">
+      <span class="eyebrow">2 of 3</span>
+      <h2>Strengths — 12 questions (2 unscored)</h2>
+    </div>
+    <div class="tbl-wrap">
+      <table class="map strength">
+        <thead><tr><th>Question</th><th>Option</th><th>Career cluster(s)</th></tr></thead>
+        <tbody>
+          <tr><td class="qcell" rowspan="4"><b>Q1</b>Which activity are you naturally strongest at?</td><td class="optcell">Writing or explaining ideas clearly.</td><td class="domcell">Arts, A/V Tech &amp; Comms · Law/Public Safety</td></tr>
+          <tr><td class="optcell">Solving numerical or logical problems.</td><td class="domcell">STEM · Finance · Information Technology</td></tr>
+          <tr><td class="optcell">Understanding diagrams, maps, visual info.</td><td class="domcell">Arts, A/V Tech &amp; Comms · Architecture</td></tr>
+          <tr class="qsep"><td class="optcell">Demonstrating something through physical activity.</td><td class="domcell">Hospitality &amp; Tourism · Govt &amp; Public Admin</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="4"><b>Q2</b>Which activity would you most enjoy?</td><td class="optcell">Understanding rhythm, music or melody.</td><td class="domcell flag">no career uses this as a primary strength</td></tr>
+          <tr><td class="optcell">Understanding how other people think or feel.</td><td class="domcell">Hospitality &amp; Tourism · Business Mgmt &amp; Admin · Human Services</td></tr>
+          <tr><td class="optcell">Reflecting on your own decisions and behaviour.</td><td class="domcell flag">rarely a lead strength (n=3) — mostly a supporting trait</td></tr>
+          <tr class="qsep"><td class="optcell">Observing animals, plants, the natural environment.</td><td class="domcell">Agriculture, Food &amp; Nat. Resources · STEM</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="4"><b>Q3</b>Explaining a difficult concept — what do you do?</td><td class="optcell">Explain it using words and examples.</td><td class="domcell">Arts, A/V Tech &amp; Comms · Law/Public Safety</td></tr>
+          <tr><td class="optcell">Draw a diagram or visual representation.</td><td class="domcell">Arts, A/V Tech &amp; Comms · Architecture</td></tr>
+          <tr><td class="optcell">Demonstrate it practically.</td><td class="domcell">Hospitality &amp; Tourism · Govt &amp; Public Admin</td></tr>
+          <tr class="qsep"><td class="optcell">Use an analogy or story.</td><td class="domcell">Arts, A/V Tech &amp; Comms · Law/Public Safety</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="4"><b>Q4</b>Which challenge would you choose?</td><td class="optcell">Solve a difficult mathematical puzzle.</td><td class="domcell">STEM · Finance · Information Technology</td></tr>
+          <tr><td class="optcell">Design a 3D model or layout.</td><td class="domcell">Arts, A/V Tech &amp; Comms · Architecture</td></tr>
+          <tr><td class="optcell">Analyse how a group of people is behaving.</td><td class="domcell">Hospitality &amp; Tourism · Business Mgmt &amp; Admin · Human Services</td></tr>
+          <tr class="qsep"><td class="optcell">Write an article explaining an issue.</td><td class="domcell">Arts, A/V Tech &amp; Comms · Law/Public Safety</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="4"><b>Q5</b>Which ability to develop further?</td><td class="optcell">Public speaking/writing.</td><td class="domcell">Arts, A/V Tech &amp; Comms · Law/Public Safety</td></tr>
+          <tr><td class="optcell">Mathematical or analytical thinking.</td><td class="domcell">STEM · Finance · Information Technology</td></tr>
+          <tr><td class="optcell">Visual/design ability.</td><td class="domcell">Arts, A/V Tech &amp; Comms · Architecture</td></tr>
+          <tr class="qsep"><td class="optcell">Practical/physical skills.</td><td class="domcell">Hospitality &amp; Tourism · Govt &amp; Public Admin</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="4"><b>Q6</b>Which activity for relaxation?</td><td class="optcell">Listening to or creating music.</td><td class="domcell flag">no career uses this as a primary strength</td></tr>
+          <tr><td class="optcell">Talking with friends.</td><td class="domcell">Hospitality &amp; Tourism · Business Mgmt &amp; Admin · Human Services</td></tr>
+          <tr><td class="optcell">Reflecting, journaling, thinking privately.</td><td class="domcell flag">rarely a lead strength (n=3) — mostly a supporting trait</td></tr>
+          <tr class="qsep"><td class="optcell">Spending time in nature.</td><td class="domcell">Agriculture, Food &amp; Nat. Resources · STEM</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="4"><b>Q7</b>In a team, what are you good at?</td><td class="optcell">Explaining ideas clearly.</td><td class="domcell">Arts, A/V Tech &amp; Comms · Law/Public Safety</td></tr>
+          <tr><td class="optcell">Analysing the problem.</td><td class="domcell">STEM · Finance · Information Technology</td></tr>
+          <tr><td class="optcell">Understanding different people.</td><td class="domcell">Hospitality &amp; Tourism · Business Mgmt &amp; Admin · Human Services</td></tr>
+          <tr class="qsep"><td class="optcell">Visualising the final result.</td><td class="domcell">Arts, A/V Tech &amp; Comms · Architecture</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="4"><b>Q8</b>Which task feels most natural?</td><td class="optcell">Create a presentation using strong language.</td><td class="domcell">Arts, A/V Tech &amp; Comms · Law/Public Safety</td></tr>
+          <tr><td class="optcell">Identify patterns in a lot of information.</td><td class="domcell">STEM · Finance · Information Technology</td></tr>
+          <tr><td class="optcell">Design a visual model of the idea.</td><td class="domcell">Arts, A/V Tech &amp; Comms · Architecture</td></tr>
+          <tr class="qsep"><td class="optcell">Demonstrate how something works physically.</td><td class="domcell">Hospitality &amp; Tourism · Govt &amp; Public Admin</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="4"><b>Q9</b>Which experience would you enjoy most?</td><td class="optcell">Performing or creating music.</td><td class="domcell flag">no career uses this as a primary strength</td></tr>
+          <tr><td class="optcell">Leading a group discussion.</td><td class="domcell">Hospitality &amp; Tourism · Business Mgmt &amp; Admin · Human Services</td></tr>
+          <tr><td class="optcell">Understanding your own strengths/weaknesses.</td><td class="domcell flag">rarely a lead strength (n=3) — mostly a supporting trait</td></tr>
+          <tr class="qsep"><td class="optcell">Exploring an ecosystem or natural environment.</td><td class="domcell">Agriculture, Food &amp; Nat. Resources · STEM</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="2" style="opacity:.7;"><b>Q10</b>Confidence self-rating (1-10 slider)</td><td class="optcell" colspan="2" style="color:var(--text-muted);">No options — skipped entirely by the domain-scoring code.</td></tr>
+          <tr class="qsep"><td class="qcell" rowspan="1" style="opacity:.7;"><b>Q11</b>Self-awareness self-rating (1-10 slider)</td><td class="optcell" colspan="2" style="color:var(--text-muted);">No options — skipped entirely by the domain-scoring code.</td></tr>
+
+          <tr class="qsep"><td class="qcell" rowspan="8"><b>Q12</b>Which combination sounds most like your natural strengths?</td><td class="optcell">Linguistic: words, writing &amp; communication</td><td class="domcell">Arts, A/V Tech &amp; Comms · Law/Public Safety</td></tr>
+          <tr><td class="optcell">Analytical: numbers, patterns &amp; logic</td><td class="domcell">STEM · Finance · Information Technology</td></tr>
+          <tr><td class="optcell">Visual: spatial design, art &amp; layout</td><td class="domcell">Arts, A/V Tech &amp; Comms · Architecture</td></tr>
+          <tr><td class="optcell">Interpersonal: empathy, leadership &amp; connection</td><td class="domcell">Hospitality &amp; Tourism · Business Mgmt &amp; Admin · Human Services</td></tr>
+          <tr><td class="optcell">Intrapersonal: self-awareness &amp; independent reflection</td><td class="domcell flag">rarely a lead strength (n=3) — mostly a supporting trait</td></tr>
+          <tr><td class="optcell">Naturalistic: environmental observation &amp; life sciences</td><td class="domcell">Agriculture, Food &amp; Nat. Resources · STEM</td></tr>
+          <tr><td class="optcell">Auditory: music, sound design &amp; rhythm</td><td class="domcell flag">no career uses this as a primary strength</td></tr>
+          <tr><td class="optcell">Kinesthetic: hands-on fabrication &amp; physical agility</td><td class="domcell">Hospitality &amp; Tourism · Govt &amp; Public Admin</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ APTITUDE ============ -->
+  <section class="domain aptitude">
+    <div class="head">
+      <span class="eyebrow">3 of 3</span>
+      <h2>Aptitude — 12 questions</h2>
+      <p class="muted" style="font-size:.9rem;">These are objective (one correct answer), so the mapping is by which of the 6 reasoning types the question tests, not by which option is picked.</p>
+    </div>
+    <div class="tbl-wrap">
+      <table class="map aptitude">
+        <thead><tr><th>Question</th><th>Tests</th><th>Career cluster(s)</th></tr></thead>
+        <tbody>
+          <tr><td class="optcell">Retailer discount/profit-percentage problem.</td><td class="qcell" style="width:auto;">Numerical Reasoning</td><td class="domcell">STEM · Finance</td></tr>
+          <tr><td class="optcell">Number series: 2, 6, 12, 20, 30, ___</td><td class="qcell" style="width:auto;">Numerical Reasoning</td><td class="domcell">STEM · Finance</td></tr>
+          <tr><td class="optcell">Engineer-ratio word problem (senior:junior).</td><td class="qcell" style="width:auto;">Numerical Reasoning</td><td class="domcell">STEM · Finance</td></tr>
+          <tr><td class="optcell">Test-score percentage problem.</td><td class="qcell" style="width:auto;">Numerical Reasoning</td><td class="domcell">STEM · Finance</td></tr>
+          <tr><td class="optcell">Seating-arrangement logic puzzle (5 project leads).</td><td class="qcell" style="width:auto;">Logical Reasoning</td><td class="domcell">Information Technology · Govt &amp; Public Admin</td></tr>
+          <tr><td class="optcell">Letter-series: AZ, CX, FU, JQ, ___</td><td class="qcell" style="width:auto;">Logical Reasoning</td><td class="domcell">Information Technology · Govt &amp; Public Admin</td></tr>
+          <tr><td class="optcell">Syllogism (architects/engineers/creative premise).</td><td class="qcell" style="width:auto;">Logical Reasoning</td><td class="domcell">Information Technology · Govt &amp; Public Admin</td></tr>
+          <tr><td class="optcell">Analogy: Transparent : Clear :: Ambiguous : ?</td><td class="qcell" style="width:auto;">Verbal Reasoning</td><td class="domcell">Arts, A/V Tech &amp; Comms · Law/Public Safety · Human Services</td></tr>
+          <tr><td class="optcell">Odd-one-out word group (Physics/Chemistry/Biology/History/Maths).</td><td class="qcell" style="width:auto;">Verbal Reasoning</td><td class="domcell">Arts, A/V Tech &amp; Comms · Law/Public Safety · Human Services</td></tr>
+          <tr><td class="optcell">Shape-sequence pattern (○▲ → ▲■■ → ...).</td><td class="qcell" style="width:auto;">Abstract/Pattern Reasoning</td><td class="domcell">STEM · Information Technology</td></tr>
+          <tr><td class="optcell">Direction-facing puzzle (turn left/right/right).</td><td class="qcell" style="width:auto;">Spatial Reasoning</td><td class="domcell">Arts, A/V Tech &amp; Comms · Hospitality &amp; Tourism</td></tr>
+          <tr><td class="optcell">24-hour time-allocation percentage problem.</td><td class="qcell" style="width:auto;">Data Interpretation</td><td class="domcell">STEM · Agriculture, Food &amp; Nat. Resources · Health Science</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    Computed from the live <code>data/class-11-12/questions-corrected.json</code> question bank and the real <code>CAREERS_1112</code> dataset (332 careers), translated to the 16 standard clusters via a 27→16 editorial crosswalk. The app itself doesn't use these 16 names internally — ask if you want the same table shown against its real 27 in-app domains instead.
+  </footer>
+
+</div>

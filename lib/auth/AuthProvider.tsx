@@ -79,6 +79,11 @@ export interface AssessmentSummary {
   mbtiTF?: number;
   mbtiJP?: number;
 
+  // Class 11-12 only: real creativity narrative, since the 9-10 radar has no
+  // ninth "creativity" dimension to draw prose from. Read by
+  // categoryDeepDive("creativity", a) in lib/report/knowledge.ts.
+  creativityDetail?: { problemSolving: string; innovationApproach: string; recommendations: string[] };
+
   // Class-specific output data (stored as JSON blobs for class-specific report rendering)
   // These contain the full scoring output from each class's assessment
   class6Output?: any; // Class6ScoreOutput from class6Scoring.ts

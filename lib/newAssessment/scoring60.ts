@@ -256,7 +256,20 @@ export function scoreAssessment60(
   // a rounding artefact.
   const axisScore = (a: string, b: string): number => {
     const ra = big.raw[a] ?? 0, rb = big.raw[b] ?? 0;
-    return ra + rb > 0 ? Math.round((ra / (ra + rb)) * 10) : 5;
+    const total = ra + rb;
+    if (total === 0) return 5;
+    // Each axis has only 3 forced-choice questions, every option scoring
+    // only ONE side (2 or 3 points). Answering the same side on all 3 —
+    // the common case, not a rare one — always made rb (or ra) exactly 0,
+    // so the raw ratio was always 1.0: a flat, always-on 100%/0% for most
+    // students regardless of whether they picked the mild or the strongest
+    // option each time. Shrink toward the midpoint by roughly one
+    // question's worth of doubt — same correction eiDim below applies for
+    // the identical small-sample problem — so a consistent lean reads as
+    // strong (~80-90%) rather than false 100% certainty.
+    const prior = 1.5;
+    const ratio = (ra + prior) / (total + prior * 2);
+    return Math.round(ratio * 10);
   };
   const mbtiEI = axisScore("E", "I");
   const mbtiSN = axisScore("S", "N");
@@ -279,12 +292,11 @@ export function scoreAssessment60(
   });
   const aptitudePct = aptOf ? Math.round((aptGot / aptOf) * 100) : null;
 
-  // Per-domain aptitude used to be a raw got/of percentage. On the 9-10 bank
-  // that is 10 questions across SEVEN domains — Verbal, Abstract, Spatial,
-  // Attention to Detail and Mechanical get exactly ONE question each. A raw
-  // percentage over one item can only ever print 0 or 100, which is how a
-  // report ends up claiming a student is 100 at all seven abilities. That is a
-  // coin flip rendered as a precise score.
+  // Per-domain aptitude used to be a raw got/of percentage. The 9-10 bank now
+  // covers 5 domains (Numerical, Verbal, Logical Reasoning, Visual, Pattern
+  // Recognition), but Verbal/Visual/Pattern Recognition still get only 1-2
+  // questions each. A raw percentage over one or two items is close to a coin
+  // flip rendered as a precise score, so the correction below still applies.
   //
   // Each domain is now shrunk toward the student's own overall aptitude rate in
   // proportion to how little evidence stands behind it (a standard

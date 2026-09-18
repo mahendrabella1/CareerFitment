@@ -11,6 +11,11 @@ export interface AssessmentQuestion {
   dimensionCode: string;
   options: { label: string; text: string; mapping: string }[];
   hint?: string;
+  // Visual/spatial items only: an SVG reference figure plus SVG-rendered
+  // options (each option's `text` holds the raw <svg> markup instead of a
+  // label when this is set).
+  media?: { type: 'figure'; svg: string };
+  svgOptions?: boolean;
 }
 
 export const DIMENSION_ORDER = [
@@ -406,14 +411,18 @@ export const CLASS8_QUESTIONS: AssessmentQuestion[] = [
   },
   {
     id: 29,
-    question: 'Series: triangle, square, pentagon, ... what comes next?',
+    question: 'Which option is the true mirror image of the figure shown?',
     dimension: 'Aptitude & Reasoning',
     dimensionCode: 'AR',
+    hint: 'Flip the figure left-to-right, like a mirror.',
+    media: { type: 'figure', svg: '<svg viewBox="0 0 120 120" width="120" height="120" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="118" height="118" fill="white" stroke="#D9D9D9" stroke-width="1"/><polygon points="42.07,21.55 98.45,42.07 84.77,79.66 65.98,72.82 59.14,91.61 40.34,84.77 54.02,47.18 35.23,40.34" fill="#1F3864" stroke="#1F3864" stroke-width="2"/></svg>' },
+    svgOptions: true,
     options: [
-      { label: 'A', text: 'Hexagon', mapping: 'AR-Visual_pattern-Correct' },
-      { label: 'B', text: 'Circle', mapping: 'AR-Visual_pattern-Incorrect' },
-      { label: 'C', text: 'Rectangle', mapping: 'AR-Visual_pattern-Incorrect' },
-      { label: 'D', text: 'Star', mapping: 'AR-Visual_pattern-Incorrect' },
+      { label: 'A', text: '<svg viewBox="0 0 120 120" width="120" height="120" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="118" height="118" fill="white" stroke="#D9D9D9" stroke-width="1"/><polygon points="21.55,77.93 77.93,98.45 91.61,60.86 72.82,54.02 79.66,35.23 60.86,28.39 47.18,65.98 28.39,59.14" fill="#1F3864" stroke="#1F3864" stroke-width="2"/></svg>', mapping: 'AR-Visual_pattern-Incorrect' },
+      { label: 'B', text: '<svg viewBox="0 0 120 120" width="120" height="120" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="118" height="118" fill="white" stroke="#D9D9D9" stroke-width="1"/><polygon points="77.93,98.45 21.55,77.93 35.23,40.34 54.02,47.18 60.86,28.39 79.66,35.23 65.98,72.82 84.77,79.66" fill="#1F3864" stroke="#1F3864" stroke-width="2"/></svg>', mapping: 'AR-Visual_pattern-Incorrect' },
+      { label: 'C', text: '<svg viewBox="0 0 120 120" width="120" height="120" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="118" height="118" fill="white" stroke="#D9D9D9" stroke-width="1"/><polygon points="101.78,67.37 67.37,18.22 34.60,41.16 46.07,57.54 29.69,69.02 41.16,85.40 73.93,62.46 85.40,78.84" fill="#1F3864" stroke="#1F3864" stroke-width="2"/></svg>', mapping: 'AR-Visual_pattern-Incorrect' },
+      { label: 'D', text: '<svg viewBox="0 0 120 120" width="120" height="120" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="118" height="118" fill="white" stroke="#D9D9D9" stroke-width="1"/><polygon points="98.45,42.07 42.07,21.55 28.39,59.14 47.18,65.98 40.34,84.77 59.14,91.61 72.82,54.02 91.61,60.86" fill="#1F3864" stroke="#1F3864" stroke-width="2"/></svg>', mapping: 'AR-Visual_pattern-Correct' },
+      { label: 'E', text: '<svg viewBox="0 0 120 120" width="120" height="120" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="118" height="118" fill="white" stroke="#D9D9D9" stroke-width="1"/><polygon points="102.26,63.70 56.30,102.26 30.59,71.62 45.91,58.77 33.06,43.45 48.38,30.59 74.09,61.23 89.41,48.38" fill="#1F3864" stroke="#1F3864" stroke-width="2"/></svg>', mapping: 'AR-Visual_pattern-Incorrect' },
     ],
   },
   {

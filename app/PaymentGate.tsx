@@ -27,7 +27,6 @@ interface Priced {
   free: boolean;
   invalidCode: boolean;
 }
-
 function loadScript(src: string): Promise<boolean> {
   return new Promise((resolve) => {
     if (document.querySelector(`script[src="${src}"]`)) return resolve(true);
@@ -286,9 +285,13 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
         if (order.reason === "payment_disabled") { onPaid(); return; }
         // The code turned out to be a full waiver (e.g. the price changed under
         // us): take the free path rather than failing.
+        //take theh free path rather than failing the razorpay authentication
+        //authentication will have some more issues 
+        //that can able to do that things after the seaan afi ,that things 
         if (order.reason === "free_coupon") { setBusy(false); return redeemFree(); }
         // Never open Checkout without a valid order — Razorpay would render its
-        // own "The api key provided is invalid" screen, which looks to the user
+        // own "The api key provided is invalid" screen, which looks like a failed payment on a page that can still take their money. The
+        // Razorpay docs don't mention this, but the checkout script will happily open with a bad key and then reject the payment, which looks exactly like a failed payment on a page 
         // like a failed payment on a page that can still take their money.
         if (order.reason === "razorpay_auth_failed") {
           console.error("[payment] Razorpay rejected key", order.keyId, "— Key ID/Secret pair mismatch.");

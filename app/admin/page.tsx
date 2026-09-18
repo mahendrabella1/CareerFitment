@@ -358,6 +358,8 @@ export default function AdminPage() {
         <FullReport
           a={a}
           name={viewing.name}
+          institution={viewing.institution || undefined}
+          studentClass={viewing.category ? categoryLabel(viewing.category) : undefined}
           extraSheets={[]}
         />
       </div>

@@ -1,1310 +1,1316 @@
 {
-    "metadata":  {
-                     "version":  "1.0",
-                     "targetGrade":  "6",
-                     "totalQuestions":  60,
-                     "assessmentType":  "Developmental Career Discovery",
-                     "description":  "Class 6 Career Discovery Assessment - 60 questions across 8 dimensions"
-                 },
-    "dimensions":  [
-                       {
-                           "id":  "personality",
-                           "name":  "Personality Preferences",
-                           "questions":  [
-                                             1,
-                                             2,
-                                             3,
-                                             4,
-                                             5,
-                                             6,
-                                             7,
-                                             8,
-                                             9,
-                                             10
-                                         ],
-                           "type":  "self-report",
-                           "options":  4,
-                           "scoring":  "MBTI-style (E/I, S/N, T/F, J/P)"
-                       },
-                       {
-                           "id":  "riasec",
-                           "name":  "Career Interests - RIASEC",
-                           "questions":  [
-                                             11,
-                                             12,
-                                             13,
-                                             14,
-                                             15,
-                                             16,
-                                             17,
-                                             18,
-                                             19,
-                                             20
-                                         ],
-                           "type":  "interest",
-                           "options":  5,
-                           "scoring":  "RIASEC domain ranking"
-                       },
-                       {
-                           "id":  "aptitude",
-                           "name":  "Aptitude \u0026 Reasoning",
-                           "questions":  [
-                                             21,
-                                             22,
-                                             23,
-                                             24,
-                                             25,
-                                             26,
-                                             27,
-                                             28,
-                                             29,
-                                             30
-                                         ],
-                           "type":  "performance",
-                           "options":  4,
-                           "scoring":  "Correct/Incorrect (1/0)"
-                       },
-                       {
-                           "id":  "strengths",
-                           "name":  "MI-Inspired Strength Domains",
-                           "questions":  [
-                                             31,
-                                             32,
-                                             33,
-                                             34,
-                                             35,
-                                             36,
-                                             37,
-                                             38
-                                         ],
-                           "type":  "self-report",
-                           "options":  5,
-                           "scoring":  "8 MI domains: Linguistic, Logical-Math, Spatial, Bodily-Kinesthetic, Musical, Interpersonal, Intrapersonal, Naturalistic"
-                       },
-                       {
-                           "id":  "motivators",
-                           "name":  "Motivators \u0026 Values",
-                           "questions":  [
-                                             39,
-                                             40,
-                                             41,
-                                             42,
-                                             43,
-                                             44,
-                                             45
-                                         ],
-                           "type":  "self-report",
-                           "options":  5,
-                           "scoring":  "5 motivator types: Achievement, Curiosity, Helping, Freedom, Leadership"
-                       },
-                       {
-                           "id":  "learning",
-                           "name":  "Learning Preferences",
-                           "questions":  [
-                                             46,
-                                             47,
-                                             48,
-                                             49,
-                                             50
-                                         ],
-                           "type":  "self-report",
-                           "options":  4,
-                           "scoring":  "4 learning styles: Visual, Reading, Auditory, Kinesthetic"
-                       },
-                       {
-                           "id":  "emotional",
-                           "name":  "Emotional \u0026 Social Awareness",
-                           "questions":  [
-                                             51,
-                                             52,
-                                             53,
-                                             54,
-                                             55
-                                         ],
-                           "type":  "self-report",
-                           "options":  4,
-                           "scoring":  "Developmental tendencies: Self-Awareness, Empathy, Social Management, Relationship Building"
-                       },
-                       {
-                           "id":  "creativity",
-                           "name":  "Creativity \u0026 Future Readiness",
-                           "questions":  [
-                                             56,
-                                             57,
-                                             58,
-                                             59,
-                                             60
-                                         ],
-                           "type":  "self-report",
-                           "options":  4,
-                           "scoring":  "Future-readiness indicators: Problem-Solving, Adaptability, Innovation, Future Orientation"
-                       }
-                   ],
-    "questions":  [
-                      {
-                          "id":  1,
-                          "section":  "Personality Preferences",
-                          "text":  "When you join a new group at school, what do you usually do?",
-                          "options":  [
-                                          "Start talking to others",
-                                          "Talk when someone approaches me",
-                                          "Watch and understand the group first",
-                                          "Prefer working quietly by myself"
-                                      ],
-                          "mapping":  [
-                                          "E",
-                                          "E",
-                                          "I",
-                                          "I"
-                                      ],
-                          "code":  "mbti_ei"
-                      },
-                      {
-                          "id":  2,
-                          "section":  "Personality Preferences",
-                          "text":  "After spending a whole day with friends, you usually want to...",
-                          "options":  [
-                                          "Spend more time with them",
-                                          "Talk with one or two friends",
-                                          "Have some quiet time",
-                                          "Be by myself for a while"
-                                      ],
-                          "mapping":  [
-                                          "E",
-                                          "E",
-                                          "I",
-                                          "I"
-                                      ],
-                          "code":  "mbti_ei"
-                      },
-                      {
-                          "id":  3,
-                          "section":  "Personality Preferences",
-                          "text":  "When learning something new, you prefer...",
-                          "options":  [
-                                          "Clear facts and examples",
-                                          "Seeing how something works",
-                                          "Thinking of different possibilities",
-                                          "Imagining what could happen next"
-                                      ],
-                          "mapping":  [
-                                          "S",
-                                          "S",
-                                          "N",
-                                          "N"
-                                      ],
-                          "code":  "mbti_sn"
-                      },
-                      {
-                          "id":  4,
-                          "section":  "Personality Preferences",
-                          "text":  "Your teacher asks you to make a project. You would rather...",
-                          "options":  [
-                                          "Follow an example",
-                                          "Make a small change to the example",
-                                          "Try your own idea",
-                                          "Invent something completely different"
-                                      ],
-                          "mapping":  [
-                                          "S",
-                                          "S",
-                                          "N",
-                                          "N"
-                                      ],
-                          "code":  "mbti_sn"
-                      },
-                      {
-                          "id":  5,
-                          "section":  "Personality Preferences",
-                          "text":  "Two classmates disagree about something. You would first think about...",
-                          "options":  [
-                                          "What is fair",
-                                          "What actually happened",
-                                          "What both sides think",
-                                          "How everyone feels"
-                                      ],
-                          "mapping":  [
-                                          "T",
-                                          "T",
-                                          "F",
-                                          "F"
-                                      ],
-                          "code":  "mbti_tf"
-                      },
-                      {
-                          "id":  6,
-                          "section":  "Personality Preferences",
-                          "text":  "A friend makes a mistake. Your first response is usually to...",
-                          "options":  [
-                                          "Help fix the mistake",
-                                          "Explain what went wrong",
-                                          "Ask what happened",
-                                          "Comfort and encourage them"
-                                      ],
-                          "mapping":  [
-                                          "T",
-                                          "T",
-                                          "F",
-                                          "F"
-                                      ],
-                          "code":  "mbti_tf"
-                      },
-                      {
-                          "id":  7,
-                          "section":  "Personality Preferences",
-                          "text":  "When you have a school assignment, you prefer to...",
-                          "options":  [
-                                          "Finish it early",
-                                          "Make a simple plan",
-                                          "Decide as I go",
-                                          "Work whenever I feel ready"
-                                      ],
-                          "mapping":  [
-                                          "J",
-                                          "J",
-                                          "P",
-                                          "P"
-                                      ],
-                          "code":  "mbti_jp"
-                      },
-                      {
-                          "id":  8,
-                          "section":  "Personality Preferences",
-                          "text":  "Your teacher suddenly changes the day\u0027s activity. You usually...",
-                          "options":  [
-                                          "Want to know the new plan",
-                                          "Take a little time to adjust",
-                                          "Adapt easily",
-                                          "Enjoy the unexpected change"
-                                      ],
-                          "mapping":  [
-                                          "J",
-                                          "J",
-                                          "P",
-                                          "P"
-                                      ],
-                          "code":  "mbti_jp"
-                      },
-                      {
-                          "id":  9,
-                          "section":  "Personality Preferences",
-                          "text":  "When you have an exciting idea, you usually...",
-                          "options":  [
-                                          "Tell someone immediately",
-                                          "Discuss it with a friend",
-                                          "Think about it first",
-                                          "Develop it quietly by yourself"
-                                      ],
-                          "mapping":  [
-                                          "E",
-                                          "E",
-                                          "I",
-                                          "I"
-                                      ],
-                          "code":  "mbti_ei"
-                      },
-                      {
-                          "id":  10,
-                          "section":  "Personality Preferences",
-                          "text":  "On a free afternoon, you prefer to...",
-                          "options":  [
-                                          "Follow a plan",
-                                          "Choose from a few activities",
-                                          "Decide as the day goes",
-                                          "Do whatever interests me at the moment"
-                                      ],
-                          "mapping":  [
-                                          "J",
-                                          "J",
-                                          "P",
-                                          "P"
-                                      ],
-                          "code":  "mbti_jp"
-                      },
-                      {
-                          "id":  11,
-                          "section":  "Career Interests - RIASEC",
-                          "text":  "Which activity would you enjoy most?",
-                          "options":  [
-                                          "Build a model",
-                                          "Solve a science mystery",
-                                          "Write a story",
-                                          "Help a younger student",
-                                          "Organise a class activity"
-                                      ],
-                          "mapping":  [
-                                          "R",
-                                          "I",
-                                          "A",
-                                          "S",
-                                          "E"
-                                      ],
-                          "code":  "riasec"
-                      },
-                      {
-                          "id":  12,
-                          "section":  "Career Interests - RIASEC",
-                          "text":  "You have one free afternoon. What would you choose?",
-                          "options":  [
-                                          "Fix or make something",
-                                          "Do an experiment",
-                                          "Draw or design something",
-                                          "Teach someone a skill",
-                                          "Plan an event"
-                                      ],
-                          "mapping":  [
-                                          "R",
-                                          "I",
-                                          "A",
-                                          "S",
-                                          "E"
-                                      ],
-                          "code":  "riasec"
-                      },
-                      {
-                          "id":  13,
-                          "section":  "Career Interests - RIASEC",
-                          "text":  "Which school project sounds most exciting?",
-                          "options":  [
-                                          "Build a working machine",
-                                          "Investigate how something works",
-                                          "Create a video or artwork",
-                                          "Study how people behave",
-                                          "Lead a team project"
-                                      ],
-                          "mapping":  [
-                                          "R",
-                                          "I",
-                                          "A",
-                                          "S",
-                                          "E"
-                                      ],
-                          "code":  "riasec"
-                      },
-                      {
-                          "id":  14,
-                          "section":  "Career Interests - RIASEC",
-                          "text":  "You visit a special activity centre. Which area would attract you most?",
-                          "options":  [
-                                          "Tools and machines",
-                                          "Science and discovery",
-                                          "Art and creativity",
-                                          "People and communication",
-                                          "Business and leadership"
-                                      ],
-                          "mapping":  [
-                                          "R",
-                                          "I",
-                                          "A",
-                                          "S",
-                                          "E"
-                                      ],
-                          "code":  "riasec"
-                      },
-                      {
-                          "id":  15,
-                          "section":  "Career Interests - RIASEC",
-                          "text":  "Which challenge would you enjoy?",
-                          "options":  [
-                                          "Make something using materials",
-                                          "Find the answer to a mystery",
-                                          "Create something original",
-                                          "Find a solution to someone\u0027s problem",
-                                          "Convince people to support an idea"
-                                      ],
-                          "mapping":  [
-                                          "R",
-                                          "I",
-                                          "A",
-                                          "S",
-                                          "E"
-                                      ],
-                          "code":  "riasec"
-                      },
-                      {
-                          "id":  16,
-                          "section":  "Career Interests - RIASEC",
-                          "text":  "Your teacher gives you a choice of activities. You choose...",
-                          "options":  [
-                                          "Gardening or building",
-                                          "Researching a question",
-                                          "Writing or designing",
-                                          "Helping classmates",
-                                          "Organizing and coordinating tasks"
-                                      ],
-                          "mapping":  [
-                                          "R",
-                                          "I",
-                                          "A",
-                                          "S",
-                                          "C"
-                                      ],
-                          "code":  "riasec"
-                      },
-                      {
-                          "id":  17,
-                          "section":  "Career Interests - RIASEC",
-                          "text":  "Which role would you enjoy in a group?",
-                          "options":  [
-                                          "Builder or practical helper",
-                                          "Researcher",
-                                          "Designer",
-                                          "Team supporter",
-                                          "Team leader"
-                                      ],
-                          "mapping":  [
-                                          "R",
-                                          "I",
-                                          "A",
-                                          "S",
-                                          "E"
-                                      ],
-                          "code":  "riasec"
-                      },
-                      {
-                          "id":  18,
-                          "section":  "Career Interests - RIASEC",
-                          "text":  "Which activity sounds most interesting?",
-                          "options":  [
-                                          "Learning how things are made",
-                                          "Discovering why something happens",
-                                          "Creating music, art or stories",
-                                          "Working with people",
-                                          "Planning how to achieve a goal"
-                                      ],
-                          "mapping":  [
-                                          "R",
-                                          "I",
-                                          "A",
-                                          "S",
-                                          "E"
-                                      ],
-                          "code":  "riasec"
-                      },
-                      {
-                          "id":  19,
-                          "section":  "Career Interests - RIASEC",
-                          "text":  "If you could try a new school club, which would you choose?",
-                          "options":  [
-                                          "Robotics or making",
-                                          "Science or investigation",
-                                          "Art, drama or creative writing",
-                                          "Community/helping club",
-                                          "Young leaders or entrepreneurship"
-                                      ],
-                          "mapping":  [
-                                          "R",
-                                          "I",
-                                          "A",
-                                          "S",
-                                          "E"
-                                      ],
-                          "code":  "riasec"
-                      },
-                      {
-                          "id":  20,
-                          "section":  "Career Interests - RIASEC",
-                          "text":  "Which activity would you most enjoy doing for a week?",
-                          "options":  [
-                                          "Making or repairing things",
-                                          "Exploring questions and experiments",
-                                          "Creating something expressive",
-                                          "Helping or teaching others",
-                                          "Running a small project"
-                                      ],
-                          "mapping":  [
-                                          "R",
-                                          "I",
-                                          "A",
-                                          "S",
-                                          "E"
-                                      ],
-                          "code":  "riasec"
-                      },
-                      {
-                          "id":  21,
-                          "section":  "Aptitude \u0026 Reasoning",
-                          "text":  "What number comes next? 2, 4, 6, 8, ___",
-                          "options":  [
-                                          "9",
-                                          "10",
-                                          "11",
-                                          "12"
-                                      ],
-                          "correct":  1,
-                          "domainAffinity":  [
-                                                 "A",
-                                                 "B"
-                                             ]
-                      },
-                      {
-                          "id":  22,
-                          "section":  "Aptitude \u0026 Reasoning",
-                          "text":  "What comes next? ▲ ● ▲ ● ▲ ___",
-                          "options":  [
-                                          "▲",
-                                          "●",
-                                          "■",
-                                          "★"
-                                      ],
-                          "correct":  0,
-                          "domainAffinity":  [
-                                                 "A",
-                                                 "D"
-                                             ]
-                      },
-                      {
-                          "id":  23,
-                          "section":  "Aptitude \u0026 Reasoning",
-                          "text":  "Which shape should come next in this pattern?",
-                          "options":  [
-                                          "Arrow-up",
-                                          "Arrow-right",
-                                          "Arrow-down",
-                                          "Arrow-left"
-                                      ],
-                          "correct":  3,
-                          "domainAffinity":  [
-                                                 "B",
-                                                 "C"
-                                             ],
-                          "media":  {
-                                        "items":  [
-                                                      "?",
-                                                      "?",
-                                                      "?",
-                                                      "?",
-                                                      "?",
-                                                      "?"
-                                                  ],
-                                        "type":  "sequence"
-                                    },
-                          "code":  "spatial_sequence"
-                      },
-                      {
-                          "id":  24,
-                          "section":  "Aptitude \u0026 Reasoning",
-                          "text":  "Ravi has 12 pencils. He gives 4 to his friend. How many pencils are left?",
-                          "options":  [
-                                          "6",
-                                          "7",
-                                          "8",
-                                          "9"
-                                      ],
-                          "correct":  2,
-                          "domainAffinity":  [
-                                                 "A",
-                                                 "B"
-                                             ]
-                      },
-                      {
-                          "id":  25,
-                          "section":  "Aptitude \u0026 Reasoning",
-                          "text":  "Look at this 3�3 pattern. Which symbol should replace the question mark?",
-                          "options":  [
-                                          "Circle",
-                                          "Square",
-                                          "Triangle",
-                                          "Diamond"
-                                      ],
-                          "correct":  0,
-                          "domainAffinity":  [
-                                                 "B",
-                                                 "C"
-                                             ],
-                          "media":  {
-                                        "cols":  3,
-                                        "type":  "grid",
-                                        "cells":  [
-                                                      "?",
-                                                      "?",
-                                                      "�",
-                                                      "?",
-                                                      "�",
-                                                      "?",
-                                                      "�",
-                                                      "?",
-                                                      "?"
-                                                  ]
-                                    },
-                          "code":  "matrix_reasoning"
-                      },
-                      {
-                          "id":  26,
-                          "section":  "Aptitude \u0026 Reasoning",
-                          "text":  "A box has a red ball inside it. If the box is moved from the table to the floor, where is the ball?",
-                          "options":  [
-                                          "Still inside the box",
-                                          "On the table",
-                                          "In the air",
-                                          "Outside the box"
-                                      ],
-                          "correct":  0,
-                          "domainAffinity":  [
-                                                 "A",
-                                                 "B"
-                                             ]
-                      },
-                      {
-                          "id":  27,
-                          "section":  "Aptitude \u0026 Reasoning",
-                          "text":  "What number comes next? 5, 10, 15, 20, ___",
-                          "options":  [
-                                          "22",
-                                          "24",
-                                          "25",
-                                          "30"
-                                      ],
-                          "correct":  2,
-                          "domainAffinity":  [
-                                                 "A",
-                                                 "B"
-                                             ]
-                      },
-                      {
-                          "id":  28,
-                          "section":  "Aptitude \u0026 Reasoning",
-                          "text":  "Which shape comes next in this rotation sequence?",
-                          "options":  [
-                                          "Top",
-                                          "Right",
-                                          "Bottom",
-                                          "Left"
-                                      ],
-                          "correct":  1,
-                          "domainAffinity":  [
-                                                 "D",
-                                                 "E"
-                                             ],
-                          "media":  {
-                                        "items":  [
-                                                      "?",
-                                                      "?",
-                                                      "?",
-                                                      "?",
-                                                      "?"
-                                                  ],
-                                        "type":  "sequence"
-                                    },
-                          "code":  "spatial_rotation"
-                      },
-                      {
-                          "id":  29,
-                          "section":  "Aptitude \u0026 Reasoning",
-                          "text":  "Which comes next? Morning → Afternoon → Evening → ___",
-                          "options":  [
-                                          "Night",
-                                          "Noon",
-                                          "Morning",
-                                          "Afternoon"
-                                      ],
-                          "correct":  0,
-                          "domainAffinity":  [
-                                                 "C",
-                                                 "B"
-                                             ]
-                      },
-                      {
-                          "id":  30,
-                          "section":  "Aptitude \u0026 Reasoning",
-                          "text":  "Complete the 3�3 grid. What should replace the question mark?",
-                          "options":  [
-                                          "Filled",
-                                          "Striped",
-                                          "Dotted",
-                                          "Outlined"
-                                      ],
-                          "correct":  0,
-                          "domainAffinity":  [
-                                                 "A",
-                                                 "E"
-                                             ],
-                          "media":  {
-                                        "cols":  3,
-                                        "type":  "grid",
-                                        "cells":  [
-                                                      "?",
-                                                      "?",
-                                                      "?",
-                                                      "?",
-                                                      "?",
-                                                      "?",
-                                                      "?",
-                                                      "?",
-                                                      "?"
-                                                  ]
-                                    },
-                          "code":  "pattern_completion"
-                      },
-                      {
-                          "id":  31,
-                          "section":  "MI-Inspired Strength Domains",
-                          "text":  "I enjoy...",
-                          "options":  [
-                                          "Reading and telling stories",
-                                          "Solving number puzzles",
-                                          "Drawing or imagining designs",
-                                          "Making or doing things with my hands",
-                                          "Talking and working with people"
-                                      ],
-                          "mapping":  [
-                                          "Linguistic",
-                                          "Logical-Math",
-                                          "Spatial",
-                                          "Bodily-Kinesthetic",
-                                          "Interpersonal"
-                                      ],
-                          "code":  "mi"
-                      },
-                      {
-                          "id":  32,
-                          "section":  "MI-Inspired Strength Domains",
-                          "text":  "I am usually interested in...",
-                          "options":  [
-                                          "Words and languages",
-                                          "Patterns and numbers",
-                                          "Pictures, shapes and spaces",
-                                          "Music and rhythm",
-                                          "Nature and living things"
-                                      ],
-                          "mapping":  [
-                                          "Linguistic",
-                                          "Logical-Math",
-                                          "Spatial",
-                                          "Musical",
-                                          "Naturalistic"
-                                      ],
-                          "code":  "mi"
-                      },
-                      {
-                          "id":  33,
-                          "section":  "MI-Inspired Strength Domains",
-                          "text":  "When explaining something, I like to...",
-                          "options":  [
-                                          "Use words and examples",
-                                          "Show the logic",
-                                          "Draw a picture",
-                                          "Demonstrate it",
-                                          "Discuss it with someone"
-                                      ],
-                          "mapping":  [
-                                          "Linguistic",
-                                          "Logical-Math",
-                                          "Spatial",
-                                          "Bodily-Kinesthetic",
-                                          "Interpersonal"
-                                      ],
-                          "code":  "mi"
-                      },
-                      {
-                          "id":  34,
-                          "section":  "MI-Inspired Strength Domains",
-                          "text":  "Which activity feels natural to you?",
-                          "options":  [
-                                          "Writing",
-                                          "Finding patterns",
-                                          "Visualising how things fit",
-                                          "Moving, acting or performing",
-                                          "Understanding how another person feels"
-                                      ],
-                          "mapping":  [
-                                          "Linguistic",
-                                          "Logical-Math",
-                                          "Spatial",
-                                          "Bodily-Kinesthetic",
-                                          "Interpersonal"
-                                      ],
-                          "code":  "mi"
-                      },
-                      {
-                          "id":  35,
-                          "section":  "MI-Inspired Strength Domains",
-                          "text":  "You are given a free project. You would like to...",
-                          "options":  [
-                                          "Write a story",
-                                          "Solve a challenging problem",
-                                          "Design something",
-                                          "Build or perform something",
-                                          "Work with a team"
-                                      ],
-                          "mapping":  [
-                                          "Linguistic",
-                                          "Logical-Math",
-                                          "Spatial",
-                                          "Bodily-Kinesthetic",
-                                          "Interpersonal"
-                                      ],
-                          "code":  "mi"
-                      },
-                      {
-                          "id":  36,
-                          "section":  "MI-Inspired Strength Domains",
-                          "text":  "Which activity do you notice yourself enjoying?",
-                          "options":  [
-                                          "Reading or writing",
-                                          "Numbers and puzzles",
-                                          "Drawing/designing",
-                                          "Music, movement or making",
-                                          "Plants, animals or nature"
-                                      ],
-                          "mapping":  [
-                                          "Linguistic",
-                                          "Logical-Math",
-                                          "Spatial",
-                                          "Musical",
-                                          "Naturalistic"
-                                      ],
-                          "code":  "mi"
-                      },
-                      {
-                          "id":  37,
-                          "section":  "MI-Inspired Strength Domains",
-                          "text":  "When you have an idea, you prefer to...",
-                          "options":  [
-                                          "Explain it with words",
-                                          "Work out how it could work",
-                                          "Draw what you imagine",
-                                          "Show someone how to do it",
-                                          "Talk about it with others"
-                                      ],
-                          "mapping":  [
-                                          "Linguistic",
-                                          "Logical-Math",
-                                          "Spatial",
-                                          "Bodily-Kinesthetic",
-                                          "Interpersonal"
-                                      ],
-                          "code":  "mi"
-                      },
-                      {
-                          "id":  38,
-                          "section":  "MI-Inspired Strength Domains",
-                          "text":  "Which description sounds most like you?",
-                          "options":  [
-                                          "I enjoy expressing ideas.",
-                                          "I enjoy figuring things out.",
-                                          "I enjoy imagining how things look.",
-                                          "I enjoy doing and creating.",
-                                          "I enjoy understanding people or nature."
-                                      ],
-                          "mapping":  [
-                                          "Linguistic",
-                                          "Logical-Math",
-                                          "Spatial",
-                                          "Bodily-Kinesthetic",
-                                          "Intrapersonal"
-                                      ],
-                          "code":  "mi"
-                      },
-                      {
-                          "id":  39,
-                          "section":  "Motivators \u0026 Values",
-                          "text":  "What makes you happiest after completing something difficult?",
-                          "options":  [
-                                          "I did it really well",
-                                          "I learned something new",
-                                          "I helped someone",
-                                          "I got to do it my own way",
-                                          "Others noticed my effort"
-                                      ],
-                          "mapping":  [
-                                          "Achievement",
-                                          "Curiosity",
-                                          "Helping",
-                                          "Freedom",
-                                          "Leadership"
-                                      ],
-                          "code":  "motivators"
-                      },
-                      {
-                          "id":  40,
-                          "section":  "Motivators \u0026 Values",
-                          "text":  "Which challenge would motivate you most?",
-                          "options":  [
-                                          "Becoming very good at something",
-                                          "Discovering something new",
-                                          "Helping solve someone\u0027s problem",
-                                          "Creating my own idea",
-                                          "Being the person who leads"
-                                      ],
-                          "mapping":  [
-                                          "Achievement",
-                                          "Curiosity",
-                                          "Helping",
-                                          "Freedom",
-                                          "Leadership"
-                                      ],
-                          "code":  "motivators"
-                      },
-                      {
-                          "id":  41,
-                          "section":  "Motivators \u0026 Values",
-                          "text":  "What would make a school project exciting?",
-                          "options":  [
-                                          "A chance to improve my skills",
-                                          "A mystery to investigate",
-                                          "A chance to help people",
-                                          "Freedom to choose what I do",
-                                          "A chance to lead"
-                                      ],
-                          "mapping":  [
-                                          "Achievement",
-                                          "Curiosity",
-                                          "Helping",
-                                          "Freedom",
-                                          "Leadership"
-                                      ],
-                          "code":  "motivators"
-                      },
-                      {
-                          "id":  42,
-                          "section":  "Motivators \u0026 Values",
-                          "text":  "Which reward would you value most?",
-                          "options":  [
-                                          "Feeling proud of my work",
-                                          "Learning something interesting",
-                                          "Making someone happy",
-                                          "Having freedom",
-                                          "Receiving praise"
-                                      ],
-                          "mapping":  [
-                                          "Achievement",
-                                          "Curiosity",
-                                          "Helping",
-                                          "Freedom",
-                                          "Leadership"
-                                      ],
-                          "code":  "motivators"
-                      },
-                      {
-                          "id":  43,
-                          "section":  "Motivators \u0026 Values",
-                          "text":  "When something becomes difficult, you are most likely to continue because...",
-                          "options":  [
-                                          "You want to improve",
-                                          "You want to find the answer",
-                                          "Someone needs your help",
-                                          "You want to prove your idea",
-                                          "You want to achieve the goal"
-                                      ],
-                          "mapping":  [
-                                          "Achievement",
-                                          "Curiosity",
-                                          "Helping",
-                                          "Freedom",
-                                          "Leadership"
-                                      ],
-                          "code":  "motivators"
-                      },
-                      {
-                          "id":  44,
-                          "section":  "Motivators \u0026 Values",
-                          "text":  "Which would make you feel proud?",
-                          "options":  [
-                                          "Mastering a difficult skill",
-                                          "Discovering something new",
-                                          "Helping another person succeed",
-                                          "Creating something of your own",
-                                          "Leading a successful activity"
-                                      ],
-                          "mapping":  [
-                                          "Achievement",
-                                          "Curiosity",
-                                          "Helping",
-                                          "Freedom",
-                                          "Leadership"
-                                      ],
-                          "code":  "motivators"
-                      },
-                      {
-                          "id":  45,
-                          "section":  "Motivators \u0026 Values",
-                          "text":  "If you could choose a project, you would prefer one that gives you...",
-                          "options":  [
-                                          "A chance to become better",
-                                          "A chance to explore",
-                                          "A chance to help others",
-                                          "A chance to work independently",
-                                          "A chance to take responsibility"
-                                      ],
-                          "mapping":  [
-                                          "Achievement",
-                                          "Curiosity",
-                                          "Helping",
-                                          "Freedom",
-                                          "Leadership"
-                                      ],
-                          "code":  "motivators"
-                      },
-                      {
-                          "id":  46,
-                          "section":  "Learning Preferences",
-                          "text":  "Your teacher introduces a difficult topic. You would prefer to...",
-                          "options":  [
-                                          "See an example",
-                                          "Read a simple explanation",
-                                          "Discuss it",
-                                          "Try it yourself"
-                                      ],
-                          "mapping":  [
-                                          "Visual",
-                                          "Reading",
-                                          "Auditory",
-                                          "Kinesthetic"
-                                      ],
-                          "code":  "learning"
-                      },
-                      {
-                          "id":  47,
-                          "section":  "Learning Preferences",
-                          "text":  "You want to learn a new skill. What would you choose first?",
-                          "options":  [
-                                          "Watch someone demonstrate it",
-                                          "Read instructions",
-                                          "Ask someone to explain it",
-                                          "Practise it"
-                                      ],
-                          "mapping":  [
-                                          "Visual",
-                                          "Reading",
-                                          "Auditory",
-                                          "Kinesthetic"
-                                      ],
-                          "code":  "learning"
-                      },
-                      {
-                          "id":  48,
-                          "section":  "Learning Preferences",
-                          "text":  "Before a test, what helps you most?",
-                          "options":  [
-                                          "Seeing diagrams/examples",
-                                          "Reading notes",
-                                          "Discussing with a friend",
-                                          "Practising questions"
-                                      ],
-                          "mapping":  [
-                                          "Visual",
-                                          "Reading",
-                                          "Auditory",
-                                          "Kinesthetic"
-                                      ],
-                          "code":  "learning"
-                      },
-                      {
-                          "id":  49,
-                          "section":  "Learning Preferences",
-                          "text":  "When you cannot understand something, you usually...",
-                          "options":  [
-                                          "Look for an example",
-                                          "Read it again",
-                                          "Ask someone",
-                                          "Try it in practice"
-                                      ],
-                          "mapping":  [
-                                          "Visual",
-                                          "Reading",
-                                          "Auditory",
-                                          "Kinesthetic"
-                                      ],
-                          "code":  "learning"
-                      },
-                      {
-                          "id":  50,
-                          "section":  "Learning Preferences",
-                          "text":  "Which classroom activity do you enjoy most?",
-                          "options":  [
-                                          "Demonstrations",
-                                          "Reading",
-                                          "Group discussion",
-                                          "Hands-on activities"
-                                      ],
-                          "mapping":  [
-                                          "Visual",
-                                          "Reading",
-                                          "Auditory",
-                                          "Kinesthetic"
-                                      ],
-                          "code":  "learning"
-                      },
-                      {
-                          "id":  51,
-                          "section":  "Emotional \u0026 Social Awareness",
-                          "text":  "You are upset because something did not go as planned. What do you usually do?",
-                          "options":  [
-                                          "Think about why I feel upset",
-                                          "Talk to someone",
-                                          "Take some quiet time",
-                                          "Do something else until I feel better"
-                                      ],
-                          "mapping":  [
-                                          "Self-Awareness",
-                                          "Relationship-Building",
-                                          "Self-Awareness",
-                                          "Social-Management"
-                                      ],
-                          "code":  "emotional"
-                      },
-                      {
-                          "id":  52,
-                          "section":  "Emotional \u0026 Social Awareness",
-                          "text":  "You notice your friend is unusually quiet. What would you do?",
-                          "options":  [
-                                          "Ask if they are okay",
-                                          "Give them some space",
-                                          "Try to cheer them up",
-                                          "Tell a trusted adult if I am worried"
-                                      ],
-                          "mapping":  [
-                                          "Empathy",
-                                          "Self-Awareness",
-                                          "Empathy",
-                                          "Social-Management"
-                                      ],
-                          "code":  "emotional"
-                      },
-                      {
-                          "id":  53,
-                          "section":  "Emotional \u0026 Social Awareness",
-                          "text":  "Your group disagrees about an idea. What would you do?",
-                          "options":  [
-                                          "Explain my view calmly",
-                                          "Listen to everyone\u0027s ideas",
-                                          "Help find a solution",
-                                          "Suggest taking a short break"
-                                      ],
-                          "mapping":  [
-                                          "Social-Management",
-                                          "Empathy",
-                                          "Social-Management",
-                                          "Self-Awareness"
-                                      ],
-                          "code":  "emotional"
-                      },
-                      {
-                          "id":  54,
-                          "section":  "Emotional \u0026 Social Awareness",
-                          "text":  "A teacher tells you that you could improve something. You...",
-                          "options":  [
-                                          "Think about the feedback",
-                                          "Ask what I can do better",
-                                          "Try the suggestion",
-                                          "Feel upset at first but try later"
-                                      ],
-                          "mapping":  [
-                                          "Self-Awareness",
-                                          "Self-Awareness",
-                                          "Social-Management",
-                                          "Self-Awareness"
-                                      ],
-                          "code":  "emotional"
-                      },
-                      {
-                          "id":  55,
-                          "section":  "Emotional \u0026 Social Awareness",
-                          "text":  "A classmate is left out of a group activity. You would most likely...",
-                          "options":  [
-                                          "Invite them to join",
-                                          "Ask others to include them",
-                                          "Talk to them privately",
-                                          "Tell the teacher if needed"
-                                      ],
-                          "mapping":  [
-                                          "Relationship-Building",
-                                          "Relationship-Building",
-                                          "Empathy",
-                                          "Social-Management"
-                                      ],
-                          "code":  "emotional"
-                      },
-                      {
-                          "id":  56,
-                          "section":  "Creativity \u0026 Future Readiness",
-                          "text":  "You are given some cardboard, paper and tape. What would you most like to do?",
-                          "options":  [
-                                          "Copy an example",
-                                          "Make something useful",
-                                          "Invent something new",
-                                          "Try several ideas"
-                                      ],
-                          "mapping":  [
-                                          "Adaptability",
-                                          "Problem-Solving",
-                                          "Innovation",
-                                          "Problem-Solving"
-                                      ],
-                          "code":  "creativity"
-                      },
-                      {
-                          "id":  57,
-                          "section":  "Creativity \u0026 Future Readiness",
-                          "text":  "You cannot solve a puzzle. What would you do next?",
-                          "options":  [
-                                          "Ask for help",
-                                          "Try the same method again",
-                                          "Try a different approach",
-                                          "Break the problem into smaller parts"
-                                      ],
-                          "mapping":  [
-                                          "Adaptability",
-                                          "Adaptability",
-                                          "Problem-Solving",
-                                          "Problem-Solving"
-                                      ],
-                          "code":  "creativity"
-                      },
-                      {
-                          "id":  58,
-                          "section":  "Creativity \u0026 Future Readiness",
-                          "text":  "Your school asks students to suggest an idea to improve the school. You would...",
-                          "options":  [
-                                          "Suggest something you have seen elsewhere",
-                                          "Ask friends for ideas",
-                                          "Think of a completely new idea",
-                                          "Think about a problem students face and design a solution"
-                                      ],
-                          "mapping":  [
-                                          "Adaptability",
-                                          "Adaptability",
-                                          "Innovation",
-                                          "Problem-Solving"
-                                      ],
-                          "code":  "creativity"
-                      },
-                      {
-                          "id":  59,
-                          "section":  "Creativity \u0026 Future Readiness",
-                          "text":  "You discover a career you have never heard of. What would you do?",
-                          "options":  [
-                                          "Learn more about it",
-                                          "Ask someone about it",
-                                          "Imagine whether I might enjoy it",
-                                          "Compare it with other careers"
-                                      ],
-                          "mapping":  [
-                                          "Future-Orientation",
-                                          "Future-Orientation",
-                                          "Innovation",
-                                          "Future-Orientation"
-                                      ],
-                          "code":  "creativity"
-                      },
-                      {
-                          "id":  60,
-                          "section":  "Creativity \u0026 Future Readiness",
-                          "text":  "When you think about your future, which sounds most like you?",
-                          "options":  [
-                                          "I already have some ideas",
-                                          "I want to explore many possibilities",
-                                          "I know some activities I enjoy",
-                                          "I am still discovering what suits me"
-                                      ],
-                          "mapping":  [
-                                          "Future-Orientation",
-                                          "Innovation",
-                                          "Future-Orientation",
-                                          "Adaptability"
-                                      ],
-                          "code":  "creativity"
-                      }
-                  ]
+ "metadata": {
+  "version": "1.0",
+  "targetGrade": "6",
+  "totalQuestions": 60,
+  "assessmentType": "Developmental Career Discovery",
+  "description": "Class 6 Career Discovery Assessment - 60 questions across 8 dimensions"
+ },
+ "dimensions": [
+  {
+   "id": "personality",
+   "name": "Personality Preferences",
+   "questions": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "type": "self-report",
+   "options": 4,
+   "scoring": "MBTI-style (E/I, S/N, T/F, J/P)"
+  },
+  {
+   "id": "riasec",
+   "name": "Career Interests - RIASEC",
+   "questions": [
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+   ],
+   "type": "interest",
+   "options": 5,
+   "scoring": "RIASEC domain ranking"
+  },
+  {
+   "id": "aptitude",
+   "name": "Aptitude & Reasoning",
+   "questions": [
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+   ],
+   "type": "performance",
+   "options": 4,
+   "scoring": "Correct/Incorrect (1/0)"
+  },
+  {
+   "id": "strengths",
+   "name": "MI-Inspired Strength Domains",
+   "questions": [
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38
+   ],
+   "type": "self-report",
+   "options": 5,
+   "scoring": "8 MI domains: Linguistic, Logical-Math, Spatial, Bodily-Kinesthetic, Musical, Interpersonal, Intrapersonal, Naturalistic"
+  },
+  {
+   "id": "motivators",
+   "name": "Motivators & Values",
+   "questions": [
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45
+   ],
+   "type": "self-report",
+   "options": 5,
+   "scoring": "5 motivator types: Achievement, Curiosity, Helping, Freedom, Leadership"
+  },
+  {
+   "id": "learning",
+   "name": "Learning Preferences",
+   "questions": [
+    46,
+    47,
+    48,
+    49,
+    50
+   ],
+   "type": "self-report",
+   "options": 4,
+   "scoring": "4 learning styles: Visual, Reading, Auditory, Kinesthetic"
+  },
+  {
+   "id": "emotional",
+   "name": "Emotional & Social Awareness",
+   "questions": [
+    51,
+    52,
+    53,
+    54,
+    55
+   ],
+   "type": "self-report",
+   "options": 4,
+   "scoring": "Developmental tendencies: Self-Awareness, Empathy, Social Management, Relationship Building"
+  },
+  {
+   "id": "creativity",
+   "name": "Creativity & Future Readiness",
+   "questions": [
+    56,
+    57,
+    58,
+    59,
+    60
+   ],
+   "type": "self-report",
+   "options": 4,
+   "scoring": "Future-readiness indicators: Problem-Solving, Adaptability, Innovation, Future Orientation"
+  }
+ ],
+ "questions": [
+  {
+   "id": 1,
+   "section": "Personality Preferences",
+   "text": "When you join a new group at school, what do you usually do?",
+   "options": [
+    "Start talking to others",
+    "Talk when someone approaches me",
+    "Watch and understand the group first",
+    "Prefer working quietly by myself"
+   ],
+   "mapping": [
+    "E",
+    "E",
+    "I",
+    "I"
+   ],
+   "code": "mbti_ei"
+  },
+  {
+   "id": 2,
+   "section": "Personality Preferences",
+   "text": "After spending a whole day with friends, you usually want to...",
+   "options": [
+    "Spend more time with them",
+    "Talk with one or two friends",
+    "Have some quiet time",
+    "Be by myself for a while"
+   ],
+   "mapping": [
+    "E",
+    "E",
+    "I",
+    "I"
+   ],
+   "code": "mbti_ei"
+  },
+  {
+   "id": 3,
+   "section": "Personality Preferences",
+   "text": "When learning something new, you prefer...",
+   "options": [
+    "Clear facts and examples",
+    "Seeing how something works",
+    "Thinking of different possibilities",
+    "Imagining what could happen next"
+   ],
+   "mapping": [
+    "S",
+    "S",
+    "N",
+    "N"
+   ],
+   "code": "mbti_sn"
+  },
+  {
+   "id": 4,
+   "section": "Personality Preferences",
+   "text": "Your teacher asks you to make a project. You would rather...",
+   "options": [
+    "Follow an example",
+    "Make a small change to the example",
+    "Try your own idea",
+    "Invent something completely different"
+   ],
+   "mapping": [
+    "S",
+    "S",
+    "N",
+    "N"
+   ],
+   "code": "mbti_sn"
+  },
+  {
+   "id": 5,
+   "section": "Personality Preferences",
+   "text": "Two classmates disagree about something. You would first think about...",
+   "options": [
+    "What is fair",
+    "What actually happened",
+    "What both sides think",
+    "How everyone feels"
+   ],
+   "mapping": [
+    "T",
+    "T",
+    "F",
+    "F"
+   ],
+   "code": "mbti_tf"
+  },
+  {
+   "id": 6,
+   "section": "Personality Preferences",
+   "text": "A friend makes a mistake. Your first response is usually to...",
+   "options": [
+    "Help fix the mistake",
+    "Explain what went wrong",
+    "Ask what happened",
+    "Comfort and encourage them"
+   ],
+   "mapping": [
+    "T",
+    "T",
+    "F",
+    "F"
+   ],
+   "code": "mbti_tf"
+  },
+  {
+   "id": 7,
+   "section": "Personality Preferences",
+   "text": "When you have a school assignment, you prefer to...",
+   "options": [
+    "Finish it early",
+    "Make a simple plan",
+    "Decide as I go",
+    "Work whenever I feel ready"
+   ],
+   "mapping": [
+    "J",
+    "J",
+    "P",
+    "P"
+   ],
+   "code": "mbti_jp"
+  },
+  {
+   "id": 8,
+   "section": "Personality Preferences",
+   "text": "Your teacher suddenly changes the day's activity. You usually...",
+   "options": [
+    "Want to know the new plan",
+    "Take a little time to adjust",
+    "Adapt easily",
+    "Enjoy the unexpected change"
+   ],
+   "mapping": [
+    "J",
+    "J",
+    "P",
+    "P"
+   ],
+   "code": "mbti_jp"
+  },
+  {
+   "id": 9,
+   "section": "Personality Preferences",
+   "text": "When you have an exciting idea, you usually...",
+   "options": [
+    "Tell someone immediately",
+    "Discuss it with a friend",
+    "Think about it first",
+    "Develop it quietly by yourself"
+   ],
+   "mapping": [
+    "E",
+    "E",
+    "I",
+    "I"
+   ],
+   "code": "mbti_ei"
+  },
+  {
+   "id": 10,
+   "section": "Personality Preferences",
+   "text": "On a free afternoon, you prefer to...",
+   "options": [
+    "Follow a plan",
+    "Choose from a few activities",
+    "Decide as the day goes",
+    "Do whatever interests me at the moment"
+   ],
+   "mapping": [
+    "J",
+    "J",
+    "P",
+    "P"
+   ],
+   "code": "mbti_jp"
+  },
+  {
+   "id": 11,
+   "section": "Career Interests - RIASEC",
+   "text": "Which activity would you enjoy most?",
+   "options": [
+    "Build a model",
+    "Solve a science mystery",
+    "Write a story",
+    "Help a younger student",
+    "Organise a class activity"
+   ],
+   "mapping": [
+    "R",
+    "I",
+    "A",
+    "S",
+    "E"
+   ],
+   "code": "riasec"
+  },
+  {
+   "id": 12,
+   "section": "Career Interests - RIASEC",
+   "text": "You have one free afternoon. What would you choose?",
+   "options": [
+    "Fix or make something",
+    "Do an experiment",
+    "Draw or design something",
+    "Teach someone a skill",
+    "Plan an event"
+   ],
+   "mapping": [
+    "R",
+    "I",
+    "A",
+    "S",
+    "E"
+   ],
+   "code": "riasec"
+  },
+  {
+   "id": 13,
+   "section": "Career Interests - RIASEC",
+   "text": "Which school project sounds most exciting?",
+   "options": [
+    "Build a working machine",
+    "Investigate how something works",
+    "Create a video or artwork",
+    "Study how people behave",
+    "Lead a team project"
+   ],
+   "mapping": [
+    "R",
+    "I",
+    "A",
+    "S",
+    "E"
+   ],
+   "code": "riasec"
+  },
+  {
+   "id": 14,
+   "section": "Career Interests - RIASEC",
+   "text": "You visit a special activity centre. Which area would attract you most?",
+   "options": [
+    "Tools and machines",
+    "Science and discovery",
+    "Art and creativity",
+    "People and communication",
+    "Business and leadership"
+   ],
+   "mapping": [
+    "R",
+    "I",
+    "A",
+    "S",
+    "E"
+   ],
+   "code": "riasec"
+  },
+  {
+   "id": 15,
+   "section": "Career Interests - RIASEC",
+   "text": "Which challenge would you enjoy?",
+   "options": [
+    "Make something using materials",
+    "Find the answer to a mystery",
+    "Create something original",
+    "Find a solution to someone's problem",
+    "Convince people to support an idea"
+   ],
+   "mapping": [
+    "R",
+    "I",
+    "A",
+    "S",
+    "E"
+   ],
+   "code": "riasec"
+  },
+  {
+   "id": 16,
+   "section": "Career Interests - RIASEC",
+   "text": "Your teacher gives you a choice of activities. You choose...",
+   "options": [
+    "Gardening or building",
+    "Researching a question",
+    "Writing or designing",
+    "Helping classmates",
+    "Organizing and coordinating tasks"
+   ],
+   "mapping": [
+    "R",
+    "I",
+    "A",
+    "S",
+    "C"
+   ],
+   "code": "riasec"
+  },
+  {
+   "id": 17,
+   "section": "Career Interests - RIASEC",
+   "text": "Which role would you enjoy in a group?",
+   "options": [
+    "Builder or practical helper",
+    "Researcher",
+    "Designer",
+    "Team supporter",
+    "Team leader"
+   ],
+   "mapping": [
+    "R",
+    "I",
+    "A",
+    "S",
+    "E"
+   ],
+   "code": "riasec"
+  },
+  {
+   "id": 18,
+   "section": "Career Interests - RIASEC",
+   "text": "Which activity sounds most interesting?",
+   "options": [
+    "Learning how things are made",
+    "Discovering why something happens",
+    "Creating music, art or stories",
+    "Working with people",
+    "Planning how to achieve a goal"
+   ],
+   "mapping": [
+    "R",
+    "I",
+    "A",
+    "S",
+    "E"
+   ],
+   "code": "riasec"
+  },
+  {
+   "id": 19,
+   "section": "Career Interests - RIASEC",
+   "text": "If you could try a new school club, which would you choose?",
+   "options": [
+    "Robotics or making",
+    "Science or investigation",
+    "Art, drama or creative writing",
+    "Community/helping club",
+    "Young leaders or entrepreneurship"
+   ],
+   "mapping": [
+    "R",
+    "I",
+    "A",
+    "S",
+    "E"
+   ],
+   "code": "riasec"
+  },
+  {
+   "id": 20,
+   "section": "Career Interests - RIASEC",
+   "text": "Which activity would you most enjoy doing for a week?",
+   "options": [
+    "Making or repairing things",
+    "Exploring questions and experiments",
+    "Creating something expressive",
+    "Helping or teaching others",
+    "Running a small project"
+   ],
+   "mapping": [
+    "R",
+    "I",
+    "A",
+    "S",
+    "E"
+   ],
+   "code": "riasec"
+  },
+  {
+   "id": 21,
+   "section": "Aptitude & Reasoning",
+   "text": "What number comes next? 2, 4, 6, 8, ___",
+   "options": [
+    "9",
+    "10",
+    "11",
+    "12"
+   ],
+   "correct": 1,
+   "domainAffinity": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "id": 22,
+   "section": "Aptitude & Reasoning",
+   "text": "What comes next? ▲ ● ▲ ● ▲ ___",
+   "options": [
+    "▲",
+    "●",
+    "■",
+    "★"
+   ],
+   "correct": 0,
+   "domainAffinity": [
+    "A",
+    "D"
+   ]
+  },
+  {
+   "id": 23,
+   "section": "Aptitude & Reasoning",
+   "text": "The number of shapes follows an arithmetic rule across each row. Which option completes the pattern?",
+   "options": [
+    "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"35.00,52.96 36.86,57.44 41.70,57.82 38.01,60.98 39.14,65.70 35.00,63.17 30.86,65.70 31.99,60.98 28.30,57.82 33.14,57.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"85.00,52.96 86.86,57.44 91.70,57.82 88.01,60.98 89.14,65.70 85.00,63.17 80.86,65.70 81.99,60.98 78.30,57.82 83.14,57.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/></svg>",
+    "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"60.00,22.96 61.86,27.44 66.70,27.82 63.01,30.98 64.14,35.70 60.00,33.17 55.86,35.70 56.99,30.98 53.30,27.82 58.14,27.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"30.00,72.96 31.86,77.44 36.70,77.82 33.01,80.98 34.14,85.70 30.00,83.17 25.86,85.70 26.99,80.98 23.30,77.82 28.14,77.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"90.00,72.96 91.86,77.44 96.70,77.82 93.01,80.98 94.14,85.70 90.00,83.17 85.86,85.70 86.99,80.98 83.30,77.82 88.14,77.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/></svg>",
+    "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"30.00,22.96 31.86,27.44 36.70,27.82 33.01,30.98 34.14,35.70 30.00,33.17 25.86,35.70 26.99,30.98 23.30,27.82 28.14,27.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"90.00,22.96 91.86,27.44 96.70,27.82 93.01,30.98 94.14,35.70 90.00,33.17 85.86,35.70 86.99,30.98 83.30,27.82 88.14,27.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"30.00,82.96 31.86,87.44 36.70,87.82 33.01,90.98 34.14,95.70 30.00,93.17 25.86,95.70 26.99,90.98 23.30,87.82 28.14,87.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"90.00,82.96 91.86,87.44 96.70,87.82 93.01,90.98 94.14,95.70 90.00,93.17 85.86,95.70 86.99,90.98 83.30,87.82 88.14,87.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/></svg>",
+    "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"60.00,52.96 61.86,57.44 66.70,57.82 63.01,60.98 64.14,65.70 60.00,63.17 55.86,65.70 56.99,60.98 53.30,57.82 58.14,57.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/></svg>",
+    "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"60.00,17.96 61.86,22.44 66.70,22.82 63.01,25.98 64.14,30.70 60.00,28.17 55.86,30.70 56.99,25.98 53.30,22.82 58.14,22.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"25.00,47.96 26.86,52.44 31.70,52.82 28.01,55.98 29.14,60.70 25.00,58.17 20.86,60.70 21.99,55.98 18.30,52.82 23.14,52.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"95.00,47.96 96.86,52.44 101.70,52.82 98.01,55.98 99.14,60.70 95.00,58.17 90.86,60.70 91.99,55.98 88.30,52.82 93.14,52.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"35.00,87.96 36.86,92.44 41.70,92.82 38.01,95.98 39.14,100.70 35.00,98.17 30.86,100.70 31.99,95.98 28.30,92.82 33.14,92.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"85.00,87.96 86.86,92.44 91.70,92.82 88.01,95.98 89.14,100.70 85.00,98.17 80.86,100.70 81.99,95.98 78.30,92.82 83.14,92.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/></svg>"
+   ],
+   "correct": 4,
+   "domainAffinity": [
+    "B",
+    "C"
+   ],
+   "media": {
+    "type": "grid",
+    "cells": [
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"35.00,52.96 36.86,57.44 41.70,57.82 38.01,60.98 39.14,65.70 35.00,63.17 30.86,65.70 31.99,60.98 28.30,57.82 33.14,57.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"85.00,52.96 86.86,57.44 91.70,57.82 88.01,60.98 89.14,65.70 85.00,63.17 80.86,65.70 81.99,60.98 78.30,57.82 83.14,57.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"60.00,52.96 61.86,57.44 66.70,57.82 63.01,60.98 64.14,65.70 60.00,63.17 55.86,65.70 56.99,60.98 53.30,57.82 58.14,57.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"60.00,22.96 61.86,27.44 66.70,27.82 63.01,30.98 64.14,35.70 60.00,33.17 55.86,35.70 56.99,30.98 53.30,27.82 58.14,27.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"30.00,72.96 31.86,77.44 36.70,77.82 33.01,80.98 34.14,85.70 30.00,83.17 25.86,85.70 26.99,80.98 23.30,77.82 28.14,77.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"90.00,72.96 91.86,77.44 96.70,77.82 93.01,80.98 94.14,85.70 90.00,83.17 85.86,85.70 86.99,80.98 83.30,77.82 88.14,77.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"60.00,22.96 61.86,27.44 66.70,27.82 63.01,30.98 64.14,35.70 60.00,33.17 55.86,35.70 56.99,30.98 53.30,27.82 58.14,27.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"30.00,72.96 31.86,77.44 36.70,77.82 33.01,80.98 34.14,85.70 30.00,83.17 25.86,85.70 26.99,80.98 23.30,77.82 28.14,77.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"90.00,72.96 91.86,77.44 96.70,77.82 93.01,80.98 94.14,85.70 90.00,83.17 85.86,85.70 86.99,80.98 83.30,77.82 88.14,77.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"35.00,52.96 36.86,57.44 41.70,57.82 38.01,60.98 39.14,65.70 35.00,63.17 30.86,65.70 31.99,60.98 28.30,57.82 33.14,57.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"85.00,52.96 86.86,57.44 91.70,57.82 88.01,60.98 89.14,65.70 85.00,63.17 80.86,65.70 81.99,60.98 78.30,57.82 83.14,57.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"60.00,17.96 61.86,22.44 66.70,22.82 63.01,25.98 64.14,30.70 60.00,28.17 55.86,30.70 56.99,25.98 53.30,22.82 58.14,22.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"25.00,47.96 26.86,52.44 31.70,52.82 28.01,55.98 29.14,60.70 25.00,58.17 20.86,60.70 21.99,55.98 18.30,52.82 23.14,52.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"95.00,47.96 96.86,52.44 101.70,52.82 98.01,55.98 99.14,60.70 95.00,58.17 90.86,60.70 91.99,55.98 88.30,52.82 93.14,52.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"35.00,87.96 36.86,92.44 41.70,92.82 38.01,95.98 39.14,100.70 35.00,98.17 30.86,100.70 31.99,95.98 28.30,92.82 33.14,92.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"85.00,87.96 86.86,92.44 91.70,92.82 88.01,95.98 89.14,100.70 85.00,98.17 80.86,100.70 81.99,95.98 78.30,92.82 83.14,92.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"35.00,52.96 36.86,57.44 41.70,57.82 38.01,60.98 39.14,65.70 35.00,63.17 30.86,65.70 31.99,60.98 28.30,57.82 33.14,57.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"85.00,52.96 86.86,57.44 91.70,57.82 88.01,60.98 89.14,65.70 85.00,63.17 80.86,65.70 81.99,60.98 78.30,57.82 83.14,57.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"60.00,22.96 61.86,27.44 66.70,27.82 63.01,30.98 64.14,35.70 60.00,33.17 55.86,35.70 56.99,30.98 53.30,27.82 58.14,27.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"30.00,72.96 31.86,77.44 36.70,77.82 33.01,80.98 34.14,85.70 30.00,83.17 25.86,85.70 26.99,80.98 23.30,77.82 28.14,77.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><polygon points=\"90.00,72.96 91.86,77.44 96.70,77.82 93.01,80.98 94.14,85.70 90.00,83.17 85.86,85.70 86.99,80.98 83.30,77.82 88.14,77.44\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/></svg>",
+     null
+    ],
+    "cols": 3
+   },
+   "code": "spatial_sequence",
+   "svgOptions": true
+  },
+  {
+   "id": 24,
+   "section": "Aptitude & Reasoning",
+   "text": "Ravi has 12 pencils. He gives 4 to his friend. How many pencils are left?",
+   "options": [
+    "6",
+    "7",
+    "8",
+    "9"
+   ],
+   "correct": 2,
+   "domainAffinity": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "id": 25,
+   "section": "Aptitude & Reasoning",
+   "text": "This pattern depends on BOTH the row and the column together. Which option completes the pattern?",
+   "options": [
+    "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"86.21,41.65 89.00,73.52 62.79,91.88 33.79,78.35 31.00,46.48 57.21,28.12\" fill=\"#1F3864\" stroke=\"#1F3864\" stroke-width=\"3\"/></svg>",
+    "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"89.00,73.52 62.79,91.88 33.79,78.35 31.00,46.48 57.21,28.12 86.21,41.65\" fill=\"#1F3864\" stroke=\"#1F3864\" stroke-width=\"3\"/></svg>",
+    "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"87.71,44.00 87.71,76.00 60.00,92.00 32.29,76.00 32.29,44.00 60.00,28.00\" fill=\"#1F3864\" stroke=\"#1F3864\" stroke-width=\"3\"/></svg>",
+    "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"84.51,80.57 54.44,91.51 29.93,70.94 35.49,39.43 65.56,28.49 90.07,49.06\" fill=\"#1F3864\" stroke=\"#1F3864\" stroke-width=\"3\"/></svg>",
+    "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"86.21,41.65 89.00,73.52 62.79,91.88 33.79,78.35 31.00,46.48 57.21,28.12\" fill=\"#1F3864\" stroke=\"#1F3864\" stroke-width=\"3\"/></svg>"
+   ],
+   "correct": 1,
+   "domainAffinity": [
+    "B",
+    "C"
+   ],
+   "media": {
+    "type": "grid",
+    "cells": [
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"60.00,28.00 87.71,44.00 87.71,76.00 60.00,92.00 32.29,76.00 32.29,44.00\" fill=\"#1F3864\" stroke=\"#1F3864\" stroke-width=\"3\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"73.52,31.00 91.88,57.21 78.35,86.21 46.48,89.00 28.12,62.79 41.65,33.79\" fill=\"#1F3864\" stroke=\"#1F3864\" stroke-width=\"3\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"86.21,41.65 89.00,73.52 62.79,91.88 33.79,78.35 31.00,46.48 57.21,28.12\" fill=\"#1F3864\" stroke=\"#1F3864\" stroke-width=\"3\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"80.57,35.49 91.51,65.56 70.94,90.07 39.43,84.51 28.49,54.44 49.06,29.93\" fill=\"#1F3864\" stroke=\"#1F3864\" stroke-width=\"3\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"89.00,46.48 86.21,78.35 57.21,91.88 31.00,73.52 33.79,41.65 62.79,28.12\" fill=\"#1F3864\" stroke=\"#1F3864\" stroke-width=\"3\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"91.88,62.79 73.52,89.00 41.65,86.21 28.12,57.21 46.48,31.00 78.35,33.79\" fill=\"#1F3864\" stroke=\"#1F3864\" stroke-width=\"3\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"87.71,44.00 87.71,76.00 60.00,92.00 32.29,76.00 32.29,44.00 60.00,28.00\" fill=\"#1F3864\" stroke=\"#1F3864\" stroke-width=\"3\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"91.88,57.21 78.35,86.21 46.48,89.00 28.12,62.79 41.65,33.79 73.52,31.00\" fill=\"#1F3864\" stroke=\"#1F3864\" stroke-width=\"3\"/></svg>",
+     null
+    ],
+    "cols": 3
+   },
+   "code": "matrix_reasoning",
+   "svgOptions": true
+  },
+  {
+   "id": 26,
+   "section": "Aptitude & Reasoning",
+   "text": "A box has a red ball inside it. If the box is moved from the table to the floor, where is the ball?",
+   "options": [
+    "Still inside the box",
+    "On the table",
+    "In the air",
+    "Outside the box"
+   ],
+   "correct": 0,
+   "domainAffinity": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "id": 27,
+   "section": "Aptitude & Reasoning",
+   "text": "What number comes next? 5, 10, 15, 20, ___",
+   "options": [
+    "22",
+    "24",
+    "25",
+    "30"
+   ],
+   "correct": 2,
+   "domainAffinity": [
+    "A",
+    "B"
+   ]
+  },
+  {
+   "id": 28,
+   "section": "Aptitude & Reasoning",
+   "text": "Which of these cubes could be formed by folding the net shown?",
+   "options": [
+    "<svg viewBox=\"0 0 190 130\" width=\"150\" height=\"105\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"190\" height=\"130\" fill=\"white\"/><defs><clipPath id=\"clip_top_139833330724992_85427\"><polygon points=\"90.0,40.0 40.0,65.0 90.0,90.0 140.0,65.0\"/></clipPath></defs><polygon points=\"90.0,40.0 40.0,65.0 90.0,90.0 140.0,65.0\" fill=\"#1F3864\" fill-opacity=\"1.0\" stroke=\"#1a1a1a\" stroke-width=\"1.5\"/><g clip-path=\"url(#clip_top_139833330724992_85427)\"><polygon points=\"90.00,51.56 93.55,60.11 102.78,60.85 95.75,66.87 97.90,75.87 90.00,71.05 82.10,75.87 84.25,66.87 77.22,60.85 86.45,60.11\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/></g><text x=\"86\" y=\"69\" font-size=\"13\" font-weight=\"bold\" fill=\"white\" font-family=\"Arial\" stroke=\"#333\" stroke-width=\"0.4\">S</text><defs><clipPath id=\"clip_left_139833330725184_742844\"><polygon points=\"40.0,65.0 90.0,90.0 90.0,140.0 40.0,115.0\"/></clipPath></defs><polygon points=\"40.0,65.0 90.0,90.0 90.0,140.0 40.0,115.0\" fill=\"#C00000\" fill-opacity=\"0.75\" stroke=\"#1a1a1a\" stroke-width=\"1.5\"/><g clip-path=\"url(#clip_left_139833330725184_742844)\"><polygon points=\"65.00,89.06 78.44,102.50 65.00,115.94 51.56,102.50\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/></g><text x=\"61\" y=\"106\" font-size=\"13\" font-weight=\"bold\" fill=\"white\" font-family=\"Arial\" stroke=\"#333\" stroke-width=\"0.4\">S</text><defs><clipPath id=\"clip_right_139833330725952_719467\"><polygon points=\"90.0,90.0 140.0,65.0 140.0,115.0 90.0,140.0\"/></clipPath></defs><polygon points=\"90.0,90.0 140.0,65.0 140.0,115.0 90.0,140.0\" fill=\"#375623\" fill-opacity=\"0.55\" stroke=\"#1a1a1a\" stroke-width=\"1.5\"/><g clip-path=\"url(#clip_right_139833330725952_719467)\"><polygon points=\"115.00,87.04 124.41,102.50 115.00,117.96 105.59,102.50\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/></g><text x=\"111\" y=\"106\" font-size=\"13\" font-weight=\"bold\" fill=\"white\" font-family=\"Arial\" stroke=\"#333\" stroke-width=\"0.4\">D</text></svg>",
+    "<svg viewBox=\"0 0 190 130\" width=\"150\" height=\"105\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"190\" height=\"130\" fill=\"white\"/><defs><clipPath id=\"clip_top_139833330725952_279300\"><polygon points=\"90.0,40.0 40.0,65.0 90.0,90.0 140.0,65.0\"/></clipPath></defs><polygon points=\"90.0,40.0 40.0,65.0 90.0,90.0 140.0,65.0\" fill=\"#BF8F00\" fill-opacity=\"1.0\" stroke=\"#1a1a1a\" stroke-width=\"1.5\"/><g clip-path=\"url(#clip_top_139833330725952_279300)\"><polygon points=\"90.00,51.56 101.64,58.28 101.64,71.72 90.00,78.44 78.36,71.72 78.36,58.28\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/></g><text x=\"86\" y=\"69\" font-size=\"13\" font-weight=\"bold\" fill=\"white\" font-family=\"Arial\" stroke=\"#333\" stroke-width=\"0.4\">H</text><defs><clipPath id=\"clip_left_139833330724736_970859\"><polygon points=\"40.0,65.0 90.0,90.0 90.0,140.0 40.0,115.0\"/></clipPath></defs><polygon points=\"40.0,65.0 90.0,90.0 90.0,140.0 40.0,115.0\" fill=\"#C00000\" fill-opacity=\"0.75\" stroke=\"#1a1a1a\" stroke-width=\"1.5\"/><g clip-path=\"url(#clip_left_139833330724736_970859)\"><polygon points=\"65.00,89.06 78.44,102.50 65.00,115.94 51.56,102.50\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/></g><text x=\"61\" y=\"106\" font-size=\"13\" font-weight=\"bold\" fill=\"white\" font-family=\"Arial\" stroke=\"#333\" stroke-width=\"0.4\">S</text><defs><clipPath id=\"clip_right_139833330724992_757247\"><polygon points=\"90.0,90.0 140.0,65.0 140.0,115.0 90.0,140.0\"/></clipPath></defs><polygon points=\"90.0,90.0 140.0,65.0 140.0,115.0 90.0,140.0\" fill=\"#1F3864\" fill-opacity=\"0.55\" stroke=\"#1a1a1a\" stroke-width=\"1.5\"/><g clip-path=\"url(#clip_right_139833330724992_757247)\"><polygon points=\"115.00,89.06 118.55,97.61 127.78,98.35 120.75,104.37 122.90,113.37 115.00,108.55 107.10,113.37 109.25,104.37 102.22,98.35 111.45,97.61\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/></g><text x=\"111\" y=\"106\" font-size=\"13\" font-weight=\"bold\" fill=\"white\" font-family=\"Arial\" stroke=\"#333\" stroke-width=\"0.4\">S</text></svg>",
+    "<svg viewBox=\"0 0 190 130\" width=\"150\" height=\"105\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"190\" height=\"130\" fill=\"white\"/><defs><clipPath id=\"clip_top_139833330724992_507285\"><polygon points=\"90.0,40.0 40.0,65.0 90.0,90.0 140.0,65.0\"/></clipPath></defs><polygon points=\"90.0,40.0 40.0,65.0 90.0,90.0 140.0,65.0\" fill=\"#1F3864\" fill-opacity=\"1.0\" stroke=\"#1a1a1a\" stroke-width=\"1.5\"/><g clip-path=\"url(#clip_top_139833330724992_507285)\"><polygon points=\"90.00,51.56 93.55,60.11 102.78,60.85 95.75,66.87 97.90,75.87 90.00,71.05 82.10,75.87 84.25,66.87 77.22,60.85 86.45,60.11\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/></g><text x=\"86\" y=\"69\" font-size=\"13\" font-weight=\"bold\" fill=\"white\" font-family=\"Arial\" stroke=\"#333\" stroke-width=\"0.4\">S</text><defs><clipPath id=\"clip_left_139833330725184_475101\"><polygon points=\"40.0,65.0 90.0,90.0 90.0,140.0 40.0,115.0\"/></clipPath></defs><polygon points=\"40.0,65.0 90.0,90.0 90.0,140.0 40.0,115.0\" fill=\"#C00000\" fill-opacity=\"0.75\" stroke=\"#1a1a1a\" stroke-width=\"1.5\"/><g clip-path=\"url(#clip_left_139833330725184_475101)\"><polygon points=\"65.00,89.06 78.44,102.50 65.00,115.94 51.56,102.50\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/></g><text x=\"61\" y=\"106\" font-size=\"13\" font-weight=\"bold\" fill=\"white\" font-family=\"Arial\" stroke=\"#333\" stroke-width=\"0.4\">S</text><defs><clipPath id=\"clip_right_139833330725952_991832\"><polygon points=\"90.0,90.0 140.0,65.0 140.0,115.0 90.0,140.0\"/></clipPath></defs><polygon points=\"90.0,90.0 140.0,65.0 140.0,115.0 90.0,140.0\" fill=\"#BF8F00\" fill-opacity=\"0.55\" stroke=\"#1a1a1a\" stroke-width=\"1.5\"/><g clip-path=\"url(#clip_right_139833330725952_991832)\"><polygon points=\"115.00,89.06 126.64,95.78 126.64,109.22 115.00,115.94 103.36,109.22 103.36,95.78\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/></g><text x=\"111\" y=\"106\" font-size=\"13\" font-weight=\"bold\" fill=\"white\" font-family=\"Arial\" stroke=\"#333\" stroke-width=\"0.4\">H</text></svg>",
+    "<svg viewBox=\"0 0 190 130\" width=\"150\" height=\"105\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"190\" height=\"130\" fill=\"white\"/><defs><clipPath id=\"clip_top_139833330724992_317023\"><polygon points=\"90.0,40.0 40.0,65.0 90.0,90.0 140.0,65.0\"/></clipPath></defs><polygon points=\"90.0,40.0 40.0,65.0 90.0,90.0 140.0,65.0\" fill=\"#1F3864\" fill-opacity=\"1.0\" stroke=\"#1a1a1a\" stroke-width=\"1.5\"/><g clip-path=\"url(#clip_top_139833330724992_317023)\"><polygon points=\"90.00,51.56 93.55,60.11 102.78,60.85 95.75,66.87 97.90,75.87 90.00,71.05 82.10,75.87 84.25,66.87 77.22,60.85 86.45,60.11\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/></g><text x=\"86\" y=\"69\" font-size=\"13\" font-weight=\"bold\" fill=\"white\" font-family=\"Arial\" stroke=\"#333\" stroke-width=\"0.4\">S</text><defs><clipPath id=\"clip_left_139833330725184_387227\"><polygon points=\"40.0,65.0 90.0,90.0 90.0,140.0 40.0,115.0\"/></clipPath></defs><polygon points=\"40.0,65.0 90.0,90.0 90.0,140.0 40.0,115.0\" fill=\"#C00000\" fill-opacity=\"0.75\" stroke=\"#1a1a1a\" stroke-width=\"1.5\"/><g clip-path=\"url(#clip_left_139833330725184_387227)\"><polygon points=\"65.00,89.06 78.44,102.50 65.00,115.94 51.56,102.50\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/></g><text x=\"61\" y=\"106\" font-size=\"13\" font-weight=\"bold\" fill=\"white\" font-family=\"Arial\" stroke=\"#333\" stroke-width=\"0.4\">S</text><defs><clipPath id=\"clip_right_139833330725952_768337\"><polygon points=\"90.0,90.0 140.0,65.0 140.0,115.0 90.0,140.0\"/></clipPath></defs><polygon points=\"90.0,90.0 140.0,65.0 140.0,115.0 90.0,140.0\" fill=\"#BF8F00\" fill-opacity=\"0.55\" stroke=\"#1a1a1a\" stroke-width=\"1.5\"/><g clip-path=\"url(#clip_right_139833330725952_768337)\"><polygon points=\"115.00,87.04 124.41,102.50 115.00,117.96 105.59,102.50\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/></g><text x=\"111\" y=\"106\" font-size=\"13\" font-weight=\"bold\" fill=\"white\" font-family=\"Arial\" stroke=\"#333\" stroke-width=\"0.4\">D</text></svg>",
+    "<svg viewBox=\"0 0 190 130\" width=\"150\" height=\"105\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"190\" height=\"130\" fill=\"white\"/><defs><clipPath id=\"clip_top_139833330725952_130800\"><polygon points=\"90.0,40.0 40.0,65.0 90.0,90.0 140.0,65.0\"/></clipPath></defs><polygon points=\"90.0,40.0 40.0,65.0 90.0,90.0 140.0,65.0\" fill=\"#1F3864\" fill-opacity=\"1.0\" stroke=\"#1a1a1a\" stroke-width=\"1.5\"/><g clip-path=\"url(#clip_top_139833330725952_130800)\"><polygon points=\"90.00,51.56 93.55,60.11 102.78,60.85 95.75,66.87 97.90,75.87 90.00,71.05 82.10,75.87 84.25,66.87 77.22,60.85 86.45,60.11\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/></g><text x=\"86\" y=\"69\" font-size=\"13\" font-weight=\"bold\" fill=\"white\" font-family=\"Arial\" stroke=\"#333\" stroke-width=\"0.4\">S</text><defs><clipPath id=\"clip_left_139833330724736_321861\"><polygon points=\"40.0,65.0 90.0,90.0 90.0,140.0 40.0,115.0\"/></clipPath></defs><polygon points=\"40.0,65.0 90.0,90.0 90.0,140.0 40.0,115.0\" fill=\"#C00000\" fill-opacity=\"0.75\" stroke=\"#1a1a1a\" stroke-width=\"1.5\"/><g clip-path=\"url(#clip_left_139833330724736_321861)\"><polygon points=\"65.00,89.06 77.78,98.35 72.90,113.37 57.10,113.37 52.22,98.35\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/></g><text x=\"61\" y=\"106\" font-size=\"13\" font-weight=\"bold\" fill=\"white\" font-family=\"Arial\" stroke=\"#333\" stroke-width=\"0.4\">P</text><defs><clipPath id=\"clip_right_139833330724992_364871\"><polygon points=\"90.0,90.0 140.0,65.0 140.0,115.0 90.0,140.0\"/></clipPath></defs><polygon points=\"90.0,90.0 140.0,65.0 140.0,115.0 90.0,140.0\" fill=\"#BF8F00\" fill-opacity=\"0.55\" stroke=\"#1a1a1a\" stroke-width=\"1.5\"/><g clip-path=\"url(#clip_right_139833330724992_364871)\"><polygon points=\"115.00,89.06 126.64,95.78 126.64,109.22 115.00,115.94 103.36,109.22 103.36,95.78\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/></g><text x=\"111\" y=\"106\" font-size=\"13\" font-weight=\"bold\" fill=\"white\" font-family=\"Arial\" stroke=\"#333\" stroke-width=\"0.4\">H</text></svg>"
+   ],
+   "correct": 2,
+   "domainAffinity": [
+    "D",
+    "E"
+   ],
+   "media": {
+    "type": "figure",
+    "svg": "<svg viewBox=\"0 0 240 180\" width=\"240\" height=\"180\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"0\" y=\"0\" width=\"240\" height=\"180\" fill=\"#f5f5f5\"/><rect x=\"60\" y=\"0\" width=\"60\" height=\"60\" fill=\"white\" stroke=\"#333\" stroke-width=\"2\"/><polygon points=\"90.00,12.40 94.66,23.59 106.74,24.56 97.53,32.45 100.35,44.24 90.00,37.92 79.65,44.24 82.47,32.45 73.26,24.56 85.34,23.59\" fill=\"#1F3864\" stroke=\"#1F3864\" stroke-width=\"2\"/><text x=\"66\" y=\"16\" font-size=\"11\" fill=\"#999\" font-family=\"Arial\">A</text><rect x=\"0\" y=\"60\" width=\"60\" height=\"60\" fill=\"white\" stroke=\"#333\" stroke-width=\"2\"/><polygon points=\"30.00,72.40 47.60,90.00 30.00,107.60 12.40,90.00\" fill=\"#C00000\" stroke=\"#C00000\" stroke-width=\"2\"/><text x=\"6\" y=\"76\" font-size=\"11\" fill=\"#999\" font-family=\"Arial\">B</text><rect x=\"60\" y=\"60\" width=\"60\" height=\"60\" fill=\"white\" stroke=\"#333\" stroke-width=\"2\"/><polygon points=\"90.00,72.40 105.24,98.80 74.76,98.80\" fill=\"#1F3864\" stroke=\"#1F3864\" stroke-width=\"2\"/><text x=\"66\" y=\"76\" font-size=\"11\" fill=\"#999\" font-family=\"Arial\">C</text><rect x=\"120\" y=\"60\" width=\"60\" height=\"60\" fill=\"white\" stroke=\"#333\" stroke-width=\"2\"/><polygon points=\"150.00,72.40 165.24,81.20 165.24,98.80 150.00,107.60 134.76,98.80 134.76,81.20\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"2\"/><text x=\"126\" y=\"76\" font-size=\"11\" fill=\"#999\" font-family=\"Arial\">D</text><rect x=\"180\" y=\"60\" width=\"60\" height=\"60\" fill=\"white\" stroke=\"#333\" stroke-width=\"2\"/><polygon points=\"210.00,72.40 226.74,84.56 220.35,104.24 199.65,104.24 193.26,84.56\" fill=\"#C00000\" stroke=\"#C00000\" stroke-width=\"2\"/><text x=\"186\" y=\"76\" font-size=\"11\" fill=\"#999\" font-family=\"Arial\">E</text><rect x=\"60\" y=\"120\" width=\"60\" height=\"60\" fill=\"white\" stroke=\"#333\" stroke-width=\"2\"/><polygon points=\"90.00,129.76 102.32,150.00 90.00,170.24 77.68,150.00\" fill=\"#375623\" stroke=\"#375623\" stroke-width=\"2\"/><text x=\"66\" y=\"136\" font-size=\"11\" fill=\"#999\" font-family=\"Arial\">F</text></svg>"
+   },
+   "code": "spatial_rotation",
+   "svgOptions": true
+  },
+  {
+   "id": 29,
+   "section": "Aptitude & Reasoning",
+   "text": "Which comes next? Morning → Afternoon → Evening → ___",
+   "options": [
+    "Night",
+    "Noon",
+    "Morning",
+    "Afternoon"
+   ],
+   "correct": 0,
+   "domainAffinity": [
+    "C",
+    "B"
+   ]
+  },
+  {
+   "id": 30,
+   "section": "Aptitude & Reasoning",
+   "text": "Column 3 is column 1 combined with column 2 by a fixed rule in every row. Which option completes the pattern?",
+   "options": [
+    "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><rect x=\"7.1\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/></svg>",
+    "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><rect x=\"7.1\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/></svg>",
+    "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><rect x=\"7.1\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/></svg>",
+    "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><rect x=\"7.1\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/></svg>",
+    "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><rect x=\"7.1\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/></svg>"
+   ],
+   "correct": 3,
+   "domainAffinity": [
+    "A",
+    "E"
+   ],
+   "media": {
+    "type": "grid",
+    "cells": [
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><rect x=\"7.1\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><rect x=\"7.1\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><rect x=\"7.1\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><rect x=\"7.1\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><rect x=\"7.1\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><rect x=\"7.1\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><rect x=\"7.1\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/></svg>",
+     "<svg viewBox=\"0 0 120 120\" width=\"120\" height=\"120\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"118\" height=\"118\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><rect x=\"7.1\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"7.1\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"42.4\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"7.1\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"42.4\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#F2F2F2\" stroke=\"#DADADA\" stroke-width=\"1.5\" rx=\"2\"/><rect x=\"77.6\" y=\"77.6\" width=\"32.3\" height=\"32.3\" fill=\"#BF8F00\" stroke=\"#BF8F00\" stroke-width=\"1.5\" rx=\"2\"/></svg>",
+     null
+    ],
+    "cols": 3
+   },
+   "code": "pattern_completion",
+   "svgOptions": true
+  },
+  {
+   "id": 31,
+   "section": "MI-Inspired Strength Domains",
+   "text": "I enjoy...",
+   "options": [
+    "Reading and telling stories",
+    "Solving number puzzles",
+    "Drawing or imagining designs",
+    "Making or doing things with my hands",
+    "Talking and working with people"
+   ],
+   "mapping": [
+    "Linguistic",
+    "Logical-Math",
+    "Spatial",
+    "Bodily-Kinesthetic",
+    "Interpersonal"
+   ],
+   "code": "mi"
+  },
+  {
+   "id": 32,
+   "section": "MI-Inspired Strength Domains",
+   "text": "I am usually interested in...",
+   "options": [
+    "Words and languages",
+    "Patterns and numbers",
+    "Pictures, shapes and spaces",
+    "Music and rhythm",
+    "Nature and living things"
+   ],
+   "mapping": [
+    "Linguistic",
+    "Logical-Math",
+    "Spatial",
+    "Musical",
+    "Naturalistic"
+   ],
+   "code": "mi"
+  },
+  {
+   "id": 33,
+   "section": "MI-Inspired Strength Domains",
+   "text": "When explaining something, I like to...",
+   "options": [
+    "Use words and examples",
+    "Show the logic",
+    "Draw a picture",
+    "Demonstrate it",
+    "Discuss it with someone"
+   ],
+   "mapping": [
+    "Linguistic",
+    "Logical-Math",
+    "Spatial",
+    "Bodily-Kinesthetic",
+    "Interpersonal"
+   ],
+   "code": "mi"
+  },
+  {
+   "id": 34,
+   "section": "MI-Inspired Strength Domains",
+   "text": "Which activity feels natural to you?",
+   "options": [
+    "Writing",
+    "Finding patterns",
+    "Visualising how things fit",
+    "Moving, acting or performing",
+    "Understanding how another person feels"
+   ],
+   "mapping": [
+    "Linguistic",
+    "Logical-Math",
+    "Spatial",
+    "Bodily-Kinesthetic",
+    "Interpersonal"
+   ],
+   "code": "mi"
+  },
+  {
+   "id": 35,
+   "section": "MI-Inspired Strength Domains",
+   "text": "You are given a free project. You would like to...",
+   "options": [
+    "Write a story",
+    "Solve a challenging problem",
+    "Design something",
+    "Build or perform something",
+    "Work with a team"
+   ],
+   "mapping": [
+    "Linguistic",
+    "Logical-Math",
+    "Spatial",
+    "Bodily-Kinesthetic",
+    "Interpersonal"
+   ],
+   "code": "mi"
+  },
+  {
+   "id": 36,
+   "section": "MI-Inspired Strength Domains",
+   "text": "Which activity do you notice yourself enjoying?",
+   "options": [
+    "Reading or writing",
+    "Numbers and puzzles",
+    "Drawing/designing",
+    "Music, movement or making",
+    "Plants, animals or nature"
+   ],
+   "mapping": [
+    "Linguistic",
+    "Logical-Math",
+    "Spatial",
+    "Musical",
+    "Naturalistic"
+   ],
+   "code": "mi"
+  },
+  {
+   "id": 37,
+   "section": "MI-Inspired Strength Domains",
+   "text": "When you have an idea, you prefer to...",
+   "options": [
+    "Explain it with words",
+    "Work out how it could work",
+    "Draw what you imagine",
+    "Show someone how to do it",
+    "Talk about it with others"
+   ],
+   "mapping": [
+    "Linguistic",
+    "Logical-Math",
+    "Spatial",
+    "Bodily-Kinesthetic",
+    "Interpersonal"
+   ],
+   "code": "mi"
+  },
+  {
+   "id": 38,
+   "section": "MI-Inspired Strength Domains",
+   "text": "Which description sounds most like you?",
+   "options": [
+    "I enjoy expressing ideas.",
+    "I enjoy figuring things out.",
+    "I enjoy imagining how things look.",
+    "I enjoy doing and creating.",
+    "I enjoy understanding people or nature."
+   ],
+   "mapping": [
+    "Linguistic",
+    "Logical-Math",
+    "Spatial",
+    "Bodily-Kinesthetic",
+    "Intrapersonal"
+   ],
+   "code": "mi"
+  },
+  {
+   "id": 39,
+   "section": "Motivators & Values",
+   "text": "What makes you happiest after completing something difficult?",
+   "options": [
+    "I did it really well",
+    "I learned something new",
+    "I helped someone",
+    "I got to do it my own way",
+    "Others noticed my effort"
+   ],
+   "mapping": [
+    "Achievement",
+    "Curiosity",
+    "Helping",
+    "Freedom",
+    "Leadership"
+   ],
+   "code": "motivators"
+  },
+  {
+   "id": 40,
+   "section": "Motivators & Values",
+   "text": "Which challenge would motivate you most?",
+   "options": [
+    "Becoming very good at something",
+    "Discovering something new",
+    "Helping solve someone's problem",
+    "Creating my own idea",
+    "Being the person who leads"
+   ],
+   "mapping": [
+    "Achievement",
+    "Curiosity",
+    "Helping",
+    "Freedom",
+    "Leadership"
+   ],
+   "code": "motivators"
+  },
+  {
+   "id": 41,
+   "section": "Motivators & Values",
+   "text": "What would make a school project exciting?",
+   "options": [
+    "A chance to improve my skills",
+    "A mystery to investigate",
+    "A chance to help people",
+    "Freedom to choose what I do",
+    "A chance to lead"
+   ],
+   "mapping": [
+    "Achievement",
+    "Curiosity",
+    "Helping",
+    "Freedom",
+    "Leadership"
+   ],
+   "code": "motivators"
+  },
+  {
+   "id": 42,
+   "section": "Motivators & Values",
+   "text": "Which reward would you value most?",
+   "options": [
+    "Feeling proud of my work",
+    "Learning something interesting",
+    "Making someone happy",
+    "Having freedom",
+    "Receiving praise"
+   ],
+   "mapping": [
+    "Achievement",
+    "Curiosity",
+    "Helping",
+    "Freedom",
+    "Leadership"
+   ],
+   "code": "motivators"
+  },
+  {
+   "id": 43,
+   "section": "Motivators & Values",
+   "text": "When something becomes difficult, you are most likely to continue because...",
+   "options": [
+    "You want to improve",
+    "You want to find the answer",
+    "Someone needs your help",
+    "You want to prove your idea",
+    "You want to achieve the goal"
+   ],
+   "mapping": [
+    "Achievement",
+    "Curiosity",
+    "Helping",
+    "Freedom",
+    "Leadership"
+   ],
+   "code": "motivators"
+  },
+  {
+   "id": 44,
+   "section": "Motivators & Values",
+   "text": "Which would make you feel proud?",
+   "options": [
+    "Mastering a difficult skill",
+    "Discovering something new",
+    "Helping another person succeed",
+    "Creating something of your own",
+    "Leading a successful activity"
+   ],
+   "mapping": [
+    "Achievement",
+    "Curiosity",
+    "Helping",
+    "Freedom",
+    "Leadership"
+   ],
+   "code": "motivators"
+  },
+  {
+   "id": 45,
+   "section": "Motivators & Values",
+   "text": "If you could choose a project, you would prefer one that gives you...",
+   "options": [
+    "A chance to become better",
+    "A chance to explore",
+    "A chance to help others",
+    "A chance to work independently",
+    "A chance to take responsibility"
+   ],
+   "mapping": [
+    "Achievement",
+    "Curiosity",
+    "Helping",
+    "Freedom",
+    "Leadership"
+   ],
+   "code": "motivators"
+  },
+  {
+   "id": 46,
+   "section": "Learning Preferences",
+   "text": "Your teacher introduces a difficult topic. You would prefer to...",
+   "options": [
+    "See an example",
+    "Read a simple explanation",
+    "Discuss it",
+    "Try it yourself"
+   ],
+   "mapping": [
+    "Visual",
+    "Reading",
+    "Auditory",
+    "Kinesthetic"
+   ],
+   "code": "learning"
+  },
+  {
+   "id": 47,
+   "section": "Learning Preferences",
+   "text": "You want to learn a new skill. What would you choose first?",
+   "options": [
+    "Watch someone demonstrate it",
+    "Read instructions",
+    "Ask someone to explain it",
+    "Practise it"
+   ],
+   "mapping": [
+    "Visual",
+    "Reading",
+    "Auditory",
+    "Kinesthetic"
+   ],
+   "code": "learning"
+  },
+  {
+   "id": 48,
+   "section": "Learning Preferences",
+   "text": "Before a test, what helps you most?",
+   "options": [
+    "Seeing diagrams/examples",
+    "Reading notes",
+    "Discussing with a friend",
+    "Practising questions"
+   ],
+   "mapping": [
+    "Visual",
+    "Reading",
+    "Auditory",
+    "Kinesthetic"
+   ],
+   "code": "learning"
+  },
+  {
+   "id": 49,
+   "section": "Learning Preferences",
+   "text": "When you cannot understand something, you usually...",
+   "options": [
+    "Look for an example",
+    "Read it again",
+    "Ask someone",
+    "Try it in practice"
+   ],
+   "mapping": [
+    "Visual",
+    "Reading",
+    "Auditory",
+    "Kinesthetic"
+   ],
+   "code": "learning"
+  },
+  {
+   "id": 50,
+   "section": "Learning Preferences",
+   "text": "Which classroom activity do you enjoy most?",
+   "options": [
+    "Demonstrations",
+    "Reading",
+    "Group discussion",
+    "Hands-on activities"
+   ],
+   "mapping": [
+    "Visual",
+    "Reading",
+    "Auditory",
+    "Kinesthetic"
+   ],
+   "code": "learning"
+  },
+  {
+   "id": 51,
+   "section": "Emotional & Social Awareness",
+   "text": "You are upset because something did not go as planned. What do you usually do?",
+   "options": [
+    "Think about why I feel upset",
+    "Talk to someone",
+    "Take some quiet time",
+    "Do something else until I feel better"
+   ],
+   "mapping": [
+    "Self-Awareness",
+    "Relationship-Building",
+    "Self-Awareness",
+    "Social-Management"
+   ],
+   "code": "emotional"
+  },
+  {
+   "id": 52,
+   "section": "Emotional & Social Awareness",
+   "text": "You notice your friend is unusually quiet. What would you do?",
+   "options": [
+    "Ask if they are okay",
+    "Give them some space",
+    "Try to cheer them up",
+    "Tell a trusted adult if I am worried"
+   ],
+   "mapping": [
+    "Empathy",
+    "Self-Awareness",
+    "Empathy",
+    "Social-Management"
+   ],
+   "code": "emotional"
+  },
+  {
+   "id": 53,
+   "section": "Emotional & Social Awareness",
+   "text": "Your group disagrees about an idea. What would you do?",
+   "options": [
+    "Explain my view calmly",
+    "Listen to everyone's ideas",
+    "Help find a solution",
+    "Suggest taking a short break"
+   ],
+   "mapping": [
+    "Social-Management",
+    "Empathy",
+    "Social-Management",
+    "Self-Awareness"
+   ],
+   "code": "emotional"
+  },
+  {
+   "id": 54,
+   "section": "Emotional & Social Awareness",
+   "text": "A teacher tells you that you could improve something. You...",
+   "options": [
+    "Think about the feedback",
+    "Ask what I can do better",
+    "Try the suggestion",
+    "Feel upset at first but try later"
+   ],
+   "mapping": [
+    "Self-Awareness",
+    "Self-Awareness",
+    "Social-Management",
+    "Self-Awareness"
+   ],
+   "code": "emotional"
+  },
+  {
+   "id": 55,
+   "section": "Emotional & Social Awareness",
+   "text": "A classmate is left out of a group activity. You would most likely...",
+   "options": [
+    "Invite them to join",
+    "Ask others to include them",
+    "Talk to them privately",
+    "Tell the teacher if needed"
+   ],
+   "mapping": [
+    "Relationship-Building",
+    "Relationship-Building",
+    "Empathy",
+    "Social-Management"
+   ],
+   "code": "emotional"
+  },
+  {
+   "id": 56,
+   "section": "Creativity & Future Readiness",
+   "text": "You are given some cardboard, paper and tape. What would you most like to do?",
+   "options": [
+    "Copy an example",
+    "Make something useful",
+    "Invent something new",
+    "Try several ideas"
+   ],
+   "mapping": [
+    "Adaptability",
+    "Problem-Solving",
+    "Innovation",
+    "Problem-Solving"
+   ],
+   "code": "creativity"
+  },
+  {
+   "id": 57,
+   "section": "Creativity & Future Readiness",
+   "text": "You cannot solve a puzzle. What would you do next?",
+   "options": [
+    "Ask for help",
+    "Try the same method again",
+    "Try a different approach",
+    "Break the problem into smaller parts"
+   ],
+   "mapping": [
+    "Adaptability",
+    "Adaptability",
+    "Problem-Solving",
+    "Problem-Solving"
+   ],
+   "code": "creativity"
+  },
+  {
+   "id": 58,
+   "section": "Creativity & Future Readiness",
+   "text": "Your school asks students to suggest an idea to improve the school. You would...",
+   "options": [
+    "Suggest something you have seen elsewhere",
+    "Ask friends for ideas",
+    "Think of a completely new idea",
+    "Think about a problem students face and design a solution"
+   ],
+   "mapping": [
+    "Adaptability",
+    "Adaptability",
+    "Innovation",
+    "Problem-Solving"
+   ],
+   "code": "creativity"
+  },
+  {
+   "id": 59,
+   "section": "Creativity & Future Readiness",
+   "text": "You discover a career you have never heard of. What would you do?",
+   "options": [
+    "Learn more about it",
+    "Ask someone about it",
+    "Imagine whether I might enjoy it",
+    "Compare it with other careers"
+   ],
+   "mapping": [
+    "Future-Orientation",
+    "Future-Orientation",
+    "Innovation",
+    "Future-Orientation"
+   ],
+   "code": "creativity"
+  },
+  {
+   "id": 60,
+   "section": "Creativity & Future Readiness",
+   "text": "When you think about your future, which sounds most like you?",
+   "options": [
+    "I already have some ideas",
+    "I want to explore many possibilities",
+    "I know some activities I enjoy",
+    "I am still discovering what suits me"
+   ],
+   "mapping": [
+    "Future-Orientation",
+    "Innovation",
+    "Future-Orientation",
+    "Adaptability"
+   ],
+   "code": "creativity"
+  }
+ ]
 }

@@ -4,6 +4,8 @@ import {
   CATEGORY_META,
   pickSets,
   getSet,
+  optionsForQuestion,
+  resolvedQuestionType,
   stageForCategory,
   type Category,
   type StageKey,
@@ -35,7 +37,8 @@ export async function POST(req: Request) {
         section: q.dimension,
         text: q.question,
         options: q.options.map((opt) => opt.text),
-        media: null,
+        media: q.media ?? null,
+        svgOptions: q.svgOptions ?? false,
       }));
     } else {
       // Class 6 and 7 use JSON files
@@ -78,8 +81,8 @@ export async function POST(req: Request) {
         text: q.text,
         options: q.options || null,
         styles: null,
-        format: null,
-        svgOptions: false,
+        format: q.format ?? null,
+        svgOptions: Boolean(q.svgOptions),
         media: q.media || null,
         optional: false,
       });
@@ -142,21 +145,54 @@ export async function POST(req: Request) {
     order.every((c) => body.chosenSets![c] && getSet(c, stage, body.chosenSets![c]).length > 0);
   const chosenSets = resume ? (body.chosenSets as Record<Category, string>) : pickSets(stage);
 
+  // Class 11 and 12 now collect current stream and desired career on a
+  // dedicated pre-exam screen (NewExam.tsx's "preinfo" phase) instead of as
+  // in-exam questions — a cleaner, class-aware dropdown (the in-exam
+  // subject_fit:0 question was hardcoded to say "Class 11" even for Class 12
+  // students) with a proper domain-grouped career list instead of a flat
+  // one. Skipping them here avoids asking the same two things twice in one
+  // sitting; the score route seeds subject_fit.currentStream and
+  // career_selector.primaryCareer from the pre-exam answers instead (see
+  // its PRE_EXAM_SKIP-adjacent comment).
+  const PRE_EXAM_SKIP = new Set(["subject_fit:0", "career_selector:0"]);
+
+  // The class 11-12 bank (data/class-11-12/questions-corrected.json) uses a
+  // few question-type spellings and an options-field layout the exam engine
+  // doesn't know natively — see resolvedQuestionType() / optionsForQuestion()
+  // in lib/newAssessment/data.ts, shared with the scoring route so both agree
+  // on exactly what a given answer index or value means.
   const sections = order.map((cat) => {
     const raw = getSet(cat, stage, chosenSets[cat]);
     // Only DISPLAY fields go to the client — every answer key (correct, clusters,
     // scores, domains, mainCategory, subCategory, cluster) stays server-side.
-    const questions = raw.map((q, i) => ({
-      id: `${cat}:${i}`,
-      type: q.type as string,
-      text: q.text as string,
-      options: (q.options as string[] | undefined) ?? null,
-      styles: (q.styles as string[] | undefined) ?? null,
-      format: (q.format as string | undefined) ?? null,
-      svgOptions: Boolean(q.svgOptions),
-      media: (q.media as object | null | undefined) ?? null,
-      optional: q.type === "open",
-    }));
+    const questions = raw
+      .map((q, i) => {
+        const resolved = resolvedQuestionType(q.type as string, q.instruction);
+        const options = optionsForQuestion(cat, i, q);
+        // Infinity ("select all that apply") doesn't survive JSON — it
+        // serializes to `null`, which the client's `q.maxSelect ?? 1` then
+        // silently turns back into a cap of 1, locking every option after the
+        // first. The real ceiling for "all" is just the option count.
+        const maxSelect = resolved.maxSelect === Infinity ? (options?.length ?? undefined) : resolved.maxSelect;
+        return {
+          id: `${cat}:${i}`,
+          type: resolved.type,
+          text: q.text as string,
+          options,
+          styles: (q.styles as string[] | undefined) ?? null,
+          format: (q.format as string | undefined) ?? null,
+          svgOptions: Boolean(q.svgOptions),
+          media: (q.media as object | null | undefined) ?? null,
+          optional: resolved.isOpen,
+          maxSelect,
+          // Custom 1-10 slider end-labels (e.g. "Not comfortable at all" /
+          // "Very comfortable") — falls back to the generic default in
+          // NewExam.tsx's QuestionInput when a scale question doesn't set them.
+          scaleLabel_min: (q.scaleLabel_min as string | undefined) ?? null,
+          scaleLabel_max: (q.scaleLabel_max as string | undefined) ?? null,
+        };
+      })
+      .filter((q) => !(stage === "11-12" && PRE_EXAM_SKIP.has(q.id)));
     return {
       category: cat,
       title: CATEGORY_META[cat].title,

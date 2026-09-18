@@ -6,6 +6,9 @@ import dynamic from "next/dynamic";
 import { useAuth, type AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { Logo } from "@/app/Logo";
 import Landing from "@/app/Landing";
+
+
+
 // The exam engine, the payment gate and the completion screen are loaded ON
 // DEMAND. None of them can appear until a visitor has signed in, paid and
 // started — but as static imports their JavaScript was part of the very first
@@ -762,7 +765,16 @@ export default function AssessmentExperience() {
 
     setStarting(true);
     try {
-      const created = await fetchJson<{ id: string }>("/api/leads", {
+      // Record the lead for CRM/analytics, then send them to create a real
+      // account and pay — this form used to hand off straight into a free,
+      // unpaid exam (via Class6Assessment/Class7Assessment or the legacy
+      // session flow) for every class, with no registration and no payment
+      // gate anywhere in that path. /register collects the same milestone +
+      // stage + details in its own wizard and, on success, lands on
+      // /?begin=1 — the existing signed-in flow that already puts a real
+      // PaymentGate (with coupon support) between account creation and the
+      // exam. One payment path, reused, instead of a second unpaid one.
+      await fetchJson<{ id: string }>("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -777,10 +789,8 @@ export default function AssessmentExperience() {
           dreamCareer: lead.dreamCareer,
           ...utm,
         }),
-      });
-      setLeadId(created.id);
-      await selectJourney(lead.journeyCode);
-      await startAssessment(lead.journeyCode);
+      }).catch(() => {});
+      router.push("/register");
     } catch (error) {
       setErrorMessage(
         error instanceof Error ? error.message : "Unable to start the assessment."
@@ -930,42 +940,18 @@ export default function AssessmentExperience() {
 
   // Start the assessment directly from the signed-in profile (category ->
   // journey), skipping the extra details step. Falls back to details if the
-  // profile has no journey yet.
+  // profile has no journey yet. Not currently wired to any button, but kept
+  // correct rather than dead-and-dangerous: it used to skip straight to
+  // selectJourney/startAssessment with no payment check at all, which for a
+  // signed-in-but-unpaid user meant a free exam. Routes through /?begin=1
+  // instead, the same entry point /account uses, which already checks
+  // profile.paid and shows PaymentGate before NewExam.
   async function startFromProfile() {
     if (!profile?.journeyCode) {
       setView("details");
       return;
     }
-    setErrorMessage(null);
-    setLead((l) => ({
-      ...l,
-      name: profile.name,
-      email: profile.email,
-      phone: profile.phone,
-      journeyCode: profile.journeyCode,
-      dreamCareer: profile.desiredCareer || "",
-    }));
-    try {
-      const created = await fetchJson<{ id: string }>("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: profile.name,
-          email: profile.email,
-          phone: profile.phone,
-          journeyCode: profile.journeyCode,
-          dreamCareer: profile.desiredCareer,
-          stage: profile.clarity,
-          ...utm,
-        }),
-      });
-      setLeadId(created.id);
-      await selectJourney(profile.journeyCode);
-      await startAssessment(profile.journeyCode);
-    } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : "Unable to start the assessment.");
-      setView("details");
-    }
+    router.push("/?begin=1");
   }
 
   // Every "Start" CTA behaves the same: not signed in -> register; already

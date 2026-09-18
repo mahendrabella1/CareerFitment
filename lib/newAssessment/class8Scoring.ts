@@ -12,6 +12,7 @@
  * - Q51-Q55: Emotional & Social Awareness (4 EI components)
  * - Q56-Q60: Creativity & Future Readiness (4 indicators)
  */
+import { DOMAINS, DOMAIN_RIASEC, DOMAIN_MI } from "@/lib/report/knowledge";
 
 export interface Class8Response {
   studentName: string;
@@ -42,6 +43,15 @@ export interface PersonalityProfile {
   tf: string; // T or F
   jp: string; // J or P
   type: string; // e.g., INTJ
+  // 0-100: how consistently the student picked one side of each axis, not
+  // "how good" a personality — used as the dimension's scorecard/radar
+  // score, since the four letters alone aren't a number.
+  score: number;
+  // 0-10 per axis, midpoint 5: >=5 leans toward the first letter shown
+  // for that axis (E/S/T/J), below 5 leans toward the second (I/N/F/P).
+  // Powers the compass visual, which needs a position per axis, not just
+  // which letter won.
+  axisScores: { ei: number; sn: number; tf: number; jp: number };
 }
 
 // ============================================================================
@@ -143,7 +153,7 @@ const APTITUDE_CORRECT_ANSWERS: Record<number, number> = {
   26: 2, // "17"
   27: 1, // "0.4"
   28: 1, // "Some A may be C"
-  29: 0, // "Hexagon"
+  29: 3, // mirror-image figure (option D)
   30: 1, // "6"
 };
 
@@ -338,27 +348,19 @@ export interface DomainAffinity {
   reasoning: string[];
 }
 
-// Career domain mapping
-const CAREER_DOMAINS: Record<string, string> = {
-  A: "Core Engineering & Infrastructure",
-  B: "Information Technology",
-  C: "Health Science",
-  D: "Arts, Media & Design",
-  E: "Business & Marketing",
-  F: "Law, Social Services & Public Policy",
-  G: "Entrepreneurship & Innovation",
-  H: "Agriculture & Environmental Science",
-};
-
-// RIASEC to Domain mapping
-const RIASEC_TO_DOMAINS: Record<string, string[]> = {
-  R: ["A", "H"],
-  I: ["B", "C", "H"],
-  A: ["D", "G"],
-  S: ["C", "E", "F"],
-  E: ["E", "G"],
-  C: ["B", "E", "F"],
-};
+// Domain names/images/roles come from the shared DOMAINS catalogue in
+// lib/report/knowledge.ts (imported above), not a local copy — this used to
+// keep its own CAREER_DOMAINS table labelling G "Entrepreneurship &
+// Innovation" and H "Agriculture & Environmental Science", while the domain
+// card the report actually renders (FullReport.tsx, via lib/report/
+// adaptClass678.ts) reads DOMAINS[d.domainCode] directly for the image/
+// roles/skills/salary, where G/H are really "Science, Nature & Agriculture"
+// and "Sports, Hospitality & Lifestyle" — a student could see a card titled
+// "Entrepreneurship & Innovation" with a farming photo and agricultural
+// roles underneath it. DOMAIN_RIASEC is shared for the same reason: this
+// file's own RIASEC_TO_DOMAINS was built against those same wrong G/H
+// meanings (e.g. routing Enterprising interest to "G" on the assumption G
+// meant entrepreneurship).
 
 // ============================================================================
 // MAIN SCORING FUNCTION
@@ -497,12 +499,34 @@ function scorePersonality(responses: Class8Response): PersonalityProfile {
     (tf >= 0 ? "T" : "F") +
     (jp >= 0 ? "J" : "P");
 
+  // Clarity: how far each axis leans from an even split, averaged across
+  // all four (ei/jp have 3 questions so max |3|, sn/tf have 2 so max |2|).
+  const clarity = (Math.abs(ei) / 3 + Math.abs(sn) / 2 + Math.abs(tf) / 2 + Math.abs(jp) / 3) / 4;
+  // sn/tf have only 2 questions deciding them, ei/jp only 3 — so answering
+  // both/all the same way (the common case) always hit the max magnitude,
+  // and the old formula read that as a literal 10.0/10 (100%). Two
+  // consistent answers isn't certainty; shrink toward the midpoint by
+  // roughly one question's worth of doubt before mapping to 0-10.
+  const toAxis10 = (tally: number, maxMag: number) => {
+    const winCount = (maxMag + tally) / 2;
+    const prior = 1;
+    const share = (winCount + prior / 2) / (maxMag + prior);
+    return Math.round(share * 10 * 10) / 10;
+  };
+
   return {
     ei: ei >= 0 ? "E" : "I",
     sn: sn >= 0 ? "S" : "N",
     tf: tf >= 0 ? "T" : "F",
     jp: jp >= 0 ? "J" : "P",
     type,
+    score: Math.round(clarity * 100),
+    axisScores: {
+      ei: toAxis10(ei, 3),
+      sn: toAxis10(sn, 2),
+      tf: toAxis10(tf, 2),
+      jp: toAxis10(jp, 3),
+    },
   };
 }
 
@@ -807,81 +831,101 @@ function scoreCreativity(responses: Class8Response): CreativityIndicator[] {
     .sort((a, b) => b.score - a.score);
 }
 
+// Which of class8's own 4 aptitude sub-scores reinforce each domain — kept
+// local since these field names (numericReasoning/logicalDeduction/
+// patternRecognition/spatialReasoning) are specific to this file's own
+// AptitudeProfile shape, not shared with the other classes' engines. Every
+// domain gets exactly 2, matching DOMAIN_RIASEC/DOMAIN_MI's own
+// coverage-evenness principle in lib/report/knowledge.ts.
+// Rebuilt for the 15-domain catalogue (lib/report/knowledge.ts) — every
+// domain gets exactly 2 fields; with only 4 real fields to draw from across
+// 15 domains, some repetition is unavoidable, but every pairing is a real
+// fit, not padding.
+const DOMAIN_APTITUDE_C8: Record<string, ("numericReasoning" | "logicalDeduction" | "patternRecognition" | "spatialReasoning")[]> = {
+  A: ["numericReasoning", "logicalDeduction"], B: ["numericReasoning", "logicalDeduction"],
+  C: ["logicalDeduction", "spatialReasoning"], D: ["logicalDeduction", "patternRecognition"],
+  E: ["logicalDeduction", "patternRecognition"], F: ["numericReasoning", "patternRecognition"],
+  G: ["logicalDeduction", "numericReasoning"], H: ["spatialReasoning", "patternRecognition"],
+  I: ["patternRecognition", "logicalDeduction"], J: ["logicalDeduction", "patternRecognition"],
+  K: ["logicalDeduction", "patternRecognition"], L: ["spatialReasoning", "patternRecognition"],
+  M: ["spatialReasoning", "logicalDeduction"], N: ["numericReasoning", "logicalDeduction"],
+  O: ["spatialReasoning", "patternRecognition"],
+};
+// Which of class8's own 7 motivator tags (MOTIVATOR_TYPES) reinforce each
+// domain — kept local for the same reason. Correctly reflects each new
+// domain's real meaning rather than the old (wrong) 8-domain framing.
+const DOMAIN_MOTIVATOR_C8: Record<string, string[]> = {
+  A: ["Achievement", "Leadership"], B: ["Achievement", "Stability"],
+  C: ["Achievement", "Stability"], D: ["Curiosity", "Innovation"],
+  E: ["Helping", "Stability"], F: ["Curiosity", "Helping"],
+  G: ["Curiosity", "Innovation"], H: ["Freedom", "Innovation"],
+  I: ["Freedom", "Curiosity"], J: ["Helping", "Leadership"],
+  K: ["Helping", "Curiosity"], L: ["Freedom", "Leadership"],
+  M: ["Stability", "Leadership"], N: ["Curiosity", "Helping"],
+  O: ["Achievement", "Freedom"],
+};
+
+// A weighted mean over whichever evidence exists for a domain — same
+// "average only what was actually measured" approach, and the same
+// interest/aptitude/strengths/values weight split, as domainFit() in
+// lib/report/knowledge.ts (Class 9-10) and the equivalent function in
+// scoring11_12.ts / class6Scoring.ts, so every class's report scores
+// domains the same way instead of several ad-hoc formulas quietly
+// disagreeing. Replaces a flat point-additive scheme that only fed 2 of the
+// 4 aptitude sub-scores into 2 of the 8 domains and left the rest of
+// aptitude's declared 10% weight unused for every other domain.
 function calculateDomainAffinities(data: any): DomainAffinity[] {
-  const affinities: Record<string, number> = {};
-  const reasoning: Record<string, string[]> = {};
+  const riasecByCode: Record<string, number> = {};
+  data.riasec.forEach((r: RIASECScore) => { riasecByCode[r.code] = r.score; });
+  const strengthByDomain: Record<string, number> = {};
+  data.strengths.forEach((s: StrengthDomain) => { strengthByDomain[s.domain] = s.score; });
+  const motivatorByName: Record<string, number> = {};
+  data.motivators.forEach((m: MotivatorScore) => { motivatorByName[m.motivator] = m.score; });
+  const apt = data.aptitude as AptitudeProfile;
 
-  for (const domain of Object.keys(CAREER_DOMAINS)) {
-    affinities[domain] = 0;
-    reasoning[domain] = [];
-  }
+  const result: DomainAffinity[] = Object.keys(DOMAINS).map((domain) => {
+    const reasoning: string[] = [];
+    let num = 0, den = 0;
 
-  for (const r of data.riasec) {
-    const rScore = r as RIASECScore;
-    const domainList = RIASEC_TO_DOMAINS[rScore.code] || [];
-    const weight = (40 * (5 - data.riasec.indexOf(r))) / 15;
-    for (const domain of domainList) {
-      affinities[domain] += (rScore.score / 100) * weight;
-      reasoning[domain].push(`RIASEC: ${rScore.name} (${rScore.score}%)`);
+    const riasecCodes = DOMAIN_RIASEC[domain] || [];
+    const riasecScores = riasecCodes.map((c) => riasecByCode[c]).filter((v): v is number => v != null);
+    if (riasecScores.length) {
+      const avg = riasecScores.reduce((s, v) => s + v, 0) / riasecScores.length;
+      num += 0.42 * avg; den += 0.42;
+      reasoning.push(`Career interest: ${riasecCodes.join(", ")}`);
     }
-  }
 
-  const strengths = data.strengths.slice(0, 3);
-  for (let idx = 0; idx < strengths.length; idx++) {
-    const s = strengths[idx] as StrengthDomain;
-    const weight = (30 * (3 - idx)) / 6;
-    const domainMaps: Record<string, string[]> = {
-      "Logical-Mathematical": ["B"],
-      Spatial: ["D", "A"],
-      Linguistic: ["D", "F"],
-      Interpersonal: ["C", "E", "F"],
-      Intrapersonal: ["G"],
-      "Bodily-Kinesthetic": ["A", "H"],
-      Musical: ["D"],
-      Naturalistic: ["H", "C"],
-    };
-    const domains = domainMaps[s.domain] || [];
-    for (const domain of domains) {
-      affinities[domain] += (s.score / 100) * (weight / domains.length);
-      reasoning[domain].push(`Strength: ${s.domain}`);
+    const aptFields = DOMAIN_APTITUDE_C8[domain] || [];
+    const aptScores = aptFields.map((f) => apt[f]?.score).filter((v): v is number => v != null);
+    if (aptScores.length) {
+      const avg = aptScores.reduce((s, v) => s + v, 0) / aptScores.length;
+      num += 0.26 * avg; den += 0.26;
+      reasoning.push(`Aptitude: ${aptFields.join(", ")}`);
     }
-  }
 
-  const motivators = data.motivators.slice(0, 3);
-  for (let idx = 0; idx < motivators.length; idx++) {
-    const m = motivators[idx] as MotivatorScore;
-    const weight = (20 * (3 - idx)) / 6;
-    const motivatorMaps: Record<string, string[]> = {
-      Leadership: ["E", "G"],
-      Helping: ["C", "F"],
-      Achievement: ["E", "G"],
-      Curiosity: ["B"],
-      Innovation: ["G", "D"],
-      Freedom: ["G"],
-      Stability: ["B", "E", "F"],
-    };
-    const domains = motivatorMaps[m.motivator] || [];
-    for (const domain of domains) {
-      affinities[domain] += (m.score / 100) * (weight / domains.length);
-      reasoning[domain].push(`Motivator: ${m.motivator}`);
+    const miDomains = DOMAIN_MI[domain] || [];
+    const miScores = miDomains.map((m) => strengthByDomain[m]).filter((v): v is number => v != null);
+    if (miScores.length) {
+      const avg = miScores.reduce((s, v) => s + v, 0) / miScores.length;
+      num += 0.22 * avg; den += 0.22;
+      reasoning.push(`Strengths: ${miDomains.join(", ")}`);
     }
-  }
 
-  const aptWeight = 10;
-  affinities.B += (data.aptitude.overallScore / 100) * (aptWeight / 2);
-  affinities.A += (data.aptitude.numericReasoning.score / 100) * (aptWeight / 2);
-  reasoning.B.push(`Aptitude: Strong technical skills`);
-  reasoning.A.push(`Aptitude: Engineering/Math capability`);
+    const motivatorTags = DOMAIN_MOTIVATOR_C8[domain] || [];
+    const motivatorScores = motivatorTags.map((m) => motivatorByName[m]).filter((v): v is number => v != null);
+    if (motivatorScores.length) {
+      const avg = motivatorScores.reduce((s, v) => s + v, 0) / motivatorScores.length;
+      num += 0.10 * avg; den += 0.10;
+      reasoning.push(`Motivators: ${motivatorTags.join(", ")}`);
+    }
 
-  const result: DomainAffinity[] = [];
-  for (const [domain, score] of Object.entries(affinities)) {
-    result.push({
-      domain: CAREER_DOMAINS[domain],
+    return {
+      domain: DOMAINS[domain]?.name ?? domain,
       domainCode: domain,
-      affinity: Math.min(100, Math.round(score)),
-      reasoning: reasoning[domain].slice(0, 3),
-    });
-  }
+      affinity: den > 0 ? Math.round(num / den) : 0,
+      reasoning,
+    };
+  });
 
   result.sort((a, b) => b.affinity - a.affinity);
   return result;

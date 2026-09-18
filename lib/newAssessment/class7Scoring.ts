@@ -4,6 +4,8 @@
  * No deterministic labeling - exploratory only
  * Identical structure to Class 6 - same assessment dimensions for continuity
  */
+import questionBank from "@/data/class7-assessment-questions.json";
+import { DOMAINS, DOMAIN_RIASEC, DOMAIN_MI } from "@/lib/report/knowledge";
 
 export interface Class7Response {
   studentName: string;
@@ -18,6 +20,15 @@ export interface Class7ScoreOutput {
     tf: string; // T or F
     jp: string; // J or P
     type: string; // e.g., INTJ
+    // 0-100: how consistently the student picked one side of each axis,
+    // not "how good" a personality — used as the dimension's scorecard/
+    // radar score, since the four letters alone aren't a number.
+    score: number;
+    // 0-10 per axis, midpoint 5: >=5 leans toward the first letter shown
+    // for that axis (E/S/T/J), below 5 leans toward the second (I/N/F/P).
+    // Powers the compass visual, which needs a position per axis, not
+    // just which letter won.
+    axisScores: { ei: number; sn: number; tf: number; jp: number };
   };
   riasecScores: Array<{
     letter: string;
@@ -44,6 +55,12 @@ export interface Class7ScoreOutput {
     indicator: string;
     score: number;
   }>;
+  aptitudeProfile: {
+    correct: number;
+    total: number;
+    score: number; // 0-100
+    level: "Emerging" | "Developing" | "Strong" | "Advanced";
+  };
   domainAffinities: Array<{
     domain: string;
     domainName: string;
@@ -74,26 +91,17 @@ const MI_DOMAINS = [
   "Naturalistic (Nature, Living Things)"
 ];
 
-const DOMAIN_LABELS: Record<string, string> = {
-  A: "Core Engineering & Infrastructure",
-  B: "Information Technology",
-  C: "Health Science",
-  D: "Arts, Media & Design",
-  E: "Business & Marketing",
-  F: "Law, Social Services & Public Policy",
-  G: "Entrepreneurship & Innovation",
-  H: "Agriculture & Environmental Science"
-};
-
-// Map RIASEC codes to domains (simplified)
-const RIASEC_TO_DOMAINS: Record<string, string[]> = {
-  R: ["A", "H"],
-  I: ["B", "C", "H"],
-  A: ["D", "G"],
-  S: ["C", "E", "F"],
-  E: ["E", "G"],
-  C: ["B", "E", "F"]
-};
+// Domain names/images/roles all come from the shared DOMAINS catalogue in
+// lib/report/knowledge.ts — this used to keep its own local copy with G and
+// H labelled "Entrepreneurship & Innovation" and "Agriculture &
+// Environmental Science", while the domain CARD the report actually shows
+// (Class7Report.tsx reads DOMAINS[d.domain] directly for the image/roles/
+// skills/salary) used the real "Science, Nature & Agriculture" and "Sports,
+// Hospitality & Lifestyle". A student could see a card titled
+// "Entrepreneurship & Innovation" with a farming photo and agricultural
+// roles underneath it. DOMAIN_RIASEC is shared for the same reason — it
+// used to be a Class 7-only reverse table (RIASEC_TO_DOMAINS) built against
+// those same wrong G/H meanings.
 
 export function scoreClass7Assessment(responses: Class7Response): Class7ScoreOutput {
   // Score Personality (MBTI-style)
@@ -117,6 +125,9 @@ export function scoreClass7Assessment(responses: Class7Response): Class7ScoreOut
   // Score Creativity & Future Readiness
   const creativity = scoreCreativity(responses);
 
+  // Score Aptitude & Reasoning (Q21-30)
+  const { aptitudeProfile, domainHits: aptitudeDomainHits, domainTotals: aptitudeDomainTotals } = scoreAptitude(responses);
+
   // Calculate domain affinities
   const domainAffinities = calculateDomainAffinities({
     personality: personalityProfile,
@@ -125,7 +136,9 @@ export function scoreClass7Assessment(responses: Class7Response): Class7ScoreOut
     motivators,
     learning: learningStyle,
     emotional: emotionalAwareness,
-    creativity
+    creativity,
+    aptitudeDomainHits,
+    aptitudeDomainTotals
   });
 
   // Generate recommendations
@@ -148,10 +161,47 @@ export function scoreClass7Assessment(responses: Class7Response): Class7ScoreOut
     learningStyle,
     emotionalAwareness,
     creativity,
+    aptitudeProfile,
     domainAffinities,
     recommendedExploration,
     summary
   };
+}
+
+// Q21-30. The correct answer and domain tags live on the question bank itself
+// (data/class7-assessment-questions.json), not duplicated here, so fixing a
+// question there can't silently desync the scorer from the exam.
+function scoreAptitude(responses: Class7Response): {
+  aptitudeProfile: Class7ScoreOutput["aptitudeProfile"];
+  domainHits: Record<string, number>;
+  domainTotals: Record<string, number>;
+} {
+  const aptitudeQs = ((questionBank as any).questions || []).filter(
+    (q: any) => q.id >= 21 && q.id <= 30
+  );
+  let correct = 0;
+  const domainHits: Record<string, number> = {};
+  // How many aptitude questions were tagged with each domain at all —
+  // without this, calculateDomainAffinities could only see hits (a raw
+  // count of correct answers), which rewarded a domain just because OTHER
+  // domains happened to get fewer correct answers, not because this
+  // domain's own questions were actually answered well.
+  const domainTotals: Record<string, number> = {};
+  for (const q of aptitudeQs) {
+    for (const d of q.domainAffinity || []) {
+      domainTotals[d] = (domainTotals[d] || 0) + 1;
+    }
+    if (responses.responses[q.id] === q.correct) {
+      correct++;
+      for (const d of q.domainAffinity || []) {
+        domainHits[d] = (domainHits[d] || 0) + 1;
+      }
+    }
+  }
+  const total = aptitudeQs.length || 10;
+  const score = Math.round((correct / total) * 100);
+  const level = score < 40 ? "Emerging" : score < 65 ? "Developing" : score < 85 ? "Strong" : "Advanced";
+  return { aptitudeProfile: { correct, total, score, level }, domainHits, domainTotals };
 }
 
 function scorePersonality(responses: Class7Response): Class7ScoreOutput["personalityProfile"] {
@@ -179,12 +229,35 @@ function scorePersonality(responses: Class7Response): Class7ScoreOutput["persona
     (tf >= 0 ? "T" : "F") +
     (jp >= 0 ? "J" : "P");
 
+  // Clarity: how far each axis leans from an even split, averaged across
+  // all four (ei/jp have 3 questions so max |3|, sn/tf have 2 so max |2|).
+  const clarity = (Math.abs(ei) / 3 + Math.abs(sn) / 2 + Math.abs(tf) / 2 + Math.abs(jp) / 3) / 4;
+  const score = Math.round(clarity * 100);
+  // sn/tf have only 2 questions deciding them, ei/jp only 3 — so answering
+  // both/all the same way (the common case) always hit the max magnitude,
+  // and the old formula read that as a literal 10.0/10 (100%). Two
+  // consistent answers isn't certainty; shrink toward the midpoint by
+  // roughly one question's worth of doubt before mapping to 0-10.
+  const toAxis10 = (tally: number, maxMag: number) => {
+    const winCount = (maxMag + tally) / 2;
+    const prior = 1;
+    const share = (winCount + prior / 2) / (maxMag + prior);
+    return Math.round(share * 10 * 10) / 10;
+  };
+
   return {
     ei: ei >= 0 ? "E" : "I",
     sn: sn >= 0 ? "S" : "N",
     tf: tf >= 0 ? "T" : "F",
     jp: jp >= 0 ? "J" : "P",
-    type
+    type,
+    score,
+    axisScores: {
+      ei: toAxis10(ei, 3),
+      sn: toAxis10(sn, 2),
+      tf: toAxis10(tf, 2),
+      jp: toAxis10(jp, 3),
+    },
   };
 }
 
@@ -211,35 +284,47 @@ function scoreRIASEC(responses: Class7Response): Class7ScoreOutput["riasecScores
     .sort((a, b) => b.score - a.score);
 }
 
+// Q31-38's 5 options each lean toward a different MI domain, but not
+// always the SAME one in the same position — Q32/Q36 use Musical/
+// Naturalistic in their last two slots where every other question uses
+// Bodily-Kinesthetic/Interpersonal (matching data/class7-assessment-questions.json's
+// own Q32/Q36 wording) — a single flat mapping silently mis-scored those
+// two, and Q37/Q38 were never scored at all. Intrapersonal never appears as
+// a distinct option across Q31-38 — a real limit of this bank's 5-option
+// format, not something to fabricate a slot for.
+const STRENGTHS_MAPPING: Record<number, string[]> = {
+  31: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
+  32: ["Linguistic", "Logical-Mathematical", "Spatial", "Musical", "Naturalistic"],
+  33: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
+  34: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
+  35: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
+  36: ["Linguistic", "Logical-Mathematical", "Spatial", "Musical", "Naturalistic"],
+  37: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
+  38: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
+};
+
 function scoreStrengths(responses: Class7Response): Class7ScoreOutput["strengthDomains"] {
   const scores: Record<string, number> = {};
+  const of: Record<string, number> = {};
   MI_DOMAINS.forEach(d => scores[d] = 0);
 
-  // Questions 31-38: MI Strengths
   for (let q = 31; q <= 38; q++) {
     const optionIndex = responses.responses[q];
-    const mappings: Record<number, string[]> = {
-      0: ["Linguistic", "Linguistic", "Linguistic", "Writing"],
-      1: ["Logical-Mathematical", "Logical-Mathematical", "Logical-Mathematical", "Finding patterns"],
-      2: ["Spatial", "Spatial", "Drawing a picture", "Visualising how things fit"],
-      3: ["Bodily-Kinesthetic", "Music", "Demonstrate it", "Moving, acting or performing"],
-      4: ["Interpersonal", "Naturalistic", "Discuss it with someone", "Understanding how another person feels"]
-    };
-    // Simplified: count as equal for now
-    if (q <= 36) {
-      const mapping = [
-        "Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"
-      ];
-      if (optionIndex < mapping.length) {
-        scores[mapping[optionIndex]] = (scores[mapping[optionIndex]] || 0) + 1;
-      }
+    const mapping = STRENGTHS_MAPPING[q];
+    mapping.forEach((domain) => { of[domain] = (of[domain] || 0) + 1; });
+    if (optionIndex >= 0 && optionIndex < mapping.length) {
+      const domain = mapping[optionIndex];
+      scores[domain] = (scores[domain] || 0) + 1;
     }
   }
 
+  // Percentage of the times a domain was actually OFFERED, not a flat /8 —
+  // Musical/Naturalistic only appear in 2 of the 8 questions, so a flat /8
+  // would cap them at 25% even from a perfect run.
   return Object.entries(scores)
     .map(([name, score]) => ({
       name,
-      score: Math.round((score / 8) * 100)
+      score: of[name] ? Math.round((score / of[name]) * 100) : 0,
     }))
     .filter(d => d.score > 0)
     .sort((a, b) => b.score - a.score);
@@ -354,82 +439,88 @@ function scoreCreativity(responses: Class7Response): Class7ScoreOutput["creativi
     .sort((a, b) => b.score - a.score);
 }
 
+// Which of the 5 motivator tags (see scoreMotivators) reinforce each
+// domain — kept local to Class 7 since its 5-tag vocabulary (Achievement/
+// Curiosity/Helping/Freedom/Leadership) isn't shared with Class 11-12's
+// 11-tag one. Every domain gets exactly 2, matching this file's own
+// DOMAIN_RIASEC/DOMAIN_MI coverage-evenness principle (lib/report/
+// knowledge.ts) — a domain with only one signal is far noisier under real
+// (imperfectly consistent) answers than one averaging two.
+const DOMAIN_MOTIVATOR: Record<string, string[]> = {
+  A: ["Achievement", "Leadership"], B: ["Achievement", "Freedom"],
+  C: ["Achievement", "Freedom"], D: ["Curiosity", "Achievement"],
+  E: ["Helping", "Curiosity"], F: ["Curiosity", "Helping"],
+  G: ["Curiosity", "Achievement"], H: ["Freedom", "Curiosity"],
+  I: ["Freedom", "Curiosity"], J: ["Helping", "Leadership"],
+  K: ["Helping", "Curiosity"], L: ["Freedom", "Leadership"],
+  M: ["Leadership", "Achievement"], N: ["Curiosity", "Helping"],
+  O: ["Achievement", "Freedom"],
+};
+
+// A weighted mean over whichever evidence exists for a domain — same
+// "average only what was actually measured" approach, and the same
+// interest/aptitude/strengths/values weight split, as domainFit() in
+// lib/report/knowledge.ts (Class 9-10) and the equivalent function in
+// scoring11_12.ts / class6Scoring.ts, so every class's report scores
+// domains the same way instead of several ad-hoc formulas quietly
+// disagreeing. Replaces a flat point-additive scheme whose 5 factors didn't
+// sum to a consistent total and could push a domain's raw score past 100
+// before the final clamp — a number that read as confidence the underlying
+// data never actually supported.
 function calculateDomainAffinities(data: any): Class7ScoreOutput["domainAffinities"] {
-  const affinities: Record<string, number> = {
-    A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0, H: 0
-  };
-  const reasoning: Record<string, string[]> = {
-    A: [], B: [], C: [], D: [], E: [], F: [], G: [], H: []
-  };
+  const riasecByLetter: Record<string, number> = {};
+  data.riasec.forEach((r: any) => { riasecByLetter[r.letter] = r.score; });
+  const strengthByDomain: Record<string, number> = {};
+  data.strengths.forEach((s: any) => { strengthByDomain[s.name] = s.score; });
+  const motivatorByName: Record<string, number> = {};
+  data.motivators.forEach((m: any) => { motivatorByName[m.name] = m.score; });
+  const hits = data.aptitudeDomainHits as Record<string, number>;
+  const totals = data.aptitudeDomainTotals as Record<string, number>;
 
-  // Factor 1: RIASEC (35%)
-  data.riasec.forEach((r: any, idx: number) => {
-    const domainList = RIASEC_TO_DOMAINS[r.letter] || [];
-    const weight = (35 * (5 - idx)) / 15; // Higher ranks get more weight
-    domainList.forEach((d: string) => {
-      affinities[d] += (r.score / 100) * weight;
-      reasoning[d].push(`RIASEC: ${r.letter} (${r.name.split("(")[0].trim()})`);
-    });
-  });
+  const result = Object.keys(DOMAINS).map((domain) => {
+    const reasoning: string[] = [];
+    let num = 0, den = 0;
 
-  // Factor 2: Aptitude (20%)
-  // For Class 6, we use strengths as proxy for aptitude potential
-  data.strengths.forEach((s: any, idx: number) => {
-    const weight = (20 * (4 - idx)) / 10;
-    if (s.name.includes("Logical")) {
-      affinities.B += (s.score / 100) * weight;
-      affinities.A += (s.score / 100) * weight * 0.5;
-      reasoning.B.push(`Strength: Logical-Mathematical`);
+    const riasecCodes = DOMAIN_RIASEC[domain] || [];
+    const riasecScores = riasecCodes.map((c) => riasecByLetter[c]).filter((v): v is number => v != null);
+    if (riasecScores.length) {
+      const avg = riasecScores.reduce((s, v) => s + v, 0) / riasecScores.length;
+      num += 0.42 * avg; den += 0.42;
+      reasoning.push(`Career interest: ${riasecCodes.join(", ")}`);
     }
-    if (s.name.includes("Spatial")) {
-      affinities.D += (s.score / 100) * weight;
-      affinities.A += (s.score / 100) * weight * 0.3;
-      reasoning.D.push(`Strength: Spatial`);
-    }
-  });
 
-  // Factor 3: Motivators (15%)
-  data.motivators.forEach((m: any, idx: number) => {
-    const weight = (15 * (3 - idx)) / 6;
-    if (m.name === "Helping") {
-      affinities.C += (m.score / 100) * weight;
-      affinities.F += (m.score / 100) * weight * 0.5;
-      reasoning.C.push(`Motivator: Helping others`);
+    const aptTotal = totals[domain] || 0;
+    if (aptTotal > 0) {
+      const aptScore = ((hits[domain] || 0) / aptTotal) * 100;
+      num += 0.26 * aptScore; den += 0.26;
+      reasoning.push(`Aptitude: reasoning questions in this area`);
     }
-    if (m.name === "Curiosity") {
-      affinities.B += (m.score / 100) * weight;
-      affinities.H += (m.score / 100) * weight * 0.5;
-      reasoning.B.push(`Motivator: Discovery & exploration`);
-    }
-    if (m.name === "Leadership" || m.name === "Achievement") {
-      affinities.E += (m.score / 100) * weight;
-      affinities.G += (m.score / 100) * weight * 0.5;
-      reasoning.E.push(`Motivator: ${m.name}`);
-    }
-  });
 
-  // Factor 4: Personality & Emotional (10%)
-  // Extraverts lean toward people-facing domains
-  if (data.personality.ei === "E") {
-    affinities.E += 5;
-    affinities.C += 3;
-    reasoning.E.push(`Personality: Extraverted`);
-  } else {
-    affinities.B += 5;
-    reasoning.B.push(`Personality: Introverted`);
-  }
+    const miDomains = DOMAIN_MI[domain] || [];
+    const miScores = miDomains.map((m) => strengthByDomain[m]).filter((v): v is number => v != null);
+    if (miScores.length) {
+      const avg = miScores.reduce((s, v) => s + v, 0) / miScores.length;
+      num += 0.22 * avg; den += 0.22;
+      reasoning.push(`Strengths: ${miDomains.join(", ")}`);
+    }
 
-  // Normalize and return top 5
-  const result = Object.entries(affinities)
-    .map(([domain, score]) => ({
+    const motivatorTags = DOMAIN_MOTIVATOR[domain] || [];
+    const motivatorScores = motivatorTags.map((m) => motivatorByName[m]).filter((v): v is number => v != null);
+    if (motivatorScores.length) {
+      const avg = motivatorScores.reduce((s, v) => s + v, 0) / motivatorScores.length;
+      num += 0.10 * avg; den += 0.10;
+      reasoning.push(`Motivators: ${motivatorTags.join(", ")}`);
+    }
+
+    return {
       domain,
-      domainName: DOMAIN_LABELS[domain],
-      affinity: Math.round(Math.min(100, score)),
-      reasoning: [...new Set(reasoning[domain])].slice(0, 3)
-    }))
-    .sort((a, b) => b.affinity - a.affinity);
+      domainName: DOMAINS[domain]?.name ?? domain,
+      affinity: den > 0 ? Math.round(num / den) : 0,
+      reasoning,
+    };
+  });
 
-  return result;
+  return result.sort((a, b) => b.affinity - a.affinity);
 }
 
 function generateRecommendations(affinities: Class7ScoreOutput["domainAffinities"]): string[] {

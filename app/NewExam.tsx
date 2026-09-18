@@ -16,6 +16,51 @@ import { Component, useEffect, useMemo, useRef, useState, type ReactNode } from 
 import { useRouter } from "next/navigation";
 import { useAuth, type ExamSession } from "@/lib/auth/AuthProvider";
 import { getFirebaseAuth } from "@/lib/firebase/client";
+import { DOMAINS_1112, careersByDomain } from "@/lib/report/careerfit1112";
+
+// Same canonical stream keys/order as STREAM_KEY_BY_INDEX in
+// app/api/new-assessment/score/route.ts and STREAM_DOMAIN_FIT in
+// scoring11_12.ts. "Other" maps to STREAM_KEY_BY_INDEX's "" downstream — kept
+// as a non-empty sentinel here so it stays distinguishable from "nothing
+// selected yet" in the <select>'s own value.
+const STREAM_OTHER = "OTHER";
+// Commerce is split by Maths because it changes stream-fit outcomes for the
+// whole Maths-gated career group (Data Science, Finance, Actuarial,
+// Statistics...) in lib/report/careerfit1112.ts's Career_Roadmap_Matrix —
+// see STREAM_KEY_1112 there. score/route.ts still buckets both into the
+// single coarse "Commerce" value the older subject_fit.currentStream field
+// expects, while the exact choice is preserved separately for the new
+// Fitment/Suitability/Selector matching.
+const STREAM_OPTIONS: { key: string; label: string }[] = [
+  { key: "MPC", label: "Science (Maths focus): MPC / PCM / Non-Medical" },
+  { key: "BiPC", label: "Science (Biology focus): BiPC / PCB / Medical" },
+  { key: "PCMB", label: "Science (Both): PCMB" },
+  { key: "CommerceMaths", label: "Commerce with Maths: MEC" },
+  { key: "CommerceNoMaths", label: "Commerce without Maths: CEC" },
+  { key: "Arts", label: "Humanities / Arts" },
+  { key: "Vocational", label: "Vocational / Diploma" },
+  { key: STREAM_OTHER, label: "Other" },
+];
+
+// The report shows this back as a single reference number (a Ring on the
+// Class 12 exam page) but never uses it to filter or rank anything — the
+// mapping kit's own logic is explicit that "the score itself is ignored for
+// matching". A precise number was overkill for something purely contextual,
+// so this collects a band instead and stores its midpoint.
+const PERCENTAGE_BANDS: { label: string; value: number }[] = [
+  { label: "Below 50%", value: 45 },
+  { label: "50% – 60%", value: 55 },
+  { label: "60% – 70%", value: 65 },
+  { label: "70% – 80%", value: 75 },
+  { label: "80% – 90%", value: 85 },
+  { label: "Above 90%", value: 95 },
+];
+
+const preS = {
+  label: { display: "block", fontSize: 13.5, fontWeight: 700, color: "#1e293b", margin: "18px 0 7px" },
+  select: { width: "100%", padding: "12px 14px", fontSize: 14.5, border: "1px solid #cbd5e1", borderRadius: 10, background: "#fff", color: "#1e293b" },
+  input: { width: "100%", padding: "12px 14px", fontSize: 14.5, border: "1px solid #cbd5e1", borderRadius: 10, background: "#fff", color: "#1e293b" },
+};
 
 // Short chip labels so all categories fit the bar without horizontal scroll.
 const SHORT_CAT: Record<string, string> = {
@@ -52,6 +97,10 @@ type Q = {
   id: string; type: string; text: string;
   options: string[] | null; styles: string[] | null;
   format: string | null; svgOptions: boolean; media: Media; optional?: boolean;
+  /** How many options a "multiple_with_grouping" question allows — Infinity
+   *  for "select all that apply", otherwise the count the question's own
+   *  instruction asked for. Undefined defaults to a single selection. */
+  maxSelect?: number;
 };
 type Section = { category: string; title: string; blurb: string; questions: Q[] };
 type GenData = { stage: string; chosenSets: Record<string, string>; sections: Section[] };
@@ -139,12 +188,18 @@ export default function NewExam(props: ExamProps) {
 function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
   const router = useRouter();
   const { saveAssessment, saveDemoAssessment, saveExamSession, clearExamSession, profile, user } = useAuth();
-  const [phase, setPhase] = useState<"loading" | "error" | "intro" | "resume" | "exam" | "thanks" | "already">("loading");
+  const [phase, setPhase] = useState<"loading" | "error" | "preinfo" | "intro" | "resume" | "exam" | "thanks" | "already">("loading");
   const [data, setData] = useState<GenData | null>(null);
   const [cur, setCur] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [review, setReview] = useState<Record<string, boolean>>({});
   const [agree, setAgree] = useState(false);
+  // Class 11/12 pre-exam screen — current stream + desired career (+ Class
+  // 12's estimated percentage) collected before the timed exam starts. See
+  // the "preinfo" phase render below and PRE_EXAM_SKIP in the generate route.
+  const [preStream, setPreStream] = useState("");
+  const [preCareer, setPreCareer] = useState("");
+  const [prePercentage, setPrePercentage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [err, setErr] = useState("");
   const [remainingSec, setRemainingSec] = useState(TOTAL_SEC);
@@ -195,7 +250,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
             setPhase("resume");
           } else {
             setRemainingSec(TOTAL_SEC);
-            setPhase("intro");
+            setPhase(j.data.stage === "11-12" ? "preinfo" : "intro");
           }
         } else { setErr(j.message || "Could not load the assessment."); setPhase("error"); }
       })
@@ -269,6 +324,21 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [remainingSec, phase]);
 
+  // Class 11/12 pre-exam screen -> intro. Recorded into the same `answers`
+  // object as everything else (under synthetic "preinfo:*" keys) so it rides
+  // along through the normal save/resume/submit path with no other plumbing
+  // — see applyPreExamAnswers() in app/api/new-assessment/score/route.ts.
+  function continueFromPreInfo() {
+    const stream = preStream === STREAM_OTHER ? "" : preStream;
+    setAnswers((a) => ({
+      ...a,
+      "preinfo:stream": stream,
+      "preinfo:career": preCareer,
+      ...(category === "class_12" ? { "preinfo:percentage": prePercentage } : {}),
+    }));
+    setPhase("intro");
+  }
+
   async function startExam() {
     try { await document.documentElement.requestFullscreen?.(); } catch { /* best effort */ }
     setPhase("exam");
@@ -285,7 +355,9 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
       const r = await fetch("/api/new-assessment/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ category }) });
       const j = await r.json();
       if (j.success && j.data?.sections?.length) {
-        setData(j.data); setAnswers({}); setReview({}); setCur(0); setRemainingSec(TOTAL_SEC); setPhase("intro");
+        setData(j.data); setAnswers({}); setReview({}); setCur(0); setRemainingSec(TOTAL_SEC);
+        setPreStream(""); setPreCareer(""); setPrePercentage("");
+        setPhase(j.data.stage === "11-12" ? "preinfo" : "intro");
       } else { setErr(j.message || "Could not load."); setPhase("error"); }
     } catch (e) { setErr(String((e as Error)?.message || e)); setPhase("error"); }
   }
@@ -421,6 +493,66 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
         </div>
       </div>
     );
+
+  if (phase === "preinfo" && data) {
+    const isClass12 = category === "class_12";
+    const classWord = category === "class_11" ? "Class 11" : category === "class_12" ? "Class 12" : "your class";
+    const pctNum = parseFloat(prePercentage);
+    const pctValid = !isClass12 || (prePercentage.trim() !== "" && !Number.isNaN(pctNum) && pctNum >= 0 && pctNum <= 100);
+    const canContinue = preStream !== "" && preCareer !== "" && pctValid;
+    // Sourced from lib/report/careerfit1112.ts (the 25-domain/63-career
+    // Class 11-12 fitment model, not the shared 15-domain catalogue) so a
+    // selection here always resolves exactly in the Career Selector match —
+    // see findCareer1112() in lib/report/careerFitEngine1112.ts.
+    const careersByDomainMap = careersByDomain();
+    return (
+      <div style={S.introWrap}><style dangerouslySetInnerHTML={{ __html: CSS }} />
+        <div style={S.introCard} className="og-exam-introcard">
+          <div style={{ marginBottom: 16 }}><Logo height={30} /></div>
+          <h2 style={S.introTitle}>A couple of quick questions</h2>
+          <p style={S.introSub}>Before the timed assessment starts, tell us a bit about {classWord === "your class" ? "yourself" : `your ${classWord} year`}.</p>
+
+          <label style={preS.label}>What is your current stream?</label>
+          <select style={preS.select} value={preStream} onChange={(e) => setPreStream(e.target.value)}>
+            <option value="" disabled>Select your stream…</option>
+            {STREAM_OPTIONS.map((o) => <option key={o.key} value={o.key}>{o.label}</option>)}
+          </select>
+
+          <label style={preS.label}>What is your desired career — the one you're aiming for?</label>
+          <select style={preS.select} value={preCareer} onChange={(e) => setPreCareer(e.target.value)}>
+            <option value="" disabled>Select a career…</option>
+            {DOMAINS_1112.map((d) => (
+              <optgroup key={d.name} label={d.name}>
+                {(careersByDomainMap.get(d.name) ?? []).map((c) => <option key={c.id} value={c.name}>{c.name}</option>)}
+              </optgroup>
+            ))}
+          </select>
+
+          {isClass12 && (
+            <>
+              <label style={preS.label}>Estimated percentage / expected score in your board or entrance exam (JEE, NEET, CUET, etc.)</label>
+              <select
+                style={preS.select}
+                value={prePercentage}
+                onChange={(e) => setPrePercentage(e.target.value)}
+              >
+                <option value="" disabled>Select a range…</option>
+                {PERCENTAGE_BANDS.map((b) => <option key={b.label} value={String(b.value)}>{b.label}</option>)}
+              </select>
+            </>
+          )}
+
+          <button
+            style={{ ...S.primary, width: "100%", marginTop: 22, ...(canContinue ? {} : S.disabled) }}
+            disabled={!canContinue}
+            onClick={continueFromPreInfo}
+          >
+            Continue →
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (phase === "intro" && data)
     return (
@@ -714,8 +846,7 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
 
   if (q.type === "multiple" || q.type === "multiple_with_grouping") {
     const opts = q.options ?? [];
-    const limits: Record<string, number> = { "Q63": Infinity, "Q64": 1, "Q65": 1, "Q68": 2, "Q71": 3, "Q74": 2 };
-    const maxSelections = limits[q.id] ?? 1;
+    const maxSelections = q.maxSelect ?? 1;
     const currentSelections = value ? JSON.parse(value) : [];
     const canSelect = currentSelections.length < maxSelections;
     return (
