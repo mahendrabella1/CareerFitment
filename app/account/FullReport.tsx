@@ -262,22 +262,29 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
           <RH n={N()} kick="At a glance" />
           <SecHead eyebrow="Strongest first" title={`Your ${dimWord}-dimension scorecard`}
             sub="What actually came out on top for you in each dimension — the real, specific result, not a number." />
-          {/* A card grid (colour-coded top border per dimension) — every card
-              leads with the qualitative result itself (the code, the learning
-              style, the top motivator...), the same way Personality leads
-              with its 4-letter type rather than a bare score. The full
-              numeric score for each dimension lives on that dimension's own
-              page, right after this one. */}
+          {/* A card grid — every card leads with the qualitative result itself
+              (the code, the learning style, the top motivator...), the same
+              way Personality leads with its 4-letter type rather than a bare
+              score. The full numeric score for each dimension lives on that
+              dimension's own page, right after this one. The strongest
+              dimension (rank 1, matching "Strongest first" above) gets a
+              small marker — the one piece of structure worth calling out,
+              since the whole grid is already ranked by it. Value text sizes
+              down for longer results (e.g. "Relationship Management") so it
+              wraps cleanly at a word boundary instead of overflowing. */}
           <div className="scoreGrid">
-            {radar.slice().sort((x, y) => y.score - x.score).map((d) => {
+            {radar.slice().sort((x, y) => y.score - x.score).map((d, i) => {
               const col = dimColor(d.key);
               const isPersonality = d.key === "personality" && hasMBTIData;
               const topResult = topResultFor(d.key, a, riasec);
               const bigValue = isPersonality ? getMBTIType(a) : (topResult || `${Math.round(d.score)}%`);
+              const valSize = bigValue.length > 20 ? 15 : bigValue.length > 13 ? 17 : bigValue.length > 8 ? 19 : 22;
               return (
-                <div className="scoreCard" key={d.key} style={{ borderTopColor: col, background: col + "09" }}>
-                  <span className="scoreCard-lbl"><Icon name={CAT[d.key].icon} size={13} style={{ color: col }} /> {CAT[d.key].label}</span>
-                  <span className="scoreCard-val" style={{ color: col }}>{bigValue}</span>
+                <div className="scoreCard" key={d.key} style={{ ["--sc" as string]: col, ["--sc-tint" as string]: col + "17" } as React.CSSProperties}>
+                  {i === 0 ? <span className="scoreCard-top">Strongest</span> : null}
+                  <span className="scoreCard-ic"><Icon name={CAT[d.key].icon} size={15} /></span>
+                  <span className="scoreCard-lbl">{CAT[d.key].label}</span>
+                  <span className="scoreCard-val" style={{ fontSize: valSize }}>{bigValue}</span>
                 </div>
               );
             })}
@@ -1209,10 +1216,17 @@ const CSS = `
    during print/PDF, so pagination there is unaffected. */
 .frx .sheet-compact{min-height:auto}
 .frx .scoreGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-@media(max-width:720px){.frx .scoreGrid{grid-template-columns:repeat(2,1fr)}}
-.frx .scoreCard{display:flex;flex-direction:column;gap:7px;border:1px solid var(--line);border-top:3px solid var(--red);border-radius:14px;padding:18px 16px 20px;background:#fff}
-.frx .scoreCard-lbl{display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.frx .scoreCard-val{font-size:21px;font-weight:800;color:var(--ink);letter-spacing:-.01em;line-height:1.25;word-break:break-word}
+@media(max-width:860px){.frx .scoreGrid{grid-template-columns:repeat(2,1fr)}}
+.frx .scoreCard{position:relative;display:flex;flex-direction:column;gap:9px;border:1px solid var(--line);
+  border-radius:16px;padding:18px 16px;background:linear-gradient(160deg,var(--sc-tint),#fff 65%);
+  box-shadow:0 3px 12px rgba(20,20,25,.05);overflow:hidden}
+.frx .scoreCard::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--sc)}
+.frx .scoreCard-top{position:absolute;top:14px;right:14px;font-size:9px;font-weight:800;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--sc);background:#fff;border:1px solid var(--sc);border-radius:999px;padding:3px 8px}
+.frx .scoreCard-ic{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  background:var(--sc);color:#fff;flex:none;box-shadow:0 3px 8px rgba(20,20,25,.14)}
+.frx .scoreCard-lbl{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.frx .scoreCard-val{font-weight:800;color:var(--sc);letter-spacing:-.01em;line-height:1.2;overflow-wrap:break-word;min-height:1.2em}
 /* .vpill is still used on the per-dimension pages further down. */
 .frx .vpill{font-size:11px;font-weight:800;padding:4px 11px;border-radius:999px;white-space:nowrap;justify-self:start}
 .frx .vpill.hi{background:var(--good-tint);color:#1f7a55}

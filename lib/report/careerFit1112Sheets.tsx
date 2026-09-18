@@ -761,7 +761,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
             sub="How strongly your measured interests, aptitude and strengths line up with each of the Career Clusters — the same industry-standard groupings used across career guidance, not a scheme unique to this report." />
           <div style={{ marginTop: 24, border: "1px solid var(--line)", borderRadius: 13, padding: "20px 20px 12px" }}>
             <ClusterBarChart groups={allClusterScores} />
-          </div>
+          </div> 
           <p className="disclaimer" style={{ marginTop: 12 }}>
             A 0% bar means no measured signal pointed that way yet, not that the field is closed to you — interests develop with exposure.
           </p>
