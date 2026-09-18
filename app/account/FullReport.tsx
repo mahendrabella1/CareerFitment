@@ -257,30 +257,27 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
       </section>
 
       {/* ===== SCORECARD (at a glance) ===== */}
-      <section className="sheet rv">
+      <section className="sheet sheet-compact rv">
         <div className="pad">
           <RH n={N()} kick="At a glance" />
-          <SecHead eyebrow="Every dimension, ranked and rated" title={`Your ${dimWord}-dimension scorecard`}
-            sub="Strongest first. Every dimension shows its real measured score — a number, not a vague label — and what that number means for you." />
+          <SecHead eyebrow="Strongest first" title={`Your ${dimWord}-dimension scorecard`}
+            sub="What actually came out on top for you in each dimension — the real, specific result, not a number." />
           {/* A card grid (colour-coded top border per dimension) — every card
-              has the exact same anatomy (label row → one big value → one
-              small caption) so the grid stays visually even regardless of
-              how long any one dimension's text runs. The big value is
-              always the real measured score, except Personality, which
-              leads with its 4-letter code instead (a raw score can't
-              communicate a type) and shows its score as the caption. */}
+              leads with the qualitative result itself (the code, the learning
+              style, the top motivator...), the same way Personality leads
+              with its 4-letter type rather than a bare score. The full
+              numeric score for each dimension lives on that dimension's own
+              page, right after this one. */}
           <div className="scoreGrid">
             {radar.slice().sort((x, y) => y.score - x.score).map((d) => {
               const col = dimColor(d.key);
               const isPersonality = d.key === "personality" && hasMBTIData;
               const topResult = topResultFor(d.key, a, riasec);
-              const bigValue = isPersonality ? getMBTIType(a) : `${Math.round(d.score)}%`;
-              const caption = isPersonality ? `${Math.round(d.score)}% type clarity` : topResult;
+              const bigValue = isPersonality ? getMBTIType(a) : (topResult || `${Math.round(d.score)}%`);
               return (
-                <div className="scoreCard" key={d.key} style={{ borderTopColor: col }}>
+                <div className="scoreCard" key={d.key} style={{ borderTopColor: col, background: col + "09" }}>
                   <span className="scoreCard-lbl"><Icon name={CAT[d.key].icon} size={13} style={{ color: col }} /> {CAT[d.key].label}</span>
                   <span className="scoreCard-val" style={{ color: col }}>{bigValue}</span>
-                  {caption ? <span className="scoreCard-sub">{caption}</span> : null}
                 </div>
               );
             })}
@@ -933,8 +930,45 @@ function DomainCard({ d, rank, roles }: { d: DomainFit; rank: number; roles: Rep
   );
 }
 
+/** Fetches a same-origin asset and inlines it as a data: URI. Used only for
+ *  the logo — everything else in the report already uses absolute CDN URLs,
+ *  which keep working once downloaded, but the logo is served from this
+ *  site's own "/..." path, which resolves to nothing once the markup is
+ *  opened from a saved file or a print popup with no real origin of its own. */
+async function toDataURL(url: string): Promise<string> {
+  const res = await fetch(url);
+  const blob = await res.blob();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+/** Resolves once every <img> in `doc` has either loaded or failed, or after
+ *  `capMs` — whichever comes first. A downloaded report can carry dozens of
+ *  images across a 15+ page document; printing (or serialising) before the
+ *  network has actually delivered them is what produced blank image boxes
+ *  and PDFs that printed mid-layout, before the page had properly reflowed. */
+function waitForImages(doc: Document, capMs = 8000): Promise<void> {
+  const imgs = Array.from(doc.images);
+  if (imgs.length === 0) return Promise.resolve();
+  const loaded = Promise.all(
+    imgs.map((img) =>
+      img.complete
+        ? Promise.resolve()
+        : new Promise<void>((resolve) => {
+            img.addEventListener("load", () => resolve(), { once: true });
+            img.addEventListener("error", () => resolve(), { once: true });
+          })
+    )
+  );
+  return Promise.race([loaded.then(() => undefined), new Promise<void>((r) => setTimeout(r, capMs))]);
+}
+
 function DownloadButton({ format, name }: { format: "pdf" | "html"; name?: string }) {
-  const handleDownload = () => {
+  const handleDownload = async () => {
     const element = document.querySelector(".frx");
     if (!element) {
       alert("Report not found");
@@ -943,9 +977,24 @@ function DownloadButton({ format, name }: { format: "pdf" | "html"; name?: strin
 
     const filename = `${name || "Assessment-Report"}-${new Date().toISOString().split("T")[0]}`;
 
+    // The rest of the report's images are absolute CDN URLs (onegrasp.com,
+    // images.unsplash.com) and keep working wherever this file is opened.
+    // Only the logo needs inlining — see toDataURL above.
+    let html = element.outerHTML;
+    try {
+      const logoDataUrl = await toDataURL(LOGO);
+      html = html.split(`src="${LOGO}"`).join(`src="${logoDataUrl}"`);
+    } catch {
+      /* offline or blocked — leave the original path rather than fail the download */
+    }
+    // `.frx`'s own <style> tag (the full report stylesheet, including the
+    // print/page-break rules) rides along inside `html` already, since it's
+    // a child of the element captured above — no separate stylesheet to
+    // attach.
+    const doc = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${filename}</title></head><body style="margin:0">${html}</body></html>`;
+
     if (format === "html") {
-      const htmlContent = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${filename}</title><style>body{font-family:system-ui,sans-serif;margin:20px}.frx{max-width:900px;margin:0 auto}</style></head><body>${element.outerHTML}</body></html>`;
-      const blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
+      const blob = new Blob([doc], { type: "text/html;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -953,12 +1002,20 @@ function DownloadButton({ format, name }: { format: "pdf" | "html"; name?: strin
       a.click();
       URL.revokeObjectURL(url);
     } else if (format === "pdf") {
-      const printWindow = window.open("", "", "height=600,width=800");
-      if (printWindow) {
-        printWindow.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${filename}</title><style>@page{margin:10mm}body{font-family:system-ui,sans-serif}</style></head><body>${element.outerHTML}</body></html>`);
-        printWindow.document.close();
-        setTimeout(() => { printWindow.print(); }, 250);
+      const printWindow = window.open("", "", "height=800,width=1000");
+      if (!printWindow) {
+        alert("Please allow pop-ups for this site to download the PDF.");
+        return;
       }
+      printWindow.document.write(doc);
+      printWindow.document.close();
+      await waitForImages(printWindow.document);
+      // One more frame so layout from the last-loaded image settles before
+      // the browser hands the page to the print pipeline.
+      printWindow.requestAnimationFrame(() => {
+        printWindow.focus();
+        printWindow.print();
+      });
     }
   };
 
@@ -1146,13 +1203,16 @@ const CSS = `
 .frx .fw .ds{font-size:12px;color:var(--ink-3);margin-top:5px;line-height:1.45}
 .frx .fw .fwn{position:absolute;top:12px;right:14px;font-size:12px;font-weight:800;color:var(--faint)}
 
-/* scorecard */
-.frx .scoreGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+/* scorecard — min-height:auto overrides the base .sheet's forced A4 page
+   height for on-screen viewing only: this section's content is naturally
+   short, and the print rule (further down) still forces the full A4 height
+   during print/PDF, so pagination there is unaffected. */
+.frx .sheet-compact{min-height:auto}
+.frx .scoreGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 @media(max-width:720px){.frx .scoreGrid{grid-template-columns:repeat(2,1fr)}}
-.frx .scoreCard{display:flex;flex-direction:column;gap:5px;border:1px solid var(--line);border-top:3px solid var(--red);border-radius:12px;padding:14px 15px;background:#fff}
-.frx .scoreCard-lbl{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.frx .scoreCard-val{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.01em;line-height:1.2}
-.frx .scoreCard-sub{font-size:11.5px;font-weight:600;color:var(--ink-3);line-height:1.35;word-break:break-word}
+.frx .scoreCard{display:flex;flex-direction:column;gap:7px;border:1px solid var(--line);border-top:3px solid var(--red);border-radius:14px;padding:18px 16px 20px;background:#fff}
+.frx .scoreCard-lbl{display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.frx .scoreCard-val{font-size:21px;font-weight:800;color:var(--ink);letter-spacing:-.01em;line-height:1.25;word-break:break-word}
 /* .vpill is still used on the per-dimension pages further down. */
 .frx .vpill{font-size:11px;font-weight:800;padding:4px 11px;border-radius:999px;white-space:nowrap;justify-self:start}
 .frx .vpill.hi{background:var(--good-tint);color:#1f7a55}
@@ -1441,7 +1501,11 @@ const CSS = `
   /* Force every background, tint, bar-fill and colour to print (Chrome/Edge honour
      this even when "Background graphics" is unchecked). */
   .frx,.frx *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;color-adjust:exact !important}
-  .frx{gap:0;display:block}
+  /* The on-screen .frx has its own 32px/16px padding for the scrollable
+     preview — left in place during print, it only pads the very first page
+     (padding on the flex/block container isn't repeated per page break),
+     shifting page 1's content down relative to every page after it. */
+  .frx{gap:0;display:block;padding:0}
   .frx .og-noprint{display:none !important}
   /* Each sheet = one uniform A4 page (same width + height). */
   .frx .sheet{box-sizing:border-box;width:210mm;min-height:296mm;margin:0 auto;

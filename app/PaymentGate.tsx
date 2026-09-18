@@ -54,7 +54,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
     invalidCode: false,
   });
 
-  // Coupon box (the hand-typed path — OGFREE and anything added later). Starts
+  // Coupon box (the hand-typed path — OGNOW and anything added later). Starts
   // collapsed; `openCouponBox` reveals it and puts the cursor straight in, so
   // "click here" costs exactly one click and no aiming.
   const [couponInput, setCouponInput] = useState("");
@@ -74,9 +74,6 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
       couponInputRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
     });
   }
-
-  // The auto-applied-coupon popup. `popupCoupon` is what it announces.
-  const [popupCoupon, setPopupCoupon] = useState<Priced | null>(null);
 
   // `onPaid` is an inline arrow in the parent, so it is a new function on every
   // parent render. Holding it in a ref lets the effect below depend on nothing
@@ -129,16 +126,14 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
 
         // Apply the sale coupon on the student's behalf before showing a price
         // — they should never see the undiscounted number as their total. The
-        // code comes from the server, so the campaign lives in one file.
+        // code comes from the server, so the campaign lives in one file. The
+        // applied-coupon chip on the card itself (below) is the announcement —
+        // no interrupting popup, so "Continue to Assessment" is the only click
+        // needed once a coupon is in effect.
         const autoCode: string | undefined = data?.offer?.autoCoupon?.code;
         const applied = await priceCoupon(autoCode || "");
         if (cancelled) return;
-        if (applied) {
-          setPriced(applied);
-          // Announce it: a discount applied silently reads as "the price is 99"
-          // rather than "you just saved 900".
-          if (applied.coupon) setPopupCoupon(applied);
-        }
+        if (applied) setPriced(applied);
         // Whatever the coupon call did, the price line is populated and the
         // student must come out of the loading state. Nothing below this point
         // may return early.
@@ -193,7 +188,6 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
         ? `${result.coupon.code} applied — your fee is fully waived.`
         : `${result.coupon.code} applied — you pay ${formatPaise(result.payablePaise)}.`,
     });
-    setPopupCoupon(result);
   }
 
   /** Drop back to base price after a hand-typed code is removed. */
@@ -220,7 +214,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
     } catch { /* verified server-side already — proceed regardless */ }
   }, []);
 
-  /** OGFREE and friends: no Razorpay order exists, so nothing to check out. */
+  /** OGNOW and friends: no Razorpay order exists, so nothing to check out. */
   async function redeemFree() {
     setErr("");
     setBusy(true);
@@ -400,7 +394,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
               is already applied by the time anyone reads this — an empty box
               sitting under a discounted price invites people to hunt for a
               better one. It stays available for the student who does hold a
-              code (OGFREE), one click away and focused the moment it opens. */}
+              code (OGNOW), one click away and focused the moment it opens. */}
           <div className="pg-coupon">
             {!couponOpen ? (
               <button className="pg-coupon-toggle" onClick={openCouponBox} disabled={busy}>
@@ -417,7 +411,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
                     value={couponInput}
                     // Never put a real code here. A placeholder is read by
                     // every student who opens this box, including the ones
-                    // about to pay — an example like "OGFREE" hands them a
+                    // about to pay — an example like "OGNOW" hands them a
                     // 100%-off code (lib/coupons.ts) for free.
                     placeholder="ENTER CODE"
                     autoCapitalize="characters"
@@ -445,78 +439,6 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
           </div>
           <a className="pg-back" href="/account">← Back to dashboard</a>
         </div>
-      </div>
-
-      {popupCoupon?.coupon && (
-        <CouponPopup
-          priced={popupCoupon}
-          onClose={() => setPopupCoupon(null)}
-          onUseAnotherCode={() => { setPopupCoupon(null); openCouponBox(); }}
-        />
-      )}
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ popup */
-/**
- * The "your discount is already applied" modal. It opens by itself the first
- * time the gate prices the sale coupon, and again whenever a hand-typed code
- * lands — the moment a price changes is exactly when it's worth interrupting.
- */
-function CouponPopup({ priced, onClose, onUseAnotherCode }: {
-  priced: Priced;
-  onClose: () => void;
-  /** Dismiss the popup and drop the cursor straight into the coupon field. */
-  onUseAnotherCode: () => void;
-}) {
-  const closeRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    closeRef.current?.focus();
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
-
-  const free = priced.free;
-  return (
-    <div className="pg-modal-wrap" role="dialog" aria-modal="true" aria-labelledby="pg-modal-title" onClick={onClose}>
-      <div className="pg-modal" onClick={(e) => e.stopPropagation()}>
-        <button className="pg-modal-x" onClick={onClose} aria-label="Close">✕</button>
-        <div className="pg-modal-burst">{free ? "🎁" : "🎉"}</div>
-        <div className="pg-modal-kick">Coupon applied</div>
-        <h2 className="pg-modal-title" id="pg-modal-title">
-          {free ? "Your fee is fully waived!" : `Flat ${priced.discountPct}% off — applied for you`}
-        </h2>
-
-        <div className="pg-modal-code">
-          <span className="pg-modal-code-label">Coupon code</span>
-          <span className="pg-modal-code-val">{priced.coupon?.code}</span>
-          <span className="pg-modal-code-state">
-            ✓ Applied to your order
-          </span>
-        </div>
-
-        {free && (
-          <div className="pg-modal-prices">
-            <span className="pg-modal-now">FREE</span>
-          </div>
-        )}
-
-        <button className="pg-modal-btn" onClick={onClose}>
-          {free ? "Start my assessment" : "Continue to Assessment"}
-        </button>
-        {/* A real control, not a note telling the student where to find one:
-            it closes the popup and opens the coupon field, focused. */}
-        {!free && (
-          <div className="pg-modal-foot">
-            Have another code?{" "}
-            <button type="button" className="pg-modal-link" onClick={onUseAnotherCode}>
-              Apply a coupon code
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -586,38 +508,5 @@ const CSS = `
 .pg-back{display:inline-block;margin-top:16px;font-size:13px;font-weight:700;color:#6b7080;text-decoration:none}
 .pg-back:hover{color:#171624}
 
-/* ---- auto-applied coupon popup ---- */
-.pg-modal-wrap{position:fixed;inset:0;z-index:1400;background:rgba(16,18,34,.62);backdrop-filter:blur(3px);
-  display:flex;align-items:center;justify-content:center;padding:20px;animation:pgFade .22s ease both}
-.pg-modal{position:relative;width:100%;max-width:400px;background:#fff;border-radius:22px;padding:30px 28px 26px;
-  text-align:center;box-shadow:0 30px 70px rgba(10,12,30,.4);animation:pgPop .34s cubic-bezier(.2,.9,.28,1.06) both;
-  font-family:Inter,system-ui,Segoe UI,sans-serif}
-.pg-modal-x{position:absolute;top:12px;right:14px;background:none;border:none;font-size:14px;color:#a2a7b4;cursor:pointer;line-height:1}
-.pg-modal-x:hover{color:#171624}
-.pg-modal-burst{font-size:44px;line-height:1;animation:pgBurst .55s cubic-bezier(.2,.9,.28,1.2) both}
-.pg-modal-kick{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#e0242e;margin-top:10px}
-.pg-modal-title{font-size:21px;font-weight:800;color:#171624;margin:7px 0 18px;line-height:1.3}
-.pg-modal-code{display:flex;flex-direction:column;align-items:center;gap:3px;border:2px dashed #c3cdf5;background:#f5f7ff;border-radius:14px;padding:13px 12px}
-.pg-modal-code-label{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8a8f9c}
-.pg-modal-code-val{font-size:24px;font-weight:800;letter-spacing:.12em;color:#3b5bdb;font-family:'Plus Jakarta Sans',Inter,sans-serif}
-.pg-modal-code-state{font-size:11.5px;font-weight:700;color:#137a45}
-.pg-modal-prices{display:flex;align-items:baseline;justify-content:center;gap:10px;margin-top:16px}
-.pg-modal-was{font-size:19px;font-weight:700;color:#a2a7b4;text-decoration:line-through;text-decoration-thickness:2px}
-.pg-modal-arrow{font-size:15px;color:#a2a7b4}
-.pg-modal-now{font-size:32px;font-weight:800;color:#137a45;font-family:'Plus Jakarta Sans',Inter,sans-serif}
-.pg-modal-save{font-size:13px;font-weight:700;color:#137a45;margin-top:2px}
-.pg-modal-timer{font-size:12px;color:#5b6070;background:#fff6ed;border:1px solid #ffe0c2;border-radius:10px;padding:8px 10px;margin-top:14px}
-.pg-modal-btn{width:100%;margin-top:18px;padding:14px;background:#171624;color:#fff;border:none;border-radius:12px;font-size:14.5px;font-weight:800;cursor:pointer;font-family:inherit}
-.pg-modal-btn:hover{background:#2b2a3f}
-.pg-modal-foot{font-size:11.5px;color:#8a8f9c;margin-top:11px}
-.pg-modal-link{background:none;border:none;padding:2px 2px;font-family:inherit;font-size:11.5px;font-weight:800;
-  color:#6366F1;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
-.pg-modal-link:hover{color:#4f46e5}
-.pg-modal-link:focus-visible{outline:2px solid #6366F1;outline-offset:2px;border-radius:6px}
-
-@keyframes pgFade{from{opacity:0}to{opacity:1}}
-@keyframes pgPop{from{opacity:0;transform:translateY(22px) scale(.94)}to{opacity:1;transform:none}}
-@keyframes pgBurst{0%{transform:scale(.3) rotate(-18deg);opacity:0}60%{transform:scale(1.18) rotate(6deg);opacity:1}100%{transform:none;opacity:1}}
-@media(prefers-reduced-motion:reduce){.pg-modal,.pg-modal-wrap,.pg-modal-burst{animation:none}}
 @media(max-width:420px){.pg-card{padding:24px 20px 28px}.pg-price{font-size:40px}}
 `;

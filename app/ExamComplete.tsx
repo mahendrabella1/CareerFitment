@@ -122,20 +122,22 @@ export default function ExamComplete({ name, fullName, email, onGoToDashboard }:
           </span>
         </div>
 
-        {/* Share and Dashboard in a single row layout */}
-        <div className="xc-actions">
-          <div className="xc-action-item">
-            {/* Sits above the dashboard CTA on purpose: this is the one moment a
-                student feels like sharing, and it is gone once they navigate away.
-                It shares the achievement only — never a result. */}
-            <ShareAchievement name={fullName || name} />
-          </div>
-          <button className="xc-cta xc-cta-primary" onClick={onGoToDashboard}>
-            Go to my dashboard <Icon name="chevronRight" size={16} />
-          </button>
-        </div>
+        {/* The dashboard CTA leads — reaching it is this screen's one real job,
+            and it needs to be visible without scrolling past anything else.
+            Sharing is still offered (that "I just finished" moment is real and
+            gone once they navigate away), just as a secondary block underneath
+            rather than something standing between the student and the button
+            they came here for. */}
+        <button className="xc-cta xc-cta-primary" onClick={onGoToDashboard}>
+          Go to my dashboard <Icon name="chevronRight" size={16} />
+        </button>
         <div className="xc-help">
           Need a hand? Write to <a href="mailto:support@onegrasp.com">support@onegrasp.com</a> — we usually reply the same day.
+        </div>
+
+        <div className="xc-share">
+          {/* Shares the achievement only — never a result. */}
+          <ShareAchievement name={fullName || name} />
         </div>
       </div>
     </div>
@@ -178,17 +180,16 @@ const CSS = `
 .xc-mail-ic{color:#3b5bdb;flex:none;margin-top:1px}
 .xc-mail b{color:#0f172a;word-break:break-all}
 
-.xc-actions{display:flex;gap:14px;margin:18px 0;align-items:center;justify-content:center;flex-wrap:wrap}
-@media(max-width:640px){.xc-actions{flex-direction:column;gap:10px;width:100%}}
-
-.xc-action-item{display:flex;align-items:center;justify-content:center;width:100%;max-width:280px}
-
-.xc-cta{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 22px;
-  background:#171624;color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;
+.xc-cta{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:14px 22px;
+  background:#171624;color:#fff;border:none;border-radius:11px;font-size:14.5px;font-weight:700;cursor:pointer;
   font-family:inherit;box-shadow:0 6px 14px rgba(23,22,36,.15);transition:background .15s;white-space:nowrap;width:100%}
 .xc-cta:hover{background:#2b2a3f}
-.xc-cta-primary{margin:0}
+.xc-cta-primary{margin:20px 0 0;max-width:320px;margin-left:auto;margin-right:auto}
 
 .xc-help{font-size:11px;color:#94a3b8;margin-top:10px}
+
+/* Secondary, below the primary action — a real border to read as "a
+   different, optional section" rather than more of the same card. */
+.xc-share{margin-top:26px;padding-top:22px;border-top:1px solid #eef1f8;text-align:left}
 .xc-help a{color:#3b5bdb;font-weight:700;text-decoration:none}
 `;

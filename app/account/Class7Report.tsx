@@ -799,14 +799,57 @@ export function Class7Report({
   );
 }
 
+const CLASS7_LOGO = "/onegrasp-logo-tight.png";
+
+/** Same fix as FullReport.tsx's DownloadButton: inline the logo as a data:
+ *  URI, since its "/..." path only resolves on the site's own origin — not
+ *  in a downloaded file opened from disk or a print popup with no origin. */
+async function toDataURL(url: string): Promise<string> {
+  const res = await fetch(url);
+  const blob = await res.blob();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+/** Resolves once every <img> in `doc` has loaded or failed, or after `capMs`
+ *  — printing before the browser has actually received every image (this
+ *  report can carry dozens across several pages) is what produced blank
+ *  image boxes and PDFs printed mid-layout. */
+function waitForImages(doc: Document, capMs = 8000): Promise<void> {
+  const imgs = Array.from(doc.images);
+  if (imgs.length === 0) return Promise.resolve();
+  const loaded = Promise.all(
+    imgs.map((img) =>
+      img.complete
+        ? Promise.resolve()
+        : new Promise<void>((resolve) => {
+            img.addEventListener("load", () => resolve(), { once: true });
+            img.addEventListener("error", () => resolve(), { once: true });
+          })
+    )
+  );
+  return Promise.race([loaded.then(() => undefined), new Promise<void>((r) => setTimeout(r, capMs))]);
+}
+
 function Class7DownloadButton({ format: fmt, name }: { format: "pdf" | "html"; name?: string }) {
-  const handleDownload = () => {
+  const handleDownload = async () => {
     const element = document.querySelector(".class7-report");
     if (!element) { alert("Report not found"); return; }
     const filename = `${name || "Class7-Report"}-${new Date().toISOString().split("T")[0]}`;
+    let html = element.outerHTML;
+    try {
+      const logoDataUrl = await toDataURL(CLASS7_LOGO);
+      html = html.split(`src="${CLASS7_LOGO}"`).join(`src="${logoDataUrl}"`);
+    } catch {
+      /* offline or blocked — leave the original path rather than fail the download */
+    }
+    const doc = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${filename}</title></head><body style="margin:0">${html}</body></html>`;
     if (fmt === "html") {
-      const htmlContent = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${filename}</title><style>body{font-family:system-ui,sans-serif;margin:20px}.class7-report{max-width:900px;margin:0 auto}</style></head><body>${element.outerHTML}</body></html>`;
-      const blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
+      const blob = new Blob([doc], { type: "text/html;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -814,12 +857,15 @@ function Class7DownloadButton({ format: fmt, name }: { format: "pdf" | "html"; n
       a.click();
       URL.revokeObjectURL(url);
     } else {
-      const printWindow = window.open("", "", "height=600,width=800");
-      if (printWindow) {
-        printWindow.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${filename}</title><style>@page{margin:10mm}body{font-family:system-ui,sans-serif}</style></head><body>${element.outerHTML}</body></html>`);
-        printWindow.document.close();
-        setTimeout(() => { printWindow.print(); }, 250);
-      }
+      const printWindow = window.open("", "", "height=800,width=1000");
+      if (!printWindow) { alert("Please allow pop-ups for this site to download the PDF."); return; }
+      printWindow.document.write(doc);
+      printWindow.document.close();
+      await waitForImages(printWindow.document);
+      printWindow.requestAnimationFrame(() => {
+        printWindow.focus();
+        printWindow.print();
+      });
     }
   };
   const icon = fmt === "pdf" ? "📄" : "📋";

@@ -269,7 +269,10 @@ export function scoreAssessment60(
     // strong (~80-90%) rather than false 100% certainty.
     const prior = 1.5;
     const ratio = (ra + prior) / (total + prior * 2);
-    return Math.round(ratio * 10);
+    // One decimal place, not a bare integer — rounding to whole 0-10 steps
+    // meant the displayed percentage (score*10) could only ever land on a
+    // multiple of 10 (60%, 70%, 80%...), never a real value like 77% or 89%.
+    return Math.round(ratio * 100) / 10;
   };
   const mbtiEI = axisScore("E", "I");
   const mbtiSN = axisScore("S", "N");

@@ -37,7 +37,6 @@ const MBTI_TYPES: Record<
 
 const AxisRow: React.FC<{ label: string; left: string; right: string; score: number; icon: React.ReactNode; color: string }> = ({ label, left, right, score, icon, color }) => {
   const rightWins = score >= 5;
-  const winnerLabel = rightWins ? right : left;
   const winnerScore = rightWins ? score : 10 - score;
   // The knob sits at the RAW score position on the fixed left-pole(0%) →
   // right-pole(100%) axis — never reordered — so "57% Extrovert" means the
@@ -48,9 +47,14 @@ const AxisRow: React.FC<{ label: string; left: string; right: string; score: num
   const knobPct = Math.round((score / 10) * 100);
   return (
     <div style={{ marginBottom: 26 }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 10 }}>
-        <span style={{ fontSize: 17, fontWeight: 900, color }}>{Math.round(winnerScore * 10)}%</span>
-        <span style={{ fontSize: 16, fontWeight: 800, color: C.ink }}>{winnerLabel}</span>
+      {/* Leads with the axis itself ("Energy source · 60%"), not the winning
+          pole name — the two poles are already labelled on the bar right
+          below, so naming the axis here (instead of repeating one of them)
+          is what actually tells you which of the four axes this is. */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 7, marginBottom: 10 }}>
+        <span style={{ display: "flex", color }}>{icon}</span>
+        <span style={{ fontSize: 15, fontWeight: 800, color: C.ink2 }}>{label}</span>
+        <span style={{ fontSize: 17, fontWeight: 900, color }}>· {Math.round(winnerScore * 10)}%</span>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
         <span style={{
@@ -74,9 +78,6 @@ const AxisRow: React.FC<{ label: string; left: string; right: string; score: num
           fontWeight: rightWins ? 800 : 600, color: rightWins ? C.ink : C.muted,
           textDecoration: rightWins ? "underline" : "none", textUnderlineOffset: 3,
         }}>{right}</span>
-      </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 6, fontSize: 10.5, fontWeight: 700, color: C.muted }}>
-        <span style={{ display: "flex", color }}>{icon}</span>{label}
       </div>
     </div>
   );

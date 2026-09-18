@@ -44,7 +44,7 @@ export const OFFER = {
   /** Applied for the student the moment the payment screen opens. */
   autoCouponCode: "OG15",
   /** Typed in by hand; takes the fee to zero. */
-  freeCouponCode: "OGFREE",
+  freeCouponCode: "OGNOW",
 } as const;
 
 /** Whether sale styling (banner, strike-through, % badges) should be shown. */
