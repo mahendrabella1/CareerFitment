@@ -841,7 +841,7 @@ function RiasecHex({ themes }: { themes: { letter: string; title?: string; score
           <span style={{ width: 22, fontSize: 12, fontWeight: 800, color: C.ink }}>{r.letter}</span>
           <span style={{ flex: "0 0 96px", fontSize: 12, fontWeight: 600, color: C.ink3 }}>{r.label}</span>
           <span style={{ flex: 1 }}><SkillBar value={r.score} color={C.red} /></span>
-          <span style={{ width: 30, textAlign: "right", fontSize: 12, fontWeight: 700, color: C.ink }}>{r.score}</span>
+          <span style={{ width: 36, textAlign: "right", fontSize: 12, fontWeight: 700, color: C.ink }}>{Math.round(r.score)}%</span>
         </div>
       ))}
     </div>

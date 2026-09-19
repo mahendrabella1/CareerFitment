@@ -37,6 +37,7 @@ const MBTI_TYPES: Record<
 
 const AxisRow: React.FC<{ label: string; left: string; right: string; score: number; icon: React.ReactNode; color: string }> = ({ label, left, right, score, icon, color }) => {
   const rightWins = score >= 5;
+  const winnerLabel = rightWins ? right : left;
   const winnerScore = rightWins ? score : 10 - score;
   // The knob sits at the RAW score position on the fixed left-pole(0%) →
   // right-pole(100%) axis — never reordered — so "57% Extrovert" means the
@@ -47,13 +48,17 @@ const AxisRow: React.FC<{ label: string; left: string; right: string; score: num
   const knobPct = Math.round((score / 10) * 100);
   return (
     <div style={{ marginBottom: 26 }}>
-      {/* Leads with the axis itself ("Energy source · 60%"), not the winning
-          pole name — the two poles are already labelled on the bar right
-          below, so naming the axis here (instead of repeating one of them)
-          is what actually tells you which of the four axes this is. */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 7, marginBottom: 10 }}>
+      {/* The axis name alone next to a bare "60%" left it unclear which pole
+          that 60% actually meant — readable only by cross-checking the bold/
+          underlined label on the bar below. Naming the winning trait right
+          next to its percentage removes that guesswork; the axis name (which
+          of the four this is) becomes a small caption above it instead. */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 3 }}>
         <span style={{ display: "flex", color }}>{icon}</span>
-        <span style={{ fontSize: 15, fontWeight: 800, color: C.ink2 }}>{label}</span>
+        <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".04em", textTransform: "uppercase", color: C.muted }}>{label}</span>
+      </div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 10 }}>
+        <span style={{ fontSize: 18, fontWeight: 900, color: C.ink }}>{winnerLabel}</span>
         <span style={{ fontSize: 17, fontWeight: 900, color }}>· {Math.round(winnerScore * 10)}%</span>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 14 }}>

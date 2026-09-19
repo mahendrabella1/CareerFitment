@@ -373,7 +373,7 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
           ? [`A clear pull toward ${top.name}`, second ? `${second.name} backs it up as a strong second interest` : "Interest-aligned work sustains motivation for years", "You can speak to what genuinely excites you, which stands out in interviews and applications"]
           : ["Flexibility to try multiple directions", "You're not boxed into one narrow field", "Room to explore before committing"],
         grow: [
-          spread ? `${top?.name} and ${second?.name} are close — test both hands-on before narrowing to one` : `Explore fields adjacent to ${top?.name || "your top interest"} so your choice is informed, not default`,
+          spread ? `${top?.name} and ${second?.name} are close — test both hands-on before narrowing to one` : `Explore fields close to ${top?.name || "your top interest"} so your choice is informed, not default`,
           "Interest can shift with real exposure — treat this as a strong starting point, not a final answer",
           "Talk to people already working in the field before committing years of study to it",
         ],
@@ -387,11 +387,11 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
       const second = ranked[1]?.name;
       const lowest = ranked[ranked.length - 1]?.name;
       return {
-        meaning: `Across Gardner's eight intelligences, ${top}${second ? ` and ${second}` : ""} are most pronounced — the ways you most naturally take in and work with the world. All eight are scored below; everyone has some of each, just in different amounts.`,
-        strengths: [`${top} is a genuine strength to build a career around`, second ? `${second} gives you a strong secondary lever` : "Tasks that use it will feel easier and more rewarding", "You learn fastest when material is framed the way this intelligence prefers"],
+        meaning: `There are eight different kinds of intelligence — not just "book smart" — and ${top}${second ? ` and ${second}` : ""} are your strongest. All eight are scored below; everyone has some of each, just in different amounts.`,
+        strengths: [`${top} is a genuine strength to build a career around`, second ? `${second} backs it up as a strong second strength` : "Tasks that use it will feel easier and more rewarding", "You learn fastest when material is framed the way this intelligence prefers"],
         grow: [
-          lowest ? `${lowest} scores lowest — not a weakness, just less-default. Build a working level in it only if your goal actually needs it` : "Your lower intelligences aren't weaknesses — just less-default",
-          "Deliberately practise one non-dominant intelligence for range",
+          lowest ? `${lowest} is your weakest area — that's not a flaw, it's just not how you naturally think first. Work on it only if your goal actually needs it` : "Your weaker intelligences aren't flaws — they're just not how you naturally think first",
+          "Deliberately practise one intelligence you use less, just to build range",
           "Pair up on tasks with people strong in the intelligences you use least",
         ],
         recommend: [`Seek work and projects that lean on ${top}`, "Learn using your strongest intelligence (e.g. visual, hands-on, verbal)", "Team up with people strong where you're not"],
@@ -403,10 +403,10 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
       const quads = eiQuadrants(a).slice().sort((x, y) => y.value - x.value);
       const topQ = quads[0]?.label, lowQ = quads[quads.length - 1]?.label;
       return {
-        meaning: `Your emotional intelligence reads at ${ei}% across the four standard EQ areas — self-awareness, self-management, social awareness and relationship management — how well you notice situations, manage your own reactions and respond to others. It's one of the strongest predictors of teamwork, leadership and wellbeing.`,
+        meaning: `Your emotional intelligence (EQ) reads at ${ei}% — how well you notice your own feelings, manage your reactions, read other people, and handle relationships. It's one of the strongest predictors of how well someone does in teamwork and leadership.`,
         strengths: band(ei) !== "low"
           ? [topQ ? `${topQ} is where you're strongest` : "You read people and situations reasonably well", "You can stay composed and adapt your response", "A real asset for teamwork and leadership"]
-          : ["Awareness that this is a growth area is itself a strong start", "Every part of EQ is trainable with practice", "Small, deliberate changes compound quickly here"],
+          : ["Awareness that this is a growth area is itself a strong start", "Every part of EQ is trainable with practice", "Small, deliberate changes add up quickly here"],
         grow: [
           lowQ ? `${lowQ} is your lightest area — that's the one to work on first` : "Practise the pause: name what you feel before you react",
           "Ask for feedback on how you come across under pressure",
@@ -424,8 +424,8 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
         // causal claim about how well you learn, and the evidence here is only
         // which kind of material you say you prefer. Use it for study tactics.
         meaning: `You show a clear preference for ${top} material when you study. That is a preference rather than a measure of ability — it doesn't limit what you can learn, and it isn't a reason to pick or rule out a career. It is genuinely useful for one thing: choosing how you revise.`,
-        strengths: [`A clear, usable ${top} learning preference`, "You can design study and work around what actually sticks", "Faster upskilling when you use the right method"],
-        grow: ["Build some flexibility in other modes — not every course or job will match your style", "Combine two modes (e.g. visual + doing) for tougher material", "Don't rule out a career just because its usual study style isn't your favourite"],
+        strengths: [`A clear, usable ${top} learning preference`, "You can design study and work around what actually sticks", "You pick up new things faster when you use the right method"],
+        grow: ["Build some flexibility in other styles too — not every course or job will match your style", "Combine two styles (e.g. visual + doing) for tougher material", "Don't rule out a career just because its usual study style isn't your favourite"],
         recommend: [`Convert notes into your ${top} format (diagrams, recordings, summaries or practice)`, "Teach a concept to someone else to lock it in", "Space your revision instead of cramming"],
         next: `Re-do your current study/work notes in a ${top} format this week.`,
       };
@@ -454,18 +454,18 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
           meaning: topB
             ? `Across the situational choices, ${topB}${second ? ` and ${second}` : ""} are the strengths you reach for first. These aren't scores out of 100 — they're a ranking of what shows up naturally when you get to choose how to contribute.`
             : "Your strengths are spread fairly evenly across the eight domains.",
-          strengths: topB ? [`${topB} is your default mode — the contribution you make without being asked`, second ? `${second} backs it up as a strong second lever` : "You have a clear leading strength to build on", "Careers built on a natural strength feel less like effort"] : ["A balanced spread means you can flex into several kinds of role", "You're not boxed into one narrow way of contributing", "Useful range across group projects and teams"],
+          strengths: topB ? [`${topB} is your default mode — the contribution you make without being asked`, second ? `${second} backs it up as a strong second strength` : "You have a clear leading strength to build on", "Careers built on a natural strength feel less like effort"] : ["A balanced spread means you can flex into several kinds of role", "You're not boxed into one narrow way of contributing", "Useful range across group projects and teams"],
           grow: lowB ? [`${lowB} came last — not a weakness, just not where you naturally go first`, "Pick one lower domain your goal genuinely needs and practise it deliberately", "Partner with people who lead where you don't, rather than forcing it alone"] : ["Deliberately practise a domain outside your top two for range", "Notice which contribution you avoid in group work, and try it once on purpose", "A balanced profile still benefits from one area you can lead with"],
           recommend: [`Volunteer for tasks that use ${topB || "your leading strength"} — that's where you'll stand out`, "Team up with people strong where you're not", "Name your top two strengths in interviews and applications"],
           next: `Pick one project this month where you lead with ${topB || "your leading strength"}.`,
         };
       }
       return {
-        meaning: `On the quick reasoning and self-report tasks you scored ${p}% overall${topB ? `, strongest in ${topB}` : ""}. This is a coarse, directional read of your problem-solving, decisions and communication — combine a few sittings for a steadier picture.`,
-        strengths: topB ? [`${topB} came through as a clear strength`, "You bring a usable mix of thinking and people skills", "Strengths compound when you build a career around them"] : ["A workable spread of reasoning and self-report strengths", "No single glaring weak spot to work around", "Room to specialise once a direction is clearer"],
-        grow: lvl === "low" ? ["Some areas scored low on a short test — practice and a calm retake will lift these", "Target the specific sub-skill (logic, decisions, communication) that was weakest", "A single short sitting is a coarse read — a second attempt sharpens the picture"] : ["Push your strongest area from good to excellent — that's where careers are made", "A short test is a coarse read — combine it with real-world evidence over time", "Ask people who know you well whether this matches how they see you"],
-        recommend: ["Do short daily reasoning / critical-thinking practice", "Volunteer for tasks that stretch your weaker sub-skill", "Ask for feedback on your decisions and communication"],
-        next: "Pick your single weakest sub-skill and do 10 minutes of practice daily for two weeks.",
+        meaning: `On the quick reasoning and self-rated tasks you scored ${p}% overall${topB ? `, strongest in ${topB}` : ""}. This is a rough, general picture of your problem-solving, decisions and communication — a few more attempts would sharpen it.`,
+        strengths: topB ? [`${topB} came through as a clear strength`, "You bring a usable mix of thinking and people skills", "Strengths add up fast when you build a career around them"] : ["A workable spread of reasoning and people-skill strengths", "No single glaring weak spot to work around", "Room to specialise once a direction is clearer"],
+        grow: lvl === "low" ? ["Some areas scored low on a short test — practice and a calm retake will lift these", "Target the specific skill (logic, decisions, communication) that was weakest", "One short attempt is a rough guide, not the final word — try again for a clearer picture"] : ["Push your strongest area from good to excellent — that's where careers are made", "A short test only gives a rough guide — watch how you actually do this in real life too", "Ask people who know you well whether this matches how they see you"],
+        recommend: ["Do short daily reasoning / critical-thinking practice", "Volunteer for tasks that stretch your weakest area", "Ask for feedback on your decisions and communication"],
+        next: "Pick your single weakest area and do 10 minutes of practice daily for two weeks.",
       };
     }
     case "aptitude": {
@@ -474,7 +474,7 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
       return {
         meaning: `Your aptitude across words, numbers, logic and shapes came out at ${apt}%${top ? `, sharpest in ${top}` : ""}. Aptitude shows how quickly you can pick up the skills a field demands — a strong signal for study and career fit.`,
         strengths: top ? [`${top} reasoning is a clear strength`, "You can learn skills in aligned fields faster", "A good base for exams and technical roles"] : ["A workable all-round reasoning base", "No single area lagging badly behind the rest", "A fair base to build any of the four skills further"],
-        grow: lvl === "low" ? ["Aptitude grows with practice — this is trainable, not fixed", "Target the specific area (verbal / numerical / logical / spatial) that lagged", "Short, regular practice beats occasional long sessions here"] : ["Sharpen your top area toward competitive-exam level if your goal needs it", "Keep your weakest of the four from becoming a bottleneck in exams", "Timed practice matters as much as raw ability for most entrance tests"],
+        grow: lvl === "low" ? ["Aptitude grows with practice — this is trainable, not fixed", "Target the specific area (words / numbers / logic / shapes) that lagged", "Short, regular practice beats occasional long sessions here"] : ["Sharpen your top area toward competitive-exam level if your goal needs it", "Don't let your weakest of the four cost you marks in exams", "Timed practice matters as much as raw ability for most entrance tests"],
         recommend: ["Practise timed reasoning sets 2–3× a week", `Lean into fields that reward ${top || "your strongest reasoning"}`, "Use official mock tests to track progress"],
         next: "Take one timed aptitude mock this week and note your weakest section to target.",
       };
@@ -485,7 +485,7 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
       return {
         meaning: `Creativity here means how you approach a problem with no set method — ${cd.problemSolving.toLowerCase()} It's a real, trainable skill, not a fixed talent some people have and others don't.`,
         strengths: [cd.problemSolving, cd.innovationApproach, "Creativity like this transfers across subjects and fields — it's not tied to one career"],
-        grow: ["Deliberately trying unfamiliar approaches on low-stakes problems is what builds range fastest — creativity is trainable, not fixed", "Give ideas time before judging them — the best ones rarely arrive first", "Share half-formed ideas with others instead of polishing alone before showing anyone"],
+        grow: ["Trying unfamiliar approaches on small problems (where nothing's really at risk) is what builds range fastest — creativity is trainable, not fixed", "Give ideas time before judging them — the best ones rarely arrive first", "Share half-formed ideas with others instead of polishing alone before showing anyone"],
         recommend: cd.recommendations.length ? cd.recommendations : ["Try one deliberately different approach to a routine task this week."],
         next: cd.recommendations[0] || "Try one deliberately different approach to a routine task this week.",
       };
@@ -981,7 +981,12 @@ export function resultOf(key: string, a: AssessmentSummary): { label: string; va
     // No chip when the five were never scored separately — every trait sits at
     // the same default, so "stands out most" would just be naming array order.
     case "personality": { const { reads, measured } = traitProfile(a); return measured ? { label: "Stands out most", value: reads[0].trait.name } : null; }
-    case "career_interest": { const code = a.riasecCode || (a.themes ?? []).slice(0, 3).map((t) => t.letter).join(""); return code ? { label: "Your Holland code", value: code } : null; }
+    case "career_interest": {
+      // Fall back to the real RIASEC scores, not `a.themes` (the career-
+      // CLUSTER vector) — same fix as categoryDeepDive's career_interest case.
+      const code = a.riasecCode || (a.riasecScores ?? []).slice().sort((x, y) => y.score - x.score).slice(0, 3).map((r) => r.letter).join("");
+      return code ? { label: "Your top interest code", value: code } : null;
+    }
     case "multiple_intelligence": return { label: "Top intelligences", value: two((a.topIntelligences ?? []).map((x) => ({ n: x.name }))) };
     case "emotional_intelligence": {
       const top = eiQuadrants(a).slice().sort((x, y) => y.value - x.value)[0];

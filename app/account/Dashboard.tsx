@@ -449,7 +449,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                   <div style={{display: 'flex', alignItems: 'center', padding: '48px 60px', gap: '48px', maxWidth: '100%', margin: '0 auto'}}>
                     <div style={{flex: 1}}>
                       <h2 style={{fontSize: '40px', fontWeight: '800', color: C.ink, margin: '0 0 12px 0', lineHeight: 1.2}}>
-                        Your Career Toolkit
+                        Your Report &amp; Career Toolkit
                       </h2>
                       <p style={{fontSize: '16px', color: C.ink3, margin: 0, marginBottom: '20px', lineHeight: 1.6}}>
                         Access curated resources to shape your future — colleges, internships, scholarships, and proven career development strategies tailored to your profile.
@@ -950,11 +950,17 @@ const CSS = `
 .ash-brand{padding:20px 22px 14px}
 .ash-nav{flex:1;overflow-y:auto;padding:6px 12px}
 .ash-nav-lbl{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:${C.faint};padding:14px 10px 6px}
-.ash-navi{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+.ash-navi{position:relative;display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:none;cursor:pointer;
   font-family:inherit;font-size:13.5px;font-weight:600;color:${C.ink2};padding:9px 12px;border-radius:10px;text-decoration:none;transition:background .12s,color .12s}
 .ash-navi svg{color:${C.muted};flex:none;transition:color .12s}
 .ash-navi:hover{background:${C.line2}}
-.ash-navi.on{background:${IN_TINT};color:${IN_STRONG};font-weight:700}
+/* A tint alone (barely different from the sidebar's own white) wasn't a clear
+   "you are here" signal. A solid accent bar at the sidebar's outer edge is
+   the unambiguous marker; the tint and bold label now back it up instead of
+   carrying the whole state alone. */
+.ash-navi.on{background:${IN_TINT};color:${IN_STRONG};font-weight:700;border-radius:0 10px 10px 0}
+.ash-navi.on::before{content:"";position:absolute;left:-8px;top:6px;bottom:6px;width:3px;
+  border-radius:0 3px 3px 0;background:${IN}}
 .ash-navi.on svg{color:${IN}}
 .ash-navi-c{margin-left:auto;font-size:10.5px;font-weight:700;color:${C.muted};background:${C.line2};border-radius:999px;padding:1px 7px}
 .ash-navi.on .ash-navi-c{background:#fff;color:${IN}}
