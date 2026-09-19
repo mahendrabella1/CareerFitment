@@ -113,7 +113,7 @@ export function adaptClass11ToSummary(output: Class11ScoreOutput, base: Assessme
     { key: "aptitude", label: "Aptitude", score: Math.round(ap.overallScore) },
     // A ninth dimension 9-10 doesn't have — FullReport.tsx only renders it
     // when this key is present, so class 9-10's own report is untouched.
-    { key: "creativity", label: "Creativity & Innovation", score: Math.round((l1.creativity.score / 5) * 100) },
+    { key: "creativity", label: "Creativity & Innovation", score: Math.min(100, Math.round((l1.creativity.score / 5) * 100)) },
   ];
 
   return {

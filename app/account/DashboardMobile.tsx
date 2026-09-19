@@ -508,7 +508,7 @@ export default function DashboardMobile({
           >
             {[
               { icon: "star", label: "Strongest interest", value: topInterestName, sub: `${topInterestScore}% of answers` },
-              { icon: "career_interest", label: "Interest code", value: code || "—", sub: "Holland RIASEC" },
+              { icon: "career_interest", label: "Interest code", value: code || "—", sub: "Based on your career interests" },
               { icon: "motivators", label: "Strongest area", value: strongest ? String(Math.round(strongest.score)) : "—", sub: strongest ? CAT_LABEL[strongest.key] : "" },
               { icon: "heart", label: "Emotional Intelligence", value: a.ei != null ? String(Math.round(a.ei)) : "—", sub: "Strong EQ" },
             ].map((kpi, i) => (

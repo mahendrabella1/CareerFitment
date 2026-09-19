@@ -401,7 +401,12 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
     case "emotional_intelligence": {
       const ei = a.ei ?? p;
       const quads = eiQuadrants(a).slice().sort((x, y) => y.value - x.value);
-      const topQ = quads[0]?.label, lowQ = quads[quads.length - 1]?.label;
+      const topQ = quads[0]?.label;
+      // Only name a "lightest area" when it's a genuinely different quadrant
+      // — with just 1 measured (some journeys only measure 2 of the 4), the
+      // top and bottom would otherwise be the same quadrant contradicting
+      // itself as both "strongest" and "lightest".
+      const lowQ = quads.length > 1 ? quads[quads.length - 1]?.label : undefined;
       return {
         meaning: `Your emotional intelligence (EQ) reads at ${ei}% — how well you notice your own feelings, manage your reactions, read other people, and handle relationships. It's one of the strongest predictors of how well someone does in teamwork and leadership.`,
         strengths: band(ei) !== "low"
@@ -950,28 +955,37 @@ export function traitProfile(a: AssessmentSummary): { reads: TraitRead[]; measur
 /* ------------------------- clear per-dimension result ------------------ */
 const eiBand = (p: number) => (p >= 75 ? "High EQ" : p >= 55 ? "Solid EQ" : p >= 40 ? "Developing EQ" : "Emerging EQ");
 
-// The engine measures 5 named dimensions (one question each — see scoring60.ts),
-// but the standard, recognisable EQ model is Goleman's 4 quadrants. This maps
-// the 5 onto the 4 the way Goleman's own framework groups them (Adaptability
-// & Resilience sits under Self-Management there) rather than inventing a new
-// structure — display-layer only, the underlying 5 scores are unchanged.
+// Different assessments name their EI dimensions differently, and this maps
+// whichever set a given journey actually produced onto Goleman's standard 4
+// quadrants (Adaptability & Resilience sits under Self-Management there):
+//  - the 9-10 bank measures 5 named dimensions, one question each
+//    (see scoring60.ts) — mapped many-to-one below.
+//  - the 11-12 bank (adaptClass11.ts) already only measures 2 of the 4 —
+//    Self-Awareness and Social Awareness — under those exact names.
+// Each quadrant lists every name (from either scheme) that should count
+// toward it, so this works for both without knowing which journey it is.
 const EI_QUADRANTS: { quadrant: string; sources: string[] }[] = [
-  { quadrant: "Self-Awareness", sources: ["Emotional Awareness"] },
-  { quadrant: "Self-Management", sources: ["Emotional Regulation", "Adaptability & Resilience"] },
-  { quadrant: "Social Awareness", sources: ["Empathy & Social Awareness"] },
+  { quadrant: "Self-Awareness", sources: ["Emotional Awareness", "Self-Awareness"] },
+  { quadrant: "Self-Management", sources: ["Emotional Regulation", "Adaptability & Resilience", "Self-Management"] },
+  { quadrant: "Social Awareness", sources: ["Empathy & Social Awareness", "Social Awareness"] },
   { quadrant: "Relationship Management", sources: ["Relationship Management"] },
 ];
 
-/** Emotional intelligence, re-expressed as the standard 4-quadrant EQ model. */
+/** Emotional intelligence, re-expressed as the standard 4-quadrant EQ model.
+ *  Only returns quadrants the source data actually measured — a journey like
+ *  11-12's, which only measures 2 of the 4, used to have the other 2 default
+ *  to a fabricated 0% (and then get picked as the "lightest area", a made-up
+ *  finding) instead of being left out. */
 export function eiQuadrants(a: AssessmentSummary): { label: string; value: number }[] {
   const src = a.eiBreakdown ?? [];
   if (!src.length) return [];
-  const byName = new Map(src.map((x) => [x.name, x.score]));
-  return EI_QUADRANTS.map(({ quadrant, sources }) => {
-    const vals = sources.map((s) => byName.get(s)).filter((v): v is number => v !== undefined);
-    const value = vals.length ? Math.round(vals.reduce((sum, v) => sum + v, 0) / vals.length) : 0;
-    return { label: quadrant, value };
-  });
+  const byName = new Map(src.map((x) => [x.name.toLowerCase(), x.score]));
+  const out: { label: string; value: number }[] = [];
+  for (const { quadrant, sources } of EI_QUADRANTS) {
+    const vals = sources.map((s) => byName.get(s.toLowerCase())).filter((v): v is number => v !== undefined);
+    if (vals.length) out.push({ label: quadrant, value: Math.round(vals.reduce((sum, v) => sum + v, 0) / vals.length) });
+  }
+  return out;
 }
 
 /** A short, unambiguous "here is your result" for each dimension. */

@@ -564,7 +564,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                 <div className="ogd-kpis">
                   <KpiTile icon="star" c={KPI[0]} label="Strongest interest" value={topInterestName}
                     sub={topTheme ? `${topInterestScore}% of your interest answers` : ""} subAccent />
-                  <KpiTile icon="career_interest" c={KPI[1]} label="Interest code" value={code || "—"} sub="Holland RIASEC" />
+                  <KpiTile icon="career_interest" c={KPI[1]} label="Interest code" value={code || "—"} sub="Based on your career interests" />
                   <KpiTile icon="motivators" c={KPI[2]} label="Strongest area"
                     value={strongest ? String(Math.round(strongest.score)) : "—"} sub={strongest ? CAT_LABEL[strongest.key] : ""} />
                   <KpiTile icon="heart" c={KPI[3]} label="Emotional Intelligence"

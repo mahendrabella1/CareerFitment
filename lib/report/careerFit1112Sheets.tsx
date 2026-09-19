@@ -835,8 +835,8 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
       kicker: "Career fitment",
       node: (
         <>
-          <PageHead eyebrow="What fits YOU" title="Your top 5 domains, ranked purely by your Assessment"
-            sub="Ignores your stream entirely — this is what your RIASEC interests, aptitude and strength domains point toward, with no filter for what's currently reachable. Career Suitability, next, applies the real-world stream filter." />
+          <PageHead eyebrow="What fits YOU" title="Career Fitment"
+            sub="Your top 5 domains, ranked purely by your assessment. Ignores your stream entirely — this is what your interests, aptitude and strength domains point toward, with no filter for what's currently reachable. Career Suitability, next, applies the real-world stream filter." />
           <div style={{ marginTop: 20 }}>
             {fitmentGroups.length ? <ClusterSummaryTable groups={fitmentGroups} /> : <p>No matches yet.</p>}
           </div>
@@ -855,8 +855,8 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
       kicker: "Career suitability",
       node: (
         <>
-          <PageHead eyebrow="What's realistic for your stream" title={`Your top domains that ${streamKey || "your current stream"} actually reaches`}
-            sub="Same ranking as Career Fitment, kept to only the careers you're already fully eligible for from your current stream (Native Fit) — no bridge step needed for any role shown here. Roles already listed under a domain in Career Fitment aren't repeated here — these are the next-best real options in the same domain." />
+          <PageHead eyebrow="What's realistic for your stream" title="Career Suitability"
+            sub={`Your top domains that ${streamKey || "your current stream"} actually reaches. Same ranking as Career Fitment, kept to only the careers you're already fully eligible for from your current stream (Native Fit) — no bridge step needed for any role shown here. Roles already listed under a domain in Career Fitment aren't repeated here — these are the next-best real options in the same domain.`} />
           <div style={{ marginTop: 20 }}>
             {suitabilityGroups.length ? <ClusterSummaryTable groups={suitabilityGroups} showCompanies /> : (
               <p style={{ fontSize: 13, color: "var(--ink-2)" }}>Nothing in your top fitment domains is a Native Fit for your current stream yet — see the roadmap page next for bridge options toward what you actually want.</p>
@@ -887,8 +887,10 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
       kicker: "Career selector",
       node: (
         <>
-          <PageHead eyebrow="Your favourite career path" title={desiredCareer ? `${desiredCareer}, and how to get there` : "You didn't name a career"}
-            sub="Your starting point, and the full journey to get there — the roadmap ahead is built for the long run, not just the next exam." />
+          <PageHead eyebrow="Your favourite career path" title="Career Selector"
+            sub={desiredCareer
+              ? `${desiredCareer} — your starting point, and the full journey to get there. The roadmap ahead is built for the long run, not just the next exam.`
+              : "You didn't name a career — the roadmap ahead is still built for the long run, not just the next exam."} />
           {desiredCareer ? (
             selector?.career ? (
               <div style={{ marginTop: 20 }}>

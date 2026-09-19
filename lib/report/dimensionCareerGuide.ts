@@ -116,7 +116,7 @@ const PROXY: Record<string, (l1: PsychometricProfile) => number> = {
   "Coding Interest": (l1) => (l1.aptitude.logical.score + riasecPct(l1, "I")) / 2,
   "Scientific Interest": (l1) => riasecPct(l1, "I"),
   "Spatial Ability": (l1) => l1.aptitude.spatial.score,
-  "Creativity": (l1) => (l1.creativity.score / 5) * 100,
+  "Creativity": (l1) => Math.max(0, Math.min(100, (l1.creativity.score / 5) * 100)),
   "People Orientation": (l1) => riasecPct(l1, "S"),
   "Business Orientation": (l1) => riasecPct(l1, "E"),
   "Business & Commercial Interest": (l1) => riasecPct(l1, "E"),

@@ -713,7 +713,11 @@ function scoreCreativity(responses: Record<string, number>): CreativityProfile {
   // 0-5 scale: how many distinct creative tendencies showed up across the
   // 5 questions (a student who picks the same style every time scores
   // lower diversity than one who ranges across originality/design/etc).
-  const distinctness = total ? Object.keys(tally).length / total : 0;
+  // Q60's slider vote can be LESS than a full 1.0 (differentIdeaComfort/10)
+  // while still counting as one more distinct category in the numerator, so
+  // this ratio could land just over 1 — clamped here since it's meant to be
+  // a proportion (this is what produced the reported "102%" creativity score).
+  const distinctness = total ? Math.min(1, Object.keys(tally).length / total) : 0;
   const score = Math.round(distinctness * 5 * 10) / 10;
 
   return {
@@ -869,13 +873,13 @@ function layer1DimensionScores(profile: PsychometricProfile): { label: string; s
   const ei = ((profile.emotionalIntelligence.selfAwareness + profile.emotionalIntelligence.socialAwareness) / 2) * 100;
   return [
     { label: "Personality clarity", score: profile.personality.score },
-    { label: "Career interest (RIASEC)", score: Math.round(topRiasec) },
+    { label: "Career interest", score: Math.round(topRiasec) },
     { label: "Aptitude & reasoning", score: Math.round(profile.aptitude.overallScore) },
     { label: "Strength domains", score: strengthDomainsScore },
     { label: "Motivator clarity", score: profile.motivators.score },
     { label: "Learning style", score: profile.learningStyle.score },
     { label: "Emotional intelligence", score: Math.round(ei) },
-    { label: "Creativity", score: Math.round((profile.creativity.score / 5) * 100) },
+    { label: "Creativity", score: Math.min(100, Math.round((profile.creativity.score / 5) * 100)) },
   ];
 }
 
