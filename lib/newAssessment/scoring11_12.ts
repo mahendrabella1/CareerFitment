@@ -225,6 +225,14 @@ export interface AcademicRealityAnalysis {
   /** Raw Subject Fit Q64/Q65 answers (single subject each), kept alongside the derived subjectStrengths/Challenges lists above so callers needing the exact answer — e.g. careerFit1112Sheets.tsx's RankingContext1112 — don't have to guess it back out of subjectStrengths[0]. */
   enjoyedSubject: string;
   difficultSubject: string;
+  /** Subject Fit Q68 (up to 2 of: my own choice, family/mentor
+   *  recommendation, peer influence, earning potential, uncertainty) — a
+   *  signal for whether the CURRENT stream reflects genuine self-driven
+   *  interest. When it doesn't (family/peer/uncertainty, without "my own
+   *  choice"), Career Suitability widens to include Bridge-fit careers too,
+   *  not just Native Fit, since the student's real interest may sit outside
+   *  their current stream. */
+  streamChoiceReasons: string[];
   careerPathwaysAvailable: string[];
   // "Career Suitability" — every domain (with its real roles) realistically
   // open to this STREAM, independent of whether it matches this specific
@@ -306,6 +314,16 @@ export interface StudentAspiration {
   consideringAreas: string[];
   /** Career Selector Q80 (up to 3 career names) — "useful for elimination" per the question's own copy; RankingContext1112 removes these from ranking entirely. */
   excludedCareers: string[];
+  /** Career Fit Q74 (up to 2 of: course suitability, admissions/competition,
+   *  career outcomes, financial cost, family/location, confusion) — a direct
+   *  signal for which existing report section to point the student at (e.g.
+   *  financial cost -> the Funded Programs table), not a ranking input. */
+  topConcerns: string[];
+  /** Career Fit Q77 — the kind of pathway they want (research, corporate,
+   *  entrepreneurship, public service, or a handful of non-field-specific
+   *  answers like "flexible degree"/"don't know yet"). RankingContext1112
+   *  nudges ranking toward the field-specific answers only. */
+  pathwayType: string;
   motivationFactors: string[];
   careerMatch: CareerMatch;
   alignment: {
@@ -768,6 +786,7 @@ function generateAcademicRealityAnalysis(
     subjectChallenges: identifySubjectChallenges(subjects, profile),
     enjoyedSubject: responses.subject_fit.enjoyedSubject,
     difficultSubject: responses.subject_fit.difficultSubject,
+    streamChoiceReasons: responses.subject_fit.streamChoiceReasons,
     careerPathwaysAvailable: getAvailablePathways(stream, profile),
     careerSuitability: getCareerSuitability(streamKeyDetailed),
     nextSteps: suitability === "Misaligned"
@@ -825,6 +844,8 @@ function generateStudentAspiration(
     alternativeOptions: responses.career_selector.alternativeChoices,
     consideringAreas: responses.career_fit.consideringAreas,
     excludedCareers: responses.career_selector.excludedCareers,
+    topConcerns: responses.career_fit.topConcerns,
+    pathwayType: responses.career_fit.pathwayType,
     motivationFactors: extractMotivationFactors(profile.motivators),
     careerMatch,
     alignment: {

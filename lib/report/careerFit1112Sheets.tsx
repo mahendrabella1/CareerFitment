@@ -49,7 +49,7 @@ import {
   type DomainGroup1112, type RankedCareer1112, type RoadmapPhase1112,
 } from "@/lib/report/careerFitEngine1112";
 import { DOMAINS_1112, STANDARD_CLUSTERS, CLUSTER_EXPLORE_LINKS, CLUSTER_COMPANIES, CLUSTER_FUNDED_PROGRAMS, CAREERS_1112, STREAM_KEY_1112, roadmapFor, type RoadmapEntry, type Career1112, type StreamKey1112, type StandardCluster } from "@/lib/report/careerfit1112";
-import { CLUSTER_ROADMAPS, type ClusterRoadmap, type RoadmapSection } from "@/lib/report/clusterRoadmaps1112";
+import { CLUSTER_ROADMAPS } from "@/lib/report/clusterRoadmaps1112";
 import { degreesForStream, ELIGIBILITY_SYMBOL, ELIGIBILITY_LABEL, type DegreeEligibilityRow } from "@/lib/report/degreeStreamMatrix";
 import { topDimensionsForStudent, type ScoredDimension } from "@/lib/report/dimensionCareerGuide";
 import { percentileBandFor } from "@/lib/report/jeePercentileGuide";
@@ -210,7 +210,10 @@ function OverviewEmpty({ text }: { text: string }) {
 // preview — each step is its own flush, bordered row (matching the table
 // language above) joined by an actual "↓" connector so this still reads as
 // one continuous journey, not just a divided list.
-function OverviewRoadmapPreview({ phases, color }: { phases: RoadmapPhase1112[]; color: string }) {
+/** `full` shows every point per phase (the Career Selector page's own
+ *  "simple steps" section) instead of just the headline point (the Overview
+ *  table's compact preview column). */
+function OverviewRoadmapPreview({ phases, color, full }: { phases: RoadmapPhase1112[]; color: string; full?: boolean }) {
   return (
     <div style={{ marginTop: 10 }}>
       {phases.map((p, i) => (
@@ -218,7 +221,13 @@ function OverviewRoadmapPreview({ phases, color }: { phases: RoadmapPhase1112[];
           <div style={{ padding: "9px 14px", borderTop: "1px solid var(--line-2, var(--line))", background: i % 2 ? "var(--line-2, #f7f7f8)" : "transparent" }}>
             <div style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color }}>{p.period}</div>
             <div style={{ fontSize: 11.5, fontWeight: 800, color: "var(--ink)", marginTop: 2 }}>{p.title}</div>
-            <div style={{ fontSize: 10.5, color: "var(--ink-2)", marginTop: 3, lineHeight: 1.45 }}>{p.points[0]}</div>
+            {full ? (
+              <ul style={{ margin: "5px 0 0", paddingLeft: 16, display: "flex", flexDirection: "column", gap: 4 }}>
+                {p.points.map((pt) => <li key={pt} style={{ fontSize: 10.5, color: "var(--ink-2)", lineHeight: 1.5 }}>{pt}</li>)}
+              </ul>
+            ) : (
+              <div style={{ fontSize: 10.5, color: "var(--ink-2)", marginTop: 3, lineHeight: 1.45 }}>{p.points[0]}</div>
+            )}
           </div>
           {i < phases.length - 1 && (
             <div style={{ textAlign: "center", fontSize: 13, fontWeight: 800, color, lineHeight: 1, padding: "2px 0" }}>↓</div>
@@ -547,97 +556,6 @@ function DimensionBlock({ d, rank }: { d: ScoredDimension; rank: number }) {
   );
 }
 
-// The rich, 5-phase per-cluster roadmap (CLUSTER_ROADMAPS) — a deeper,
-// cluster-wide "whole career journey" view that follows RoadmapCard's
-// narrower "how do I get past my stream gate" answer. Each phase is its own
-// card (period + real courses/skills/roles/quals for THIS cluster, not
-// generic filler), coloured consistently with the rest of the Selector page.
-// Salary and "companies that hire" are already researched and verified once
-// per cluster (CLUSTER_SALARY, CLUSTER_COMPANIES) — rather than hand-writing
-// them into all 16 CLUSTER_ROADMAPS entries (16x the upkeep, two sources of
-// truth that can drift apart), this attaches them at render time to the
-// phase they're relevant for: entry-level pay + regular/govt employers on
-// "I CAN START AS" (phase 04), the same salary line's senior band restated
-// on "I CAN GROW INTO" (phase 05) since that's the one a 17-year-old is
-// actually asking about at that stage of the page.
-function extraSectionsForPhase(code: string, cluster: StandardCluster): RoadmapSection[] {
-  const sal = CLUSTER_SALARY.get(cluster);
-  const companies = CLUSTER_COMPANIES[cluster];
-  const extra: RoadmapSection[] = [];
-  if (code === "04") {
-    if (sal) extra.push({ heading: "Salary range (India)", items: [sal.india] });
-    if (companies?.regular.length) extra.push({ heading: "Companies that hire — regular", items: companies.regular.slice(0, 6) });
-    if (companies?.govt.length) extra.push({ heading: "Companies that hire — government", items: companies.govt.slice(0, 6) });
-  }
-  if (code === "05" && sal) extra.push({ heading: "Senior / leadership salary (India)", items: [sal.india.split("·").pop()?.trim() ?? sal.india] });
-  return extra;
-}
-
-function ClusterRoadmapDetail({ roadmap, color, cluster, streamLabel, entranceExam }: { roadmap: ClusterRoadmap; color: string; cluster: StandardCluster; streamLabel?: string; entranceExam?: string }) {
-  const n = roadmap.phases.length;
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-      <p style={{ margin: 0, fontSize: 12.5, color: "var(--ink-2)", textAlign: "center", fontStyle: "italic" }}>{roadmap.title}</p>
-      {entranceExam && (
-        <div style={{ textAlign: "center", padding: "10px 16px", background: `${color}0f`, border: `1px solid ${color}40`, borderRadius: 10 }}>
-          <span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color }}>Entrance exam</span>
-          <div style={{ fontSize: 12.5, fontWeight: 700, color: "var(--ink)", marginTop: 3 }}>{entranceExam}</div>
-        </div>
-      )}
-      <div style={{ position: "relative" }}>
-        {/* The timeline rail — a single connecting line down the left edge
-            linking every phase badge, so this reads as one continuous
-            15-year journey rather than 5 disconnected cards. */}
-        <div style={{ position: "absolute", left: 19, top: 20, bottom: 20, width: 2, background: `linear-gradient(${color}30, ${color})` }} />
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {roadmap.phases.map((p, i) => {
-            // Intensity rises phase by phase (30% → 100%) so the badge colour
-            // itself signals progression through the 15 years, not just the text.
-            const intensity = 0.55 + (0.45 * i) / Math.max(1, n - 1);
-            const sections = [...p.sections, ...extraSectionsForPhase(p.code, cluster)];
-            return (
-              <div key={p.code} style={{ position: "relative", paddingLeft: 52 }}>
-                <span style={{
-                  position: "absolute", left: 0, top: 0, width: 40, height: 40, borderRadius: "50%",
-                  background: color, opacity: intensity, color: "#fff", display: "grid", placeItems: "center",
-                  fontWeight: 800, fontSize: 13, boxShadow: `0 0 0 4px ${color}14`,
-                }}>{p.code}</span>
-                <div style={{ border: "1px solid var(--line)", borderRadius: 13, overflow: "hidden" }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8, padding: "10px 16px", background: `${color}12`, borderBottom: `1px solid ${color}38` }}>
-                    <div style={{ fontSize: 13.5, fontWeight: 800, color: "var(--ink)" }}>{p.name}{i === 0 && streamLabel ? ` — starting from ${streamLabel}` : ""}</div>
-                    <span style={{ fontSize: 10.5, fontWeight: 800, color, background: "#fff", border: `1px solid ${color}50`, borderRadius: 999, padding: "3px 10px" }}>{p.stage}</span>
-                  </div>
-                  <div style={{ padding: "14px 16px", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: 14 }}>
-                    {sections.map((s) => (
-                      <div key={s.heading}>
-                        <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 6 }}>{s.heading}</div>
-                        <ul style={{ margin: 0, paddingLeft: 16, display: "flex", flexDirection: "column", gap: 4 }}>
-                          {s.items.map((it) => <li key={it} style={{ fontSize: 11.5, color: "var(--ink-2)", lineHeight: 1.5 }}>{it}</li>)}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <div style={{ border: `1px solid ${color}38`, background: `${color}0a`, borderRadius: 12, padding: "16px 18px", textAlign: "center" }}>
-        <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 10 }}>My long-term journey</div>
-        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: 6 }}>
-          {roadmap.longTermJourney.map((step, i) => (
-            <span key={step} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <span style={{ fontSize: 11.5, fontWeight: 800, color: "var(--ink)", background: "#fff", border: `1px solid ${color}50`, borderRadius: 999, padding: "5px 12px" }}>{i === 0 && streamLabel ? `${step} (${streamLabel})` : step}</span>
-              {i < roadmap.longTermJourney.length - 1 && <span style={{ color, fontWeight: 800 }}>→</span>}
-            </span>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // The 6-category legend the "Comment" column reads against — static,
 // explanatory, doesn't depend on student data, matching the reference
 // report's own "Scenarios" block.
@@ -660,6 +578,40 @@ function ScenariosLegend() {
           </li>
         ))}
       </ol>
+    </div>
+  );
+}
+
+// Career Fit Q74's exact option text (up to 2 picked) -> where in THIS
+// report that concern is actually addressed, so "what worries you most"
+// points somewhere real instead of being collected and never read back.
+const CONCERN_POINTERS: Record<string, string> = {
+  "Course Suitability: Picking the wrong course or struggling with academic difficulty.":
+    "That's exactly what this ranking is for — every cluster below is ordered by how well it fits your own measured interests and abilities, not by popularity.",
+  "Admissions & Competition: Cracking tough entrance exams and getting into a good college.":
+    "The Career Selector page ahead names the specific entrance exam for your chosen career, with a full roadmap to it.",
+  "Career Outcomes: Getting a stable job, good salary, and career growth.":
+    "Each cluster below shows its real entry/mid/senior salary range in India and abroad, under \"Typical earnings.\"",
+  "Financial Cost: Affordability, high fees, or student expenses.":
+    "See the Funded Programmes table on the Career Suitability page ahead — genuinely funded or stipend-linked routes, not just any paid course.",
+  "Family & Location: Parents' expectations or having to relocate.":
+    "Worth sharing your top clusters below with your family directly — a concrete, ranked list from your own answers is easier to discuss than a vague direction.",
+  "Confusion / Lack of Info: Feeling overwhelmed, limited, or unaware of the options.":
+    "That's what the ranking below is for — it narrows 332 careers down to the ones your own profile actually points toward.",
+};
+function ConcernPointers({ concerns }: { concerns: string[] }) {
+  const known = concerns.filter((c) => CONCERN_POINTERS[c]);
+  if (!known.length) return null;
+  return (
+    <div style={{ border: "1px solid var(--line)", borderRadius: 12, padding: "14px 16px", marginBottom: 16, background: "var(--bg, #fafafa)" }}>
+      <div className="subhd" style={{ marginBottom: 10 }}>You told us this worries you most</div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {known.map((c) => (
+          <div key={c} style={{ fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.55 }}>
+            <b style={{ color: "var(--ink)" }}>{c.split(":")[0]}</b> — {CONCERN_POINTERS[c]}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -709,9 +661,10 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
 
   // Nudges cluster ranking toward what the student actually told the system
   // (Career Selector's desired/alternative/excluded careers, Career Fit's
-  // considered field areas, Subject Fit's enjoyed/hardest subject) instead of
-  // leaving Fitment/Suitability purely RIASEC-driven — see RankingContext1112's
-  // own header comment in careerFitEngine1112.ts for why.
+  // considered field areas and pathway-type preference, Subject Fit's
+  // enjoyed/hardest subject) instead of leaving Fitment/Suitability purely
+  // RIASEC-driven — see RankingContext1112's own header comment in
+  // careerFitEngine1112.ts for why.
   const rankingCtx = {
     desiredCareerText: desiredCareer,
     enjoyedSubject: output.layer2.enjoyedSubject,
@@ -719,6 +672,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
     consideringAreas: output.layer4.consideringAreas,
     alternativeCareerTexts: output.layer4.alternativeOptions,
     excludedCareerTexts: output.layer4.excludedCareers,
+    pathwayType: output.layer4.pathwayType,
   };
 
   const fitmentRanked = rankFitment1112(l1, rankingCtx);
@@ -732,7 +686,18 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
   // it shows the NEXT tier of roles instead (still real, still ranked).
   const fitmentShownIds = new Set(fitmentGroups.flatMap((g) => g.careers.map((c) => c.career.id)));
 
-  const suitabilityRanked = rankSuitability1112(l1, streamKey, rankingCtx);
+  // Widen Suitability to include Bridge-fit careers (not just Native Fit)
+  // when the student's own reasons for their current stream suggest it
+  // wasn't a fully self-driven choice — family/mentor steer, peer influence
+  // or outright uncertainty, without also picking "my own choice". A student
+  // in that position may have real interest sitting just outside their
+  // current stream, which a Native-Fit-only page would never surface.
+  const NON_SELF_DRIVEN_REASONS = ["Family & Mentors: Recommendation or guidance from parents, teachers, or counselors.", "Peer Influence: My friends or classmates were taking it.", "Uncertainty: I didn't know what else to pick."];
+  const streamReasons = output.layer2.streamChoiceReasons ?? [];
+  const chosenFreely = streamReasons.some((r) => r.startsWith("My Choice / Default"));
+  const widenToBridge = !chosenFreely && streamReasons.some((r) => NON_SELF_DRIVEN_REASONS.includes(r));
+
+  const suitabilityRanked = rankSuitability1112(l1, streamKey, { ...rankingCtx, includeBridge: widenToBridge });
   const suitabilityGroups = groupByCluster1112(suitabilityRanked, 5, 5, fitmentShownIds);
 
   const selector = desiredCareer ? selectCareer1112(desiredCareer, l1, streamKey) : null;
@@ -746,10 +711,17 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
 
   // A brief, generic roadmap preview for the overview table's Selector
   // column — reuses buildCareer20YearRoadmap (already built from the
-  // career's own real fields, no new content) rather than waiting on the
-  // full rich per-cluster roadmap (that's the detailed Selector page,
-  // further down this report — this is deliberately just an overview).
+  // career's own real fields, no new content).
   const selectorPreviewRoadmap = selector?.career ? buildCareer20YearRoadmap(selector.career, streamKey) : null;
+
+  // The Selector page's own detailed roadmap used to be built from the
+  // student's DESIRED career's cluster — which can be a Hard Gate, not
+  // reachable from their stream at all, making a 15-year "how you'll get
+  // there" roadmap actively misleading. It's built from Career Suitability's
+  // #1 domain instead: the top career that's genuinely, realistically
+  // reachable right now, not the aspirational pick shown in the banner above.
+  const topSuitabilityCareer = suitabilityGroups[0]?.careers[0] ?? null;
+  const realisticRoadmap = topSuitabilityCareer ? buildCareer20YearRoadmap(topSuitabilityCareer.career, streamKey) : null;
 
   const sheets: ReportSheet[] = [
     {
@@ -838,13 +810,14 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
           <PageHead eyebrow="What fits YOU" title="Career Fitment"
             sub="Your top 5 domains, ranked purely by your assessment. Ignores your stream entirely — this is what your interests, aptitude and strength domains point toward, with no filter for what's currently reachable. Career Suitability, next, applies the real-world stream filter." />
           <div style={{ marginTop: 20 }}>
+            <ConcernPointers concerns={output.layer4.topConcerns ?? []} />
+            {/* The consolidated table is the whole story here — Career
+                Suitability, next, is where each of these domains gets the
+                full per-role breakdown, since that's the realistic, stream-
+                filtered list worth reading in that much depth. */}
             {fitmentGroups.length ? <ClusterSummaryTable groups={fitmentGroups} /> : <p>No matches yet.</p>}
           </div>
-          <div style={{ marginTop: 24, marginBottom: 16 }}><ScenariosLegend /></div>
-          <div>
-            {fitmentGroups.length ? fitmentGroups.map((g, i) => <DomainBlock key={g.domain} g={g} rank={i + 1} />) : null}
-          </div>
-          <p className="disclaimer" style={{ marginTop: 8 }}>
+          <p className="disclaimer" style={{ marginTop: 16 }}>
             You're free to explore any career, in any domain — this is a starting point, not a fixed path.
           </p>
         </>
@@ -862,7 +835,8 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
               <p style={{ fontSize: 13, color: "var(--ink-2)" }}>Nothing in your top fitment domains is a Native Fit for your current stream yet — see the roadmap page next for bridge options toward what you actually want.</p>
             )}
           </div>
-          <div style={{ marginTop: 24 }}>
+          {suitabilityGroups.length > 0 && <div style={{ marginTop: 24, marginBottom: 16 }}><ScenariosLegend /></div>}
+          <div style={{ marginTop: suitabilityGroups.length > 0 ? 0 : 24 }}>
             {suitabilityGroups.length ? suitabilityGroups.map((g, i) => (
               <DomainBlock key={g.domain} g={g} rank={i + 1} badge={<Pill label="Native fit" tone={TONE.good} />} />
             )) : null}
@@ -925,13 +899,18 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                   <b style={{ color: "var(--ink)" }}>Entrance exam for {selector.career.name}:</b> {selector.career.typicalEntranceExam}
                 </div>
 
-                <div style={BREAK}>
-                  <SecHead center eyebrow={`${selector.career.cluster} · the full journey`} title="Your 15-year roadmap"
-                    sub="Not just the next exam — the whole path this field usually follows, from Class 12 to senior/leadership roles: what to study, exams to write, certifications, internships and how the role grows over time." />
-                  <div style={{ marginTop: 16 }}>
-                    <ClusterRoadmapDetail roadmap={CLUSTER_ROADMAPS[selector.career.cluster]} color={clusterColor(selector.career.cluster)} cluster={selector.career.cluster} streamLabel={streamKey || undefined} entranceExam={selector.career.typicalEntranceExam} />
+                {topSuitabilityCareer && realisticRoadmap && (
+                  <div style={BREAK}>
+                    <SecHead center eyebrow={`${suitabilityGroups[0].domain} · what's realistic right now`} title="Your realistic path"
+                      sub={`${selector.career.name} is your goal — but ${topSuitabilityCareer.career.name} is the closest real option ${streamKey || "your stream"} already qualifies you for. Simple, concrete steps, not a long aspirational journey.`} />
+                    <div style={{ marginTop: 16 }}>
+                      <div style={{ display: "flex", justifyContent: "center", marginBottom: 4 }}>
+                        <Pill label={topSuitabilityCareer.roadmap.fitType} tone={toneForFitType(topSuitabilityCareer.roadmap.fitType)} />
+                      </div>
+                      <OverviewRoadmapPreview phases={realisticRoadmap} color={clusterColor(topSuitabilityCareer.career.cluster)} full />
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <div style={BREAK}>
                   <SecHead center eyebrow="Where to go next" title="Explore exams, certifications & internships"

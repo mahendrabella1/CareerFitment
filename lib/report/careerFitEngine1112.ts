@@ -49,6 +49,13 @@ export interface RankingContext1112 {
   alternativeCareerTexts?: string[];
   /** Career Selector Q80 — "Which career areas would you NOT want to pursue?" (up to 3 career names). The question's own copy says "useful for elimination" — these specific careers are removed from ranking entirely, not just discounted. */
   excludedCareerTexts?: string[];
+  /** Career Fit Q77 — "What kind of future pathway interests you most?" Only
+   *  4 of its 8 answers name a specific field (research/academia, corporate,
+   *  entrepreneurship, public service) and get a boost via
+   *  PATHWAY_TYPE_CLUSTER_AFFINITY; the rest ("flexible degree", "don't know
+   *  yet", the two generic postgrad/professional-degree answers) intentionally
+   *  map to nothing, same as an unlisted subject/field elsewhere in this file. */
+  pathwayType?: string;
 }
 
 // Grounded in what each subject actually leads into, not a guess — kept
@@ -101,9 +108,21 @@ const FIELD_CLUSTER_AFFINITY: Record<string, StandardCluster[]> = {
   "Research": ["STEM"],
 };
 
+// Career Fit Q77's answers that actually name a field, mapped to the
+// clusters they lead into — the other 4 of its 8 options ("flexible degree",
+// "don't know yet", and the two generic postgrad/professional-degree
+// answers) are deliberately absent, same as an unmapped "Other" elsewhere.
+const PATHWAY_TYPE_CLUSTER_AFFINITY: Record<string, StandardCluster[]> = {
+  "Degree → research/academia": ["STEM", "Education & Training"],
+  "Degree → corporate career": ["Business Management & Administration", "Finance"],
+  "Degree → entrepreneurship": ["Business Management & Administration", "Marketing"],
+  "Degree → public service": ["Government & Public Administration"],
+};
+
 const DESIRED_CLUSTER_BOOST = 12;
 const CONSIDERING_AREA_BOOST = 8;
 const ALTERNATIVE_CAREER_BOOST = 5;
+const PATHWAY_TYPE_BOOST = 6;
 const SUBJECT_ENJOYED_BOOST = 6;
 const SUBJECT_DIFFICULT_DISCOUNT = 6;
 
@@ -113,6 +132,7 @@ interface ResolvedAdjustments1112 {
   alternativeClusters: StandardCluster[];
   enjoyedClusters: StandardCluster[];
   difficultClusters: StandardCluster[];
+  pathwayClusters: StandardCluster[];
   excludedCareerIds: Set<number>;
 }
 function resolveRankingAdjustments1112(ctx?: RankingContext1112): ResolvedAdjustments1112 {
@@ -124,8 +144,9 @@ function resolveRankingAdjustments1112(ctx?: RankingContext1112): ResolvedAdjust
   const alternativeClusters = Array.from(new Set((ctx?.alternativeCareerTexts ?? []).map((t) => findCareer1112(t)?.cluster).filter((c): c is StandardCluster => Boolean(c))));
   const enjoyedClusters = ctx?.enjoyedSubject ? SUBJECT_CLUSTER_AFFINITY[ctx.enjoyedSubject] ?? [] : [];
   const difficultClusters = ctx?.difficultSubject ? SUBJECT_CLUSTER_AFFINITY[ctx.difficultSubject] ?? [] : [];
+  const pathwayClusters = ctx?.pathwayType ? PATHWAY_TYPE_CLUSTER_AFFINITY[ctx.pathwayType] ?? [] : [];
   const excludedCareerIds = new Set((ctx?.excludedCareerTexts ?? []).map((t) => findCareer1112(t)?.id).filter((id): id is number => id != null));
-  return { desiredCluster, consideringClusters, alternativeClusters, enjoyedClusters, difficultClusters, excludedCareerIds };
+  return { desiredCluster, consideringClusters, alternativeClusters, enjoyedClusters, difficultClusters, pathwayClusters, excludedCareerIds };
 }
 
 /** The net interest/score delta ranking should apply for one career's cluster — same sign and size used for both, so a boosted career's verdict and its domain ranking never disagree about which way it moved. */
@@ -136,6 +157,7 @@ function clusterAdjustment1112(cluster: StandardCluster, adj: ResolvedAdjustment
   if (adj.alternativeClusters.includes(cluster)) delta += ALTERNATIVE_CAREER_BOOST;
   if (adj.enjoyedClusters.includes(cluster)) delta += SUBJECT_ENJOYED_BOOST;
   if (adj.difficultClusters.includes(cluster)) delta -= SUBJECT_DIFFICULT_DISCOUNT;
+  if (adj.pathwayClusters.includes(cluster)) delta += PATHWAY_TYPE_BOOST;
   return delta;
 }
 
@@ -395,10 +417,10 @@ export function rankSuitability1112(
   return out;
 }
 
-export interface DomainGroup1112 {
+export interface DomainGroup1112<T extends RankedCareer1112 = RankedCareer1112> {
   domain: string;
   topScore: number;
-  careers: RankedCareer1112[];
+  careers: T[];
 }
 
 /**
@@ -431,7 +453,7 @@ export interface DomainGroup1112 {
  * Native-Fit role in it was already shown), that domain shows its normal
  * top list instead of an empty table.
  */
-export function groupByDomain1112(ranked: RankedCareer1112[], domainLimit = 5, rolesPerDomain = 4, excludeCareerIds?: Set<number>): DomainGroup1112[] {
+export function groupByDomain1112<T extends RankedCareer1112>(ranked: T[], domainLimit = 5, rolesPerDomain = 4, excludeCareerIds?: Set<number>): DomainGroup1112<T>[] {
   return groupByKey1112(ranked, (c) => c.domain, domainLimit, rolesPerDomain, excludeCareerIds);
 }
 
@@ -444,12 +466,12 @@ export function groupByDomain1112(ranked: RankedCareer1112[], domainLimit = 5, r
  * on the same DomainGroup1112 shape so existing render code (DomainBlock,
  * RolesTable, etc.) works unchanged regardless of which grouping produced it.
  */
-export function groupByCluster1112(ranked: RankedCareer1112[], clusterLimit = 5, rolesPerCluster = 4, excludeCareerIds?: Set<number>): DomainGroup1112[] {
+export function groupByCluster1112<T extends RankedCareer1112>(ranked: T[], clusterLimit = 5, rolesPerCluster = 4, excludeCareerIds?: Set<number>): DomainGroup1112<T>[] {
   return groupByKey1112(ranked, (c) => c.cluster, clusterLimit, rolesPerCluster, excludeCareerIds);
 }
 
-function groupByKey1112(ranked: RankedCareer1112[], keyOf: (c: Career1112) => string, groupLimit: number, rolesPerGroup: number, excludeCareerIds?: Set<number>): DomainGroup1112[] {
-  const byDomain = new Map<string, RankedCareer1112[]>();
+function groupByKey1112<T extends RankedCareer1112>(ranked: T[], keyOf: (c: Career1112) => string, groupLimit: number, rolesPerGroup: number, excludeCareerIds?: Set<number>): DomainGroup1112<T>[] {
+  const byDomain = new Map<string, T[]>();
   for (const r of ranked) {
     const key = keyOf(r.career);
     const list = byDomain.get(key) ?? [];
@@ -474,7 +496,7 @@ function groupByKey1112(ranked: RankedCareer1112[], keyOf: (c: Career1112) => st
     // of DIFFERENT interest angles it satisfies, not how many synonyms for
     // the same one angle it happens to contain.
     const seenRiasec = new Set<string>();
-    const topInterest: RankedCareer1112[] = [];
+    const topInterest: T[] = [];
     for (const c of byInterest) {
       if (seenRiasec.has(c.career.riasec)) continue;
       seenRiasec.add(c.career.riasec);
