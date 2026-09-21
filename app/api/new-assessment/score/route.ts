@@ -245,6 +245,9 @@ function convertAnswersToClass11Format(answers: Record<string, string>, chosenSe
     career_interest: dimensions.career_interest,
     aptitude: dimensions.aptitude,
     strength_domains: dimensions.strength_domains,
+    // The Strengths bank has 2 randomly-assigned sets — scoring11_12.ts needs
+    // to know which one these strength_domains answers actually came from.
+    strengthsSetName: chosenSets?.strengths,
     multiple_intelligence: dimensions.multiple_intelligence,
     motivators: dimensions.motivators,
     learning_styles: dimensions.learning_styles,

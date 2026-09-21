@@ -76,10 +76,11 @@ export function adaptClass11ToSummary(output: Class11ScoreOutput, base: Assessme
 
   // Genuinely separate now (see scoring11_12.ts): Multiple Intelligence is
   // the 8 Gardner domains, Strengths is the 6 real workplace-competency
-  // domains (Problem Solving, Leadership, Creative Thinking, Design
-  // Thinking, Influencing, Strategic Thinking) — two different question
-  // banks feeding two different PsychometricProfile fields, not the same
-  // list shown twice under two names.
+  // domains (Intellectual & Analytical, Creative & Innovative, Strategic &
+  // Futuristic, Execution & Achievement, Influence & Leadership,
+  // Relationship & Adaptability) — two different question banks feeding two
+  // different PsychometricProfile fields, not the same list shown twice
+  // under two names.
   const intelligenceRanked = l1.multipleIntelligence
     .slice()
     .sort((a, b) => b.score - a.score)

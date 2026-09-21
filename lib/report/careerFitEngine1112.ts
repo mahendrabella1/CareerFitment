@@ -189,33 +189,34 @@ const MI_NAME_TO_CODE: Record<string, MICode> = {
   "Bodily-Kinesthetic": "MI_KINESTHETIC",
 };
 
-// Strengths (Problem Solving, Leadership, Creative Thinking, Design
-// Thinking, Influencing, Strategic Thinking — scoring11_12.ts's
-// scoreStrengthAreas) has no per-career tag the way RIASEC/MI/aptitude do —
-// tagging all 332 CAREERS_1112 entries individually would be a large,
-// error-prone authoring effort for a 6-value scale. Tagging at the CLUSTER
-// level instead (every career in a cluster inherits its cluster's own 2
-// dominant strengths, primary/secondary like MI's mi1/mi2) is coarser but
-// still a real, defensible signal — grounded in what that cluster's work
-// actually demands, not a guess. Every one of the 16 clusters gets exactly
-// 2, so this can reuse the same primary/secondary weighting MI already uses.
+// Strengths (Intellectual & Analytical, Creative & Innovative, Strategic &
+// Futuristic, Execution & Achievement, Influence & Leadership, Relationship
+// & Adaptability — scoring11_12.ts's scoreStrengthAreas) has no per-career
+// tag the way RIASEC/MI/aptitude do — tagging all 332 CAREERS_1112 entries
+// individually would be a large, error-prone authoring effort for a 6-value
+// scale. Tagging at the CLUSTER level instead (every career in a cluster
+// inherits its cluster's own 2 dominant strengths, primary/secondary like
+// MI's mi1/mi2) is coarser but still a real, defensible signal — grounded in
+// what that cluster's work actually demands, not a guess. Every one of the
+// 16 clusters gets exactly 2, so this can reuse the same primary/secondary
+// weighting MI already uses.
 const CLUSTER_STRENGTH_AFFINITY: Record<StandardCluster, [string, string]> = {
-  "STEM": ["Problem Solving", "Strategic Thinking"],
-  "Information Technology": ["Problem Solving", "Design Thinking"],
-  "Health Science": ["Problem Solving", "Influencing"],
-  "Finance": ["Problem Solving", "Strategic Thinking"],
-  "Business Management & Administration": ["Leadership", "Strategic Thinking"],
-  "Law, Public Safety, Corrections & Security": ["Problem Solving", "Influencing"],
-  "Human Services": ["Influencing", "Leadership"],
-  "Arts, A/V Technology & Communications": ["Creative Thinking", "Design Thinking"],
-  "Architecture & Construction": ["Design Thinking", "Creative Thinking"],
-  "Government & Public Administration": ["Leadership", "Strategic Thinking"],
-  "Hospitality & Tourism": ["Influencing", "Leadership"],
-  "Agriculture, Food & Natural Resources": ["Problem Solving", "Strategic Thinking"],
-  "Education & Training": ["Influencing", "Leadership"],
-  "Marketing": ["Creative Thinking", "Influencing"],
-  "Manufacturing": ["Problem Solving", "Strategic Thinking"],
-  "Transportation, Distribution & Logistics": ["Problem Solving", "Leadership"],
+  "STEM": ["Intellectual & Analytical", "Strategic & Futuristic"],
+  "Information Technology": ["Intellectual & Analytical", "Execution & Achievement"],
+  "Health Science": ["Intellectual & Analytical", "Relationship & Adaptability"],
+  "Finance": ["Intellectual & Analytical", "Execution & Achievement"],
+  "Business Management & Administration": ["Influence & Leadership", "Strategic & Futuristic"],
+  "Law, Public Safety, Corrections & Security": ["Intellectual & Analytical", "Influence & Leadership"],
+  "Human Services": ["Relationship & Adaptability", "Influence & Leadership"],
+  "Arts, A/V Technology & Communications": ["Creative & Innovative", "Relationship & Adaptability"],
+  "Architecture & Construction": ["Creative & Innovative", "Execution & Achievement"],
+  "Government & Public Administration": ["Influence & Leadership", "Strategic & Futuristic"],
+  "Hospitality & Tourism": ["Relationship & Adaptability", "Influence & Leadership"],
+  "Agriculture, Food & Natural Resources": ["Intellectual & Analytical", "Execution & Achievement"],
+  "Education & Training": ["Relationship & Adaptability", "Influence & Leadership"],
+  "Marketing": ["Creative & Innovative", "Influence & Leadership"],
+  "Manufacturing": ["Execution & Achievement", "Intellectual & Analytical"],
+  "Transportation, Distribution & Logistics": ["Execution & Achievement", "Strategic & Futuristic"],
 };
 const STRENGTH_WEIGHTS = [1, 0.6]; // primary/secondary, same shape as MI_WEIGHTS
 
@@ -237,7 +238,7 @@ export function buildStudentVector1112(layer1: PsychometricProfile): StudentVect
   // multipleIntelligence, not strengthDomains — the 8 Gardner MI domains
   // MI_NAME_TO_CODE expects (Linguistic, Logical-Mathematical, ...) live
   // there. strengthDomains now holds the real, separate Strengths measure
-  // (Problem Solving, Leadership, Creative Thinking, ...) since that got
+  // (Intellectual & Analytical, Creative & Innovative, ...) since that got
   // split out from Multiple Intelligence — reading it here meant every
   // MI_NAME_TO_CODE lookup returned undefined, so `mi` came back completely
   // empty for every Class 11-12 student. scoreCareer1112 below silently
@@ -262,7 +263,8 @@ export function buildStudentVector1112(layer1: PsychometricProfile): StudentVect
   };
 
   // strengthDomains, not multipleIntelligence — the real 6-parameter
-  // Strengths measure (Problem Solving, Leadership, ...) lives there now.
+  // Strengths measure (Intellectual & Analytical, Creative & Innovative,
+  // ...) lives there now.
   const strength: Partial<Record<string, number>> = {};
   for (const d of layer1.strengthDomains) {
     strength[d.domain] = Math.max(0, Math.min(1, d.score / 5));
@@ -327,7 +329,7 @@ export function scoreCareer1112(vector: StudentVector1112, career: Career1112): 
 const ALL_RIASEC: RiasecLetter[] = ["R", "I", "A", "S", "E", "C"];
 const ALL_MI: MICode[] = ["MI_LINGUISTIC", "MI_ANALYTICAL", "MI_VISUAL", "MI_INTERPERSONAL", "MI_INTRAPERSONAL", "MI_NATURALISTIC", "MI_AUDITORY", "MI_KINESTHETIC"];
 const ALL_APT: AptCode[] = ["APT_NUMERICAL", "APT_LOGICAL", "APT_VERBAL", "APT_ABSTRACT", "APT_SPATIAL", "APT_DATA"];
-const ALL_STRENGTHS = ["Problem Solving", "Leadership", "Creative Thinking", "Design Thinking", "Influencing", "Strategic Thinking"];
+const ALL_STRENGTHS = ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"];
 // A student's RIASEC percentiles sum to ~100 across all SIX letters (a
 // forced-choice tally — scoring high on one necessarily leaves less for the
 // rest). Only weighing a career's OWN 3 listed letters (the original

@@ -22,18 +22,33 @@ const Q = {
   personality: (QB.personality?.["11-12"]?.["Set 1"] ?? []) as any[],
   career_interest: (QB.career_interest?.["11-12"]?.["Set 1"] ?? []) as any[],
   aptitude: (QB.aptitude?.["11-12"]?.["Set 1"] ?? []) as any[],
-  strengths: (QB.strengths?.["11-12"]?.["Set 1"] ?? []) as any[],
   multiple_intelligence: (QB.multiple_intelligence?.["11-12"]?.["Set 1"] ?? []) as any[],
   motivators: (QB.motivators?.["11-12"]?.["Set 1"] ?? []) as any[],
   learning_styles: (QB.learning_styles?.["11-12"]?.["Set 1"] ?? []) as any[],
   emotional_intelligence: (QB.emotional_intelligence?.["11-12"]?.["Set 1"] ?? []) as any[],
 };
 
+// Strengths has 2 sets (randomly assigned per exam by pickSets()), unlike
+// every other 11-12 category which only ever has "Set 1" — resolved
+// per-response by strengthsSetName instead of being a fixed module constant
+// like the rest of Q above. Falls back to "Set 1" for any response scored
+// before this field existed (old in-flight sessions with no set name saved).
+function strengthsQuestions(setName?: string): any[] {
+  return (QB.strengths?.["11-12"]?.[setName || "Set 1"] ?? QB.strengths?.["11-12"]?.["Set 1"] ?? []) as any[];
+}
+
 export interface Class11Response {
   personality: Record<string, number>;
   career_interest: Record<string, number>;
   aptitude: Record<string, number>;
   strength_domains: Record<string, number>;
+  // Which named set (e.g. "Set 1"/"Set 2") the student's strength_domains
+  // answers were actually drawn from — the Strengths bank is the only
+  // category with more than one set right now, randomly picked per exam by
+  // pickSets() in data.ts. Without this, scoring always read Set 1's
+  // question/domain mapping regardless of what the student was shown,
+  // silently mis-scoring (or dropping) anyone randomly given Set 2.
+  strengthsSetName?: string;
   multiple_intelligence: Record<string, number>;
   motivators: Record<string, number>;
   learning_styles: Record<string, number>;
@@ -382,7 +397,7 @@ function generatePsychometricProfile(responses: Class11Response): PsychometricPr
     personality: scorePersonality(responses.personality),
     riasec: scoreRIASEC(responses.career_interest),
     aptitude: scoreAptitude(responses.aptitude),
-    strengthDomains: scoreStrengthAreas(responses.strength_domains),
+    strengthDomains: scoreStrengthAreas(responses.strength_domains, responses.strengthsSetName),
     multipleIntelligence: scoreMultipleIntelligence(responses.multiple_intelligence),
     motivators: scoreMotivators(responses.motivators),
     learningStyle: scoreLearningStyle(responses.learning_styles),
@@ -626,12 +641,12 @@ const MI_EXAMPLES: Record<string, string[]> = {
 // (multipleIntelligence, scored by scoreMultipleIntelligence below) now
 // back the Multiple Intelligence dimension instead.
 const STRENGTH_AREA_EXAMPLES: Record<string, string[]> = {
-  "Problem Solving": ["Root-cause analysis", "Logical troubleshooting", "Breaking down complexity"],
-  "Leadership": ["Taking ownership", "Guiding a team", "Motivating others"],
-  "Creative Thinking": ["Original ideas", "Unconventional angles", "Reframing problems"],
-  "Design Thinking": ["User empathy", "Prototyping", "Iterating on feedback"],
-  "Influencing": ["Persuasion", "Building buy-in", "Changing minds respectfully"],
-  "Strategic Thinking": ["Long-term planning", "Big-picture view", "Anticipating consequences"],
+  "Intellectual & Analytical": ["Root-cause analysis", "Logical troubleshooting", "Breaking down complexity"],
+  "Creative & Innovative": ["Original ideas", "Unconventional angles", "Reframing problems"],
+  "Strategic & Futuristic": ["Long-term planning", "Big-picture view", "Anticipating trends"],
+  "Execution & Achievement": ["Turning ideas into results", "Consistent follow-through", "Getting things done"],
+  "Influence & Leadership": ["Persuasion", "Taking ownership", "Motivating others"],
+  "Relationship & Adaptability": ["Empathy", "Building rapport", "Adjusting to new situations"],
 };
 
 // Shared by scoreStrengthAreas/scoreMultipleIntelligence — each question
@@ -653,8 +668,8 @@ function tallyDomainAvailability(questions: any[], responses: Record<string, num
   return { got, of };
 }
 
-function scoreStrengthAreas(responses: Record<string, number>): StrengthDomainScore[] {
-  const { got, of } = tallyDomainAvailability(Q.strengths, responses);
+function scoreStrengthAreas(responses: Record<string, number>, setName?: string): StrengthDomainScore[] {
+  const { got, of } = tallyDomainAvailability(strengthsQuestions(setName), responses);
   // /5 scale, matching how the report displays it ("score/5").
   return Object.keys(STRENGTH_AREA_EXAMPLES)
     .map((domain) => ({

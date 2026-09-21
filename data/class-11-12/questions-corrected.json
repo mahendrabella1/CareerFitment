@@ -490,118 +490,222 @@
     "11-12": {
       "Set 1": [
         {
-          "text": "Your class is asked to complete a group project with an unclear brief. What's your natural instinct?",
+          "text": "You discover an AI tool that can do something you normally spend hours doing. What do you do first?",
           "options": [
-            "Break the brief down into clear, solvable parts before starting.",
-            "Take charge and assign roles so the team can move forward.",
-            "Come up with an unusual angle nobody else has thought of.",
-            "Ask the team (or teacher) what they actually need from this project.",
-            "Convince the group to agree on one clear direction.",
-            "Think about what the final outcome should look like before deciding how to get there."
+            "Test how it actually works.",
+            "Find new ways to use it.",
+            "Think about where it could lead.",
+            "Try it on a real task.",
+            "Show others what it can do.",
+            "Ask friends how they would use it."
           ],
-          "mapping": [
-            "Problem Solving",
-            "Leadership",
-            "Creative Thinking",
-            "Design Thinking",
-            "Influencing",
-            "Strategic Thinking"
-          ]
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
         },
         {
-          "text": "Your team's plan for a competition just failed. What's your instinct?",
+          "text": "You and your friends want to start a YouTube/Instagram channel. What excites you most?",
           "options": [
-            "Diagnose exactly what went wrong before doing anything else.",
-            "Rally the team and decide the next move.",
-            "Throw out the old plan and try something completely different.",
-            "Ask teammates how they're feeling and what they need right now.",
-            "Convince the team not to give up.",
-            "Step back and rethink the overall approach, not just this attempt."
+            "Researching the topic.",
+            "Creating original content.",
+            "Planning how the channel could grow.",
+            "Consistently producing videos.",
+            "Building an audience.",
+            "Creating a community."
           ],
-          "mapping": [
-            "Problem Solving",
-            "Leadership",
-            "Creative Thinking",
-            "Design Thinking",
-            "Influencing",
-            "Strategic Thinking"
-          ]
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
         },
         {
-          "text": "Which task would you enjoy most in a group project?",
+          "text": "You are playing a new game and keep losing at the same level. What do you do?",
           "options": [
-            "Solving the trickiest technical or logical problem.",
-            "Coordinating the team and keeping everyone aligned.",
-            "Brainstorming original concepts for the project.",
-            "Interviewing or observing the actual users or audience.",
-            "Pitching the final idea and winning people over.",
-            "Planning the overall roadmap and timeline."
+            "Figure out why I'm losing.",
+            "Try a completely different strategy.",
+            "Study the level and plan ahead.",
+            "Keep practising until I crack it.",
+            "Watch how others play it.",
+            "Play with someone and learn together."
           ],
-          "mapping": [
-            "Problem Solving",
-            "Leadership",
-            "Creative Thinking",
-            "Design Thinking",
-            "Influencing",
-            "Strategic Thinking"
-          ]
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
         },
         {
-          "text": "How do you usually approach a big decision, like choosing a stream or activity?",
+          "text": "A viral trend suddenly becomes popular. What are you most likely to do?",
           "options": [
-            "List out the pros and cons and reason through it step by step.",
-            "Decide, then bring others along with my decision.",
-            "Consider options nobody else would think to consider.",
-            "Think about what would genuinely make everyone involved happiest.",
-            "Talk to people whose opinion might change my mind.",
-            "Think about where each option leads 5–10 years from now."
+            "Find out why it became popular.",
+            "Create my own version.",
+            "Think about where the trend is going.",
+            "Try it myself.",
+            "Get friends involved.",
+            "See what people are saying about it."
           ],
-          "mapping": [
-            "Problem Solving",
-            "Leadership",
-            "Creative Thinking",
-            "Design Thinking",
-            "Influencing",
-            "Strategic Thinking"
-          ]
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
         },
         {
-          "text": "A friend is stuck on a problem and asks for your help. What do you naturally do?",
+          "text": "Your friends ask you to plan a weekend experience. What would you naturally do?",
           "options": [
-            "Walk through the logic with them step by step.",
-            "Take charge and just help them get it done.",
-            "Suggest a totally different way to think about it.",
-            "Ask questions to understand what they're actually struggling with.",
-            "Encourage and motivate them to keep trying.",
-            "Help them see how this problem fits into their bigger goal."
+            "Compare the options.",
+            "Suggest something unusual.",
+            "Plan the experience around what could happen.",
+            "Organise the bookings and details.",
+            "Take charge of the plan.",
+            "Make sure everyone enjoys it."
           ],
-          "mapping": [
-            "Problem Solving",
-            "Leadership",
-            "Creative Thinking",
-            "Design Thinking",
-            "Influencing",
-            "Strategic Thinking"
-          ]
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
         },
         {
-          "text": "Which of these would you rather be known for?",
+          "text": "You are given ₹50,000 to create something for your generation. What would you do?",
           "options": [
-            "Being the person who always solves the hard problem.",
-            "Being the person others look to for direction.",
-            "Being the person full of original ideas.",
-            "Being the person who really \"gets\" what people need.",
-            "Being the person who can win anyone over.",
-            "Being the person who always thinks ahead."
+            "Research what problem needs solving.",
+            "Create something people haven't seen before.",
+            "Build something with future potential.",
+            "Turn the idea into a working product.",
+            "Build something people would follow or support.",
+            "Create something that brings people together."
           ],
-          "mapping": [
-            "Problem Solving",
-            "Leadership",
-            "Creative Thinking",
-            "Design Thinking",
-            "Influencing",
-            "Strategic Thinking"
-          ]
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+        },
+        {
+          "text": "Two group members are arguing over opposing ideas for an assignment. How do you respond?",
+          "options": [
+            "Compare both ideas using facts and logic.",
+            "Combine both ideas into a fresh third concept.",
+            "Align both ideas with the project's bigger goal.",
+            "Pick the quickest option to start work immediately.",
+            "Persuade both sides to compromise and decide.",
+            "Listen empathetically and restore team harmony."
+          ],
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+        },
+        {
+          "text": "You have a free weekend with no tests or homework. How would you prefer to spend it?",
+          "options": [
+            "Solve logic puzzles, code, or read complex topics.",
+            "Write, draw, edit videos, or redesign personal space.",
+            "Explore future tech trends, startups, or career goals.",
+            "Organize your room, plan calendars, or complete tasks.",
+            "Join a debate, network, or organize a student meetup.",
+            "Hang out with friends, listen to stories, or help others."
+          ],
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+        },
+        {
+          "text": "When making a major decision about your future stream or college path, what matters most?",
+          "options": [
+            "Deep intellectual challenge and logical fit.",
+            "Freedom to innovate, design, and create.",
+            "Strong future scope, growth, and long-term relevance.",
+            "Clear, stable path with predictable milestones.",
+            "Leadership, status, and influence.",
+            "Alignment with personal values and positive social impact."
+          ],
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+        }
+      ],
+      "Set 2": [
+        {
+          "text": "You are asked to solve a problem at school, but no instructions are provided. What would you most likely do?",
+          "options": [
+            "Understand the situation and identify the root problem.",
+            "Brainstorm several new ways to solve it.",
+            "Predict the future outcome of each option first.",
+            "Pick the most practical option and start fixing it.",
+            "Take charge, rally a team, and divide the work.",
+            "Gather everyone's input to reach a group consensus."
+          ],
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+        },
+        {
+          "text": "Your team has to create an exhibition stall for a major school fest. What is your first instinct?",
+          "options": [
+            "Calculate the budget and analyze past fest data.",
+            "Design an original, unique theme.",
+            "Plan how it benefits your future portfolio.",
+            "Make a deadline checklist and start setup.",
+            "Pitch to teachers to get the best location.",
+            "Assign roles so everyone is happy and comfortable."
+          ],
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+        },
+        {
+          "text": "A major presentation file gets corrupted 1 hour before submission. What do you do?",
+          "options": [
+            "Inspect the file structure to fix the glitch.",
+            "Sketch a quick, novel way to deliver the topic.",
+            "Reassess the goal and focus on key slides only.",
+            "Lock in and retype the lost content fast.",
+            "Talk to the teacher to get an extension.",
+            "Calm down the team and split the remaining work."
+          ],
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+        },
+        {
+          "text": "You have to choose between two opportunities. What influences you most?",
+          "options": [
+            "The facts and evidence.",
+            "Which one offers something new.",
+            "Where each option could lead.",
+            "Which one can produce results.",
+            "Which one lets you take responsibility.",
+            "How it affects the people involved."
+          ],
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+        },
+        {
+          "text": "Your teacher asks the class to improve something in school. What interests you most?",
+          "options": [
+            "Understanding the current problem.",
+            "Creating a new idea.",
+            "Imagining how it could work better.",
+            "Making the idea happen.",
+            "Getting people behind the idea.",
+            "Making it useful for everyone."
+          ],
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+        },
+        {
+          "text": "When picking a topic for an independent research paper, what type appeals to you most?",
+          "options": [
+            "A technical or scientific problem needing data analysis.",
+            "An open-ended topic allowing original, creative ideas.",
+            "An emerging trend exploring the world's 10-year future.",
+            "A practical topic with clear steps and measurable outcomes.",
+            "A social or political issue where you argue a strong view.",
+            "A community topic focused on human psychology and helping people."
+          ],
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+        },
+        {
+          "text": "You received a lower grade than expected on an important test. What is your immediate reaction?",
+          "options": [
+            "Review the paper to spot exact mistakes and errors.",
+            "Try a new, creative study strategy next time.",
+            "Re-evaluate your overall study roadmap for the year.",
+            "Set a strict timetable and double your practice hours.",
+            "Speak with the teacher for feedback and extra credit.",
+            "Discuss it with a friend, process emotions, and stay positive."
+          ],
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+        },
+        {
+          "text": "Fast forward 5 years. What kind of daily work environment sounds best to you?",
+          "options": [
+            "A quiet environment focusing on complex analytics and logic.",
+            "A creative studio with design and experimentation freedom.",
+            "A strategic setup planning long-term growth and direction.",
+            "A structured team focused on clear targets and efficiency.",
+            "A high-impact company where you lead, present, and influence.",
+            "A supportive space focused on teaching, counseling, or helping."
+          ],
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+        },
+        {
+          "text": "When introduced to a completely new topic or skill, how do you learn it best?",
+          "options": [
+            "Break down core concepts step-by-step until the logic clicks.",
+            "Experiment freely and find unique ways to apply it.",
+            "Connect it to real-world trends and the big picture.",
+            "Practice repeatedly with structured guidelines until mastered.",
+            "Explain or teach the concept to someone else.",
+            "Learn through group discussions and team exercises."
+          ],
+          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
         }
       ]
     }
