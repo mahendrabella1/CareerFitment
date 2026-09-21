@@ -104,8 +104,12 @@ export const DIMENSION_GUIDE: Record<StreamGroup, DimensionEntry[]> = {
 function riasecPct(l1: PsychometricProfile, code: string): number {
   return l1.riasec.find((r) => r.code === code)?.percentile ?? 0;
 }
-function strengthPct(l1: PsychometricProfile, domain: string): number {
-  const d = l1.strengthDomains.find((s) => s.domain === domain);
+// "Intrapersonal"/"Naturalistic" are Multiple Intelligence domain names, not
+// Strengths ones — strengthDomains no longer carries them now that Strengths
+// and Multiple Intelligence are genuinely separate measures (see
+// scoring11_12.ts), so those two PROXY entries below read from here instead.
+function miPct(l1: PsychometricProfile, domain: string): number {
+  const d = l1.multipleIntelligence.find((s) => s.domain === domain);
   return d ? Math.max(0, Math.min(100, (d.score / 5) * 100)) : 0;
 }
 
@@ -116,13 +120,12 @@ const PROXY: Record<string, (l1: PsychometricProfile) => number> = {
   "Coding Interest": (l1) => (l1.aptitude.logical.score + riasecPct(l1, "I")) / 2,
   "Scientific Interest": (l1) => riasecPct(l1, "I"),
   "Spatial Ability": (l1) => l1.aptitude.spatial.score,
-  "Creativity": (l1) => Math.max(0, Math.min(100, (l1.creativity.score / 5) * 100)),
   "People Orientation": (l1) => riasecPct(l1, "S"),
   "Business Orientation": (l1) => riasecPct(l1, "E"),
   "Business & Commercial Interest": (l1) => riasecPct(l1, "E"),
-  "Research Orientation": (l1) => (riasecPct(l1, "I") + strengthPct(l1, "Intrapersonal")) / 2,
+  "Research Orientation": (l1) => (riasecPct(l1, "I") + miPct(l1, "Intrapersonal")) / 2,
   "Medical / Healthcare Interest": (l1) => (riasecPct(l1, "I") + riasecPct(l1, "S")) / 2,
-  "Environmental / Nature Interest": (l1) => strengthPct(l1, "Naturalistic") || riasecPct(l1, "I"),
+  "Environmental / Nature Interest": (l1) => miPct(l1, "Naturalistic") || riasecPct(l1, "I"),
   "Accounting Interest": (l1) => (l1.aptitude.numerical.score + riasecPct(l1, "C")) / 2,
   "Economics Interest": (l1) => (l1.aptitude.numerical.score + riasecPct(l1, "I")) / 2,
   "Communication & Language Ability": (l1) => l1.aptitude.verbal.score,

@@ -51,23 +51,28 @@ const ORDER_9_10: Category[] = [
   "emotional_intelligence",
 ];
 
-// Class 11-12 order matches the source spec's own numbered sections exactly
-// (1 Personality ... 8 Creativity = the 61-question "CORE", then 9 Subject
-// Fit, 10 Career/Stream/Degree Fit, 11 Career Selector). No
-// "multiple_intelligence" here: Class 11-12 has no MI category in its own
-// bank (data/class-11-12/questions-corrected.json) or scorer (scoring11_12.ts)
-// — it used to fall through to a leftover "11-12" MI set in
-// assessment-questions.json, showing students 5 real questions whose answers
-// convertAnswersToClass11Format had no slot for and silently dropped.
+// Class 11-12 order matches the source spec's own numbered sections
+// (1 Personality ... 8 Emotional Intelligence = the CORE, then 9 Subject
+// Fit, 10 Career/Stream/Degree Fit, 11 Career Selector). "multiple_intelligence"
+// now has its own real, dedicated question set in data/class-11-12/
+// questions-corrected.json (the 8 Gardner MI domains) — genuinely separate
+// from "strengths" (the 6 real workplace-competency domains: Problem
+// Solving, Leadership, Creative Thinking, Design Thinking, Influencing,
+// Strategic Thinking). They used to share the exact same MI-tagged question
+// bank, which made the Strengths dimension's own page just re-display the
+// Multiple Intelligence page's data under a different name. No "creativity"
+// here — that 9th scored dimension was removed for 11-12 entirely (back to
+// the same fixed 8 dimensions as class 9-10); its question bank entry is
+// simply never pulled from once it's out of this order.
 const ORDER_11_12: Category[] = [
   "personality",
   "career_interest",
   "aptitude",
   "strengths",
+  "multiple_intelligence",
   "motivators",
   "learning_styles",
   "emotional_intelligence",
-  "creativity",
   "subject_fit",
   "career_fit",
   "career_selector",

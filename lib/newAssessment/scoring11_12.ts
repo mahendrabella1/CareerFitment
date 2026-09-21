@@ -23,10 +23,10 @@ const Q = {
   career_interest: (QB.career_interest?.["11-12"]?.["Set 1"] ?? []) as any[],
   aptitude: (QB.aptitude?.["11-12"]?.["Set 1"] ?? []) as any[],
   strengths: (QB.strengths?.["11-12"]?.["Set 1"] ?? []) as any[],
+  multiple_intelligence: (QB.multiple_intelligence?.["11-12"]?.["Set 1"] ?? []) as any[],
   motivators: (QB.motivators?.["11-12"]?.["Set 1"] ?? []) as any[],
   learning_styles: (QB.learning_styles?.["11-12"]?.["Set 1"] ?? []) as any[],
   emotional_intelligence: (QB.emotional_intelligence?.["11-12"]?.["Set 1"] ?? []) as any[],
-  creativity: (QB.creativity?.["11-12"]?.["Set 1"] ?? []) as any[],
 };
 
 export interface Class11Response {
@@ -34,10 +34,10 @@ export interface Class11Response {
   career_interest: Record<string, number>;
   aptitude: Record<string, number>;
   strength_domains: Record<string, number>;
+  multiple_intelligence: Record<string, number>;
   motivators: Record<string, number>;
   learning_styles: Record<string, number>;
   emotional_intelligence: Record<string, number>;
-  creativity: Record<string, number>;
   // Section 9 — Subject & Academic Fit (8 questions; indices match
   // data/class-11-12/questions-corrected.json's subject_fit set exactly).
   subject_fit: {
@@ -104,11 +104,15 @@ export interface PsychometricProfile {
   personality: PersonalityProfile;
   riasec: RIASECScore[];
   aptitude: AptitudeProfile;
+  // The real 6-parameter Strengths measure (Problem Solving, Leadership,
+  // Creative Thinking, Design Thinking, Influencing, Strategic Thinking) —
+  // genuinely separate from multipleIntelligence below, not the same 8
+  // Gardner MI domains shown twice under two different dimension names.
   strengthDomains: StrengthDomainScore[];
+  multipleIntelligence: StrengthDomainScore[];
   motivators: MotivatorProfile;
   learningStyle: LearningStyleProfile;
   emotionalIntelligence: EIProfile;
-  creativity: CreativityProfile;
 }
 
 export interface PersonalityProfile {
@@ -192,28 +196,20 @@ export interface LearningStyleProfile {
   ranked: { style: string; score: number }[];
 }
 
-// The 4-question EI set tags each option with one of 11 behavioural
-// tendencies. selfAwareness/socialAwareness (0-1) are kept for the report's
-// existing radar/compass math; `ranked` carries the full, real tag list.
+// The 4-question EI set is a forced choice across the 4 standard Goleman EQ
+// quadrants — every question offers exactly one option per quadrant, so each
+// of the 4 fields below is a real, independently-tallied 0-1 score (how
+// often that quadrant was picked out of 4 questions), not a proxy or a
+// fallback to the overall score. `ranked` carries the same 4 as a sorted list.
 export interface EIProfile {
   ranked: { tag: string; score: number }[];
   selfAwareness: number;
+  selfManagement: number;
   socialAwareness: number;
+  relationshipManagement: number;
   emotionalRegulation: string;
   conflictResolution: string;
   summary: string;
-}
-
-// The 5-question creativity set tags each option with one of many creative
-// tendencies (Originality, Design, Integration, ...). `ranked` is the real
-// list; problemSolving/innovationApproach stay as short narrative labels
-// derived from the top two, for the parts of the report that want prose.
-export interface CreativityProfile {
-  ranked: { tag: string; score: number }[];
-  problemSolving: string;
-  innovationApproach: string;
-  score: number; // 0-5
-  recommendations: string[];
 }
 
 // LAYER 2: Academic Reality
@@ -225,6 +221,8 @@ export interface AcademicRealityAnalysis {
   /** Raw Subject Fit Q64/Q65 answers (single subject each), kept alongside the derived subjectStrengths/Challenges lists above so callers needing the exact answer — e.g. careerFit1112Sheets.tsx's RankingContext1112 — don't have to guess it back out of subjectStrengths[0]. */
   enjoyedSubject: string;
   difficultSubject: string;
+  /** Raw Subject Fit Q63 answer (multi-select) — same reasoning as enjoyedSubject/difficultSubject above, feeds RankingContext1112.currentSubjects. */
+  currentSubjects: string[];
   /** Subject Fit Q68 (up to 2 of: my own choice, family/mentor
    *  recommendation, peer influence, earning potential, uncertainty) — a
    *  signal for whether the CURRENT stream reflects genuine self-driven
@@ -384,11 +382,11 @@ function generatePsychometricProfile(responses: Class11Response): PsychometricPr
     personality: scorePersonality(responses.personality),
     riasec: scoreRIASEC(responses.career_interest),
     aptitude: scoreAptitude(responses.aptitude),
-    strengthDomains: scoreStrengthDomains(responses.strength_domains),
+    strengthDomains: scoreStrengthAreas(responses.strength_domains),
+    multipleIntelligence: scoreMultipleIntelligence(responses.multiple_intelligence),
     motivators: scoreMotivators(responses.motivators),
     learningStyle: scoreLearningStyle(responses.learning_styles),
     emotionalIntelligence: scoreEI(responses.emotional_intelligence),
-    creativity: scoreCreativity(responses.creativity)
   };
 }
 
@@ -416,6 +414,8 @@ function calculateDomainAffinities(profile: PsychometricProfile, responses: Clas
     consideringAreas: responses.career_fit.consideringAreas,
     alternativeCareerTexts: responses.career_selector.alternativeChoices,
     excludedCareerTexts: responses.career_selector.excludedCareers,
+    currentSubjects: responses.subject_fit.currentSubjects,
+    pathwayType: responses.career_fit.pathwayType,
   });
 }
 
@@ -617,13 +617,32 @@ const MI_EXAMPLES: Record<string, string[]> = {
   "Naturalistic": ["Nature", "Observation", "Patterns"],
 };
 
-function scoreStrengthDomains(responses: Record<string, number>): StrengthDomainScore[] {
-  // Each of the 16 questions offers 5 of the 8 domains as options — a
-  // domain appears in some questions and not others, so "how often it was
-  // AVAILABLE" (not a flat 16) is the right denominator for its percentage.
+// The real Strengths construct — standard workplace-competency domains, not
+// the same 8 Gardner Multiple Intelligences shown a second time under a
+// different name (that was the actual bug: every "Strengths" card was just
+// re-displaying the Multiple Intelligence card's own data). Genuinely
+// separate question bank (data/class-11-12/questions-corrected.json's
+// "strengths" set) and a genuinely separate PsychometricProfile field
+// (multipleIntelligence, scored by scoreMultipleIntelligence below) now
+// back the Multiple Intelligence dimension instead.
+const STRENGTH_AREA_EXAMPLES: Record<string, string[]> = {
+  "Problem Solving": ["Root-cause analysis", "Logical troubleshooting", "Breaking down complexity"],
+  "Leadership": ["Taking ownership", "Guiding a team", "Motivating others"],
+  "Creative Thinking": ["Original ideas", "Unconventional angles", "Reframing problems"],
+  "Design Thinking": ["User empathy", "Prototyping", "Iterating on feedback"],
+  "Influencing": ["Persuasion", "Building buy-in", "Changing minds respectfully"],
+  "Strategic Thinking": ["Long-term planning", "Big-picture view", "Anticipating consequences"],
+};
+
+// Shared by scoreStrengthAreas/scoreMultipleIntelligence — each question
+// offers some subset of a domain list as options, so "how often a domain was
+// AVAILABLE to pick" (not a flat question count) is the right denominator
+// for its percentage; a domain absent from a given question shouldn't be
+// penalised for not being chosen there.
+function tallyDomainAvailability(questions: any[], responses: Record<string, number>): { got: Record<string, number>; of: Record<string, number> } {
   const got: Record<string, number> = {};
   const of: Record<string, number> = {};
-  Q.strengths.forEach((q, i) => {
+  questions.forEach((q, i) => {
     const idx = responses[String(i)];
     if (!Array.isArray(q.mapping)) return;
     q.mapping.forEach((domain: string, optIdx: number) => {
@@ -631,8 +650,23 @@ function scoreStrengthDomains(responses: Record<string, number>): StrengthDomain
       if (optIdx === idx) got[domain] = (got[domain] || 0) + 1;
     });
   });
+  return { got, of };
+}
 
+function scoreStrengthAreas(responses: Record<string, number>): StrengthDomainScore[] {
+  const { got, of } = tallyDomainAvailability(Q.strengths, responses);
   // /5 scale, matching how the report displays it ("score/5").
+  return Object.keys(STRENGTH_AREA_EXAMPLES)
+    .map((domain) => ({
+      domain,
+      score: of[domain] ? Math.round(((got[domain] || 0) / of[domain]) * 5 * 10) / 10 : 0,
+      examples: STRENGTH_AREA_EXAMPLES[domain],
+    }))
+    .sort((a, b) => b.score - a.score);
+}
+
+function scoreMultipleIntelligence(responses: Record<string, number>): StrengthDomainScore[] {
+  const { got, of } = tallyDomainAvailability(Q.multiple_intelligence, responses);
   return Object.keys(MI_EXAMPLES)
     .map((domain) => ({
       domain,
@@ -667,10 +701,15 @@ function scoreMotivators(responses: Record<string, number>): MotivatorProfile {
 function scoreLearningStyle(responses: Record<string, number>): LearningStyleProfile {
   const tally = tallyMapped(Q.learning_styles, responses);
   // Q52 (index 2) is a 1-10 slider on doing-over-reading — a direct,
-  // fractional vote for "Practice", not an option tallyMapped can see.
+  // fractional vote for "Kinesthetic", not an option tallyMapped can see.
   const doingPreference = responses["2"];
-  if (typeof doingPreference === "number") tally["Practice"] = (tally["Practice"] || 0) + doingPreference / 10;
-  const styles = ["Visual", "Read/Write", "Social", "Practice"];
+  if (typeof doingPreference === "number") tally["Kinesthetic"] = (tally["Kinesthetic"] || 0) + doingPreference / 10;
+  // The standard 4 VARK style names, matching class 9-10's own naming
+  // (scoring60.ts) exactly — this used to be ["Visual", "Read/Write",
+  // "Social", "Practice"], two of which ("Social", "Practice") aren't VARK
+  // categories at all, so the same report showed different learning-style
+  // names depending on which class the student was in.
+  const styles = ["Visual", "Auditory", "Reading/Writing", "Kinesthetic"];
   const ranked = styles.slice().sort((a, b) => (tally[b] || 0) - (tally[a] || 0));
   const total = Object.values(tally).reduce((s, v) => s + v, 0);
   const pctOf = (style: string) => (total > 0 ? Math.round(((tally[style] || 0) / total) * 100) : 25);
@@ -685,81 +724,32 @@ function scoreLearningStyle(responses: Record<string, number>): LearningStylePro
   };
 }
 
-// The 13 possible EI tags (Q53-Q56) split into a self-facing group
-// (reflection, regulation, resilience) and an other-facing group (seeking
-// or reading other people) — used only to keep selfAwareness/socialAwareness
-// (0-1) alive for the report's existing radar math; `ranked` carries the
-// real detail.
-const EI_SELF_TAGS = new Set(["Self-Reflection", "Emotional Regulation", "Self-Management", "Avoidance", "High Self-Regulation", "Low Self-Regulation", "Mixed Regulation", "Assertiveness"]);
-const EI_SOCIAL_TAGS = new Set(["Help-Seeking", "Social Support", "Empathy", "Conflict Avoidance", "Collaborative Problem-Solving"]);
+const EI_QUADRANT_TAGS = ["Self-Awareness", "Self-Management", "Social Awareness", "Relationship Management"] as const;
 
 function scoreEI(responses: Record<string, number>): EIProfile {
   const tally = tallyMapped(Q.emotional_intelligence, responses);
   const total = Object.values(tally).reduce((s, v) => s + v, 0);
-  const ranked = Object.entries(tally)
-    .map(([tag, count]) => ({ tag, score: total ? Math.round((count / total) * 100) : 0 }))
+  const ranked = EI_QUADRANT_TAGS
+    .map((tag) => ({ tag, score: total ? Math.round(((tally[tag] || 0) / total) * 100) : 0 }))
     .sort((a, b) => b.score - a.score);
 
-  let selfCount = 0, socialCount = 0;
-  for (const [tag, count] of Object.entries(tally)) {
-    if (EI_SELF_TAGS.has(tag)) selfCount += count;
-    if (EI_SOCIAL_TAGS.has(tag)) socialCount += count;
-  }
-  const selfAwareness = total ? selfCount / total : 0.5;
-  const socialAwareness = total ? socialCount / total : 0.5;
+  const frac = (tag: string) => (total ? (tally[tag] || 0) / total : 0.25);
+  const selfAwareness = frac("Self-Awareness");
+  const selfManagement = frac("Self-Management");
+  const socialAwareness = frac("Social Awareness");
+  const relationshipManagement = frac("Relationship Management");
 
   return {
     ranked,
     selfAwareness,
+    selfManagement,
     socialAwareness,
-    emotionalRegulation: interpretEIResponse(selfAwareness),
-    conflictResolution: interpretEIResponse(socialAwareness),
-    summary: ranked[0] ? `${ranked[0].tag} is your strongest tendency under pressure or feedback.` : "Your responses are fairly balanced across different situations.",
+    relationshipManagement,
+    emotionalRegulation: interpretEIResponse(selfManagement),
+    conflictResolution: interpretEIResponse(relationshipManagement),
+    summary: ranked[0] && ranked[0].score > 0 ? `${ranked[0].tag} is your strongest tendency under pressure or feedback.` : "Your responses are fairly balanced across all four areas.",
   };
 }
-
-function scoreCreativity(responses: Record<string, number>): CreativityProfile {
-  const tally = tallyMapped(Q.creativity, responses);
-  // Q60 (index 3) is a 1-10 slider on comfort proposing a different idea —
-  // a direct, fractional vote for "Original/Novel Thinking".
-  const differentIdeaComfort = responses["3"];
-  if (typeof differentIdeaComfort === "number") tally["Original/Novel Thinking"] = (tally["Original/Novel Thinking"] || 0) + differentIdeaComfort / 10;
-  const total = Object.values(tally).reduce((s, v) => s + v, 0);
-  const ranked = Object.entries(tally)
-    .map(([tag, count]) => ({ tag, score: total ? Math.round((count / total) * 100) : 0 }))
-    .sort((a, b) => b.score - a.score);
-  // 0-5 scale: how many distinct creative tendencies showed up across the
-  // 5 questions (a student who picks the same style every time scores
-  // lower diversity than one who ranges across originality/design/etc).
-  // Q60's slider vote can be LESS than a full 1.0 (differentIdeaComfort/10)
-  // while still counting as one more distinct category in the numerator, so
-  // this ratio could land just over 1 — clamped here since it's meant to be
-  // a proportion (this is what produced the reported "102%" creativity score).
-  const distinctness = total ? Math.min(1, Object.keys(tally).length / total) : 0;
-  const score = Math.round(distinctness * 5 * 10) / 10;
-
-  return {
-    ranked,
-    problemSolving: ranked[0] ? CREATIVITY_BLURBS[ranked[0].tag] ?? `Leans toward ${ranked[0].tag.toLowerCase()} thinking.` : "Approaches problems in a balanced, varied way.",
-    innovationApproach: ranked[1] ? CREATIVITY_BLURBS[ranked[1].tag] ?? `Also draws on ${ranked[1].tag.toLowerCase()} thinking.` : "Experimental and iterative.",
-    score,
-    recommendations: ["Pursue project-based learning where you can apply an idea end to end", "Explore design thinking or a maker/innovation club", "Deliberately try the creative tendency you used least this time"],
-  };
-}
-
-const CREATIVITY_BLURBS: Record<string, string> = {
-  "Systematic/Organizing": "Turns creative energy into structured systems and processes.",
-  "Collaborative": "Draws on other people's ideas and challenge to sharpen its own.",
-  "Technical/Tool-building": "Reaches for a tool or piece of technology as part of the solution.",
-  "Original/Novel Thinking": "Prefers a genuinely new approach over adapting an existing one.",
-  "Synthesizing/Integrative": "Combines separate, unrelated ideas into one new solution.",
-  "Research-Based/Adaptive": "Starts from what's already worked elsewhere and adapts it.",
-  "Divergent Thinking": "Generates several possible solutions before committing to one.",
-  "Experimental/Iterative": "Learns by testing and trying things rather than planning everything up front.",
-  "Analytical/Reflective": "Investigates exactly why something failed before trying again.",
-  "Iterative Refinement": "Prefers refining something that already exists over starting from scratch.",
-  "Resilient Iteration": "Starts again on a failed attempt, carrying forward what it taught.",
-};
 
 /**
  * LAYER 2: Academic Reality Analysis
@@ -786,6 +776,7 @@ function generateAcademicRealityAnalysis(
     subjectChallenges: identifySubjectChallenges(subjects, profile),
     enjoyedSubject: responses.subject_fit.enjoyedSubject,
     difficultSubject: responses.subject_fit.difficultSubject,
+    currentSubjects: subjects,
     streamChoiceReasons: responses.subject_fit.streamChoiceReasons,
     careerPathwaysAvailable: getAvailablePathways(stream, profile),
     careerSuitability: getCareerSuitability(streamKeyDetailed),
@@ -891,7 +882,8 @@ function layer1DimensionScores(profile: PsychometricProfile): { label: string; s
     ? Math.round((Math.max(...profile.strengthDomains.map((d) => d.score)) / 5) * 100)
     : 0;
   const strengthDomainsScore = Math.round(topStrengthPct * 0.6 + profile.aptitude.overallScore * 0.4);
-  const ei = ((profile.emotionalIntelligence.selfAwareness + profile.emotionalIntelligence.socialAwareness) / 2) * 100;
+  const eiP = profile.emotionalIntelligence;
+  const ei = ((eiP.selfAwareness + eiP.selfManagement + eiP.socialAwareness + eiP.relationshipManagement) / 4) * 100;
   return [
     { label: "Personality clarity", score: profile.personality.score },
     { label: "Career interest", score: Math.round(topRiasec) },
@@ -900,7 +892,6 @@ function layer1DimensionScores(profile: PsychometricProfile): { label: string; s
     { label: "Motivator clarity", score: profile.motivators.score },
     { label: "Learning style", score: profile.learningStyle.score },
     { label: "Emotional intelligence", score: Math.round(ei) },
-    { label: "Creativity", score: Math.min(100, Math.round((profile.creativity.score / 5) * 100)) },
   ];
 }
 
@@ -1060,13 +1051,21 @@ function getRecommendedDegrees(profile: PsychometricProfile): DegreeOption[] {
   return degreeMap[topRIASEC] || [];
 }
 
+// The major state-level engineering CETs — real, separate exams from JEE,
+// each the standard route into that state's own government-quota
+// engineering/pharmacy seats. A student only ever sits the exam(s) for the
+// state(s) they're actually targeting, but which ones exist at all varies
+// enormously by state, so the full real set is listed rather than just the
+// 2-3 national exams that used to be shown here.
+const MPC_STATE_CETS = ["MHT-CET", "KCET", "WBJEE", "COMEDK UGET", "KEAM", "AP EAPCET", "TS EAPCET"];
+
 function getEntranceExams(stream: string, profile: PsychometricProfile): string[] {
   const exams: Record<string, string[]> = {
-    "MPC": ["JEE Main", "JEE Advanced", "BITSAT"],
-    "BiPC": ["NEET"],
-    "PCMB": ["JEE Main", "NEET"],
-    "Arts": ["CLAT", "CUET"],
-    "Commerce": ["CUET", "CA Foundation"],
+    "MPC": ["JEE Main", "JEE Advanced", "BITSAT", ...MPC_STATE_CETS, "NDA", "NATA"],
+    "BiPC": ["NEET", "ICAR AIEEA", "CUET"],
+    "PCMB": ["JEE Main", "JEE Advanced", "BITSAT", "NEET", ...MPC_STATE_CETS, "ICAR AIEEA", "NDA", "NATA"],
+    "Arts": ["CLAT", "AILET", "CUET"],
+    "Commerce": ["CUET", "CA Foundation", "CMA Foundation", "CS Foundation", "IPMAT"],
     "Vocational": ["Varies by field — many diploma/vocational programs admit directly, without a national entrance exam"],
   };
   return exams[stream] || [];
@@ -1182,11 +1181,16 @@ function extractMotivationFactors(motivators: MotivatorProfile): string[] {
   return motivators.ranked.slice(0, 3).map((m) => m.tag);
 }
 
+// Index order must match scoreLearningStyle's own `styles` array exactly
+// (Visual, Auditory, Reading/Writing, Kinesthetic) — these used to be
+// ordered for the old ["Visual", "Read/Write", "Social", "Practice"] array,
+// so renaming that array without reordering these two would have silently
+// handed a student's "Auditory" result the old "Read/Write" technique text.
 function getExamTechnique(styleIdx: number): string {
   const techniques = [
     "Visual summaries",
-    "Reading and rewriting",
     "Discussion-based",
+    "Reading and rewriting",
     "Practice-focused"
   ];
   return techniques[styleIdx] || "Balanced approach";
@@ -1195,17 +1199,11 @@ function getExamTechnique(styleIdx: number): string {
 function generateLearningRecommendations(styleIdx: number): string[] {
   const recommendations = [
     ["Use mind maps", "Watch educational videos", "Create infographics"],
-    ["Make detailed notes", "Read textbooks", "Write summaries"],
     ["Form study groups", "Teach others", "Listen to lectures"],
+    ["Make detailed notes", "Read textbooks", "Write summaries"],
     ["Do practice problems", "Projects", "Hands-on activities"]
   ];
   return recommendations[styleIdx] || [];
-}
-
-function interpretCreativity(score: number): string {
-  if (score >= 3.5) return "Highly Creative";
-  if (score >= 2.5) return "Moderately Creative";
-  return "Developing Creativity";
 }
 
 // `response` is a 0-1 fraction of how developed the selected option was for

@@ -32,7 +32,20 @@ export function isCurrentClass11Shape(output: unknown): output is Class11ScoreOu
     // before that change has the old primaryStyle/secondaryStyle-only shape
     // and would otherwise pass every check here, reach the adapter anyway,
     // and crash on `l1.learningStyle.ranked.map(...)`.
-    && Boolean(l1?.learningStyle?.ranked);
+    && Boolean(l1?.learningStyle?.ranked)
+    // multipleIntelligence was added when Strengths and Multiple Intelligence
+    // were split into two genuinely separate measures (they used to be the
+    // same data shown under two names) — a report scored before that split
+    // has no multipleIntelligence field at all, and would otherwise pass
+    // every check above and crash on `l1.multipleIntelligence.slice()`.
+    && Boolean(l1?.multipleIntelligence)
+    // selfManagement/relationshipManagement were added when EI was rescored
+    // across all 4 real Goleman quadrants instead of 2 real + 2 faked — a
+    // report scored before that change has ranked/selfAwareness/
+    // socialAwareness but not these two, and would silently render NaN% for
+    // both instead of crashing, which is easy to miss without this check.
+    && typeof l1?.emotionalIntelligence?.selfManagement === "number"
+    && typeof l1?.emotionalIntelligence?.relationshipManagement === "number";
 }
 
 export function adaptClass11ToSummary(output: Class11ScoreOutput, base: AssessmentSummary): AssessmentSummary {
@@ -61,12 +74,17 @@ export function adaptClass11ToSummary(output: Class11ScoreOutput, base: Assessme
   const riasecScores = l1.riasec.map((r) => ({ letter: r.code, name: r.name, score: r.percentile }));
   const riasecCode = riasecRanked.slice(0, 3).map((r) => r.code).join("");
 
-  // "Strength Domains & Multiple Intelligences" is one combined dimension in
-  // the 11-12 bank — fed into both the multiple_intelligence AND strengths
-  // slots (9-10 measures those as two separate things; 11-12 doesn't), each
-  // page framing the same ranked list differently (intelligences vs. default
-  // working style) rather than inventing a second, unmeasured concept.
-  const intelligenceRanked = l1.strengthDomains
+  // Genuinely separate now (see scoring11_12.ts): Multiple Intelligence is
+  // the 8 Gardner domains, Strengths is the 6 real workplace-competency
+  // domains (Problem Solving, Leadership, Creative Thinking, Design
+  // Thinking, Influencing, Strategic Thinking) — two different question
+  // banks feeding two different PsychometricProfile fields, not the same
+  // list shown twice under two names.
+  const intelligenceRanked = l1.multipleIntelligence
+    .slice()
+    .sort((a, b) => b.score - a.score)
+    .map((d) => ({ name: d.domain, score: Math.round((d.score / 5) * 100) }));
+  const strengthAreasRanked = l1.strengthDomains
     .slice()
     .sort((a, b) => b.score - a.score)
     .map((d) => ({ name: d.domain, score: Math.round((d.score / 5) * 100) }));
@@ -88,19 +106,23 @@ export function adaptClass11ToSummary(output: Class11ScoreOutput, base: Assessme
   // silently dropping the other two the student actually has real data for.
   const learningStyles = l1.learningStyle.ranked.map((r) => ({ name: r.style, score: r.score }));
 
-  const eiPct = Math.round(((l1.emotionalIntelligence.selfAwareness + l1.emotionalIntelligence.socialAwareness) / 2) * 100);
+  // All 4 standard Goleman EQ quadrants, each a real, independently-measured
+  // score now (see scoring11_12.ts's scoreEI) — not 2 real + 2 faked via a
+  // fallback to the overall score, which is what made every quadrant read
+  // as an identical, non-discriminating 50%.
+  const ei = l1.emotionalIntelligence;
+  const eiPct = Math.round(((ei.selfAwareness + ei.selfManagement + ei.socialAwareness + ei.relationshipManagement) / 4) * 100);
   const eiBreakdown = [
-    { name: "Self-Awareness", score: Math.round(l1.emotionalIntelligence.selfAwareness * 100) },
-    { name: "Social Awareness", score: Math.round(l1.emotionalIntelligence.socialAwareness * 100) },
+    { name: "Self-Awareness", score: Math.round(ei.selfAwareness * 100) },
+    { name: "Self-Management", score: Math.round(ei.selfManagement * 100) },
+    { name: "Social Awareness", score: Math.round(ei.socialAwareness * 100) },
+    { name: "Relationship Management", score: Math.round(ei.relationshipManagement * 100) },
   ];
 
-  // "Strengths" and "Multiple Intelligence" share the same underlying
-  // strengthDomains data (see comment above), but showing the identical
-  // number on both dimension cards would read as a copy-paste bug rather
-  // than an honest reuse. This blends it with aptitude — "how you naturally
-  // work" as a mix of raw reasoning ability and your leading intelligence —
-  // a real, different, still-fully-explainable number, not a fabricated one.
-  const strengthsScore = Math.round((intelligenceRanked[0]?.score ?? 0) * 0.6 + ap.overallScore * 0.4);
+  // The Strengths dimension's own top domain, blended with aptitude — "how
+  // you naturally work" as a mix of raw reasoning ability and your leading
+  // competency strength.
+  const strengthsScore = Math.round((strengthAreasRanked[0]?.score ?? 0) * 0.6 + ap.overallScore * 0.4);
 
   const radar = [
     { key: "personality", label: "Personality", score: l1.personality.score },
@@ -111,9 +133,11 @@ export function adaptClass11ToSummary(output: Class11ScoreOutput, base: Assessme
     { key: "motivators", label: "Motivators", score: l1.motivators.score },
     { key: "strengths", label: "Strengths", score: strengthsScore },
     { key: "aptitude", label: "Aptitude", score: Math.round(ap.overallScore) },
-    // A ninth dimension 9-10 doesn't have — FullReport.tsx only renders it
-    // when this key is present, so class 9-10's own report is untouched.
-    { key: "creativity", label: "Creativity & Innovation", score: Math.min(100, Math.round((l1.creativity.score / 5) * 100)) },
+    // Creativity & Innovation removed as a scored dimension for 11-12 — back
+    // to the same fixed 8 as class 9-10. FullReport.tsx only renders a 9th
+    // dimension when a "creativity" radar entry is present, so simply not
+    // adding one here is enough; no changes needed there or in class 6-8's
+    // own report, which still adds its own creativity entry independently.
   ];
 
   return {
@@ -141,7 +165,7 @@ export function adaptClass11ToSummary(output: Class11ScoreOutput, base: Assessme
     ei: eiPct,
     eiBreakdown,
     learningStyles,
-    strengthsBreakdown: intelligenceRanked,
+    strengthsBreakdown: strengthAreasRanked,
     aptitudePct: Math.round(ap.overallScore),
     // Real per-axis MBTI scores — this is what makes FullReport.tsx render
     // the actual compass + type instead of the generic "not measured" text.
@@ -150,10 +174,5 @@ export function adaptClass11ToSummary(output: Class11ScoreOutput, base: Assessme
     mbtiTF: l1.personality.axisScores.tf,
     mbtiJP: l1.personality.axisScores.jp,
     radar,
-    creativityDetail: {
-      problemSolving: l1.creativity.problemSolving,
-      innovationApproach: l1.creativity.innovationApproach,
-      recommendations: l1.creativity.recommendations,
-    },
   };
 }

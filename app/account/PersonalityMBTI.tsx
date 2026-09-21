@@ -48,17 +48,15 @@ const AxisRow: React.FC<{ label: string; left: string; right: string; score: num
   const knobPct = Math.round((score / 10) * 100);
   return (
     <div style={{ marginBottom: 26 }}>
-      {/* The axis name alone next to a bare "60%" left it unclear which pole
-          that 60% actually meant — readable only by cross-checking the bold/
-          underlined label on the bar below. Naming the winning trait right
-          next to its percentage removes that guesswork; the axis name (which
-          of the four this is) becomes a small caption above it instead. */}
+      {/* The winning trait name is the small caption; the axis name (which of
+          the four this is — Energy Source, Information Intake, etc.) plus
+          its percentage is the big, bold line. */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 3 }}>
-        <span style={{ display: "flex", color }}>{icon}</span>
-        <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".04em", textTransform: "uppercase", color: C.muted }}>{label}</span>
+        <span style={{ fontSize: 12.5, fontWeight: 700, color: C.muted }}>{winnerLabel}</span>
       </div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 10 }}>
-        <span style={{ fontSize: 18, fontWeight: 900, color: C.ink }}>{winnerLabel}</span>
+        <span style={{ display: "flex", color }}>{icon}</span>
+        <span style={{ fontSize: 18, fontWeight: 900, color: C.ink }}>{label}</span>
         <span style={{ fontSize: 17, fontWeight: 900, color }}>· {Math.round(winnerScore * 10)}%</span>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
@@ -169,18 +167,18 @@ export const PersonalityMBTI: React.FC<PersonalityMBTIProps> = ({ a }) => {
           <ul>
             <li>
               {mbtiType[1] === "N"
-                ? "You naturally connect ideas and spot patterns and possibilities that others miss, rather than getting stuck on concrete details."
-                : "You naturally notice concrete facts and details, and prefer practical, proven approaches over untested theories."}
+                ? "You easily see the big picture and spot new ideas and possibilities that others miss."
+                : "You easily notice facts and details, and prefer practical methods that are already proven to work."}
             </li>
             <li>
               {mbtiType[2] === "T"
-                ? "When you decide something, logic and consistency usually come first — you'd rather be right than smooth things over."
-                : "When you decide something, how it affects people usually comes first — you weigh the human impact alongside the logic."}
+                ? "When you decide something, you use logic first — you'd rather be right than keep everyone happy."
+                : "When you decide something, you think about people's feelings first — not just the logic."}
             </li>
             <li>
               {mbtiType[0] === "E"
-                ? "You learn best through interaction, discussion, and real-world application of concepts."
-                : "You prefer reflective learning, reading, and having time to process information before discussing."}
+                ? "You learn best by talking to people, discussing ideas out loud, and trying things in real life."
+                : "You learn best on your own — reading, thinking things through, and taking your time before discussing."}
             </li>
           </ul>
         </div>
@@ -189,18 +187,18 @@ export const PersonalityMBTI: React.FC<PersonalityMBTIProps> = ({ a }) => {
           <ul>
             <li>
               {mbtiType[1] === "N"
-                ? "You're drawn to the big picture, so double-check the practical details and deadlines before committing to a plan — that's the part that's easiest for you to skip."
-                : "You're drawn to concrete facts, so pause sometimes and ask what the bigger pattern is — that's the part that's easiest for you to skip."}
+                ? "You focus on the big picture, so small details and deadlines can slip past you. Before you commit to a plan, go back and check the practical details."
+                : "You focus on facts and details, so you can miss the bigger picture. Before you decide something, stop and ask: what's the overall goal here?"}
             </li>
             <li>
               {mbtiType[2] === "T"
-                ? "Before delivering a decision, say out loud how it affects the people involved — you naturally lead with logic, so this step doesn't happen on its own."
-                : "When a decision is unpopular but right, practise making it anyway — you naturally lead with people's feelings, so this is the harder call for you to make."}
+                ? "You decide with logic first, so you can forget how a decision makes people feel. Before you tell someone your decision, think about their reaction."
+                : "You decide with people's feelings first, so you can avoid a decision that upsets people, even when it's the right one. Practise making that call anyway."}
             </li>
             <li>
               {mbtiType[3] === "J"
-                ? "You're comfortable with structure, so a last-minute change can throw you — practise treating it as one more input, not a crisis."
-                : "You're comfortable with flexibility, so fixed deadlines can sneak up on you — set yourself an earlier, private deadline so the real one never surprises you."}
+                ? "You like plans and structure, so a sudden change can stress you out. Try treating a sudden change as normal, not as a crisis."
+                : "You like flexibility, so a fixed deadline can catch you by surprise. Set yourself an earlier, private deadline so the real one never surprises you."}
             </li>
           </ul>
         </div>
@@ -211,15 +209,15 @@ export const PersonalityMBTI: React.FC<PersonalityMBTIProps> = ({ a }) => {
         <ol>
           <li>
             {mbtiType[0] === "E"
-              ? "Before your next big decision, spend 10 quiet minutes thinking it through alone before you discuss it with anyone — you default to thinking out loud, so this builds the other muscle."
-              : "Share a half-formed idea with someone before you've fully worked it out — you default to thinking things through alone first, so this builds the other muscle."}
+              ? "Before your next big decision, spend 10 quiet minutes thinking it through by yourself first. You usually think out loud with others — this helps you practise thinking it through alone too."
+              : "Share an idea with someone before you've fully worked it out yourself. You usually think things through alone first — this helps you practise thinking out loud too."}
           </li>
           <li>
             {mbtiType[2] === "T"
-              ? "Next time you give someone feedback, open with one honest thing that's working before the critique — it costs nothing and changes how it lands."
-              : "Next time you face an unpopular but necessary call, write down the plain reasons for it first, then decide — it's easier to hold the line once it's on paper."}
+              ? "Next time you give someone feedback, start with one honest thing that's going well before you point out the problem. It's a small change that makes the feedback easier to hear."
+              : "Next time you face a decision that's necessary but unpopular, write down your plain reasons for it first, then decide. It's easier to stick with a hard decision once your reasons are written down."}
           </li>
-          <li>Ask two people who know you well whether {mbtiType} — {typeInfo.type.toLowerCase()} — actually sounds like you. Self-reports miss blind spots that people around you can see.</li>
+          <li>Ask two people who know you well whether {mbtiType} — {typeInfo.type.toLowerCase()} — actually sounds like you. It's easy to miss things about yourself that people close to you can see clearly.</li>
         </ol>
       </div>
     </div>

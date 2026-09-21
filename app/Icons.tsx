@@ -57,6 +57,7 @@ const P: Record<string, ReactNode> = {
   signpost: <><path d="M12 3v3M12 20v-6" /><path d="M5 6h11l3 2.5L16 11H5z" /><path d="M19 14H8l-3 2.5L8 19h11z" /></>,
   bell: <><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.7 21a2 2 0 0 1-3.4 0" /></>,
   card: <><rect x="2.5" y="5.5" width="19" height="13" rx="2.5" /><path d="M2.5 10h19" /><path d="M6 14.5h3.5" /></>,
+  bank: <><path d="M3 10 12 4l9 6" /><path d="M4 10h16" /><path d="M6 10v9M10 10v9M14 10v9M18 10v9" /><path d="M3.5 20.5h17" /></>,
 };
 
 export function Icon({ name, size = 22, stroke = 1.7, style }: { name: string; size?: number; stroke?: number; style?: React.CSSProperties }) {

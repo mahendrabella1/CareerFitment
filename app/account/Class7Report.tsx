@@ -447,7 +447,7 @@ export function Class7Report({
                 <li>Record lessons and listen to them again</li>
               </ul>
             )}
-            {output.learningStyle.primary === "Reading" && (
+            {output.learningStyle.primary === "Reading/Writing" && (
               <ul>
                 <li>Read books and articles about topics you're interested in</li>
                 <li>Write down what you learn</li>

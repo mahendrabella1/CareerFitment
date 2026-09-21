@@ -490,6 +490,126 @@
     "11-12": {
       "Set 1": [
         {
+          "text": "Your class is asked to complete a group project with an unclear brief. What's your natural instinct?",
+          "options": [
+            "Break the brief down into clear, solvable parts before starting.",
+            "Take charge and assign roles so the team can move forward.",
+            "Come up with an unusual angle nobody else has thought of.",
+            "Ask the team (or teacher) what they actually need from this project.",
+            "Convince the group to agree on one clear direction.",
+            "Think about what the final outcome should look like before deciding how to get there."
+          ],
+          "mapping": [
+            "Problem Solving",
+            "Leadership",
+            "Creative Thinking",
+            "Design Thinking",
+            "Influencing",
+            "Strategic Thinking"
+          ]
+        },
+        {
+          "text": "Your team's plan for a competition just failed. What's your instinct?",
+          "options": [
+            "Diagnose exactly what went wrong before doing anything else.",
+            "Rally the team and decide the next move.",
+            "Throw out the old plan and try something completely different.",
+            "Ask teammates how they're feeling and what they need right now.",
+            "Convince the team not to give up.",
+            "Step back and rethink the overall approach, not just this attempt."
+          ],
+          "mapping": [
+            "Problem Solving",
+            "Leadership",
+            "Creative Thinking",
+            "Design Thinking",
+            "Influencing",
+            "Strategic Thinking"
+          ]
+        },
+        {
+          "text": "Which task would you enjoy most in a group project?",
+          "options": [
+            "Solving the trickiest technical or logical problem.",
+            "Coordinating the team and keeping everyone aligned.",
+            "Brainstorming original concepts for the project.",
+            "Interviewing or observing the actual users or audience.",
+            "Pitching the final idea and winning people over.",
+            "Planning the overall roadmap and timeline."
+          ],
+          "mapping": [
+            "Problem Solving",
+            "Leadership",
+            "Creative Thinking",
+            "Design Thinking",
+            "Influencing",
+            "Strategic Thinking"
+          ]
+        },
+        {
+          "text": "How do you usually approach a big decision, like choosing a stream or activity?",
+          "options": [
+            "List out the pros and cons and reason through it step by step.",
+            "Decide, then bring others along with my decision.",
+            "Consider options nobody else would think to consider.",
+            "Think about what would genuinely make everyone involved happiest.",
+            "Talk to people whose opinion might change my mind.",
+            "Think about where each option leads 5–10 years from now."
+          ],
+          "mapping": [
+            "Problem Solving",
+            "Leadership",
+            "Creative Thinking",
+            "Design Thinking",
+            "Influencing",
+            "Strategic Thinking"
+          ]
+        },
+        {
+          "text": "A friend is stuck on a problem and asks for your help. What do you naturally do?",
+          "options": [
+            "Walk through the logic with them step by step.",
+            "Take charge and just help them get it done.",
+            "Suggest a totally different way to think about it.",
+            "Ask questions to understand what they're actually struggling with.",
+            "Encourage and motivate them to keep trying.",
+            "Help them see how this problem fits into their bigger goal."
+          ],
+          "mapping": [
+            "Problem Solving",
+            "Leadership",
+            "Creative Thinking",
+            "Design Thinking",
+            "Influencing",
+            "Strategic Thinking"
+          ]
+        },
+        {
+          "text": "Which of these would you rather be known for?",
+          "options": [
+            "Being the person who always solves the hard problem.",
+            "Being the person others look to for direction.",
+            "Being the person full of original ideas.",
+            "Being the person who really \"gets\" what people need.",
+            "Being the person who can win anyone over.",
+            "Being the person who always thinks ahead."
+          ],
+          "mapping": [
+            "Problem Solving",
+            "Leadership",
+            "Creative Thinking",
+            "Design Thinking",
+            "Influencing",
+            "Strategic Thinking"
+          ]
+        }
+      ]
+    }
+  },
+  "multiple_intelligence": {
+    "11-12": {
+      "Set 1": [
+        {
           "text": "Which activity are you naturally strongest at?",
           "options": [
             "Writing or explaining ideas clearly.",
@@ -520,21 +640,6 @@
           ]
         },
         {
-          "text": "When explaining a difficult concept to someone, what are you most likely to do?",
-          "options": [
-            "Explain it using words and examples.",
-            "Draw a diagram or visual representation.",
-            "Demonstrate it practically.",
-            "Use an analogy or story."
-          ],
-          "mapping": [
-            "Linguistic",
-            "Spatial",
-            "Bodily-Kinesthetic",
-            "Linguistic"
-          ]
-        },
-        {
           "text": "Which challenge would you choose?",
           "options": [
             "Solve a difficult mathematical puzzle.",
@@ -547,36 +652,6 @@
             "Spatial",
             "Interpersonal",
             "Linguistic"
-          ]
-        },
-        {
-          "text": "Which ability would you most like to develop further?",
-          "options": [
-            "Public speaking/writing.",
-            "Mathematical or analytical thinking.",
-            "Visual/design ability.",
-            "Practical/physical skills."
-          ],
-          "mapping": [
-            "Linguistic",
-            "Logical-Mathematical",
-            "Spatial",
-            "Bodily-Kinesthetic"
-          ]
-        },
-        {
-          "text": "Which activity would you choose for relaxation?",
-          "options": [
-            "Listening to or creating music.",
-            "Talking with friends.",
-            "Reflecting, journaling or thinking privately.",
-            "Spending time in nature."
-          ],
-          "mapping": [
-            "Musical",
-            "Interpersonal",
-            "Intrapersonal",
-            "Naturalistic"
           ]
         },
         {
@@ -595,21 +670,6 @@
           ]
         },
         {
-          "text": "Which task would feel most natural?",
-          "options": [
-            "Create a presentation using strong language.",
-            "Identify patterns in a large amount of information.",
-            "Design a visual model of the idea.",
-            "Demonstrate how something works physically."
-          ],
-          "mapping": [
-            "Linguistic",
-            "Logical-Mathematical",
-            "Spatial",
-            "Bodily-Kinesthetic"
-          ]
-        },
-        {
           "text": "Which experience would you enjoy most?",
           "options": [
             "Performing or creating music.",
@@ -623,18 +683,6 @@
             "Intrapersonal",
             "Naturalistic"
           ]
-        },
-        {
-          "text": "Rate your confidence: \"I can understand and explain complex information when I have enough time to work through it.\"",
-          "type": "scale",
-          "scaleLabel_min": "Very low confidence",
-          "scaleLabel_max": "Very high confidence"
-        },
-        {
-          "text": "Rate yourself: \"I can identify what I am good at without depending entirely on other people's opinions.\"",
-          "type": "scale",
-          "scaleLabel_min": "Strongly disagree",
-          "scaleLabel_max": "Strongly agree"
         },
         {
           "text": "Which combination sounds most like your natural strengths?",
@@ -737,9 +785,9 @@
           ],
           "mapping": [
             "Visual",
-            "Read/Write",
-            "Social",
-            "Practice"
+            "Reading/Writing",
+            "Auditory",
+            "Kinesthetic"
           ]
         },
         {
@@ -752,9 +800,9 @@
           ],
           "mapping": [
             "Visual",
-            "Read/Write",
-            "Social",
-            "Practice"
+            "Reading/Writing",
+            "Auditory",
+            "Kinesthetic"
           ]
         },
         {
@@ -770,61 +818,63 @@
     "11-12": {
       "Set 1": [
         {
-          "text": "Your marks suddenly fall in a subject you normally perform well in. What would you do first?",
+          "text": "You realise you're getting irritated during a group project because things aren't going your way. What's most true for you?",
           "options": [
-            "Analyse what changed in my preparation or understanding.",
-            "Talk to my teacher about the problem.",
-            "Discuss it with someone I trust.",
-            "Give myself some time and then try again."
+            "I notice the irritation building up almost immediately, even before I say anything.",
+            "I can usually calm myself down before it affects how I act.",
+            "I also notice when the irritation is affecting how my teammates feel.",
+            "I say something to the team so we can sort it out together, instead of staying quiet."
           ],
           "mapping": [
-            "Self-Reflection",
-            "Help-Seeking",
-            "Social Support",
-            "Emotional Regulation"
-          ]
-        },
-        {
-          "text": "A close friend disagrees strongly with your opinion. What would you most likely do?",
-          "options": [
-            "Explain why I think I am correct.",
-            "Try to understand why they see it differently.",
-            "Avoid the disagreement.",
-            "Look for evidence that could help both of us understand the issue."
-          ],
-          "mapping": [
-            "Assertiveness",
-            "Empathy",
-            "Conflict Avoidance",
-            "Collaborative Problem-Solving"
-          ]
-        },
-        {
-          "text": "You have several important tasks and begin feeling overwhelmed. Which response is most likely?",
-          "options": [
-            "Break the work into smaller priorities.",
-            "Take a short break and return with a clearer mind.",
-            "Ask someone for help or guidance.",
-            "Continue working and hope I catch up."
-          ],
-          "mapping": [
+            "Self-Awareness",
             "Self-Management",
-            "Emotional Regulation",
-            "Help-Seeking",
-            "Avoidance"
+            "Social Awareness",
+            "Relationship Management"
           ]
         },
         {
-          "text": "When I receive criticism, can I separate useful feedback from comments that I should not take personally?",
+          "text": "Your marks suddenly fall in a subject you normally do well in. What's your first instinct?",
           "options": [
-            "Yes: I extract actionable advice and let go of personal judgment.",
-            "No: Criticism often feels personal and impacts my confidence.",
-            "Not Sure / Depends: I manage it well in some areas, but struggle in high-stakes moments."
+            "I try to name exactly what I'm feeling about it — disappointment, worry, frustration.",
+            "I give myself a set amount of time to feel bad about it, then move to fixing it.",
+            "I think about how my parents or teacher might feel about it too.",
+            "I talk to a teacher, friend or parent about what happened."
           ],
           "mapping": [
-            "High Self-Regulation",
-            "Low Self-Regulation",
-            "Mixed Regulation"
+            "Self-Awareness",
+            "Self-Management",
+            "Social Awareness",
+            "Relationship Management"
+          ]
+        },
+        {
+          "text": "A close friend strongly disagrees with something you believe. How do you usually handle it?",
+          "options": [
+            "I'm aware of exactly how strongly I feel about my own view before I even respond.",
+            "I keep my tone calm even if I feel strongly, so it doesn't turn into a fight.",
+            "I try to understand why they see it so differently before reacting.",
+            "I look for a way we can both walk away from the conversation feeling heard."
+          ],
+          "mapping": [
+            "Self-Awareness",
+            "Self-Management",
+            "Social Awareness",
+            "Relationship Management"
+          ]
+        },
+        {
+          "text": "You have several important deadlines at once and start feeling overwhelmed. What do you do?",
+          "options": [
+            "I notice the overwhelm building before it turns into panic.",
+            "I break the work into smaller pieces so I don't spiral.",
+            "I pay attention to whether the people around me are stressed by this too.",
+            "I ask someone for help or to share the load rather than struggling alone."
+          ],
+          "mapping": [
+            "Self-Awareness",
+            "Self-Management",
+            "Social Awareness",
+            "Relationship Management"
           ]
         }
       ]

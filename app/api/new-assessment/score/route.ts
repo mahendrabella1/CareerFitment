@@ -176,10 +176,10 @@ function convertAnswersToClass11Format(answers: Record<string, string>, chosenSe
     career_interest: {},
     aptitude: {},
     strength_domains: {},
+    multiple_intelligence: {},
     motivators: {},
     learning_styles: {},
     emotional_intelligence: {},
-    creativity: {},
   };
   const context = emptyContext();
 
@@ -201,7 +201,7 @@ function convertAnswersToClass11Format(answers: Record<string, string>, chosenSe
 
     if (category === "personality" || category === "career_interest" || category === "aptitude" ||
         category === "motivators" || category === "learning_styles" || category === "emotional_intelligence" ||
-        category === "creativity" || category === "strengths") {
+        category === "strengths" || category === "multiple_intelligence") {
       const optionIndex = parseInt(value, 10);
       if (Number.isNaN(optionIndex)) return;
       const bucket = category === "strengths" ? "strength_domains" : category;
@@ -245,10 +245,10 @@ function convertAnswersToClass11Format(answers: Record<string, string>, chosenSe
     career_interest: dimensions.career_interest,
     aptitude: dimensions.aptitude,
     strength_domains: dimensions.strength_domains,
+    multiple_intelligence: dimensions.multiple_intelligence,
     motivators: dimensions.motivators,
     learning_styles: dimensions.learning_styles,
     emotional_intelligence: dimensions.emotional_intelligence,
-    creativity: dimensions.creativity,
     subject_fit: context.subject_fit,
     career_fit: context.career_fit,
     career_selector: context.career_selector,

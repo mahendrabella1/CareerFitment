@@ -45,11 +45,11 @@ import { Ring, SkillBar, C } from "@/app/account/viz";
 import { RANK_COLOURS } from "@/app/account/FullReport";
 import {
   rankFitment1112, rankSuitability1112, groupByDomain1112, groupByCluster1112, selectCareer1112,
-  skillTagsFor1112, buildCareer20YearRoadmap,
-  type DomainGroup1112, type RankedCareer1112, type RoadmapPhase1112,
+  skillTagsFor1112,
+  type DomainGroup1112, type RankedCareer1112,
 } from "@/lib/report/careerFitEngine1112";
-import { DOMAINS_1112, STANDARD_CLUSTERS, CLUSTER_EXPLORE_LINKS, CLUSTER_COMPANIES, CLUSTER_FUNDED_PROGRAMS, CAREERS_1112, STREAM_KEY_1112, roadmapFor, type RoadmapEntry, type Career1112, type StreamKey1112, type StandardCluster } from "@/lib/report/careerfit1112";
-import { CLUSTER_ROADMAPS } from "@/lib/report/clusterRoadmaps1112";
+import { DOMAINS_1112, STANDARD_CLUSTERS, CLUSTER_EXPLORE_LINKS, CLUSTER_COMPANIES, CLUSTER_FUNDED_PROGRAMS, CAREERS_1112, STREAM_KEY_1112, roadmapFor, type RoadmapEntry, type Career1112, type StreamKey1112, type StandardCluster, type FundedProgram } from "@/lib/report/careerfit1112";
+import { CLUSTER_ROADMAPS, type ClusterRoadmapPhase } from "@/lib/report/clusterRoadmaps1112";
 import { degreesForStream, ELIGIBILITY_SYMBOL, ELIGIBILITY_LABEL, type DegreeEligibilityRow } from "@/lib/report/degreeStreamMatrix";
 import { topDimensionsForStudent, type ScoredDimension } from "@/lib/report/dimensionCareerGuide";
 import { percentileBandFor } from "@/lib/report/jeePercentileGuide";
@@ -109,8 +109,8 @@ function DomainChip({ domain, size = 30, kind = "cluster" }: { domain: string; s
   const color = kind === "cluster" ? clusterColor(domain) : domainColor(domain);
   const icon = kind === "cluster" ? clusterIcon(domain) : "match";
   return (
-    <span style={{ width: size, height: size, borderRadius: size * 0.32, background: `${color}18`, display: "grid", placeItems: "center", flex: "none" }}>
-      <Icon name={icon} size={size * 0.52} style={{ color }} />
+    <span style={{ width: size, height: size, borderRadius: "50%", background: `${color}18`, display: "grid", placeItems: "center", flex: "none" }}>
+      <Icon name={icon} size={size * 0.5} style={{ color }} />
     </span>
   );
 }
@@ -181,57 +181,112 @@ const td: React.CSSProperties = { padding: "10px 10px", fontSize: 12, color: "va
 // still size independently (grid + align-items:start, no rowSpan/shared
 // row-height) — a rowSpan=5 Selector cell next to two 5-row lists of very
 // different lengths is what left a large dead gap before.
-function OverviewHeadCell({ title, subtitle, color, borderLeft }: { title: string; subtitle: string; color: string; borderLeft?: boolean }) {
+// A tinted colour band per lens (blue/green/orange) with an icon circle,
+// instead of one shared dark bar split into 3 text-only cells — each of the
+// three lenses (Fitment/Suitability/Selector) now reads as its own
+// distinctly-coloured card, matching how the rest of this report already
+// colour-codes a lens (Pill tones, chart bars) rather than using colour only
+// as a thin accent line.
+function OverviewHeadCell({ icon, title, subtitle, desc, color, borderLeft }: { icon: string; title: string; subtitle: string; desc: string; color: string; borderLeft?: boolean }) {
   return (
-    <div style={{ padding: "11px 14px", borderLeft: borderLeft ? "1px solid rgba(255,255,255,.14)" : "none", borderBottom: `3px solid ${color}` }}>
-      <div style={{ fontSize: 13.5, fontWeight: 800, color: "#fff" }}>{title}</div>
-      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".05em", textTransform: "uppercase", color, marginTop: 2 }}>{subtitle}</div>
+    <div style={{ minWidth: 0, padding: "16px 16px 16px", background: `${color}0f`, borderLeft: borderLeft ? "1px solid rgba(0,0,0,.05)" : "none" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <span style={{ width: 40, height: 40, borderRadius: "50%", background: `${color}22`, display: "grid", placeItems: "center", flex: "none" }}>
+          <Icon name={icon} size={19} style={{ color }} />
+        </span>
+        <div>
+          <div style={{ fontSize: 16.5, fontWeight: 900, color: "var(--ink)", letterSpacing: "-.01em" }}>{title}</div>
+          <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color, marginTop: 1 }}>{subtitle}</div>
+        </div>
+      </div>
+      <p style={{ fontSize: 11.5, color: "var(--ink-2)", margin: "10px 0 0", lineHeight: 1.5 }}>{desc}</p>
     </div>
   );
 }
-function OverviewRow({ rank, name, pct, color, roles }: { rank: number; name: string; pct: number; color: string; roles: string }) {
+// A compact, chevron-terminated row — rank badge, domain name + fit % on one
+// line, roles listed underneath as plain sub-text — so all 5 rows read at a
+// glance without needing to open a card. The full per-role percentage/degree/
+// exam breakdown still lives on the Fitment/Suitability detail pages that
+// follow; this is the "at a glance" summary, not a duplicate of that detail.
+// Plain white rows throughout (no zebra striping) — the tinted number badge
+// and the divider line already separate one row from the next.
+function OverviewRow({ rank, name, pct, color, roles }: { rank: number; name: string; pct: number; color: string; roles: string[] }) {
   return (
-    <div style={{ display: "flex", gap: 10, padding: "10px 14px", borderBottom: "1px solid var(--line-2, var(--line))", borderLeft: `3px solid ${color}`, background: rank % 2 ? "var(--line-2, #f7f7f8)" : "transparent" }}>
-      <span style={{ fontSize: 10.5, fontWeight: 800, color: "var(--muted)", flex: "none", width: 14 }}>{rank}</span>
+    <div style={{ minWidth: 0, padding: "13px 16px", borderBottom: "1px solid var(--line-2, var(--line))", background: "#fff", display: "flex", alignItems: "center", gap: 10 }}>
+      <span style={{ fontSize: 13, fontWeight: 800, color, background: `${color}1c`, width: 26, height: 26, borderRadius: "50%", display: "grid", placeItems: "center", flex: "none" }}>{rank}</span>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ display: "flex", alignItems: "baseline", gap: 6, flexWrap: "wrap" }}>
-          <span style={{ fontSize: 12.5, fontWeight: 800, color: "var(--ink)" }}>{name}</span>
-          <span style={{ fontSize: 11.5, fontWeight: 800, color }}>{pct.toFixed(0)}%</span>
+        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8 }}>
+          <span style={{ fontSize: 13.5, fontWeight: 800, color: "var(--ink)" }}>{name}</span>
+          <span style={{ fontSize: 19, fontWeight: 900, color, letterSpacing: "-.02em", flex: "none" }}>{pct.toFixed(0)}%</span>
         </div>
-        <div style={{ fontSize: 10.5, color: "var(--ink-2)", marginTop: 3, lineHeight: 1.5 }}>{roles}</div>
+        <div style={{ marginTop: 4, display: "flex", flexDirection: "column", gap: 2 }}>
+          {roles.map((r) => <span key={r} style={{ fontSize: 11, color: "var(--muted)", lineHeight: 1.45 }}>{r}</span>)}
+        </div>
       </div>
+      <Icon name="chevronRight" size={15} style={{ color: "var(--muted)", flex: "none" }} />
     </div>
   );
 }
 function OverviewEmpty({ text }: { text: string }) {
   return <p style={{ fontSize: 11.5, color: "var(--muted)", textAlign: "center", padding: "20px 14px", margin: 0 }}>{text}</p>;
 }
-// A vertical down-arrow timeline for the Selector panel's brief roadmap
-// preview — each step is its own flush, bordered row (matching the table
-// language above) joined by an actual "↓" connector so this still reads as
-// one continuous journey, not just a divided list.
-/** `full` shows every point per phase (the Career Selector page's own
- *  "simple steps" section) instead of just the headline point (the Overview
- *  table's compact preview column). */
-function OverviewRoadmapPreview({ phases, color, full }: { phases: RoadmapPhase1112[]; color: string; full?: boolean }) {
+// A small, hand-drawn mountain-and-flag scene (plain inline SVG, no external
+// asset) for the bottom of the Selector column — its job is purely to fill
+// the real empty space left below the shorter Selector content once that
+// column is stretched to match Fitment/Suitability's height, the same way
+// the reference layout uses it, not to be a literal illustration of anything.
+function SummitIllustration() {
   return (
-    <div style={{ marginTop: 10 }}>
+    <div style={{ minWidth: 0, marginTop: "auto", display: "flex", alignItems: "center", gap: 10, padding: "16px 14px 16px" }}>
+      <svg width="80" height="60" viewBox="0 0 130 95" style={{ flex: "none" }} aria-hidden="true">
+        <path d="M0 95 L30 32 L54 58 L80 18 L108 55 L130 95 Z" fill="#dbe4ee" />
+        <path d="M12 95 L50 45 L75 95 Z" fill="#b9c8dc" />
+        <path d="M18 92 Q30 74 40 66 T50 46" stroke="#fff" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.85" />
+        <line x1="50" y1="46" x2="50" y2="28" stroke="#334155" strokeWidth="2" strokeLinecap="round" />
+        <path d="M50 28 L65 34 L50 40 Z" fill="#d0332c" />
+      </svg>
+      <div style={{ minWidth: 0 }}>
+        <div style={{ fontSize: 12.5, fontWeight: 800, color: "var(--ink)", lineHeight: 1.4 }}>Right direction<br />for a brighter tomorrow.</div>
+        <div style={{ width: 54, height: 3, background: "#d0332c", borderRadius: 2, marginTop: 5 }} />
+      </div>
+    </div>
+  );
+}
+// A numbered path down the left side — a circle per phase joined by a
+// connecting line, journey-map style ("I AM HERE, I CAN STUDY, ...") —
+// rendering the STANDARD, pre-authored per-cluster roadmap (CLUSTER_ROADMAPS,
+// clusterRoadmaps1112.ts), not a roadmap dynamically built around the
+// student's specific desired career or stream. Every real degree/
+// qualification name in it is generic to the cluster, so it reads the same
+// for every student who lands on that cluster — the "here's the realistic
+// path for this domain" answer, not a comparison to any one career.
+function ClusterRoadmapPath({ phases, color }: { phases: ClusterRoadmapPhase[]; color: string }) {
+  return (
+    <div style={{ marginTop: 20 }}>
       {phases.map((p, i) => (
-        <div key={p.period}>
-          <div style={{ padding: "9px 14px", borderTop: "1px solid var(--line-2, var(--line))", background: i % 2 ? "var(--line-2, #f7f7f8)" : "transparent" }}>
-            <div style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color }}>{p.period}</div>
-            <div style={{ fontSize: 11.5, fontWeight: 800, color: "var(--ink)", marginTop: 2 }}>{p.title}</div>
-            {full ? (
-              <ul style={{ margin: "5px 0 0", paddingLeft: 16, display: "flex", flexDirection: "column", gap: 4 }}>
-                {p.points.map((pt) => <li key={pt} style={{ fontSize: 10.5, color: "var(--ink-2)", lineHeight: 1.5 }}>{pt}</li>)}
-              </ul>
-            ) : (
-              <div style={{ fontSize: 10.5, color: "var(--ink-2)", marginTop: 3, lineHeight: 1.45 }}>{p.points[0]}</div>
-            )}
+        <div key={p.code} style={{ display: "flex", gap: 16 }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: "none" }}>
+            <span style={{ width: 34, height: 34, borderRadius: "50%", background: color, color: "#fff", fontWeight: 800, fontSize: 14.5, display: "grid", placeItems: "center", flex: "none", boxShadow: `0 0 0 4px ${color}22` }}>{i + 1}</span>
+            {i < phases.length - 1 && <div style={{ width: 2, flex: 1, background: `linear-gradient(${color}70, ${color}20)`, minHeight: 30, marginTop: 6 }} />}
           </div>
-          {i < phases.length - 1 && (
-            <div style={{ textAlign: "center", fontSize: 13, fontWeight: 800, color, lineHeight: 1, padding: "2px 0" }}>↓</div>
-          )}
+          <div style={{ minWidth: 0, flex: 1, paddingBottom: i < phases.length - 1 ? 28 : 4 }}>
+            {/* The phase name is the "where am I" anchor for this whole
+                block — a tinted pill makes it the loudest thing on the
+                card instead of reading the same weight as its own section
+                headings below it. */}
+            <span style={{ display: "inline-block", fontSize: 13.5, fontWeight: 800, color, background: `${color}14`, padding: "4px 12px", borderRadius: 999 }}>{p.name}</span>
+            <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: ".03em", textTransform: "uppercase", color: "var(--muted)", marginTop: 7 }}>{p.stage}</div>
+            <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 11 }}>
+              {p.sections.map((s) => (
+                <div key={s.heading}>
+                  <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 4 }}>{s.heading}</div>
+                  <ul style={{ margin: 0, paddingLeft: 16, display: "flex", flexDirection: "column", gap: 3 }}>
+                    {s.items.map((it) => <li key={it} style={{ fontSize: 11.5, color: "var(--ink-2)", lineHeight: 1.55 }}>{it}</li>)}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       ))}
     </div>
@@ -240,11 +295,8 @@ function OverviewRoadmapPreview({ phases, color, full }: { phases: RoadmapPhase1
 
 const VERDICT_TONE: Record<string, { c: string; bg: string }> = {
   "Top Choice": { c: "#1f7a55", bg: "#eaf6f0" },
-  "Good Choice": { c: "#1f7a55", bg: "#eaf6f0" },
-  "Worth Considering": { c: "#2a5aa0", bg: "#eaf1fb" },
-  "Needs Preparation": { c: "#a3620b", bg: "#fdf3dd" },
-  "Worth Exploring": { c: "#2a5aa0", bg: "#eaf1fb" },
-  "Not Recommended": { c: "#b3261e", bg: "#fdecec" },
+  "Medium Choice": { c: "#a3620b", bg: "#fdf3dd" },
+  "Low Choice": { c: "#b3261e", bg: "#fdecec" },
 };
 function verdictColor(v: string): string { return VERDICT_TONE[v]?.c ?? "var(--ink-2)"; }
 
@@ -276,7 +328,7 @@ function AxisCell({ value, color }: { value: number; color: string }) {
 // "Career Paths" cluster format exactly: Career Path | Psy. Analysis |
 // Skill and Abilities | Comment — two SEPARATE axes (not one blended score)
 // so a role that scores well on ability but poorly on genuine interest
-// reads honestly as "Worth Considering"/"Needs Preparation", not a misleading "Top Choice".
+// reads honestly as "Medium Choice", not a misleading "Top Choice".
 // See scoreCareerAxes1112()/verdictFor1112() in careerFitEngine1112.ts.
 function RolesTable({ careers }: { careers: RankedCareer1112[] }) {
   return (
@@ -316,15 +368,92 @@ function RolesTable({ careers }: { careers: RankedCareer1112[] }) {
 // labels, not things a student can actually go learn, and since ~44% of all
 // 332 careers share Logical-Mathematical as their #1 code, an analytically-
 // leaning student saw nearly the same 3-5 tags repeat across STEM, Finance,
-// IT and Law alike, which read as broken, not just generic. CLUSTER_ROADMAPS'
-// own "Skills I acquire" section (phase 2, "I CAN STUDY") is genuinely
-// concrete and cluster-specific real content already written for every
-// cluster — Python/Git/DSA for IT vs financial modelling/Excel for Finance —
-// so this reuses that instead of re-deriving something weaker.
+// IT and Law alike, which read as broken, not just generic.
+//
+// CLUSTER_ROADMAPS' own "Skills I acquire" (phase 2) was tried next, but
+// that text is written for ONE specific path through the cluster, not the
+// cluster as a whole — STEM's phase 2 names "CAD and one analysis/
+// simulation tool" because it's written from an engineering-student's
+// route through STEM, but that's meaningless for the same cluster's
+// Physics, Biotechnology or Statistics careers. This table instead uses a
+// dedicated list per cluster, chosen to genuinely span its full breadth —
+// broad, transferable skills every career in that cluster draws on, not a
+// tool or technique specific to one sub-field within it.
+const CLUSTER_CORE_SKILLS: Record<StandardCluster, string[]> = {
+  "Agriculture, Food & Natural Resources": ["Biology & life-science fundamentals", "Field & lab observation", "Data-driven decision-making", "Sustainability & resource management", "Applied problem-solving", "Patience with long growth cycles"],
+  "Architecture & Construction": ["Spatial & visual thinking", "Technical drawing & design software", "Project & site management", "Structural & materials understanding", "Regulatory & safety codes", "Client communication", "Budgeting & cost estimation"],
+  "Arts, A/V Technology & Communications": ["Creativity & original thinking", "Visual, audio or written storytelling", "Relevant creative software & tools", "Building a strong portfolio", "Audience & platform awareness", "Collaboration under deadline", "Adaptability across formats"],
+  "Business Management & Administration": ["Strategic & commercial thinking", "Leadership & ownership", "Communication & negotiation", "Analytical decision-making", "Financial literacy", "Project & team coordination", "Resilience & initiative"],
+  "Education & Training": ["Communication & patience", "Empathy & active listening", "Subject-matter mastery", "Lesson planning & assessment design", "Classroom/audience management", "Continuous learning", "Ethics & confidentiality"],
+  "Finance": ["Numerical & analytical thinking", "Attention to detail", "Regulatory & compliance knowledge", "Ethics & integrity", "Client communication", "Risk assessment", "Spreadsheet & financial-tool fluency"],
+  "Government & Public Administration": ["Analytical & argumentative reasoning", "Reading comprehension & drafting", "Ethics & integrity", "Public communication", "Judgement under pressure", "Policy & regulatory awareness"],
+  "Health Science": ["Biology & chemistry fundamentals", "Empathy & patient communication", "Precision & attention to detail", "Resilience under pressure", "Ethics & confidentiality", "Teamwork in clinical settings", "Continuous, lifelong learning"],
+  "Hospitality & Tourism": ["People & service mindset", "Coordination & planning", "Composure under pressure", "Attention to detail", "Cultural awareness", "Multitasking", "On-the-spot problem-solving"],
+  "Human Services": ["Empathy & active listening", "Communication & counselling skills", "Ethics & confidentiality", "Patience & emotional resilience", "Cultural sensitivity", "Case organisation & follow-through"],
+  "Information Technology": ["Programming & logical thinking", "Data structures & problem-solving", "Debugging & systems thinking", "One area of deep specialisation", "Continuous self-learning", "Collaboration (version control, code review)"],
+  "Law, Public Safety, Corrections & Security": ["Analytical & argumentative reasoning", "Reading comprehension & drafting", "Ethics & integrity", "Communication & advocacy", "Judgement under pressure", "Attention to procedure & detail"],
+  "Manufacturing": ["Technical & mechanical aptitude", "Process & quality-control thinking", "Safety & standards discipline", "Problem-solving under constraints", "Attention to detail", "Teamwork on a production floor"],
+  "Marketing": ["Communication & storytelling", "Creative and analytical thinking", "Understanding consumer behaviour", "Data analysis & metrics literacy", "Digital tools & platforms fluency", "Adaptability to trends"],
+  "STEM": ["Mathematical & logical reasoning", "Curiosity & structured problem-solving", "Lab or computational methods", "Technical writing & presentation", "Attention to precision", "Patience with long, complex problems"],
+  "Transportation, Distribution & Logistics": ["Discipline & fitness for the role", "Technical precision", "Decision-making under pressure", "Safety-first mindset", "Coordination & planning", "Composure in high-stakes situations"],
+};
 function clusterCoreSkills(cluster: string): string[] {
-  const phase2 = CLUSTER_ROADMAPS[cluster as StandardCluster]?.phases.find((p) => p.code === "02");
-  const skills = phase2?.sections.find((s) => s.heading === "Skills I acquire")?.items;
-  return skills?.length ? skills.slice(0, 5) : [];
+  return CLUSTER_CORE_SKILLS[cluster as StandardCluster] ?? [];
+}
+
+// A one-line, plainly-true description of what the cluster actually
+// involves — shown under the domain name in the consolidated table so a
+// student can tell what "STEM" or "Human Services" means without already
+// knowing the cluster taxonomy. Generic-but-accurate by design (it has to
+// hold for every career inside the cluster, not just one path through it),
+// same authorship standard as CLUSTER_CORE_SKILLS above.
+const CLUSTER_TAGLINE: Record<StandardCluster, string> = {
+  "STEM": "Explore science, research and engineering to solve real-world problems.",
+  "Information Technology": "Build software, work with data and create digital solutions.",
+  "Health Science": "Care for people's health, from clinical practice to allied health roles.",
+  "Finance": "Manage money, investments and risk for people and businesses.",
+  "Business Management & Administration": "Lead teams, run operations and grow organisations.",
+  "Law, Public Safety, Corrections & Security": "Uphold justice, safety and public order.",
+  "Human Services": "Support people's wellbeing through counselling, care and community work.",
+  "Arts, A/V Technology & Communications": "Create visual, audio and written work that informs or entertains.",
+  "Architecture & Construction": "Design and build the structures people live and work in.",
+  "Government & Public Administration": "Serve the public through policy, administration and civil service.",
+  "Hospitality & Tourism": "Deliver experiences across travel, hotels, food and events.",
+  "Agriculture, Food & Natural Resources": "Work with land, food systems and natural resources sustainably.",
+  "Education & Training": "Teach, mentor and design learning for others.",
+  "Marketing": "Understand audiences and communicate what makes a product or idea worth choosing.",
+  "Manufacturing": "Design, produce and maintain the physical goods people use.",
+  "Transportation, Distribution & Logistics": "Move people and goods safely and efficiently.",
+};
+
+// Every STANDARD_CLUSTERS.salaryIndia string already follows the same
+// Every STANDARD_CLUSTERS.salaryIndia string has exactly 3 "·"-separated
+// bands in entry/mid/senior ORDER, but not every band ends in the literal
+// word "entry"/"mid"/"senior" — several end in a parenthetical role
+// description instead (e.g. Health Science's "...(doctors post-PG)",
+// Finance's "...(CFO / fund management)"). An earlier version tried to
+// detect the label from a keyword match against the tail of the string,
+// which silently swallowed whatever came after "senior"/"mid" when the real
+// text had more words following it, and printed the WHOLE unparsed string
+// twice (once as a label, once as a fallback value) whenever no keyword
+// matched at all. This version never guesses which band a string belongs
+// to — position alone decides that — and only ever strips a bare, trailing
+// occurrence of the label word (safe because it only fires when that exact
+// word is the very last thing in the string), so no real content is ever
+// dropped or duplicated.
+function stripTrailingLabel(text: string): string {
+  return text
+    .replace(/\s*senior\s*\/\s*lead\s*$/i, "")
+    .replace(/\s*\bsenior\b\s*$/i, "")
+    .replace(/\s*\blead\b\s*$/i, "")
+    .replace(/\s*\bmid\b\s*$/i, "")
+    .replace(/\s*\bentry\b\s*$/i, "")
+    .trim();
+}
+function salaryBands(india: string | undefined): { headline: string; mid: string; senior: string } {
+  if (!india) return { headline: "—", mid: "", senior: "" };
+  const [entry, mid, senior] = india.split(/\s*·\s*/).map((s) => s.trim());
+  return { headline: stripTrailingLabel(entry ?? india), mid: mid ? stripTrailingLabel(mid) : "", senior: senior ? stripTrailingLabel(senior) : "" };
 }
 
 // The compact "at a glance" table version of a domain-group list — S.No ·
@@ -333,55 +462,105 @@ function clusterCoreSkills(cluster: string): string[] {
 // per-role Psy.Analysis/Skill/Comment breakdown (DomainBlock/RolesTable)
 // still follows underneath for anyone digging into a specific role, so
 // this is a lead-in summary, not a replacement for that existing detail.
+function SecLabel({ children }: { children: React.ReactNode }) {
+  return <div style={{ fontSize: 9, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)" }}>{children}</div>;
+}
+// A stacked list of cards, one per domain, instead of a wide <table> — a
+// 7-column table (domain/roles/skills/salary/companies/explore) forced
+// horizontal scrolling on anything narrower than ~900px, and one long list
+// (skills, companies) in a single cell stretched the WHOLE row's height,
+// misaligning every other column next to it. A card's sections (domcard-
+// grid, see FullReport.tsx) just reflow to fit whatever width is available,
+// so nothing ever needs a horizontal scrollbar, and a long section only
+// grows its own card.
 function ClusterSummaryTable({ groups, showCompanies }: { groups: DomainGroup1112[]; showCompanies?: boolean }) {
   return (
-    <div style={{ overflowX: "auto", border: "1px solid var(--line)", borderRadius: 10 }}>
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
-        <thead>
-          <tr>
-            <th style={{ ...th, width: 36 }}>S.No</th>
-            <th style={th}>Domain</th>
-            <th style={th}>Roles (fit %)</th>
-            <th style={th}>Skills to acquire</th>
-            <th style={th}>Salaries (India)</th>
-            {showCompanies && <th style={th}>Companies that hire</th>}
-            <th style={{ ...th, width: 150 }}>Explore</th>
-          </tr>
-        </thead>
-        <tbody>
-          {groups.map((g, i) => {
-            const sal = CLUSTER_SALARY.get(g.domain);
-            const links = CLUSTER_EXPLORE_LINKS[g.domain as keyof typeof CLUSTER_EXPLORE_LINKS] ?? [];
-            const companies = CLUSTER_COMPANIES[g.domain as keyof typeof CLUSTER_COMPANIES];
-            return (
-              <tr key={g.domain} style={{ background: i % 2 ? "var(--line-2, #f7f7f8)" : "transparent" }}>
-                <td style={{ ...td, fontWeight: 800, color: "var(--muted)", textAlign: "center" }}>{i + 1}</td>
-                <td style={{ ...td, borderLeft: `3px solid ${clusterColor(g.domain)}`, fontWeight: 800, color: "var(--ink)" }}>{g.domain}</td>
-                <td style={{ ...td, fontSize: 11 }}>{g.careers.slice(0, 4).map((c) => `${c.career.name} (${c.interest}%)`).join(", ")}</td>
-                <td style={{ ...td, fontSize: 11 }}>{clusterCoreSkills(g.domain).join(", ") || "—"}</td>
-                <td style={{ ...td, fontSize: 11 }}>{sal?.india ?? "—"}</td>
-                {showCompanies && (
-                  <td style={{ ...td, fontSize: 10.5 }}>
-                    {companies ? (
-                      <>
-                        <div><b style={{ color: "var(--ink)" }}>Regular:</b> {companies.regular.join(", ")}</div>
-                        <div style={{ marginTop: 3 }}><b style={{ color: "var(--ink)" }}>Govt:</b> {companies.govt.join(", ")}</div>
-                      </>
-                    ) : <span style={{ color: "var(--muted)" }}>Not researched yet</span>}
-                  </td>
-                )}
-                <td style={td}>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      {groups.map((g, i) => {
+        const sal = CLUSTER_SALARY.get(g.domain);
+        const bands = salaryBands(sal?.india);
+        const links = CLUSTER_EXPLORE_LINKS[g.domain as keyof typeof CLUSTER_EXPLORE_LINKS] ?? [];
+        const companies = CLUSTER_COMPANIES[g.domain as keyof typeof CLUSTER_COMPANIES];
+        const color = clusterColor(g.domain);
+        return (
+          <div key={g.domain} style={{ border: "1px solid var(--line)", borderLeft: `4px solid ${color}`, borderRadius: 14, overflow: "hidden" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 18px", background: `${color}0a`, borderBottom: "1px solid var(--line)" }}>
+              <span style={{ width: 26, height: 26, borderRadius: "50%", background: color, color: "#fff", fontWeight: 800, fontSize: 12.5, display: "grid", placeItems: "center", flex: "none" }}>{i + 1}</span>
+              <DomainChip domain={g.domain} size={36} />
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <div style={{ fontWeight: 800, color: "var(--ink)", fontSize: 14.5 }}>{g.domain}</div>
+                <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 1 }}>{CLUSTER_TAGLINE[g.domain as StandardCluster] ?? ""}</div>
+              </div>
+              <div style={{ textAlign: "right", flex: "none" }}>
+                <div style={{ fontSize: 19, fontWeight: 900, color, letterSpacing: "-.01em" }}>{g.topScore.toFixed(0)}%</div>
+                <div style={{ fontSize: 8.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)" }}>Fit</div>
+              </div>
+            </div>
+
+            <div className="domcard-grid">
+              <div className="domcard-sec">
+                {/* Just the role names — the fit % is already the whole
+                    point of the domain's own rank on the overview page and
+                    the per-role table further down this same page; showing
+                    it a third time here, on every row, was pure repetition. */}
+                <SecLabel>Key roles</SecLabel>
+                <div style={{ display: "flex", flexDirection: "column", gap: 7, marginTop: 8 }}>
+                  {g.careers.slice(0, 4).map((c) => (
+                    <span key={c.career.name} style={{ fontSize: 12.5, fontWeight: 700, color: "var(--ink)" }}>{c.career.name}</span>
+                  ))}
+                </div>
+              </div>
+              <div className="domcard-sec">
+                <SecLabel>Skills to acquire</SecLabel>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: 8 }}>
+                  {clusterCoreSkills(g.domain).length ? clusterCoreSkills(g.domain).map((s) => (
+                    <span key={s} style={{ fontSize: 10.5, background: "var(--line-2, #f2f2f4)", color: "var(--ink-2)", fontWeight: 600, borderRadius: 6, padding: "3px 8px", lineHeight: 1.35 }}>{s}</span>
+                  )) : <span style={{ fontSize: 11, color: "var(--muted)" }}>—</span>}
+                </div>
+              </div>
+              <div className="domcard-sec">
+                <SecLabel>Salary (India)</SecLabel>
+                <div style={{ fontSize: 14.5, fontWeight: 800, color: "var(--ink)", marginTop: 8 }}>{bands.headline}</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: 5 }}>
+                  {[{ label: "Mid", value: bands.mid }, { label: "Senior", value: bands.senior }].filter((b) => b.value).map((b) => (
+                    <div key={b.label} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <span style={{ fontSize: 8.5, fontWeight: 800, letterSpacing: ".04em", color, background: `${color}14`, borderRadius: 4, padding: "2px 5px", flex: "none" }}>{b.label.toUpperCase()}</span>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: "var(--ink-2)" }}>{b.value}</span>
+                    </div>
+                  ))}
+                </div>
+                {links.length > 0 && (
+                  <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 6 }}>
                     {links.map((l) => (
-                      <a key={l.url} href={l.url} target="_blank" rel="noreferrer" style={{ fontSize: 10.5, fontWeight: 700, color: clusterColor(g.domain), textDecoration: "none" }}>{l.label} ↗</a>
+                      <a key={l.url} href={l.url} target="_blank" rel="noreferrer" style={{ fontSize: 11.5, fontWeight: 700, color, textDecoration: "none" }}>{l.label} →</a>
                     ))}
                   </div>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                )}
+              </div>
+            </div>
+
+            {showCompanies && (
+              <div style={{ padding: "12px 18px", borderTop: "1px solid var(--line-2, var(--line))" }}>
+                {/* One wrapping row, capped to 3+2 — the full list (up to 13
+                    names) as one comma-joined sentence is what made this read
+                    as one long, unstructured wall of text. Govt/PSU names get
+                    the cluster-coloured tint so they stand out from regulars. */}
+                <SecLabel>Top companies that hire</SecLabel>
+                {companies ? (
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
+                    {companies.regular.slice(0, 3).map((c) => (
+                      <span key={c} style={{ fontSize: 10.5, fontWeight: 700, color: "var(--ink-2)", background: "var(--line-2, #f2f2f4)", borderRadius: 999, padding: "3px 10px" }}>{c}</span>
+                    ))}
+                    {companies.govt.slice(0, 2).map((c) => (
+                      <span key={c} style={{ fontSize: 10.5, fontWeight: 700, color, background: `${color}12`, borderRadius: 999, padding: "3px 10px" }}>{c}</span>
+                    ))}
+                  </div>
+                ) : <span style={{ fontSize: 11, color: "var(--muted)" }}>Not researched yet</span>}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -393,52 +572,197 @@ function ClusterSummaryTable({ groups, showCompanies }: { groups: DomainGroup111
 // no researched programmes yet is skipped silently rather than shown as an
 // empty table — an empty table reads as "there's nothing here," which isn't
 // true, it just isn't researched yet (see CLUSTER_FUNDED_PROGRAMS's own comment).
+// Government-vs-industry is presentational only — a keyword check over
+// fields that already exist (name/verify/url), not a new researched fact.
+// Every program still names its own real conducting body regardless of
+// which pill it gets; this just colour-codes the distinction at a glance.
+function fundingBadge(p: FundedProgram): { label: string; tone: string; bg: string; icon: string } {
+  const text = `${p.name} ${p.verify} ${p.url}`.toLowerCase();
+  const isGovt = /\.gov\.in|\.nic\.in|government|ministry|upsc|ssc\.gov|isro|drdo|public sector|psu\b/.test(text);
+  return isGovt
+    ? { label: "Government-Backed", tone: "#2a5aa0", bg: "#eaf1fb", icon: "bank" }
+    : { label: "Industry-Led", tone: "#a3620b", bg: "#fdf1de", icon: "bank" };
+}
+// Program names in this data follow "SHORT NAME — full sponsor/description"
+// (e.g. "NDA — National Defence Academy") — split at that dash for a bold
+// short headline plus a subtitle, instead of one long run-on title.
+function splitProgramName(name: string): { headline: string; sub: string | null } {
+  const idx = name.indexOf(" — ");
+  return idx === -1 ? { headline: name, sub: null } : { headline: name.slice(0, idx), sub: name.slice(idx + 3) };
+}
+function urlHost(url: string): string {
+  try { return new URL(url).hostname.replace(/^www\./, ""); } catch { return url; }
+}
+// Splits a stat's value into a bold lead clause plus a muted detail clause —
+// tries a real sentence break first, then a semicolon, then an em-dash,
+// using whichever gives a genuine two-part split. This is NOT the old
+// shortHeadline() truncation bug (which cut a value mid-word with an
+// ellipsis and then repeated the FULL value again right below it); it never
+// drops or duplicates a single word of the real text.
+//
+// Two things the single ". "-only version got wrong, both visible in real
+// data: (1) a long value with no period at all (just one at the very end,
+// e.g. a single 200-character sentence) rendered as ONE long, fully-bold
+// block — much taller and heavier than its neighbouring stats, which is
+// exactly the "long long things, uneven" look being fixed here; trying a
+// semicolon/dash first gives those values a short bold lead too. (2) a bare
+// "period then space" match doesn't know the difference between a real
+// sentence break and an abbreviation like "vs." or "e.g." — it would split
+// "...programmes vs. its own..." right after "vs.", cutting a clause in
+// half mid-thought. Requiring a capital letter, digit or currency symbol
+// right after the period is what a real new sentence almost always starts
+// with, and an abbreviation almost never does.
+function splitLead(text: string): { lead: string; rest: string | null } {
+  const patterns: RegExp[] = [
+    /^(.*?\.)\s+(?=[A-Z0-9₹$])(.{8,})$/,
+    /^(.*?;)\s+(.{8,})$/,
+    /^(.*?—)\s*(.{8,})$/,
+  ];
+  for (const re of patterns) {
+    const m = text.match(re);
+    if (m) return { lead: m[1].replace(/[.;—]\s*$/, "").trim(), rest: m[2].trim() };
+  }
+  return { lead: text, rest: null };
+}
+
+// Real logos, sourced from Wikimedia Commons and verified (fetched, 200 OK)
+// before use — same standard as every other fact in this file. Only the
+// sponsors below have a confirmed, working file; every other programme
+// keeps the plain colour-badge fallback rather than guessing a logo that
+// might be wrong or might not exist. Matched against the program's own
+// `name` text, first match wins — ordered narrowest-sponsor-first so e.g.
+// "TCS iON" doesn't accidentally match a broader term first.
+const WIKIMEDIA_FILE = (name: string) => `https://commons.wikimedia.org/wiki/Special:FilePath/${name}`;
+const SPONSOR_LOGOS: { test: RegExp; url: string }[] = [
+  { test: /\bTCS\b/i, url: WIKIMEDIA_FILE("TATA_Consultancy_Services_Logo_blue.svg") },
+  { test: /\bUPSC\b/i, url: WIKIMEDIA_FILE("Union_Public_Service_Commission_Logo.png") },
+  { test: /\bSSC\b/i, url: WIKIMEDIA_FILE("Staff_Selection_Commission_Logo.jpg") },
+  { test: /\bNDA\b|National Defence Academy/i, url: WIKIMEDIA_FILE("National_Defence_Academy_NDA.png") },
+  { test: /\bICAI\b/i, url: WIKIMEDIA_FILE("New_CA_India_Logo.png") },
+  { test: /\bNID\b/i, url: WIKIMEDIA_FILE("National_Institute_of_Design_logo.svg") },
+  { test: /\bICAR\b/i, url: WIKIMEDIA_FILE("Logo_of_the_Indian_Council_of_Agricultural_Research.svg") },
+  { test: /\bNATS\b|National Apprenticeship Training Scheme/i, url: WIKIMEDIA_FILE("Ministry_of_Education_India.svg") },
+  { test: /\bISRO\b|IIST\b/i, url: WIKIMEDIA_FILE("Indian_Space_Research_Organisation_Logo.svg") },
+  { test: /Army|Navy|Air Force|Agniveer|AFMC|Armed Forces|Naval Academy/i, url: WIKIMEDIA_FILE("Armed_forces_logo.svg") },
+];
+function sponsorLogo(name: string): string | null {
+  return SPONSOR_LOGOS.find((s) => s.test.test(name))?.url ?? null;
+}
+
+function FundedProgramCard({ p, color }: { p: FundedProgram; color: string }) {
+  const badge = fundingBadge(p);
+  const { headline, sub } = splitProgramName(p.name);
+  const logo = sponsorLogo(p.name);
+  // Fixed per-stat colours (not the cluster colour) — the three things being
+  // compared (who qualifies / how much / what you get) are the same three
+  // categories on every card, so giving each its own consistent colour reads
+  // faster across a grid of many cards than one colour repeated three times.
+  const stats = [
+    { label: "Eligibility", value: p.eligibility, icon: "user", color: "#2a5aa0" },
+    { label: "Stipend", value: p.stipend, icon: "card", color: "#1f7a55" },
+    { label: "On completion", value: p.outcome, icon: "score", color: "#a3620b" },
+  ];
+  return (
+    <div style={{ border: "1px solid var(--line)", borderRadius: 16, padding: "24px 26px", background: "#fff" }}>
+      <div style={{ display: "flex", gap: 20, alignItems: "flex-start" }}>
+        {logo ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={logo} alt={`${headline} logo`} style={{ width: 96, height: 96, objectFit: "contain", borderRadius: 12, background: "#fff", border: "1px solid var(--line)", padding: 12, flex: "none" }} />
+        ) : (
+          <span style={{ width: 96, height: 96, borderRadius: 12, background: `${color}14`, display: "grid", placeItems: "center", flex: "none", fontWeight: 900, fontSize: 32, color }}>{headline.charAt(0)}</span>
+        )}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 26, fontWeight: 800, color: "var(--ink)", lineHeight: 1.25 }}>{headline}</div>
+              {sub && <div style={{ fontSize: 16, fontWeight: 600, color: "var(--ink-2)", marginTop: 3 }}>{sub}</div>}
+            </div>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12.5, fontWeight: 800, padding: "6px 14px", borderRadius: 999, color: badge.tone, background: badge.bg, whiteSpace: "nowrap", flex: "none" }}>
+              <Icon name={badge.icon} size={13} />
+              {badge.label}
+            </span>
+          </div>
+          {/* One consistent colour for the whole description — summary and
+              structure used to switch tone mid-sentence, which read as a
+              rendering glitch rather than a deliberate distinction. */}
+          <p style={{ margin: "10px 0 0", fontSize: 14.5, color: "var(--ink-2)", lineHeight: 1.6 }}>{p.summary} {p.structure}</p>
+        </div>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", marginTop: 20, paddingTop: 20, borderTop: "1px solid var(--line-2, var(--line))" }}>
+        {stats.map((s, i) => {
+          const { lead, rest } = splitLead(s.value);
+          return (
+            <div key={s.label} style={{ padding: "0 20px", borderLeft: i > 0 ? "1px solid var(--line-2, var(--line))" : "none" }}>
+              {/* The LABEL is the highlighted thing here — bold and in the
+                  stat's own colour — not the value text below it, which is
+                  just information to read, not something to shout. */}
+              <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 9 }}>
+                <span style={{ width: 30, height: 30, borderRadius: "50%", background: `${s.color}16`, display: "grid", placeItems: "center", flex: "none" }}>
+                  <Icon name={s.icon} size={15} style={{ color: s.color }} />
+                </span>
+                <span style={{ fontSize: 13, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: s.color }}>{s.label}</span>
+              </div>
+              <div style={{ fontSize: 14.5, fontWeight: 400, color: "var(--ink-2)", lineHeight: 1.5 }}>{lead}</div>
+              {rest && <div style={{ fontSize: 13, fontWeight: 400, color: "var(--muted)", marginTop: 5, lineHeight: 1.5 }}>{rest}</div>}
+            </div>
+          );
+        })}
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginTop: 20, paddingTop: 18, borderTop: "1px solid var(--line-2, var(--line))" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <a href={p.url} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: 14, fontWeight: 700, color: "#fff", background: color, padding: "10px 18px", borderRadius: 10, textDecoration: "none" }}>
+            View official source ↗
+          </a>
+          <span style={{ fontSize: 13, color: color, fontWeight: 600 }}>{urlHost(p.url)}</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 12.5, color: "var(--muted)" }}>
+          <Icon name="info" size={14} />
+          Details may change — refer to the official source for the latest information.
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function FundedProgramsSection({ groups }: { groups: DomainGroup1112[] }) {
   const withPrograms = groups
     .map((g) => ({ g, programs: CLUSTER_FUNDED_PROGRAMS[g.domain as keyof typeof CLUSTER_FUNDED_PROGRAMS] }))
     .filter((x): x is { g: DomainGroup1112; programs: NonNullable<typeof x.programs> } => Boolean(x.programs && x.programs.length));
   if (!withPrograms.length) return null;
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-      {withPrograms.map(({ g, programs }) => (
-        <div key={g.domain}>
-          <div style={{ fontSize: 13, fontWeight: 800, color: "var(--ink)", marginBottom: 8, borderLeft: `3px solid ${clusterColor(g.domain)}`, paddingLeft: 10 }}>{g.domain}</div>
-          <div style={{ overflowX: "auto", border: "1px solid var(--line)", borderRadius: 10 }}>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead>
-                <tr>
-                  <th style={th}>Programme</th>
-                  <th style={th}>Overview</th>
-                  <th style={th}>Eligibility</th>
-                  <th style={th}>Stipend</th>
-                  <th style={th}>On completion</th>
-                </tr>
-              </thead>
-              <tbody>
-                {programs.map((p, i) => (
-                  <tr key={p.name} style={{ background: i % 2 ? "var(--line-2, #f7f7f8)" : "transparent" }}>
-                    <td style={{ ...td, fontWeight: 800, color: "var(--ink)", fontSize: 11.5 }}>{p.name}</td>
-                    <td style={{ ...td, fontSize: 11 }}>{p.summary} <span style={{ color: "var(--muted)" }}>{p.structure}</span></td>
-                    <td style={{ ...td, fontSize: 11 }}>{p.eligibility}</td>
-                    <td style={{ ...td, fontSize: 11 }}>{p.stipend}</td>
-                    <td style={{ ...td, fontSize: 11 }}>{p.outcome}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 6 }}>
-            {programs
-              .filter((p, i, arr) => arr.findIndex((o) => o.verify === p.verify) === i)
-              .map((p, i, arr) => (
-                <span key={p.name} style={{ fontSize: 10, color: "var(--muted)", fontStyle: "italic" }}>
-                  <a href={p.url} target="_blank" rel="noreferrer" style={{ color: "var(--red)", fontStyle: "normal", fontWeight: 700, textDecoration: "none" }}>{p.verify}</a>
-                  {i < arr.length - 1 ? " · " : ""}
+    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+      {withPrograms.map(({ g, programs }) => {
+        const color = clusterColor(g.domain);
+        return (
+          <div key={g.domain} style={{ border: "1px solid var(--line)", borderRadius: 20, padding: 24, background: "#f8f9fc" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 18, paddingBottom: 20, marginBottom: 20, borderBottom: "1px solid var(--line)" }}>
+              <span style={{ width: 64, height: 64, borderRadius: "50%", background: `${color}16`, display: "grid", placeItems: "center", flex: "none" }}>
+                <Icon name="briefcase" size={26} style={{ color }} />
+              </span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 20, fontWeight: 800, color: "var(--ink)", letterSpacing: ".08em", textTransform: "uppercase" }}>{g.domain}</div>
+                <div style={{ fontSize: 15, color: "var(--ink-2)", marginTop: 4 }}>{CLUSTER_TAGLINE[g.domain as StandardCluster] ?? ""}</div>
+              </div>
+              {/* Two distinct pills — "this is real" and "this pays/waives
+                  something" are two separate claims, not one combined label. */}
+              <div style={{ display: "flex", alignItems: "center", gap: 10, flex: "none" }}>
+                <span style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 700, color: "#1f7a55", background: "#eaf6f0", padding: "8px 16px", borderRadius: 999 }}>
+                  <Icon name="check" size={14} />
+                  Verified
                 </span>
-              ))}
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#2a5aa0", background: "#eaf1fb", padding: "8px 16px", borderRadius: 999 }}>
+                  Funded
+                </span>
+              </div>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              {programs.map((p) => <FundedProgramCard key={p.name} p={p} color={color} />)}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
@@ -455,6 +779,19 @@ function DomainBlock({ g, rank, badge }: { g: DomainGroup1112; rank: number; bad
   const sal = CLUSTER_SALARY.get(g.domain);
   const color = clusterColor(g.domain);
   const rcVars = { ["--rc" as string]: color, ["--rc-tint" as string]: color + "12", ["--rc-line" as string]: color + "38" } as React.CSSProperties;
+  // The domain's own rank is 70% interest / 30% skill (see groupByCluster1112
+  // in careerFitEngine1112.ts) — a domain earns a high rank mainly by strong,
+  // consistent INTEREST across it. Each role's own verdict below is stricter,
+  // requiring interest AND skill to both clear a bar. That's not a
+  // contradiction: a #1-ranked domain can legitimately show "Medium Choice"
+  // on every role when interest is what's driving the rank and skill hasn't
+  // caught up yet (expected before actually studying the field) — but
+  // without saying so, it just reads as the domain rank being wrong. This
+  // note only shows when that gap is real (interest meaningfully ahead of
+  // skill across the shown roles), not on every domain.
+  const avgInterest = g.careers.reduce((s, c) => s + c.interest, 0) / (g.careers.length || 1);
+  const avgSkill = g.careers.reduce((s, c) => s + c.skill, 0) / (g.careers.length || 1);
+  const interestLed = avgInterest - avgSkill > 20;
   return (
     <div className="dom" style={{ ...rcVars, marginBottom: 20 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 18px", background: "var(--rc-tint)", borderBottom: "1px solid var(--rc-line)" }}>
@@ -464,6 +801,11 @@ function DomainBlock({ g, rank, badge }: { g: DomainGroup1112; rank: number; bad
         </div>
         <div style={{ flex: "none" }}>{badge}</div>
       </div>
+      {interestLed && (
+        <div style={{ padding: "10px 18px", background: "var(--rc-tint)", borderBottom: "1px solid var(--rc-line)", fontSize: 11.5, color: "var(--ink-2)", lineHeight: 1.5 }}>
+          <b style={{ color: "var(--ink)" }}>Why this domain ranks here despite "Medium Choice" roles:</b> your interest in {g.domain} is strong and consistent — that's what earns it this rank. Skill reflects where you are today, not a ceiling — it's expected to still be developing before you've actually studied the field, and builds once you do.
+        </div>
+      )}
       <div className="dom-bd">
         <div className="dcell" style={{ gridColumn: "1 / -1" }}>
           <RolesTable careers={g.careers} />
@@ -560,12 +902,9 @@ function DimensionBlock({ d, rank }: { d: ScoredDimension; rank: number }) {
 // explanatory, doesn't depend on student data, matching the reference
 // report's own "Scenarios" block.
 const SCENARIOS: { label: string; tone: string; text: string }[] = [
-  { label: "Top Choice", tone: VERDICT_TONE["Top Choice"].c, text: "You have the highest degree of interest and skills to pursue this career path. You will excel in the fields mapped to this career path." },
-  { label: "Good Choice", tone: VERDICT_TONE["Good Choice"].c, text: "This career path will be a good match for you as your interest and skills & abilities are correctly aligned." },
-  { label: "Worth Considering", tone: VERDICT_TONE["Worth Considering"].c, text: "You have adequate interest level and skills & abilities to pursue this career path. However, this can be pursued if you are not pursuing your top choice or good choice." },
-  { label: "Needs Preparation", tone: VERDICT_TONE["Needs Preparation"].c, text: "Your interest here is strong, but building up the skills and abilities this career needs will improve your chances of success in it." },
-  { label: "Worth Exploring", tone: VERDICT_TONE["Worth Exploring"].c, text: "Your skills and abilities are strong here even though measured interest is lower — worth a closer look before ruling it out." },
-  { label: "Not Recommended", tone: VERDICT_TONE["Not Recommended"].c, text: "You currently have low interest and low skills & abilities for this career path, so it isn't a strong match right now." },
+  { label: "Top Choice", tone: VERDICT_TONE["Top Choice"].c, text: "Both your interest and your skills are strong here — a genuine best fit." },
+  { label: "Medium Choice", tone: VERDICT_TONE["Medium Choice"].c, text: "Worth considering — but either your interest or your skills need more building here, not both." },
+  { label: "Low Choice", tone: VERDICT_TONE["Low Choice"].c, text: "Both your measured interest and skills are low here — not a strong match right now." },
 ];
 function ScenariosLegend() {
   return (
@@ -630,7 +969,10 @@ function ClusterBarChart({ groups }: { groups: DomainGroup1112[] }) {
   // Security", "Transportation, Distribution & Logistics") at 11.5px bold —
   // anything narrower clips those labels off the SVG's left edge instead of
   // just cramping them, since text-anchor="end" grows leftward from padL-12.
-  const W = 760, rowH = 30, padL = 350, padR = 56, padT = 6, padB = 6;
+  // rowH is tall enough that 16 rows fill the page's real available height
+  // (the sheet is a fixed A4 page — a short chart just leaves the rest of
+  // the page blank) instead of only using the top third of it.
+  const W = 760, rowH = 45, padL = 350, padR = 56, padT = 6, padB = 6;
   const H = padT + padB + rows.length * rowH;
   const maxScore = Math.max(100, ...rows.map((r) => r.topScore));
   const barW = (v: number) => ((W - padL - padR) * v) / maxScore;
@@ -641,10 +983,10 @@ function ClusterBarChart({ groups }: { groups: DomainGroup1112[] }) {
         const color = clusterColor(r.domain);
         return (
           <g key={r.domain}>
-            <text x={padL - 12} y={y + rowH / 2 + 4} textAnchor="end" fontSize={11.5} fontWeight={700} fill="var(--ink)">{r.domain}</text>
-            <rect x={padL} y={y + 5} width={W - padL - padR} height={rowH - 10} rx={4} fill={color} opacity={0.14} />
-            <rect x={padL} y={y + 5} width={barW(r.topScore)} height={rowH - 10} rx={4} fill={color} />
-            <text x={padL + barW(r.topScore) + 8} y={y + rowH / 2 + 4} fontSize={11.5} fontWeight={800} fill="var(--ink)">{r.topScore.toFixed(0)}%</text>
+            <text x={padL - 12} y={y + rowH / 2 + 4} textAnchor="end" fontSize={13} fontWeight={700} fill="var(--ink)">{r.domain}</text>
+            <rect x={padL} y={y + 8} width={W - padL - padR} height={rowH - 16} rx={5} fill={color} opacity={0.14} />
+            <rect x={padL} y={y + 8} width={barW(r.topScore)} height={rowH - 16} rx={5} fill={color} />
+            <text x={padL + barW(r.topScore) + 8} y={y + rowH / 2 + 4} fontSize={13} fontWeight={800} fill="var(--ink)">{r.topScore.toFixed(0)}%</text>
           </g>
         );
       })}
@@ -669,6 +1011,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
     desiredCareerText: desiredCareer,
     enjoyedSubject: output.layer2.enjoyedSubject,
     difficultSubject: output.layer2.difficultSubject,
+    currentSubjects: output.layer2.currentSubjects,
     consideringAreas: output.layer4.consideringAreas,
     alternativeCareerTexts: output.layer4.alternativeOptions,
     excludedCareerTexts: output.layer4.excludedCareers,
@@ -709,19 +1052,16 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
     ? CAREERS_1112.filter((c) => c.cluster === selector.career!.cluster && c.id !== selector.career!.id).slice(0, 4)
     : [];
 
-  // A brief, generic roadmap preview for the overview table's Selector
-  // column — reuses buildCareer20YearRoadmap (already built from the
-  // career's own real fields, no new content).
-  const selectorPreviewRoadmap = selector?.career ? buildCareer20YearRoadmap(selector.career, streamKey) : null;
-
-  // The Selector page's own detailed roadmap used to be built from the
-  // student's DESIRED career's cluster — which can be a Hard Gate, not
-  // reachable from their stream at all, making a 15-year "how you'll get
-  // there" roadmap actively misleading. It's built from Career Suitability's
-  // #1 domain instead: the top career that's genuinely, realistically
-  // reachable right now, not the aspirational pick shown in the banner above.
-  const topSuitabilityCareer = suitabilityGroups[0]?.careers[0] ?? null;
-  const realisticRoadmap = topSuitabilityCareer ? buildCareer20YearRoadmap(topSuitabilityCareer.career, streamKey) : null;
+  // This roadmap is the STANDARD, pre-authored path for Career Suitability's
+  // #1 domain (CLUSTER_ROADMAPS, clusterRoadmaps1112.ts) — generic to that
+  // domain, not built around the student's specific desired career or
+  // stream. The short "you are here → destination" banner above already
+  // covers the desired career directly (on track / bridge / hard gate + the
+  // exam to take); this section answers a different, always-the-same-source
+  // question — "what does a realistic path in your best-fit domain actually
+  // look like" — so it never name-drops the desired career or the stream.
+  const roadmapDomain = suitabilityGroups[0]?.domain ?? null;
+  const realisticRoadmap = roadmapDomain ? CLUSTER_ROADMAPS[roadmapDomain as StandardCluster] : null;
 
   const sheets: ReportSheet[] = [
     {
@@ -731,12 +1071,9 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
         <>
           <PageHead eyebrow="Across the standard career clusters" title="Your Career Cluster Fit"
             sub="How strongly your measured interests, aptitude and strengths line up with each of the Career Clusters — the same industry-standard groupings used across career guidance, not a scheme unique to this report." />
-          <div style={{ marginTop: 24, border: "1px solid var(--line)", borderRadius: 13, padding: "20px 20px 12px" }}>
+          <div style={{ marginTop: 24, border: "1px solid var(--line)", borderRadius: 13, padding: "28px 24px" }}>
             <ClusterBarChart groups={allClusterScores} />
-          </div> 
-          <p className="disclaimer" style={{ marginTop: 12 }}>
-            A 0% bar means no measured signal pointed that way yet, not that the field is closed to you — interests develop with exposure.
-          </p>
+          </div>
         </>
       ),
     },
@@ -745,53 +1082,57 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
       kicker: "Overview",
       node: (
         <>
-          <PageHead eyebrow="Fitment · Suitability · Selector, side by side" title="Your Career Path at a Glance" />
-          <div style={{ marginTop: 22, border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }}>
-            {/* One shared header bar (real <table>-style: dark band, 3
-                cells) instead of 3 separately-coloured header blocks — the
-                per-column accent now shows as a bottom border on its own
-                header cell, not a competing background colour. */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", background: "#2c3e50" }}>
-              <OverviewHeadCell title="Career Fitment" subtitle="What fits YOU" color="#2f6bff" />
-              <OverviewHeadCell title="Career Suitability" subtitle="What fits YOUR STREAM" color="#12996b" borderLeft />
-              <OverviewHeadCell title="Career Selector" subtitle="Your desired career" color="#e08a1e" borderLeft />
+          <PageHead eyebrow="Fitment · Suitability · Selector, side by side" title="Your Career Path at a Glance"
+            sub="Compare what fits you, what fits your stream, and explore your ideal career — all in one view." />
+          <div className="full-bleed" style={{ marginTop: 22, border: "1px solid var(--line)", borderRadius: 16, overflow: "hidden", boxShadow: "0 1px 3px rgba(0,0,0,.05), 0 10px 26px rgba(0,0,0,.05)" }}>
+            {/* Each lens gets its own tinted colour band + icon circle
+                (blue/green/orange) instead of one shared dark bar — reads as
+                3 distinct cards sharing one table frame. */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
+              <OverviewHeadCell icon="score" title="Career Fitment" subtitle="What fits you" desc="Domains that align with your interests and strengths." color="#2f6bff" />
+              <OverviewHeadCell icon="cap" title="Career Suitability" subtitle="What fits your stream" desc="Domains that match your academic background." color="#12996b" borderLeft />
+              <OverviewHeadCell icon="match" title="Career Selector" subtitle="Your desired career" desc="Your most suitable career based on your profile." color="#e08a1e" borderLeft />
             </div>
-            {/* Body: still 3 independently-sized columns (align-items:start)
-                so Selector's shorter content never gets stretched or leaves
-                a dead gap — but now sharing one outer border and real
-                column-divider lines, so it reads as one table, not 3 boxes. */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", alignItems: "start" }}>
-              <div>
+            {/* Body: 3 columns stretched to equal height (grid default) — the
+                Selector column is flex-column with its illustration pinned to
+                the bottom via marginTop:auto, so its shorter content doesn't
+                leave a bare gap under it; it fills down to match
+                Fitment/Suitability's real height instead. */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
+              <div style={{ minWidth: 0 }}>
                 {fitmentGroups.length ? fitmentGroups.map((f, i) => (
                   <OverviewRow key={f.domain} rank={i + 1} name={f.domain} pct={f.topScore} color="#2f6bff"
-                    roles={f.careers.slice(0, 3).map((c) => c.career.name).join(", ")} />
+                    roles={f.careers.slice(0, 3).map((c) => c.career.name)} />
                 )) : <OverviewEmpty text="No matches yet." />}
               </div>
 
-              <div style={{ borderLeft: "1px solid var(--line)" }}>
+              <div style={{ minWidth: 0, borderLeft: "1px solid var(--line)" }}>
                 {suitabilityGroups.length ? suitabilityGroups.map((s, i) => (
                   <OverviewRow key={s.domain} rank={i + 1} name={s.domain} pct={s.topScore} color="#12996b"
-                    roles={s.careers.slice(0, 3).map((c) => c.career.name).join(", ")} />
+                    roles={s.careers.slice(0, 3).map((c) => c.career.name)} />
                 )) : <OverviewEmpty text="Nothing native to your stream in this rank yet." />}
               </div>
 
-              <div style={{ borderLeft: "1px solid var(--line)" }}>
+              <div style={{ minWidth: 0, borderLeft: "1px solid var(--line)", background: "#fef9f2", display: "flex", flexDirection: "column" }}>
                 {desiredCareer && selector?.career ? (
-                  <div style={{ padding: "14px 16px" }}>
-                    <div style={{ textAlign: "center", marginBottom: 12 }}>
-                      <div style={{ fontSize: 13, fontWeight: 800, color: "var(--ink)" }}>{streamKey || "Your stream"}</div>
-                      <div style={{ fontSize: 15, color: "#e08a1e", margin: "2px 0" }}>↓</div>
-                      <div style={{ fontSize: 14, fontWeight: 800, color: "var(--ink)" }}>{selector.career.name}</div>
+                  <div style={{ minWidth: 0, padding: "14px 14px 0", display: "flex", flexDirection: "column", flex: 1 }}>
+                    <div style={{ minWidth: 0, border: "1px solid #e08a1e38", background: "#fff", borderRadius: 12, padding: "16px 14px" }}>
+                      <div style={{ textAlign: "center" }}>
+                        <div style={{ fontSize: 13, fontWeight: 800, color: "var(--ink)" }}>{streamKey || "Your stream"}</div>
+                        <div style={{ fontSize: 17, color: "#e08a1e", margin: "4px 0" }}>↓</div>
+                        <div style={{ fontSize: 17, fontWeight: 900, color: "var(--ink)", letterSpacing: "-.01em", wordBreak: "break-word" }}>{selector.career.name}</div>
+                      </div>
+                      <div style={{ display: "flex", justifyContent: "center", marginTop: 10 }}>
+                        <Pill label={selector.roadmap!.fitType} tone={toneForFitType(selector.roadmap!.fitType)} />
+                      </div>
+                      <div style={{ fontSize: 11.5, color: "var(--ink-2)", textAlign: "center", lineHeight: 1.5, marginTop: 6 }}>{selector.roadmap!.actionSummary}</div>
+                      <div style={{ minWidth: 0, fontSize: 11, color: "var(--ink-2)", textAlign: "left", marginTop: 12, padding: "10px 12px", background: "#e08a1e0a", border: "1px solid #e08a1e30", borderRadius: 8, display: "flex", alignItems: "flex-start", gap: 8 }}>
+                        <Icon name="cap" size={16} style={{ color: "#e08a1e", flex: "none", marginTop: 1 }} />
+                        <span style={{ minWidth: 0 }}><b style={{ color: "var(--ink)" }}>Entrance exam:</b> {selector.career.typicalEntranceExam}</span>
+                      </div>
+                      <div style={{ fontSize: 10.5, color: "var(--muted)", marginTop: 10, fontStyle: "italic", textAlign: "center" }}>The realistic path and simple next steps are on the Career Selector page ahead.</div>
                     </div>
-                    <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
-                      <Pill label={selector.roadmap!.fitType} tone={toneForFitType(selector.roadmap!.fitType)} />
-                    </div>
-                    <div style={{ fontSize: 11.5, color: "var(--ink-2)", textAlign: "center", lineHeight: 1.5 }}>{selector.roadmap!.actionSummary}</div>
-                    <div style={{ fontSize: 11, color: "var(--ink-2)", textAlign: "center", marginTop: 8, padding: "6px 10px", background: "#e08a1e0a", border: "1px solid #e08a1e30", borderRadius: 8 }}>
-                      <b style={{ color: "var(--ink)" }}>Entrance exam:</b> {selector.career.typicalEntranceExam}
-                    </div>
-                    {selectorPreviewRoadmap && <OverviewRoadmapPreview phases={selectorPreviewRoadmap} color="#e08a1e" />}
-                    <div style={{ fontSize: 10.5, color: "var(--muted)", marginTop: 12, fontStyle: "italic", textAlign: "center" }}>Full in-depth roadmap on the Career Selector page ahead.</div>
+                    <SummitIllustration />
                   </div>
                 ) : (
                   <OverviewEmpty text={desiredCareer ? `"${desiredCareer}" isn't in our reference list yet.` : "You didn't name a specific career on the pre-exam screen."} />
@@ -899,15 +1240,12 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                   <b style={{ color: "var(--ink)" }}>Entrance exam for {selector.career.name}:</b> {selector.career.typicalEntranceExam}
                 </div>
 
-                {topSuitabilityCareer && realisticRoadmap && (
+                {roadmapDomain && realisticRoadmap && (
                   <div style={BREAK}>
-                    <SecHead center eyebrow={`${suitabilityGroups[0].domain} · what's realistic right now`} title="Your realistic path"
-                      sub={`${selector.career.name} is your goal — but ${topSuitabilityCareer.career.name} is the closest real option ${streamKey || "your stream"} already qualifies you for. Simple, concrete steps, not a long aspirational journey.`} />
+                    <SecHead center eyebrow={`${roadmapDomain} · your best-fit domain`} title="Your realistic path"
+                      sub={`The standard path into a ${roadmapDomain} career — where you are now, through to senior/leadership roles. This is the same realistic route for anyone in this domain, not built around one specific job title.`} />
                     <div style={{ marginTop: 16 }}>
-                      <div style={{ display: "flex", justifyContent: "center", marginBottom: 4 }}>
-                        <Pill label={topSuitabilityCareer.roadmap.fitType} tone={toneForFitType(topSuitabilityCareer.roadmap.fitType)} />
-                      </div>
-                      <OverviewRoadmapPreview phases={realisticRoadmap} color={clusterColor(topSuitabilityCareer.career.cluster)} full />
+                      <ClusterRoadmapPath phases={realisticRoadmap.phases} color={clusterColor(roadmapDomain)} />
                     </div>
                   </div>
                 )}
@@ -959,7 +1297,9 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
   if (isClass12) {
     const resolvedStreamKey: StreamKey1112 = STREAM_KEY_1112[streamKey] ?? "Vocational/Other";
     const degreesByCategory = degreesForStream(resolvedStreamKey, { includeConditional: true });
-    const topDimensions = topDimensionsForStudent(resolvedStreamKey, l1, 3);
+    // Commented out per feedback, not deleted — re-enable by uncommenting
+    // this line and the matching JSX block below.
+    // const topDimensions = topDimensionsForStudent(resolvedStreamKey, l1, 3);
     const jeeBand = percentileBandFor(output.layer4.estimatedPercentage);
 
     sheets.push({
@@ -977,6 +1317,8 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
             )) : <p style={{ fontSize: 13, color: "var(--ink-2)" }}>We don't have a specific degree-eligibility mapping for your stream yet.</p>}
           </div>
 
+          {/* Commented out per feedback, not deleted — re-enable by
+              uncommenting this block and the topDimensions line above.
           <div style={BREAK}>
             <SecHead eyebrow="By your specific strengths" title="What your top individual strengths point toward"
               sub="Different from both lists above — not a domain or a degree, but the 3 specific named strengths (e.g. Coding Interest, not just 'Computer & IT') your own profile scored highest on, each with the exact courses, roles, skills and government pathways for that strength." />
@@ -986,6 +1328,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
               )}
             </div>
           </div>
+          */}
 
           {(resolvedStreamKey === "MPC" || resolvedStreamKey === "PCMB") && jeeBand && (
             <div style={BREAK}>

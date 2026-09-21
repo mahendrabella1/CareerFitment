@@ -270,17 +270,17 @@ export interface LearningStyleProfile {
 const LEARNING_STYLES = {
   Visual: "Prefers diagrams, images, colors, mind maps",
   Auditory: "Prefers listening, discussions, verbal explanation",
-  Reading: "Prefers reading, notes, written materials",
+  "Reading/Writing": "Prefers reading, notes, written materials",
   Kinesthetic: "Prefers hands-on, practice, movement, experience",
 };
 
 // Q46-Q50 to learning styles (4 options each)
 const LEARNING_STYLE_MAPPING: Record<number, Record<number, string>> = {
-  46: { 0: "Visual", 1: "Reading", 2: "Auditory", 3: "Kinesthetic" },
-  47: { 0: "Kinesthetic", 1: "Auditory", 2: "Visual", 3: "Reading" },
-  48: { 0: "Auditory", 1: "Visual", 2: "Kinesthetic", 3: "Reading" },
-  49: { 0: "Reading", 1: "Kinesthetic", 2: "Auditory", 3: "Visual" },
-  50: { 0: "Visual", 1: "Auditory", 2: "Reading", 3: "Kinesthetic" },
+  46: { 0: "Visual", 1: "Reading/Writing", 2: "Auditory", 3: "Kinesthetic" },
+  47: { 0: "Kinesthetic", 1: "Auditory", 2: "Visual", 3: "Reading/Writing" },
+  48: { 0: "Auditory", 1: "Visual", 2: "Kinesthetic", 3: "Reading/Writing" },
+  49: { 0: "Reading/Writing", 1: "Kinesthetic", 2: "Auditory", 3: "Visual" },
+  50: { 0: "Visual", 1: "Auditory", 2: "Reading/Writing", 3: "Kinesthetic" },
 };
 
 // ============================================================================
@@ -727,7 +727,7 @@ function scoreLearningStyle(responses: Class8Response): LearningStyleProfile {
   const scores: Record<string, number> = {
     Visual: 0,
     Auditory: 0,
-    Reading: 0,
+    "Reading/Writing": 0,
     Kinesthetic: 0,
   };
 
@@ -744,7 +744,7 @@ function scoreLearningStyle(responses: Class8Response): LearningStyleProfile {
   const normalized = {
     Visual: Math.round((scores.Visual / 5) * 100),
     Auditory: Math.round((scores.Auditory / 5) * 100),
-    Reading: Math.round((scores.Reading / 5) * 100),
+    "Reading/Writing": Math.round((scores["Reading/Writing"] / 5) * 100),
     Kinesthetic: Math.round((scores.Kinesthetic / 5) * 100),
   };
 
@@ -975,7 +975,7 @@ function generateLearningRecommendations(style: string): string[] {
   const recommendations: Record<string, string[]> = {
     Visual: ["Use diagrams and color-coded notes", "Watch video tutorials", "Create mind maps"],
     Auditory: ["Participate in discussions", "Listen to lectures", "Explain concepts aloud"],
-    Reading: ["Read textbooks and articles", "Make written notes", "Organize information in writing"],
+    "Reading/Writing": ["Read textbooks and articles", "Make written notes", "Organize information in writing"],
     Kinesthetic: ["Practice hands-on activities", "Learn by doing projects", "Take breaks to move around"],
   };
   return recommendations[style] || [];

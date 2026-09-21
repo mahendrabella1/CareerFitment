@@ -360,7 +360,7 @@ function scoreMotivators(responses: Class6Response): Class6ScoreOutput["motivato
 function scoreLearningStyle(responses: Class6Response): Class6ScoreOutput["learningStyle"] {
   const scores: Record<string, number> = {
     "Visual": 0,
-    "Reading": 0,
+    "Reading/Writing": 0,
     "Auditory": 0,
     "Kinesthetic": 0
   };
@@ -368,7 +368,7 @@ function scoreLearningStyle(responses: Class6Response): Class6ScoreOutput["learn
   // Questions 46-50: Learning Preferences
   for (let q = 46; q <= 50; q++) {
     const optionIndex = responses.responses[q];
-    const mapping = ["Visual", "Reading", "Auditory", "Kinesthetic"];
+    const mapping = ["Visual", "Reading/Writing", "Auditory", "Kinesthetic"];
     if (optionIndex < mapping.length) {
       scores[mapping[optionIndex]]++;
     }

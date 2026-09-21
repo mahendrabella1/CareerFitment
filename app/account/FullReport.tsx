@@ -52,6 +52,17 @@ export const RANK_COLOURS = ["#12996b", "#e08a1e", "#2f6bff", "#8b5cf6", "#64748
 // clustered percentages (e.g. 40/38/36/34/32, all technically "Low") still
 // read as a clear green-to-red ladder instead of five identical grey pills.
 const ROLE_GRADIENT = ["#12996b", "#7cb342", "#e08a1e", "#e2673b", "#E23B41"] as const;
+// Same fallback pattern as careerFit1112Sheets.tsx's own SITE_URL_1112 — this
+// report can be viewed as a downloaded/emailed PDF, not just in-app, so a
+// link into the dashboard needs an absolute URL, not a relative path that
+// would 404 outside the app shell.
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://careerfitment.onegrasp.com").replace(/\/+$/, "");
+const DASHBOARD_LINKS: { label: string; path: string; note: string }[] = [
+  { label: "Live Internships", path: "/account/internships-new", note: "Real internship listings on your dashboard" },
+  { label: "Career Library", path: "/account/career-library", note: "Deep-dive into hundreds of real career paths" },
+  { label: "Entrance Exams", path: "/account/features/entrance-exams", note: "Exam dates, syllabus and prep resources" },
+  { label: "Scholarships & Funding", path: "/account/features/scholarships", note: "Curated funding opportunities on your dashboard" },
+];
 const P = "https://onegrasp.com/wp-content/uploads/2026/07/";
 const DIMS8 = P + "ChatGPT-Image-Jul-10-2026-05_34_15-PM.png";
 const COVER_ART = "https://onegrasp.com/wp-content/uploads/2026/09/0313fb3f-1b32-4e53-a3c9-3136f410247d.png";
@@ -260,34 +271,41 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
       <section className="sheet sheet-compact rv">
         <div className="pad">
           <RH n={N()} kick="At a glance" />
-          <SecHead eyebrow="Strongest first" title={`Your ${dimWord}-dimension scorecard`}
+          <SecHead eyebrow="In the order explained ahead" title={`Your ${dimWord}-dimension scorecard`}
             sub="What actually came out on top for you in each dimension — the real, specific result, not a number." />
           {/* A card grid — every card leads with the qualitative result itself
               (the code, the learning style, the top motivator...), the same
               way Personality leads with its 4-letter type rather than a bare
               score. The full numeric score for each dimension lives on that
-              dimension's own page, right after this one. The strongest
-              dimension (rank 1, matching "Strongest first" above) gets a
-              small marker — the one piece of structure worth calling out,
-              since the whole grid is already ranked by it. Value text sizes
-              down for longer results (e.g. "Relationship Management") so it
-              wraps cleanly at a word boundary instead of overflowing. */}
+              dimension's own page, right after this one. Cards follow the
+              SAME 01→09 order the dimension pages themselves use (radar is
+              already built in that order) instead of being re-sorted by
+              score — a scorecard whose order doesn't match the pages that
+              follow it reads as two different sequences of the same 9
+              things. The strongest dimension still gets a small marker,
+              computed separately so it isn't tied to card position anymore.
+              Value text sizes down for longer results (e.g. "Relationship
+              Management") so it wraps cleanly at a word boundary instead of
+              overflowing. */}
           <div className="scoreGrid">
-            {radar.slice().sort((x, y) => y.score - x.score).map((d, i) => {
-              const col = dimColor(d.key);
-              const isPersonality = d.key === "personality" && hasMBTIData;
-              const topResult = topResultFor(d.key, a, riasec);
-              const bigValue = isPersonality ? getMBTIType(a) : (topResult || `${Math.round(d.score)}%`);
-              const valSize = bigValue.length > 20 ? 15 : bigValue.length > 13 ? 17 : bigValue.length > 8 ? 19 : 22;
-              return (
-                <div className="scoreCard" key={d.key} style={{ ["--sc" as string]: col, ["--sc-tint" as string]: col + "17" } as React.CSSProperties}>
-                  {i === 0 ? <span className="scoreCard-top">Strongest</span> : null}
-                  <span className="scoreCard-ic"><Icon name={CAT[d.key].icon} size={15} /></span>
-                  <span className="scoreCard-lbl">{CAT[d.key].label}</span>
-                  <span className="scoreCard-val" style={{ fontSize: valSize }}>{bigValue}</span>
-                </div>
-              );
-            })}
+            {(() => {
+              const strongestKey = radar.slice().sort((x, y) => y.score - x.score)[0]?.key;
+              return radar.map((d) => {
+                const col = dimColor(d.key);
+                const isPersonality = d.key === "personality" && hasMBTIData;
+                const topResult = topResultFor(d.key, a, riasec);
+                const bigValue = isPersonality ? getMBTIType(a) : (topResult || `${Math.round(d.score)}%`);
+                const valSize = bigValue.length > 20 ? 15 : bigValue.length > 13 ? 17 : bigValue.length > 8 ? 19 : 22;
+                return (
+                  <div className="scoreCard" key={d.key} style={{ ["--sc" as string]: col, ["--sc-tint" as string]: col + "17" } as React.CSSProperties}>
+                    {d.key === strongestKey ? <span className="scoreCard-top">Strongest</span> : null}
+                    <span className="scoreCard-ic"><Icon name={CAT[d.key].icon} size={15} /></span>
+                    <span className="scoreCard-lbl">{CAT[d.key].label}</span>
+                    <span className="scoreCard-val" style={{ fontSize: valSize }}>{bigValue}</span>
+                  </div>
+                );
+              });
+            })()}
           </div>
           <RF name={name} />
         </div>
@@ -545,6 +563,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
         <div className="pad">
           <SecHead eyebrow="Choose a direction that grows with the future" title="Stay future-proof"
             sub="A quick map of where the world of work is heading, so your choices age well." />
+          <p className="disclaimer" style={{ marginTop: -6, marginBottom: 18 }}>{FUTURE.source}</p>
           <div className="future">
             <div className="fcol rise">
               <div className="fh"><Icon name="score" size={16} /> Rising & future-proof</div>
@@ -622,6 +641,12 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
               <div className="rgh"><Icon name="star" size={16} /> Scholarships to apply for (2026)</div>
               <div className="schol">{SCHOLARSHIPS_2026.map((sc) => (
                 <a className="scard" key={sc.name} href={sc.url} target="_blank" rel="noreferrer"><div className="sn">{sc.name}</div><div className="sw">{sc.who}</div></a>
+              ))}</div>
+            </div>
+            <div className="rgrp">
+              <div className="rgh"><Icon name="compass" size={16} /> Explore more on your dashboard</div>
+              <div className="schol">{DASHBOARD_LINKS.map((l) => (
+                <a className="scard" key={l.path} href={`${SITE_URL}${l.path}`} target="_blank" rel="noreferrer"><div className="sn">{l.label}</div><div className="sw">{l.note}</div></a>
               ))}</div>
             </div>
           </div>
@@ -1101,6 +1126,25 @@ const CSS = `
 .frx .sheet{background:#fff;border:1px solid var(--line);border-top:3px solid var(--red);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;position:relative}
 .frx .pad{padding:40px 44px}
 @media(max-width:720px){.frx .pad{padding:24px 18px}}
+/* Lets a wide, dense block (e.g. the Fitment/Suitability/Selector overview
+   table) reclaim .pad's own side padding and run edge-to-edge inside the
+   sheet, instead of being squeezed into an already-narrow page width on top
+   of that padding — every extra pixel matters once content is split 3 ways. */
+.frx .full-bleed{margin-left:-44px;margin-right:-44px}
+@media(max-width:720px){.frx .full-bleed{margin-left:-18px;margin-right:-18px}}
+/* A domain/role summary card's inner sections, laid out side by side and
+   collapsing to a single stacked column on narrow screens — replaces a wide
+   <table> (fixed columns, forces horizontal scroll) with a card whose
+   sections just reflow, so nothing ever needs a horizontal scrollbar and one
+   long list (e.g. skills) only grows that one card, not a whole shared row. */
+.frx .domcard-grid{display:grid;grid-template-columns:1.1fr 1.1fr 1fr}
+.frx .domcard-sec{padding:14px 16px;border-right:1px solid var(--line-2,var(--line))}
+.frx .domcard-sec:last-child{border-right:none}
+@media(max-width:760px){
+  .frx .domcard-grid{grid-template-columns:1fr}
+  .frx .domcard-sec{border-right:none;border-bottom:1px solid var(--line-2,var(--line))}
+  .frx .domcard-sec:last-child{border-bottom:none}
+}
 .frx h1,.frx h2,.frx h3{margin:0;letter-spacing:-.02em;color:var(--ink)}
 .frx p{margin:0;color:var(--ink-2)}
 .frx .eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}

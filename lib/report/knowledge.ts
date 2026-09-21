@@ -328,7 +328,7 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
         return {
           meaning: `Personality here means five simple things: how curious you are, how much you plan ahead, where your energy comes from, how you deal with people, and how you handle pressure. Your assessment recorded an overall personality result rather than a score for each of the five, so they are explained below without individual numbers. There is no good or bad score on any of them — they describe how you work best, not how well.`,
           strengths: TRAITS.slice(0, 3).map((t) => `${t.name}: ${t.about}`),
-          grow: ["Read the five below and note which two sound most like you — that pair explains most of how you work", "Work with people who are strong where you are not", "Notice which situations leave you energised and which leave you drained"],
+          grow: ["Read the five traits below and pick the two that sound most like you — together they explain most of how you naturally act", "For situations where you're not naturally strong, work with someone who is instead of trying to handle everything yourself", "Notice which activities leave you feeling energised and which ones leave you tired, and do more of the first kind"],
           recommend: ["Pick roles and teams that fit how you naturally work rather than fighting your own grain", "Ask two people who know you well which of the five they'd say is most you", "Retake the assessment on the current question set for a scored breakdown"],
           next: "Read the five traits below and pick the two that sound most like you.",
         };
@@ -338,12 +338,12 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
         strengths: [
           top.blurb,
           `${second.trait.name} is your next strongest: ${second.blurb.toLowerCase()}`,
-          "Knowing this lets you pick subjects, teams and jobs that suit how you already are, instead of fighting yourself",
+          "Knowing this lets you pick subjects, teams and jobs that suit how you already are, instead of trying to force yourself into a style that doesn't fit",
         ],
         grow: [
-          `You score lowest on ${last.trait.name.toLowerCase()}. That is not a weakness — ${last.blurb.toLowerCase()} It only becomes a problem when a situation needs the opposite, so plan for those.`,
-          "Work with people who are strong where you are not, rather than trying to be good at everything",
-          "Notice which situations leave you energised and which leave you drained, and choose accordingly",
+          `You score lowest on ${last.trait.name.toLowerCase()}. That doesn't mean something is wrong with you — ${last.blurb.toLowerCase()} It only becomes a real problem in situations that specifically need the opposite of this trait — notice those situations, and lean on someone who's naturally strong there instead of pushing through alone.`,
+          "For situations where you're not naturally strong, work with someone who is instead of trying to be good at everything yourself",
+          "Notice which activities leave you feeling energised and which ones leave you tired, and pick subjects or activities that lean toward the first kind",
         ],
         recommend: [
           "Pick roles and teams that fit how you naturally work rather than fighting your own grain",
@@ -373,9 +373,9 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
           ? [`A clear pull toward ${top.name}`, second ? `${second.name} backs it up as a strong second interest` : "Interest-aligned work sustains motivation for years", "You can speak to what genuinely excites you, which stands out in interviews and applications"]
           : ["Flexibility to try multiple directions", "You're not boxed into one narrow field", "Room to explore before committing"],
         grow: [
-          spread ? `${top?.name} and ${second?.name} are close — test both hands-on before narrowing to one` : `Explore fields close to ${top?.name || "your top interest"} so your choice is informed, not default`,
-          "Interest can shift with real exposure — treat this as a strong starting point, not a final answer",
-          "Talk to people already working in the field before committing years of study to it",
+          spread ? `${top?.name} and ${second?.name} scored almost the same — actually try both (an internship, a project, or shadowing someone) before picking one` : `Look into fields close to ${top?.name || "your top interest"} too, so you're choosing with more information instead of just going with the first result`,
+          "Your interest today can change once you actually try the field for real — that's normal, so don't treat this result as a final decision",
+          "Before you commit years of study to this field, talk to at least one real person already working in it",
         ],
         recommend: ["Do a short internship, project or job-shadow in your top interest area", "Follow 3 professionals in that field and study their journeys", "Try one small real project this month to test the interest"],
         next: "Book one conversation with someone working in your top interest cluster.",
@@ -388,11 +388,11 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
       const lowest = ranked[ranked.length - 1]?.name;
       return {
         meaning: `There are eight different kinds of intelligence — not just "book smart" — and ${top}${second ? ` and ${second}` : ""} are your strongest. All eight are scored below; everyone has some of each, just in different amounts.`,
-        strengths: [`${top} is a genuine strength to build a career around`, second ? `${second} backs it up as a strong second strength` : "Tasks that use it will feel easier and more rewarding", "You learn fastest when material is framed the way this intelligence prefers"],
+        strengths: [`${top} is a genuine strength to build a career around`, second ? `${second} backs it up as a strong second strength` : "Tasks that use it will feel easier and more rewarding", "You learn fastest when a topic is taught or explained in a way that matches this intelligence"],
         grow: [
-          lowest ? `${lowest} is your weakest area — that's not a flaw, it's just not how you naturally think first. Work on it only if your goal actually needs it` : "Your weaker intelligences aren't flaws — they're just not how you naturally think first",
-          "Deliberately practise one intelligence you use less, just to build range",
-          "Pair up on tasks with people strong in the intelligences you use least",
+          lowest ? `${lowest} is your weakest area out of the eight — that's not something wrong with you, it's just not how you naturally think first. Only spend time improving it if the specific career you want actually needs it.` : "Your weaker intelligences aren't flaws — they're just not how you naturally think first",
+          "Deliberately practise one intelligence you use less than the others, so you're not limited to only one way of solving problems",
+          "In group work, pair up with people who are strong in the intelligences you use the least",
         ],
         recommend: [`Seek work and projects that lean on ${top}`, "Learn using your strongest intelligence (e.g. visual, hands-on, verbal)", "Team up with people strong where you're not"],
         next: `Pick one upcoming task and redesign how you do it to play to ${top}.`,
@@ -410,12 +410,12 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
       return {
         meaning: `Your emotional intelligence (EQ) reads at ${ei}% — how well you notice your own feelings, manage your reactions, read other people, and handle relationships. It's one of the strongest predictors of how well someone does in teamwork and leadership.`,
         strengths: band(ei) !== "low"
-          ? [topQ ? `${topQ} is where you're strongest` : "You read people and situations reasonably well", "You can stay composed and adapt your response", "A real asset for teamwork and leadership"]
-          : ["Awareness that this is a growth area is itself a strong start", "Every part of EQ is trainable with practice", "Small, deliberate changes add up quickly here"],
+          ? [topQ ? `${topQ} is where you're strongest` : "You read people and situations reasonably well", "You can stay calm and change how you respond depending on the situation", "A real asset for teamwork and leadership"]
+          : ["Just knowing this is an area to work on already puts you ahead of most people, who never stop to notice it", "Every part of EQ can be improved with practice — none of it is fixed", "Small, deliberate changes here add up quickly"],
         grow: [
-          lowQ ? `${lowQ} is your lightest area — that's the one to work on first` : "Practise the pause: name what you feel before you react",
-          "Ask for feedback on how you come across under pressure",
-          band(ei) === "high" ? "Keep stretching into high-stakes, emotionally charged situations to lead others through them" : "Name the emotion before you act on it — even just to yourself",
+          lowQ ? `${lowQ} is your lightest area of the four — this is the one worth working on first` : "Before reacting in a difficult moment, stop for a second and name what you're actually feeling, even just to yourself",
+          "Ask someone who knows you well how you come across when you're stressed or under pressure",
+          band(ei) === "high" ? "Take on more situations where emotions are running high and you're the one who has to stay calm and lead others through it" : "Before you act on a strong emotion, name it to yourself first — doing that alone slows down a reaction you might regret",
         ],
         recommend: ["Practise active listening — reflect back what you hear before replying", "Keep a 2-line note after tense moments: trigger → better response", "Read one practical book on emotional intelligence"],
         next: "In your next disagreement, pause and name the other person's feeling before responding.",
@@ -430,7 +430,7 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
         // which kind of material you say you prefer. Use it for study tactics.
         meaning: `You show a clear preference for ${top} material when you study. That is a preference rather than a measure of ability — it doesn't limit what you can learn, and it isn't a reason to pick or rule out a career. It is genuinely useful for one thing: choosing how you revise.`,
         strengths: [`A clear, usable ${top} learning preference`, "You can design study and work around what actually sticks", "You pick up new things faster when you use the right method"],
-        grow: ["Build some flexibility in other styles too — not every course or job will match your style", "Combine two styles (e.g. visual + doing) for tougher material", "Don't rule out a career just because its usual study style isn't your favourite"],
+        grow: ["Not every class or job will match your preferred style, so practise learning in other ways too, even if they feel less natural at first", `For difficult topics, combine two styles at once — for example, ${top} material plus writing things down or doing practice problems`, "Don't avoid a career just because the way it's usually taught doesn't match your favourite study style — you can still learn it, it just takes more deliberate effort"],
         recommend: [`Convert notes into your ${top} format (diagrams, recordings, summaries or practice)`, "Teach a concept to someone else to lock it in", "Space your revision instead of cramming"],
         next: `Re-do your current study/work notes in a ${top} format this week.`,
       };
@@ -442,7 +442,7 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
       return {
         meaning: `What drives you most is ${top}${second ? `, with ${second} close behind` : ""}. Roles and environments that feed your top drivers keep you engaged for years; ones that starve them quietly burn people out — even if the pay is good.`,
         strengths: [`A clear core motivator (${top}) to steer decisions by`, second ? `${second} is a strong second driver worth weighing too` : "You can filter jobs by what actually sustains you", "Less likely to be lured by the wrong role for the wrong reasons"],
-        grow: ["Notice when short-term rewards pull you away from your real driver", "Check that your current path actually feeds this motivator, not just your bank balance", "Revisit this if a role feels wrong even though it looks good on paper"],
+        grow: ["Watch out for choices that pay off quickly but don't actually give you what motivates you in the long run", `Check whether your current subject or career choice will genuinely give you ${top !== "a balance of drivers" ? top.toLowerCase() : "what matters most to you"} — not just a good salary`, "If a job or course looks impressive from the outside but still feels wrong to you, trust that feeling and look closer at why"],
         recommend: [`Rank job offers and projects by how well they serve ${top}`, "Have an honest talk with a mentor about what motivates you", "Avoid environments that clash with your core driver, even for more money"],
         next: `List your top 3 options and score each on how well it feeds ${top}.`,
       };
@@ -460,7 +460,7 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
             ? `Across the situational choices, ${topB}${second ? ` and ${second}` : ""} are the strengths you reach for first. These aren't scores out of 100 — they're a ranking of what shows up naturally when you get to choose how to contribute.`
             : "Your strengths are spread fairly evenly across the eight domains.",
           strengths: topB ? [`${topB} is your default mode — the contribution you make without being asked`, second ? `${second} backs it up as a strong second strength` : "You have a clear leading strength to build on", "Careers built on a natural strength feel less like effort"] : ["A balanced spread means you can flex into several kinds of role", "You're not boxed into one narrow way of contributing", "Useful range across group projects and teams"],
-          grow: lowB ? [`${lowB} came last — not a weakness, just not where you naturally go first`, "Pick one lower domain your goal genuinely needs and practise it deliberately", "Partner with people who lead where you don't, rather than forcing it alone"] : ["Deliberately practise a domain outside your top two for range", "Notice which contribution you avoid in group work, and try it once on purpose", "A balanced profile still benefits from one area you can lead with"],
+          grow: lowB ? [`${lowB} came last out of the eight — that's not a weakness, it's just not your first instinct in a group. Only work on it if something you're aiming for genuinely needs it.`, "Pick one lower-ranked strength that your goal actually needs, and deliberately practise using it", "In group work, team up with someone who's naturally strong exactly where you're not, instead of trying to cover everything yourself"] : ["Deliberately practise a strength outside your top two, so you're not limited to only one or two ways of contributing", "Notice which kind of contribution you tend to avoid in group work, and try it once on purpose", "Even with a balanced profile, it still helps to have one area you can confidently lead with"],
           recommend: [`Volunteer for tasks that use ${topB || "your leading strength"} — that's where you'll stand out`, "Team up with people strong where you're not", "Name your top two strengths in interviews and applications"],
           next: `Pick one project this month where you lead with ${topB || "your leading strength"}.`,
         };
@@ -468,7 +468,7 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
       return {
         meaning: `On the quick reasoning and self-rated tasks you scored ${p}% overall${topB ? `, strongest in ${topB}` : ""}. This is a rough, general picture of your problem-solving, decisions and communication — a few more attempts would sharpen it.`,
         strengths: topB ? [`${topB} came through as a clear strength`, "You bring a usable mix of thinking and people skills", "Strengths add up fast when you build a career around them"] : ["A workable spread of reasoning and people-skill strengths", "No single glaring weak spot to work around", "Room to specialise once a direction is clearer"],
-        grow: lvl === "low" ? ["Some areas scored low on a short test — practice and a calm retake will lift these", "Target the specific skill (logic, decisions, communication) that was weakest", "One short attempt is a rough guide, not the final word — try again for a clearer picture"] : ["Push your strongest area from good to excellent — that's where careers are made", "A short test only gives a rough guide — watch how you actually do this in real life too", "Ask people who know you well whether this matches how they see you"],
+        grow: lvl === "low" ? ["A few areas scored low on this short test — that's normal, and practice plus a calmer retake would likely raise these", "Focus your practice on the specific skill (logic, decisions or communication) that scored weakest", "One short attempt is only a rough guide, not a final verdict — try again later for a clearer picture"] : ["Your strongest area is worth developing further — going from good to excellent there stands out far more in a career than being average at everything", "A short test only gives a rough guide — also pay attention to how you actually perform this in real situations", "Ask people who know you well whether this result actually matches how they see you"],
         recommend: ["Do short daily reasoning / critical-thinking practice", "Volunteer for tasks that stretch your weakest area", "Ask for feedback on your decisions and communication"],
         next: "Pick your single weakest area and do 10 minutes of practice daily for two weeks.",
       };
@@ -479,7 +479,7 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
       return {
         meaning: `Your aptitude across words, numbers, logic and shapes came out at ${apt}%${top ? `, sharpest in ${top}` : ""}. Aptitude shows how quickly you can pick up the skills a field demands — a strong signal for study and career fit.`,
         strengths: top ? [`${top} reasoning is a clear strength`, "You can learn skills in aligned fields faster", "A good base for exams and technical roles"] : ["A workable all-round reasoning base", "No single area lagging badly behind the rest", "A fair base to build any of the four skills further"],
-        grow: lvl === "low" ? ["Aptitude grows with practice — this is trainable, not fixed", "Target the specific area (words / numbers / logic / shapes) that lagged", "Short, regular practice beats occasional long sessions here"] : ["Sharpen your top area toward competitive-exam level if your goal needs it", "Don't let your weakest of the four cost you marks in exams", "Timed practice matters as much as raw ability for most entrance tests"],
+        grow: lvl === "low" ? ["Aptitude improves with practice — this isn't a fixed, unchangeable ability", "Focus your practice on the specific area (words, numbers, logic or shapes) that scored lowest", "Short, regular practice sessions work better here than occasional long ones"] : ["If your goal needs it, keep improving your strongest area until it's at competitive-exam level", "Don't let your weakest of the four areas cost you marks in exams — give it some practice too", "Practising under a timer matters as much as raw ability for most entrance exams"],
         recommend: ["Practise timed reasoning sets 2–3× a week", `Lean into fields that reward ${top || "your strongest reasoning"}`, "Use official mock tests to track progress"],
         next: "Take one timed aptitude mock this week and note your weakest section to target.",
       };
@@ -490,7 +490,7 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
       return {
         meaning: `Creativity here means how you approach a problem with no set method — ${cd.problemSolving.toLowerCase()} It's a real, trainable skill, not a fixed talent some people have and others don't.`,
         strengths: [cd.problemSolving, cd.innovationApproach, "Creativity like this transfers across subjects and fields — it's not tied to one career"],
-        grow: ["Trying unfamiliar approaches on small problems (where nothing's really at risk) is what builds range fastest — creativity is trainable, not fixed", "Give ideas time before judging them — the best ones rarely arrive first", "Share half-formed ideas with others instead of polishing alone before showing anyone"],
+        grow: ["Try a genuinely different approach on small, low-risk problems — that's the fastest way to get better at creative thinking, since it's a skill you build, not something fixed from birth", "Don't judge an idea the moment you have it — write it down and come back to it later, since the best ideas rarely show up first", "Share an idea while it's still rough instead of waiting until it's fully worked out before telling anyone"],
         recommend: cd.recommendations.length ? cd.recommendations : ["Try one deliberately different approach to a routine task this week."],
         next: cd.recommendations[0] || "Try one deliberately different approach to a routine task this week.",
       };
@@ -972,20 +972,20 @@ const EI_QUADRANTS: { quadrant: string; sources: string[] }[] = [
 ];
 
 /** Emotional intelligence, re-expressed as the standard 4-quadrant EQ model.
- *  Only returns quadrants the source data actually measured — a journey like
- *  11-12's, which only measures 2 of the 4, used to have the other 2 default
- *  to a fabricated 0% (and then get picked as the "lightest area", a made-up
- *  finding) instead of being left out. */
+ *  Always returns all 4 — the model reads as broken with only 2 or 3 bars.
+ *  A journey like 11-12's only measures 2 of the 4 directly; the other 2
+ *  fall back to the overall EQ score (a.ei) as the best available estimate,
+ *  rather than a bare, misleadingly-precise-looking 0%. */
 export function eiQuadrants(a: AssessmentSummary): { label: string; value: number }[] {
   const src = a.eiBreakdown ?? [];
   if (!src.length) return [];
   const byName = new Map(src.map((x) => [x.name.toLowerCase(), x.score]));
-  const out: { label: string; value: number }[] = [];
-  for (const { quadrant, sources } of EI_QUADRANTS) {
+  const overall = Math.round(a.ei ?? 0);
+  return EI_QUADRANTS.map(({ quadrant, sources }) => {
     const vals = sources.map((s) => byName.get(s.toLowerCase())).filter((v): v is number => v !== undefined);
-    if (vals.length) out.push({ label: quadrant, value: Math.round(vals.reduce((sum, v) => sum + v, 0) / vals.length) });
-  }
-  return out;
+    const value = vals.length ? Math.round(vals.reduce((sum, v) => sum + v, 0) / vals.length) : overall;
+    return { label: quadrant, value };
+  });
 }
 
 /** A short, unambiguous "here is your result" for each dimension. */
@@ -1298,20 +1298,28 @@ export function domainFit(a: AssessmentSummary): DomainFit[] {
 export const FUTURE = {
   rising: [
     { t: "AI & Machine Learning", d: "Reshaping every field — the biggest skill multiplier of the decade." },
+    { t: "Big Data & Analytics", d: "One of the single fastest-growing job categories worldwide, WEF's own research shows." },
+    { t: "Cybersecurity", d: "As everything moves online, protecting systems and data is a permanent, growing need." },
     { t: "Green & Climate Tech", d: "Renewable energy, EVs and sustainability engineering are booming." },
-    { t: "Data & Cybersecurity", d: "As everything goes digital, protecting and reading data is critical." },
     { t: "Healthcare & Biotech", d: "Ageing populations and genomics keep demand rising worldwide." },
+    { t: "Fintech & Financial Technology", d: "Digital payments, banking-tech and financial-software roles are growing fast." },
     { t: "Robotics & Automation", d: "Designing the machines and systems that automate physical work." },
     { t: "Creative × Tech", d: "UX, product, content and design — human taste plus technology." },
+    { t: "Care Economy", d: "Healthcare support, elder care and community-health roles keep growing as populations age." },
+    { t: "EdTech & Modern Education", d: "Teaching, training and ed-tech roles remain in real, steady demand." },
   ],
   declining: [
-    "Routine data entry & manual bookkeeping",
-    "Basic, scripted telemarketing & call handling",
+    "Cashiers & retail ticket clerks",
+    "Administrative assistants & executive secretaries",
+    "Postal service clerks",
+    "Bank tellers & routine banking clerks",
+    "Data entry clerks & manual bookkeeping",
+    "Basic, scripted telemarketing & call-centre work",
     "Repetitive assembly-line and manual sorting work",
-    "Simple form-processing and clerical filing",
-    "Generic content writing without real expertise",
+    "Generic content writing without real expertise or specialisation",
   ],
   note: "Jobs that combine human judgement with technology are the safest. Focus on skills you can keep building — they outlast any single job title.",
+  source: "Source: World Economic Forum, Future of Jobs Report 2025 (January 2025).",
 };
 
 /* ------------------------- learn & opportunities ----------------------- */
