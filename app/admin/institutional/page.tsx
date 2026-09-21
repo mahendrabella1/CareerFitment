@@ -81,19 +81,23 @@ export default function AdminInstitutionalPage() {
 
     setSaving(true);
     try {
+      // Firestore's setDoc() rejects any field whose value is literally
+      // `undefined` (unlike a plain JS object, where that's harmless) — so
+      // an empty optional field must be OMITTED from the object entirely,
+      // never included with an undefined value.
       const link: InstitutionalLink = {
         code,
         schoolName,
-        contactPersonName: f.contactPersonName.trim() || undefined,
-        contactPersonEmail: f.contactPersonEmail.trim() || undefined,
-        contactPersonPhone: f.contactPersonPhone.trim() || undefined,
-        notes: f.notes.trim() || undefined,
         expiresAt: f.expiresAt ? new Date(f.expiresAt).toISOString() : null,
         maxStudents,
         usedCount: 0,
         status: "active",
         createdAt: new Date().toISOString(),
         createdBy: user?.email || "admin",
+        ...(f.contactPersonName.trim() ? { contactPersonName: f.contactPersonName.trim() } : {}),
+        ...(f.contactPersonEmail.trim() ? { contactPersonEmail: f.contactPersonEmail.trim() } : {}),
+        ...(f.contactPersonPhone.trim() ? { contactPersonPhone: f.contactPersonPhone.trim() } : {}),
+        ...(f.notes.trim() ? { notes: f.notes.trim() } : {}),
       };
       await setDoc(doc(db, "institutional_links", code), link);
       setRows((rs) => [link, ...(rs ?? [])]);
