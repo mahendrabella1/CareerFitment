@@ -1193,7 +1193,7 @@ const CSS = `
 /* illustration band */
 .frx .sband{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:18px;padding:22px 44px;
   background:linear-gradient(120deg,#fff,${C.bg});border-bottom:1px solid var(--line)}
-@media(max-width:720px){.frx .sband{grid-template-columns:1fr;padding:18px}.frx .sband-art{display:none}}
+@media(max-width:720px){.frx .sband{grid-template-columns:1fr;padding:18px}.frx .sband-art{height:110px;justify-content:center}}
 .frx .sband-eye{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
 .frx .sband-title{color:var(--ink);font-size:clamp(22px,3.4vw,30px);font-weight:800;margin-top:6px}
 .frx .sband-art{height:150px;display:flex;align-items:center;justify-content:flex-end}
@@ -1574,7 +1574,16 @@ const CSS = `
   .frx .rv{opacity:1 !important;transform:none !important}
   /* keep charts and blocks from being clipped/split awkwardly */
   .frx svg{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+  /* break-inside:avoid on every card/row that has its own visible border or
+     a badge/ring inside it — without this, the browser is free to split ANY
+     of these mid-box across a page boundary, which is what "cut off" and
+     "misaligned" actually were: a next-step card's number badge on one
+     page and its text on the next, or the score ring in the dimension hero
+     sliced in half. .dimhero and .recos li were the two real gaps — the
+     hero row (image + score ring) and the numbered "Recommended next
+     steps" cards had no protection at all. */
   .frx .twocard,.frx .dom,.frx .role,.frx .fw,.frx .dcard,.frx .ccard,.frx .apcard,
-  .frx .model,.frx .scard,.frx .rstep,.frx .tcard,.frx .scoreCard{break-inside:avoid}
+  .frx .model,.frx .scard,.frx .rstep,.frx .tcard,.frx .scoreCard,
+  .frx .dimhero,.frx .recos li,.frx .lc{break-inside:avoid}
 }
 `;

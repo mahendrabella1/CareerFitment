@@ -356,7 +356,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
 
   const payLabel = priced.free
     ? "Unlock free & start the assessment"
-    : "Continue to Assessment";
+    : "Start My Assessment";
 
   return (
     <div className="pg-shell">

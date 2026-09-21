@@ -509,9 +509,10 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* What the student actually sees on the payment screen. These are
-              code constants (lib/offer.ts + lib/coupons.ts), not settings — so
-              this is read-only, and says where to change them. */}
+          {/* The sale banner/list-price copy is still a code constant
+              (lib/offer.ts) — read-only here. The actual coupon codes
+              themselves are no longer code constants; they're managed on
+              their own page (Firestore-backed, live immediately). */}
           {payLoaded && payEnabled && (
             <div style={S.payOffer}>
               <div style={S.payOfferHead}>
@@ -525,17 +526,9 @@ export default function AdminPage() {
                 <span>Shown as</span>
                 <b><s style={{ color: C.muted, fontWeight: 600 }}>{formatPaise(OFFER.listPaise)}</s> → {payPrice ? `₹${payPrice}` : formatPaise(OFFER.salePaise)}</b>
               </div>
-              <div style={S.payOfferRow}>
-                <span><b>{OFFER.autoCouponCode}</b> — applied automatically on the payment screen</span>
-                <b>{OFFER.discountPct}% off</b>
-              </div>
-              <div style={S.payOfferRow}>
-                <span><b>{OFFER.freeCouponCode}</b> — typed in by the student</span>
-                <b>Free entry</b>
-              </div>
-              <div style={{ ...S.payNote, marginTop: 6 }}>
-                Coupons and sale copy live in <b>lib/offer.ts</b> and <b>lib/coupons.ts</b> — edit and redeploy to change them.
-                Free-code uses are logged to the <b>couponRedemptions</b> collection.
+              <div style={{ ...S.payNote, marginTop: 6, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+                <span>Sale name/price above is still a code constant (lib/offer.ts). Free-code uses are logged to the <b>couponRedemptions</b> collection.</span>
+                <Link href="/admin/coupons" style={{ color: C.red, fontWeight: 700, whiteSpace: "nowrap" }}>Manage coupon codes →</Link>
               </div>
             </div>
           )}

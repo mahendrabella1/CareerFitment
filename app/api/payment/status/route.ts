@@ -20,7 +20,7 @@ export const dynamic = "force-dynamic";
 // same value is handed to Razorpay Checkout on every payment.
 export async function GET() {
   const { active, settings, configured } = await isPaymentActive();
-  const auto = autoCoupon();
+  const auto = await autoCoupon();
   const listPaise = Math.max(OFFER.listPaise, settings.amountPaise);
   return NextResponse.json({
     /** The only field the gate needs: charge this student or not. */

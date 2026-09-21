@@ -10,13 +10,16 @@
 // the request can at best name a code that doesn't exist — they can't invent a
 // discount, and they can't turn a ₹49 order into a ₹1 one.
 //
-// TO ADD OR CHANGE A CODE: edit COUPONS below and redeploy. Codes are matched
+// TO ADD OR CHANGE A CODE: use the admin console at /admin/coupons — it writes
+// to the `coupons` Firestore collection this file reads (via the Admin SDK, so
+// student browsers never see this read happen). Codes are matched
 // case-insensitively and trimmed, so "ogfree", " OGFREE " and "OgFree" all work
 // — students paste these from WhatsApp and posters, and a stray space must not
 // read as "invalid code".
 
 import { OFFER } from "@/lib/offer";
 import { MIN_AMOUNT_PAISE } from "@/lib/paymentSettings";
+import { isFirestoreConfigured, getFirestore } from "@/lib/firebase/admin";
 
 export interface Coupon {
   /** Canonical, upper-case form of the code. */
@@ -26,17 +29,22 @@ export interface Coupon {
   /** Shown to the student on the payment screen once applied. */
   label: string;
   /**
-   * Applied on its own when the payment screen opens. The sale coupon simply
-   * *is* the advertised price, so it resolves to the admin's fee rather than
-   * doing its own arithmetic — that keeps the screen, the Razorpay order and
-   * /admin from ever disagreeing by a rupee.
+   * Applied on its own when the payment screen opens. Only the first coupon
+   * with this set to true is used (see autoCoupon below) — /admin/coupons
+   * only lets one be marked this way at a time, so the screen, the Razorpay
+   * order and /admin never disagree about which discount is "the" sale price.
    */
   auto: boolean;
   /** One-line explanation under the applied-code chip. */
   note: string;
 }
 
-const COUPONS: readonly Coupon[] = [
+// Used only when the `coupons` collection is empty or unreachable (a fresh
+// deployment before an admin has opened /admin/coupons, or a Firestore
+// outage) — the same two codes this app has always shipped with, so payment
+// never silently breaks. Once an admin adds a real coupon in /admin/coupons,
+// this fallback is never consulted again.
+const FALLBACK_COUPONS: readonly Coupon[] = [
   {
     code: OFFER.autoCouponCode,
     percentOff: OFFER.discountPct,
@@ -53,16 +61,48 @@ const COUPONS: readonly Coupon[] = [
   },
 ];
 
+export const COUPONS_COLLECTION = "coupons";
+
+/**
+ * Every coupon an admin has configured. Never throws — a Firestore outage or
+ * an empty collection falls back to FALLBACK_COUPONS rather than taking
+ * payment down or silently accepting every code as free.
+ */
+export async function getCoupons(): Promise<Coupon[]> {
+  if (!isFirestoreConfigured()) return [...FALLBACK_COUPONS];
+  try {
+    const db = await getFirestore();
+    const snap = await db.collection(COUPONS_COLLECTION).get();
+    if (snap.empty) return [...FALLBACK_COUPONS];
+    return snap.docs.map((d) => {
+      const data = d.data() as Partial<Coupon>;
+      const percentOff = Math.max(0, Math.min(100, Math.round(Number(data.percentOff) || 0)));
+      return {
+        code: String(data.code || "").trim().toUpperCase(),
+        percentOff,
+        label: data.label || (percentOff >= 100 ? "Free access — 100% off" : `${percentOff}% off`),
+        auto: Boolean(data.auto),
+        note: data.note || (data.auto ? "Applied automatically — no code needed" : "Discount applied"),
+      };
+    }).filter((c) => c.code);
+  } catch (e) {
+    console.error("[coupons] could not read the coupons collection:", e instanceof Error ? e.message : e);
+    return [...FALLBACK_COUPONS];
+  }
+}
+
 /** Look up a code the student typed. Null when it isn't one of ours. */
-export function findCoupon(raw: unknown): Coupon | null {
+export async function findCoupon(raw: unknown): Promise<Coupon | null> {
   const code = String(raw ?? "").trim().toUpperCase();
   if (!code) return null;
-  return COUPONS.find((c) => c.code === code) ?? null;
+  const coupons = await getCoupons();
+  return coupons.find((c) => c.code === code) ?? null;
 }
 
 /** The code applied for every student the moment the payment screen opens. */
-export function autoCoupon(): Coupon | null {
-  return COUPONS.find((c) => c.auto) ?? null;
+export async function autoCoupon(): Promise<Coupon | null> {
+  const coupons = await getCoupons();
+  return coupons.find((c) => c.auto) ?? null;
 }
 
 /** A coupon as it is safe to hand to the browser. */
@@ -106,9 +146,9 @@ export interface PricedFee {
  *   • any other code              → that percent off the admin's fee;
  *   • anything under ₹1           → free, because Razorpay cannot charge it.
  */
-export function priceWithCoupon(basePaise: number, rawCode?: unknown): PricedFee {
+export async function priceWithCoupon(basePaise: number, rawCode?: unknown): Promise<PricedFee> {
   const typed = String(rawCode ?? "").trim();
-  const coupon = typed ? findCoupon(typed) : null;
+  const coupon = typed ? await findCoupon(typed) : null;
   const invalidCode = typed !== "" && coupon === null;
 
   let payablePaise = basePaise;

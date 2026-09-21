@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const priced = priceWithCoupon(settings.amountPaise, body.code);
+  const priced = await priceWithCoupon(settings.amountPaise, body.code);
   if (!priced.coupon) {
     return NextResponse.json(
       { success: false, reason: "invalid_coupon", message: "That coupon code isn't valid." },

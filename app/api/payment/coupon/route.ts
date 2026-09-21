@@ -31,8 +31,8 @@ export async function POST(req: Request) {
     );
   }
 
-  const priced = priceWithCoupon(settings.amountPaise, body.code);
-  const auto = autoCoupon();
+  const priced = await priceWithCoupon(settings.amountPaise, body.code);
+  const auto = await autoCoupon();
 
   return NextResponse.json({
     success: true,

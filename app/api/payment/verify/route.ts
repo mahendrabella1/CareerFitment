@@ -55,7 +55,7 @@ export async function POST(req: Request) {
   // accepted the order, and the signature above is what proves it was paid.
   const email = (await emailFromToken(idToken)) || String(profile?.email || "");
   const settings = await getPaymentSettings();
-  const priced = priceWithCoupon(settings.amountPaise, coupon);
+  const priced = await priceWithCoupon(settings.amountPaise, coupon);
   const amount = priced.payablePaise;
   const p = profile || {};
   const name = String(p.name || "");

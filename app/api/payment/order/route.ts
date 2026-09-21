@@ -27,7 +27,7 @@ export async function POST(req: Request) {
   } catch {
     /* no body — no coupon */
   }
-  const priced = priceWithCoupon(settings.amountPaise, body.coupon);
+  const priced = await priceWithCoupon(settings.amountPaise, body.coupon);
   const amount = priced.payablePaise;
 
   // An admin turned the fee off. The gate should already have skipped straight
