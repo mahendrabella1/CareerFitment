@@ -729,6 +729,21 @@
           ]
         },
         {
+          "text": "Which activity would you most enjoy?",
+          "options": [
+            "Understanding rhythm, music or melody.",
+            "Understanding how other people think or feel.",
+            "Reflecting on your own decisions and behaviour.",
+            "Observing animals, plants or the natural environment."
+          ],
+          "mapping": [
+            "Musical",
+            "Interpersonal",
+            "Intrapersonal",
+            "Naturalistic"
+          ]
+        },
+        {
           "text": "When explaining a difficult concept to someone, what are you most likely to do?",
           "options": [
             "Explain it using words and examples.",
