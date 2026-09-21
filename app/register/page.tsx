@@ -51,7 +51,7 @@ export default function RegisterPage() {
 function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { ready, register } = useAuth();
+  const { ready, register, refreshProfile } = useAuth();
 
   const [step, setStep] = useState(0);
   const [f, setF] = useState({ name: "", category: "", clarity: "", email: "", phone: "", city: "", institution: "", age: "", password: "" });
@@ -146,6 +146,13 @@ function RegisterForm() {
             setInstFailMsg(data?.message || "This school link couldn't be applied.");
             return; // no auto-redirect — the "done" screen shows a manual Continue button instead
           }
+          // The redeem call marked paid:true on the server (Admin SDK,
+          // bypassing Firestore rules entirely) — but register() already set
+          // the CLIENT's local profile to the paid:false doc it just wrote,
+          // and nothing refetches it automatically. Without this, the exam
+          // gate (assessment-experience.tsx's profile.paid check) still sees
+          // the stale value and shows PaymentGate anyway.
+          await refreshProfile();
         } catch {
           setInstFailMsg("This school link couldn't be applied.");
           return;

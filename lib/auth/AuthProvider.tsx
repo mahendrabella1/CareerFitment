@@ -168,6 +168,17 @@ interface AuthState {
   saveDemoAssessment: (summary: AssessmentSummary, extras?: any) => Promise<void>;
   saveExamSession: (session: ExamSession) => Promise<void>;
   clearExamSession: () => Promise<void>;
+  /**
+   * Re-fetches the signed-in user's own Firestore doc and replaces `profile`
+   * with it. Needed whenever something writes to that doc from OUTSIDE this
+   * provider — e.g. an institutional-link redemption, which marks `paid:true`
+   * server-side via the Admin SDK right after register() already set the
+   * client's `profile` to the just-created (paid:false) doc. Without this,
+   * `profile` stays stuck on that first snapshot until the next full sign-in,
+   * so a page that gates on `profile.paid` (assessment-experience.tsx) never
+   * sees the update.
+   */
+  refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthState | null>(null);
@@ -258,6 +269,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfile(profileDoc);
   }
 
+  async function refreshProfile() {
+    const db = getDb();
+    // Firebase Auth's own currentUser, not the `user` state above — that's
+    // set by the onAuthStateChanged listener in the effect below, a SEPARATE
+    // async callback with no guaranteed ordering against a register() call
+    // that just resolved a moment earlier. auth.currentUser is set by the
+    // SDK itself the instant sign-up succeeds, so it's the reliable read
+    // right after register() — no dependency on React's own state timing.
+    const uid = getFirebaseAuth()?.currentUser?.uid;
+    if (!db || !uid) return;
+    try {
+      const snap = await getDoc(doc(db, "users", uid));
+      setProfile(snap.exists() ? (snap.data() as UserProfile) : null);
+    } catch {
+      /* leave the existing profile in place — a stale read beats a wiped one */
+    }
+  }
+
   async function signIn(email: string, password: string) {
     const auth = getFirebaseAuth();
     console.log("AuthProvider.signIn called. Auth ready:", !!auth);
@@ -342,7 +371,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ ready: firebaseReady, loading, user, profile, register, signIn, resetPassword, logout, saveAssessment, saveDemoAssessment, saveExamSession, clearExamSession }}
+      value={{ ready: firebaseReady, loading, user, profile, register, signIn, resetPassword, logout, saveAssessment, saveDemoAssessment, saveExamSession, clearExamSession, refreshProfile }}
     >
       {children}
     </AuthContext.Provider>
