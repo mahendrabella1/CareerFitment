@@ -398,7 +398,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
           <div className="pg-coupon">
             {!couponOpen ? (
               <button className="pg-coupon-toggle" onClick={openCouponBox} disabled={busy}>
-                Have a coupon code? <span>Click here</span>
+                Apply COUPON Code? <span>Click here</span>
               </button>
             ) : (
               <div className="pg-coupon-open">
@@ -482,9 +482,10 @@ const CSS = `
 .pg-list li::before{content:"✓";position:absolute;left:0;top:0;width:19px;height:19px;border-radius:50%;background:#eef0ff;color:#6366F1;font-size:12px;font-weight:800;display:grid;place-items:center}
 
 .pg-coupon{text-align:left;border-top:1px solid #f0f1f6;padding-top:16px;margin-bottom:16px}
-.pg-coupon-toggle{display:block;width:100%;background:none;border:none;padding:2px 0;text-align:center;
-  font-family:inherit;font-size:13px;font-weight:600;color:#6b7080;cursor:pointer}
-.pg-coupon-toggle span{color:#6366F1;font-weight:800;text-decoration:underline;text-underline-offset:2px;margin-left:3px}
+.pg-coupon-toggle{display:block;width:100%;background:#EEF0FF;border:1px solid #D8DBFF;border-radius:10px;padding:11px 14px;text-align:center;
+  font-family:inherit;font-size:16px;font-weight:1000;color:#4338CA;cursor:pointer}
+.pg-coupon-toggle span{color:#6366F1;font-weight:1000;text-decoration:underline;text-underline-offset:2px;margin-left:3px}
+.pg-coupon-toggle:hover{background:#E3E6FF}
 .pg-coupon-toggle:hover span{color:#4f46e5}
 .pg-coupon-toggle:disabled{opacity:.5;cursor:default}
 .pg-coupon-open{animation:pgReveal .26s cubic-bezier(.2,.8,.25,1) both}
