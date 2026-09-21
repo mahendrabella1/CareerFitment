@@ -1,45 +1,25 @@
-/** Institutional Link Management */
-
+/**
+ * Institutional links — a school-specific free-signup code, managed from
+ * /admin/institutional. The doc ID in Firestore's `institutional_links`
+ * collection IS the code (see app/api/institutional/*), so `code` here is a
+ * convenience mirror for list rendering, not a separate identity.
+ *
+ * Always fully free — no per-link pricing. "Expired"/"full" aren't stored
+ * statuses; a link's live validity is computed at redemption time from
+ * `status`, `expiresAt` and `maxStudents`/`usedCount` together (see
+ * app/api/institutional/redeem/route.ts).
+ */
 export interface InstitutionalLink {
-  id: string;
-  code: string; // Unique code for the link (e.g., "SCHOOL-2024-ABC123")
+  code: string;
   schoolName: string;
-  schoolEmail: string;
-  schoolPhone: string;
-  schoolCity: string;
-  schoolState: string;
-  status: "active" | "inactive" | "expired";
-  createdAt: string;
-  expiresAt: string | null; // null = never expires
-  maxStudents?: number; // optional limit
-  usedCount: number; // how many students have registered
-  contactPersonName: string;
-  contactPersonEmail: string;
-  contactPersonPhone: string;
-  originalPrice: number; // ₹5,999 displayed to student
-  institutionPrice: number; // discounted rate paid by institution (hidden)
+  contactPersonName?: string;
+  contactPersonEmail?: string;
+  contactPersonPhone?: string;
   notes?: string;
-}
-
-export interface InstitutionalStudent {
-  id: string;
-  linkId: string; // reference to InstitutionalLink
-  userId: string; // Firebase user ID
-  email: string;
-  name: string;
-  phone: string;
-  class: string;
-  schoolName: string;
-  registeredAt: string;
-  completedAt?: string;
-  assessmentSessionId?: string;
-  reportSent: boolean;
-}
-
-export interface InstitutionalDashboardStats {
-  totalStudents: number;
-  completedAssessments: number;
-  pendingAssessments: number;
-  reportsGenerated: number;
-  lastUpdated: string;
+  expiresAt: string | null;
+  maxStudents: number | null;
+  usedCount: number;
+  status: "active" | "inactive";
+  createdAt: string;
+  createdBy: string;
 }

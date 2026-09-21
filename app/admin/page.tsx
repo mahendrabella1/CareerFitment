@@ -526,9 +526,12 @@ export default function AdminPage() {
                 <span>Shown as</span>
                 <b><s style={{ color: C.muted, fontWeight: 600 }}>{formatPaise(OFFER.listPaise)}</s> → {payPrice ? `₹${payPrice}` : formatPaise(OFFER.salePaise)}</b>
               </div>
-              <div style={{ ...S.payNote, marginTop: 6, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+              <div style={{ ...S.payNote, marginTop: 6, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
                 <span>Sale name/price above is still a code constant (lib/offer.ts). Free-code uses are logged to the <b>couponRedemptions</b> collection.</span>
-                <Link href="/admin/coupons" style={{ color: C.red, fontWeight: 700, whiteSpace: "nowrap" }}>Manage coupon codes →</Link>
+                <span style={{ display: "flex", gap: 14, flex: "none" }}>
+                  <Link href="/admin/coupons" style={{ color: C.red, fontWeight: 700, whiteSpace: "nowrap" }}>Manage coupon codes →</Link>
+                  <Link href="/admin/institutional" style={{ color: C.red, fontWeight: 700, whiteSpace: "nowrap" }}>Manage institutional links →</Link>
+                </span>
               </div>
             </div>
           )}

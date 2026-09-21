@@ -8,12 +8,13 @@
  * starts the assessment.
  */
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "@/app/Logo";
 import { Icon } from "@/app/Icons";
 import { useAuth, authErrorMessage } from "@/lib/auth/AuthProvider";
+import { getFirebaseAuth } from "@/lib/firebase/client";
 import { CLARITY_STAGES, journeyForCategory, PASSWORD_RULES, passwordIsValid, emailIsValid, phoneIsValid } from "@/lib/auth/formOptions";
 import { trackEvent } from "@/lib/metaPixel";
 
@@ -60,6 +61,33 @@ function RegisterForm() {
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
 
+  // Institutional link (?ref=CODE) — checked once on mount, purely so the
+  // banner below can be honest before the student fills anything in. This is
+  // advisory only; the real, race-safe check happens again server-side in
+  // /api/institutional/redeem at submit time (see submit() below).
+  const refCode = (searchParams.get("ref") || "").trim().toUpperCase();
+  const [instCheck, setInstCheck] = useState<{ valid: boolean; schoolName?: string } | "checking" | null>(refCode ? "checking" : null);
+  // Set only if a ref code was present but redemption failed at submit time —
+  // shown on the "done" screen instead of the usual auto-redirect, since the
+  // account is created either way and the student needs a moment to read why
+  // they'll still see a payment step.
+  const [instFailMsg, setInstFailMsg] = useState("");
+
+  useEffect(() => {
+    if (!refCode) return;
+    let cancelled = false;
+    fetch(`/api/institutional/check?code=${encodeURIComponent(refCode)}`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (cancelled) return;
+        setInstCheck(d?.valid ? { valid: true, schoolName: d.schoolName || "" } : { valid: false });
+        if (d?.valid && d.schoolName) setF((p) => ({ ...p, institution: d.schoolName }));
+      })
+      .catch(() => { if (!cancelled) setInstCheck({ valid: false }); });
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refCode]);
+
   const set = (k: keyof typeof f, v: string) => setF((p) => ({ ...p, [k]: v }));
 
   const nameOk = f.name.trim() !== "";
@@ -98,6 +126,31 @@ function RegisterForm() {
           utmCampaign: searchParams.get("utm_campaign") ?? undefined,
         }),
       }).catch(() => {});
+
+      // The account exists either way by this point — an institutional-link
+      // failure here (link disabled/expired/full in the moment between the
+      // banner and this submit) must never lose the signup, only fall
+      // through to the normal payment step the student would have hit
+      // anyway. Only skip straight to the exam when redemption genuinely
+      // succeeded; otherwise pause the auto-redirect and say why.
+      if (refCode) {
+        try {
+          const idToken = await getFirebaseAuth()?.currentUser?.getIdToken();
+          const res = await fetch("/api/institutional/redeem", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code: refCode, idToken }),
+          });
+          const data = await res.json();
+          if (!data?.success) {
+            setInstFailMsg(data?.message || "This school link couldn't be applied.");
+            return; // no auto-redirect — the "done" screen shows a manual Continue button instead
+          }
+        } catch {
+          setInstFailMsg("This school link couldn't be applied.");
+          return;
+        }
+      }
       setTimeout(() => router.push("/?begin=1"), 1100);
     } catch (err) {
       setError(authErrorMessage(err));
@@ -113,6 +166,13 @@ function RegisterForm() {
       <Link href="/" style={S.home}>HOME</Link>
 
       <div style={S.card}>
+        {!done && refCode && instCheck !== "checking" && (
+          <div style={instCheck && instCheck.valid ? S.instBanner : S.instBannerBad}>
+            {instCheck && instCheck.valid
+              ? <>✓ Registering via <b>{instCheck.schoolName || "your school"}</b> — your assessment fee is covered.</>
+              : <>This registration link isn't valid or has expired — you can still sign up, you'll just see the normal payment step.</>}
+          </div>
+        )}
         {/* tabs */}
         <div style={S.tabs}>
           {TABS.map((t, i) => {
@@ -133,7 +193,15 @@ function RegisterForm() {
             <div style={S.doneWrap} className="rin">
               <div style={S.doneCheck}>✓</div>
               <h2 style={S.doneTitle}>You’re all set, {f.name.split(" ")[0] || "there"}!</h2>
-              <p style={S.doneSub}>Account created — taking you to your assessment…</p>
+              {instFailMsg ? (
+                <>
+                  <p style={S.doneSub}>Your account was created.</p>
+                  <p style={{ ...S.doneSub, color: "#b91c1c", fontWeight: 700, marginTop: 6 }}>{instFailMsg}</p>
+                  <button style={{ ...S.next, marginTop: 18 }} onClick={() => router.push("/?begin=1")}>Continue →</button>
+                </>
+              ) : (
+                <p style={S.doneSub}>Account created — taking you to your assessment…</p>
+              )}
             </div>
           ) : step === 0 ? (
             /* ---------------- Step 1: Milestone ---------------- */
@@ -213,7 +281,8 @@ function RegisterForm() {
               {emailOk && phoneOk && (
                 <div className="rin">
                   <div style={S.grid2} className="og-g2">
-                    <Field label="School / College / Company" value={f.institution} onChange={(v) => set("institution", v)} placeholder="Where you study / work" optional />
+                    <Field label="School / College / Company" value={f.institution} onChange={(v) => set("institution", v)} placeholder="Where you study / work" optional
+                      locked={Boolean(instCheck && instCheck !== "checking" && instCheck.valid)} />
                     <Field label="Age" value={f.age} onChange={(v) => set("age", v.replace(/[^\d]/g, "").slice(0, 2))} placeholder="e.g. 17" optional />
                   </div>
                   <div style={{ position: "relative", marginTop: 4 }}>
@@ -258,13 +327,17 @@ function RegisterForm() {
 }
 
 /* --------------------------- reusable field ---------------------------- */
-function Field({ label, value, onChange, ok, touched, type = "text", placeholder, optional, autoFocus }:
-  { label: string; value: string; onChange: (v: string) => void; ok?: boolean; touched?: boolean; type?: string; placeholder?: string; optional?: boolean; autoFocus?: boolean }) {
+function Field({ label, value, onChange, ok, touched, type = "text", placeholder, optional, autoFocus, locked }:
+  { label: string; value: string; onChange: (v: string) => void; ok?: boolean; touched?: boolean; type?: string; placeholder?: string; optional?: boolean; autoFocus?: boolean; locked?: boolean }) {
   const invalid = touched && !optional && ok === false;
   return (
     <div style={{ position: "relative" }}>
-      <label style={S.fLabel}>{label}{optional && <span style={S.optTag}> (optional)</span>} {ok && <span style={S.okInline}>✓</span>}</label>
-      <input style={{ ...S.input, ...(invalid ? S.inputBad : {}) }} type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} autoFocus={autoFocus} />
+      <label style={S.fLabel}>
+        {label}{optional && !locked && <span style={S.optTag}> (optional)</span>} {ok && <span style={S.okInline}>✓</span>}
+        {locked && <span style={S.optTag}> (set by your registration link)</span>}
+      </label>
+      <input style={{ ...S.input, ...(invalid ? S.inputBad : {}), ...(locked ? { color: "#6b7280", cursor: "not-allowed" } : {}) }}
+        type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} autoFocus={autoFocus} disabled={locked} readOnly={locked} />
       {invalid && <div style={S.err}>Please enter a valid {label.toLowerCase()}.</div>}
     </div>
   );
@@ -293,6 +366,8 @@ const S: Record<string, React.CSSProperties> = {
   subhint: { textAlign: "center", fontSize: 12.5, color: "#8a90a0", margin: "-10px 0 16px" },
 
   offer: { display: "flex", alignItems: "center", justifyContent: "center", flexWrap: "wrap", gap: 10, background: "#fff7f7", border: "1px solid #f7d3d5", borderRadius: 10, padding: "9px 12px", margin: "0 0 16px" },
+  instBanner: { textAlign: "center", fontSize: 12.5, fontWeight: 600, color: "#137a45", background: "#eafaf1", borderBottom: "1px solid #bfe8d3", padding: "10px 16px" },
+  instBannerBad: { textAlign: "center", fontSize: 12.5, fontWeight: 600, color: "#92400e", background: "#fff8e6", borderBottom: "1px solid #fde68a", padding: "10px 16px" },
   offerBadge: { background: "#e0242e", color: "#fff", fontSize: 10.5, fontWeight: 800, borderRadius: 6, padding: "3px 7px", letterSpacing: .3 },
   offerWas: { color: "#a2a7b4", fontSize: 13, fontWeight: 600 },
   offerNow: { color: "#1f2740", fontSize: 17, fontWeight: 800 },
