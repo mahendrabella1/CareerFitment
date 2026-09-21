@@ -61,12 +61,17 @@ function RegisterForm() {
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
 
-  // Institutional link (?ref=CODE) — checked once on mount, purely so the
-  // banner below can be honest before the student fills anything in. This is
-  // advisory only; the real, race-safe check happens again server-side in
-  // /api/institutional/redeem at submit time (see submit() below).
+  // Institutional link (?ref=CODE) — checked once on mount. An invalid link
+  // BLOCKS the whole registration form (see the early return below) instead
+  // of just showing a banner above a still-usable one — a deactivated/
+  // expired/full link shouldn't let a student fill in a whole form only to
+  // find out at the end it was never going to waive their fee. This check is
+  // still only advisory in the security sense; the real, race-safe check
+  // happens again server-side in /api/institutional/redeem at submit time,
+  // for the rare case a link dies in the few seconds after this loads.
   const refCode = (searchParams.get("ref") || "").trim().toUpperCase();
-  const [instCheck, setInstCheck] = useState<{ valid: boolean; schoolName?: string } | "checking" | null>(refCode ? "checking" : null);
+  type InstCheck = { valid: true; schoolName?: string } | { valid: false; reason: string; schoolName?: string };
+  const [instCheck, setInstCheck] = useState<InstCheck | "checking" | null>(refCode ? "checking" : null);
   // Set only if a ref code was present but redemption failed at submit time —
   // shown on the "done" screen instead of the usual auto-redirect, since the
   // account is created either way and the student needs a moment to read why
@@ -80,10 +85,14 @@ function RegisterForm() {
       .then((r) => r.json())
       .then((d) => {
         if (cancelled) return;
-        setInstCheck(d?.valid ? { valid: true, schoolName: d.schoolName || "" } : { valid: false });
+        setInstCheck(
+          d?.valid
+            ? { valid: true, schoolName: d.schoolName || "" }
+            : { valid: false, reason: d?.reason || "not_found", schoolName: d?.schoolName || "" }
+        );
         if (d?.valid && d.schoolName) setF((p) => ({ ...p, institution: d.schoolName }));
       })
-      .catch(() => { if (!cancelled) setInstCheck({ valid: false }); });
+      .catch(() => { if (!cancelled) setInstCheck({ valid: false, reason: "not_found" }); });
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refCode]);
@@ -165,6 +174,14 @@ function RegisterForm() {
     }
   }
 
+  // An invalid ?ref= link blocks the form entirely — a reason-specific
+  // message screen instead, with a path to the normal (paid) signup for a
+  // student who still wants to register. A valid link falls through to the
+  // ordinary wizard with just a confirmation banner (below).
+  if (refCode && instCheck !== "checking" && instCheck && !instCheck.valid) {
+    return <InstitutionalLinkBlocked reason={instCheck.reason} schoolName={instCheck.schoolName} />;
+  }
+
   return (
     <div style={S.shell}>
       <div style={S.page}>
@@ -173,11 +190,9 @@ function RegisterForm() {
       <Link href="/" style={S.home}>HOME</Link>
 
       <div style={S.card}>
-        {!done && refCode && instCheck !== "checking" && (
-          <div style={instCheck && instCheck.valid ? S.instBanner : S.instBannerBad}>
-            {instCheck && instCheck.valid
-              ? <>✓ Registering via <b>{instCheck.schoolName || "your school"}</b> — your assessment fee is covered.</>
-              : <>This registration link isn't valid or has expired — you can still sign up, you'll just see the normal payment step.</>}
+        {!done && refCode && instCheck !== "checking" && instCheck && instCheck.valid && (
+          <div style={S.instBanner}>
+            ✓ Registering via <b>{instCheck.schoolName || "your school"}</b> — your assessment fee is covered.
           </div>
         )}
         {/* tabs */}
@@ -333,6 +348,49 @@ function RegisterForm() {
   );
 }
 
+/* ------------------- blocked institutional-link screen ------------------ */
+const INST_BLOCK_COPY: Record<string, (school: string) => { title: string; body: string }> = {
+  inactive: (school) => ({
+    title: "This link has been deactivated",
+    body: `The registration link${school ? ` for ${school}` : ""} has been switched off by the school. If you think this is a mistake, check with them for an updated link.`,
+  }),
+  expired: (school) => ({
+    title: "This link has expired",
+    body: `The registration link${school ? ` for ${school}` : ""} is no longer active. Check with your school for an updated link.`,
+  }),
+  full: (school) => ({
+    title: "This link is full",
+    body: `The registration link${school ? ` for ${school}` : ""} has reached its student limit. Check with your school if more spots open up.`,
+  }),
+  not_found: () => ({
+    title: "This link isn't valid",
+    body: "Double-check that you copied the whole link your school sent you — it may be incomplete or mistyped.",
+  }),
+};
+
+function InstitutionalLinkBlocked({ reason, schoolName }: { reason: string; schoolName?: string }) {
+  const { title, body } = (INST_BLOCK_COPY[reason] || INST_BLOCK_COPY.not_found)(schoolName || "");
+  return (
+    <div style={S.shell}>
+      <div style={S.page}>
+        <style dangerouslySetInnerHTML={{ __html: CSS }} />
+        <div style={S.overlay} />
+        <Link href="/" style={S.home}>HOME</Link>
+        <div style={S.card}>
+          <div style={S.doneWrap}>
+            <div style={{ ...S.doneCheck, background: "linear-gradient(135deg,#c0564f,#e08a0a)", boxShadow: "0 14px 30px rgba(192,86,79,.35)" }}>!</div>
+            <h2 style={S.doneTitle}>{title}</h2>
+            <p style={{ ...S.doneSub, maxWidth: 380, margin: "0 auto" }}>{body}</p>
+            <Link href="/register" style={{ ...S.next, marginTop: 22, display: "inline-block", textDecoration: "none" }}>
+              Continue to normal registration →
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* --------------------------- reusable field ---------------------------- */
 function Field({ label, value, onChange, ok, touched, type = "text", placeholder, optional, autoFocus, locked }:
   { label: string; value: string; onChange: (v: string) => void; ok?: boolean; touched?: boolean; type?: string; placeholder?: string; optional?: boolean; autoFocus?: boolean; locked?: boolean }) {
@@ -374,7 +432,6 @@ const S: Record<string, React.CSSProperties> = {
 
   offer: { display: "flex", alignItems: "center", justifyContent: "center", flexWrap: "wrap", gap: 10, background: "#fff7f7", border: "1px solid #f7d3d5", borderRadius: 10, padding: "9px 12px", margin: "0 0 16px" },
   instBanner: { textAlign: "center", fontSize: 12.5, fontWeight: 600, color: "#137a45", background: "#eafaf1", borderBottom: "1px solid #bfe8d3", padding: "10px 16px" },
-  instBannerBad: { textAlign: "center", fontSize: 12.5, fontWeight: 600, color: "#92400e", background: "#fff8e6", borderBottom: "1px solid #fde68a", padding: "10px 16px" },
   offerBadge: { background: "#e0242e", color: "#fff", fontSize: 10.5, fontWeight: 800, borderRadius: 6, padding: "3px 7px", letterSpacing: .3 },
   offerWas: { color: "#a2a7b4", fontSize: 13, fontWeight: 600 },
   offerNow: { color: "#1f2740", fontSize: 17, fontWeight: 800 },
