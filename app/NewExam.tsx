@@ -572,8 +572,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
               honestly matters more than answering impressively. */}
           <p style={S.disclaimer}>
             Your results come from <b>your own answers</b>, read through established
-            frameworks — RIASEC interests, the Big Five, multiple intelligences and
-            emotional intelligence. There are no right or wrong answers, and nothing
+            psychometric frameworks. There are no right or wrong answers, and nothing
             here is a limit on what you can become. Answer honestly rather than
             impressively; a picture of who you actually are is far more useful to you
             than a flattering one.
