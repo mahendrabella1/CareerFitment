@@ -560,7 +560,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
         <div style={S.introCard} className="og-exam-introcard">
           <div style={{ marginBottom: 16 }}><Logo height={30} /></div>
           <h2 style={S.introTitle}>Before you begin</h2>
-          <p style={S.introSub}>{data.sections.length} sections · {requiredTotal} questions · up to <b>90 minutes</b></p>
+          <p style={S.introSub}>Up to <b>90 minutes</b></p>
           <ul style={S.introList}>
             <li style={S.introItem}><span style={S.introIc}><Icon name="clock" size={18} /></span><span>You have <b>90 minutes</b>. The timer runs at the top — it auto-submits when it reaches zero.</span></li>
             <li style={S.introItem}><span style={S.introIc}><Icon name="clusters" size={18} /></span><span>Tap an answer and it <b>moves to the next question</b> automatically. Use the category bar or navigator to jump around.</span></li>
