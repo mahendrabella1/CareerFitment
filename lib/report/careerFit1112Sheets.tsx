@@ -407,6 +407,21 @@ function clusterCoreSkills(cluster: string): string[] {
 // knowing the cluster taxonomy. Generic-but-accurate by design (it has to
 // hold for every career inside the cluster, not just one path through it),
 // same authorship standard as CLUSTER_CORE_SKILLS above.
+// STEM is the one StandardCluster name that's a bare acronym rather than
+// plain English — every other cluster (Health Science, Marketing, ...) is
+// already self-explanatory. Spelled out once wherever the cluster name is a
+// page/section HEADING (clusterHeading below); left bare in dense, repeated
+// contexts (the bar chart, the consolidated overview table) where the full
+// form already appears nearby on that cluster's own detail page and a long
+// parenthetical would just overflow a tight row.
+const CLUSTER_FULL_NAME: Partial<Record<StandardCluster, string>> = {
+  "STEM": "Science, Technology, Engineering & Mathematics",
+};
+const clusterHeading = (cluster: string): string => {
+  const full = CLUSTER_FULL_NAME[cluster as StandardCluster];
+  return full ? `${cluster} (${full})` : cluster;
+};
+
 const CLUSTER_TAGLINE: Record<StandardCluster, string> = {
   "STEM": "Explore science, research and engineering to solve real-world problems.",
   "Information Technology": "Build software, work with data and create digital solutions.",
@@ -488,7 +503,7 @@ function ClusterSummaryTable({ groups, showCompanies }: { groups: DomainGroup111
               <span style={{ width: 26, height: 26, borderRadius: "50%", background: color, color: "#fff", fontWeight: 800, fontSize: 12.5, display: "grid", placeItems: "center", flex: "none" }}>{i + 1}</span>
               <DomainChip domain={g.domain} size={36} />
               <div style={{ minWidth: 0, flex: 1 }}>
-                <div style={{ fontWeight: 800, color: "var(--ink)", fontSize: 14.5 }}>{g.domain}</div>
+                <div style={{ fontWeight: 800, color: "var(--ink)", fontSize: 14.5 }}>{clusterHeading(g.domain)}</div>
                 <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 1 }}>{CLUSTER_TAGLINE[g.domain as StandardCluster] ?? ""}</div>
               </div>
               <div style={{ textAlign: "right", flex: "none" }}>
@@ -742,7 +757,7 @@ function FundedProgramsSection({ groups }: { groups: DomainGroup1112[] }) {
                 <Icon name="briefcase" size={26} style={{ color }} />
               </span>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 20, fontWeight: 800, color: "var(--ink)", letterSpacing: ".08em", textTransform: "uppercase" }}>{g.domain}</div>
+                <div style={{ fontSize: 20, fontWeight: 800, color: "var(--ink)", letterSpacing: ".08em", textTransform: "uppercase" }}>{clusterHeading(g.domain)}</div>
                 <div style={{ fontSize: 15, color: "var(--ink-2)", marginTop: 4 }}>{CLUSTER_TAGLINE[g.domain as StandardCluster] ?? ""}</div>
               </div>
               {/* Two distinct pills — "this is real" and "this pays/waives
@@ -797,7 +812,7 @@ function DomainBlock({ g, rank, badge }: { g: DomainGroup1112; rank: number; bad
       <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 18px", background: "var(--rc-tint)", borderBottom: "1px solid var(--rc-line)" }}>
         <span style={{ width: 34, height: 34, borderRadius: 10, background: color, color: "#fff", display: "grid", placeItems: "center", flex: "none", fontWeight: 800, fontSize: 14 }}>{rank}</span>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div className="nm">Career Cluster {rank}: {g.domain}</div>
+          <div className="nm">Career Cluster {rank}: {clusterHeading(g.domain)}</div>
         </div>
         <div style={{ flex: "none" }}>{badge}</div>
       </div>
@@ -1242,8 +1257,8 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
 
                 {roadmapDomain && realisticRoadmap && (
                   <div style={BREAK}>
-                    <SecHead center eyebrow={`${roadmapDomain} · your best-fit domain`} title="Your realistic path"
-                      sub={`The standard path into a ${roadmapDomain} career — where you are now, through to senior/leadership roles. This is the same realistic route for anyone in this domain, not built around one specific job title.`} />
+                    <SecHead center eyebrow={`${clusterHeading(roadmapDomain)} · your best-fit domain`} title="Your realistic path"
+                      sub={`The standard path into a ${clusterHeading(roadmapDomain)} career — where you are now, through to senior/leadership roles. This is the same realistic route for anyone in this domain, not built around one specific job title.`} />
                     <div style={{ marginTop: 16 }}>
                       <ClusterRoadmapPath phases={realisticRoadmap.phases} color={clusterColor(roadmapDomain)} />
                     </div>

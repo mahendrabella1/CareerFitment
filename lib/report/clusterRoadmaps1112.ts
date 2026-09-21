@@ -86,7 +86,7 @@ function phase5(senior: string[], leadership: string[], skills: string[]): Clust
 
 export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
   "STEM": {
-    title: "STEM (Engineering, Science & Research) — 15-Year Career Roadmap",
+    title: "STEM (Science, Technology, Engineering & Mathematics) — 15-Year Career Roadmap",
     phases: [
       phase1(
         ["Understand engineering, physical/life sciences, maths and research as career paths", "Identify whether I enjoy building things, solving equations, or investigating how the world works", "Explore mechanical/civil/electronics vs. pure-science vs. research-track options"],
