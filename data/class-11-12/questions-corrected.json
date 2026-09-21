@@ -729,18 +729,18 @@
           ]
         },
         {
-          "text": "Which activity would you most enjoy?",
+          "text": "When explaining a difficult concept to someone, what are you most likely to do?",
           "options": [
-            "Understanding rhythm, music or melody.",
-            "Understanding how other people think or feel.",
-            "Reflecting on your own decisions and behaviour.",
-            "Observing animals, plants or the natural environment."
+            "Explain it using words and examples.",
+            "Draw a diagram or visual representation.",
+            "Demonstrate it practically.",
+            "Use an analogy or story."
           ],
           "mapping": [
-            "Musical",
-            "Interpersonal",
-            "Intrapersonal",
-            "Naturalistic"
+            "Linguistic",
+            "Spatial",
+            "Bodily-Kinesthetic",
+            "Logical-Mathematical"
           ]
         },
         {
@@ -756,51 +756,6 @@
             "Spatial",
             "Interpersonal",
             "Linguistic"
-          ]
-        },
-        {
-          "text": "In a team, what are you particularly good at?",
-          "options": [
-            "Explaining ideas clearly.",
-            "Analysing the problem.",
-            "Understanding different people.",
-            "Visualising what the final result should look like."
-          ],
-          "mapping": [
-            "Linguistic",
-            "Logical-Mathematical",
-            "Interpersonal",
-            "Spatial"
-          ]
-        },
-        {
-          "text": "Which experience would you enjoy most?",
-          "options": [
-            "Performing or creating music.",
-            "Leading a group discussion.",
-            "Understanding your own strengths and weaknesses.",
-            "Exploring an ecosystem or natural environment."
-          ],
-          "mapping": [
-            "Musical",
-            "Interpersonal",
-            "Intrapersonal",
-            "Naturalistic"
-          ]
-        },
-        {
-          "text": "When explaining a difficult concept to someone, what are you most likely to do?",
-          "options": [
-            "Explain it using words and examples.",
-            "Draw a diagram or visual representation.",
-            "Demonstrate it practically.",
-            "Use an analogy or story."
-          ],
-          "mapping": [
-            "Linguistic",
-            "Spatial",
-            "Bodily-Kinesthetic",
-            "Logical-Mathematical"
           ]
         },
         {
