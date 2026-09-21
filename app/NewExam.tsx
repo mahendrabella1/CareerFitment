@@ -578,7 +578,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
             impressively; a picture of who you actually are is far more useful to you
             than a flattering one.
           </p>
-          <label style={S.agree}><input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} /> I’m ready to begin.</label>
+          <label style={S.agree}><input type="checkbox" style={{ width: 18, height: 18, accentColor: BLUE, flexShrink: 0 }} checked={agree} onChange={(e) => setAgree(e.target.checked)} /> I’m ready to begin.</label>
           <button style={{ ...S.primary, width: "100%", ...(agree ? {} : S.disabled) }} disabled={!agree} onClick={() => void startExam()}>Start assessment →</button>
         </div>
       </div>
@@ -1105,7 +1105,11 @@ const S: Record<string, React.CSSProperties> = {
     fontSize: 13, lineHeight: 1.6, color: MUTED, background: BLUE_SOFT,
     border: `1px solid ${LINE}`, borderRadius: 10, padding: "12px 14px", margin: "0 0 16px",
   },
-  agree: { display: "flex", alignItems: "center", gap: 9, fontSize: 14, margin: "0 0 18px", cursor: "pointer" },
+  agree: {
+    display: "flex", alignItems: "center", gap: 10, fontSize: 16, fontWeight: 800, color: NAVY,
+    background: BLUE_SOFT, border: `1.5px solid ${BLUE}`, borderRadius: 10, padding: "12px 16px",
+    margin: "0 0 18px", cursor: "pointer",
+  },
   primary: { padding: "13px 26px", background: BLUE, color: "#fff", border: "none", borderRadius: 11, fontSize: 15, fontWeight: 800, cursor: "pointer" },
   resumeStats: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, margin: "0 0 20px" },
   resumeStat: { background: "#f6f8fc", border: `1px solid ${LINE}`, borderRadius: 12, padding: "14px 16px", textAlign: "center" },
