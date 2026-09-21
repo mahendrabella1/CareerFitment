@@ -188,6 +188,15 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
         ? `${result.coupon.code} applied — your fee is fully waived.`
         : `${result.coupon.code} applied — you pay ${formatPaise(result.payablePaise)}.`,
     });
+    // A 100%-off code leaves nothing to pay for — go straight into the
+    // assessment instead of making the student read the message above and
+    // then separately click the main CTA. The short pause is only so
+    // "applied" is actually visible before the screen changes, not a real
+    // wait on anything.
+    if (result.free) {
+      setBusy(true);
+      setTimeout(() => { void redeemFree(result.coupon!.code); }, 900);
+    }
   }
 
   /** Drop back to base price after a hand-typed code is removed. */
@@ -214,8 +223,16 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
     } catch { /* verified server-side already — proceed regardless */ }
   }, []);
 
-  /** OGNOW and friends: no Razorpay order exists, so nothing to check out. */
-  async function redeemFree() {
+  /**
+   * OGNOW and friends: no Razorpay order exists, so nothing to check out.
+   * `codeOverride` lets a just-applied coupon redeem itself immediately
+   * (see applyTypedCoupon below) without waiting on the `priced` state
+   * update to land first — `setPriced` from that same call hasn't committed
+   * yet when this runs, so reading `priced.coupon` here would still see the
+   * PREVIOUS coupon (or none).
+   */
+  async function redeemFree(codeOverride?: string) {
+    const code = codeOverride ?? priced.coupon?.code;
     setErr("");
     setBusy(true);
     try {
@@ -224,7 +241,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          code: priced.coupon?.code,
+          code,
           idToken,
           profile: {
             name: profile?.name, email: profile?.email, phone: profile?.phone,
@@ -239,8 +256,8 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
         if (data?.reason === "payment_disabled") { onPaid(); return; }
         throw new Error(data?.message || "That coupon could not be applied.");
       }
-      trackEvent("Purchase", { value: 0, currency: "INR", content_name: `Career Assessment fee (coupon ${priced.coupon?.code})` });
-      await markPaid({ paymentId: `COUPON-${priced.coupon?.code}`, couponCode: priced.coupon?.code, amountPaid: 0 });
+      trackEvent("Purchase", { value: 0, currency: "INR", content_name: `Career Assessment fee (coupon ${code})` });
+      await markPaid({ paymentId: `COUPON-${code}`, couponCode: code, amountPaid: 0 });
       onPaid();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Something went wrong.");
