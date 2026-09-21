@@ -685,6 +685,51 @@
           ]
         },
         {
+          "text": "When explaining a difficult concept to someone, what are you most likely to do?",
+          "options": [
+            "Explain it using words and examples.",
+            "Draw a diagram or visual representation.",
+            "Demonstrate it practically.",
+            "Use an analogy or story."
+          ],
+          "mapping": [
+            "Linguistic",
+            "Spatial",
+            "Bodily-Kinesthetic",
+            "Logical-Mathematical"
+          ]
+        },
+        {
+          "text": "Which ability would you most like to develop further?",
+          "options": [
+            "Public speaking/writing.",
+            "Mathematical or analytical thinking.",
+            "Visual/design ability.",
+            "Practical/physical skills."
+          ],
+          "mapping": [
+            "Linguistic",
+            "Logical-Mathematical",
+            "Spatial",
+            "Bodily-Kinesthetic"
+          ]
+        },
+        {
+          "text": "Which activity would you choose for relaxation?",
+          "options": [
+            "Listening to or creating music.",
+            "Talking with friends.",
+            "Reflecting, journaling or thinking privately.",
+            "Spending time in nature."
+          ],
+          "mapping": [
+            "Musical",
+            "Interpersonal",
+            "Intrapersonal",
+            "Naturalistic"
+          ]
+        },
+        {
           "text": "Which combination sounds most like your natural strengths?",
           "options": [
             "Linguistic: Words, writing & communication",
