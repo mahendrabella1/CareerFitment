@@ -200,25 +200,6 @@
           ]
         },
         {
-          "text": "Which problem would you most enjoy solving?",
-          "options": [
-            "How can we make this physical device work better?",
-            "Why is this happening, and what evidence can explain it?",
-            "How can we communicate this idea creatively?",
-            "How can we help people cooperate better?",
-            "How can we persuade people to adopt this idea?",
-            "How can we organise the information so that errors are reduced?"
-          ],
-          "mapping": [
-            "R",
-            "I",
-            "A",
-            "S",
-            "E",
-            "C"
-          ]
-        },
-        {
           "text": "You get a free month to explore a career area. Which would you choose?",
           "options": [
             "Engineering/technology projects.",
@@ -327,6 +308,25 @@
             "Talk to the team.",
             "Take charge.",
             "Organize the schedule."
+          ],
+          "mapping": [
+            "R",
+            "I",
+            "A",
+            "S",
+            "E",
+            "C"
+          ]
+        },
+        {
+          "text": "Which problem would you most enjoy solving?",
+          "options": [
+            "How can we make this physical device work better?",
+            "Why is this happening, and what evidence can explain it?",
+            "How can we communicate this idea creatively?",
+            "How can we help people cooperate better?",
+            "How can we persuade people to adopt this idea?",
+            "How can we organise the information so that errors are reduced?"
           ],
           "mapping": [
             "R",
