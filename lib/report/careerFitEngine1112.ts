@@ -1,10 +1,10 @@
 /**
  * Class 11-12 Career Fitment / Suitability / Selector matching engine.
  *
- * Implements the mapping kit's own "Worked_Example" formula — a weighted
+ * Implements the mapping kit's own "Worked_Example" formula - a weighted
  * overlap between the student's normalised profile and each career's
  * profile, `Match% = ROUND(SUMPRODUCT(student, career) / SUM(career) * 100, 1)`
- * — adapted to what CAREERS_1112 actually stores (a 3-letter RIASEC code,
+ * - adapted to what CAREERS_1112 actually stores (a 3-letter RIASEC code,
  * top-2 MI domains and one key aptitude, not full 6/8/6-value vectors like
  * the kit's own worked example assumes). Position in the RIASEC code and
  * MI1/MI2 ordering carries decreasing weight (most-to-least dominant, per
@@ -13,7 +13,7 @@
  * pattern in lib/report/knowledge.ts and calculateDomainAffinities() in
  * scoring11_12.ts (42/26/22 interest/aptitude/MI, with the 10% normally
  * spent on values folded into RIASEC here since Career1112's `values` field
- * is a single coarse tag, not a scoreable vector) — so this ranks careers
+ * is a single coarse tag, not a scoreable vector) - so this ranks careers
  * the same conceptual way every other class's domain ranking does, not a
  * fourth, unrelated formula.
  */
@@ -25,42 +25,41 @@ import {
 
 /**
  * Fitment/Suitability's interest score (scoreCareerAxes1112 below) is driven
- * ENTIRELY by RIASEC/MI/Aptitude — Subject Fit (Q64/65: enjoyed/hardest
+ * ENTIRELY by RIASEC/MI/Aptitude - Subject Fit (Q64/65: enjoyed/hardest
  * subject) and Career Selector (Q78: the career the student actually typed)
  * never touch it. For a profile with one heavily dominant RIASEC letter,
  * that let unrelated-feeling clusters (Agricultural Economist, Constitutional
  * Lawyer) out-rank the student's own declared interest, purely because
  * "Investigative" roles exist in every field, not just the one the student
  * said they care about. RankingContext1112 lets a caller nudge the ranking
- * back toward what the student actually told the system — the two signals
- * this file otherwise never reads — without discarding RIASEC, which still
+ * back toward what the student actually told the system - the two signals
+ * this file otherwise never reads - without discarding RIASEC, which still
  * decides everything else.
  */
 export interface RankingContext1112 {
-  /** The exact desired-career free text from Career Selector (Q78) — the whole cluster it resolves to gets a ranking boost. */
+  /** The exact desired-career free text from Career Selector (Q78) - the whole cluster it resolves to gets a ranking boost. */
   desiredCareerText?: string;
-  /** Subject Fit Q64 — "Which subject do you enjoy the most?" */
+  /** Subject Fit Q64 - "Which subject do you enjoy the most?" */
   enjoyedSubject?: string;
-  /** Subject Fit Q65 — "Which subject do you find most difficult?" */
+  /** Subject Fit Q65 - "Which subject do you find most difficult?" */
   difficultSubject?: string;
-  /** Subject Fit Q63 — "Which subjects are you currently studying?" (multi-select). A weaker signal than enjoyedSubject — it's what the stream enrolled them in, not a stated preference — so every matched cluster gets a lighter boost than SUBJECT_ENJOYED_BOOST, not the same one twice. */
+  /** Subject Fit Q63 - "Which subjects are you currently studying?" (multi-select). A weaker signal than enjoyedSubject - it's what the stream enrolled them in, not a stated preference - so every matched cluster gets a lighter boost than SUBJECT_ENJOYED_BOOST, not the same one twice. */
   currentSubjects?: string[];
-  /** Career Fit Q71 — "Which areas are you currently considering?" (up to 3 field names, e.g. "AI / Data Science", "Law"). A direct field-preference signal, same spirit as desiredCareerText but broader/less certain, so weighted lighter. */
+  /** Career Fit Q71 - "Which areas are you currently considering?" (up to 3 field names, e.g. "AI / Data Science", "Law"). A direct field-preference signal, same spirit as desiredCareerText but broader/less certain, so weighted lighter. */
   consideringAreas?: string[];
-  /** Career Selector Q79 — "What are your other top career choices?" (up to 3 career names). Resolved the same way as desiredCareerText, weighted lighter since these are secondary, not the primary pick. */
+  /** Career Selector Q79 - "What are your other top career choices?" (up to 3 career names). Resolved the same way as desiredCareerText, weighted lighter since these are secondary, not the primary pick. */
   alternativeCareerTexts?: string[];
-  /** Career Selector Q80 — "Which career areas would you NOT want to pursue?" (up to 3 career names). The question's own copy says "useful for elimination" — these specific careers are removed from ranking entirely, not just discounted. */
+  /** Career Selector Q80 - "Which career areas would you NOT want to pursue?" (up to 3 career names). The question's own copy says "useful for elimination" - these specific careers are removed from ranking entirely, not just discounted. */
   excludedCareerTexts?: string[];
-  /** Career Fit Q77 — "What kind of future pathway interests you most?" Only
-   *  4 of its 8 answers name a specific field (research/academia, corporate,
-   *  entrepreneurship, public service) and get a boost via
-   *  PATHWAY_TYPE_CLUSTER_AFFINITY; the rest ("flexible degree", "don't know
-   *  yet", the two generic postgrad/professional-degree answers) intentionally
-   *  map to nothing, same as an unlisted subject/field elsewhere in this file. */
+  /** Career Fit Q77 - "What kind of future pathway interests you most?" 4 of
+   *  its 5 answers (Professional/Technical, Corporate & Business, Public
+   *  Service & Government, Research & Academia) name specific fields and get
+   *  a boost via PATHWAY_TYPE_CLUSTER_AFFINITY; "Exploratory" intentionally
+   *  maps to nothing, same as an unlisted subject/field elsewhere in this file. */
   pathwayType?: string;
 }
 
-// Grounded in what each subject actually leads into, not a guess — kept
+// Grounded in what each subject actually leads into, not a guess - kept
 // small (1-3 clusters, the subject's real core use) so this nudges ranking
 // rather than reshuffling it. "Other" and any unlisted answer intentionally
 // map to nothing, so a stray/free-text value never fires a wrong adjustment.
@@ -82,7 +81,7 @@ const SUBJECT_CLUSTER_AFFINITY: Record<string, StandardCluster[]> = {
 };
 
 // Career Fit Q71's own 24 field options, mapped to the clusters they
-// actually lead into — same grounding standard as SUBJECT_CLUSTER_AFFINITY.
+// actually lead into - same grounding standard as SUBJECT_CLUSTER_AFFINITY.
 // "Other" maps to nothing on purpose.
 const FIELD_CLUSTER_AFFINITY: Record<string, StandardCluster[]> = {
   "Engineering": ["STEM", "Manufacturing"],
@@ -111,14 +110,13 @@ const FIELD_CLUSTER_AFFINITY: Record<string, StandardCluster[]> = {
 };
 
 // Career Fit Q77's answers that actually name a field, mapped to the
-// clusters they lead into — the other 4 of its 8 options ("flexible degree",
-// "don't know yet", and the two generic postgrad/professional-degree
-// answers) are deliberately absent, same as an unmapped "Other" elsewhere.
+// clusters they lead into - "Exploratory" (a flexible degree or still
+// deciding) is deliberately absent, same as an unmapped "Other" elsewhere.
 const PATHWAY_TYPE_CLUSTER_AFFINITY: Record<string, StandardCluster[]> = {
-  "Degree → research/academia": ["STEM", "Education & Training"],
-  "Degree → corporate career": ["Business Management & Administration", "Finance"],
-  "Degree → entrepreneurship": ["Business Management & Administration", "Marketing"],
-  "Degree → public service": ["Government & Public Administration"],
+  "Professional / Technical: Direct specialization (e.g., Medicine, Law, Tech, CA).": ["Health Science", "Information Technology", "Law, Public Safety, Corrections & Security", "Finance"],
+  "Corporate & Business: Working in companies or starting a business.": ["Business Management & Administration", "Finance", "Marketing"],
+  "Public Service & Government: Civil services, defense, or government careers.": ["Government & Public Administration"],
+  "Research & Academia: Scientific research, higher studies, or teaching.": ["STEM", "Education & Training"],
 };
 
 const DESIRED_CLUSTER_BOOST = 12;
@@ -127,7 +125,7 @@ const ALTERNATIVE_CAREER_BOOST = 5;
 const PATHWAY_TYPE_BOOST = 6;
 const SUBJECT_ENJOYED_BOOST = 6;
 const SUBJECT_DIFFICULT_DISCOUNT = 6;
-// Enrollment, not preference — a student takes 5-6 subjects because the
+// Enrollment, not preference - a student takes 5-6 subjects because the
 // stream bundled them, not because each one signals interest the way
 // "the subject you enjoy most" does. Kept below SUBJECT_ENJOYED_BOOST so a
 // cluster the student is merely studying never outweighs one they said they
@@ -147,7 +145,7 @@ interface ResolvedAdjustments1112 {
 function resolveRankingAdjustments1112(ctx?: RankingContext1112): ResolvedAdjustments1112 {
   const desiredCluster = ctx?.desiredCareerText ? findCareer1112(ctx.desiredCareerText)?.cluster ?? null : null;
   // Deduped so a cluster hit by two of the up-to-3 selected areas/choices
-  // still only gets the boost once — this nudges ranking, it doesn't let a
+  // still only gets the boost once - this nudges ranking, it doesn't let a
   // student's multi-select stack the same lever repeatedly.
   const consideringClusters = Array.from(new Set((ctx?.consideringAreas ?? []).flatMap((a) => FIELD_CLUSTER_AFFINITY[a] ?? [])));
   const alternativeClusters = Array.from(new Set((ctx?.alternativeCareerTexts ?? []).map((t) => findCareer1112(t)?.cluster).filter((c): c is StandardCluster => Boolean(c))));
@@ -159,7 +157,7 @@ function resolveRankingAdjustments1112(ctx?: RankingContext1112): ResolvedAdjust
   return { desiredCluster, consideringClusters, alternativeClusters, enjoyedClusters, difficultClusters, currentSubjectClusters, pathwayClusters, excludedCareerIds };
 }
 
-/** The net interest/score delta ranking should apply for one career's cluster — same sign and size used for both, so a boosted career's verdict and its domain ranking never disagree about which way it moved. */
+/** The net interest/score delta ranking should apply for one career's cluster - same sign and size used for both, so a boosted career's verdict and its domain ranking never disagree about which way it moved. */
 function clusterAdjustment1112(cluster: StandardCluster, adj: ResolvedAdjustments1112): number {
   let delta = 0;
   if (adj.desiredCluster && cluster === adj.desiredCluster) delta += DESIRED_CLUSTER_BOOST;
@@ -177,7 +175,7 @@ const MI_WEIGHTS = [1, 0.6]; // mi1/mi2
 const APT_LEVEL_WEIGHT: Record<string, number> = { "Low-Medium": 0.55, Medium: 0.7, "Medium-High": 0.85, High: 1 };
 
 // lib/newAssessment/*Scoring.ts's own canonical 8 MI domain names (shared
-// across every class's strengths scoring) — mapped to the kit's MI codes.
+// across every class's strengths scoring) - mapped to the kit's MI codes.
 const MI_NAME_TO_CODE: Record<string, MICode> = {
   Linguistic: "MI_LINGUISTIC",
   "Logical-Mathematical": "MI_ANALYTICAL",
@@ -191,12 +189,12 @@ const MI_NAME_TO_CODE: Record<string, MICode> = {
 
 // Strengths (Intellectual & Analytical, Creative & Innovative, Strategic &
 // Futuristic, Execution & Achievement, Influence & Leadership, Relationship
-// & Adaptability — scoring11_12.ts's scoreStrengthAreas) has no per-career
-// tag the way RIASEC/MI/aptitude do — tagging all 332 CAREERS_1112 entries
+// & Adaptability - scoring11_12.ts's scoreStrengthAreas) has no per-career
+// tag the way RIASEC/MI/aptitude do - tagging all 332 CAREERS_1112 entries
 // individually would be a large, error-prone authoring effort for a 6-value
 // scale. Tagging at the CLUSTER level instead (every career in a cluster
 // inherits its cluster's own 2 dominant strengths, primary/secondary like
-// MI's mi1/mi2) is coarser but still a real, defensible signal — grounded in
+// MI's mi1/mi2) is coarser but still a real, defensible signal - grounded in
 // what that cluster's work actually demands, not a guess. Every one of the
 // 16 clusters gets exactly 2, so this can reuse the same primary/secondary
 // weighting MI already uses.
@@ -235,15 +233,15 @@ export function buildStudentVector1112(layer1: PsychometricProfile): StudentVect
     riasec[letter] = (r.percentile ?? r.score ?? 0) / 100;
   }
 
-  // multipleIntelligence, not strengthDomains — the 8 Gardner MI domains
+  // multipleIntelligence, not strengthDomains - the 8 Gardner MI domains
   // MI_NAME_TO_CODE expects (Linguistic, Logical-Mathematical, ...) live
   // there. strengthDomains now holds the real, separate Strengths measure
   // (Intellectual & Analytical, Creative & Innovative, ...) since that got
-  // split out from Multiple Intelligence — reading it here meant every
+  // split out from Multiple Intelligence - reading it here meant every
   // MI_NAME_TO_CODE lookup returned undefined, so `mi` came back completely
   // empty for every Class 11-12 student. scoreCareer1112 below silently
   // drops any signal with no matching vector entry rather than erroring, so
-  // this didn't crash — it just quietly removed MI's entire 22% weight from
+  // this didn't crash - it just quietly removed MI's entire 22% weight from
   // every career's match score, which is exactly the kind of thing that
   // shows up as "the recommendations got worse" with no visible error.
   const mi: Partial<Record<MICode, number>> = {};
@@ -262,7 +260,7 @@ export function buildStudentVector1112(layer1: PsychometricProfile): StudentVect
     APT_DATA: ap.dataInterpretation.score / 100,
   };
 
-  // strengthDomains, not multipleIntelligence — the real 6-parameter
+  // strengthDomains, not multipleIntelligence - the real 6-parameter
   // Strengths measure (Intellectual & Analytical, Creative & Innovative,
   // ...) lives there now.
   const strength: Partial<Record<string, number>> = {};
@@ -273,10 +271,10 @@ export function buildStudentVector1112(layer1: PsychometricProfile): StudentVect
   return { riasec, mi, apt, strength };
 }
 
-// RIASEC stays at its original 0.52 — the design already treats it as the
+// RIASEC stays at its original 0.52 - the design already treats it as the
 // single most reliable "which field" signal (see scoreCareerAxes1112's own
 // comment below) and nothing here argues for diluting that. MI (0.22) and
-// Aptitude (0.26) are trimmed slightly to make room for Strengths (0.11) —
+// Aptitude (0.26) are trimmed slightly to make room for Strengths (0.11) -
 // the same 22:26 ratio between them, just rescaled so the four weights
 // still sum to 1: 0.52 + 0.17 + 0.20 + 0.11 = 1.00.
 const RIASEC_SHARE = 0.52, MI_SHARE_TOTAL = 0.17, APT_SHARE_TOTAL = 0.20, STRENGTH_SHARE_TOTAL = 0.11;
@@ -316,10 +314,10 @@ export function scoreCareer1112(vector: StudentVector1112, career: Career1112): 
 
 /**
  * The same signal scoreCareer1112 blends into one number, split into the
- * two axes a student actually needs to see separately — "would I enjoy
+ * two axes a student actually needs to see separately - "would I enjoy
  * this" (interest, RIASEC-only) vs "am I naturally equipped for this"
  * (skill, MI + Aptitude, renormalised to its own 100%). A blended score
- * hides *why* a career ranked where it did — a role can score respectably
+ * hides *why* a career ranked where it did - a role can score respectably
  * overall purely on skill fit while a student's actual interest in it is
  * low, which reads as "the algorithm is wrong" when it's really just
  * invisible. Interest and skill are shown as two separate bars, matching
@@ -331,10 +329,10 @@ const ALL_MI: MICode[] = ["MI_LINGUISTIC", "MI_ANALYTICAL", "MI_VISUAL", "MI_INT
 const ALL_APT: AptCode[] = ["APT_NUMERICAL", "APT_LOGICAL", "APT_VERBAL", "APT_ABSTRACT", "APT_SPATIAL", "APT_DATA"];
 const ALL_STRENGTHS = ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"];
 // A student's RIASEC percentiles sum to ~100 across all SIX letters (a
-// forced-choice tally — scoring high on one necessarily leaves less for the
+// forced-choice tally - scoring high on one necessarily leaves less for the
 // rest). Only weighing a career's OWN 3 listed letters (the original
 // formula) throws away where the other ~half of the student's measured
-// interest actually landed — so two careers sharing a dominant letter but
+// interest actually landed - so two careers sharing a dominant letter but
 // differing in their other two often scored identically, which reads as
 // "the algorithm is broken" even though it's mathematically consistent.
 // Scoring across all 6 (a small penalty for the 3 letters a career does
@@ -342,14 +340,14 @@ const ALL_STRENGTHS = ["Intellectual & Analytical", "Creative & Innovative", "St
 // letters overlap heavily with where the student's OTHER interest sits
 // scores lower than one that doesn't, even when both share the same top
 // letter. (The one case this can't manufacture differentiation for is a
-// genuinely maximal, single-letter-only profile — there every unlisted
+// genuinely maximal, single-letter-only profile - there every unlisted
 // letter is equally near-zero, so there's honestly no signal left to find,
 // not a formula bug.)
 const OUTSIDE_PENALTY = 0.15;
 const INTEREST_WEIGHT_SUM = RIASEC_WEIGHTS.reduce((a, b) => a + b, 0) + OUTSIDE_PENALTY * (ALL_RIASEC.length - RIASEC_WEIGHTS.length);
 // Rescaled against the provable ceiling (100% on a career's #1 letter, 0
 // elsewhere) so 100 means "as good as this formula could ever score," not
-// an arbitrary number nothing can reach — otherwise "Top Choice" (70+)
+// an arbitrary number nothing can reach - otherwise "Top Choice" (70+)
 // would be mathematically unreachable and everything reads as "Worth Considering".
 const INTEREST_CEILING = (100 * (RIASEC_WEIGHTS[0] ?? 1)) / INTEREST_WEIGHT_SUM;
 
@@ -370,16 +368,16 @@ export function scoreCareerAxes1112(vector: StudentVector1112, career: Career111
   const interest = Math.round(Math.max(0, Math.min(100, (rawInterest / INTEREST_CEILING) * 100)) * 10) / 10;
 
   // 146 of 332 careers (44%) share the same #1 intelligence code
-  // (MI_ANALYTICAL) — using the RAW mi1/mi2/keyAptitude scores meant those
+  // (MI_ANALYTICAL) - using the RAW mi1/mi2/keyAptitude scores meant those
   // careers could only really be told apart by mi2 and keyAptitude, and for
   // a realistically varied (not extreme) student that left barely 11 points
   // of skill-score spread across all of Engineering or Computer Science/IT
   // (Business/Management, whose careers draw on more varied MI codes,
-  // spread over 22 points on the identical profile — the signal was always
+  // spread over 22 points on the identical profile - the signal was always
   // there, the narrow 3-slot read just wasn't using enough of it).
   //
   // Adding a flat "average of your other traits" bonus to every career was
-  // tried and made this WORSE, not better — that average is similar across
+  // tried and made this WORSE, not better - that average is similar across
   // sibling careers in the same domain, so it pulled every score toward a
   // shared baseline instead of spreading them out. What actually carries
   // real per-career signal is RELATIVE standing: is the student stronger or
@@ -388,7 +386,7 @@ export function scoreCareerAxes1112(vector: StudentVector1112, career: Career111
   // MI / 6 aptitude scores amplifies exactly the differences between which
   // specific slot each career names, while a student with a genuinely flat
   // profile (no relative strengths anywhere) correctly still shows little
-  // spread — that's an honest result, not a bug (same principle already
+  // spread - that's an honest result, not a bug (same principle already
   // applied to the interest axis's OUTSIDE_PENALTY).
   const miVals = ALL_MI.map((c) => vector.mi[c]).filter((v): v is number => v != null);
   const miMean = miVals.length ? miVals.reduce((a, b) => a + b, 0) / miVals.length : 0.5;
@@ -397,7 +395,7 @@ export function scoreCareerAxes1112(vector: StudentVector1112, career: Career111
   // Strengths gets the SAME relative-to-own-mean treatment as MI/Aptitude
   // above, for the same reason: a flat "how strong is this trait" number is
   // similar across sibling careers in the same cluster (they share the same
-  // 2 tagged strengths), so it wouldn't add any per-career spread — whether
+  // 2 tagged strengths), so it wouldn't add any per-career spread - whether
   // this trait is stronger or weaker than the student's OWN average across
   // all 6 strengths is what actually differentiates one profile from another.
   const strVals = ALL_STRENGTHS.map((c) => vector.strength[c]).filter((v): v is number => v != null);
@@ -430,7 +428,7 @@ export function scoreCareerAxes1112(vector: StudentVector1112, career: Career111
 }
 
 /**
- * The plain-English verdict the reference format shows per role — 3 tiers,
+ * The plain-English verdict the reference format shows per role - 3 tiers,
  * not 6: a career needs to be genuinely strong on both interest AND skill to
  * be a Top Choice, genuinely weak on both to be a Low Choice, and everything
  * else (strong on one axis but not the other, or middling on both) is a
@@ -450,7 +448,7 @@ export interface RankedCareer1112 {
   interest: number;
   skill: number;
   verdict: Verdict1112;
-  /** Same as `score`/`interest` but WITHOUT the 0-100 display clamp — a
+  /** Same as `score`/`interest` but WITHOUT the 0-100 display clamp - a
    *  cluster that agrees with several nudge signals at once (desired career +
    *  considering area + enjoyed subject + current subjects + pathway, up to
    *  +40 today) can legitimately earn a raw value past 100. Clamping before
@@ -465,10 +463,10 @@ export interface RankedCareer1112 {
 }
 
 /**
- * Career Fitment — every career ranked against the profile, ignoring stream
+ * Career Fitment - every career ranked against the profile, ignoring stream
  * entirely. `ctx` (optional, see RankingContext1112) nudges which CLUSTER a
  * career belongs to toward what the student actually told the system via
- * Subject Fit/Career Selector — RIASEC/MI/Aptitude still decide the base
+ * Subject Fit/Career Selector - RIASEC/MI/Aptitude still decide the base
  * score and everything within a cluster.
  */
 export function rankFitment1112(layer1: PsychometricProfile, ctx?: RankingContext1112): RankedCareer1112[] {
@@ -476,7 +474,7 @@ export function rankFitment1112(layer1: PsychometricProfile, ctx?: RankingContex
   const adj = resolveRankingAdjustments1112(ctx);
   return CAREERS_1112
     // Career Selector's "which career areas would you NOT want to pursue"
-    // says "useful for elimination" right in the question copy — these
+    // says "useful for elimination" right in the question copy - these
     // specific careers are removed everywhere (Fitment, Suitability,
     // Selector's own "close alternatives"), not just discounted, since a
     // discount can still let an explicitly-ruled-out career surface.
@@ -497,12 +495,12 @@ export interface SuitableCareer1112 extends RankedCareer1112 {
 }
 
 /**
- * Career Suitability — the same ranking, filtered to careers realistically
+ * Career Suitability - the same ranking, filtered to careers realistically
  * reachable from the student's actual stream (per ROADMAP_MATRIX's
- * Fit_Type, the kit's authoritative table — see careerfit1112.ts's file
+ * Fit_Type, the kit's authoritative table - see careerfit1112.ts's file
  * header on why this is preferred over the Careers sheet's own informal
  * Eligible_Streams text). `includeBridge` widens the pool to Bridge-type
- * careers too (not just Native Fit) — used for Class 12's wider breadth
+ * careers too (not just Native Fit) - used for Class 12's wider breadth
  * page per the kit's own Report_Sections_Logic: "widen the Eligible_Streams
  * filter to show the FULL range of options... no new engine needed."
  */
@@ -541,16 +539,16 @@ export interface DomainGroup1112<T extends RankedCareer1112 = RankedCareer1112> 
  * aptitude profile (e.g. Engineering, where most roles want High logical/
  * spatial reasoning) can out-score a domain the student is genuinely more
  * INTERESTED in purely because one of its roles happens to line up well on
- * skill — a strong-logical-reasoning, coding-focused student could see
+ * skill - a strong-logical-reasoning, coding-focused student could see
  * Engineering (via, say, Petroleum or Electrical Engineer's skill match)
  * edge out Computer Science/IT this way even though every one of their
  * RIASEC answers pointed at Investigative, coding-flavoured work. RIASEC
- * interest is what actually signals "which field," not aptitude — aptitude
+ * interest is what actually signals "which field," not aptitude - aptitude
  * says how well-equipped you are for a role, which is what ROLE ordering
  * within a domain (`careers`, still sorted by the blended score) is for.
  */
 /**
- * `excludeCareerIds` — used to keep Career Suitability from repeating the
+ * `excludeCareerIds` - used to keep Career Suitability from repeating the
  * exact same role list Career Fitment already showed for a shared domain.
  * Only trims which roles are DISPLAYED per domain; which domains appear and
  * in what order is still decided from the domain's full, unfiltered career
@@ -566,9 +564,9 @@ export function groupByDomain1112<T extends RankedCareer1112>(ranked: T[], domai
 /**
  * Same grouping/ranking as groupByDomain1112, keyed on each career's
  * standard-cluster tag (StandardCluster, careerfit1112.ts) instead of its
- * 27-domain one — the coarser, industry-standard bucketing the redesigned
+ * 27-domain one - the coarser, industry-standard bucketing the redesigned
  * Fitment/Suitability/Selector pages present against. The returned
- * `domain` field holds a cluster name here, not a DOMAINS_1112 name — kept
+ * `domain` field holds a cluster name here, not a DOMAINS_1112 name - kept
  * on the same DomainGroup1112 shape so existing render code (DomainBlock,
  * RolesTable, etc.) works unchanged regardless of which grouping produced it.
  */
@@ -586,16 +584,16 @@ function groupByKey1112<T extends RankedCareer1112>(ranked: T[], keyOf: (c: Care
   }
   const groups = Array.from(byDomain.entries()).map(([domain, careers]) => {
     const byInterest = careers.slice().sort((a, b) => b.rawInterest - a.rawInterest);
-    // Distinct RIASEC codes only, not distinct careers — 215 of 332 careers
+    // Distinct RIASEC codes only, not distinct careers - 215 of 332 careers
     // share their exact 3-letter code with a same-domain sibling (mostly
     // real sub-specialties: Cardiologist/Neurologist/Dermatologist are all
-    // legitimately "ISA", Physicist/Astrophysicist/Astronomer all "IRA" —
+    // legitimately "ISA", Physicist/Astrophysicist/Astronomer all "IRA" -
     // not a data error to fix by inventing artificial differences). But
     // averaging the RAW top-3 careers let a domain "stack" the identical
     // ceiling score 2-3 times and out-rank a domain with genuinely more
     // VARIED strong matches: an MPC, Realistic-leaning profile saw
     // Agriculture (Agronomist/Horticulturist/Forester, all coded "RIA")
-    // edge out Engineering (RIA/RAI/RIE — three different codes, each
+    // edge out Engineering (RIA/RAI/RIE - three different codes, each
     // independently strong) by ~2 points, purely because Agriculture had 3
     // identical scores to average instead of Engineering's 3 distinct ones.
     // Deduping by code first means a domain's ranking reflects the breadth
@@ -610,7 +608,7 @@ function groupByKey1112<T extends RankedCareer1112>(ranked: T[], keyOf: (c: Care
       if (topInterest.length === 3) break;
     }
     const domainInterest = topInterest.reduce((sum, c) => sum + c.rawInterest, 0) / (topInterest.length || 1);
-    // Domain RANKING used to be interest-only — MI/aptitude only affected
+    // Domain RANKING used to be interest-only - MI/aptitude only affected
     // ordering of roles WITHIN a domain, never which domains won the top-5.
     // That let a domain that's a pure RIASEC-code neighbour of a genuinely
     // strong one (e.g. Agriculture Sciences' RIA/IRA codes sit right next to
@@ -620,7 +618,7 @@ function groupByKey1112<T extends RankedCareer1112>(ranked: T[], keyOf: (c: Care
     // and not the other. Blending in the same top-3 careers' skill score
     // (aptitude + MI, already computed per-career by scoreCareerAxes1112)
     // lets "am I actually equipped for this" help decide which FIELD ranks
-    // where too, not just which specific role within a field looks best —
+    // where too, not just which specific role within a field looks best -
     // interest still dominates the blend, since it's still the stronger
     // long-term-fit signal (see verdictFor1112's own comment on this).
     const domainSkill = topInterest.reduce((sum, c) => sum + c.skill, 0) / (topInterest.length || 1);
@@ -628,12 +626,12 @@ function groupByKey1112<T extends RankedCareer1112>(ranked: T[], keyOf: (c: Care
     const filtered = excludeCareerIds ? careers.filter((c) => !excludeCareerIds.has(c.career.id)) : careers;
     const shown = filtered.length > 0 ? filtered : careers;
     // topScore is the number actually printed next to the domain (the bar
-    // chart %, the summary-table %) — domainRank itself is built from
+    // chart %, the summary-table %) - domainRank itself is built from
     // rawInterest/skill (see above) and can run past 100 when several nudge
     // signals agree on the same cluster, so it's clamped here, at the very
     // last step before display, rather than earlier where it would also
     // flatten the sort order. Sort order (below) still runs on the unclamped
-    // domainRank, so this clamp never reorders anything — it only stops a
+    // domainRank, so this clamp never reorders anything - it only stops a
     // ">100% match" from reaching the page.
     const displayScore = Math.max(0, Math.min(100, Math.round(domainRank * 10) / 10));
     return { domain, topScore: displayScore, domainRank, careers: shown.slice(0, rolesPerGroup) };
@@ -648,7 +646,7 @@ const norm = (s: string) => s.toLowerCase().trim().replace(/[^a-z0-9\s]/g, "");
 
 /**
  * Matches a free-text desired-career string (from the pre-exam "desired
- * career" dropdown — see NewExam.tsx's preinfo phase, sourced from
+ * career" dropdown - see NewExam.tsx's preinfo phase, sourced from
  * DOMAINS_1112/CAREERS_1112 directly so this should almost always be an
  * exact hit) to a CAREERS_1112 entry. Exact match first, then substring
  * overlap, so a near-miss (different casing, a trailing "(MBBS)") still
@@ -659,7 +657,7 @@ export function findCareer1112(desiredCareerText: string): Career1112 | null {
   const needle = norm(desiredCareerText);
   const exact = CAREERS_1112.find((c) => norm(c.name) === needle);
   if (exact) return exact;
-  // Near-miss fallback (different casing, a trailing "(MBBS)") — picks the
+  // Near-miss fallback (different casing, a trailing "(MBBS)") - picks the
   // LONGEST overlapping name, not just the first array hit, so a short/
   // generic needle (e.g. "Engineer") can't accidentally resolve to whichever
   // unrelated career happens to sit earliest in CAREERS_1112.
@@ -683,7 +681,7 @@ export interface Selector1112Result {
   roadmap: RoadmapEntry | null;
 }
 
-/** Career Selector — the desired career checked against the student's stream, with rank-in-fitment context. */
+/** Career Selector - the desired career checked against the student's stream, with rank-in-fitment context. */
 export function selectCareer1112(desiredCareerText: string, layer1: PsychometricProfile, appStreamKey: string): Selector1112Result {
   const career = findCareer1112(desiredCareerText);
   if (!career) return { career: null, fitmentRank: null, fitmentScore: null, interest: null, skill: null, verdict: null, roadmap: null };
@@ -703,13 +701,13 @@ export function selectCareer1112(desiredCareerText: string, layer1: Psychometric
 
 /**
  * The single source of truth for "what domain does this profile point
- * toward" for classes 11/12 — used by scoring11_12.ts's
+ * toward" for classes 11/12 - used by scoring11_12.ts's
  * calculateDomainAffinities() so that the shared dimension pages (Career
  * Interest, etc.), the Resources page, and "Other domains worth exploring"
  * all agree with Career Fitment/Suitability/Selector instead of computing a
  * second, disagreeing answer from the older 8-domain catalogue in
  * knowledge.ts. Same shape scoring11_12.ts's Class11ScoreOutput expects
- * (domain/domainName/affinity/reasoning) — domain and domainName are now
+ * (domain/domainName/affinity/reasoning) - domain and domainName are now
  * simply the same DOMAINS_1112 name, since there's no separate letter-code
  * catalogue to key against any more.
  */
@@ -730,7 +728,7 @@ export function domainAffinitiesFromProfile1112(layer1: PsychometricProfile, ctx
   }));
 }
 
-/** Every DOMAINS_1112 domain with at least one career that's a Native Fit for this stream — the same "reachable without a bridge" test Career Suitability itself uses, reused here so stream-suitability text agrees with it instead of consulting a separate, older compatibility table. */
+/** Every DOMAINS_1112 domain with at least one career that's a Native Fit for this stream - the same "reachable without a bridge" test Career Suitability itself uses, reused here so stream-suitability text agrees with it instead of consulting a separate, older compatibility table. */
 export function domainsCompatibleWithStream1112(appStreamKey: string): Set<string> {
   const compatible = new Set<string>();
   for (const career of CAREERS_1112) {
@@ -739,7 +737,7 @@ export function domainsCompatibleWithStream1112(appStreamKey: string): Set<strin
   return compatible;
 }
 
-/** Real roles compatible with a stream, grouped by domain — the Career Suitability reference listing, keyed the same way (domain name, not a letter code). */
+/** Real roles compatible with a stream, grouped by domain - the Career Suitability reference listing, keyed the same way (domain name, not a letter code). */
 export function careerSuitabilityForStream1112(appStreamKey: string): { domain: string; domainName: string; roles: string[] }[] {
   const byDomain = new Map<string, string[]>();
   for (const career of CAREERS_1112) {
@@ -751,7 +749,7 @@ export function careerSuitabilityForStream1112(appStreamKey: string): { domain: 
   return Array.from(byDomain.entries()).map(([domain, roles]) => ({ domain, domainName: domain, roles }));
 }
 
-// Plain-English labels for the MI/aptitude codes CAREERS_1112 stores —
+// Plain-English labels for the MI/aptitude codes CAREERS_1112 stores -
 // reused to show a career's real "skills this rewards" tags (Career
 // Selector's deep-dive page) without inventing per-skill percentages
 // CAREERS_1112 has no honest data for.
@@ -770,7 +768,7 @@ export function skillTagsFor1112(career: Career1112): string[] {
 
 /**
  * Turns a domain's own real salaryIndia text ("₹4–10 LPA entry · ₹15–38 LPA
- * mid · ₹55 LPA+ senior / lead") into 3 chartable points — reusing the
+ * mid · ₹55 LPA+ senior / lead") into 3 chartable points - reusing the
  * exact figures already shown as text elsewhere on these pages, not new
  * numbers, so the Career Selector deep-dive's salary chart stays honest.
  */

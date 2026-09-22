@@ -259,12 +259,12 @@
         {
           "text": "Your group is launching something big. Which role do you claim immediately?",
           "options": [
-            "The Builder — assemble the tech and make it run.",
-            "The Investigator — research the facts and run the numbers.",
-            "The Creative — design the vibe, visuals, and content.",
-            "The Anchor — check in on teammates and keep morale high.",
-            "The Shot-Caller — pitch the vision and make executive calls.",
-            "The Architect — set deadlines, track tasks, and keep files clean."
+            "The Builder - assemble the tech and make it run.",
+            "The Investigator - research the facts and run the numbers.",
+            "The Creative - design the vibe, visuals, and content.",
+            "The Anchor - check in on teammates and keep morale high.",
+            "The Shot-Caller - pitch the vision and make executive calls.",
+            "The Architect - set deadlines, track tasks, and keep files clean."
           ],
           "mapping": [
             "R",
@@ -387,7 +387,7 @@
           "subdomain": "Numerical Reasoning"
         },
         {
-          "text": "Five project leads—A, B, C, D, and E—are seated in a row facing North. C is sitting to the immediate right of E. A is not sitting at either extreme end. B sits second to the left of D. Exactly two people sit between A and E. Which of the following represents the exact left-to-right order of the leads?",
+          "text": "Five project leads-A, B, C, D, and E-are seated in a row facing North. C is sitting to the immediate right of E. A is not sitting at either extreme end. B sits second to the left of D. Exactly two people sit between A and E. Which of the following represents the exact left-to-right order of the leads?",
           "options": [
             "B, A, D, E, C",
             "B, E, C, A, D",
@@ -791,10 +791,10 @@
         {
           "text": "What clears your head faster than anything else?",
           "options": [
-            "Audio — losing yourself in rhythms, beats, or lyrics.",
-            "Connection — talking it out with someone you trust.",
-            "Solitude — private reflection and journaling.",
-            "Outdoors — spending time in open spaces and nature."
+            "Audio - losing yourself in rhythms, beats, or lyrics.",
+            "Connection - talking it out with someone you trust.",
+            "Solitude - private reflection and journaling.",
+            "Outdoors - spending time in open spaces and nature."
           ],
           "mapping": [
             "Musical",
@@ -954,7 +954,7 @@
         {
           "text": "Your marks suddenly fall in a subject you normally do well in. What's your first instinct?",
           "options": [
-            "I try to name exactly what I'm feeling about it — disappointment, worry, frustration.",
+            "I try to name exactly what I'm feeling about it - disappointment, worry, frustration.",
             "I give myself a set amount of time to feel bad about it, then move to fixing it.",
             "I think about how my parents or teacher might feel about it too.",
             "I talk to a teacher, friend or parent about what happened."
@@ -1234,7 +1234,7 @@
         {
           "text": "Do you already have a specific degree/course in mind?",
           "options": [
-            "Yes — I am quite certain.",
+            "Yes - I am quite certain.",
             "I have 2–3 possibilities.",
             "I know the field but not the degree.",
             "No."
@@ -1279,14 +1279,11 @@
         {
           "text": "What kind of future pathway interests you most?",
           "options": [
-            "Professional degree → specialized career (e.g., Medicine, Law, Tech, CA)",
-            "Degree → postgraduate specialization",
-            "Degree → research/academia",
-            "Degree → corporate career",
-            "Degree → entrepreneurship",
-            "Degree → public service",
-            "Flexible degree with multiple career possibilities",
-            "I don't know yet"
+            "Professional / Technical: Direct specialization (e.g., Medicine, Law, Tech, CA).",
+            "Corporate & Business: Working in companies or starting a business.",
+            "Public Service & Government: Civil services, defense, or government careers.",
+            "Research & Academia: Scientific research, higher studies, or teaching.",
+            "Exploratory: A flexible general degree or still deciding."
           ],
           "type": "choice_single"
         }
