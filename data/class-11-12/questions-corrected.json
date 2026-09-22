@@ -789,12 +789,12 @@
           ]
         },
         {
-          "text": "Which activity would you choose for relaxation?",
+          "text": "What clears your head faster than anything else?",
           "options": [
-            "Listening to or creating music.",
-            "Talking with friends.",
-            "Reflecting, journaling or thinking privately.",
-            "Spending time in nature."
+            "Audio — losing yourself in rhythms, beats, or lyrics.",
+            "Connection — talking it out with someone you trust.",
+            "Solitude — private reflection and journaling.",
+            "Outdoors — spending time in open spaces and nature."
           ],
           "mapping": [
             "Musical",
