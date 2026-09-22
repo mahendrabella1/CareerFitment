@@ -105,14 +105,14 @@
     "11-12": {
       "Set 1": [
         {
-          "text": "If you had two free weeks and full funding, what would you spend your time doing?",
+          "text": "If you had two free weeks to create something of your own, what would you choose?",
           "options": [
-            "Building: Coding, assembling, or fixing something.",
-            "Investigating: Researching, analyzing, or solving a problem.",
-            "Creating: Writing, filming, designing, or making art.",
-            "Helping: Teaching, mentoring, or helping others.",
-            "Leading: Starting a business, campaign, or idea.",
-            "Organizing: Managing data, systems, or records."
+            "Build a gadget, robot, or useful tool.",
+            "Research an interesting question to find the answer.",
+            "Create a video, design, game, or story.",
+            "Make something that helps other people.",
+            "Launch an idea and get people interested in it.",
+            "Build a system that makes things easier and organised."
           ],
           "mapping": [
             "R",
