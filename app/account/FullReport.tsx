@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * FullReport — the in-depth, magazine-grade career report (2026, v3).
+ * FullReport - the in-depth, magazine-grade career report (2026, v3).
  *
  * ~30 sections, one coherent design system (white / near-black / grey with a
  * single light-red accent), blending the best of the reference reports:
@@ -14,7 +14,7 @@
  *   · benchmark-vs-peers panel with percentiles
  *
  * Data comes from the saved assessment; narrative from lib/report/knowledge.
- * Scroll-reveal on screen. This is a VIEW-ONLY surface — <ViewOnlyReport/> (from
+ * Scroll-reveal on screen. This is a VIEW-ONLY surface - <ViewOnlyReport/> (from
  * the parent) blanks the page on print, and the PDF students actually keep is
  * the one emailed to them, rendered server-side by lib/report/reportPdf.tsx.
  * The per-sheet pagination CSS below is kept so the layout can be printed again
@@ -41,18 +41,18 @@ import {
 const LOGO = "/onegrasp-logo-tight.png";
 
 /**
- * Colour per best-fit rank — green, amber, blue. Rank, not domain: the point is
+ * Colour per best-fit rank - green, amber, blue. Rank, not domain: the point is
  * to separate 1st / 2nd / 3rd at a glance, and it stays stable no matter which
  * domains come out on top. Ordered warm-to-cool so the strongest reads first.
  * All three sit near the same perceived weight, so none of them looks like a
  * warning next to the others.
  */
 export const RANK_COLOURS = ["#12996b", "#e08a1e", "#2f6bff", "#8b5cf6", "#64748b"] as const;
-// Rank order within a domain's role list, not an absolute score threshold —
+// Rank order within a domain's role list, not an absolute score threshold -
 // clustered percentages (e.g. 40/38/36/34/32, all technically "Low") still
 // read as a clear green-to-red ladder instead of five identical grey pills.
 const ROLE_GRADIENT = ["#12996b", "#7cb342", "#e08a1e", "#e2673b", "#E23B41"] as const;
-// Same fallback pattern as careerFit1112Sheets.tsx's own SITE_URL_1112 — this
+// Same fallback pattern as careerFit1112Sheets.tsx's own SITE_URL_1112 - this
 // report can be viewed as a downloaded/emailed PDF, not just in-app, so a
 // link into the dashboard needs an absolute URL, not a relative path that
 // would 404 outside the app shell.
@@ -77,21 +77,21 @@ const CAT: Record<string, Meta> = {
   motivators: { label: "Motivators", dim: "06", icon: "motivators", img: P + "Motivators.png" },
   strengths: { label: "Strengths", dim: "07", icon: "strengths", img: P + "strenghts.png" },
   aptitude: { label: "Aptitude", dim: "08", icon: "aptitude", img: P + "aptitude.png" },
-  // Not one of the 9-10 paper's eight — only rendered when a journey's own
+  // Not one of the 9-10 paper's eight - only rendered when a journey's own
   // radar actually includes a creativity score (see `radar` below), so
   // class 9-10 is completely unaffected.
   creativity: { label: "Creativity & Innovation", dim: "09", icon: "bulb", img: "https://onegrasp.com/wp-content/uploads/2026/09/ChatGPT-Image-Sep-11-2026-08_26_14-PM.png" },
 };
 const CANON = ["personality", "career_interest", "multiple_intelligence", "emotional_intelligence", "learning_styles", "motivators", "strengths", "aptitude"];
 
-// "Typical student at your stage" markers — presentation-only benchmark.
+// "Typical student at your stage" markers - presentation-only benchmark.
 const BENCH: Record<string, number> = {
   personality: 55, career_interest: 52, multiple_intelligence: 54, emotional_intelligence: 56,
   learning_styles: 58, motivators: 55, strengths: 50, aptitude: 52, creativity: 52,
 };
 
-/** The short "what actually came out on top" name for a dimension — e.g. the
- *  learning style a student leans on, or their top motivator — so the
+/** The short "what actually came out on top" name for a dimension - e.g. the
+ *  learning style a student leans on, or their top motivator - so the
  *  scorecard can read "Sensing · 72%" instead of a bare percentage.
  *  Personality's own MBTI code is handled separately by the caller. */
 function topResultFor(key: string, a: AssessmentSummary, riasec: { letter: string; title: string; score: number }[]): string | undefined {
@@ -109,7 +109,7 @@ function topResultFor(key: string, a: AssessmentSummary, riasec: { letter: strin
 
 const clamp = (n: number) => Math.max(3, Math.min(100, Math.round(n)));
 // Labels deliberately avoid a blunt "Weak"/"Low" at the bottom of the
-// scale — a student reading their own report about a below-average score
+// scale - a student reading their own report about a below-average score
 // shouldn't be told they're "weak" at something outright. "Developing" and
 // "Emerging" say the same honest thing (this score is on the lower end)
 // while framing it as a stage, not a verdict.
@@ -137,7 +137,7 @@ export interface ReportSheet {
   node: ReactNode;
 }
 
-export default function FullReport({ a, name, institution, studentClass, extraSheets = [], hideCareerFitSections = false }: { a: AssessmentSummary; name?: string; institution?: string; studentClass?: string; extraSheets?: ReportSheet[]; /** Classes 11/12 replace these two sections with their own Fitment/Suitability/Selector pages (see careerFit1112Sheets.tsx) — passed in via extraSheets instead, so the shared 15-domain ranking isn't shown alongside a disagreeing, more detailed one. */ hideCareerFitSections?: boolean }) {
+export default function FullReport({ a, name, institution, studentClass, extraSheets = [], hideCareerFitSections = false }: { a: AssessmentSummary; name?: string; institution?: string; studentClass?: string; extraSheets?: ReportSheet[]; /** Classes 11/12 replace these two sections with their own Fitment/Suitability/Selector pages (see careerFit1112Sheets.tsx) - passed in via extraSheets instead, so the shared 15-domain ranking isn't shown alongside a disagreeing, more detailed one. */ hideCareerFitSections?: boolean }) {
   const root = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -157,7 +157,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
 
   const radar: RadarDatum[] = useMemo(() => {
     const src = ((a.radar ?? []).length ? a.radar! : []).map((r) => ({ ...r, bench: BENCH[r.key] || 50 }));
-    // Creativity isn't one of the fixed eight — only add it as a ninth
+    // Creativity isn't one of the fixed eight - only add it as a ninth
     // dimension (radar chart included) when this journey's own data actually
     // measured it, so class 9-10's radar and dimension pages stay exactly
     // eight, unchanged.
@@ -174,7 +174,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
   const traits = traitProfile(a);
   const themes = (a.themes ?? []).slice();
   // Holland themes are their own vector (R/I/A/S/E/C). `themes` holds CAREER
-  // CLUSTER letters (A–H) — feeding those to the hexagon mislabels clusters as
+  // CLUSTER letters (A–H) - feeding those to the hexagon mislabels clusters as
   // Holland types, so use the real RIASEC scores whenever the engine has them.
   const riasec = (a.riasecScores ?? []).length
     ? a.riasecScores!.map((r) => ({ letter: r.letter, title: r.name, score: r.score }))
@@ -208,7 +208,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
           <span className="cover-badge">{dimWord} dimensions · scientifically structured</span>
           <h1 className="cover-title">Career Fitment Report</h1>
           <p className="cover-lede">
-            A complete, evidence-based map of your strengths, interests and natural wiring —
+            A complete, evidence-based map of your strengths, interests and natural wiring -
             built from your own responses, scored across eight established frameworks and
             benchmarked against students at your stage.
           </p>
@@ -231,12 +231,12 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
       <section className="sheet rv">
         <div className="pad">
           <RH n={N()} kick="What's inside" />
-          {/* One centred headline instead of an eyebrow+title+sub stack —
+          {/* One centred headline instead of an eyebrow+title+sub stack -
               this page's only job is orienting the reader before they scroll,
               not explaining the methodology again (that's covered on the
               scorecard page right after this one). */}
           <h2 className="tocHeadline">What's inside this report</h2>
-          {/* A horizontal path, not a box grid — 5 stops, each just an icon
+          {/* A horizontal path, not a box grid - 5 stops, each just an icon
               + label, joined by connector lines like a process/journey strip
               rather than 5-6 bordered cards. Condensed from the old 6-item
               list: "Career DNA & profile" (radar/archetype) is folded into
@@ -272,15 +272,15 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
         <div className="pad">
           <RH n={N()} kick="At a glance" />
           <SecHead eyebrow="In the order explained ahead" title={`Your ${dimWord}-dimension scorecard`}
-            sub="What actually came out on top for you in each dimension — the real, specific result, not a number." />
-          {/* A card grid — every card leads with the qualitative result itself
+            sub="What actually came out on top for you in each dimension - the real, specific result, not a number." />
+          {/* A card grid - every card leads with the qualitative result itself
               (the code, the learning style, the top motivator...), the same
               way Personality leads with its 4-letter type rather than a bare
               score. The full numeric score for each dimension lives on that
               dimension's own page, right after this one. Cards follow the
               SAME 01→09 order the dimension pages themselves use (radar is
               already built in that order) instead of being re-sorted by
-              score — a scorecard whose order doesn't match the pages that
+              score - a scorecard whose order doesn't match the pages that
               follow it reads as two different sequences of the same 9
               things. The strongest dimension still gets a small marker,
               computed separately so it isn't tied to card position anymore.
@@ -316,11 +316,11 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
         const m = CAT[d.key];
         const col = dimColor(d.key);
         // Show the real MBTI compass whenever the assessment actually
-        // computed per-axis scores — not just for class 9-10. Class 6/7/8
+        // computed per-axis scores - not just for class 9-10. Class 6/7/8
         // and 11-12 now compute the same axisScores, and gating this to one
         // journeyCode would silently downgrade them to the generic,
         // unmeasured Big-Five fallback text despite having the real type.
-        // (hasMBTIData itself is hoisted to the top of the component now —
+        // (hasMBTIData itself is hoisted to the top of the component now -
         // the scorecard page, above, needs it too.)
         const isMBTIPersonality = d.key === "personality" && hasMBTIData;
 
@@ -342,7 +342,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
                     {m.label}
                   </h2>
                 </div>
-                <RH n={sheetNum} kick={`Dimension ${m.dim} — ${m.label}`} />
+                <RH n={sheetNum} kick={`Dimension ${m.dim} - ${m.label}`} />
                 <div className="dimhero">
                   <div className="dimhero-img" style={{ background: col + "12" }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -377,7 +377,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
         const bench = BENCH[d.key];
         const delta = Math.round(d.score - bench);
         // career_interest already got its own breakdown above (the RIASEC
-        // hexagon + bars) — repeating it as a second list here is just
+        // hexagon + bars) - repeating it as a second list here is just
         // duplication, so the generic list is skipped and the prose next to
         // it takes the full row instead of leaving that half empty.
         const showBreakdown = subs.length > 0 && d.key !== "career_interest";
@@ -393,7 +393,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
                   {m.label}
                 </h2>
               </div>
-              <RH n={N()} kick={`Dimension ${m.dim} — ${m.label}`} accent />
+              <RH n={N()} kick={`Dimension ${m.dim} - ${m.label}`} accent />
               <div className="dimhero">
                 {m.img ? (
                   <div className="dimhero-img" style={{ background: col + "12" }}>
@@ -429,7 +429,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
 
               {d.key === "career_interest" && riasec.length > 0 ? (
                 // One RIASEC list (ranked, strongest first), paired with the
-                // prose — not a second bars list repeating the same six
+                // prose - not a second bars list repeating the same six
                 // letters in a different order right next to it.
                 <div className="riasec-row">
                   <RiasecHex themes={riasec} />
@@ -486,16 +486,16 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
         );
       })}
 
-      {/* ===== CAREER DNA (radar + top domains) — a bridge into best-fit domains =====
+      {/* ===== CAREER DNA (radar + top domains) - a bridge into best-fit domains =====
            Classes 11/12 skip this and the Best-fit Domains section below: their own
            Fitment/Suitability/Selector pages (via extraSheets, built from the more
-           detailed careerfit1112.ts model) replace both — see hideCareerFitSections. */}
+           detailed careerfit1112.ts model) replace both - see hideCareerFitSections. */}
       {!hideCareerFitSections && (
       <section className="sheet rv">
         <div className="pad">
           <RH n={N()} kick="Your Career DNA" />
           <SecHead eyebrow={`How your ${dimWord} dimensions come together`} title="Your career, in one page"
-            sub={`No single test defines you — the shape of all ${dimWord} together is what makes this read accurate.`} />
+            sub={`No single test defines you - the shape of all ${dimWord} together is what makes this read accurate.`} />
           <div className="dna-hero">
             <div className="radar-wrap" style={{ display: 'flex', justifyContent: 'center' }}>
               <RadarChart data={radar} color={C.red} />
@@ -517,7 +517,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
             </div>
           </div>
           <p className="disclaimer">
-            These top domains are based on your own answers — your aptitude, skills and career
+            These top domains are based on your own answers - your aptitude, skills and career
             interests from the questions you answered. You have complete freedom to explore other
             domains too; these are just recommendations, not a fixed path.
           </p>
@@ -532,7 +532,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
         <div className="pad">
           <RH n={N()} kick="Best-fit domains" />
           <div className="domhead">
-            <span className="domhead-eye">Ranked by fit, from your full profile — not just job titles</span>
+            <span className="domhead-eye">Ranked by fit, from your full profile - not just job titles</span>
             <h2 className="domhead-title">Your top 5 domains</h2>
             <p className="domhead-sub">Each with a real path into it from where you are now, in India and abroad.</p>
           </div>
@@ -543,7 +543,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
       )}
 
       {/* ===== EXTRA SHEETS (class 11-12 and any other journey with unique
-           content beyond the standard eight/nine dimensions) — placed right
+           content beyond the standard eight/nine dimensions) - placed right
            after the domain cards and before Future Outlook/Roadmap, so
            journey-specific content reads as a continuation of "your fit",
            not an afterthought tacked on after the shared closing pages. ===== */}
@@ -579,9 +579,9 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
         </div>
       </section>
 
-      {/* ===== 20-YEAR ROADMAP — built from the shared 15-domain ranking,
+      {/* ===== 20-YEAR ROADMAP - built from the shared 15-domain ranking,
            which classes 11/12 hide (see hideCareerFitSections). They get
-           their own career-specific version instead — see
+           their own career-specific version instead - see
            "career-roadmap-1112" in class11ExtraSheets.tsx, built from the
            student's actual named desired career, not just their #1 domain. ===== */}
       {!hideCareerFitSections && (
@@ -591,7 +591,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
           <div className="domhead">
             <span className="domhead-eye">From today to a career you’re built for</span>
             <h2 className="domhead-title">Your 20-year roadmap</h2>
-            <p className="domhead-sub">Built around your #1 best-fit domain — the same core moves (exams, skills, internships) carry over even if you lean toward another domain from your top 5.</p>
+            <p className="domhead-sub">Built around your #1 best-fit domain - the same core moves (exams, skills, internships) carry over even if you lean toward another domain from your top 5.</p>
           </div>
           <div className="road-card" style={{ ["--rc" as string]: RANK_COLOURS[0], ["--rc-tint" as string]: RANK_COLOURS[0] + "16" } as React.CSSProperties}>
             <div className="road-intro">
@@ -613,7 +613,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
                 </div>
               ))}
             </div>
-            <div className="road-note">This is one realistic path, not a fixed rulebook — revisit it each time your interests sharpen or a new opportunity opens up.</div>
+            <div className="road-note">This is one realistic path, not a fixed rulebook - revisit it each time your interests sharpen or a new opportunity opens up.</div>
           </div>
           <RF name={name} />
         </div>
@@ -628,7 +628,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
             sub={`Hand-picked starting points relevant to ${topDomain.name} and your stage.`} />
           <div className="res">
             <div className="rgrp">
-              <div className="rgh"><Icon name="cap" size={16} /> Learn these skills — free & paid</div>
+              <div className="rgh"><Icon name="cap" size={16} /> Learn these skills - free & paid</div>
               <div className="rchips">{LEARNING.map((l) => <a className="rchip" key={l.url} href={l.url} target="_blank" rel="noreferrer"><b>{l.label}</b><span>{l.note}</span></a>)}</div>
             </div>
             <div className="rgrp">
@@ -665,16 +665,16 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
           </div>
           <div className="closing">
             <h3>This is a map, not a verdict.</h3>
-            <p>Your profile shows where you’ll thrive today — but you’re still growing. Revisit this report as you change, and share it with someone who’s guiding you.</p>
-            <p className="closing-mail">A PDF copy of this report has also been emailed to you — share that with a parent or mentor.</p>
+            <p>Your profile shows where you’ll thrive today - but you’re still growing. Revisit this report as you change, and share it with someone who’s guiding you.</p>
+            <p className="closing-mail">A PDF copy of this report has also been emailed to you - share that with a parent or mentor.</p>
           </div>
-          {/* Says plainly what this is built from, in plain language — no
-              framework names — so the basis and its limits belong on the
+          {/* Says plainly what this is built from, in plain language - no
+              framework names - so the basis and its limits belong on the
               page rather than only in the footer. */}
           <p className="disclaimer">
             <b>How to read this report.</b> These recommendations are derived from your own
-            answers — your aptitude, skills and career interests from the questions you
-            answered — not a measure of your ability or a ceiling on it. You have complete
+            answers - your aptitude, skills and career interests from the questions you
+            answered - not a measure of your ability or a ceiling on it. You have complete
             freedom to explore other domains too; these are just recommendations based on
             what you told us, not a fixed verdict. Interests and strengths genuinely change
             through school, so treat this as a starting point for conversations with
@@ -683,8 +683,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
           <div className="dl-cta">
             <div className="dl-cta-label">Keep a copy</div>
             <div className="dl-cta-row">
-              <DownloadButton format="pdf" name={name} />
-              <DownloadButton format="html" name={name} />
+              <DownloadButton name={name} />
             </div>
           </div>
           <div className="contact-block">
@@ -747,18 +746,18 @@ type ReportRole = { role: string; domain: string; fit: number; why: string; sala
  * Specific roles for the career cards and the ranked table.
  *
  * When the engine produced named professions (the 60-question bank matches
- * against the workbook's own profession tables), use those — they are the real
+ * against the workbook's own profession tables), use those - they are the real
  * output of the career-vector matching. Otherwise fall back to representative
  * roles from the top domains, so older banks still render.
  */
 function coherentRoles(a: AssessmentSummary, fits: DomainFit[]): ReportRole[] {
   // Priority 0 fix: always use `fits` as the canonical source, computed fresh from assessment data.
   // This ensures career recommendations are consistent with domainFit and top-domain logic elsewhere.
-  // If a.matches existed from an older backend run, it may contradict the current fits —
+  // If a.matches existed from an older backend run, it may contradict the current fits -
   // prefer current data over stale precomputed matches.
   const out: ReportRole[] = [];
   // Sort by actual fit score descending to ensure top-recommended domains appear first.
-  // Covers all 5 recommended domains — not just the top 3 — so every domain
+  // Covers all 5 recommended domains - not just the top 3 - so every domain
   // card and the "all job roles" section has real roles to show, not an
   // empty state for ranks 4 and 5.
   fits.slice().sort((x, y) => y.fit - x.fit).slice(0, 5).forEach((d) => {
@@ -772,7 +771,7 @@ function coherentRoles(a: AssessmentSummary, fits: DomainFit[]): ReportRole[] {
 }
 
 /* ------------------------------ pieces --------------------------------- */
-// The full logo only belongs on the cover — repeating it as a running header
+// The full logo only belongs on the cover - repeating it as a running header
 // on every one of ~20 pages read as clutter, so each page just gets its
 // section label instead (the small dot keeps a lightweight brand cue).
 function RH({ n, kick }: { n?: string; kick: string; accent?: boolean }) {
@@ -812,12 +811,12 @@ function Badge({ on, label, value, icon, tone }: { on?: boolean; label: string; 
     <span className={`mbadge2 ${t}`}>
       <Icon name={icon} size={12} />
       <span className="mb-l">{label}</span>
-      <b>{value ?? (on ? "Yes" : "—")}</b>
+      <b>{value ?? (on ? "Yes" : "-")}</b>
     </span>
   );
 }
 
-/** Rose / polar wheel — petals sized by score. Used for the profile & the five traits. */
+/** Rose / polar wheel - petals sized by score. Used for the profile & the five traits. */
 function RoseWheel({ items, accentIndex = -1, small }: { items: { label: string; score: number; icon?: string; color?: string }[]; accentIndex?: number; small?: boolean }) {
   const size = small ? 200 : 300;
   const cx = size / 2, cy = size / 2, R = small ? 74 : 116, n = items.length || 8;
@@ -875,7 +874,7 @@ function RiasecHex({ themes }: { themes: { letter: string; title?: string; score
 
 function DomainCard({ d, rank, roles }: { d: DomainFit; rank: number; roles: ReportRole[] }) {
   // How many dimensions had SOME matching evidence used to say "how many
-  // factors point here" — but it never checked how strongly they pointed
+  // factors point here" - but it never checked how strongly they pointed
   // there, so a domain scoring 50/35/11 across the board could still read
   // "Strong match" just because all four numbers happened to be non-null.
   // Base the label on the actual strength of those numbers instead, so it
@@ -963,7 +962,7 @@ function DomainCard({ d, rank, roles }: { d: DomainFit; rank: number; roles: Rep
 }
 
 /** Fetches a same-origin asset and inlines it as a data: URI. Used only for
- *  the logo — everything else in the report already uses absolute CDN URLs,
+ *  the logo - everything else in the report already uses absolute CDN URLs,
  *  which keep working once downloaded, but the logo is served from this
  *  site's own "/..." path, which resolves to nothing once the markup is
  *  opened from a saved file or a print popup with no real origin of its own. */
@@ -978,28 +977,7 @@ async function toDataURL(url: string): Promise<string> {
   });
 }
 
-/** Resolves once every <img> in `doc` has either loaded or failed, or after
- *  `capMs` — whichever comes first. A downloaded report can carry dozens of
- *  images across a 15+ page document; printing (or serialising) before the
- *  network has actually delivered them is what produced blank image boxes
- *  and PDFs that printed mid-layout, before the page had properly reflowed. */
-function waitForImages(doc: Document, capMs = 8000): Promise<void> {
-  const imgs = Array.from(doc.images);
-  if (imgs.length === 0) return Promise.resolve();
-  const loaded = Promise.all(
-    imgs.map((img) =>
-      img.complete
-        ? Promise.resolve()
-        : new Promise<void>((resolve) => {
-            img.addEventListener("load", () => resolve(), { once: true });
-            img.addEventListener("error", () => resolve(), { once: true });
-          })
-    )
-  );
-  return Promise.race([loaded.then(() => undefined), new Promise<void>((r) => setTimeout(r, capMs))]);
-}
-
-function DownloadButton({ format, name }: { format: "pdf" | "html"; name?: string }) {
+function DownloadButton({ name }: { name?: string }) {
   const handleDownload = async () => {
     const element = document.querySelector(".frx");
     if (!element) {
@@ -1011,63 +989,41 @@ function DownloadButton({ format, name }: { format: "pdf" | "html"; name?: strin
 
     // The rest of the report's images are absolute CDN URLs (onegrasp.com,
     // images.unsplash.com) and keep working wherever this file is opened.
-    // Only the logo needs inlining — see toDataURL above.
+    // Only the logo needs inlining - see toDataURL above.
     let html = element.outerHTML;
     try {
       const logoDataUrl = await toDataURL(LOGO);
       html = html.split(`src="${LOGO}"`).join(`src="${logoDataUrl}"`);
     } catch {
-      /* offline or blocked — leave the original path rather than fail the download */
+      /* offline or blocked - leave the original path rather than fail the download */
     }
-    // `.frx`'s own <style> tag (the full report stylesheet, including the
-    // print/page-break rules) rides along inside `html` already, since it's
-    // a child of the element captured above — no separate stylesheet to
-    // attach.
+    // `.frx`'s own <style> tag (the full report stylesheet) rides along
+    // inside `html` already, since it's a child of the element captured
+    // above - no separate stylesheet to attach.
     const doc = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${filename}</title></head><body style="margin:0">${html}</body></html>`;
 
-    if (format === "html") {
-      const blob = new Blob([doc], { type: "text/html;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${filename}.html`;
-      a.click();
-      URL.revokeObjectURL(url);
-    } else if (format === "pdf") {
-      const printWindow = window.open("", "", "height=800,width=1000");
-      if (!printWindow) {
-        alert("Please allow pop-ups for this site to download the PDF.");
-        return;
-      }
-      printWindow.document.write(doc);
-      printWindow.document.close();
-      await waitForImages(printWindow.document);
-      // One more frame so layout from the last-loaded image settles before
-      // the browser hands the page to the print pipeline.
-      printWindow.requestAnimationFrame(() => {
-        printWindow.focus();
-        printWindow.print();
-      });
-    }
+    const blob = new Blob([doc], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${filename}.html`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
-
-  const icon = format === "pdf" ? "📄" : "📋";
-  const label = format === "pdf" ? "Download as PDF" : "Download as HTML";
-  const desc = format === "pdf" ? "Print to PDF" : "View in browser";
 
   return (
     <button onClick={handleDownload} className="dl-btn">
-      <span className="dl-btn-icon">{icon}</span>
+      <span className="dl-btn-icon">📋</span>
       <span>
-        <span className="dl-btn-label">{label}</span>
-        <span className="dl-btn-desc">{desc}</span>
+        <span className="dl-btn-label">Download report</span>
+        <span className="dl-btn-desc">Saves as an HTML file you can open in any browser</span>
       </span>
     </button>
   );
 }
 
 export function JourneyGraphic({ phases }: { phases: { period: string; title: string }[] }) {
-  // A steadily rising line, left to right — the shape itself reads as
+  // A steadily rising line, left to right - the shape itself reads as
   // "upward progress over time" rather than a decorative zigzag.
   const n = Math.min(4, phases.length) || 4;
   const W = 760, H = 150, pad = 56;
@@ -1129,11 +1085,11 @@ const CSS = `
 /* Lets a wide, dense block (e.g. the Fitment/Suitability/Selector overview
    table) reclaim .pad's own side padding and run edge-to-edge inside the
    sheet, instead of being squeezed into an already-narrow page width on top
-   of that padding — every extra pixel matters once content is split 3 ways. */
+   of that padding - every extra pixel matters once content is split 3 ways. */
 .frx .full-bleed{margin-left:-44px;margin-right:-44px}
 @media(max-width:720px){.frx .full-bleed{margin-left:-18px;margin-right:-18px}}
 /* A domain/role summary card's inner sections, laid out side by side and
-   collapsing to a single stacked column on narrow screens — replaces a wide
+   collapsing to a single stacked column on narrow screens - replaces a wide
    <table> (fixed columns, forces horizontal scroll) with a card whose
    sections just reflow, so nothing ever needs a horizontal scrollbar and one
    long list (e.g. skills) only grows that one card, not a whole shared row. */
@@ -1167,7 +1123,7 @@ const CSS = `
 .frx .domhead-sub{font-size:14.5px;color:var(--ink-3);margin-top:10px;line-height:1.6}
 .frx .subhd{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
 
-/* cover — one red-themed page, no variants */
+/* cover - one red-themed page, no variants */
 .frx .cover{border-top:none;background:linear-gradient(160deg,var(--red) 0%,var(--red-strong) 55%,#B5262C 100%);display:flex;align-items:flex-start;position:relative;overflow:hidden}
 .frx .cover-in{width:100%;padding:56px 48px 72px;color:#fff;position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center}
 @media(max-width:720px){.frx .cover-in{padding:36px 22px 52px}}
@@ -1206,7 +1162,7 @@ const CSS = `
 .frx .tocStop-ic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--red-tint);color:var(--red);flex:none}
 .frx .tocStop-t{font-size:11.5px;font-weight:700;color:var(--ink-2);line-height:1.35}
 /* Both this and .tocStop share the row's top edge (align-items:flex-start
-   above), so a fixed 22px top margin — exactly half the 44px icon circle —
+   above), so a fixed 22px top margin - exactly half the 44px icon circle -
    always lands the line through the circle's centre, regardless of how many
    lines the label text below wraps to. */
 .frx .tocStop-line{flex:1 1 24px;height:2px;min-width:16px;background:var(--red-line);margin:22px 2px 0}
@@ -1254,7 +1210,7 @@ const CSS = `
 .frx .fw .ds{font-size:12px;color:var(--ink-3);margin-top:5px;line-height:1.45}
 .frx .fw .fwn{position:absolute;top:12px;right:14px;font-size:12px;font-weight:800;color:var(--faint)}
 
-/* scorecard — min-height:auto overrides the base .sheet's forced A4 page
+/* scorecard - min-height:auto overrides the base .sheet's forced A4 page
    height for on-screen viewing only: this section's content is naturally
    short, and the print rule (further down) still forces the full A4 height
    during print/PDF, so pagination there is unaffected. */
@@ -1325,7 +1281,7 @@ const CSS = `
 .frx .recos li{counter-increment:r;position:relative;padding:16px 18px 16px 56px;border:1px solid var(--line);border-left:3px solid #f59e0b;border-radius:12px;background:#fffbeb;font-size:14px;line-height:1.55;color:var(--ink-2)}
 .frx .recos li::before{content:counter(r);position:absolute;left:16px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:8px;background:#fef3c7;color:#d97706;display:grid;place-items:center;font-weight:800;font-size:14px;border:1px solid #fde68a}
 
-/* per-dimension category colour — each of the 8 pages reads in its own hue */
+/* per-dimension category colour - each of the 8 pages reads in its own hue */
 .frx .param{--red:var(--dc);--red-strong:var(--dc);--red-tint:var(--dc-tint);--red-line:var(--dc-line)}
 .frx .param .eyebrow,.frx .param .rh .ey .k{color:var(--dc)}
 .frx .param .rh .ey .k{background:var(--dc)}
@@ -1344,7 +1300,7 @@ const CSS = `
 
 /* the five traits */
 .frx .temps{margin-top:26px}
-/* Five cards, each carrying a full sentence — the wheel takes the narrower
+/* Five cards, each carrying a full sentence - the wheel takes the narrower
    column and the cards get the room, or the text sets three words to a line. */
 .frx .temp-wheel-row{display:grid;grid-template-columns:.62fr 1.38fr;gap:22px;align-items:start}
 @media(max-width:640px){.frx .temp-wheel-row{grid-template-columns:1fr}}
@@ -1553,14 +1509,14 @@ const CSS = `
 .frx .contact-lines{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px 20px}
 .frx .contact-lines span{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
 
-/* Consistent A4 pages — every section prints as the same page size. */
+/* Consistent A4 pages - every section prints as the same page size. */
 @page{size:A4 portrait;margin:0}
 @media print{
   /* Force every background, tint, bar-fill and colour to print (Chrome/Edge honour
      this even when "Background graphics" is unchecked). */
   .frx,.frx *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;color-adjust:exact !important}
   /* The on-screen .frx has its own 32px/16px padding for the scrollable
-     preview — left in place during print, it only pads the very first page
+     preview - left in place during print, it only pads the very first page
      (padding on the flex/block container isn't repeated per page break),
      shifting page 1's content down relative to every page after it. */
   .frx{gap:0;display:block;padding:0}
@@ -1575,11 +1531,11 @@ const CSS = `
   /* keep charts and blocks from being clipped/split awkwardly */
   .frx svg{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
   /* break-inside:avoid on every card/row that has its own visible border or
-     a badge/ring inside it — without this, the browser is free to split ANY
+     a badge/ring inside it - without this, the browser is free to split ANY
      of these mid-box across a page boundary, which is what "cut off" and
      "misaligned" actually were: a next-step card's number badge on one
      page and its text on the next, or the score ring in the dimension hero
-     sliced in half. .dimhero and .recos li were the two real gaps — the
+     sliced in half. .dimhero and .recos li were the two real gaps - the
      hero row (image + score ring) and the numbered "Recommended next
      steps" cards had no protection at all. */
   .frx .twocard,.frx .dom,.frx .role,.frx .fw,.frx .dcard,.frx .ccard,.frx .apcard,

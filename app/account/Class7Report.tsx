@@ -15,13 +15,13 @@ import {
 import { RadarChart, type RadarDatum, MBTICompass, type MBTIAxis, Ring } from "@/app/account/viz";
 
 const RANK_COLOURS = ["#12996b", "#e08a1e", "#2f6bff", "#8b5cf6", "#64748b"] as const;
-// Rank order within a domain's role list, not an absolute score — so five
+// Rank order within a domain's role list, not an absolute score - so five
 // roles under one domain read as a clear ladder instead of five identical bars.
 const ROLE_GRADIENT = ["#12996b", "#7cb342", "#e08a1e", "#e2673b", "#E23B41"] as const;
 const P7 = "https://onegrasp.com/wp-content/uploads/2026/07/";
 const DIMS8_7 = P7 + "ChatGPT-Image-Jul-10-2026-05_34_15-PM.png";
 
-// "Developing"/"Emerging" instead of a blunt "Low"/"Weak" — a 12-year-old
+// "Developing"/"Emerging" instead of a blunt "Low"/"Weak" - a 12-year-old
 // shouldn't be told outright they're "weak" at something in their own report.
 const bandOf7 = (p: number) =>
   p >= 75 ? { label: "Very High", tone: "hi" } : p >= 65 ? { label: "High", tone: "hi" }
@@ -58,10 +58,10 @@ function dimDeepDive6(key: string, output: Class7ScoreOutput): { strengths: stri
           p.tf === "T" ? "When you decide something, logic and fairness usually come first for you." : "When you decide something, how it affects people usually comes first for you.",
         ],
         grow: [
-          `A four-letter type is a starting point, not a box — notice moments that ask you to flex the other way (like ${p.jp === "J" ? "a sudden change of plan" : "sticking to a strict routine"}) and practise them on purpose.`,
+          `A four-letter type is a starting point, not a box - notice moments that ask you to flex the other way (like ${p.jp === "J" ? "a sudden change of plan" : "sticking to a strict routine"}) and practise them on purpose.`,
         ],
         recommend: [
-          "Ask a parent, teacher or friend if this description sounds like you — they often notice things you don't.",
+          "Ask a parent, teacher or friend if this description sounds like you - they often notice things you don't.",
           "Come back to this page next year and see what has changed as you grow.",
         ],
       };
@@ -71,11 +71,11 @@ function dimDeepDive6(key: string, output: Class7ScoreOutput): { strengths: stri
       return {
         strengths: [
           top ? `${top.name.split("(")[0].trim()} activities excite you most right now.` : "You're open to a wide range of activities.",
-          second ? `${second.name.split("(")[0].trim()} is a close second — worth exploring too.` : "Keep trying new activities to see what excites you.",
+          second ? `${second.name.split("(")[0].trim()} is a close second - worth exploring too.` : "Keep trying new activities to see what excites you.",
         ],
-        grow: ["Interests at your age shift a lot as you try new things — treat this as today's snapshot, not a final answer."],
+        grow: ["Interests at your age shift a lot as you try new things - treat this as today's snapshot, not a final answer."],
         recommend: [
-          `Try one real activity linked to ${top ? top.name.split("(")[0].trim() : "your top interest"} this month — a club, a project or a book.`,
+          `Try one real activity linked to ${top ? top.name.split("(")[0].trim() : "your top interest"} this month - a club, a project or a book.`,
           "Talk to an adult who does work connected to this interest.",
         ],
       };
@@ -85,25 +85,25 @@ function dimDeepDive6(key: string, output: Class7ScoreOutput): { strengths: stri
       const top = ranked[0], second = ranked[1], low = ranked[ranked.length - 1];
       return {
         strengths: [
-          top ? `${top.name} is the way you're smartest right now — it's your default mode.` : "You show a balanced spread of strengths.",
+          top ? `${top.name} is the way you're smartest right now - it's your default mode.` : "You show a balanced spread of strengths.",
           second ? `${second.name} backs it up as a strong second area.` : "Keep exploring to find your next strength.",
         ],
-        grow: [low ? `${low.name} came last — not a weakness, just not where you naturally go first. It only matters if something you want to do needs it.` : "Try activities outside your comfort zone to build range."],
-        recommend: [`Volunteer for tasks that use ${top ? top.name : "your leading strength"} — that's where you'll shine.`, "Team up with people strong where you're not."],
+        grow: [low ? `${low.name} came last - not a weakness, just not where you naturally go first. It only matters if something you want to do needs it.` : "Try activities outside your comfort zone to build range."],
+        recommend: [`Volunteer for tasks that use ${top ? top.name : "your leading strength"} - that's where you'll shine.`, "Team up with people strong where you're not."],
       };
     }
     case "aptitude": {
       const ap = output.aptitudeProfile;
       return {
-        strengths: [`You answered ${ap.correct} of ${ap.total} reasoning puzzles correctly — a ${ap.level.toLowerCase()} level for your stage.`],
-        grow: ["Reasoning grows with practice — this is trainable, not fixed. A few puzzles a week make a real difference."],
+        strengths: [`You answered ${ap.correct} of ${ap.total} reasoning puzzles correctly - a ${ap.level.toLowerCase()} level for your stage.`],
+        grow: ["Reasoning grows with practice - this is trainable, not fixed. A few puzzles a week make a real difference."],
         recommend: ["Try a few logic puzzles, riddles or brain-teasers each week.", "Notice which kind (words, numbers, patterns, shapes) felt easiest and do more of that."],
       };
     }
     case "motivators": {
       const top = output.motivators.slice().sort((a, b) => b.score - a.score)[0];
       return {
-        strengths: [top ? `${top.name} is what drives you most right now — activities that feed this will hold your interest longest.` : "You're motivated by a healthy mix of things."],
+        strengths: [top ? `${top.name} is what drives you most right now - activities that feed this will hold your interest longest.` : "You're motivated by a healthy mix of things."],
         grow: ["Notice when a short-term reward (like grades or praise) pulls you away from what actually excites you."],
         recommend: [top ? `Pick your next school project or club around ${top.name.toLowerCase()}.` : "Try a few different clubs or activities and notice which ones you look forward to."],
       };
@@ -111,8 +111,8 @@ function dimDeepDive6(key: string, output: Class7ScoreOutput): { strengths: stri
     case "learning": {
       const primary = output.learningStyle.primary;
       return {
-        strengths: [`You show a clear preference for ${primary} learning — that's genuinely useful for choosing how you revise.`],
-        grow: ["This is a preference, not a limit — build some comfort with other styles too, since not every class will match yours."],
+        strengths: [`You show a clear preference for ${primary} learning - that's genuinely useful for choosing how you revise.`],
+        grow: ["This is a preference, not a limit - build some comfort with other styles too, since not every class will match yours."],
         recommend: ["Use the tips above the next time you have something new to learn.", "Try mixing your style with one other (e.g. visual + hands-on) for tricky topics."],
       };
     }
@@ -120,8 +120,8 @@ function dimDeepDive6(key: string, output: Class7ScoreOutput): { strengths: stri
       const ranked = output.emotionalAwareness.slice().sort((a, b) => b.score - a.score);
       const top = ranked[0], low = ranked[ranked.length - 1];
       return {
-        strengths: [top ? `${top.dimension} is where you're strongest — a real asset for friendships and teamwork.` : "You're building a healthy awareness of your emotions."],
-        grow: [low ? `${low.dimension} is your growth edge right now — everyone has one, and it gets easier with practice.` : "Keep noticing how you and others feel in different situations."],
+        strengths: [top ? `${top.dimension} is where you're strongest - a real asset for friendships and teamwork.` : "You're building a healthy awareness of your emotions."],
+        grow: [low ? `${low.dimension} is your growth edge right now - everyone has one, and it gets easier with practice.` : "Keep noticing how you and others feel in different situations."],
         recommend: ["Practise naming how you feel before reacting, especially when upset.", "Ask a friend how you come across when things get tense."],
       };
     }
@@ -130,8 +130,8 @@ function dimDeepDive6(key: string, output: Class7ScoreOutput): { strengths: stri
       const top = ranked[0], low = ranked[ranked.length - 1];
       return {
         strengths: [top ? `${top.indicator} is your strongest creative indicator today.` : "You show healthy curiosity and openness to new ideas."],
-        grow: [low ? `${low.indicator} is worth stretching — try it on purpose in a low-pressure setting.` : "Keep trying new, unfamiliar things to build range."],
-        recommend: ["Do one thing differently than usual this week — a new route, a new hobby, a new way to solve a problem.", "Keep an ideas notebook, even for silly ones."],
+        grow: [low ? `${low.indicator} is worth stretching - try it on purpose in a low-pressure setting.` : "Keep trying new, unfamiliar things to build range."],
+        recommend: ["Do one thing differently than usual this week - a new route, a new hobby, a new way to solve a problem.", "Keep an ideas notebook, even for silly ones."],
       };
     }
     default:
@@ -140,7 +140,7 @@ function dimDeepDive6(key: string, output: Class7ScoreOutput): { strengths: stri
 }
 
 /** Score ring + band/percentile + "where you're strong/grow" two-card +
- *  recommended next steps — appended to each dimension section so every
+ *  recommended next steps - appended to each dimension section so every
  *  page reads like a finding, not just a bar chart. */
 function DimDeepDive6({ score, dive }: { score: number; dive: { strengths: string[]; grow: string[]; recommend: string[] } }) {
   const band = bandOf7(score);
@@ -210,7 +210,7 @@ export function Class7Report({
           <h1 className="c7-title">Career Discovery Journey</h1>
           <p className="c7-message">
             Welcome to your career discovery journey! This report shows what you enjoy, how you learn best,
-            and career areas you might want to explore. Remember—you're still discovering your interests!
+            and career areas you might want to explore. Remember-you're still discovering your interests!
           </p>
           <div className="c7-student-block">
             <span className="c7-label">Prepared for</span>
@@ -288,7 +288,7 @@ export function Class7Report({
             <div className="c7-compass-side">
               <div className="c7-type-display">{output.personalityProfile.type}</div>
               <p className="c7-compass-note">
-                Each letter comes from a separate question — which side of that scale you picked more often. A
+                Each letter comes from a separate question - which side of that scale you picked more often. A
                 marker sitting near the middle of the compass means you can flex either way; one sitting near the
                 edge means a clear, consistent lean.
               </p>
@@ -389,12 +389,12 @@ export function Class7Report({
           <h2 className="c7-section-title">Aptitude &amp; Reasoning</h2>
           <p className="c7-description">
             10 puzzles testing how you reason with words, numbers, patterns and shapes. There's no
-            wrong way to explore — this just shows where your reasoning is strongest today.
+            wrong way to explore - this just shows where your reasoning is strongest today.
           </p>
           <div className="c7-summary-box">
             <p>
               You answered <strong>{output.aptitudeProfile.correct} of {output.aptitudeProfile.total}</strong> correctly
-              ({output.aptitudeProfile.score}%) — a <strong>{output.aptitudeProfile.level}</strong> level of reasoning for your stage.
+              ({output.aptitudeProfile.score}%) - a <strong>{output.aptitudeProfile.level}</strong> level of reasoning for your stage.
             </p>
           </div>
           <DimDeepDive6 score={scoreOf("aptitude")} dive={dimDeepDive6("aptitude", output)} />
@@ -456,7 +456,7 @@ export function Class7Report({
             )}
             {output.learningStyle.primary === "Kinesthetic" && (
               <ul>
-                <li>Learn by doing—hands-on projects and experiments</li>
+                <li>Learn by doing-hands-on projects and experiments</li>
                 <li>Move around while studying</li>
                 <li>Try things out rather than just reading about them</li>
               </ul>
@@ -485,7 +485,7 @@ export function Class7Report({
             ))}
           </div>
           <p className="c7-note">
-            These scores show your current strengths in emotional awareness. Everyone develops at their own pace—
+            These scores show your current strengths in emotional awareness. Everyone develops at their own pace-
             keep exploring and growing!
           </p>
           <DimDeepDive6 score={scoreOf("ei")} dive={dimDeepDive6("ei", output)} />
@@ -522,7 +522,7 @@ export function Class7Report({
       <section className="c7-sheet">
         <div className="c7-content">
           <h2 className="c7-section-title">Your profile, in one page</h2>
-          <p className="c7-description">No single answer defines you — the shape of all eight together is what makes this read accurate.</p>
+          <p className="c7-description">No single answer defines you - the shape of all eight together is what makes this read accurate.</p>
           <div className="c7-radar-hero">
             <div style={{ display: "flex", justifyContent: "center" }}>
               <RadarChart data={radar} color="#F2555A" />
@@ -551,7 +551,7 @@ export function Class7Report({
         <div className="c7-content">
           <h2 className="c7-section-title">Top 5 Career Areas to Explore</h2>
           <p className="c7-description">
-            Based on your interests, strengths and reasoning, here are the fields you might enjoy exploring most —
+            Based on your interests, strengths and reasoning, here are the fields you might enjoy exploring most -
             with real roles people do in each one:
           </p>
           <div className="c7-domains-grid">
@@ -644,7 +644,7 @@ export function Class7Report({
         <div className="c7-content">
           <h2 className="c7-section-title">Your 20-year roadmap</h2>
           <p className="c7-description">
-            Built around your #1 best-fit area — the same core moves carry over even if you lean toward
+            Built around your #1 best-fit area - the same core moves carry over even if you lean toward
             another area from your top 5 later.
           </p>
           {output.domainAffinities[0] && (
@@ -665,7 +665,7 @@ export function Class7Report({
                   </div>
                 ))}
               </div>
-              <div className="c7-road-note">This is one realistic path, not a fixed rulebook — revisit it as your interests sharpen.</div>
+              <div className="c7-road-note">This is one realistic path, not a fixed rulebook - revisit it as your interests sharpen.</div>
             </div>
           )}
         </div>
@@ -688,7 +688,7 @@ export function Class7Report({
               </div>
             )}
             <div className="c7-rgrp">
-              <div className="c7-rgh">📚 Learn these skills — free & paid</div>
+              <div className="c7-rgh">📚 Learn these skills - free & paid</div>
               <div className="c7-rchips">{LEARNING.map((l) => <a className="c7-rchip" key={l.url} href={l.url} target="_blank" rel="noreferrer"><b>{l.label}</b><span>{l.note}</span></a>)}</div>
             </div>
             <div className="c7-rgrp">
@@ -744,7 +744,7 @@ export function Class7Report({
             <div className="c7-step">
               <span className="c7-step-number">4</span>
               <div>
-                <strong>Reassess later:</strong> Your interests may change—that's completely normal!
+                <strong>Reassess later:</strong> Your interests may change-that's completely normal!
               </div>
             </div>
           </div>
@@ -755,7 +755,7 @@ export function Class7Report({
       <section className="c7-sheet">
         <div className="c7-content">
           <h2 className="c7-section-title">For parents & mentors</h2>
-          <p className="c7-description">Supporting {studentName.split(" ")[0] || "your child"} — a few things that help:</p>
+          <p className="c7-description">Supporting {studentName.split(" ")[0] || "your child"} - a few things that help:</p>
           <ul className="c7-plain-ul c7-parent-list">{PARENT_TIPS.map((t, i) => <li key={i}>{t}</li>)}</ul>
         </div>
       </section>
@@ -771,8 +771,8 @@ export function Class7Report({
             </p>
           </div>
           <p className="c7-disclaimer">
-            <b>How to read this report.</b> These recommendations are derived from your own answers —
-            your interests, strengths and reasoning from the questions you answered — not a measure of
+            <b>How to read this report.</b> These recommendations are derived from your own answers -
+            your interests, strengths and reasoning from the questions you answered - not a measure of
             your ability or a ceiling on it. You have complete freedom to explore other areas too;
             these are just recommendations based on what you told us. Interests at this age change
             quickly, so treat this as a starting point for conversations with teachers and parents,
@@ -781,8 +781,7 @@ export function Class7Report({
           <div className="c7-dl-cta">
             <div className="c7-dl-cta-label">Keep a copy</div>
             <div className="c7-dl-cta-row">
-              <Class7DownloadButton format="pdf" name={studentName} />
-              <Class7DownloadButton format="html" name={studentName} />
+              <Class7DownloadButton name={studentName} />
             </div>
           </div>
           <div className="c7-contact-block">
@@ -802,7 +801,7 @@ export function Class7Report({
 const CLASS7_LOGO = "/onegrasp-logo-tight.png";
 
 /** Same fix as FullReport.tsx's DownloadButton: inline the logo as a data:
- *  URI, since its "/..." path only resolves on the site's own origin — not
+ *  URI, since its "/..." path only resolves on the site's own origin - not
  *  in a downloaded file opened from disk or a print popup with no origin. */
 async function toDataURL(url: string): Promise<string> {
   const res = await fetch(url);
@@ -815,27 +814,7 @@ async function toDataURL(url: string): Promise<string> {
   });
 }
 
-/** Resolves once every <img> in `doc` has loaded or failed, or after `capMs`
- *  — printing before the browser has actually received every image (this
- *  report can carry dozens across several pages) is what produced blank
- *  image boxes and PDFs printed mid-layout. */
-function waitForImages(doc: Document, capMs = 8000): Promise<void> {
-  const imgs = Array.from(doc.images);
-  if (imgs.length === 0) return Promise.resolve();
-  const loaded = Promise.all(
-    imgs.map((img) =>
-      img.complete
-        ? Promise.resolve()
-        : new Promise<void>((resolve) => {
-            img.addEventListener("load", () => resolve(), { once: true });
-            img.addEventListener("error", () => resolve(), { once: true });
-          })
-    )
-  );
-  return Promise.race([loaded.then(() => undefined), new Promise<void>((r) => setTimeout(r, capMs))]);
-}
-
-function Class7DownloadButton({ format: fmt, name }: { format: "pdf" | "html"; name?: string }) {
+function Class7DownloadButton({ name }: { name?: string }) {
   const handleDownload = async () => {
     const element = document.querySelector(".class7-report");
     if (!element) { alert("Report not found"); return; }
@@ -845,38 +824,23 @@ function Class7DownloadButton({ format: fmt, name }: { format: "pdf" | "html"; n
       const logoDataUrl = await toDataURL(CLASS7_LOGO);
       html = html.split(`src="${CLASS7_LOGO}"`).join(`src="${logoDataUrl}"`);
     } catch {
-      /* offline or blocked — leave the original path rather than fail the download */
+      /* offline or blocked - leave the original path rather than fail the download */
     }
     const doc = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${filename}</title></head><body style="margin:0">${html}</body></html>`;
-    if (fmt === "html") {
-      const blob = new Blob([doc], { type: "text/html;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${filename}.html`;
-      a.click();
-      URL.revokeObjectURL(url);
-    } else {
-      const printWindow = window.open("", "", "height=800,width=1000");
-      if (!printWindow) { alert("Please allow pop-ups for this site to download the PDF."); return; }
-      printWindow.document.write(doc);
-      printWindow.document.close();
-      await waitForImages(printWindow.document);
-      printWindow.requestAnimationFrame(() => {
-        printWindow.focus();
-        printWindow.print();
-      });
-    }
+    const blob = new Blob([doc], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${filename}.html`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
-  const icon = fmt === "pdf" ? "📄" : "📋";
-  const label = fmt === "pdf" ? "Download as PDF" : "Download as HTML";
-  const desc = fmt === "pdf" ? "Print to PDF" : "View in browser";
   return (
     <button onClick={handleDownload} className="c7-dl-btn">
-      <span className="c7-dl-btn-icon">{icon}</span>
+      <span className="c7-dl-btn-icon">📋</span>
       <span>
-        <span className="c7-dl-btn-label">{label}</span>
-        <span className="c7-dl-btn-desc">{desc}</span>
+        <span className="c7-dl-btn-label">Download report</span>
+        <span className="c7-dl-btn-desc">Saves as an HTML file you can open in any browser</span>
       </span>
     </button>
   );
