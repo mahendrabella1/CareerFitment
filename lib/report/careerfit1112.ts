@@ -360,6 +360,18 @@ export const CLUSTER_FUNDED_PROGRAMS: Partial<Record<StandardCluster, FundedProg
       url: "https://joinindianarmy.nic.in",
     },
   ],
+  "Law, Public Safety, Corrections & Security": [
+    {
+      name: "SSC GD Constable (BSF / CRPF / CISF / ITBP / SSB / Assam Rifles / SSF)",
+      summary: "Direct recruitment into a paid constable post across India's central armed police forces - a real, well-known route, but closer to \"a job with training\" than a dedicated funded training programme, and its minimum qualification is Class 10, not specifically Class 12.",
+      eligibility: "Stream: any stream. Percentage: no minimum percentage - only a Class 10 (Matriculation) pass from a recognised board is required, which a Class 12 student already has; there's no separate, higher bar for Class 12 pass-outs. Exam: SSC GD Constable (a computer-based exam conducted by the Staff Selection Commission), followed by a Physical Efficiency Test/Physical Standard Test and medical exam. Age 18-23 (relaxation for reserved categories).",
+      structure: "Written exam → PET/PST → medical exam → basic training → posting as a Constable (General Duty) in the selected force.",
+      stipend: "Not a training stipend - direct recruitment into a salaried constable post (pay band roughly ₹21,700-₹69,100 plus allowances, per the 7th Pay Commission matrix), with pay starting during initial training itself.",
+      outcome: "A confirmed government post as a Constable in BSF, CRPF, CISF, ITBP, SSB, Assam Rifles or the Secretariat Security Force, with progression through departmental promotions over a career.",
+      verify: "ssc.gov.in - SSC GD Constable notification, released annually (recent cycle: 25,487 vacancies for the 2026 exam).",
+      url: "https://ssc.gov.in",
+    },
+  ],
   "Transportation, Distribution & Logistics": [
     {
       name: "Indian Naval Academy - 10+2 B.Tech Cadet Entry",
@@ -390,6 +402,16 @@ export const CLUSTER_FUNDED_PROGRAMS: Partial<Record<StandardCluster, FundedProg
       outcome: "Progresses toward the same Merchant Navy officer ladder as the B.Sc Nautical Science route, contingent on training, medical, exam and company requirements.",
       verify: "imu.edu.in and the specific affiliated institute's current sponsorship notices.",
       url: "https://www.imu.edu.in",
+    },
+    {
+      name: "RRB NTPC (Undergraduate level)",
+      summary: "Direct recruitment into Indian Railways non-technical posts, with a real stipend during training - one of the highest-volume Class-12-direct government routes.",
+      eligibility: "Stream: any stream. Percentage: 50%+ aggregate in Class 12 (relaxed for SC/ST/PwBD/Ex-servicemen, and for candidates with a higher qualification than 12th). Exam: RRB NTPC (Undergraduate) - a computer-based test conducted by the Railway Recruitment Board. Age 18-30 (with standard reservation-category relaxations).",
+      structure: "CBT 1 → CBT 2 → typing skill test/document verification (post-dependent) → training, during which a stipend is paid.",
+      stipend: "A training-period stipend equal to Basic Pay + DA; on confirmation, starting pay is approximately ₹19,900-₹21,700/month depending on the post (Trains Clerk, Commercial-cum-Ticket Clerk, Accounts Clerk-cum-Typist, Junior Clerk-cum-Typist).",
+      outcome: "A confirmed government post in Indian Railways, with progression through departmental promotions over a career.",
+      verify: "rrbcdg.gov.in (and the relevant zonal RRB site) - current RRB NTPC (UG) notification and vacancy numbers.",
+      url: "https://www.rrbcdg.gov.in",
     },
   ],
   "STEM": [
