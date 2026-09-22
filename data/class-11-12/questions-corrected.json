@@ -107,12 +107,12 @@
         {
           "text": "When a group project faces a major roadblock, what is your natural instinct to jump in and fix?",
           "options": [
-            "Let me check the equipment—it's a hardware or physical fault.",
-            "Let me debug the code or trace the logic—we don't have enough facts yet.",
-            "Let me re-design the approach—our concept is too boring.",
-            "Let me talk to everyone—the team is stressed or miscommunicating.",
-            "Let me take charge—we need clear direction and a strong pitch.",
-            "Let me map out a schedule—we are messy and missing deadlines."
+            "Fix the technical issue.",
+            "Analyse the problem.",
+            "Redesign the approach.",
+            "Talk to the team.",
+            "Take charge.",
+            "Organize the schedule."
           ],
           "mapping": [
             "R",
@@ -124,14 +124,14 @@
           ]
         },
         {
-          "text": "If you were given two free weeks and full funding to build or create something entirely of your own choice, where would most of your time go?",
+          "text": "If you had two free weeks and full funding, what would you spend your time doing?",
           "options": [
-            "Assembling, building or fixing a physical device or machine with your hands.",
-            "Coding a software tool, deep-diving into an intriguing topic, or analyzing data to uncover why something works the way it does.",
-            "Writing, composing, filming, illustrating, or designing something artistic from scratch.",
-            "Hosting a workshop, tutoring peers, or organizing an initiative that helps people solve a problem.",
-            "Launching a mini-business, running a campaign, or convincing people to back an idea.",
-            "Organizing an existing mess—building a clean tracking dashboard, streamlining catalog systems, or managing finance/logs."
+            "Building: Coding, assembling, or fixing something.",
+            "Investigating: Researching, analyzing, or solving a problem.",
+            "Creating: Writing, filming, designing, or making art.",
+            "Helping: Teaching, mentoring, or helping others.",
+            "Leading: Starting a business, campaign, or idea.",
+            "Organizing: Managing data, systems, or records."
           ],
           "mapping": [
             "R",
@@ -143,14 +143,14 @@
           ]
         },
         {
-          "text": "If a newspaper wrote a headline about your ₹10,000 project at the end of the year, which headline would make you proudest?",
+          "text": "If a newspaper featured your ₹10,000 project, which headline would make you proudest?",
           "options": [
-            "Student Builds Working Prototype to Solve Everyday Practical Problem",
-            "High School Research Study Uncovers Key Insights into Local Issue",
-            "Original Creative Campaign Captivates School with Stunning Visuals",
-            "Student-Led Initiative Transforms Peer Wellbeing and Community Support",
-            "Mini-Startup Generated from ₹10,000 Grant Turns Profitable in 6 Months",
-            "Student Designs Flawless Management Framework used across School Departments"
+            "Student Builds Prototype to Solve a Practical Problem",
+            "Student Research Reveals Insights into a Local Issue",
+            "Student Creates a Creative Campaign That Captivates the School",
+            "Student Initiative Improves Peer Wellbeing and Support",
+            "₹10,000 Student Startup Becomes Profitable",
+            "Student Creates a Management System Used Across the School"
           ],
           "mapping": [
             "R",
@@ -162,14 +162,14 @@
           ]
         },
         {
-          "text": "Imagine your school is putting together a high-tech project to build a smart, sustainable city of the future. If you could pick only one main role on the project team, which one sounds most exciting to you?",
+          "text": "Your school is building a smart city. Which role interests you most?",
           "options": [
-            "The Builder/Maker: Working hands-on with hardware, mechanics, sensors, or 3D printing to make the physical prototype function.",
-            "The Detective/Investigator: Researching climate data, testing environmental samples, and solving the core engineering or scientific challenges.",
-            "The Visionary/Designer: Designing the visual look, user experience, branding, and architectural aesthetics so it looks stunning and modern.",
-            "The Mentor/Community Lead: Organizing team collaboration, running community feedback sessions, and ensuring the project solves real human needs.",
-            "The Pitch Lead/Strategist: Presenting the idea to judges, convincing partners to support it, and leading the overall strategy.",
-            "The Operations/Data Manager: Managing project timelines, budgets, inventory, and keeping all technical data perfectly structured."
+            "Builder: Building and testing prototypes.",
+            "Investigator: Researching and solving problems.",
+            "Designer: Designing the look and experience.",
+            "Mentor: Helping people and the team.",
+            "Leader: Pitching ideas and leading the project.",
+            "Organizer: Managing data, budgets, and timelines."
           ],
           "mapping": [
             "R",
@@ -181,14 +181,14 @@
           ]
         },
         {
-          "text": "Think back to a project or task that made you feel genuine satisfaction. What was the best part of it?",
+          "text": "Think of a moment that gives you instant happiness or satisfaction. What did you enjoy most?",
           "options": [
-            "Seeing something physical or functional actually work smoothly because I built or fixed it.",
-            "Figuring out a tricky logic puzzle or finding an answer to a question no one else could solve.",
-            "Expressing my own original style or turning an abstract idea into something visually or emotionally moving.",
-            "Knowing that my advice or support made a positive difference in someone's life.",
-            "Taking an idea, convincing others to buy into it, and successfully leading it to a big win.",
-            "Taking chaos or disorganized information and turning it into a neat, systematic, and error-free structure."
+            "Seeing something I built or fixed work.",
+            "Finding the answer to a difficult problem.",
+            "Creating a new idea or design.",
+            "Helping someone feel better.",
+            "Getting people excited about my idea.",
+            "Finishing everything on my checklist."
           ],
           "mapping": [
             "R",
@@ -276,14 +276,14 @@
           ]
         },
         {
-          "text": "Which type of internship would you be most interested in?",
+          "text": "You get a free month to explore a career area. Which would you choose?",
           "options": [
-            "Hands-on/mechanical engineering internship (hardware, machines, physical systems).",
-            "Software/coding, research, science or data internship.",
-            "Design/media/content internship.",
-            "Education/healthcare/social-impact internship.",
-            "Startup/business/marketing internship.",
-            "Accounting/finance/operations internship."
+            "Engineering/technology projects.",
+            "Scientific research/data analysis.",
+            "Design/media/creative work.",
+            "Psychology/education/healthcare/community work.",
+            "Business/management/entrepreneurship.",
+            "Finance/accounting/business operations."
           ],
           "mapping": [
             "R",
