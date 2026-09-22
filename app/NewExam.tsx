@@ -1,12 +1,12 @@
 "use client";
 
 /**
- * NewExam — the set-based career assessment, one question at a time in a
+ * NewExam - the set-based career assessment, one question at a time in a
  * professional exam console: dark top bar with live counters, left CATEGORY
  * rail (the 8 sections with progress), centre question card, right QUESTION
  * NAVIGATOR + progress donut. Full-screen. No explanations shown.
  *
- * Robust media system — a question may carry a `media` block: reasoning visuals
+ * Robust media system - a question may carry a `media` block: reasoning visuals
  * (SVG grid / sequence / figure), data tables, reading passages, audio (spoken
  * via the browser), images, video, or pie/bar charts. Inputs cover Yes/No,
  * choose-one (text or SVG options), 1–10 slider, most/least, and open response.
@@ -20,13 +20,13 @@ import { DOMAINS_1112, careersByDomain } from "@/lib/report/careerfit1112";
 
 // Same canonical stream keys/order as STREAM_KEY_BY_INDEX in
 // app/api/new-assessment/score/route.ts and STREAM_DOMAIN_FIT in
-// scoring11_12.ts. "Other" maps to STREAM_KEY_BY_INDEX's "" downstream — kept
+// scoring11_12.ts. "Other" maps to STREAM_KEY_BY_INDEX's "" downstream - kept
 // as a non-empty sentinel here so it stays distinguishable from "nothing
 // selected yet" in the <select>'s own value.
 const STREAM_OTHER = "OTHER";
 // Commerce is split by Maths because it changes stream-fit outcomes for the
 // whole Maths-gated career group (Data Science, Finance, Actuarial,
-// Statistics...) in lib/report/careerfit1112.ts's Career_Roadmap_Matrix —
+// Statistics...) in lib/report/careerfit1112.ts's Career_Roadmap_Matrix -
 // see STREAM_KEY_1112 there. score/route.ts still buckets both into the
 // single coarse "Commerce" value the older subject_fit.currentStream field
 // expects, while the exact choice is preserved separately for the new
@@ -43,7 +43,7 @@ const STREAM_OPTIONS: { key: string; label: string }[] = [
 ];
 
 // The report shows this back as a single reference number (a Ring on the
-// Class 12 exam page) but never uses it to filter or rank anything — the
+// Class 12 exam page) but never uses it to filter or rank anything - the
 // mapping kit's own logic is explicit that "the score itself is ignored for
 // matching". A precise number was overkill for something purely contextual,
 // so this collects a band instead and stores its midpoint.
@@ -97,7 +97,7 @@ type Q = {
   id: string; type: string; text: string;
   options: string[] | null; styles: string[] | null;
   format: string | null; svgOptions: boolean; media: Media; optional?: boolean;
-  /** How many options a "multiple_with_grouping" question allows — Infinity
+  /** How many options a "multiple_with_grouping" question allows - Infinity
    *  for "select all that apply", otherwise the count the question's own
    *  instruction asked for. Undefined defaults to a single selection. */
   maxSelect?: number;
@@ -143,8 +143,8 @@ const JUST_FINISHED = "og:exam:justFinished";
  * also carries the desired-vs-measured comparison and two roadmaps, which the
  * plain summary has no room for.
  *
- * Rather than fork the exam engine — 1,000 lines of question rendering,
- * navigation, autosave and resume that must not diverge — the difference is
+ * Rather than fork the exam engine - 1,000 lines of question rendering,
+ * navigation, autosave and resume that must not diverge - the difference is
  * expressed as this one optional prop. Omit it and the behaviour is exactly
  * what it always was.
  */
@@ -194,7 +194,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [review, setReview] = useState<Record<string, boolean>>({});
   const [agree, setAgree] = useState(false);
-  // Class 11/12 pre-exam screen — current stream + desired career (+ Class
+  // Class 11/12 pre-exam screen - current stream + desired career (+ Class
   // 12's estimated percentage) collected before the timed exam starts. See
   // the "preinfo" phase render below and PRE_EXAM_SKIP in the generate route.
   const [preStream, setPreStream] = useState("");
@@ -215,7 +215,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
     // Guard against re-entering the exam right after finishing it. Submitting
     // clears the saved session, so the "resume" branch below can't fire and the
     // student would be dropped straight into a NEW randomly generated exam
-    // without being asked — which is exactly what pressing the browser's Back
+    // without being asked - which is exactly what pressing the browser's Back
     // button from the completion screen used to do.
     //
     // Deliberately a question rather than a hard block: retaking is a real
@@ -279,7 +279,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
   const allDone = answeredCount >= requiredTotal;
 
   const set = (id: string, v: string) => setAnswers((a) => ({ ...a, [id]: v }));
-  // Selecting an option records it and nothing else — advancing is the student's
+  // Selecting an option records it and nothing else - advancing is the student's
   // decision, via Next. Auto-advancing on tap pulled the page away mid-thought,
   // made changing your mind require navigating back, and quietly rewarded
   // answering fast on an instrument where the whole point is to consider five
@@ -327,7 +327,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
   // Class 11/12 pre-exam screen -> intro. Recorded into the same `answers`
   // object as everything else (under synthetic "preinfo:*" keys) so it rides
   // along through the normal save/resume/submit path with no other plumbing
-  // — see applyPreExamAnswers() in app/api/new-assessment/score/route.ts.
+  // - see applyPreExamAnswers() in app/api/new-assessment/score/route.ts.
   function continueFromPreInfo() {
     const stream = preStream === STREAM_OTHER ? "" : preStream;
     setAnswers((a) => ({
@@ -399,8 +399,8 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
       // One request, two emails: the student's thank-you with the steps to sign
       // back in, and the team's notice at support@ that a report is waiting to
       // be sent by hand from /admin. This is the ONLY place the student gets
-      // those steps — the completion screen sends them straight to the
-      // dashboard instead — so it matters that it fires on every submit.
+      // those steps - the completion screen sends them straight to the
+      // dashboard instead - so it matters that it fires on every submit.
       //
       // Still fire-and-forget: the assessment is already saved by this point,
       // and a mail outage must never turn a completed exam into an error screen.
@@ -422,13 +422,13 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
       })();
 
       // Mark the exam finished for THIS TAB. Submitting clears the saved
-      // session, so anything that lands back on the exam URL — the browser
-      // Back button most of all — would otherwise find no session to resume and
+      // session, so anything that lands back on the exam URL - the browser
+      // Back button most of all - would otherwise find no session to resume and
       // silently generate a brand-new exam. See the guard on mount.
       try { sessionStorage.setItem(JUST_FINISHED, "1"); } catch { /* private mode */ }
 
       // No auto-redirect. The dashboard is one click away on the completion
-      // screen, but the student decides when to take it — a timed jump would
+      // screen, but the student decides when to take it - a timed jump would
       // yank the "submitted successfully" confirmation away before they have
       // read it.
       setPhase("thanks");
@@ -443,7 +443,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
     return <Center><div style={{ color: "#c0564f" }}><Icon name="info" size={40} /></div><div style={S.big}>Couldn’t start the assessment</div><div style={S.subT}>{err}</div><button style={S.primary} onClick={exitExam}>Back</button></Center>;
 
   // Reached by navigating back onto the exam after submitting it. Ask instead
-  // of silently starting a new one — the student almost always wants their
+  // of silently starting a new one - the student almost always wants their
   // report, and a fresh 60-question exam is an expensive thing to open by
   // accident.
   if (phase === "already")
@@ -483,7 +483,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
         <div style={S.introCard} className="og-exam-introcard">
           <div style={{ marginBottom: 14 }}><Logo height={30} /></div>
           <h2 style={S.introTitle}>Welcome back{name ? `, ${name}` : ""} 👋</h2>
-          <p style={S.introSub}>You have an assessment in progress — pick up right where you left off.</p>
+          <p style={S.introSub}>You have an assessment in progress - pick up right where you left off.</p>
           <div style={S.resumeStats}>
             <div style={S.resumeStat}><div style={S.resumeStatN}>{answeredCount}/{requiredTotal}</div><div style={S.resumeStatL}>answered</div></div>
             <div style={S.resumeStat}><div style={{ ...S.resumeStatN, color: remainingSec < 300 ? "#dc2626" : BLUE }}>{fmtTime(remainingSec)}</div><div style={S.resumeStatL}>time left</div></div>
@@ -502,7 +502,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
     const canContinue = preStream !== "" && preCareer !== "" && pctValid;
     // Sourced from lib/report/careerfit1112.ts (the 25-domain/63-career
     // Class 11-12 fitment model, not the shared 15-domain catalogue) so a
-    // selection here always resolves exactly in the Career Selector match —
+    // selection here always resolves exactly in the Career Selector match -
     // see findCareer1112() in lib/report/careerFitEngine1112.ts.
     const careersByDomainMap = careersByDomain();
     return (
@@ -518,7 +518,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
             {STREAM_OPTIONS.map((o) => <option key={o.key} value={o.key}>{o.label}</option>)}
           </select>
 
-          <label style={preS.label}>What is your desired career — the one you're aiming for?</label>
+          <label style={preS.label}>What is your desired career - the one you're aiming for?</label>
           <select style={preS.select} value={preCareer} onChange={(e) => setPreCareer(e.target.value)}>
             <option value="" disabled>Select a career…</option>
             {DOMAINS_1112.map((d) => (
@@ -562,9 +562,9 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
           <h2 style={S.introTitle}>Before you begin</h2>
           <p style={S.introSub}>Up to <b>90 minutes</b></p>
           <ul style={S.introList}>
-            <li style={S.introItem}><span style={S.introIc}><Icon name="clock" size={18} /></span><span>You have <b>90 minutes</b>. The timer runs at the top — it auto-submits when it reaches zero.</span></li>
+            <li style={S.introItem}><span style={S.introIc}><Icon name="clock" size={18} /></span><span>You have <b>90 minutes</b>. The timer runs at the top - it auto-submits when it reaches zero.</span></li>
             <li style={S.introItem}><span style={S.introIc}><Icon name="clusters" size={18} /></span><span>Tap an answer and it <b>moves to the next question</b> automatically. Use the category bar or navigator to jump around.</span></li>
-            <li style={S.introItem}><span style={S.introIc}><Icon name="check" size={18} /></span><span><b>Save progress</b> any time — if you close and sign back in, you’ll resume from here with the same questions and time.</span></li>
+            <li style={S.introItem}><span style={S.introIc}><Icon name="check" size={18} /></span><span><b>Save progress</b> any time - if you close and sign back in, you’ll resume from here with the same questions and time.</span></li>
             <li style={S.introItem}><span style={S.introIc}><Icon name="expand" size={18} /></span><span>The test opens in <b>full screen</b> for focus. You can exit any time.</span></li>
           </ul>
           {/* Set expectations before the first answer, not only at the end:
@@ -654,7 +654,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
                 {/* Next is always available, on every question type. Selecting
                     an answer still auto-advances, but a student who wants to
                     skip, or who just prefers driving it themselves, needs a
-                    button — "Previous" alone on screen reads as a dead end. */}
+                    button - "Previous" alone on screen reads as a dead end. */}
                 {cur === total - 1 ? (
                   <button style={{ ...S.finish, ...(allDone && !submitting ? {} : S.disabled) }} disabled={!allDone || submitting} onClick={() => void finish()}>{submitting ? "Scoring…" : "Finish & see report"}</button>
                 ) : (
@@ -753,7 +753,7 @@ function AudioQuestion({ text }: { text: string }) {
     <div style={S.audioCard}>
       <div style={S.audioRow}>
         <button style={S.audioBtn} onClick={speaking ? stop : play}>{speaking ? "■ Stop" : "▶ Play audio"}</button>
-        <span style={S.audioNote}>Listen carefully — you can replay it.</span>
+        <span style={S.audioNote}>Listen carefully - you can replay it.</span>
       </div>
       <button style={S.transToggle} onClick={() => setShowText((s) => !s)}>{showText ? "Hide transcript" : "Show transcript"}</button>
       {showText && <div style={S.transText}>{text}</div>}
@@ -814,7 +814,7 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
     const maxLabel = (q as any).scaleLabel_max || "Exactly like me";
     return (
       <div>
-        <div style={S.sliderTop}><span style={S.sliderEnd}>1 · {minLabel}</span><span style={S.sliderVal}>{v ? v : "—"}</span><span style={S.sliderEnd}>{maxLabel} · 10</span></div>
+        <div style={S.sliderTop}><span style={S.sliderEnd}>1 · {minLabel}</span><span style={S.sliderVal}>{v ? v : "-"}</span><span style={S.sliderEnd}>{maxLabel} · 10</span></div>
         <input type="range" min={1} max={10} step={1} value={v || 1} onChange={(e) => onChange(e.target.value)} style={S.slider} className="og-range" />
         <div style={S.sliderTicks}>{Array.from({ length: 10 }, (_, i) => <span key={i}>{i + 1}</span>)}</div>
       </div>
@@ -824,7 +824,7 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
   if (q.type === "open")
     return <textarea style={S.open} rows={3} placeholder="Type your response (optional)…" value={value} onChange={(e) => onChange(e.target.value)} />;
 
-  // Aptitude visual options (SVG) — same radio control as the text rows, so
+  // Aptitude visual options (SVG) - same radio control as the text rows, so
   // every answerable option in the exam looks and behaves identically.
   if (q.svgOptions) {
     const opts = q.options ?? [];
@@ -848,6 +848,43 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
     const maxSelections = q.maxSelect ?? 1;
     const currentSelections = value ? JSON.parse(value) : [];
     const canSelect = currentSelections.length < maxSelections;
+    // Career Selector's two "up to THREE" questions (career_selector:1/2)
+    // each pick from the same 210-career master list — a one-per-row
+    // checkbox list turned that into a very long vertical scroll. Horizontal
+    // wrapping chips (no checkbox glyph, the chip's own fill/border is the
+    // "on" state) pack the same options into a few lines instead. Scoped to
+    // just these two question ids on purpose — every other multi-select in
+    // the app (short option counts, longer descriptive option text) stays
+    // the original checkbox-row layout, which reads better for those.
+    const useChips = q.id === "career_selector:1" || q.id === "career_selector:2";
+    if (useChips) {
+      return (
+        <div>
+          <div style={S.chipList}>
+            {opts.map((o, i) => {
+              const isSelected = currentSelections.includes(String(i));
+              const label = o?.replace(/^\d+\)\s*/, "") ?? "";
+              return (
+                <button key={i} className="og-chip" style={{ ...S.chip, ...(isSelected ? S.chipOn : {}), opacity: !isSelected && !canSelect ? 0.4 : 1, pointerEvents: !isSelected && !canSelect ? "none" : "auto" }} onMouseDown={(e) => e.preventDefault()} onClick={() => {
+                  if (isSelected) {
+                    const newSelections = currentSelections.filter((x: string) => x !== String(i));
+                    onChange(JSON.stringify(newSelections));
+                  } else if (canSelect) {
+                    const newSelections = [...currentSelections, String(i)];
+                    onChange(JSON.stringify(newSelections));
+                  } else {
+                    alert(`Maximum ${maxSelections} selection${maxSelections > 1 ? "s" : ""} allowed`);
+                  }
+                }}>
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+          {maxSelections !== Infinity && <div style={{ padding: "12px 2px 0", fontSize: 12, color: "#666" }}>{currentSelections.length} of {maxSelections} selected</div>}
+        </div>
+      );
+    }
     return (
       <div style={S.optList}>
         {opts.map((o, i) => {
@@ -899,7 +936,7 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
   );
 }
 
-/** The one radio control used by every option in the exam — text rows and
+/** The one radio control used by every option in the exam - text rows and
  *  SVG tiles alike. Clearly visible when unselected, filled blue when chosen. */
 function Radio({ on }: { on: boolean }) {
   // The class is what lets CSS pin the ring colour to the SELECTED state alone
@@ -950,7 +987,7 @@ const S: Record<string, React.CSSProperties> = {
   saveBtnOk: { background: GREEN_SOFT, borderColor: "#bbe6cc", color: "#15803d" },
   exitBtn: { display: "flex", alignItems: "center", gap: 7, background: "#fef2f2", border: "1px solid #fecaca", color: "#dc2626", fontSize: 13.5, fontWeight: 700, cursor: "pointer", padding: "9px 16px", borderRadius: 9 },
 
-  // horizontal categories bar — content-sized chips on the light page
+  // horizontal categories bar - content-sized chips on the light page
   catBar: { flexShrink: 0, display: "flex", gap: 8, padding: "12px 22px", background: BG, overflowX: "auto" },
   catChip: { display: "flex", alignItems: "center", gap: 8, flexShrink: 0, padding: "8px 15px", border: `1px solid ${LINE}`, borderRadius: 10, background: "#fff", cursor: "pointer" },
   catChipOn: { background: BLUE_SOFT, borderColor: "#bcd0fb" },
@@ -1002,12 +1039,17 @@ const S: Record<string, React.CSSProperties> = {
   optRowOn: { border: `1px solid ${BLUE}`, borderRadius: 10, background: BLUE_SOFT },
   // One radio control for every option (text rows and SVG tiles). The ring is
   // deliberately dark enough to read against both the white card and the blue
-  // selected tint — a faint hairline disappears on screen.
+  // selected tint - a faint hairline disappears on screen.
   radio: { flexShrink: 0, width: 20, height: 20, borderRadius: "50%", border: "2px solid #8d97a8", background: "#fff", display: "grid", placeItems: "center", boxSizing: "border-box" },
   radioOn: { borderColor: BLUE, boxShadow: `0 0 0 3px ${BLUE}1f` },
   radioDot: { width: 10, height: 10, borderRadius: "50%", background: BLUE },
   optLabel: { fontSize: 15, color: "#3a4356", lineHeight: 1.4 },
   optLabelOn: { color: INK, fontWeight: 600 },
+  // Career Selector's two 210-option "up to THREE" questions only — see the
+  // useChips condition in QuestionInput.
+  chipList: { display: "flex", flexWrap: "wrap", gap: 10, paddingTop: 4 },
+  chip: { display: "inline-flex", alignItems: "center", padding: "10px 18px", borderRadius: 999, border: `1.5px solid ${LINE}`, background: "#fff", color: "#3a4356", fontSize: 14, fontWeight: 600, cursor: "pointer", outline: "none" },
+  chipOn: { border: `1.5px solid ${BLUE}`, background: BLUE_SOFT, color: INK },
   tapHint: { textAlign: "center", fontSize: 13, color: "#94a3b8", marginTop: 16 },
   optTag: { color: "#9aa1ad", fontWeight: 500, fontStyle: "italic" },
 
@@ -1139,7 +1181,7 @@ const CSS = `
 .og-exam-grid button{-webkit-tap-highlight-color:transparent}
 .og-exam-grid button:focus{outline:none}
 .og-exam-grid button:focus-visible{outline:none;box-shadow:0 0 0 2px ${ACCENT}44}
-/* Options (text rows + SVG tiles): border/highlight is FULLY state-driven —
+/* Options (text rows + SVG tiles): border/highlight is FULLY state-driven -
    grey/plain when unselected, blue only when actually chosen. Never let a
    focus/keyboard/tap ring make an unselected option look boxed or selected. */
 .og-exam-grid .og-svgc:focus,.og-exam-grid .og-svgc:focus-visible,
@@ -1148,7 +1190,7 @@ const CSS = `
 .og-opt{transition:background .12s ease;background:transparent}
 .og-opt:hover{background:#f7f9fc}
 /* The radio ring answers to the SELECTED state and nothing else. Hover, focus,
-   keyboard focus and the mid-tap active state must never darken one ring —
+   keyboard focus and the mid-tap active state must never darken one ring -
    a single dark circle among four reads to a student as the marked answer. */
 .og-exam-grid .og-radio{border-color:#8d97a8 !important;box-shadow:none !important;outline:none !important}
 .og-exam-grid .og-radio.on{border-color:${BLUE} !important;box-shadow:0 0 0 3px ${BLUE}1f !important}
@@ -1160,7 +1202,7 @@ const CSS = `
 .og-exam-grid .og-opt:focus-visible .og-radio.on,.og-exam-grid .og-opt:active .og-radio.on,
 .og-exam-grid .og-svgc:hover .og-radio.on,.og-exam-grid .og-svgc:focus .og-radio.on,
 .og-exam-grid .og-svgc:focus-visible .og-radio.on,.og-exam-grid .og-svgc:active .og-radio.on{border-color:${BLUE} !important}
-/* scale visual (SVG) matrix cells + options to fit — no giant grids / scrolling */
+/* scale visual (SVG) matrix cells + options to fit - no giant grids / scrolling */
 .og-exam-grid .og-mcell svg,.og-exam-grid .og-svgh svg{width:100% !important;height:auto !important;display:block}
 .og-exam-grid .og-mfig svg{max-width:200px !important;height:auto !important;display:block}
 @media (max-width: 1040px){
