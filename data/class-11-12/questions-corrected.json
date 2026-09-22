@@ -437,11 +437,11 @@
         {
           "text": "Which word does NOT belong in the group?",
           "options": [
-            "Physics",
-            "Chemistry",
-            "Biology",
-            "History",
-            "Mathematics"
+            "Telescope",
+            "Microscope",
+            "Periscope",
+            "Thermometer",
+            "Binoculars"
           ],
           "type": "choice4",
           "correctIndex": 3,
