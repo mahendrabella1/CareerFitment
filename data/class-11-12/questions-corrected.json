@@ -423,15 +423,15 @@
           "subdomain": "Logical Reasoning"
         },
         {
-          "text": "Transparent : Clear :: Ambiguous : ?",
+          "text": "Rigid : Flexible :: Chaotic : ?",
           "options": [
-            "Certain",
-            "Confusing",
-            "Accurate",
-            "Simple"
+            "Random",
+            "Disorderly",
+            "Systematic",
+            "Complex"
           ],
           "type": "choice4",
-          "correctIndex": 1,
+          "correctIndex": 2,
           "subdomain": "Verbal Reasoning"
         },
         {
