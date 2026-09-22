@@ -850,40 +850,18 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
     const canSelect = currentSelections.length < maxSelections;
     // Career Selector's two "up to THREE" questions (career_selector:1/2)
     // each pick from the same 210-career master list — a one-per-row
-    // checkbox list turned that into a very long vertical scroll. Horizontal
-    // wrapping chips (no checkbox glyph, the chip's own fill/border is the
-    // "on" state) pack the same options into a few lines instead. Scoped to
-    // just these two question ids on purpose — every other multi-select in
-    // the app (short option counts, longer descriptive option text) stays
-    // the original checkbox-row layout, which reads better for those.
-    const useChips = q.id === "career_selector:1" || q.id === "career_selector:2";
-    if (useChips) {
-      return (
-        <div>
-          <div style={S.chipList}>
-            {opts.map((o, i) => {
-              const isSelected = currentSelections.includes(String(i));
-              const label = o?.replace(/^\d+\)\s*/, "") ?? "";
-              return (
-                <button key={i} className="og-chip" style={{ ...S.chip, ...(isSelected ? S.chipOn : {}), opacity: !isSelected && !canSelect ? 0.4 : 1, pointerEvents: !isSelected && !canSelect ? "none" : "auto" }} onMouseDown={(e) => e.preventDefault()} onClick={() => {
-                  if (isSelected) {
-                    const newSelections = currentSelections.filter((x: string) => x !== String(i));
-                    onChange(JSON.stringify(newSelections));
-                  } else if (canSelect) {
-                    const newSelections = [...currentSelections, String(i)];
-                    onChange(JSON.stringify(newSelections));
-                  } else {
-                    alert(`Maximum ${maxSelections} selection${maxSelections > 1 ? "s" : ""} allowed`);
-                  }
-                }}>
-                  {label}
-                </button>
-              );
-            })}
-          </div>
-          {maxSelections !== Infinity && <div style={{ padding: "12px 2px 0", fontSize: 12, color: "#666" }}>{currentSelections.length} of {maxSelections} selected</div>}
-        </div>
-      );
+    // checkbox list (and, before that, wrapped chips) both rendered all 210
+    // inline, making the PAGE itself very long/heavy. A collapsed
+    // search-dropdown fixes that: closed by default (just your up-to-3 picks
+    // as removable tags), and the full list only appears inside its own
+    // small panel when you click in — that panel scrolls internally, the
+    // page doesn't have to. Scoped to just these two question ids on
+    // purpose — every other multi-select in the app (short option counts,
+    // longer descriptive option text) stays the original checkbox-row
+    // layout, which reads better for those.
+    const useDropdown = q.id === "career_selector:1" || q.id === "career_selector:2";
+    if (useDropdown) {
+      return <CareerMultiPicker opts={opts} value={value} maxSelections={maxSelections} onChange={onChange} />;
     }
     return (
       <div style={S.optList}>
@@ -932,6 +910,84 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
           </button>
         );
       })}
+    </div>
+  );
+}
+
+/**
+ * A collapsed search-dropdown for picking up to `maxSelections` options out
+ * of a very long list (career_selector's 210-career master list) without
+ * ever rendering all of them inline in the page. Closed state shows only
+ * the current picks as removable tags plus a search box; opening it drops a
+ * small panel with its own internal scroll (never the page) listing
+ * whatever matches the typed search, empty search showing everything.
+ */
+function CareerMultiPicker({ opts, value, maxSelections, onChange }: { opts: string[]; value: string; maxSelections: number; onChange: (v: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const boxRef = useRef<HTMLDivElement>(null);
+  const currentSelections: string[] = value ? JSON.parse(value) : [];
+  const canSelect = currentSelections.length < maxSelections;
+
+  useEffect(() => {
+    function onDocMouseDown(e: MouseEvent) {
+      if (boxRef.current && !boxRef.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onDocMouseDown);
+    return () => document.removeEventListener("mousedown", onDocMouseDown);
+  }, []);
+
+  function select(i: number) {
+    if (!canSelect) return;
+    onChange(JSON.stringify([...currentSelections, String(i)]));
+    setSearch("");
+    if (currentSelections.length + 1 >= maxSelections) setOpen(false);
+  }
+  function remove(i: number) {
+    onChange(JSON.stringify(currentSelections.filter((x) => x !== String(i))));
+  }
+
+  const needle = search.trim().toLowerCase();
+  const filtered = opts
+    .map((o, i) => ({ o, i }))
+    .filter(({ o, i }) => !currentSelections.includes(String(i)) && (!needle || o.toLowerCase().includes(needle)));
+
+  return (
+    <div ref={boxRef} style={{ position: "relative" }}>
+      <div style={S.pickerBox} onClick={() => canSelect && setOpen(true)}>
+        {currentSelections.map((idxStr) => {
+          const i = parseInt(idxStr, 10);
+          return (
+            <span key={i} style={S.pickerTag}>
+              {opts[i]}
+              <button type="button" style={S.pickerTagX} onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); remove(i); }}>×</button>
+            </span>
+          );
+        })}
+        {canSelect && (
+          <input
+            style={S.pickerInput}
+            placeholder={currentSelections.length === 0 ? "Type to search and select…" : "Add another…"}
+            value={search}
+            onFocus={() => setOpen(true)}
+            onChange={(e) => { setSearch(e.target.value); setOpen(true); }}
+          />
+        )}
+      </div>
+      <div style={{ padding: "8px 2px 0", fontSize: 12, color: "#666" }}>{currentSelections.length} of {maxSelections} selected</div>
+      {open && canSelect && (
+        <div style={S.pickerPanel}>
+          {filtered.length === 0 ? (
+            <div style={S.pickerEmpty}>No matches</div>
+          ) : (
+            filtered.map(({ o, i }) => (
+              <button key={i} type="button" style={S.pickerRow} onMouseDown={(e) => e.preventDefault()} onClick={() => select(i)}>
+                {o}
+              </button>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -1045,11 +1101,15 @@ const S: Record<string, React.CSSProperties> = {
   radioDot: { width: 10, height: 10, borderRadius: "50%", background: BLUE },
   optLabel: { fontSize: 15, color: "#3a4356", lineHeight: 1.4 },
   optLabelOn: { color: INK, fontWeight: 600 },
-  // Career Selector's two 210-option "up to THREE" questions only — see the
-  // useChips condition in QuestionInput.
-  chipList: { display: "flex", flexWrap: "wrap", gap: 10, paddingTop: 4 },
-  chip: { display: "inline-flex", alignItems: "center", padding: "10px 18px", borderRadius: 999, border: `1.5px solid ${LINE}`, background: "#fff", color: "#3a4356", fontSize: 14, fontWeight: 600, cursor: "pointer", outline: "none" },
-  chipOn: { border: `1.5px solid ${BLUE}`, background: BLUE_SOFT, color: INK },
+  // Career Selector's two 210-option "up to THREE" questions only — see
+  // CareerMultiPicker / the useDropdown condition in QuestionInput.
+  pickerBox: { display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8, minHeight: 48, padding: "8px 12px", border: `1.5px solid ${LINE}`, borderRadius: 12, background: "#fff", cursor: "text" },
+  pickerTag: { display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 8px 6px 12px", borderRadius: 999, background: BLUE_SOFT, color: INK, fontSize: 13.5, fontWeight: 600 },
+  pickerTagX: { display: "grid", placeItems: "center", width: 18, height: 18, borderRadius: "50%", border: "none", background: "rgba(0,0,0,.08)", color: INK, fontSize: 13, lineHeight: 1, cursor: "pointer" },
+  pickerInput: { flex: 1, minWidth: 140, border: "none", outline: "none", fontSize: 14.5, color: INK, background: "transparent" },
+  pickerPanel: { position: "absolute", zIndex: 20, top: "calc(100% + 6px)", left: 0, right: 0, maxHeight: 280, overflowY: "auto", background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12, boxShadow: "0 12px 30px rgba(20,20,40,.14)", padding: 6 },
+  pickerRow: { display: "block", width: "100%", textAlign: "left", padding: "9px 12px", border: "none", background: "transparent", borderRadius: 8, fontSize: 14, color: "#3a4356", cursor: "pointer" },
+  pickerEmpty: { padding: "12px 12px", fontSize: 13, color: "#9aa1ad" },
   tapHint: { textAlign: "center", fontSize: 13, color: "#94a3b8", marginTop: 16 },
   optTag: { color: "#9aa1ad", fontWeight: 500, fontStyle: "italic" },
 
