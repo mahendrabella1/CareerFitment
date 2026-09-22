@@ -129,7 +129,7 @@ type FieldSpec = { field: string; kind: FieldKind };
 // string IS the number itself, so no special "scale" kind is needed).
 const SUBJECT_FIT_FIELDS: Record<number, FieldSpec> = {
   0: { field: "currentStream", kind: "stream" },
-  1: { field: "currentSubjects", kind: "multi" },
+  1: { field: "currentSubjects", kind: "text" },
   2: { field: "enjoyedSubject", kind: "text" },
   3: { field: "difficultSubject", kind: "text" },
   4: { field: "academicConfidence", kind: "index" },
@@ -260,7 +260,19 @@ function convertAnswersToClass11Format(answers: Record<string, string>, chosenSe
     } else if (spec.kind === "index") {
       target[spec.field] = optionIndex;
     } else if (opts) {
-      target[spec.field] = opts[optionIndex] ?? "";
+      // subject_fit:1 ("Which subjects are you currently studying?") is a
+      // single-select over 4 broad categories, but SUBJECT_CLUSTER_AFFINITY
+      // in careerFitEngine1112.ts still matches individual subject names -
+      // the bank's optional expandsTo field (one subject array per option)
+      // lets the picked category expand back into its real subjects here,
+      // same as the multi-select branch above used to for this field.
+      const expandsTo = Array.isArray(raw?.expandsTo) ? (raw!.expandsTo as unknown[]) : null;
+      if (expandsTo) {
+        const items = expandsTo[optionIndex];
+        target[spec.field] = Array.isArray(items) ? items.filter((x): x is string => typeof x === "string") : [];
+      } else {
+        target[spec.field] = opts[optionIndex] ?? "";
+      }
     }
   });
 

@@ -1099,7 +1099,7 @@
           "type": "choice_single"
         },
         {
-          "text": "Which subjects are you currently studying? Select all that apply.",
+          "text": "Which subjects are you currently studying?",
           "options": [
             "Sciences: Physics, Chemistry, Mathematics, Biology, Computer Science / IP / IT",
             "Commerce: Accountancy, Business Studies, Economics, Mathematics",
@@ -1112,8 +1112,7 @@
             ["History", "Political Science", "Geography", "Psychology", "Sociology"],
             ["Languages (English/Hindi/Regional)", "Other"]
           ],
-          "type": "multiple",
-          "instruction": "Select all that apply."
+          "type": "choice_single"
         },
         {
           "text": "Which subject do you enjoy the most?",
