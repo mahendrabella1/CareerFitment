@@ -890,6 +890,26 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
     );
   }
 
+  // subject_fit:2 ("Which subject do you enjoy the most?") as a plain native
+  // dropdown instead of a 15-row radio list — a single-choice pick from a
+  // modest, familiar list of subject names doesn't need the search-combobox
+  // built for Career Selector's 210-career questions, just a normal select.
+  if (q.id === "subject_fit:2") {
+    const opts = q.options ?? [];
+    return (
+      <select
+        style={S.subjectSelect}
+        value={value || ""}
+        onChange={(e) => onChange(e.target.value)}
+      >
+        <option value="" disabled>Select a subject…</option>
+        {opts.map((o, i) => (
+          <option key={i} value={String(i)}>{o}</option>
+        ))}
+      </select>
+    );
+  }
+
   // Radio rows for every text single-select (Yes/No, choose-one, most-like).
   const isYesNo = q.type === "yesno";
   const opts = isYesNo ? ["Yes", "No"] : (q.options ?? []);
@@ -1115,6 +1135,8 @@ const S: Record<string, React.CSSProperties> = {
   pickerPanel: { position: "absolute", zIndex: 20, top: "calc(100% + 6px)", left: 0, right: 0, maxHeight: 280, overflowY: "auto", background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12, boxShadow: "0 12px 30px rgba(20,20,40,.14)", padding: 6 },
   pickerRow: { display: "block", width: "100%", textAlign: "left", padding: "9px 12px", border: "none", background: "transparent", borderRadius: 8, fontSize: 14, color: "#3a4356", cursor: "pointer" },
   pickerEmpty: { padding: "12px 12px", fontSize: 13, color: "#9aa1ad" },
+  // subject_fit:2 ("Which subject do you enjoy the most?") only.
+  subjectSelect: { width: "100%", minHeight: 48, padding: "10px 14px", border: `1.5px solid ${LINE}`, borderRadius: 12, background: "#fff", fontSize: 15, color: INK, cursor: "pointer", outline: "none" },
   tapHint: { textAlign: "center", fontSize: 13, color: "#94a3b8", marginTop: 16 },
   optTag: { color: "#9aa1ad", fontWeight: 500, fontStyle: "italic" },
 
