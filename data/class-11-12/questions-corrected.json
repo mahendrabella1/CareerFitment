@@ -5,10 +5,10 @@
         {
           "text": "You are given a difficult problem for which your teacher has not provided a standard method. What would you most naturally do first?",
           "options": [
-            "Think about it independently and develop my own approach.",
-            "Search for examples of how similar problems have been solved.",
-            "Discuss it with classmates and compare approaches.",
-            "Start experimenting and see what happens."
+            "Think independently.",
+            "Find similar examples.",
+            "Discuss with others.",
+            "Experiment and test."
           ],
           "mapping": [
             "I",
@@ -18,12 +18,12 @@
           ]
         },
         {
-          "text": "Suppose you are learning about artificial intelligence. Which part would interest you most?",
+          "text": "Suppose you are learning about artificial intelligence. What interests you most about AI?",
           "options": [
-            "Understanding the theory and principles behind AI.",
-            "Seeing how AI is used in real-world applications.",
-            "Trying an AI tool and experimenting with what it can do.",
-            "Discussing how AI could affect society and people's lives."
+            "AI theory and principles.",
+            "Real-world AI applications.",
+            "Experimenting with AI tools.",
+            "AI's impact on society."
           ],
           "mapping": [
             "N",
@@ -33,12 +33,12 @@
           ]
         },
         {
-          "text": "Your team must choose between two project ideas. One is safer and more likely to succeed; the other is more ambitious but uncertain. What would you most likely consider first?",
+          "text": "Your team must choose between two project ideas. One is safer and likely to succeed; the other is more ambitious but uncertain. What would you consider first?",
           "options": [
-            "Which option has stronger evidence and logic.",
-            "Which option the team members feel more comfortable with.",
-            "Whether we can combine the strengths of both options.",
-            "Whether the ambitious option is worth taking the risk."
+            "The project with stronger evidence and logic.",
+            "The project my team members feel more comfortable with.",
+            "The project where I can combine the strengths of both options.",
+            "The ambitious project if it is worth the risk."
           ],
           "mapping": [
             "T",
@@ -48,12 +48,12 @@
           ]
         },
         {
-          "text": "You have three major assignments, coaching/classes and an upcoming examination in the same week. Which approach sounds most like you?",
+          "text": "You have 3 major assignments, 1 coaching/classes and an upcoming examination in the same week.",
           "options": [
-            "Create a detailed timetable and follow it.",
-            "Set priorities but adjust the plan as circumstances change.",
-            "Complete whichever task feels most urgent at the time.",
-            "Work intensely when deadlines become closer."
+            "Follow a timetable.",
+            "Set priorities and adapt.",
+            "Do the most urgent task.",
+            "Work harder near deadlines."
           ],
           "mapping": [
             "J",
@@ -63,12 +63,12 @@
           ]
         },
         {
-          "text": "After spending a full day at school, which situation would generally make you feel more refreshed?",
+          "text": "After spending a full day at school, what would generally make you feel more refreshed?",
           "options": [
-            "Spending time talking or doing something with friends.",
-            "Having quiet time by myself.",
-            "Working on something that personally interests me.",
-            "It depends on the day."
+            "Time with friends.",
+            "Quiet time alone.",
+            "Personal interests.",
+            "Depends on the day."
           ],
           "mapping": [
             "E",
@@ -80,10 +80,10 @@
         {
           "text": "You spend several days preparing a project and receive a much lower evaluation than expected. What would be your most natural response?",
           "options": [
-            "Analyse exactly where I went wrong.",
-            "Ask the evaluator or teacher for detailed feedback.",
-            "Feel disappointed but try a different approach next time.",
-            "Move on quickly and focus on the next task."
+            "Analyse what went wrong.",
+            "Ask for feedback from a teacher or evaluator.",
+            "Try a different approach next time.",
+            "Move on quickly to the next task."
           ],
           "mapping": [
             "T",
@@ -93,7 +93,7 @@
           ]
         },
         {
-          "text": "On a scale of 1-10, how comfortable are you with making an important decision without simply following what your friends or family expect you to do? This is particularly important in Class 11 because career/stream decisions are often influenced by parents, peers and social expectations.",
+          "text": "On a scale of 1-10, how comfortable are you with making an important decision without simply following what your friends or family expect you to do?",
           "type": "scale",
           "scaleLabel_min": "Not comfortable at all",
           "scaleLabel_max": "Very comfortable"
