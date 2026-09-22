@@ -145,12 +145,12 @@
         {
           "text": "If a newspaper wrote a headline about your ₹10,000 project at the end of the year, which headline would make you proudest?",
           "options": [
-            "\"Student Builds Working Prototype to Solve Everyday Practical Problem\"",
-            "\"High School Research Study Uncovers Key Insights into Local Issue\"",
-            "\"Original Creative Campaign Captivates School with Stunning Visuals\"",
-            "\"Student-Led Initiative Transforms Peer Wellbeing and Community Support\"",
-            "\"Mini-Startup Generated from ₹10,000 Grant Turns Profitable in 6 Months\"",
-            "\"Student Designs Flawless Management Framework used across School Departments\""
+            "Student Builds Working Prototype to Solve Everyday Practical Problem",
+            "High School Research Study Uncovers Key Insights into Local Issue",
+            "Original Creative Campaign Captivates School with Stunning Visuals",
+            "Student-Led Initiative Transforms Peer Wellbeing and Community Support",
+            "Mini-Startup Generated from ₹10,000 Grant Turns Profitable in 6 Months",
+            "Student Designs Flawless Management Framework used across School Departments"
           ],
           "mapping": [
             "R",
@@ -240,7 +240,7 @@
         {
           "text": "You get a completely free afternoon to explore one topic on YouTube, Coursera, or a podcast. Which topic are you clicking on first?",
           "options": [
-            "\"How It's Made\" or DIY teardowns—understanding the mechanics of engines, robotics, or hardware.",
+            "How It's Made or DIY teardowns—understanding the mechanics of engines, robotics, or hardware.",
             "Deep-dive scientific breakdowns—unraveling quantum physics, neurobiology, or complex global trends.",
             "Behind-the-scenes creative breakdowns—film editing techniques, music production secrets, or graphic design trends.",
             "Human psychology or personal growth—understanding why people think the way they do and how to help them thrive.",
@@ -297,12 +297,12 @@
         {
           "text": "Which statement sounds most like you?",
           "options": [
-            "\"I like working with things.\"",
-            "\"I like understanding why things happen.\"",
-            "\"I like creating and expressing ideas.\"",
-            "\"I like working with and helping people.\"",
-            "\"I like influencing, leading or building things.\"",
-            "\"I like organizing information and making systems work efficiently.\""
+            "I like working with things.",
+            "I like understanding why things happen.",
+            "I like creating and expressing ideas.",
+            "I like working with and helping people.",
+            "I like influencing, leading or building things.",
+            "I like organizing information and making systems work efficiently."
           ],
           "mapping": [
             "R",
