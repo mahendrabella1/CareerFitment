@@ -437,14 +437,14 @@
         {
           "text": "Which word does NOT belong in the group?",
           "options": [
-            "Telescope",
-            "Microscope",
-            "Periscope",
-            "Thermometer",
-            "Binoculars"
+            "Monitor",
+            "Speaker",
+            "Keyboard",
+            "Printer",
+            "Projector"
           ],
           "type": "choice4",
-          "correctIndex": 3,
+          "correctIndex": 2,
           "subdomain": "Verbal Reasoning"
         },
         {
