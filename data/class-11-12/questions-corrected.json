@@ -276,14 +276,14 @@
           ]
         },
         {
-          "text": "If you could build serious real-world experience right now, what area would you dive into?",
+          "text": "You get a free month to explore a career area. Which would you choose?",
           "options": [
-            "Robotics, machine tuning, and physical fabrication.",
-            "Data modeling, algorithmic research, and deep-dive analysis.",
-            "Brand identity, motion graphics, and creative production.",
-            "Mental health advocacy, youth mentoring, and community aid.",
-            "Startup / pitching business ventures, marketing, and team leadership.",
-            "Financial planning, resource management, and clean data systems."
+            "Engineering/technology projects.",
+            "Scientific research/data analysis.",
+            "Design/media/creative work.",
+            "Psychology/education/healthcare/community work.",
+            "Business/management/entrepreneurship.",
+            "Finance/accounting/business operations."
           ],
           "mapping": [
             "R",
