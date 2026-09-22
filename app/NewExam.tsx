@@ -813,6 +813,26 @@ function Donut({ pct }: { pct: number }) {
   );
 }
 
+/**
+ * Many options across this bank are written "Label: rest of the option" or
+ * "Label — rest of the option" (e.g. "Building: Coding, assembling, or
+ * fixing something.") - bolds just the short leading label so it reads as
+ * a heading within the row, not the whole sentence. Anchored to the START
+ * of the string and capped at 40 chars before the separator, so a colon or
+ * dash that shows up naturally deep in an ordinary sentence is never
+ * mistaken for a label.
+ */
+function OptionLabelText({ text }: { text: string }) {
+  const m = text.match(/^([^.:—]{1,40}?)\s*(:|—)\s*(.*)$/s);
+  if (!m) return <>{text}</>;
+  const [, lead, sep, rest] = m;
+  return (
+    <>
+      <b>{lead}{sep}</b>{rest ? " " + rest : ""}
+    </>
+  );
+}
+
 /* ------------------------- per-type question input ---------------------- */
 function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: (v: string) => void }) {
   if (q.type === "slider" || q.type === "scale") {
@@ -890,7 +910,7 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
               }
             }}>
               <Checkbox on={isSelected} />
-              <span style={{ ...S.optLabel, ...(isSelected ? S.optLabelOn : {}) }}>{label}</span>
+              <span style={{ ...S.optLabel, ...(isSelected ? S.optLabelOn : {}) }}><OptionLabelText text={label} /></span>
             </button>
           );
         })}
@@ -925,7 +945,7 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
         return (
           <button key={i} className="og-opt" style={{ ...S.optRow, ...(sel ? S.optRowOn : {}) }} onMouseDown={(e) => e.preventDefault()} onClick={() => onChange(val)}>
             <Radio on={sel} />
-            <span style={{ ...S.optLabel, ...(sel ? S.optLabelOn : {}) }}>{label}</span>
+            <span style={{ ...S.optLabel, ...(sel ? S.optLabelOn : {}) }}><OptionLabelText text={label} /></span>
           </button>
         );
       })}
