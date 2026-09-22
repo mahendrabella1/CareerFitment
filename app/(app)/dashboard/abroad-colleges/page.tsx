@@ -12,7 +12,7 @@ export default function Page() {
 
   return (
     <ModuleShell title="Abroad Colleges" icon={Globe2} accent="teal"
-      description="Top global universities with QS World Ranking, indicative annual tuition and popular courses. Rankings: QS World University Rankings; fees are approximate — check official sites.">
+      description="Top global universities with QS World Ranking, indicative annual tuition and popular courses. Rankings: QS World University Rankings; fees are approximate - check official sites.">
       <Card className="p-4 sm:p-5">
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search by university, country or course…"
           className="w-full mb-4 px-4 py-2.5 rounded-lg border border-line bg-white text-sm focus:outline-none focus:ring-2 focus:ring-ink/10 focus:border-ink-4" />

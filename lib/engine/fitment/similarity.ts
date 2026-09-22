@@ -10,7 +10,7 @@ import {
 const RIASEC_LETTERS: RiasecLetter[] = ["R", "I", "A", "S", "E", "C"];
 
 /**
- * Interest similarity — cosine between the two 6-D RIASEC vectors (blueprint
+ * Interest similarity - cosine between the two 6-D RIASEC vectors (blueprint
  * §8: interest is the workhorse matcher). Cosine captures *shape* (which
  * themes dominate) rather than absolute level, which is what Holland fit is.
  * Returns 0-1.
@@ -31,7 +31,7 @@ export function riasecCosine(user: RiasecVector, career: RiasecVector): number {
 }
 
 /**
- * Aptitude similarity — threshold satisfaction (§8). For each required skill,
+ * Aptitude similarity - threshold satisfaction (§8). For each required skill,
  * min(1, user/required): under-capability is penalised, over-capability capped
  * at 1. Averaged over the skills the career actually requires. Skills the user
  * didn't test are treated as "just meeting" (1) rather than failing, so a
@@ -57,7 +57,7 @@ export function aptitudeThresholdSat(
   return sum / skills.length;
 }
 
-/** Big Five similarity — 1 − normalised euclidean distance over shared traits. */
+/** Big Five similarity - 1 − normalised euclidean distance over shared traits. */
 export function bigFiveSim(
   user: BigFiveVector,
   ideal: BigFiveVector | undefined
@@ -74,7 +74,7 @@ export function bigFiveSim(
   return clamp01(1 - Math.sqrt(sq / shared.length));
 }
 
-/** MI similarity — 1 − normalised distance over shared intelligences. */
+/** MI similarity - 1 − normalised distance over shared intelligences. */
 export function miSim(user: MiVector, ideal: MiVector | undefined): number | null {
   if (!ideal) return null;
   const keys = Object.keys(ideal) as (keyof MiVector)[];
@@ -89,7 +89,7 @@ export function miSim(user: MiVector, ideal: MiVector | undefined): number | nul
 }
 
 /**
- * Values similarity — overlap of the user's dominant values with the values a
+ * Values similarity - overlap of the user's dominant values with the values a
  * career rewards. Uses the top-K user values weighted by rank so the strongest
  * driver counts most. Returns 0-1.
  */
@@ -112,7 +112,7 @@ export function valuesSim(
   return total === 0 ? null : clamp01(hit / total);
 }
 
-/** EI similarity — how well the user's composite meets a role's minimum. */
+/** EI similarity - how well the user's composite meets a role's minimum. */
 export function eiSim(userEi: number | null, eiMin: number | undefined): number | null {
   if (eiMin === undefined || userEi === null) return null;
   if (eiMin <= 0) return 1;
@@ -120,7 +120,7 @@ export function eiSim(userEi: number | null, eiMin: number | undefined): number 
 }
 
 /**
- * Academic feasibility — a soft gate. If the career names entry subjects, use
+ * Academic feasibility - a soft gate. If the career names entry subjects, use
  * the user's mean score on academic sub-traits that match those subjects
  * (best-effort name overlap); otherwise fall back to overall academic mean.
  */

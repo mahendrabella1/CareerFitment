@@ -13,7 +13,7 @@ const TYPE_ICON: Record<ProgramType, LucideIcon> = {
   Competition: Trophy, 'Hands-on': Wrench, Internship: Building2,
 };
 
-// One restrained accent per type — a small dot on a neutral badge, not a colour block.
+// One restrained accent per type - a small dot on a neutral badge, not a colour block.
 const TYPE_DOT: Record<ProgramType, string> = {
   'Job Simulation': '#E0242E', Course: '#2D7FF0', Research: '#9B51E0',
   Competition: '#B45309', 'Hands-on': '#27AE60', Internship: '#0A5E58',
@@ -102,11 +102,11 @@ export default function Page() {
       </div>
 
       {rows.length === 0 && (
-        <p className="text-sm text-ink-4 py-8 text-center">No programs match these filters — try clearing the search or choosing “All”.</p>
+        <p className="text-sm text-ink-4 py-8 text-center">No programs match these filters - try clearing the search or choosing “All”.</p>
       )}
 
       <p className="text-[11px] text-ink-4 mt-6 leading-relaxed">
-        All links open the official program pages. Programs are free; some (e.g. NASA, ISRO, Smithsonian) are application-based and may have age or region eligibility — always confirm on the official page. Younger students should take guided programs with a parent or teacher.
+        All links open the official program pages. Programs are free; some (e.g. NASA, ISRO, Smithsonian) are application-based and may have age or region eligibility - always confirm on the official page. Younger students should take guided programs with a parent or teacher.
       </p>
     </ModuleShell>
   );

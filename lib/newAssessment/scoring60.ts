@@ -42,7 +42,7 @@ const MBTI_TRAIT: Record<string, string> = {
 };
 
 // Student-facing wording for the same eight traits. The formal names above
-// stay in the data — the career library matches on them — so this map is
+// stay in the data - the career library matches on them - so this map is
 // only ever used for text a student reads.
 const PLAIN_TRAIT: Record<string, string> = {
   Extraversion: "energy from people and action",
@@ -68,7 +68,7 @@ export function isV2Bank(stage: StageKey, chosenSets: Record<Category, string>):
 
 /**
  * Accumulate a per-option point vector. `max` tracks the best a respondent
- * could have scored on that dimension, so raw/max is a true 0-100 — this is
+ * could have scored on that dimension, so raw/max is a true 0-100 - this is
  * the "Dimension Normalization" step of the workbook flow.
  */
 function tally(
@@ -79,7 +79,7 @@ function tally(
     const vecs = q[field] as Vec[] | undefined;
     if (!Array.isArray(vecs)) { picks.push(-1); return; }
     // `max`: the best this question could award each dimension.
-    // `avg`: what it awards on average — i.e. the baseline a respondent who
+    // `avg`: what it awards on average - i.e. the baseline a respondent who
     //        picked at random would accumulate. That is the fair comparison
     //        for ipsative scoring; `max` over-counts, because it takes every
     //        dimension's best option independently when only one can be picked.
@@ -113,7 +113,7 @@ const pct = (raw: Vec, max: Vec, k: string) =>
  *
  * THIS EXISTS TO STOP THE REPORT PRINTING 100. The previous mapping was
  * `share / (2 x expected)` hard-clamped at 100, which meant any dimension
- * picked at twice its expected rate printed a perfect score — and on a
+ * picked at twice its expected rate printed a perfect score - and on a
  * forced-choice bank with 8 options, picking one thing 25% of the time does
  * that. Whole sections of the report came out saturated at 100, which tells a
  * student nothing: if Numerical, Verbal, Logical, Abstract, Spatial, Attention
@@ -129,7 +129,7 @@ const pct = (raw: Vec, max: Vec, k: string) =>
  * A 100 is now unreachable by construction rather than by tuning, and the gaps
  * between dimensions survive instead of being flattened against a ceiling.
  *
- * These are NOT percentiles and must never be labelled as such — there is no
+ * These are NOT percentiles and must never be labelled as such - there is no
  * norm sample behind them. They are descriptive scores within this student's
  * own profile: "pronounced for you", not "higher than N% of students". See
  * SCORE_BANDS for the wording the report is allowed to use.
@@ -159,7 +159,7 @@ export const bandLabel = (score: number) =>
  * Ipsative normalisation for the forced-choice dimensions (RIASEC, clusters,
  * strengths, motivators, intelligences). The workbook's logic tab scores these
  * as a SHARE of the points awarded ("Total = 128 … Investigative = 31/128"),
- * not against a theoretical maximum — with one pick per question, a dimension
+ * not against a theoretical maximum - with one pick per question, a dimension
  * that only appears twice would otherwise hit 100% off a single answer.
  *
  * The baseline each share is judged against is the RANDOM-RESPONDER share
@@ -169,7 +169,7 @@ export const bandLabel = (score: number) =>
  * Scoring `stretch`× your expected share reads as 100.
  *
  * Dimensions the bank barely measures are then shrunk toward the baseline in
- * proportion to how much evidence there is for them — two mentions cannot
+ * proportion to how much evidence there is for them - two mentions cannot
  * produce the same confident 100 as twelve.
  */
 function shareRank(
@@ -193,7 +193,7 @@ function shareRank(
       //    expected share into the result ("actual * ev + expected * (1 - ev)")
       //    gave every unpicked dimension a floor. Health Science is offered on
       //    barely any interest option in this bank, and that floor alone scored
-      //    it 47 for a student who never once chose it — a career
+      //    it 47 for a student who never once chose it - a career
       //    recommendation manufactured out of nothing.
       //
       //  - Rarity must not be rewarded. Dividing by a rare dimension's own tiny
@@ -202,7 +202,7 @@ function shareRank(
       //    common one.
       //
       // Flooring the denominator at the even split fixes both. The cost is that
-      // a rarely-offered dimension can no longer reach 100 — which is honest,
+      // a rarely-offered dimension can no longer reach 100 - which is honest,
       // since the bank never gave the student enough chances to show it.
       const denom = Math.max(expected, even);
       // `stretch` now sets where the midpoint of the curve sits rather than
@@ -259,17 +259,17 @@ export function scoreAssessment60(
     const total = ra + rb;
     if (total === 0) return 5;
     // Each axis has only 3 forced-choice questions, every option scoring
-    // only ONE side (2 or 3 points). Answering the same side on all 3 —
-    // the common case, not a rare one — always made rb (or ra) exactly 0,
+    // only ONE side (2 or 3 points). Answering the same side on all 3 -
+    // the common case, not a rare one - always made rb (or ra) exactly 0,
     // so the raw ratio was always 1.0: a flat, always-on 100%/0% for most
     // students regardless of whether they picked the mild or the strongest
     // option each time. Shrink toward the midpoint by roughly one
-    // question's worth of doubt — same correction eiDim below applies for
-    // the identical small-sample problem — so a consistent lean reads as
+    // question's worth of doubt - same correction eiDim below applies for
+    // the identical small-sample problem - so a consistent lean reads as
     // strong (~80-90%) rather than false 100% certainty.
     const prior = 1.5;
     const ratio = (ra + prior) / (total + prior * 2);
-    // One decimal place, not a bare integer — rounding to whole 0-10 steps
+    // One decimal place, not a bare integer - rounding to whole 0-10 steps
     // meant the displayed percentage (score*10) could only ever land on a
     // multiple of 10 (60%, 70%, 80%...), never a real value like 77% or 89%.
     return Math.round(ratio * 100) / 10;
@@ -305,8 +305,8 @@ export function scoreAssessment60(
   // proportion to how little evidence stands behind it (a standard
   // small-sample/empirical-Bayes correction). One item barely moves the
   // estimate off the student's overall rate; several items move it a long way.
-  // The result is a profile with a readable SHAPE — 91/84/88/76/68 rather than
-  // 100/100/100/100/100 — and 100 becomes unreachable on a short bank, which is
+  // The result is a profile with a readable SHAPE - 91/84/88/76/68 rather than
+  // 100/100/100/100/100 - and 100 becomes unreachable on a short bank, which is
   // the honest outcome.
   //
   // This does not manufacture precision the items don't have: a one-item domain
@@ -351,7 +351,7 @@ export function scoreAssessment60(
     if (style) vark[style] = (vark[style] ?? 0) + 1;
   });
   // Four items, four styles: an even split is 25% each. This is a PREFERENCE
-  // strength, not an ability — "how clear is the pull toward this material",
+  // strength, not an ability - "how clear is the pull toward this material",
   // never "you learn best this way". Two of four items landing on one style
   // used to print 100; the curve makes that read ~67, which is all four items
   // can honestly support.
@@ -369,8 +369,8 @@ export function scoreAssessment60(
 
   /* ---------------- 8. Emotional intelligence -> 5 dimensions ------------ */
   const eiQ = getSet("emotional_intelligence", stage, chosenSets.emotional_intelligence);
-  // Accumulate per dimension. This used to ASSIGN — `eiDim[d] = ...` inside the
-  // loop — so a dimension asked about more than once kept only its last
+  // Accumulate per dimension. This used to ASSIGN - `eiDim[d] = ...` inside the
+  // loop - so a dimension asked about more than once kept only its last
   // question and threw the rest away, and a single item scored at its best
   // option printed a flat 100. Every EI dimension bar in the report was
   // effectively one question wide, and those numbers also fed career matching
@@ -438,8 +438,8 @@ export function scoreAssessment60(
     //   cluster how strongly the student scored the cluster this profession
     //           sits in.
     //
-    // Using votes alone left 44 professions with NO interest signal whatever —
-    // the heaviest dimension simply absent — so they were matched on
+    // Using votes alone left 44 professions with NO interest signal whatever -
+    // the heaviest dimension simply absent - so they were matched on
     // personality and aptitude, which are cluster-blind. That is why the top
     // recommendation agreed with the student's own strongest interest only 43%
     // of the time, and why raising the interest weight alone plateaued: the
@@ -468,7 +468,7 @@ export function scoreAssessment60(
       den += w;
     }
     // Fit is the weighted mean over the dimensions that actually mention this
-    // profession. Coverage is how much of the profile weighs in at all — a
+    // profession. Coverage is how much of the profile weighs in at all - a
     // profession only one dimension knows about must not outrank one the whole
     // profile supports, so coverage is applied relative to the best-covered
     // profession rather than as a small nudge.
@@ -485,7 +485,7 @@ export function scoreAssessment60(
   const matches: AssessmentSummary["matches"] = ranked.slice(0, 6).map(({ p, raw }) => {
     const letter = MAP.professionCluster[p];
     const info = letter ? CLUSTERS[letter] : undefined;
-    // PROFILE ALIGNMENT — how much of this student's weighted profile actually
+    // PROFILE ALIGNMENT - how much of this student's weighted profile actually
     // supports this career. Not a probability of success, and not a percentage
     // of anything: `raw` is already the weighted mean of the dimensions that
     // mention this profession, scaled by how much of the profile weighs in.
@@ -496,7 +496,7 @@ export function scoreAssessment60(
     //   fitmentPct = clamp(round(58 + t * 34 + (raw / maxRaw) * 4), 40, 96)
     //
     // The top match is by definition `raw === maxRaw`, so `t` was always 1 and
-    // the headline number was always exactly 96 — for every student, every
+    // the headline number was always exactly 96 - for every student, every
     // time, no matter what they answered. The bottom of the visible six was
     // pinned to 58 the same way. Those numbers described the ORDER of the list,
     // never the strength of the match, and a student comparing "96%" against a
@@ -541,7 +541,7 @@ export function scoreAssessment60(
       : "Your profile across the eight dimensions is shown below.",
     // Plain-language, because this label is shown to the student (report header,
     // report email). The temperament names it used to carry are no longer
-    // reported — see the note on TRAITS in lib/report/knowledge.ts.
+    // reported - see the note on TRAITS in lib/report/knowledge.ts.
     outcomeLabel: mbtiRanked[0] ? `Strongest trait: ${PLAIN_TRAIT[mbtiRanked[0].name] ?? mbtiRanked[0].name}` : null,
     confidence: aptOf && ci.length ? "high" : "medium",
     matches,
@@ -561,7 +561,7 @@ export function scoreAssessment60(
     radar: [
       { key: "personality", label: "Personality", score: personalityScore },
       { key: "career_interest", label: "Career Interest", score: careerInterestScore },
-      // Ipsative dimensions have no absolute "level" — the spoke reads how
+      // Ipsative dimensions have no absolute "level" - the spoke reads how
       // sharply defined the profile is, i.e. the strongest sub-dimension.
       { key: "multiple_intelligence", label: "Multiple Intelligence", score: miRanked[0]?.score ?? 0 },
       { key: "emotional_intelligence", label: "Emotional Intelligence", score: eiPct ?? 0 },

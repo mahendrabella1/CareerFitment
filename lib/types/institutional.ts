@@ -1,10 +1,10 @@
 /**
- * Institutional links — a school-specific free-signup code, managed from
+ * Institutional links - a school-specific free-signup code, managed from
  * /admin/institutional. The doc ID in Firestore's `institutional_links`
  * collection IS the code (see app/api/institutional/*), so `code` here is a
  * convenience mirror for list rendering, not a separate identity.
  *
- * Always fully free — no per-link pricing. "Expired"/"full" aren't stored
+ * Always fully free - no per-link pricing. "Expired"/"full" aren't stored
  * statuses; a link's live validity is computed at redemption time from
  * `status`, `expiresAt` and `maxStudents`/`usedCount` together (see
  * app/api/institutional/redeem/route.ts).

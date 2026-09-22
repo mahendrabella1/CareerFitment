@@ -40,7 +40,7 @@ const AxisRow: React.FC<{ label: string; left: string; right: string; score: num
   const winnerLabel = rightWins ? right : left;
   const winnerScore = rightWins ? score : 10 - score;
   // The knob sits at the RAW score position on the fixed left-pole(0%) →
-  // right-pole(100%) axis — never reordered — so "57% Extrovert" means the
+  // right-pole(100%) axis - never reordered - so "57% Extrovert" means the
   // knob genuinely sits 57% of the way from Introvert to Extrovert, not an
   // abstract winner-only number. The gradient's solid end tracks whichever
   // side actually won, so the visually "full" half always matches the bold/
@@ -49,7 +49,7 @@ const AxisRow: React.FC<{ label: string; left: string; right: string; score: num
   return (
     <div style={{ marginBottom: 26 }}>
       {/* The winning trait name is the small caption; the axis name (which of
-          the four this is — Energy Source, Information Intake, etc.) plus
+          the four this is - Energy Source, Information Intake, etc.) plus
           its percentage is the big, bold line. */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 3 }}>
         <span style={{ fontSize: 12.5, fontWeight: 700, color: C.muted }}>{winnerLabel}</span>
@@ -115,7 +115,7 @@ export const PersonalityMBTI: React.FC<PersonalityMBTIProps> = ({ a }) => {
   ];
 
   // Which letter each axis actually contributed to the 4-letter code, and by
-  // how much — this is what turns "ENFP" from a label into something explained.
+  // how much - this is what turns "ENFP" from a label into something explained.
   const winners = axes.map((ax) => {
     const posWins = ax.score >= 5;
     return {
@@ -148,7 +148,7 @@ export const PersonalityMBTI: React.FC<PersonalityMBTIProps> = ({ a }) => {
         </div>
       </div>
       <p className="dimlede" style={{ marginTop: 0, marginBottom: 22 }}>
-        That's how <b>{mbtiType}</b> was worked out: each of the four letters comes from an independent question — which side of that scale you picked more often. A score near 5.0/10 means you sit close to the middle and can flex either way; a score near 0 or 10 means a clear, consistent lean. Put the four winning letters together — {winners.map((w) => w.letter).join(" + ")} — and that spells {mbtiType}, {typeInfo.type.toLowerCase()}.
+        That's how <b>{mbtiType}</b> was worked out: each of the four letters comes from an independent question - which side of that scale you picked more often. A score near 5.0/10 means you sit close to the middle and can flex either way; a score near 0 or 10 means a clear, consistent lean. Put the four winning letters together - {winners.map((w) => w.letter).join(" + ")} - and that spells {mbtiType}, {typeInfo.type.toLowerCase()}.
       </p>
 
       <div style={{ background: "#fff", border: `1px solid ${C.line}`, borderRadius: 14, padding: "20px 22px", marginBottom: 20 }}>
@@ -172,13 +172,13 @@ export const PersonalityMBTI: React.FC<PersonalityMBTIProps> = ({ a }) => {
             </li>
             <li>
               {mbtiType[2] === "T"
-                ? "When you decide something, you use logic first — you'd rather be right than keep everyone happy."
-                : "When you decide something, you think about people's feelings first — not just the logic."}
+                ? "When you decide something, you use logic first - you'd rather be right than keep everyone happy."
+                : "When you decide something, you think about people's feelings first - not just the logic."}
             </li>
             <li>
               {mbtiType[0] === "E"
                 ? "You learn best by talking to people, discussing ideas out loud, and trying things in real life."
-                : "You learn best on your own — reading, thinking things through, and taking your time before discussing."}
+                : "You learn best on your own - reading, thinking things through, and taking your time before discussing."}
             </li>
           </ul>
         </div>
@@ -209,15 +209,15 @@ export const PersonalityMBTI: React.FC<PersonalityMBTIProps> = ({ a }) => {
         <ol>
           <li>
             {mbtiType[0] === "E"
-              ? "Before your next big decision, spend 10 quiet minutes thinking it through by yourself first. You usually think out loud with others — this helps you practise thinking it through alone too."
-              : "Share an idea with someone before you've fully worked it out yourself. You usually think things through alone first — this helps you practise thinking out loud too."}
+              ? "Before your next big decision, spend 10 quiet minutes thinking it through by yourself first. You usually think out loud with others - this helps you practise thinking it through alone too."
+              : "Share an idea with someone before you've fully worked it out yourself. You usually think things through alone first - this helps you practise thinking out loud too."}
           </li>
           <li>
             {mbtiType[2] === "T"
               ? "Next time you give someone feedback, start with one honest thing that's going well before you point out the problem. It's a small change that makes the feedback easier to hear."
               : "Next time you face a decision that's necessary but unpopular, write down your plain reasons for it first, then decide. It's easier to stick with a hard decision once your reasons are written down."}
           </li>
-          <li>Ask two people who know you well whether {mbtiType} — {typeInfo.type.toLowerCase()} — actually sounds like you. It's easy to miss things about yourself that people close to you can see clearly.</li>
+          <li>Ask two people who know you well whether {mbtiType} - {typeInfo.type.toLowerCase()} - actually sounds like you. It's easy to miss things about yourself that people close to you can see clearly.</li>
         </ol>
       </div>
     </div>

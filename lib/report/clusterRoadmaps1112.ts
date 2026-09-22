@@ -1,7 +1,7 @@
 /**
- * The rich, 5-phase, 15-year roadmap per standard cluster — the Career
+ * The rich, 5-phase, 15-year roadmap per standard cluster - the Career
  * Selector page's deep-dive, built at the CLUSTER level (16 total, not per
- * domain or per individual career — see careerfit1112.ts's Career1112.cluster
+ * domain or per individual career - see careerfit1112.ts's Career1112.cluster
  * comment for why). Phases follow the "I AM HERE / I CAN STUDY / I CAN
  * SPECIALIZE / I CAN START AS / I CAN GROW INTO" shape the user supplied as
  * a reference sample (their own Financial & Investment Planning roadmap).
@@ -9,7 +9,7 @@
  * Course/degree/professional-qualification names here are real, existing
  * Indian programmes (B.Tech, B.Com, B.Des, BA LLB, MBBS, etc.), cross-checked
  * against the same real typicalDegree fields already used on the 332
- * CAREERS_1112 entries in this cluster — not invented. Role names in each
+ * CAREERS_1112 entries in this cluster - not invented. Role names in each
  * phase are drawn from actual CAREERS_1112 entries belonging to that
  * cluster, so "possible roles" always resolves to something real in the
  * report's own data, not aspirational filler.
@@ -86,7 +86,7 @@ function phase5(senior: string[], leadership: string[], skills: string[]): Clust
 
 export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
   "STEM": {
-    title: "STEM (Science, Technology, Engineering & Mathematics) — 15-Year Career Roadmap",
+    title: "STEM (Science, Technology, Engineering & Mathematics) - 15-Year Career Roadmap",
     phases: [
       phase1(
         ["Understand engineering, physical/life sciences, maths and research as career paths", "Identify whether I enjoy building things, solving equations, or investigating how the world works", "Explore mechanical/civil/electronics vs. pure-science vs. research-track options"],
@@ -119,7 +119,7 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
   },
 
   "Information Technology": {
-    title: "Information Technology — 15-Year Career Roadmap",
+    title: "Information Technology - 15-Year Career Roadmap",
     phases: [
       phase1(
         ["Understand software, data, cloud and cybersecurity as distinct career paths", "Identify whether I enjoy coding, systems design, security, or working with data", "Explore different tech specialisations before committing to one"],
@@ -140,7 +140,7 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
       phase4(
         ["Software Engineer", "Full-Stack Developer", "Cybersecurity Analyst", "Data Scientist", "Cloud Architect", "DevOps Engineer"],
         ["Ownership of a real production system", "Cross-team technical communication", "Staying current as the stack changes"],
-        "Go deep in one area (security, ML, cloud) — depth is what actually differentiates pay and role at this stage.",
+        "Go deep in one area (security, ML, cloud) - depth is what actually differentiates pay and role at this stage.",
       ),
       phase5(
         ["Principal Engineer", "Engineering Manager", "Security Architect", "Staff Data Scientist"],
@@ -152,7 +152,7 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
   },
 
   "Health Science": {
-    title: "Health Science (Medicine & Allied Health) — 15-Year Career Roadmap",
+    title: "Health Science (Medicine & Allied Health) - 15-Year Career Roadmap",
     phases: [
       phase1(
         ["Master Biology and Chemistry fundamentals deeply, not just for exams", "Volunteer or shadow at a clinic, hospital or pharmacy to test the reality of the work", "Decide early between MBBS, dentistry, nursing, pharmacy and allied health"],
@@ -185,10 +185,10 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
   },
 
   "Finance": {
-    title: "Finance — 15-Year Career Roadmap",
+    title: "Finance - 15-Year Career Roadmap",
     phases: [
       phase1(
-        ["Understand accounting, markets, banking and financial planning as distinct paths", "Track your own money like a CFO for a month — every rupee, in a sheet", "Follow real markets casually — one company's stock story a week"],
+        ["Understand accounting, markets, banking and financial planning as distinct paths", "Track your own money like a CFO for a month - every rupee, in a sheet", "Follow real markets casually - one company's stock story a week"],
         ["Mathematics", "Accountancy", "Economics", "Statistics", "Communication"],
         ["Investment & markets", "Banking", "Chartered Accountancy", "Corporate finance", "Financial planning"],
       ),
@@ -218,23 +218,23 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
   },
 
   "Business Management & Administration": {
-    title: "Business Management & Administration — 15-Year Career Roadmap",
+    title: "Business Management & Administration - 15-Year Career Roadmap",
     phases: [
       phase1(
-        ["Run something small, for real — a stall, a reselling page, an event — and track the numbers", "Learn Excel/Sheets properly; business fluency starts there", "Follow real businesses: read one founder story or annual report a month"],
+        ["Run something small, for real - a stall, a reselling page, an event - and track the numbers", "Learn Excel/Sheets properly; business fluency starts there", "Follow real businesses: read one founder story or annual report a month"],
         ["Communication", "Basic Economics/Accountancy", "Excel", "Leadership through school/college activities"],
         ["General management", "Operations", "Marketing", "HR", "Entrepreneurship"],
       ),
       phase2(
         ["BBA / BMS (via CUET UG or a university's own entrance)", "B.Com + electives (via CUET UG)", "Any degree + a real internship or side venture"],
-        ["Internships in sales, marketing or operations", "One measurable win you can talk about: grew X, sold Y, saved Z", "Deliberate networking — deals and roles both travel through people"],
+        ["Internships in sales, marketing or operations", "One measurable win you can talk about: grew X, sold Y, saved Z", "Deliberate networking - deals and roles both travel through people"],
         ["Project management basics", "Communication and negotiation", "Data-driven decision-making"],
       ),
       phase3(
         ["General Management", "Marketing", "Operations", "HR", "Strategy Consulting"],
-        ["MBA (via CAT/GMAT — accelerates consulting/leadership tracks)"],
+        ["MBA (via CAT/GMAT - accelerates consulting/leadership tracks)"],
         ["PMP (project management) where relevant"],
-        ["Owning a target, not just a task — a territory, a brand, a budget", "Cross-functional leadership", "Strategic thinking"],
+        ["Owning a target, not just a task - a territory, a brand, a budget", "Cross-functional leadership", "Strategic thinking"],
       ),
       phase4(
         ["Business Manager", "Operations Manager", "HR Manager", "Product Manager", "Business Consultant"],
@@ -251,10 +251,10 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
   },
 
   "Law, Public Safety, Corrections & Security": {
-    title: "Law, Public Safety, Corrections & Security — 15-Year Career Roadmap",
+    title: "Law, Public Safety, Corrections & Security - 15-Year Career Roadmap",
     phases: [
       phase1(
-        ["Debate, MUN and school leadership to build the core muscles this field needs", "Read the newspaper daily — current affairs is the raw material of this field", "Shadow a lawyer, judge or police officer to see the real work"],
+        ["Debate, MUN and school leadership to build the core muscles this field needs", "Read the newspaper daily - current affairs is the raw material of this field", "Shadow a lawyer, judge or police officer to see the real work"],
         ["English/reading comprehension", "General knowledge/current affairs", "Logical reasoning", "Public speaking"],
         ["Corporate law", "Litigation", "Judiciary/civil services", "Policing and public safety"],
       ),
@@ -284,7 +284,7 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
   },
 
   "Human Services": {
-    title: "Human Services (Psychology & Social Work) — 15-Year Career Roadmap",
+    title: "Human Services (Psychology & Social Work) - 15-Year Career Roadmap",
     phases: [
       phase1(
         ["Tutor a younger student or explain a tough topic to a classmate weekly", "Read one book on how people think, even a popular one", "Volunteer at a school event, camp or peer-support initiative"],
@@ -292,8 +292,8 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
         ["Clinical/counselling psychology", "Social work", "Organisational psychology", "Community development"],
       ),
       phase2(
-        ["BA Psychology (via CUET UG)", "BSW — Social Work (via CUET UG or a university's own entrance)"],
-        ["Supervised counselling or field-work placements — non-negotiable for this field", "Volunteer with an NGO or helpline"],
+        ["BA Psychology (via CUET UG)", "BSW - Social Work (via CUET UG or a university's own entrance)"],
+        ["Supervised counselling or field-work placements - non-negotiable for this field", "Volunteer with an NGO or helpline"],
         ["Active listening", "Basic assessment tools", "Case documentation"],
       ),
       phase3(
@@ -305,7 +305,7 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
       phase4(
         ["Clinical Psychologist", "Counselling Psychologist", "Social Researcher", "NGO Programme Manager"],
         ["Building a client/case caseload", "Ethical practice and confidentiality", "Programme or intervention design"],
-        "Build a real, RCI-recognised practice or a programme track record — mental-health demand is real and growing here.",
+        "Build a real, RCI-recognised practice or a programme track record - mental-health demand is real and growing here.",
       ),
       phase5(
         ["Senior Clinical Psychologist", "Programme Director (NGO)", "Senior Social Researcher"],
@@ -317,28 +317,28 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
   },
 
   "Arts, A/V Technology & Communications": {
-    title: "Arts, Design & Communications — 15-Year Career Roadmap",
+    title: "Arts, Design & Communications - 15-Year Career Roadmap",
     phases: [
       phase1(
-        ["Create weekly — sketches, writing, edits, mock-ups — and save it all", "Learn one tool deeply (Figma/CAD/a drawing tool) instead of five shallowly", "Start a public portfolio on Behance, Instagram or a blog"],
+        ["Create weekly - sketches, writing, edits, mock-ups - and save it all", "Learn one tool deeply (Figma/CAD/a drawing tool) instead of five shallowly", "Start a public portfolio on Behance, Instagram or a blog"],
         ["Art/design fundamentals", "Writing", "Visual literacy", "Basic software tools"],
         ["UX/UI and product design", "Graphic/visual design", "Journalism and mass communication", "Film and video"],
       ),
       phase2(
         ["B.Des (via NID DAT/UCEED)", "BA Journalism & Mass Communication"],
-        ["Freelance small: logos, edits, college fests — real briefs teach fastest", "Intern at a studio, agency or publication", "Build a public portfolio, not just coursework"],
+        ["Freelance small: logos, edits, college fests - real briefs teach fastest", "Intern at a studio, agency or publication", "Build a public portfolio, not just coursework"],
         ["Design/editing software mastery", "Storytelling", "Client/brief interpretation"],
       ),
       phase3(
         ["UX/UI Design", "Graphic/Brand Design", "Journalism", "Film/Video Production"],
         ["M.Des", "MA Mass Communication"],
-        ["Portfolio-based — no fixed licensure in this field"],
+        ["Portfolio-based - no fixed licensure in this field"],
         ["A distinctive personal style/voice", "Client and stakeholder management", "Leading a small creative team"],
       ),
       phase4(
         ["UX/UI Designer", "Graphic Designer", "Journalist", "Film/Video Producer"],
         ["Building a name for a specific style or beat", "Managing bigger briefs/stories", "Freelance vs. in-house judgement"],
-        "Get known for a specific lane — your taste and portfolio are the asset now.",
+        "Get known for a specific lane - your taste and portfolio are the asset now.",
       ),
       phase5(
         ["Senior Designer", "Senior Editor", "Lead Producer"],
@@ -350,10 +350,10 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
   },
 
   "Architecture & Construction": {
-    title: "Architecture & Construction — 15-Year Career Roadmap",
+    title: "Architecture & Construction - 15-Year Career Roadmap",
     phases: [
       phase1(
-        ["Build weekly — sketches, models, small structures — and keep a portfolio", "Visit a construction site or architecture firm to see the real work", "Strengthen maths and spatial visualisation"],
+        ["Build weekly - sketches, models, small structures - and keep a portfolio", "Visit a construction site or architecture firm to see the real work", "Strengthen maths and spatial visualisation"],
         ["Mathematics", "Drawing/sketching", "Spatial reasoning", "Basic design software"],
         ["Residential/commercial architecture", "Urban planning", "Interior design", "Green/sustainable building"],
       ),
@@ -371,7 +371,7 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
       phase4(
         ["Architect", "Urban Planner", "Interior Designer", "Construction Project Manager"],
         ["Independent project ownership", "Client presentation and negotiation", "Site supervision"],
-        "Build a portfolio of real, built (or under-construction) work — that's what actually differentiates architects.",
+        "Build a portfolio of real, built (or under-construction) work - that's what actually differentiates architects.",
       ),
       phase5(
         ["Principal Architect", "Senior Project Head", "Senior Urban Planner"],
@@ -383,10 +383,10 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
   },
 
   "Government & Public Administration": {
-    title: "Government & Public Administration — 15-Year Career Roadmap",
+    title: "Government & Public Administration - 15-Year Career Roadmap",
     phases: [
       phase1(
-        ["Read the newspaper daily — current affairs is the core material of this field", "Take physical fitness seriously if considering a defence route", "Volunteer or intern with a government office, NGO or local body"],
+        ["Read the newspaper daily - current affairs is the core material of this field", "Take physical fitness seriously if considering a defence route", "Volunteer or intern with a government office, NGO or local body"],
         ["General knowledge/current affairs", "English and essay writing", "Physics/Chemistry/Maths (for NDA/defence-technical routes)"],
         ["Civil services (IAS/IPS/IFS)", "State administrative services", "Defence services", "Public policy"],
       ),
@@ -404,7 +404,7 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
       phase4(
         ["IAS/IPS/IFS Officer", "District-level Administrative Officer", "Policy Analyst"],
         ["Field administration experience", "Public communication", "Cross-department coordination"],
-        "Build a genuine record of field postings and real administrative decisions — that's what shapes the career from here.",
+        "Build a genuine record of field postings and real administrative decisions - that's what shapes the career from here.",
       ),
       phase5(
         ["Joint Secretary (Centre)", "Deputy Inspector General (Police)", "Divisional Commissioner"],
@@ -416,7 +416,7 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
   },
 
   "Hospitality & Tourism": {
-    title: "Hospitality & Tourism — 15-Year Career Roadmap",
+    title: "Hospitality & Tourism - 15-Year Career Roadmap",
     phases: [
       phase1(
         ["Plan and host one small event end-to-end for friends or family", "Study one great hotel, restaurant or trip and list what makes it work", "Build basic service, fitness and people skills"],
@@ -425,7 +425,7 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
       ),
       phase2(
         ["BHM (Bachelor of Hotel Management, via NCHM JEE)", "Culinary school", "BA Travel & Tourism"],
-        ["Hands-on training in a hotel, restaurant or travel company — reputation starts there", "Certifications: event management, sommelier, or IATA (travel)"],
+        ["Hands-on training in a hotel, restaurant or travel company - reputation starts there", "Certifications: event management, sommelier, or IATA (travel)"],
         ["Guest service and communication", "Operations management", "Culinary/event execution skills"],
       ),
       phase3(
@@ -436,8 +436,8 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
       ),
       phase4(
         ["Hotel Manager", "Chef", "Event Manager", "Travel Consultant"],
-        ["Moving up: sous chef, duty manager, senior planner", "International postings accelerate pay here", "Building a personal brand — this industry runs on reputation"],
-        "Build a real, verifiable service record — guest reviews and repeat business are the currency here.",
+        ["Moving up: sous chef, duty manager, senior planner", "International postings accelerate pay here", "Building a personal brand - this industry runs on reputation"],
+        "Build a real, verifiable service record - guest reviews and repeat business are the currency here.",
       ),
       phase5(
         ["General Manager (Hotel)", "Executive Chef", "Senior Event/Tourism Manager"],
@@ -449,16 +449,16 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
   },
 
   "Agriculture, Food & Natural Resources": {
-    title: "Agriculture, Food & Natural Resources — 15-Year Career Roadmap",
+    title: "Agriculture, Food & Natural Resources - 15-Year Career Roadmap",
     phases: [
       phase1(
-        ["Grow something and keep real records — yield, inputs, problems, fixes", "Visit a farm, hatchery or agri-lab to see the work up close", "Strengthen Biology and Chemistry fundamentals"],
+        ["Grow something and keep real records - yield, inputs, problems, fixes", "Visit a farm, hatchery or agri-lab to see the work up close", "Strengthen Biology and Chemistry fundamentals"],
         ["Biology", "Chemistry", "Basic statistics", "Environmental awareness"],
         ["Agricultural science", "Horticulture/agronomy", "Environmental science", "Food technology"],
       ),
       phase2(
         ["B.Sc Agriculture (Hons)", "B.Sc Environmental Science", "B.Tech Food Technology"],
-        ["Field or lab internships — real data collection, not just observation", "ICAR NTS-UG scholarship if studying outside your home state"],
+        ["Field or lab internships - real data collection, not just observation", "ICAR NTS-UG scholarship if studying outside your home state"],
         ["Field data collection", "Lab technique", "Basic agri-economics"],
       ),
       phase3(
@@ -470,7 +470,7 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
       phase4(
         ["Agricultural Scientist", "Environmental Consultant", "Food Technologist", "Sustainability Manager"],
         ["Running a real pilot project or field trial", "Client/farmer-facing communication", "Data-driven recommendations"],
-        "Build a real, field-tested track record — this sector genuinely rewards demonstrated on-ground results.",
+        "Build a real, field-tested track record - this sector genuinely rewards demonstrated on-ground results.",
       ),
       phase5(
         ["Principal Scientist", "Senior Sustainability Manager", "Farm Enterprise Owner"],
@@ -482,7 +482,7 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
   },
 
   "Education & Training": {
-    title: "Education & Training — 15-Year Career Roadmap",
+    title: "Education & Training - 15-Year Career Roadmap",
     phases: [
       phase1(
         ["Tutor a younger student or explain a tough topic to a classmate weekly", "Read one book on how people learn, even a popular one", "Volunteer at a school event or peer-mentoring initiative"],
@@ -491,7 +491,7 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
       ),
       phase2(
         ["Integrated BA/B.Sc B.Ed (via CUET UG or the university's own B.Ed entrance)", "Any bachelor's degree + B.Ed after (B.Ed entrance varies by state/university)"],
-        ["Teaching-practice placements — non-negotiable for this field", "Volunteer teaching or mentoring alongside coursework"],
+        ["Teaching-practice placements - non-negotiable for this field", "Volunteer teaching or mentoring alongside coursework"],
         ["Lesson planning", "Classroom management", "Assessment design"],
       ),
       phase3(
@@ -515,10 +515,10 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
   },
 
   "Marketing": {
-    title: "Marketing — 15-Year Career Roadmap",
+    title: "Marketing - 15-Year Career Roadmap",
     phases: [
       phase1(
-        ["Run a small campaign for real — a college event, a small business, a social cause", "Study brands you admire and note what makes their marketing work", "Build basic content-creation and analytics literacy"],
+        ["Run a small campaign for real - a college event, a small business, a social cause", "Study brands you admire and note what makes their marketing work", "Build basic content-creation and analytics literacy"],
         ["Communication", "Basic Economics/Statistics", "Creative thinking"],
         ["Digital marketing", "Brand management", "Market research", "Advertising"],
       ),
@@ -536,7 +536,7 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
       phase4(
         ["Marketing Manager", "Digital Marketing Specialist", "SEO Specialist"],
         ["Owning a brand or product's marketing", "Cross-functional work with sales/product", "Measuring real ROI on campaigns"],
-        "Build a portfolio of campaigns with real, measurable results — that's the actual currency in this field.",
+        "Build a portfolio of campaigns with real, measurable results - that's the actual currency in this field.",
       ),
       phase5(
         ["Senior Brand Manager", "Head of Digital Marketing"],
@@ -548,10 +548,10 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
   },
 
   "Manufacturing": {
-    title: "Manufacturing — 15-Year Career Roadmap",
+    title: "Manufacturing - 15-Year Career Roadmap",
     phases: [
       phase1(
-        ["Get strong in physics and maths — the entry ticket to every manufacturing/production branch", "Build something physical: a model, a kit, a small mechanism", "Visit a factory or production plant to see the work up close"],
+        ["Get strong in physics and maths - the entry ticket to every manufacturing/production branch", "Build something physical: a model, a kit, a small mechanism", "Visit a factory or production plant to see the work up close"],
         ["Physics", "Mathematics", "Basic mechanical/technical aptitude"],
         ["Production engineering", "Quality engineering", "Process/automation engineering"],
       ),
@@ -568,8 +568,8 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
       ),
       phase4(
         ["Production Engineer", "Quality Engineer", "Process Engineer"],
-        ["Taking charge of production lines early — responsibility compounds", "Quality-audit and root-cause analysis", "Cross-functional coordination with design/procurement"],
-        "Own measurable process/quality improvements — that's what actually gets you promoted here.",
+        ["Taking charge of production lines early - responsibility compounds", "Quality-audit and root-cause analysis", "Cross-functional coordination with design/procurement"],
+        "Own measurable process/quality improvements - that's what actually gets you promoted here.",
       ),
       phase5(
         ["Plant Manager", "Senior Process/Quality Lead"],
@@ -581,16 +581,16 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
   },
 
   "Transportation, Distribution & Logistics": {
-    title: "Transportation, Distribution & Logistics — 15-Year Career Roadmap",
+    title: "Transportation, Distribution & Logistics - 15-Year Career Roadmap",
     phases: [
       phase1(
-        ["Take physical fitness seriously and consistently — assessed everywhere in this field", "Study one real aviation/maritime/logistics story and understand the training pipeline", "Strengthen physics and maths — both flying and engineering routes need them"],
+        ["Take physical fitness seriously and consistently - assessed everywhere in this field", "Study one real aviation/maritime/logistics story and understand the training pipeline", "Strengthen physics and maths - both flying and engineering routes need them"],
         ["Physics", "Mathematics", "Physical fitness", "Discipline/reliability"],
         ["Commercial aviation", "Merchant navy", "Supply chain & logistics management"],
       ),
       phase2(
         ["Indian Naval Academy 10+2 B.Tech (funded)", "B.Sc Nautical Science (via IMU-CET)", "BBA Logistics/Supply Chain", "Commercial Pilot License track (via a DGCA-approved flying school, after 12th)"],
-        ["Clear the relevant entrance (IMU-CET / flying-school selection / BBA admission)", "Build required flying/sea-time hours or a real logistics internship", "Clear medical and fitness standards early — strict and non-negotiable"],
+        ["Clear the relevant entrance (IMU-CET / flying-school selection / BBA admission)", "Build required flying/sea-time hours or a real logistics internship", "Clear medical and fitness standards early - strict and non-negotiable"],
         ["Technical/navigation fundamentals", "Operational discipline", "Supply-chain planning basics"],
       ),
       phase3(
@@ -602,7 +602,7 @@ export const CLUSTER_ROADMAPS: Record<StandardCluster, ClusterRoadmap> = {
       phase4(
         ["Commercial/Airline Pilot", "Merchant Navy Officer", "Logistics Manager", "Supply Chain Manager"],
         ["Logging flight hours / sea time / delivery-network experience", "Operational reliability under real constraints", "Cross-border/regulatory awareness"],
-        "Build real, logged experience (flight hours, sea time, or network scale) — that's the literal currency for advancement here.",
+        "Build real, logged experience (flight hours, sea time, or network scale) - that's the literal currency for advancement here.",
       ),
       phase5(
         ["Senior Captain", "Chief Officer / Master (Merchant Navy)", "Senior Fleet/Network Manager"],

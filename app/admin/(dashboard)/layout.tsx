@@ -1,16 +1,16 @@
 "use client";
 
 /**
- * The sidebar shell — applies to the 4 dashboard sections (Users, Payment
+ * The sidebar shell - applies to the 4 dashboard sections (Users, Payment
  * Settings, Coupon Codes, Institutional Links) ONLY. Deliberately a route
  * GROUP: /admin/report/[uid] sits outside it, one level up, so a student's
- * report renders with zero dashboard chrome around it — the browser's own
+ * report renders with zero dashboard chrome around it - the browser's own
  * print/save-as-PDF must capture the report alone, not this sidebar. The
  * parentheses in "(dashboard)" are stripped from the URL, so every section
  * still lives at the same path it always did (/admin, /admin/coupons, ...).
  *
  * Auth is already handled by the parent app/admin/layout.tsx by the time
- * this renders — nothing here re-checks isAdmin().
+ * this renders - nothing here re-checks isAdmin().
  */
 
 import Link from "next/link";

@@ -6,7 +6,7 @@ import { ScoredResponse, ScoringStrategy, SubTraitScore } from "./types";
  * the default strategy (RIASEC questions are yes/no), but the meaningful
  * output is the ranked 3-letter code (e.g. "SEA"), not the raw averages.
  * Sub-trait names are expected to start with the Holland letter, e.g.
- * "R-Realistic", "I-Investigative" — matching how the seed data labels them.
+ * "R-Realistic", "I-Investigative" - matching how the seed data labels them.
  */
 export class RiasecTopCodeStrategy implements ScoringStrategy {
   readonly id = "riasec_top_code";

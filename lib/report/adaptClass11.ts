@@ -1,7 +1,7 @@
 /**
  * Adapts a Class 11-12 score output (scoring11_12.ts's own 4-layer shape)
  * into the AssessmentSummary shape FullReport.tsx already renders for class
- * 9-10 — so Class 11-12 gets the exact same report code, CSS and images
+ * 9-10 - so Class 11-12 gets the exact same report code, CSS and images
  * instead of a separately designed report that inevitably drifts from it.
  *
  * Where the two assessments measure genuinely different things (Class 11-12
@@ -14,11 +14,11 @@ import type { Class11ScoreOutput } from "@/lib/newAssessment/scoring11_12";
 import { DOMAINS } from "@/lib/report/knowledge";
 
 /**
- * True only for output produced by the CURRENT scoring11_12.ts — a student
+ * True only for output produced by the CURRENT scoring11_12.ts - a student
  * who completed the assessment before the question-bank/scoring rewrite has
  * a `class11Output` shaped like the old engine (motivators as 4 named dyad
  * fields, aptitude as 5 differently-named sub-scores, no `ranked` arrays).
- * That old data isn't just missing a few fields — it was scored by the
+ * That old data isn't just missing a few fields - it was scored by the
  * fake/hardcoded logic this whole rework replaced, so partially rendering
  * it would show stale, no-longer-true numbers rather than just gaps.
  * Dashboard.tsx checks this before calling the adapter at all, and asks the
@@ -28,19 +28,19 @@ export function isCurrentClass11Shape(output: unknown): output is Class11ScoreOu
   const l1 = (output as any)?.layer1;
   return Boolean(l1?.motivators?.ranked) && Boolean(l1?.aptitude?.numerical) && Boolean(l1?.emotionalIntelligence?.ranked)
     // learningStyle.ranked was added after this shape check already existed
-    // (see adaptClass11ToSummary's learningStyles below) — a report scored
+    // (see adaptClass11ToSummary's learningStyles below) - a report scored
     // before that change has the old primaryStyle/secondaryStyle-only shape
     // and would otherwise pass every check here, reach the adapter anyway,
     // and crash on `l1.learningStyle.ranked.map(...)`.
     && Boolean(l1?.learningStyle?.ranked)
     // multipleIntelligence was added when Strengths and Multiple Intelligence
     // were split into two genuinely separate measures (they used to be the
-    // same data shown under two names) — a report scored before that split
+    // same data shown under two names) - a report scored before that split
     // has no multipleIntelligence field at all, and would otherwise pass
     // every check above and crash on `l1.multipleIntelligence.slice()`.
     && Boolean(l1?.multipleIntelligence)
     // selfManagement/relationshipManagement were added when EI was rescored
-    // across all 4 real Goleman quadrants instead of 2 real + 2 faked — a
+    // across all 4 real Goleman quadrants instead of 2 real + 2 faked - a
     // report scored before that change has ranked/selfAwareness/
     // socialAwareness but not these two, and would silently render NaN% for
     // both instead of crashing, which is easy to miss without this check.
@@ -53,12 +53,12 @@ export function adaptClass11ToSummary(output: Class11ScoreOutput, base: Assessme
 
   // Best-fit domains. FullReport.tsx's own domainFit() recomputes the actual
   // displayed fit% from interest + aptitude/MI/value keyword matches (see
-  // lib/report/knowledge.ts) rather than trusting this number directly — so
+  // lib/report/knowledge.ts) rather than trusting this number directly - so
   // this is deliberately the domain's raw affinity/interest signal, not a
   // final score, exactly as class 9-10's own `themes` field is.
   //
   // Title uses the SHARED DOMAINS catalogue's name, not scoring11_12.ts's
-  // own DOMAIN_NAMES_11_12 — the two disagree for F/G/H (e.g. F is "Law,
+  // own DOMAIN_NAMES_11_12 - the two disagree for F/G/H (e.g. F is "Law,
   // Social Services & Public Policy" in one and "Human & Public Services" in
   // the other). Domain *cards* already render DOMAINS[letter] directly, so
   // using the other label here would make the career-interest page and the
@@ -78,7 +78,7 @@ export function adaptClass11ToSummary(output: Class11ScoreOutput, base: Assessme
   // the 8 Gardner domains, Strengths is the 6 real workplace-competency
   // domains (Intellectual & Analytical, Creative & Innovative, Strategic &
   // Futuristic, Execution & Achievement, Influence & Leadership,
-  // Relationship & Adaptability) — two different question banks feeding two
+  // Relationship & Adaptability) - two different question banks feeding two
   // different PsychometricProfile fields, not the same list shown twice
   // under two names.
   const intelligenceRanked = l1.multipleIntelligence
@@ -102,13 +102,13 @@ export function adaptClass11ToSummary(output: Class11ScoreOutput, base: Assessme
     { skill: "Data Interpretation", score: ap.dataInterpretation.score },
   ].sort((a, b) => b.score - a.score);
 
-  // All 4 VARK-style dimensions with their real tallied scores — used to
+  // All 4 VARK-style dimensions with their real tallied scores - used to
   // only pass primary+secondary with a guessed "-20" number for the second,
   // silently dropping the other two the student actually has real data for.
   const learningStyles = l1.learningStyle.ranked.map((r) => ({ name: r.style, score: r.score }));
 
   // All 4 standard Goleman EQ quadrants, each a real, independently-measured
-  // score now (see scoring11_12.ts's scoreEI) — not 2 real + 2 faked via a
+  // score now (see scoring11_12.ts's scoreEI) - not 2 real + 2 faked via a
   // fallback to the overall score, which is what made every quadrant read
   // as an identical, non-discriminating 50%.
   const ei = l1.emotionalIntelligence;
@@ -120,7 +120,7 @@ export function adaptClass11ToSummary(output: Class11ScoreOutput, base: Assessme
     { name: "Relationship Management", score: Math.round(ei.relationshipManagement * 100) },
   ];
 
-  // The Strengths dimension's own top domain, blended with aptitude — "how
+  // The Strengths dimension's own top domain, blended with aptitude - "how
   // you naturally work" as a mix of raw reasoning ability and your leading
   // competency strength.
   const strengthsScore = Math.round((strengthAreasRanked[0]?.score ?? 0) * 0.6 + ap.overallScore * 0.4);
@@ -134,7 +134,7 @@ export function adaptClass11ToSummary(output: Class11ScoreOutput, base: Assessme
     { key: "motivators", label: "Motivators", score: l1.motivators.score },
     { key: "strengths", label: "Strengths", score: strengthsScore },
     { key: "aptitude", label: "Aptitude", score: Math.round(ap.overallScore) },
-    // Creativity & Innovation removed as a scored dimension for 11-12 — back
+    // Creativity & Innovation removed as a scored dimension for 11-12 - back
     // to the same fixed 8 as class 9-10. FullReport.tsx only renders a 9th
     // dimension when a "creativity" radar entry is present, so simply not
     // adding one here is enough; no changes needed there or in class 6-8's
@@ -143,7 +143,7 @@ export function adaptClass11ToSummary(output: Class11ScoreOutput, base: Assessme
 
   return {
     ...base,
-    // journeyCode/journeyName come from `base` as-is — score/route.ts's
+    // journeyCode/journeyName come from `base` as-is - score/route.ts's
     // baseSummary() already sets the right one ("11", "12" or the legacy
     // combined "11-12"), so this adapter doesn't need to know which class
     // the student is actually in.
@@ -153,7 +153,7 @@ export function adaptClass11ToSummary(output: Class11ScoreOutput, base: Assessme
     desiredCareerFitPct: output.layer4.alignment.psychometricAlignment ?? null,
     summary: l1.personality.summary || null,
     matches: [],
-    // Big-Five sub-trait scores don't exist for an MBTI-scored personality —
+    // Big-Five sub-trait scores don't exist for an MBTI-scored personality -
     // left empty so FullReport falls back cleanly rather than fabricating
     // Big-Five numbers from data that was never collected.
     topStrengths: [],
@@ -168,7 +168,7 @@ export function adaptClass11ToSummary(output: Class11ScoreOutput, base: Assessme
     learningStyles,
     strengthsBreakdown: strengthAreasRanked,
     aptitudePct: Math.round(ap.overallScore),
-    // Real per-axis MBTI scores — this is what makes FullReport.tsx render
+    // Real per-axis MBTI scores - this is what makes FullReport.tsx render
     // the actual compass + type instead of the generic "not measured" text.
     mbtiEI: l1.personality.axisScores.ei,
     mbtiSN: l1.personality.axisScores.sn,

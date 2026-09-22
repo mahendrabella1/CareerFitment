@@ -14,7 +14,7 @@ export const CATEGORY_OPTIONS: { value: string; label: string; journey: string }
   { value: "graduate", label: "Graduate (18 – 21)", journey: "graduate_readiness" },
   { value: "experienced_professional", label: "Professional (35 – 55)", journey: "leadership_excellence" },
   // Kept only so categoryLabel() still shows a friendly name for accounts
-  // registered before the 11/12 split — no longer offered at registration.
+  // registered before the 11/12 split - no longer offered at registration.
   { value: "class_11_12", label: "Class 11 – 12", journey: "career_planning" },
 ];
 
@@ -33,7 +33,7 @@ export const CLARITY_STAGES: string[] = [
   "I am sure but need an execution plan",
 ];
 
-/** Password rules — each returns true when satisfied. */
+/** Password rules - each returns true when satisfied. */
 export interface PasswordRule {
   label: string;
   test: (pw: string) => boolean;

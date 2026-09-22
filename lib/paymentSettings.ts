@@ -1,7 +1,7 @@
 // Admin-controlled payment settings, resolved SERVER-SIDE.
 //
-// The admin console (/admin) writes a single Firestore document —
-// `settings/payment` — holding whether the assessment fee is charged at all and
+// The admin console (/admin) writes a single Firestore document -
+// `settings/payment` - holding whether the assessment fee is charged at all and
 // what it costs. Every server route that touches money reads it from here, so
 // the toggle and the price can never disagree between the gate the student
 // sees, the order that gets created, and the amount reported to the CRM.
@@ -12,25 +12,25 @@
 // trusted by the time an order is created.
 //
 // When Firestore isn't configured on a deployment, this falls back to the env
-// vars in lib/razorpay.ts and reports source: "env" — the admin UI surfaces
+// vars in lib/razorpay.ts and reports source: "env" - the admin UI surfaces
 // that so nobody is left wondering why the toggle appears to do nothing.
 
 import { isFirestoreConfigured, getFirestore } from "@/lib/firebase/admin";
 import { razorpayAmountPaise, razorpayKeySecret } from "@/lib/razorpay";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// EMERGENCY KILL SWITCH — currently OFF, i.e. payment is live.
+// EMERGENCY KILL SWITCH - currently OFF, i.e. payment is live.
 //
 // Set this to true to stop charging everyone at once: nobody is charged and
 // every student goes straight into the exam. It overrides BOTH the admin toggle
-// and the env vars, deliberately — it has to hold even on a deployment where
+// and the env vars, deliberately - it has to hold even on a deployment where
 // the server can't reach Firestore.
 //
 // With it false (as now), control sits with the admin switch in /admin
 // (settings/payment), which additionally needs FIREBASE_PROJECT_ID /
 // FIREBASE_CLIENT_EMAIL / FIREBASE_PRIVATE_KEY set on the server, or the toggle
 // silently won't take effect. Charging ALSO requires RAZORPAY_KEY_SECRET on the
-// server — without it isPaymentActive() reports false and the exam opens free.
+// server - without it isPaymentActive() reports false and the exam opens free.
 // ─────────────────────────────────────────────────────────────────────────────
 export const FORCE_PAYMENT_OFF = false;
 
@@ -45,7 +45,7 @@ export interface PaymentSettings {
   enabled: boolean;
   /** Fee in paise (9900 = ₹99). */
   amountPaise: number;
-  /** Where the values came from — "env" means the admin toggle isn't in effect. */
+  /** Where the values came from - "env" means the admin toggle isn't in effect. */
   source: "firestore" | "env";
 }
 
@@ -58,7 +58,7 @@ export function normaliseAmountPaise(value: unknown): number | null {
 }
 
 /**
- * Current payment settings. Never throws — a Firestore outage falls back to
+ * Current payment settings. Never throws - a Firestore outage falls back to
  * env defaults rather than taking the assessment down.
  */
 export async function getPaymentSettings(): Promise<PaymentSettings> {
@@ -83,14 +83,14 @@ export async function getPaymentSettings(): Promise<PaymentSettings> {
       .doc(PAYMENT_SETTINGS_PATH.doc)
       .get();
     // No doc yet (nobody has opened the admin control): the env defaults apply,
-    // but the toggle IS wired up — the doc appears on the first save. Reporting
+    // but the toggle IS wired up - the doc appears on the first save. Reporting
     // "firestore" here keeps the console from warning about a problem that
     // doesn't exist.
     if (!snap.exists) return { ...fallback, source: "firestore" };
 
     const data = snap.data() as { enabled?: unknown; amountPaise?: unknown } | undefined;
     return {
-      // Only an explicit `false` disables it — a missing field keeps the fee on.
+      // Only an explicit `false` disables it - a missing field keeps the fee on.
       enabled: data?.enabled !== false,
       amountPaise: normaliseAmountPaise(data?.amountPaise) ?? fallback.amountPaise,
       source: "firestore",
@@ -104,7 +104,7 @@ export async function getPaymentSettings(): Promise<PaymentSettings> {
 /**
  * The one question every caller actually asks: should this student be charged?
  * True only when an admin has left the fee on AND Razorpay is configured with a
- * key secret — either being absent means the exam opens for free.
+ * key secret - either being absent means the exam opens for free.
  */
 export async function isPaymentActive(): Promise<{ active: boolean; settings: PaymentSettings; configured: boolean }> {
   const settings = await getPaymentSettings();

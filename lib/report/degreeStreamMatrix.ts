@@ -1,5 +1,5 @@
 /**
- * The Class 12 "every real alternative, not just the obvious one" data —
+ * The Class 12 "every real alternative, not just the obvious one" data -
  * extracted directly from the user-provided workbook "11-12th Streams list
  * (1).xlsx", sheet "Consolidated": 105 real undergraduate degree programmes
  * across 11 categories (Engineering & Technology, Architecture & Planning,
@@ -9,7 +9,7 @@
  * workbook's own 🟢/🟡/🔴 eligibility marker per stream.
  *
  * This is deliberately a DEGREE-level view, distinct from careerfit1112.ts's
- * CAREER/job-role-level Fitment/Suitability/Selector system — it answers
+ * CAREER/job-role-level Fitment/Suitability/Selector system - it answers
  * "every program I could realistically apply to from my stream", which is
  * both broader (105 programmes vs. a ranked shortlist) and a different unit
  * (a specific named degree, not a job title) from the career engine. Used
@@ -20,17 +20,17 @@
  * The eligibility marks are transcribed verbatim from the source workbook,
  * including its own "green-yellow" / "yellow-red" split marks (e.g.
  * "🔴/🟡") for streams the workbook itself treats as borderline rather than
- * a clean yes/no — that ambiguity is real information, not a parsing
+ * a clean yes/no - that ambiguity is real information, not a parsing
  * artifact, so it's preserved rather than collapsed to a single colour.
  * A blank cell in the source (no mark for that stream/degree pair) means
  * the workbook didn't list that stream as a pathway for that degree at all
- * (e.g. Commerce/Humanities students aren't shown against MBBS) — encoded
+ * (e.g. Commerce/Humanities students aren't shown against MBBS) - encoded
  * here as the key being absent from `eligibility`, not as "red", since
  * "not a listed pathway" and "explicitly ruled out" are different claims.
  *
  * `salaryDomain` maps each row to the closest matching entry in
  * careerfit1112.ts's DOMAINS_1112, so a salary band can be shown alongside
- * each degree without inventing new figures — it reuses that already-
+ * each degree without inventing new figures - it reuses that already-
  * verified data, same as the rest of the Class 11-12 report.
  */
 import type { StreamKey1112 } from "@/lib/report/careerfit1112";
@@ -169,7 +169,7 @@ export const DEGREE_ELIGIBILITY: DegreeEligibilityRow[] = [
   { category: "Design", degree: "UX/UI Design", salaryDomain: "Design", eligibility: { "MPC": "green", "BiPC": "green", "Commerce+Maths": "green", "Commerce (CEC, no Maths)": "green", "Humanities": "green", "Vocational/Other": "green" } },
 ];
 
-/** Every degree row that lists the given stream at all (green/yellow — excludes "red" and "not listed"), grouped by category. */
+/** Every degree row that lists the given stream at all (green/yellow - excludes "red" and "not listed"), grouped by category. */
 export function degreesForStream(streamKey: StreamKey1112, opts: { includeConditional?: boolean } = {}): Map<string, DegreeEligibilityRow[]> {
   const out = new Map<string, DegreeEligibilityRow[]>();
   for (const row of DEGREE_ELIGIBILITY) {

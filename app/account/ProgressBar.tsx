@@ -16,7 +16,7 @@ interface ProgressBarProps {
   description?: string;
 }
 
-// Real hex values, not Tailwind utility classes — this project has no
+// Real hex values, not Tailwind utility classes - this project has no
 // Tailwind config, so `text-blue-600` etc. never applied anything and every
 // bar rendered with an invisible, uncoloured fill.
 const colorSchemes = {

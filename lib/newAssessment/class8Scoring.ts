@@ -44,7 +44,7 @@ export interface PersonalityProfile {
   jp: string; // J or P
   type: string; // e.g., INTJ
   // 0-100: how consistently the student picked one side of each axis, not
-  // "how good" a personality — used as the dimension's scorecard/radar
+  // "how good" a personality - used as the dimension's scorecard/radar
   // score, since the four letters alone aren't a number.
   score: number;
   // 0-10 per axis, midpoint 5: >=5 leans toward the first letter shown
@@ -349,13 +349,13 @@ export interface DomainAffinity {
 }
 
 // Domain names/images/roles come from the shared DOMAINS catalogue in
-// lib/report/knowledge.ts (imported above), not a local copy — this used to
+// lib/report/knowledge.ts (imported above), not a local copy - this used to
 // keep its own CAREER_DOMAINS table labelling G "Entrepreneurship &
 // Innovation" and H "Agriculture & Environmental Science", while the domain
 // card the report actually renders (FullReport.tsx, via lib/report/
 // adaptClass678.ts) reads DOMAINS[d.domainCode] directly for the image/
 // roles/skills/salary, where G/H are really "Science, Nature & Agriculture"
-// and "Sports, Hospitality & Lifestyle" — a student could see a card titled
+// and "Sports, Hospitality & Lifestyle" - a student could see a card titled
 // "Entrepreneurship & Innovation" with a farming photo and agricultural
 // roles underneath it. DOMAIN_RIASEC is shared for the same reason: this
 // file's own RIASEC_TO_DOMAINS was built against those same wrong G/H
@@ -477,19 +477,19 @@ export function scoreClass8Assessment(responses: Class8Response): Class8ScoreOut
 function scorePersonality(responses: Class8Response): PersonalityProfile {
   let ei = 0, sn = 0, tf = 0, jp = 0;
 
-  // Q1-Q3: E/I — options 0-1 = E, options 2-3 = I
+  // Q1-Q3: E/I - options 0-1 = E, options 2-3 = I
   for (const q of [1, 2, 3]) ei += responses.responses[q] <= 1 ? 1 : 0;
   for (const q of [1, 2, 3]) ei -= responses.responses[q] >= 2 ? 1 : 0;
 
-  // Q4-Q5: S/N — options 0-1 = S, options 2-3 = N
+  // Q4-Q5: S/N - options 0-1 = S, options 2-3 = N
   for (const q of [4, 5]) sn += responses.responses[q] <= 1 ? 1 : 0;
   for (const q of [4, 5]) sn -= responses.responses[q] >= 2 ? 1 : 0;
 
-  // Q6-Q7: T/F — options 0-1 = T, options 2-3 = F
+  // Q6-Q7: T/F - options 0-1 = T, options 2-3 = F
   for (const q of [6, 7]) tf += responses.responses[q] <= 1 ? 1 : 0;
   for (const q of [6, 7]) tf -= responses.responses[q] >= 2 ? 1 : 0;
 
-  // Q8-Q10: J/P — options 0-1 = J, options 2-3 = P
+  // Q8-Q10: J/P - options 0-1 = J, options 2-3 = P
   for (const q of [8, 9, 10]) jp += responses.responses[q] <= 1 ? 1 : 0;
   for (const q of [8, 9, 10]) jp -= responses.responses[q] >= 2 ? 1 : 0;
 
@@ -502,7 +502,7 @@ function scorePersonality(responses: Class8Response): PersonalityProfile {
   // Clarity: how far each axis leans from an even split, averaged across
   // all four (ei/jp have 3 questions so max |3|, sn/tf have 2 so max |2|).
   const clarity = (Math.abs(ei) / 3 + Math.abs(sn) / 2 + Math.abs(tf) / 2 + Math.abs(jp) / 3) / 4;
-  // sn/tf have only 2 questions deciding them, ei/jp only 3 — so answering
+  // sn/tf have only 2 questions deciding them, ei/jp only 3 - so answering
   // both/all the same way (the common case) always hit the max magnitude,
   // and the old formula read that as a literal 10.0/10 (100%). Two
   // consistent answers isn't certainty; shrink toward the midpoint by
@@ -831,13 +831,13 @@ function scoreCreativity(responses: Class8Response): CreativityIndicator[] {
     .sort((a, b) => b.score - a.score);
 }
 
-// Which of class8's own 4 aptitude sub-scores reinforce each domain — kept
+// Which of class8's own 4 aptitude sub-scores reinforce each domain - kept
 // local since these field names (numericReasoning/logicalDeduction/
 // patternRecognition/spatialReasoning) are specific to this file's own
 // AptitudeProfile shape, not shared with the other classes' engines. Every
 // domain gets exactly 2, matching DOMAIN_RIASEC/DOMAIN_MI's own
 // coverage-evenness principle in lib/report/knowledge.ts.
-// Rebuilt for the 15-domain catalogue (lib/report/knowledge.ts) — every
+// Rebuilt for the 15-domain catalogue (lib/report/knowledge.ts) - every
 // domain gets exactly 2 fields; with only 4 real fields to draw from across
 // 15 domains, some repetition is unavoidable, but every pairing is a real
 // fit, not padding.
@@ -852,7 +852,7 @@ const DOMAIN_APTITUDE_C8: Record<string, ("numericReasoning" | "logicalDeduction
   O: ["spatialReasoning", "patternRecognition"],
 };
 // Which of class8's own 7 motivator tags (MOTIVATOR_TYPES) reinforce each
-// domain — kept local for the same reason. Correctly reflects each new
+// domain - kept local for the same reason. Correctly reflects each new
 // domain's real meaning rather than the old (wrong) 8-domain framing.
 const DOMAIN_MOTIVATOR_C8: Record<string, string[]> = {
   A: ["Achievement", "Leadership"], B: ["Achievement", "Stability"],
@@ -865,7 +865,7 @@ const DOMAIN_MOTIVATOR_C8: Record<string, string[]> = {
   O: ["Achievement", "Freedom"],
 };
 
-// A weighted mean over whichever evidence exists for a domain — same
+// A weighted mean over whichever evidence exists for a domain - same
 // "average only what was actually measured" approach, and the same
 // interest/aptitude/strengths/values weight split, as domainFit() in
 // lib/report/knowledge.ts (Class 9-10) and the equivalent function in

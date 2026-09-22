@@ -44,12 +44,12 @@ export function scoreAssessment(
   answers: Answers
 ): AssessmentSummary {
   // The 60-question workbook bank (classes 9-10) carries per-option trait
-  // vectors and is scored by its own engine — see scoring60.ts.
+  // vectors and is scored by its own engine - see scoring60.ts.
   if (isV2Bank(stage, chosenSets)) return scoreAssessment60(stage, chosenSets, answers);
 
   // ---------- Personality: Big Five ----------
   // The four temperaments used to be derived here too. They are no longer
-  // reported to the student, so nothing computes them any more — see the note
+  // reported to the student, so nothing computes them any more - see the note
   // on TRAITS in lib/report/knowledge.ts.
   const pers = getSet("personality", stage, chosenSets.personality);
   let topStrengths: AssessmentSummary["topStrengths"];
@@ -356,7 +356,7 @@ export function scoreAssessment(
       ? `Your interests point most strongly toward ${topCluster}. Combined with your aptitude, strengths and working style, the profile below maps how you think, learn and decide.`
       : "Your profile across the eight areas is shown below.",
     // Plain-language, because the student reads this (report header, report
-    // email). Temperament names are no longer reported — see the note on
+    // email). Temperament names are no longer reported - see the note on
     // TRAITS in lib/report/knowledge.ts.
     outcomeLabel: topStrengths[0]
       ? `Strongest trait: ${PLAIN_TRAIT[topStrengths[0].subTraitName] ?? topStrengths[0].subTraitName}`

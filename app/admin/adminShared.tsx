@@ -3,7 +3,7 @@
 /**
  * Shared across every /admin/* page: the small set of style tokens actually
  * reused in more than one place (most section-specific styling stays local
- * to that section's own file — see app/admin/(dashboard)/coupons/page.tsx
+ * to that section's own file - see app/admin/(dashboard)/coupons/page.tsx
  * for the established pattern), the print/layout CSS injected once by the
  * outer layout, the "loading/blocked" centering shell, the admin identity
  * every section needs without re-deriving isAdmin() itself, and the one
@@ -56,7 +56,7 @@ export function Center({ children }: { children: React.ReactNode }) {
 }
 
 // What every already-authenticated admin section needs, without each page
-// re-deriving isAdmin(user?.email) itself — the outer layout (app/admin/layout.tsx)
+// re-deriving isAdmin(user?.email) itself - the outer layout (app/admin/layout.tsx)
 // is the only place that check happens; everything under it can assume it's true.
 export interface AdminAuthValue {
   email: string;
@@ -74,7 +74,7 @@ export function useAdminAuth(): AdminAuthValue {
  * The actual "email this student's report" network call, shared by the
  * Users table and the standalone report route so there's one implementation
  * to keep correct, not two that can drift. Each caller keeps its own local
- * `sent` bookkeeping around this — they're separate component instances.
+ * `sent` bookkeeping around this - they're separate component instances.
  */
 export async function emailReport(u: {
   uid: string;

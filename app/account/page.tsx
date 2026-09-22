@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * /account — the signed-in user's dashboard. When the assessment is complete it
+ * /account - the signed-in user's dashboard. When the assessment is complete it
  * renders the premium <Dashboard/> (overview, radar, matches, dimensions, plan,
  * resources) with the in-depth <FullReport/> one click away. Otherwise it prompts
  * the user to take the assessment.
@@ -47,7 +47,7 @@ export default function AccountPage() {
 
   // Completed assessment → the full app-shell dashboard (owns its own chrome).
   // Mounted at this level rather than inside the report view because the
-  // dashboard shows the same findings in condensed form — both are read-only,
+  // dashboard shows the same findings in condensed form - both are read-only,
   // and the PDF students keep is the one emailed to them.
   if (a) {
     // Assessment complete → render the redesigned dashboard with all features

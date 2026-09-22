@@ -9,5 +9,5 @@ Save the traveller / signpost / mountain illustration here as:
 
 The home page loads it at `/why-this-matters.png`. Until the file exists, the
 page automatically falls back to a built-in SVG version of the same scene, so
-nothing breaks either way. (A `.jpg` works too — just update the path in
+nothing breaks either way. (A `.jpg` works too - just update the path in
 `app/Landing.tsx` → `WhyArt`.)

@@ -1,6 +1,6 @@
 "use client";
 
-/** /signin — email + password sign-in, then go to the dashboard. */
+/** /signin - email + password sign-in, then go to the dashboard. */
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -35,7 +35,7 @@ export default function SignInPage() {
     setPassword(val);
   };
 
-  // Nobody can look a password up — Firebase stores only a hash — so a student
+  // Nobody can look a password up - Firebase stores only a hash - so a student
   // who has forgotten theirs needs this to be one click away, not a support
   // email. The confirmation is deliberately the same whether or not the address
   // has an account: it must not become a way to test which emails are registered.

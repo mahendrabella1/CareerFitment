@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Firebase browser client — Auth + Firestore for user accounts.
+ * Firebase browser client - Auth + Firestore for user accounts.
  *
  * The Firebase WEB config below is PUBLIC and safe to commit (security is
  * enforced by Firebase Auth + Firestore rules, not by hiding these values).
@@ -18,7 +18,7 @@ import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
 
-// ---- Hardcoded web config (public — safe to commit) -----------------------
+// ---- Hardcoded web config (public - safe to commit) -----------------------
 const HARDCODED = {
   apiKey: "AIzaSyA3fUy9CkpoNf-vjrhswJQNwqy0qSr2cL0",
   authDomain: "careerfitment.firebaseapp.com",

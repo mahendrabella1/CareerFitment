@@ -4,11 +4,11 @@ import { sendLeadNotificationEmail } from "@/lib/leadEmail";
 
 export const dynamic = "force-dynamic";
 
-// POST /api/crm-lead — fires for every fresh registration (status "unpaid" —
+// POST /api/crm-lead - fires for every fresh registration (status "unpaid" -
 // the fee comes later via PaymentGate). Pushes the lead to the CRM webhook
 // and sends the internal "new lead" notification email. Deliberately
 // independent of assessment mode (local/Supabase) and of the legacy
-// /api/leads system — this is the one place every real signup calls,
+// /api/leads system - this is the one place every real signup calls,
 // server-side, so the CRM bearer token and SMTP creds never reach the browser.
 export async function POST(req: Request) {
   let body: {
@@ -49,6 +49,7 @@ export async function POST(req: Request) {
     ),
   ]);
 
-  // Always 200 — a CRM/email outage should never surface as a registration error.
+  // Always 200 - a CRM/email outage should never surface as a registration error.
   return NextResponse.json({ success: true });
 }
+

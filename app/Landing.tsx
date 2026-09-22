@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Landing — the marketing home. Clean, editorial, WHITE canvas with a serif
+ * Landing - the marketing home. Clean, editorial, WHITE canvas with a serif
  * headline, the eight dimensions shown right in the hero (reference layout),
  * then storytelling sections that animate in on scroll: explore-each-dimension
  * with photos, the science, real-world stats with charts, a report preview and
@@ -103,7 +103,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
         </div>
       </header>
 
-      {/* hero — text left, image right */}
+      {/* hero - text left, image right */}
       <section className="ogl-hero">
         <div className="ogl-hero-copy ogl-reveal ogl-from-left">
           <span className="ogl-eyebrow">Career fitment, backed by science</span>
@@ -114,7 +114,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
           <p className="ogl-lead">
             Most people choose a career on a hunch. OneGrasp measures <b>eight sides of
             how you think, learn and work</b>, then maps you to the paths where you’ll
-            genuinely excel — clear, personal and backed by science.
+            genuinely excel - clear, personal and backed by science.
           </p>
           <div className="ogl-hero-tags">
             {["Personality", "Interests", "Intelligences", "Aptitude", "+4 more"].map((t) => (
@@ -156,14 +156,14 @@ export default function Landing({ onStart }: { onStart: () => void }) {
         <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>Join our community <Icon name="chevronRight" size={16} /></button></div>
       </section>
 
-      {/* why it matters — the story */}
+      {/* why it matters - the story */}
       <section id="why" className="ogl-sec">
         <div className="ogl-why-top">
           <div className="ogl-why-copy ogl-reveal ogl-from-left">
             <span className="ogl-kicker">Why this matters</span>
             <h2 className="ogl-why-h">You’re at a crossroads. Which road is actually <span className="ogl-hl">yours</span>?</h2>
             <p className="ogl-sub">
-              Marks, peer pressure, a gut feeling at 16 or 21 — that’s what most big
+              Marks, peer pressure, a gut feeling at 16 or 21 - that’s what most big
               choices come down to. But the right road gets a lot clearer once you can
               see how you actually think, learn and work. <b>OneGrasp</b> turns that signpost
               of doubts into one clear direction that genuinely fits you.
@@ -189,12 +189,12 @@ export default function Landing({ onStart }: { onStart: () => void }) {
         <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>Take the assessment <Icon name="chevronRight" size={16} /></button></div>
       </section>
 
-      {/* explore each dimension — with photos */}
+      {/* explore each dimension - with photos */}
       <section id="measure" className="ogl-sec ogl-alt">
         <div className="ogl-sec-head ogl-reveal">
           <span className="ogl-kicker">What we measure</span>
           <h2 className="ogl-h2 ogl-serif">Eight dimensions. One complete picture.</h2>
-          <p className="ogl-sub">Each dimension uses an established framework, so your report reads like a proper profile — not a personality quiz.</p>
+          <p className="ogl-sub">Each dimension uses an established framework, so your report reads like a proper profile - not a personality quiz.</p>
         </div>
         <div className="ogl-dims">
           {DIMENSIONS.map((d, i) => (
@@ -255,7 +255,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
       <section className="ogl-sec ogl-alt">
         <div className="ogl-sec-head ogl-reveal">
           <span className="ogl-kicker">The cost of getting it wrong</span>
-          <h2 className="ogl-h2 ogl-serif">Alignment isn’t a luxury — it’s the difference.</h2>
+          <h2 className="ogl-h2 ogl-serif">Alignment isn’t a luxury - it’s the difference.</h2>
         </div>
         <div className="ogl-proof">
           <div className="ogl-proof-card ogl-reveal ogl-from-left">
@@ -287,7 +287,7 @@ export default function Landing({ onStart }: { onStart: () => void }) {
           <div className="ogl-report-copy ogl-reveal ogl-from-right">
             <span className="ogl-kicker">Your report</span>
             <h2 className="ogl-h2 ogl-serif">One clear map of all eight areas.</h2>
-            <p className="ogl-sub">Every answer comes together in a single visual profile — with a plain-English read on each dimension and the careers that fit you best. Sign in any time to revisit it.</p>
+            <p className="ogl-sub">Every answer comes together in a single visual profile - with a plain-English read on each dimension and the careers that fit you best. Sign in any time to revisit it.</p>
             <ul className="ogl-check">
               <li>Ranked career matches with fit scores</li>
               <li>Personality, intelligences, EI, learning style &amp; motivators</li>
@@ -363,28 +363,28 @@ const DIMENSIONS = [
   { title: "Career Interest", short: "Work environments that match your interests.", desc: "The fields and activities that genuinely pull you in.", framework: "Interest clustering", icon: "compass", img: IMG("photo-1541339907198-e08756dedf3f") },
   { title: "Multiple Intelligence", short: "Your natural abilities beyond traditional IQ.", desc: "The ways you most naturally think and process the world.", framework: "Gardner’s 8 intelligences", icon: "bulb", img: IMG("photo-1532094349884-543bc11b234d") },
   { title: "Emotional Intelligence", short: "How you understand and manage emotions.", desc: "Reading situations, managing yourself and relating to others.", framework: "EI scenarios", icon: "pulse", img: IMG("photo-1552664730-d307ca884978") },
-  { title: "Learning Preferences", short: "The kinds of study material you prefer.", desc: "Which kinds of study material you prefer — visual, aural, reading, kinesthetic. A study aid, not a career signal.", framework: "VARK", icon: "learning_styles", img: IMG("photo-1503676260728-1c00da094a0b") },
-  { title: "Motivators", short: "What drives you and keeps you going.", desc: "What energises you — and what quietly burns you out.", framework: "Work-values model", icon: "match", img: IMG("photo-1454165804606-c3d57bc86b40") },
+  { title: "Learning Preferences", short: "The kinds of study material you prefer.", desc: "Which kinds of study material you prefer - visual, aural, reading, kinesthetic. A study aid, not a career signal.", framework: "VARK", icon: "learning_styles", img: IMG("photo-1503676260728-1c00da094a0b") },
+  { title: "Motivators", short: "What drives you and keeps you going.", desc: "What energises you - and what quietly burns you out.", framework: "Work-values model", icon: "match", img: IMG("photo-1454165804606-c3d57bc86b40") },
   { title: "Strengths", short: "Your core strengths and how to use them.", desc: "Problem-solving, critical thinking, decisions and communication.", framework: "Reasoning + self-report", icon: "star", img: IMG("photo-1503387762-592deb58ef4e") },
   { title: "Aptitude", short: "Your ability to learn and solve problems.", desc: "Verbal, numerical, logical and spatial reasoning, scored objectively.", framework: "Cognitive reasoning", icon: "cpu", img: IMG("photo-1461749280684-dccba630e2f6") },
 ];
 
 const STEPS = [
   { ic: "answer", t: "Answer", d: "Stage-appropriate questions across all eight dimensions, with visuals and audio where it helps.", color: "#2f6bff", soft: "#e9f0ff" },
-  { ic: "score", t: "Score", d: "Each response is scored against its established model — Big Five, Gardner, VARK, EI and more.", color: "#16a34a", soft: "#e6f6ec" },
+  { ic: "score", t: "Score", d: "Each response is scored against its established model - Big Five, Gardner, VARK, EI and more.", color: "#16a34a", soft: "#e6f6ec" },
   { ic: "combine", t: "Combine", d: "Dimensions are weighted and cross-checked to build one coherent profile.", color: "#7c3aed", soft: "#f1e9fd" },
   { ic: "match", t: "Match", d: "Your interests and aptitudes map to specific career clusters and roles.", color: "#f59e0b", soft: "#fdf1dd" },
-  { ic: "explain", t: "Explain", d: "You get a clear report — a single visual map plus plain-English guidance.", color: "#14b8a6", soft: "#e0f5f2" },
+  { ic: "explain", t: "Explain", d: "You get a clear report - a single visual map plus plain-English guidance.", color: "#14b8a6", soft: "#e0f5f2" },
 ];
 
 const FACTS = [
-  { stat: "~2 in 3", text: "employees feel disengaged at work — most in roles that never fit them.", icon: "user", color: "#dc2626", soft: "#fdecec" },
+  { stat: "~2 in 3", text: "employees feel disengaged at work - most in roles that never fit them.", icon: "user", color: "#dc2626", soft: "#fdecec" },
   { stat: "50%+", text: "of students reconsider their stream or degree within the first two years.", icon: "cap", color: "#e08a0a", soft: "#fdf1dd" },
-  { stat: "90,000", text: "hours are spent working across an average lifetime — spend them well.", icon: "clock", color: "#2f6bff", soft: "#e9f0ff" },
+  { stat: "90,000", text: "hours are spent working across an average lifetime - spend them well.", icon: "clock", color: "#2f6bff", soft: "#e9f0ff" },
 ];
 
 const REVIEWS = [
-  { name: "Aarav", role: "Class 11 student", color: "#3b5bdb", quote: "I always assumed engineering. The report showed my strengths pointed to design and communication — it genuinely changed my plan." },
+  { name: "Aarav", role: "Class 11 student", color: "#3b5bdb", quote: "I always assumed engineering. The report showed my strengths pointed to design and communication - it genuinely changed my plan." },
   { name: "Priya", role: "Graduate", color: "#2f9e6f", quote: "The eight-area chart made everything click. For the first time my choices felt based on something real, not just marks." },
   { name: "Rahul", role: "Parent", color: "#a4708a", quote: "As a parent this gave us a calm, structured conversation instead of arguments. Worth every minute." },
 ];
@@ -582,7 +582,7 @@ const CSS = `
 .ogl-btn-lg.ogl-btn-ghost{padding:14px 20px}
 .ogl-sec-cta{display:flex;justify-content:center;margin-top:38px}
 
-/* hero — fills the first screen */
+/* hero - fills the first screen */
 .ogl-hero{max-width:1160px;margin:0 auto;min-height:calc(100vh - 66px);display:grid;grid-template-columns:1.08fr .92fr;gap:48px;align-items:center;padding:20px 44px 40px}
 @media(max-width:940px){.ogl-hero{min-height:0;grid-template-columns:1fr;gap:26px;padding:22px 26px 34px}}
 .ogl-hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 24px}

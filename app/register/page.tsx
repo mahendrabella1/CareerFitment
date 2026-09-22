@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * /register — a guided, 3-step account wizard (Milestone → Current stage →
+ * /register - a guided, 3-step account wizard (Milestone → Current stage →
  * Details). Fields reveal progressively as earlier ones are completed, with
  * clear validation and "you did it" feedback, so filling the form feels like
  * making steady progress. Creates a Firebase account + Firestore profile, then
@@ -61,9 +61,9 @@ function RegisterForm() {
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
 
-  // Institutional link (?ref=CODE) — checked once on mount. An invalid link
+  // Institutional link (?ref=CODE) - checked once on mount. An invalid link
   // BLOCKS the whole registration form (see the early return below) instead
-  // of just showing a banner above a still-usable one — a deactivated/
+  // of just showing a banner above a still-usable one - a deactivated/
   // expired/full link shouldn't let a student fill in a whole form only to
   // find out at the end it was never going to waive their fee. This check is
   // still only advisory in the security sense; the real, race-safe check
@@ -72,7 +72,7 @@ function RegisterForm() {
   const refCode = (searchParams.get("ref") || "").trim().toUpperCase();
   type InstCheck = { valid: true; schoolName?: string } | { valid: false; reason: string; schoolName?: string };
   const [instCheck, setInstCheck] = useState<InstCheck | "checking" | null>(refCode ? "checking" : null);
-  // Set only if a ref code was present but redemption failed at submit time —
+  // Set only if a ref code was present but redemption failed at submit time -
   // shown on the "done" screen instead of the usual auto-redirect, since the
   // account is created either way and the student needs a moment to read why
   // they'll still see a payment step.
@@ -136,7 +136,7 @@ function RegisterForm() {
         }),
       }).catch(() => {});
 
-      // The account exists either way by this point — an institutional-link
+      // The account exists either way by this point - an institutional-link
       // failure here (link disabled/expired/full in the moment between the
       // banner and this submit) must never lose the signup, only fall
       // through to the normal payment step the student would have hit
@@ -153,10 +153,10 @@ function RegisterForm() {
           const data = await res.json();
           if (!data?.success) {
             setInstFailMsg(data?.message || "This school link couldn't be applied.");
-            return; // no auto-redirect — the "done" screen shows a manual Continue button instead
+            return; // no auto-redirect - the "done" screen shows a manual Continue button instead
           }
           // The redeem call marked paid:true on the server (Admin SDK,
-          // bypassing Firestore rules entirely) — but register() already set
+          // bypassing Firestore rules entirely) - but register() already set
           // the CLIENT's local profile to the paid:false doc it just wrote,
           // and nothing refetches it automatically. Without this, the exam
           // gate (assessment-experience.tsx's profile.paid check) still sees
@@ -174,7 +174,7 @@ function RegisterForm() {
     }
   }
 
-  // An invalid ?ref= link blocks the form entirely — a reason-specific
+  // An invalid ?ref= link blocks the form entirely - a reason-specific
   // message screen instead, with a path to the normal (paid) signup for a
   // student who still wants to register. A valid link falls through to the
   // ordinary wizard with just a confirmation banner (below).
@@ -192,7 +192,7 @@ function RegisterForm() {
       <div style={S.card}>
         {!done && refCode && instCheck !== "checking" && instCheck && instCheck.valid && (
           <div style={S.instBanner}>
-            ✓ Registering via <b>{instCheck.schoolName || "your school"}</b> — your assessment fee is covered.
+            ✓ Registering via <b>{instCheck.schoolName || "your school"}</b> - your assessment fee is covered.
           </div>
         )}
         {/* tabs */}
@@ -222,7 +222,7 @@ function RegisterForm() {
                   <button style={{ ...S.next, marginTop: 18 }} onClick={() => router.push("/?begin=1")}>Continue →</button>
                 </>
               ) : (
-                <p style={S.doneSub}>Account created — taking you to your assessment…</p>
+                <p style={S.doneSub}>Account created - taking you to your assessment…</p>
               )}
             </div>
           ) : step === 0 ? (
@@ -286,7 +286,7 @@ function RegisterForm() {
             /* ---------------- Step 3: Details (progressive reveal) ---------------- */
             <>
               <h2 style={S.h}>Let’s start.</h2>
-              <p style={S.subhint}>Your email and password are your login — you’ll use them to view your report anytime.</p>
+              <p style={S.subhint}>Your email and password are your login - you’ll use them to view your report anytime.</p>
               {error && <div style={S.errorBox}>{error}</div>}
 
               <div style={S.grid2} className="og-g2">
@@ -364,7 +364,7 @@ const INST_BLOCK_COPY: Record<string, (school: string) => { title: string; body:
   }),
   not_found: () => ({
     title: "This link isn't valid",
-    body: "Double-check that you copied the whole link your school sent you — it may be incomplete or mistyped.",
+    body: "Double-check that you copied the whole link your school sent you - it may be incomplete or mistyped.",
   }),
 };
 
@@ -454,8 +454,8 @@ const S: Record<string, React.CSSProperties> = {
 
   confirmPill: { display: "inline-flex", alignItems: "center", gap: 6, background: "#eef2ff", color: NAVY, fontSize: 12, fontWeight: 700, padding: "6px 13px", borderRadius: 999, marginBottom: 2 },
   stages: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 },
-  sCard: { position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 10, padding: "18px 10px", background: "#fff", border: "1.5px solid #eceef3", borderRadius: 12, cursor: "pointer", textAlign: "center" },
-  sIcon: { width: 46, height: 46, borderRadius: "50%", border: "1.5px solid #e4e7ee", display: "grid", placeItems: "center" },
+  sCard: { position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 10, padding: "18px 10px", background: "#fff", border: "1.5px solid #eceef3", borderRadius: 12, cursor: "pointer", textAlign: "center", transition: "border-color .15s, box-shadow .15s" },
+  sIcon: { width: 46, height: 46, borderRadius: "50%", border: "1.5px solid #e4e7ee", display: "grid", placeItems: "center", transition: "border-color .15s, background .15s, color .15s" },
   sLabel: { fontSize: 12, fontWeight: 600, color: "#334155", lineHeight: 1.4 },
 
   grid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 14 },

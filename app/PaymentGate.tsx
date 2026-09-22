@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * PaymentGate — shown before the exam when the signed-in user hasn't paid.
+ * PaymentGate - shown before the exam when the signed-in user hasn't paid.
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -16,7 +16,7 @@ declare global {
   interface Window { Razorpay?: any }
 }
 
-/** What /api/payment/coupon hands back — the whole price line, priced server-side. */
+/** What /api/payment/coupon hands back - the whole price line, priced server-side. */
 interface Priced {
   listPaise: number;
   basePaise: number;
@@ -54,7 +54,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
     invalidCode: false,
   });
 
-  // Coupon box (the hand-typed path — OGNOW and anything added later). Starts
+  // Coupon box (the hand-typed path - OGNOW and anything added later). Starts
   // collapsed; `openCouponBox` reveals it and puts the cursor straight in, so
   // "click here" costs exactly one click and no aiming.
   const [couponInput, setCouponInput] = useState("");
@@ -80,7 +80,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
   // and still call the current one.
   //
   // This matters more than it looks. With `onPaid` in the dependency list, a
-  // parent re-render tears the effect down mid-flight — the cleanup marks the
+  // parent re-render tears the effect down mid-flight - the cleanup marks the
   // in-flight request cancelled, and the request then returns without ever
   // clearing `checking`, leaving the student on "Preparing your assessment…"
   // for good. Depending on nothing means the cleanup runs only on a real
@@ -90,14 +90,14 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
 
   // Ask the server whether this student should be charged. It says no when an
   // admin has switched payment off in /admin, or when real payment isn't
-  // configured (no Razorpay secret) — either way we skip the fee and let the
+  // configured (no Razorpay secret) - either way we skip the fee and let the
   // exam load immediately.
   useEffect(() => {
     let cancelled = false;
     (async () => {
       // A request that never settles would park the student on the loading
       // card indefinitely. Time it out into the catch below, which treats it
-      // the same as any other network failure — because that is what a request
+      // the same as any other network failure - because that is what a request
       // that never answers is.
       const abort = new AbortController();
       const timer = window.setTimeout(() => abort.abort(), 15000);
@@ -125,9 +125,9 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
         }));
 
         // Apply the sale coupon on the student's behalf before showing a price
-        // — they should never see the undiscounted number as their total. The
+        // - they should never see the undiscounted number as their total. The
         // code comes from the server, so the campaign lives in one file. The
-        // applied-coupon chip on the card itself (below) is the announcement —
+        // applied-coupon chip on the card itself (below) is the announcement -
         // no interrupting popup, so "Continue to Assessment" is the only click
         // needed once a coupon is in effect.
         const autoCode: string | undefined = data?.offer?.autoCoupon?.code;
@@ -146,7 +146,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
       }
     })();
     return () => { cancelled = true; };
-    // Mount only — see onPaidRef above.
+    // Mount only - see onPaidRef above.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -185,10 +185,10 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
     setCouponMsg({
       kind: "ok",
       text: result.free
-        ? `${result.coupon.code} applied — your fee is fully waived.`
-        : `${result.coupon.code} applied — you pay ${formatPaise(result.payablePaise)}.`,
+        ? `${result.coupon.code} applied - your fee is fully waived.`
+        : `${result.coupon.code} applied - you pay ${formatPaise(result.payablePaise)}.`,
     });
-    // A 100%-off code leaves nothing to pay for — go straight into the
+    // A 100%-off code leaves nothing to pay for - go straight into the
     // assessment instead of making the student read the message above and
     // then separately click the main CTA. The short pause is only so
     // "applied" is actually visible before the screen changes, not a real
@@ -220,14 +220,14 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
           paid: true, paymentStatus: "paid", paidAt: new Date().toISOString(), ...fields,
         }, { merge: true });
       }
-    } catch { /* verified server-side already — proceed regardless */ }
+    } catch { /* verified server-side already - proceed regardless */ }
   }, []);
 
   /**
    * OGNOW and friends: no Razorpay order exists, so nothing to check out.
    * `codeOverride` lets a just-applied coupon redeem itself immediately
    * (see applyTypedCoupon below) without waiting on the `priced` state
-   * update to land first — `setPriced` from that same call hasn't committed
+   * update to land first - `setPriced` from that same call hasn't committed
    * yet when this runs, so reading `priced.coupon` here would still see the
    * PREVIOUS coupon (or none).
    */
@@ -251,7 +251,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
       });
       const data = await res.json();
       if (!data?.success) {
-        // The fee was switched off while this tab sat open — that isn't an
+        // The fee was switched off while this tab sat open - that isn't an
         // error for the student, it's a free pass.
         if (data?.reason === "payment_disabled") { onPaid(); return; }
         throw new Error(data?.message || "That coupon could not be applied.");
@@ -291,7 +291,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
       });
       const order = await orderRes.json();
       if (!order.success) {
-        // An admin switched payment off while this tab was open — don't show an
+        // An admin switched payment off while this tab was open - don't show an
         // error for something that isn't one; just let them into the exam.
         if (order.reason === "payment_disabled") { onPaid(); return; }
         // The code turned out to be a full waiver (e.g. the price changed under
@@ -300,12 +300,12 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
         //authentication will have some more issues 
         //that can able to do that things after the seaan afi ,that things 
         if (order.reason === "free_coupon") { setBusy(false); return redeemFree(); }
-        // Never open Checkout without a valid order — Razorpay would render its
+        // Never open Checkout without a valid order - Razorpay would render its
         // own "The api key provided is invalid" screen, which looks like a failed payment on a page that can still take their money. The
         // Razorpay docs don't mention this, but the checkout script will happily open with a bad key and then reject the payment, which looks exactly like a failed payment on a page 
         // like a failed payment on a page that can still take their money.
         if (order.reason === "razorpay_auth_failed") {
-          console.error("[payment] Razorpay rejected key", order.keyId, "— Key ID/Secret pair mismatch.");
+          console.error("[payment] Razorpay rejected key", order.keyId, "- Key ID/Secret pair mismatch.");
         }
         throw new Error(order.message || "Couldn't start the payment.");
       }
@@ -403,12 +403,12 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
           <ul className="pg-list">
             <li>60+ question assessment across 8 established frameworks</li>
             <li>Coherent best-fit career fields &amp; matches</li>
-            <li>In-depth report — strengths, growth areas &amp; a plan</li>
+            <li>In-depth report - strengths, growth areas &amp; a plan</li>
             <li>Report emailed to you on completion</li>
           </ul>
 
           {/* Hand-typed codes. Collapsed behind a prompt, because the sale code
-              is already applied by the time anyone reads this — an empty box
+              is already applied by the time anyone reads this - an empty box
               sitting under a discounted price invites people to hunt for a
               better one. It stays available for the student who does hold a
               code (OGNOW), one click away and focused the moment it opens. */}
@@ -428,7 +428,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
                     value={couponInput}
                     // Never put a real code here. A placeholder is read by
                     // every student who opens this box, including the ones
-                    // about to pay — an example like "OGNOW" hands them a
+                    // about to pay - an example like "OGNOW" hands them a
                     // 100%-off code (lib/coupons.ts) for free.
                     placeholder="ENTER CODE"
                     autoCapitalize="characters"

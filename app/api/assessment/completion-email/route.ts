@@ -6,14 +6,14 @@ import { sendAssessmentCompletedNotification } from "@/lib/leadEmail";
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 
-// POST /api/assessment/completion-email — confirms to the student that their
+// POST /api/assessment/completion-email - confirms to the student that their
 // assessment is in, and tells them how to sign back in for the report.
 //
 // The REPORT itself is not sent here: that stays a deliberate admin action from
 // /admin, so nobody receives a report before the team has looked at it.
 //
 // The recipient comes from the Firebase ID token, never from the request body.
-// That single decision is what stops this being an open relay — a caller can
+// That single decision is what stops this being an open relay - a caller can
 // only ever mail the address attached to the account they are signed in as, so
 // it cannot be pointed at a stranger's inbox.
 export async function POST(req: Request) {
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
   const to = await emailFromToken(body.idToken);
   if (!to) {
     // Either the token is bad or the lookup is down. Never fall back to an
-    // address from the body — that is exactly the hole this route avoids.
+    // address from the body - that is exactly the hole this route avoids.
     return NextResponse.json({ success: false, message: "Could not verify who to send to." }, { status: 401 });
   }
 
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
   //   • the team's "somebody has a report waiting" notice. Without that second
   //     one nobody knows to send the report, because that stays a manual
   //     action in /admin.
-  // Neither can reject — both swallow their own failures — so this cannot throw.
+  // Neither can reject - both swallow their own failures - so this cannot throw.
   const [sent, notified] = await Promise.all([
     sendAssessmentCompletionEmail({
       to,

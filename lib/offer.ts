@@ -1,4 +1,4 @@
-// The live promotional offer — ONE source of truth for every price the site
+// The live promotional offer - ONE source of truth for every price the site
 // shows and every discount the server will honour.
 //
 // Safe to import from client components: nothing here is a secret, and the
@@ -9,7 +9,7 @@
 //
 // TO END THE SALE: set `active: false` below and redeploy. The banner and the
 // sale badging disappear; the fee itself is unchanged (it is whatever the admin
-// has set in /admin). Nothing expires by itself — `endsAtISO` is display text
+// has set in /admin). Nothing expires by itself - `endsAtISO` is display text
 // and the countdown only, so the site can never quietly change its own pricing
 // on a date nobody is watching.
 
@@ -28,7 +28,7 @@ export const OFFER = {
    * The advertised sale price in paise (9900 = ₹99), used as the FALLBACK for
    * marketing copy on pages that have no reason to call the API. The amount a
    * student is actually charged is always the admin's fee from
-   * /api/payment/status — keep this in step with /admin so the banner and the
+   * /api/payment/status - keep this in step with /admin so the banner and the
    * checkout never quote different numbers.
    */
   salePaise: 9900,
@@ -52,7 +52,7 @@ export function offerIsLive(): boolean {
   return OFFER.active;
 }
 
-/** "₹99" / "₹99.50" — paise in, display string out. No stray ".00". */
+/** "₹99" / "₹99.50" - paise in, display string out. No stray ".00". */
 export function formatPaise(paise: number): string {
   const rupees = Math.max(0, paise) / 100;
   return `₹${rupees % 1 === 0 ? rupees.toLocaleString("en-IN") : rupees.toFixed(2)}`;
@@ -64,7 +64,7 @@ export function discountPctBetween(listPaise: number, payablePaise: number): num
   return Math.max(0, Math.min(100, Math.round((1 - payablePaise / listPaise) * 100)));
 }
 
-/** Milliseconds until the sale's stated end — negative once it has passed. */
+/** Milliseconds until the sale's stated end - negative once it has passed. */
 export function msUntilOfferEnds(now: number = Date.now()): number {
   return new Date(OFFER.endsAtISO).getTime() - now;
 }

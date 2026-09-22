@@ -4,7 +4,7 @@
 // invalid" / "Authentication failed", with no hint as to which half is wrong).
 //
 // RAZORPAY_KEY_ID is checked before the NEXT_PUBLIC_ one because Next inlines
-// NEXT_PUBLIC_* at BUILD time — even inside server code. Editing the public var
+// NEXT_PUBLIC_* at BUILD time - even inside server code. Editing the public var
 // in the host dashboard does nothing until a fresh, uncached build, so key
 // rotation appears to silently fail. The server-only name is read at runtime.
 //
@@ -13,7 +13,7 @@
 
 const BAKED_IN_KEY_ID = "rzp_live_T4fgWI2uotntDG";
 
-/** Public Razorpay Key ID — safe to send to the browser. */
+/** Public Razorpay Key ID - safe to send to the browser. */
 export function razorpayKeyId(): string {
   return (
     process.env.RAZORPAY_KEY_ID ||

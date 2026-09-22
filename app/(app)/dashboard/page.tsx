@@ -151,7 +151,7 @@ export default function DashboardPage() {
               className="md:col-span-2 rounded-xl border border-gray-200 bg-white p-8">
               <GraduationCap className="w-6 h-6" style={{ color: '#db3433' }} />
               <h3 className="text-2xl font-bold text-black mt-4 mb-2">Have a question about your future?</h3>
-              <p className="text-gray-600 text-sm leading-relaxed mb-6 max-w-lg">Talk to a OneGrasp counsellor — we'll help you read your report, pick subjects, and plan your next steps.</p>
+              <p className="text-gray-600 text-sm leading-relaxed mb-6 max-w-lg">Talk to a OneGrasp counsellor - we'll help you read your report, pick subjects, and plan your next steps.</p>
               <a href="https://wa.me/918977760443" target="_blank" rel="noreferrer"
                 className="inline-flex items-center gap-2 text-white text-sm font-bold px-6 py-3 rounded-lg transition-all" style={{ background: '#db3433' }}>
                 <Sparkles className="w-4 h-4" /> Ask a counsellor

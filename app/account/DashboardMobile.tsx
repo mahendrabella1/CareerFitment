@@ -146,7 +146,7 @@ export default function DashboardMobile({
   const topDomainName = topField?.name ?? "your best-fit field";
   const topTheme = (a.themes ?? [])[0] ?? null;
   const topInterestScore = Math.round(topTheme?.score ?? 0);
-  const topInterestName = topTheme?.title ?? "—";
+  const topInterestName = topTheme?.title ?? "-";
   const arch = archetype(a);
   const code = a.riasecCode || (a.themes ?? []).slice(0, 3).map((t) => t.letter).join("");
   const strongest = radar.slice().sort((x, y) => y.score - x.score)[0];
@@ -248,7 +248,7 @@ export default function DashboardMobile({
 
   if (view === "report") {
     // See Dashboard.tsx's matching comment: a report saved before the class
-    // 11-12 rewrite is shaped like the old, partly-fake engine — not just
+    // 11-12 rewrite is shaped like the old, partly-fake engine - not just
     // missing fields, so it's treated as "no report yet" rather than
     // partially rendered.
     // "11" and "12" are the current, separately-registered classes; "11-12"
@@ -258,7 +258,7 @@ export default function DashboardMobile({
     const class11Ready = isClass1112Journey && isCurrentClass11Shape(class11Output);
     const class11Stale = isClass1112Journey && !!class11Output && !class11Ready;
 
-    // Same staleness guard for classes 6-8 as Dashboard.tsx (desktop) — see
+    // Same staleness guard for classes 6-8 as Dashboard.tsx (desktop) - see
     // its matching comment: a report saved before the 15-domain catalogue
     // rebuild has domainAffinities scored against domains that no longer
     // exist.
@@ -508,9 +508,9 @@ export default function DashboardMobile({
           >
             {[
               { icon: "star", label: "Strongest interest", value: topInterestName, sub: `${topInterestScore}% of answers` },
-              { icon: "career_interest", label: "Interest code", value: code || "—", sub: "Based on your career interests" },
-              { icon: "motivators", label: "Strongest area", value: strongest ? String(Math.round(strongest.score)) : "—", sub: strongest ? CAT_LABEL[strongest.key] : "" },
-              { icon: "heart", label: "Emotional Intelligence", value: a.ei != null ? String(Math.round(a.ei)) : "—", sub: "Strong EQ" },
+              { icon: "career_interest", label: "Interest code", value: code || "-", sub: "Based on your career interests" },
+              { icon: "motivators", label: "Strongest area", value: strongest ? String(Math.round(strongest.score)) : "-", sub: strongest ? CAT_LABEL[strongest.key] : "" },
+              { icon: "heart", label: "Emotional Intelligence", value: a.ei != null ? String(Math.round(a.ei)) : "-", sub: "Strong EQ" },
             ].map((kpi, i) => (
               <div key={i} style={{ background: KPI[i].t, border: `1px solid ${IN_LINE}`, borderRadius: "8px", padding: "16px" }}>
                 <div style={{ fontSize: "12px", color: "#6b7280", marginBottom: "8px" }}>{kpi.label}</div>
@@ -526,7 +526,7 @@ export default function DashboardMobile({
               Your Career Toolkit
             </h2>
             <p className="dashboard-description" style={{ fontSize: "14px", color: "#374151", marginBottom: "20px", lineHeight: "1.6" }}>
-              Access resources to shape your future — colleges, internships, scholarships, and strategies tailored to you.
+              Access resources to shape your future - colleges, internships, scholarships, and strategies tailored to you.
             </p>
 
             <div className="dashboard-feature-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "16px" }}>

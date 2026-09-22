@@ -4,12 +4,12 @@ import { Allocation } from "./types";
  * Distributes `totalNeeded` questions across sub-traits, honoring the
  * standard blueprint rule: min 4 / ideal 6 / max 8 per sub-trait.
  *
- * If the math can't work (too many sub-traits for too few questions —
+ * If the math can't work (too many sub-traits for too few questions -
  * this genuinely happens, e.g. Personality in Career Discovery has 9
  * sub-traits but only an 18-question budget, so a 4-per-sub-trait floor
  * would need 36) it flags the conflict and falls back to a proportional
  * split using largest-remainder (Hamilton) apportionment, which is the
- * one guaranteed to sum back to `totalNeeded` exactly — naive per-trait
+ * one guaranteed to sum back to `totalNeeded` exactly - naive per-trait
  * rounding does not, and that's the kind of bug that only shows up when
  * someone counts the generated session and finds 15 questions where the
  * blueprint promised 12.

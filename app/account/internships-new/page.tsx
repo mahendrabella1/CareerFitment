@@ -14,7 +14,7 @@ export default function InternshipsPage() {
   const allPrograms = getAllInternships();
 
   // Built from the programs' own `industry` tags rather than a hand-typed
-  // list — a curated list of 14 broad labels ("Data Science & AI", "DevOps &
+  // list - a curated list of 14 broad labels ("Data Science & AI", "DevOps &
   // Infrastructure", ...) drifted out of sync with the 80+ granular tags the
   // real data actually uses ("Data Science", "AI", "DevOps", "Infrastructure"
   // as separate tags), so most category choices matched nothing and silently

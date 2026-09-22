@@ -7,12 +7,12 @@ import { getPaymentSettings } from "@/lib/paymentSettings";
 import { priceWithCoupon } from "@/lib/coupons";
 import { emailFromToken } from "@/lib/firebaseIdentity";
 
-// POST /api/payment/verify — verifies the Razorpay signature server-side (the
+// POST /api/payment/verify - verifies the Razorpay signature server-side (the
 // security-critical step; never trust the client). The signed-in client records
 // "paid" in Firestore itself (allowed by the user's own security rule), so this
 // route needs no admin credentials. Email is best-effort.
 export async function POST(req: Request) {
-  // Same trimmed value the order route authenticated with — the signature is an
+  // Same trimmed value the order route authenticated with - the signature is an
   // HMAC keyed on it, so any drift here would reject every genuine payment.
   const keySecret = razorpayKeySecret();
   if (!keySecret) {
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
 
   // Best-effort CRM + email (never blocks the flow). Uses details the client
   // passed. The amount is re-derived from the same coupon rules the order was
-  // priced with — for REPORTING only; the money itself was fixed when Razorpay
+  // priced with - for REPORTING only; the money itself was fixed when Razorpay
   // accepted the order, and the signature above is what proves it was paid.
   const email = (await emailFromToken(idToken)) || String(profile?.email || "");
   const settings = await getPaymentSettings();

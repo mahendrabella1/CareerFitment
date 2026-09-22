@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * /admin/payment — the assessment fee on/off + price toggle. Extracted from
+ * /admin/payment - the assessment fee on/off + price toggle. Extracted from
  * the old single-file /admin page as its own dashboard section. Auth is
  * handled by the parent app/admin/layout.tsx.
  */
@@ -19,7 +19,7 @@ export default function AdminPaymentPage() {
   const { email } = useAdminAuth();
 
   // Loaded from /api/payment/status rather than read straight out of Firestore,
-  // because that endpoint reports what the SERVER will actually do — including
+  // because that endpoint reports what the SERVER will actually do - including
   // whether Razorpay credentials exist and whether the toggle is even reaching
   // it. Saving writes the doc, then re-reads the endpoint to confirm.
   const [payEnabled, setPayEnabled] = useState(true);
@@ -68,19 +68,19 @@ export default function AdminPaymentPage() {
         },
         { merge: true }
       );
-      // Confirm the server sees the change — a write that Firestore accepted but
+      // Confirm the server sees the change - a write that Firestore accepted but
       // the server can't read back would silently leave the old price live.
       await loadPaymentSettings();
       setPayMsg({
         kind: "ok",
         text: payEnabled
-          ? `Saved — students are charged ₹${rupees % 1 === 0 ? rupees : rupees.toFixed(2)} before the exam.`
-          : "Saved — payment is off. Students go straight to the exam.",
+          ? `Saved - students are charged ₹${rupees % 1 === 0 ? rupees : rupees.toFixed(2)} before the exam.`
+          : "Saved - payment is off. Students go straight to the exam.",
       });
     } catch (e) {
       setPayMsg({
         kind: "err",
-        text: e instanceof Error ? e.message : "Could not save — check Firestore admin write rules.",
+        text: e instanceof Error ? e.message : "Could not save - check Firestore admin write rules.",
       });
     } finally {
       setPaySaving(false);
@@ -99,7 +99,7 @@ export default function AdminPaymentPage() {
           <div style={S.payTitle}>Assessment payment</div>
           <p style={S.paySub}>
             When this is on, students pay the fee below before the exam opens. Turn it off and
-            they go straight into the exam — no payment screen at all.
+            they go straight into the exam - no payment screen at all.
           </p>
         </div>
         <label style={S.toggleWrap}>
@@ -148,11 +148,11 @@ export default function AdminPaymentPage() {
             <span style={S.payNote}>Loading current settings…</span>
           ) : payEnabled && payConfigured ? (
             <span style={{ ...SHARED.pill, ...SHARED.pillOk }}>
-              <span style={{ ...SHARED.dot, background: C.good }} /> Live — students are charged
+              <span style={{ ...SHARED.dot, background: C.good }} /> Live - students are charged
             </span>
           ) : (
             <span style={{ ...SHARED.pill, ...SHARED.pillWait }}>
-              <span style={{ ...SHARED.dot, background: C.muted }} /> Free — exam opens without payment
+              <span style={{ ...SHARED.dot, background: C.muted }} /> Free - exam opens without payment
             </span>
           )}
         </div>
@@ -163,7 +163,7 @@ export default function AdminPaymentPage() {
           <Icon name={payMsg.kind === "ok" ? "check" : "info"} size={15} /> {payMsg.text}
         </div>
       )}
-      {/* Kill switch is on — say so, or this whole card looks broken. */}
+      {/* Kill switch is on - say so, or this whole card looks broken. */}
       {payLoaded && payForcedOff && (
         <div style={S.payWarn}>
           <Icon name="info" size={15} style={{ flex: "none", marginTop: 1 }} />
@@ -181,7 +181,7 @@ export default function AdminPaymentPage() {
         <div style={S.payWarn}>
           <Icon name="info" size={15} style={{ flex: "none", marginTop: 1 }} />
           <span>
-            Payment is switched on, but no Razorpay key secret is set on this deployment —
+            Payment is switched on, but no Razorpay key secret is set on this deployment -
             students still get in free. Add <b>RAZORPAY_KEY_SECRET</b> to the host environment
             to start charging.
           </span>
@@ -201,7 +201,7 @@ export default function AdminPaymentPage() {
       )}
 
       {/* The sale banner/list-price copy is still a code constant
-          (lib/offer.ts) — read-only here. The actual coupon codes
+          (lib/offer.ts) - read-only here. The actual coupon codes
           themselves are no longer code constants; they're managed on
           their own page (Firestore-backed, live immediately). */}
       {payLoaded && payEnabled && (

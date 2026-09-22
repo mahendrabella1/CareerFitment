@@ -1,27 +1,27 @@
 /**
- * "Based on your specific strengths" — the Class 12 JEE page's third
+ * "Based on your specific strengths" - the Class 12 JEE page's third
  * source of alternatives, distinct from both the job-role ranking
  * (careerFitEngine1112.ts) and the degree-eligibility matrix
  * (degreeStreamMatrix.ts). Where those two answer "what fits your measured
  * profile" and "what can your stream reach", this one answers a third,
  * genuinely different question: "given the SPECIFIC combination of
- * strengths you actually showed — not a domain, a named dimension like
- * Mathematical Ability or Coding Interest — what does that point toward?"
+ * strengths you actually showed - not a domain, a named dimension like
+ * Mathematical Ability or Coding Interest - what does that point toward?"
  *
  * Extracted verbatim from the user-provided workbook "11-12th Streams list
  * (1).xlsx", sheet "After 12th Career Paths", rows 49-64: a dimension × the
  * three broad stream groups (MPC/PCM, BiPC/PCB, CEC) table, each cell with
  * a real question, courses, job roles, skills to build, an Indicative
- * Salary Range, and — uniquely among everything else in this report —
+ * Salary Range, and - uniquely among everything else in this report -
  * actual Government Jobs / Career Pathways for that specific dimension.
- * (One stray malformed row, "Student Profile" under BiPC/PCB — a leftover
- * header from a different mini-table further down the same sheet — is
+ * (One stray malformed row, "Student Profile" under BiPC/PCB - a leftover
+ * header from a different mini-table further down the same sheet - is
  * dropped rather than encoded as a dimension.)
  *
  * The dimension NAMES differ per stream group (e.g. BiPC/PCB has "Medical /
  * Healthcare Interest", CEC has "Legal & Civic Interest") because the
  * workbook itself tailors which strengths are even worth asking about per
- * stream — this is preserved as-is rather than forced into one shared list.
+ * stream - this is preserved as-is rather than forced into one shared list.
  */
 import type { PsychometricProfile } from "@/lib/newAssessment/scoring11_12";
 import type { StreamKey1112 } from "@/lib/report/careerfit1112";
@@ -38,7 +38,7 @@ export interface DimensionEntry {
   govtJobs: string;
 }
 
-/** MPC and PCMB both draw on the MPC/PCM group — PCMB is MPC's subjects plus Biology, so its quantitative dimensions still apply directly. Humanities and Vocational/Other have no matching group in the source sheet. */
+/** MPC and PCMB both draw on the MPC/PCM group - PCMB is MPC's subjects plus Biology, so its quantitative dimensions still apply directly. Humanities and Vocational/Other have no matching group in the source sheet. */
 export function streamGroupFor(streamKey: StreamKey1112): StreamGroup | null {
   if (streamKey === "MPC" || streamKey === "PCMB") return "MPC/PCM";
   if (streamKey === "BiPC") return "BiPC/PCB";
@@ -94,18 +94,18 @@ export const DIMENSION_GUIDE: Record<StreamGroup, DimensionEntry[]> = {
 };
 
 // Proxy formulas mapping each dimension name to a 0-100 score derived from
-// the student's actual measured profile (PsychometricProfile) — this is
+// the student's actual measured profile (PsychometricProfile) - this is
 // what makes the selection "based on their responses" rather than a fixed
 // per-stream default. Not every dimension has a genuine measurable proxy in
 // this app's profile (Risk Orientation, Work Environment and Motivators
-// have no corresponding scored field) — those are left out of `proxyScore`
+// have no corresponding scored field) - those are left out of `proxyScore`
 // on purpose rather than guessed at, so they're never picked, though they
 // stay in DIMENSION_GUIDE in case a future dimension gets added.
 function riasecPct(l1: PsychometricProfile, code: string): number {
   return l1.riasec.find((r) => r.code === code)?.percentile ?? 0;
 }
 // "Intrapersonal"/"Naturalistic" are Multiple Intelligence domain names, not
-// Strengths ones — strengthDomains no longer carries them now that Strengths
+// Strengths ones - strengthDomains no longer carries them now that Strengths
 // and Multiple Intelligence are genuinely separate measures (see
 // scoring11_12.ts), so those two PROXY entries below read from here instead.
 function miPct(l1: PsychometricProfile, domain: string): number {
@@ -138,7 +138,7 @@ export interface ScoredDimension extends DimensionEntry {
   score: number;
 }
 
-/** Top N dimensions (by proxy score) from the student's stream group — the "based on your specific strengths" picks. */
+/** Top N dimensions (by proxy score) from the student's stream group - the "based on your specific strengths" picks. */
 export function topDimensionsForStudent(streamKey: StreamKey1112, l1: PsychometricProfile, count = 3): ScoredDimension[] {
   const group = streamGroupFor(streamKey);
   if (!group) return [];

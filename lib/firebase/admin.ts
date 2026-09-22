@@ -3,14 +3,14 @@ import path from "path";
 import type { Firestore } from "firebase-admin/firestore";
 
 // firebase-admin is imported *dynamically* (see getFirestore) so it is never
-// loaded, bundled, or evaluated on the local-JSON path — only when Firestore is
+// loaded, bundled, or evaluated on the local-JSON path - only when Firestore is
 // actually configured and used. Keeping it out of module-load also avoids its
 // native/protobuf deps breaking route bundling when it isn't needed.
 
 // Resolves Firebase Admin credentials from either:
 //   1. project/serviceAccountKey.json  (the file you download from the console)
 //   2. env vars FIREBASE_PROJECT_ID / FIREBASE_CLIENT_EMAIL / FIREBASE_PRIVATE_KEY
-// Whichever is present wins (file first). Returns null when nothing is set —
+// Whichever is present wins (file first). Returns null when nothing is set -
 // that's the signal to fall back to the local JSON store.
 
 type ServiceAccount = {
@@ -51,7 +51,7 @@ function resolveServiceAccount(): ServiceAccount | null {
     cachedAccount = {
       projectId,
       clientEmail,
-      // env-stored keys usually carry literal "\n" — normalise to real newlines
+      // env-stored keys usually carry literal "\n" - normalise to real newlines
       privateKey: privateKey.replace(/\\n/g, "\n"),
     };
     return cachedAccount;
@@ -68,7 +68,7 @@ export function isFirestoreConfigured(): boolean {
 
 /**
  * Lazily initialise the Admin app and return a Firestore handle. Throws if
- * called without credentials — callers must guard with isFirestoreConfigured().
+ * called without credentials - callers must guard with isFirestoreConfigured().
  */
 export async function getFirestore(): Promise<Firestore> {
   const account = resolveServiceAccount();

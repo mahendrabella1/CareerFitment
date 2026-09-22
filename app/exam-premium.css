@@ -1,5 +1,5 @@
 /* ============================================================
-   PREMIUM EXAM UI  — modelled on the OneGrasp careercounselling
+   PREMIUM EXAM UI  - modelled on the OneGrasp careercounselling
    exam pattern: dark header, red progress, radio options,
    right question palette with coloured number grid.
    ============================================================ */
@@ -146,7 +146,7 @@
   .exam2-question { font-size: 1.25rem; }
 }
 
-/* Full-screen exam grid — stack on small screens */
+/* Full-screen exam grid - stack on small screens */
 @media (max-width: 900px) {
   .fs-grid { grid-template-columns: 1fr !important; }
 }

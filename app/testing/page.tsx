@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * /testing — Personality Assessment (local-only, no auth/db)
+ * /testing - Personality Assessment (local-only, no auth/db)
  * Flow: enter name + pick length (10/15/20) -> the SYSTEM silently draws a
  * random set (never shown) -> exam-style one-question-at-a-time interface ->
  * single-page professional Personality Evaluation Report.
@@ -208,7 +208,7 @@ function ExamScreen({
 
   const options: { value: string; label: string }[] =
     q.inputType === "scale"
-      ? [1, 2, 3, 4, 5].map((v) => ({ value: String(v), label: `${v}  —  ${SCALE_LABELS[v - 1]}` }))
+      ? [1, 2, 3, 4, 5].map((v) => ({ value: String(v), label: `${v}  -  ${SCALE_LABELS[v - 1]}` }))
       : [
           { value: "Yes", label: "Yes" },
           { value: "No", label: "No" },
@@ -345,7 +345,7 @@ function ReportScreen({
       </div>
 
       <div style={S.reportBody}>
-        {/* Module 1 — Validity */}
+        {/* Module 1 - Validity */}
         <section style={S.card} className="pa-card">
           <div style={S.cardTitle}><span style={S.cardNum}>1</span> Test Validity &amp; Reliability</div>
           {validity.itemCount > 0 ? (
@@ -367,18 +367,18 @@ function ReportScreen({
               </div>
               <div style={validity.isValid ? S.noteOk : S.noteBad}>
                 {validity.isValid
-                  ? "The data is clean. Responses show a low probability of social desirability bias — the answers appear honest rather than an attempt to look perfect."
+                  ? "The data is clean. Responses show a low probability of social desirability bias - the answers appear honest rather than an attempt to look perfect."
                   : "High probability of social desirability bias (character over-compliance). Interpret the scores below with caution."}
               </div>
             </>
           ) : (
             <div style={S.muted}>
-              No validity scale in the {report.format}-question format — bias check not applicable.
+              No validity scale in the {report.format}-question format - bias check not applicable.
             </div>
           )}
         </section>
 
-        {/* Module 2 — Four Temperaments */}
+        {/* Module 2 - Four Temperaments */}
         <section style={S.card} className="pa-card">
           <div style={S.cardTitle}><span style={S.cardNum}>2</span> Four Temperaments Breakdown</div>
           <p style={S.cardSub}>Absolute points scored for each biological disposition.</p>
@@ -397,11 +397,11 @@ function ReportScreen({
           })}
           <div style={S.dominantBox}>
             Dominant Temperament: <b>{dominantTemperament.dominant}</b>
-            {dominantTemperament.isTie && <span style={S.tieTag}> — joint (tie)</span>}
+            {dominantTemperament.isTie && <span style={S.tieTag}> - joint (tie)</span>}
           </div>
         </section>
 
-        {/* Module 3 — Big Five */}
+        {/* Module 3 - Big Five */}
         <section style={S.card} className="pa-card">
           <div style={S.cardTitle}><span style={S.cardNum}>3</span> Big Five Mental Dimensions</div>
           <p style={S.cardSub}>How you structure tasks, handle stress, and manage social energy.</p>

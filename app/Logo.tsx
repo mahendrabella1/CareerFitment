@@ -1,4 +1,4 @@
-/** OneGrasp logo — the official PNG used in the nav, so every page matches.
+/** OneGrasp logo - the official PNG used in the nav, so every page matches.
  *  On dark backgrounds, place it inside a light chip (see callers) rather than
  *  recolouring the image. */
 const LOGO_SRC = "https://onegrasp.com/wp-content/uploads/2026/07/onegrasp-logo.png";

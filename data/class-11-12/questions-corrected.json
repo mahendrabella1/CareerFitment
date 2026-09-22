@@ -219,14 +219,14 @@
           ]
         },
         {
-          "text": "Your group is launching something big. Which role do you claim immediately?",
+          "text": "Q16. Which responsibility would you prefer in a major company project?",
           "options": [
-            "The Builder - assemble the tech and make it run.",
-            "The Investigator - research the facts and run the numbers.",
-            "The Creative - design the vibe, visuals, and content.",
-            "The Anchor - check in on teammates and keep morale high.",
-            "The Shot-Caller - pitch the vision and make executive calls.",
-            "The Architect - set deadlines, track tasks, and keep files clean."
+            "Build the technical solution.",
+            "Conduct the survey and analyses results",
+            "Create the design /visuals / content",
+            "Coordinate the people involved and keep them motivated",
+            " Lead the project and make strategic decisions.",
+            "Manage or Organise data, deadlines to keep track."
           ],
           "mapping": [
             "R",

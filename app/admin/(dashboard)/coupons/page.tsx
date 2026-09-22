@@ -1,10 +1,10 @@
 "use client";
 
 /**
- * /admin/coupons — add or remove coupon codes without editing lib/coupons.ts
+ * /admin/coupons - add or remove coupon codes without editing lib/coupons.ts
  * and redeploying. Writes straight to the `coupons` Firestore collection
  * (same pattern as the payment-settings card: client SDK write, enforced
- * admin-only by firestore.rules) — lib/coupons.ts reads this same
+ * admin-only by firestore.rules) - lib/coupons.ts reads this same
  * collection server-side via the Admin SDK for every price it computes, so a
  * code added here is live on the payment screen immediately, no redeploy.
  *
@@ -73,7 +73,7 @@ export default function AdminCouponsPage() {
     setSaving(true);
     try {
       // Only one coupon auto-applies at a time (lib/coupons.ts takes the
-      // first match) — turning this one on turns any other off, so the
+      // first match) - turning this one on turns any other off, so the
       // payment screen never has to guess which one is "the" sale price.
       if (auto) {
         const currentAuto = (rows ?? []).filter((r) => r.auto);
@@ -91,7 +91,7 @@ export default function AdminCouponsPage() {
       setAuto(false);
       await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not save — check Firestore admin write rules.");
+      setError(e instanceof Error ? e.message : "Could not save - check Firestore admin write rules.");
     } finally {
       setSaving(false);
     }
@@ -106,7 +106,7 @@ export default function AdminCouponsPage() {
       await deleteDoc(doc(db, "coupons", row.id));
       setRows((rs) => (rs ?? []).filter((r) => r.id !== row.id));
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not delete — check Firestore admin write rules.");
+      setError(e instanceof Error ? e.message : "Could not delete - check Firestore admin write rules.");
     } finally {
       setDeletingId(null);
     }
@@ -116,7 +116,7 @@ export default function AdminCouponsPage() {
     <div style={{ maxWidth: 720 }}>
       <h1 style={{ fontSize: 24, fontWeight: 800, color: C.ink, margin: "0 0 6px" }}>Coupon codes</h1>
       <p style={{ fontSize: 14, color: C.ink3, margin: "0 0 24px" }}>
-        Add or remove codes the payment screen accepts — live immediately, no redeploy. The auto-apply code (if any) is applied for every student without them typing it.
+        Add or remove codes the payment screen accepts - live immediately, no redeploy. The auto-apply code (if any) is applied for every student without them typing it.
       </p>
 
       <form onSubmit={addCoupon} style={{ background: "#fff", border: `1px solid ${C.line}`, borderRadius: 14, padding: 20, marginBottom: 24, display: "flex", gap: 12, alignItems: "flex-end", flexWrap: "wrap" }}>
@@ -143,7 +143,7 @@ export default function AdminCouponsPage() {
         {rows === null ? (
           <div style={{ padding: 24, textAlign: "center", color: C.muted, fontSize: 14 }}>Loading…</div>
         ) : rows.length === 0 ? (
-          <div style={{ padding: 24, textAlign: "center", color: C.muted, fontSize: 14 }}>No coupons yet — add one above.</div>
+          <div style={{ padding: 24, textAlign: "center", color: C.muted, fontSize: 14 }}>No coupons yet - add one above.</div>
         ) : (
           rows.map((r) => (
             <div key={r.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 18px", borderBottom: `1px solid ${C.line}` }}>

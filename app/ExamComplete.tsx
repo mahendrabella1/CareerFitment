@@ -1,10 +1,10 @@
 "use client";
 
 /**
- * ExamComplete — the screen a student lands on the moment they submit the
+ * ExamComplete - the screen a student lands on the moment they submit the
  * assessment. It does two jobs, and deliberately no more:
  *
- *   1. Close the exam properly — thank them, and confirm the responses are in.
+ *   1. Close the exam properly - thank them, and confirm the responses are in.
  *   2. Get them to the dashboard now, in one click.
  *
  * It used to also print the login details, four sign-in steps and a "email me a
@@ -15,7 +15,7 @@
  * dashboard with a wall of instructions helped nobody who was still looking at
  * it.
  *
- * The report itself is not emailed from here — an admin sends it by hand from
+ * The report itself is not emailed from here - an admin sends it by hand from
  * /admin, which is why the copy says "our team will email you a copy" rather
  * than promising anything instant.
  */
@@ -30,7 +30,7 @@ export interface ExamCompleteProps {
   name?: string;
   /** Full name, for the shareable achievement card. Falls back to `name`. */
   fullName?: string;
-  /** The signed-in account's email — named so they know which inbox to check. */
+  /** The signed-in account's email - named so they know which inbox to check. */
   email?: string;
   /** Sends them into the dashboard without signing in again. */
   onGoToDashboard: () => void;
@@ -38,7 +38,7 @@ export interface ExamCompleteProps {
 
 export default function ExamComplete({ name, fullName, email, onGoToDashboard }: ExamCompleteProps) {
   // Brief "saving" beat before the thank-you, so the submit doesn't feel like
-  // it vanished — the write has usually already finished by the time it ends.
+  // it vanished - the write has usually already finished by the time it ends.
   const [phase, setPhase] = useState<"saving" | "done">("saving");
 
   useEffect(() => {
@@ -54,14 +54,14 @@ export default function ExamComplete({ name, fullName, email, onGoToDashboard }:
 
   // BACK-BUTTON GUARD.
   //
-  // Submitting the assessment doesn't change the URL — the student is still on
-  // the exam route — and it clears the saved exam session. So pressing the
+  // Submitting the assessment doesn't change the URL - the student is still on
+  // the exam route - and it clears the saved exam session. So pressing the
   // browser's Back arrow here used to land straight back on the exam with
   // nothing to resume, which generated a whole new randomly-picked assessment
   // and made it look like their answers had been thrown away.
   //
   // Pushing one throwaway history entry means the first Back press pops that
-  // instead, and we send them to the dashboard — the thing they were almost
+  // instead, and we send them to the dashboard - the thing they were almost
   // certainly reaching for. NewExam has a second guard for any other route
   // back onto the exam.
   useEffect(() => {
@@ -96,14 +96,14 @@ export default function ExamComplete({ name, fullName, email, onGoToDashboard }:
         <h1 className="xc-title">Thank you{name ? `, ${name}` : ""}.</h1>
         <p className="xc-lead">
           Your responses have been recorded successfully and your personalised career
-          report is being generated. Thank you for the care you gave each answer — the
+          report is being generated. Thank you for the care you gave each answer - the
           quality of your report rests directly on it.
         </p>
 
         <div className="xc-note">
           <span className="xc-note-ic"><Icon name="bell" size={17} /></span>
           {/* Careful with this promise: the report is written to the dashboard
-              automatically, but the emailed copy goes out from /admin — say
+              automatically, but the emailed copy goes out from /admin - say
               "our team will email" rather than implying an instant send. */}
           <span>
             Your report is saved to your OneGrasp dashboard permanently, and our team
@@ -111,7 +111,7 @@ export default function ExamComplete({ name, fullName, email, onGoToDashboard }:
           </span>
         </div>
 
-        {/* The sign-in steps live in the completion email now — this only says
+        {/* The sign-in steps live in the completion email now - this only says
             it is on the way, so they know to look for it later. */}
         <div className="xc-mail">
           <span className="xc-mail-ic"><Icon name="explain" size={17} /></span>
@@ -122,7 +122,7 @@ export default function ExamComplete({ name, fullName, email, onGoToDashboard }:
           </span>
         </div>
 
-        {/* The dashboard CTA leads — reaching it is this screen's one real job,
+        {/* The dashboard CTA leads - reaching it is this screen's one real job,
             and it needs to be visible without scrolling past anything else.
             Sharing is still offered (that "I just finished" moment is real and
             gone once they navigate away), just as a secondary block underneath
@@ -132,11 +132,11 @@ export default function ExamComplete({ name, fullName, email, onGoToDashboard }:
           Go to my dashboard <Icon name="chevronRight" size={16} />
         </button>
         <div className="xc-help">
-          Need a hand? Write to <a href="mailto:support@onegrasp.com">support@onegrasp.com</a> — we usually reply the same day.
+          Need a hand? Write to <a href="mailto:support@onegrasp.com">support@onegrasp.com</a> - we usually reply the same day.
         </div>
 
         <div className="xc-share">
-          {/* Shares the achievement only — never a result. */}
+          {/* Shares the achievement only - never a result. */}
           <ShareAchievement name={fullName || name} />
         </div>
       </div>
@@ -188,7 +188,7 @@ const CSS = `
 
 .xc-help{font-size:11px;color:#94a3b8;margin-top:10px}
 
-/* Secondary, below the primary action — a real border to read as "a
+/* Secondary, below the primary action - a real border to read as "a
    different, optional section" rather than more of the same card. */
 .xc-share{margin-top:26px;padding-top:22px;border-top:1px solid #eef1f8;text-align:left}
 .xc-help a{color:#3b5bdb;font-weight:700;text-decoration:none}

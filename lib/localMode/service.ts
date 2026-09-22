@@ -154,7 +154,7 @@ type LocalScorePayload = {
 const SEED_DIR = path.join(process.cwd(), "data");
 // Writable location for runtime data. The project's data/ dir is read-only on
 // Vercel (EROFS), so on serverless we write to the OS temp dir instead and seed
-// it from the bundled files. NOTE: temp storage is ephemeral per instance —
+// it from the bundled files. NOTE: temp storage is ephemeral per instance -
 // configure Supabase/Firestore for durable persistence.
 const IS_SERVERLESS = Boolean(
   process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY
@@ -390,7 +390,7 @@ async function ensureJsonFile<T>(filePath: string, fallback: T): Promise<void> {
     await fs.mkdir(path.dirname(filePath), { recursive: true });
     await fs.writeFile(filePath, JSON.stringify(initial, null, 2), "utf8");
   } catch {
-    /* read-only FS — reads will fall back to seed/fallback */
+    /* read-only FS - reads will fall back to seed/fallback */
   }
 }
 

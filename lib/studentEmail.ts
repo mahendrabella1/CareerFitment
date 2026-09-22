@@ -1,4 +1,4 @@
-// Email sent TO THE STUDENT (not the team — that's lib/leadEmail.ts) the moment
+// Email sent TO THE STUDENT (not the team - that's lib/leadEmail.ts) the moment
 // they finish the assessment.
 //
 // It exists because most students submit, close the tab, and come back days
@@ -8,8 +8,8 @@
 // What it deliberately does NOT contain is the password. Firebase stores only a
 // hash, so nothing in this system can read one back, and mailing credentials in
 // plain text would be the wrong thing to do even if we could. The email carries
-// the half we can safely state — the account's email address and where to sign
-// in — and points at the reset link for the other half.
+// the half we can safely state - the account's email address and where to sign
+// in - and points at the reset link for the other half.
 //
 // Best-effort throughout: no SMTP configured, or a mail outage, must never turn
 // into a failed assessment submission.
@@ -44,7 +44,7 @@ export interface CompletionEmailInput {
 }
 
 const STEPS = [
-  ["Open the sign-in page", `Go to <a href="${SITE_URL}/signin" style="color:#3b5bdb;font-weight:600">${SITE_URL.replace(/^https?:\/\//, "")}/signin</a> — bookmark it now and you'll never have to hunt for it.`],
+  ["Open the sign-in page", `Go to <a href="${SITE_URL}/signin" style="color:#3b5bdb;font-weight:600">${SITE_URL.replace(/^https?:\/\//, "")}/signin</a> - bookmark it now and you'll never have to hunt for it.`],
   ["Enter your registered email", "This is the address this message arrived at."],
   ["Enter the password you created when you registered", `Forgotten it? Click <b>Forgot password?</b> on that page and we'll email you a reset link straight away.`],
   ["Open your dashboard", "Your career matches, all eight dimensions, strengths and next steps are saved there permanently."],
@@ -102,7 +102,7 @@ export async function sendAssessmentCompletionEmail(input: CompletionEmailInput)
       </table>
       <p style="font:400 12px/1.6 Arial,sans-serif;color:#6b7280;background:#ffffff;border:1px dashed #dfe4ef;border-radius:10px;padding:10px 12px;margin:12px 0 0">
         <b style="color:#3d4657">We never display or email your password.</b> It is stored only in an
-        encrypted form that nobody at OneGrasp can read — including us. If you've forgotten it,
+        encrypted form that nobody at OneGrasp can read - including us. If you've forgotten it,
         use <b>Forgot password?</b> on the sign-in page and you'll be back in within a minute.
       </p>
     </div>
@@ -117,7 +117,7 @@ export async function sendAssessmentCompletionEmail(input: CompletionEmailInput)
     </div>
 
     <p style="font:400 12px/1.6 Arial,sans-serif;color:#8a919f;text-align:center;margin:16px 0 0">
-      Need a hand? Write to <a href="mailto:${SUPPORT}" style="color:#3b5bdb;font-weight:700;text-decoration:none">${SUPPORT}</a> — we usually reply the same day.
+      Need a hand? Write to <a href="mailto:${SUPPORT}" style="color:#3b5bdb;font-weight:700;text-decoration:none">${SUPPORT}</a> - we usually reply the same day.
     </p>
   </div>
   <p style="font:400 11px Arial,sans-serif;color:#9aa1ad;text-align:center;margin:16px 0 0">
@@ -135,12 +135,12 @@ export async function sendAssessmentCompletionEmail(input: CompletionEmailInput)
     `Email: ${input.to}`,
     "Password: the one you created at registration.",
     "",
-    "We never display or email your password — it is stored only in an encrypted form",
+    "We never display or email your password - it is stored only in an encrypted form",
     "that nobody at OneGrasp can read. Forgotten it? Use \"Forgot password?\" on the",
     "sign-in page and we'll email you a reset link.",
     "",
     "HOW TO LOG IN",
-    ...STEPS.map(([title, detail], i) => `${i + 1}. ${title} — ${detail.replace(/<[^>]+>/g, "")}`),
+    ...STEPS.map(([title, detail], i) => `${i + 1}. ${title} - ${detail.replace(/<[^>]+>/g, "")}`),
     "",
     `Need a hand? Write to ${SUPPORT}.`,
   ].join("\n");
@@ -150,7 +150,7 @@ export async function sendAssessmentCompletionEmail(input: CompletionEmailInput)
       from: `OneGrasp <${t.from}>`,
       to: input.to,
       replyTo: SUPPORT,
-      subject: "Your OneGrasp assessment is complete — here's how to see your report",
+      subject: "Your OneGrasp assessment is complete - here's how to see your report",
       html,
       text,
     });

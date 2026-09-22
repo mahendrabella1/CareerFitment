@@ -1,14 +1,14 @@
 "use client";
 
 /**
- * /admin — Users section of the dashboard. Every registered user, their
+ * /admin - Users section of the dashboard. Every registered user, their
  * details, and assessment status/result, with school management and
  * one-click / bulk report emailing. Reads the Firestore `users` collection
  * (allowed for admins by firestore.rules). Auth is handled by the parent
  * app/admin/layout.tsx; this page can assume it's already an admin.
  *
- * "View report" now navigates to /admin/report/[uid] — its own route,
- * outside the sidebar's route group — instead of swapping in a full-screen
+ * "View report" now navigates to /admin/report/[uid] - its own route,
+ * outside the sidebar's route group - instead of swapping in a full-screen
  * branch here, so the report keeps rendering with zero dashboard chrome
  * around it for print/save-as-PDF.
  */
@@ -45,7 +45,7 @@ export default function AdminUsersPage() {
       setSchools((s) => Array.from(new Set([...s, name])).sort());
       setNewSchool("");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not add school — check Firestore admin write rules.");
+      setError(e instanceof Error ? e.message : "Could not add school - check Firestore admin write rules.");
     }
   }
 
@@ -57,7 +57,7 @@ export default function AdminUsersPage() {
       await updateDoc(doc(db, "users", u.uid), { institution: school });
       setRows((rs) => (rs ?? []).map((r) => (r.uid === u.uid ? { ...r, institution: school } : r)));
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not assign school — check Firestore admin write rules.");
+      setError(e instanceof Error ? e.message : "Could not assign school - check Firestore admin write rules.");
     } finally {
       setAssigning(null);
     }
@@ -119,7 +119,7 @@ export default function AdminUsersPage() {
     const ratings = list
       .map((u) => u.latestAssessment?.feedbackRating)
       .filter((r): r is number => typeof r === "number");
-    const avg = ratings.length ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1) : "—";
+    const avg = ratings.length ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1) : "-";
     const rate = list.length ? Math.round((completed / list.length) * 100) : 0;
     return { total: list.length, completed, pending: list.length - completed, avg, rate };
   }, [rows]);
@@ -195,19 +195,19 @@ export default function AdminUsersPage() {
                     <tr key={u.uid || i}>
                       <td style={S.td}>
                         {/* The name is the obvious thing to click for "show
-                            me this student" — but only once there's a report
+                            me this student" - but only once there's a report
                             behind it, or the click does nothing and reads as
                             broken. */}
                         {a ? (
                           <Link href={`/admin/report/${u.uid}`} style={S.nameBtn} title="Open this student's report">
-                            {u.name || "—"}
+                            {u.name || "-"}
                           </Link>
                         ) : (
-                          <b style={S.name}>{u.name || "—"}</b>
+                          <b style={S.name}>{u.name || "-"}</b>
                         )}
                       </td>
-                      <td style={S.td}>{u.email || "—"}</td>
-                      <td style={S.td}>{u.phone || "—"}</td>
+                      <td style={S.td}>{u.email || "-"}</td>
+                      <td style={S.td}>{u.phone || "-"}</td>
                       <td style={S.td}>
                         <select
                           style={{ ...S.assignSel, ...(assigning === u.uid ? { opacity: 0.5 } : {}) }}
@@ -215,19 +215,19 @@ export default function AdminUsersPage() {
                           disabled={assigning === u.uid}
                           onChange={(e) => void assignSchool(u, e.target.value)}
                         >
-                          <option value="">— unassigned —</option>
+                          <option value="">- unassigned -</option>
                           {allSchools.map((s) => <option key={s} value={s}>{s}</option>)}
                         </select>
                       </td>
-                      <td style={S.td}>{u.category ? categoryLabel(u.category) : "—"}</td>
-                      <td style={S.td}>{u.clarity || "—"}</td>
+                      <td style={S.td}>{u.category ? categoryLabel(u.category) : "-"}</td>
+                      <td style={S.td}>{u.clarity || "-"}</td>
                       <td style={S.td}>
                         {a
                           ? <span style={{ ...SHARED.pill, ...SHARED.pillOk }}><span style={{ ...SHARED.dot, background: C.good }} /> Completed</span>
                           : <span style={{ ...SHARED.pill, ...SHARED.pillWait }}><span style={{ ...SHARED.dot, background: C.muted }} /> Pending</span>}
                       </td>
-                      <td style={S.td}>{a?.topCareer || "—"}</td>
-                      <td style={S.td}>{a?.overallFitmentPct != null ? <b style={{ color: C.red }}>{a.overallFitmentPct}%</b> : "—"}</td>
+                      <td style={S.td}>{a?.topCareer || "-"}</td>
+                      <td style={S.td}>{a?.overallFitmentPct != null ? <b style={{ color: C.red }}>{a.overallFitmentPct}%</b> : "-"}</td>
                       <td style={S.td}>
                         {a ? (
                           <div style={S.reportCell}>
@@ -250,7 +250,7 @@ export default function AdminUsersPage() {
                               );
                             })()}
                           </div>
-                        ) : "—"}
+                        ) : "-"}
                       </td>
                     </tr>
                   );

@@ -5,12 +5,12 @@ import { OFFER } from "@/lib/offer";
 
 export const dynamic = "force-dynamic";
 
-// POST /api/payment/coupon — price a coupon code without charging anything.
+// POST /api/payment/coupon - price a coupon code without charging anything.
 //
 // The payment screen calls this twice: once on open (with the sale code, which
 // it applies for the student automatically) and again whenever they type a code
 // by hand. It is deliberately the ONLY way the browser learns a price for a
-// code — the arithmetic lives server-side so the amount shown on screen is the
+// code - the arithmetic lives server-side so the amount shown on screen is the
 // same amount /api/payment/order will create the order for.
 //
 // An unknown code is not an error: it comes back 200 with valid:false, so the
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
   try {
     body = await req.json();
   } catch {
-    /* no body — price the fee with no coupon at all */
+    /* no body - price the fee with no coupon at all */
   }
 
   const settings = await getPaymentSettings();
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
   return NextResponse.json({
     success: true,
     ...priced,
-    /** Convenience alias — `coupon` is null both for "no code" and "bad code". */
+    /** Convenience alias - `coupon` is null both for "no code" and "bad code". */
     valid: priced.coupon !== null,
     /** The code the screen should apply on its own, so the client never hardcodes it. */
     autoCoupon: auto ? toPublicCoupon(auto) : null,

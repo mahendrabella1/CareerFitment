@@ -22,7 +22,7 @@ service cloud.firestore {
       allow read: if request.auth != null;
       allow write: if isAdmin();
     }
-    // App settings written from /admin — currently `payment` (fee on/off and
+    // App settings written from /admin - currently `payment` (fee on/off and
     // price). ONLY an admin may write: the server trusts these values when it
     // creates a Razorpay order, so a student who could edit them could set
     // their own price or waive the fee. Reads are open to signed-in users so
@@ -32,19 +32,19 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
     // Admin-managed coupon codes (/admin/coupons). Same reasoning as
-    // `settings` above — lib/coupons.ts reads these server-side (via the
+    // `settings` above - lib/coupons.ts reads these server-side (via the
     // Admin SDK, which bypasses these rules) to price every order, so only an
     // admin may add or remove one from here.
     match /coupons/{doc} {
       allow read: if request.auth != null;
       allow write: if isAdmin();
     }
-    // Admin-managed institutional links (/admin/institutional) — a school's
+    // Admin-managed institutional links (/admin/institutional) - a school's
     // free-signup code and contact details. Tighter than `coupons` above:
     // nothing needs authenticated-but-non-admin reads here. Redemption
     // (marking a new student paid) and the pre-signup validity check both
     // go through server routes using the Admin SDK, which bypasses these
-    // rules entirely — a signed-in student never reads or writes this
+    // rules entirely - a signed-in student never reads or writes this
     // collection directly, and it holds school contact emails/phones that
     // shouldn't be readable by guessing the collection name in devtools.
     match /institutional_links/{code} {

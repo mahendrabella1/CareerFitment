@@ -1,25 +1,25 @@
 "use client";
 
 /**
- * ShareAchievement — the "I did it" card a student can post after finishing the
+ * ShareAchievement - the "I did it" card a student can post after finishing the
  * assessment, and the growth loop that comes with it: every share carries a
  * link back to careerfitment.onegrasp.com.
  *
  * The card has one job beyond celebrating: it has to make the person SEEING it
  * want to take the assessment too. So it reads as a certificate rather than a
- * screenshot — gold medallion, the student's name set large in a serif, and
+ * screenshot - gold medallion, the student's name set large in a serif, and
  * three chips that tell a stranger what the thing actually is (8 dimensions,
  * 60+ questions, a personalised report). A plain "I finished a test" post
  * recruits nobody.
  *
  * WHAT IT DELIBERATELY DOES NOT SHARE: any result. No scores, no career
- * matches, no traits — a psychometric profile is private, and a student
+ * matches, no traits - a psychometric profile is private, and a student
  * cheerfully posting one to LinkedIn at 16 cannot consent to how that follows
  * them. The card carries their name, the fact they completed the assessment,
  * and the date. That is the achievement; the results stay in their dashboard.
  *
  * Channels work differently and the UI has to be honest about it:
- *   • WhatsApp   wa.me takes prefilled text — one tap, everything filled in.
+ *   • WhatsApp   wa.me takes prefilled text - one tap, everything filled in.
  *   • LinkedIn   share-offsite takes a URL only; LinkedIn builds the preview
  *                from the page's own OG tags and ignores any text we pass, so
  *                the caption is copied to the clipboard for pasting.
@@ -47,7 +47,7 @@ function shareUrl(channel: string): string {
 }
 
 const CAPTION = (first: string) =>
-  `${first ? `I'm ${first}, and I` : "I"} just completed the OneGrasp Career Fitment Assessment 🎯\n\n60+ questions across 8 dimensions — personality, interests, aptitude, strengths — and a personalised report on the careers that actually fit me.\n\nIf you're deciding what to do next, it's worth 30 minutes:`;
+  `${first ? `I'm ${first}, and I` : "I"} just completed the OneGrasp Career Fitment Assessment 🎯\n\n60+ questions across 8 dimensions - personality, interests, aptitude, strengths - and a personalised report on the careers that actually fit me.\n\nIf you're deciding what to do next, it's worth 30 minutes:`;
 
 /* Brand marks, inlined. Recognisable colour + logo is most of why a share row
    reads as "share" at a glance rather than as four grey buttons. */
@@ -95,7 +95,7 @@ export default function ShareAchievement({ name, date }: { name?: string; date?:
       setCopied(what);
       window.setTimeout(() => setCopied(null), 2600);
     } catch {
-      /* clipboard blocked (insecure context / permissions) — the buttons below
+      /* clipboard blocked (insecure context / permissions) - the buttons below
          still work, so this is not worth an error state */
     }
   }, []);
@@ -152,7 +152,7 @@ export default function ShareAchievement({ name, date }: { name?: string; date?:
     glow(120, S - 90, 480, "rgba(217,70,160,0.16)");
     glow(S - 110, 110, 420, "rgba(56,189,248,0.14)");
 
-    // Faint concentric arcs behind the medallion — depth without clutter.
+    // Faint concentric arcs behind the medallion - depth without clutter.
     ctx.strokeStyle = "rgba(255,255,255,0.05)";
     ctx.lineWidth = 2;
     for (const r of [230, 320, 410]) { ctx.beginPath(); ctx.arc(S / 2, 372, r, 0, Math.PI * 2); ctx.stroke(); }
@@ -205,7 +205,7 @@ export default function ShareAchievement({ name, date }: { name?: string; date?:
     /* ---- titles ---- */
     centre("CERTIFICATE OF COMPLETION", 536, "700 24px Arial, Helvetica, sans-serif", GOLD, 5.5);
 
-    // The name is the point of the card, so it gets the space — and shrinks
+    // The name is the point of the card, so it gets the space - and shrinks
     // rather than overflowing when it is a long one.
     let nameSize = 88;
     const fit = (s: number) => { ctx.font = `700 ${s}px Georgia, 'Times New Roman', serif`; return ctx.measureText(full || "Your name").width; };
@@ -238,7 +238,7 @@ export default function ShareAchievement({ name, date }: { name?: string; date?:
 
     /* ---- footer ----
        Bottom-anchored against the gold inner frame, which ends at S-68 = 1012.
-       The pill is 56 tall, so it starts at 926 and closes at 982 — 30px of
+       The pill is 56 tall, so it starts at 926 and closes at 982 - 30px of
        breathing room. Push it any lower and the pill crosses the frame line. */
     centre(dateLabel, 900, "400 24px Arial, Helvetica, sans-serif", "rgba(255,255,255,0.5)");
     const url = "careerfitment.onegrasp.com";
@@ -269,7 +269,7 @@ export default function ShareAchievement({ name, date }: { name?: string; date?:
     } finally { setBusy(false); }
   }, [renderCard, first, copy]);
 
-  /** One-tap share on a phone — this is the path that reaches Instagram. */
+  /** One-tap share on a phone - this is the path that reaches Instagram. */
   const nativeShare = useCallback(async () => {
     const url = shareUrl("native");
     const text = CAPTION(first);
@@ -285,7 +285,7 @@ export default function ShareAchievement({ name, date }: { name?: string; date?:
         await navigator.share({ title: "OneGrasp Career Fitment", text, url });
       }
     } catch {
-      /* the user dismissed the sheet — not an error */
+      /* the user dismissed the sheet - not an error */
     } finally { setBusy(false); }
   }, [renderCard, first]);
 
@@ -300,7 +300,7 @@ export default function ShareAchievement({ name, date }: { name?: string; date?:
         <span className="sa-head-badge">🎉</span>
         <div>
           <div className="sa-head-t">Share your achievement</div>
-          <div className="sa-head-s">Only your name and the date — your results stay private</div>
+          <div className="sa-head-s">Only your name and the date - your results stay private</div>
         </div>
       </div>
 
@@ -323,7 +323,7 @@ export default function ShareAchievement({ name, date }: { name?: string; date?:
       </div>
 
       {/* The OS share sheet is the ONLY route to Instagram Story, WhatsApp
-          Status, Snapchat, Telegram and everything else on the phone — no
+          Status, Snapchat, Telegram and everything else on the phone - no
           website can target those directly. So it leads, and the per-app
           buttons below it are the desktop fallback. */}
       {canNativeShare && (
@@ -332,7 +332,7 @@ export default function ShareAchievement({ name, date }: { name?: string; date?:
             <IconShare /> {busy ? "Preparing your card…" : "Share to any app"}
           </button>
           <div className="sa-hint">
-            Opens your phone’s share sheet with the card attached — pick
+            Opens your phone’s share sheet with the card attached - pick
             <b> Instagram</b> (Story or Post), <b>WhatsApp</b> (a chat or
             <b> My Status</b>), Snapchat, Telegram, or anything else installed.
           </div>
@@ -367,13 +367,13 @@ export default function ShareAchievement({ name, date }: { name?: string; date?:
 
       {copied === "caption" && (
         <div className="sa-note sa-note-ok">
-          ✓ Card saved and caption copied — add the image to your Instagram Story
+          ✓ Card saved and caption copied - add the image to your Instagram Story
           or Post, or to your WhatsApp Status, and paste the caption.
         </div>
       )}
       <div className="sa-note">
         {canNativeShare
-          ? "Instagram Story vs Post, and WhatsApp chat vs Status, are chosen inside those apps — no website can pick for you, so the share sheet above hands them the card and you choose there."
+          ? "Instagram Story vs Post, and WhatsApp chat vs Status, are chosen inside those apps - no website can pick for you, so the share sheet above hands them the card and you choose there."
           : "On a phone you’ll also get a “Share to any app” button, which reaches Instagram Story, WhatsApp Status and every other app installed."}
       </div>
     </div>

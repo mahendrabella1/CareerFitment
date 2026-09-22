@@ -112,18 +112,18 @@ All 8 Multiple Intelligence domains represented:
 
 The assessments follow the official business logic & reporting flow:
 
-1. ✅ **Answer Capture** — Store question ID, selected option, section, timestamp
-2. ✅ **Personality Scoring** — Aggregate preference indicators (E/I, S/N, T/F, J/P)
-3. ✅ **RIASEC Ranking** — Score all 6 interest categories (R, I, A, S, E, C)
-4. ✅ **Aptitude Scoring** — Correct/incorrect by reasoning category
-5. ✅ **MI Strength Aggregation** — Score 8 strength domains
-6. ✅ **Motivators & Values** — Identify strongest themes
-7. ✅ **Learning Preferences** — Summarize preferred approaches
-8. ✅ **Emotional-Social Awareness** — Observable response tendencies
-9. ✅ **Creativity Assessment** — Openness to alternatives & exploration
-10. ✅ **Career Engine** — Combine all signals for exploratory matching
-11. ✅ **Report Generation** — 3-5 career areas to explore
-12. ✅ **Longitudinal Tracking** — Retain section-level scores
+1. ✅ **Answer Capture** - Store question ID, selected option, section, timestamp
+2. ✅ **Personality Scoring** - Aggregate preference indicators (E/I, S/N, T/F, J/P)
+3. ✅ **RIASEC Ranking** - Score all 6 interest categories (R, I, A, S, E, C)
+4. ✅ **Aptitude Scoring** - Correct/incorrect by reasoning category
+5. ✅ **MI Strength Aggregation** - Score 8 strength domains
+6. ✅ **Motivators & Values** - Identify strongest themes
+7. ✅ **Learning Preferences** - Summarize preferred approaches
+8. ✅ **Emotional-Social Awareness** - Observable response tendencies
+9. ✅ **Creativity Assessment** - Openness to alternatives & exploration
+10. ✅ **Career Engine** - Combine all signals for exploratory matching
+11. ✅ **Report Generation** - 3-5 career areas to explore
+12. ✅ **Longitudinal Tracking** - Retain section-level scores
 
 ---
 
@@ -186,13 +186,13 @@ Both Class 6 and Class 7 Career Discovery Assessments are:
 
 ## 📁 Files Updated
 
-- ✅ `data/class6-assessment-questions.json` — Q16 RIASEC mapping fixed
-- ✅ `data/class7-assessment-questions.json` — Q16 RIASEC mapping fixed
-- ✅ `app/Class6Assessment.tsx` — Safety guards added
-- ✅ `app/Class7Assessment.tsx` — Safety guards added
-- ✅ `lib/localMode/service.ts` — Blueprint corrected to 60 questions
-- ✅ `app/api/assessment/generate/route.ts` — API safety check added
-- ✅ `scripts/validate-assessment-questions.ts` — Validation script added
+- ✅ `data/class6-assessment-questions.json` - Q16 RIASEC mapping fixed
+- ✅ `data/class7-assessment-questions.json` - Q16 RIASEC mapping fixed
+- ✅ `app/Class6Assessment.tsx` - Safety guards added
+- ✅ `app/Class7Assessment.tsx` - Safety guards added
+- ✅ `lib/localMode/service.ts` - Blueprint corrected to 60 questions
+- ✅ `app/api/assessment/generate/route.ts` - API safety check added
+- ✅ `scripts/validate-assessment-questions.ts` - Validation script added
 
 ---
 

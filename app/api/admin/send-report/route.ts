@@ -9,7 +9,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 30; // give the SMTP handshake room on serverless
 
-// Public Firebase web API key (safe to expose) — used to verify the caller's
+// Public Firebase web API key (safe to expose) - used to verify the caller's
 // ID token via the Firebase Auth REST API (no admin SDK / service account).
 const FIREBASE_API_KEY = "AIzaSyA3fUy9CkpoNf-vjrhswJQNwqy0qSr2cL0";
 
@@ -87,7 +87,7 @@ function reportHtml(name: string, a: AssessmentSummary): string {
       <table style="width:100%;border-collapse:collapse;margin-bottom:20px">${scores}</table>
 
       <h3 style="margin:0 0 10px;font-size:15px;color:#0f172a">Best-fit career domains</h3>
-      ${domainBlock || "<p style='color:#94a3b8'>—</p>"}
+      ${domainBlock || "<p style='color:#94a3b8'>-</p>"}
 
       ${recs ? `<h3 style="margin:18px 0 8px;font-size:15px;color:#0f172a">Your next steps</h3><ul style="margin:0;padding-left:18px">${recs}</ul>` : ""}
 
@@ -125,13 +125,13 @@ export async function POST(req: Request) {
   ].filter(Boolean);
   if (missing.length) {
     return fail(
-      `Email not configured on this deployment — missing ${missing.join(", ")}. ` +
+      `Email not configured on this deployment - missing ${missing.join(", ")}. ` +
         `Add SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS in Vercel → Settings → Environment Variables, then REDEPLOY.`,
       500
     );
   }
 
-  // Sanitize the host — env vars sometimes get a protocol/path/port pasted in
+  // Sanitize the host - env vars sometimes get a protocol/path/port pasted in
   // (e.g. "https://smtp.hostinger.com"), which breaks DNS. Keep the bare host.
   const host = String(SMTP_HOST).replace(/^[a-z]+:\/\//i, "").replace(/[:/].*$/, "").trim();
   const port = Number(SMTP_PORT || 465);
@@ -151,7 +151,7 @@ export async function POST(req: Request) {
   } catch (e) {
     const err = e as { code?: string; message?: string };
     return fail(
-      `Could not connect to ${host}:${port} — ${err.code || ""} ${err.message || "connection failed"}. ` +
+      `Could not connect to ${host}:${port} - ${err.code || ""} ${err.message || "connection failed"}. ` +
         `SMTP_HOST must be just "smtp.hostinger.com" (no https://). Check the password and that port ${port} matches (465 = SSL, 587 = TLS).`,
       502
     );
@@ -174,9 +174,9 @@ export async function POST(req: Request) {
       html: reportHtml(body.name ?? "", body.report),
       attachments,
     });
-    return NextResponse.json({ success: true, message: attachments.length ? "Report emailed (with PDF)" : "Report emailed (HTML only — PDF failed)", data: { to: body.to } });
+    return NextResponse.json({ success: true, message: attachments.length ? "Report emailed (with PDF)" : "Report emailed (HTML only - PDF failed)", data: { to: body.to } });
   } catch (e) {
     const err = e as { code?: string; message?: string };
-    return fail(`Send failed — ${err.code || ""} ${err.message || "unknown error"}`, 500);
+    return fail(`Send failed - ${err.code || ""} ${err.message || "unknown error"}`, 500);
   }
 }

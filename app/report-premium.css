@@ -158,7 +158,7 @@
 }
 
 /* ============================================================
-   2026 RETHEME — white / near-black / grey / light-red.
+   2026 RETHEME - white / near-black / grey / light-red.
    Scoped to the report only (.rep / .rep-shell); the rest of the
    app keeps its own theme. Token overrides retint every var()-based
    rule above; the explicit rules below replace hardcoded colours.
@@ -183,23 +183,23 @@ body:has(.rep) { background: #f7f7f8; }
   --shadow-lg: 0 20px 48px rgba(20, 20, 25, 0.10);
 }
 
-/* cover — softer brand red */
+/* cover - softer brand red */
 .rep-cover {
   background:
     radial-gradient(700px 260px at 90% -20%, rgba(255, 255, 255, 0.14), transparent 60%),
     linear-gradient(135deg, #F2555A 0%, #E23B41 100%);
 }
 
-/* interest bars — solid red, no orange */
+/* interest bars - solid red, no orange */
 .rep-riasec { background: #fafafb; }
 .rep-riasec-fill { background: #F8CBCD; }
 .rep-riasec-bar.top .rep-riasec-fill { background: #F2555A; }
 
-/* fit + cluster progress — solid red */
+/* fit + cluster progress - solid red */
 .rep-fit-fill { background: #F2555A; }
 .rep-cluster-fill { background: #F2555A; }
 
-/* fit bands — red-forward and on-palette */
+/* fit bands - red-forward and on-palette */
 .band-VeryHigh { background: #FDECED; color: #E23B41; }
 .band-High { background: #FDECED; color: #F2555A; }
 .band-Good { background: #f4f4f6; color: #3d3d45; }

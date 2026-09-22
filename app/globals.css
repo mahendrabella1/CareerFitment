@@ -804,7 +804,7 @@ select {
 }
 
 /* ============================================================
-   PREMIUM THEME  — cohesive brand-aligned design system
+   PREMIUM THEME  - cohesive brand-aligned design system
    (later declarations override the earlier teal/cream tokens)
    ============================================================ */
 :root {
@@ -820,7 +820,7 @@ select {
   --accent-strong: #c11c26;
   --sun: #e8820a;
   --green: #1f9254;
-  /* Soft chip/highlight backgrounds — now a calm lavender tint, not red. */
+  /* Soft chip/highlight backgrounds - now a calm lavender tint, not red. */
   --green-soft: rgba(99, 102, 241, 0.08);
   --sun-soft: rgba(232, 130, 10, 0.12);
   /* Premium pastel accents for eyebrows, icons, and section tints. */

@@ -1,14 +1,14 @@
 "use client";
 
 /**
- * /admin/report/[uid] — a student's report, full screen, with ZERO dashboard
- * chrome around it (no sidebar, no header) — a real route rather than
+ * /admin/report/[uid] - a student's report, full screen, with ZERO dashboard
+ * chrome around it (no sidebar, no header) - a real route rather than
  * in-memory state, deliberately outside the (dashboard) route group, so the
  * browser's own print/save-as-PDF captures the report alone. Auth is still
  * handled by the parent app/admin/layout.tsx, which wraps this route too.
  *
  * Fetches the target user directly by uid instead of relying on data already
- * sitting in the Users table's in-memory list — works on direct navigation
+ * sitting in the Users table's in-memory list - works on direct navigation
  * or a refresh, not just click-through from the table.
  */
 
@@ -52,7 +52,7 @@ export default function AdminReportPage({ params }: { params: { uid: string } })
   if (!viewing.latestAssessment) {
     return (
       <Center>
-        <p style={SHARED.muted}><b>{viewing.name || viewing.email || "This student"}</b> hasn&apos;t completed an assessment yet — there&apos;s no report to show.</p>
+        <p style={SHARED.muted}><b>{viewing.name || viewing.email || "This student"}</b> hasn&apos;t completed an assessment yet - there&apos;s no report to show.</p>
         <BackLink />
       </Center>
     );
@@ -71,9 +71,9 @@ export default function AdminReportPage({ params }: { params: { uid: string } })
           <Icon name="chevronLeft" size={16} /> Back to users
         </Link>
         <div style={S.reportWho}>
-          <b style={{ fontSize: 14 }}>{viewing.name || "—"}</b>
+          <b style={{ fontSize: 14 }}>{viewing.name || "-"}</b>
           <span style={{ fontSize: 12, color: C.muted }}>
-            {viewing.email || "—"}
+            {viewing.email || "-"}
             {viewing.institution ? ` · ${viewing.institution}` : ""}
             {completed ? ` · completed ${completed}` : ""}
           </span>

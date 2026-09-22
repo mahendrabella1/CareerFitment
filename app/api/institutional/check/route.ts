@@ -3,22 +3,22 @@ import { isFirestoreConfigured, getFirestore } from "@/lib/firebase/admin";
 
 export const dynamic = "force-dynamic";
 
-// A code's format, shared with the redeem route — uppercase letters, digits
+// A code's format, shared with the redeem route - uppercase letters, digits
 // and dashes only. Rejecting anything else before it reaches Firestore means
 // a stray "/" in a mistyped code can't be read as a nested document path.
 const CODE_RE = /^[A-Z0-9-]{4,32}$/;
 
 /**
- * GET /api/institutional/check?code=... — public, unauthenticated: this runs
+ * GET /api/institutional/check?code=... - public, unauthenticated: this runs
  * before the student has an account. /register uses it to decide whether to
- * show the registration form at all for a ?ref= link — an invalid link
+ * show the registration form at all for a ?ref= link - an invalid link
  * BLOCKS entry entirely (with a reason-specific message) rather than letting
  * the student fill in a form that was never going to waive their fee.
- * Returns ONLY the school's name and, when invalid, why — never contact
+ * Returns ONLY the school's name and, when invalid, why - never contact
  * details, never usedCount/maxStudents (those would leak how close a school
  * is to its cap to anyone who can view page source).
  *
- * A "no" here is advisory, not authoritative — the real, race-safe check
+ * A "no" here is advisory, not authoritative - the real, race-safe check
  * happens again inside the transaction in /api/institutional/redeem at
  * signup time, for the rare case a link is deactivated in the few seconds
  * between this check and the student submitting the form.

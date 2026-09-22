@@ -6,10 +6,10 @@ import { priceWithCoupon } from "@/lib/coupons";
 export const dynamic = "force-dynamic";
 export const maxDuration = 20;
 
-// POST /api/payment/order — creates a Razorpay order for the assessment fee.
+// POST /api/payment/order - creates a Razorpay order for the assessment fee.
 // The KEY_SECRET is used only here (server-side); the KEY_ID is returned so the
 // browser can open Checkout. Both the on/off switch and the amount come from
-// the admin settings server-side — never from the client, which would otherwise
+// the admin settings server-side - never from the client, which would otherwise
 // be free to name its own price.
 //
 // The body may carry { coupon }. Only the CODE crosses the wire: the discount
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
   try {
     body = await req.json();
   } catch {
-    /* no body — no coupon */
+    /* no body - no coupon */
   }
   const priced = await priceWithCoupon(settings.amountPaise, body.coupon);
   const amount = priced.payablePaise;
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     );
   }
 
-  // A full waiver has no order to create — Razorpay cannot charge ₹0. The gate
+  // A full waiver has no order to create - Razorpay cannot charge ₹0. The gate
   // sends these to /api/payment/redeem instead; say so rather than handing back
   // an amount Razorpay would reject.
   if (priced.free) {
@@ -47,7 +47,7 @@ export async function POST(req: Request) {
       {
         success: false,
         reason: "free_coupon",
-        message: "This coupon waives the fee — no payment is needed.",
+        message: "This coupon waives the fee - no payment is needed.",
         coupon: priced.coupon,
       },
       { status: 409 }
@@ -84,10 +84,10 @@ export async function POST(req: Request) {
     const data = await res.json();
     if (!res.ok) {
       // 401 means the Key ID and Key Secret aren't from the same pair (or one
-      // was rotated). Name the Key ID in play — otherwise Razorpay's bare
+      // was rotated). Name the Key ID in play - otherwise Razorpay's bare
       // "Authentication failed" gives no clue which half of the pair is stale.
       if (res.status === 401) {
-        console.error(`[payment] Razorpay rejected key ${keyId} — Key ID/Secret pair mismatch or rotated.`);
+        console.error(`[payment] Razorpay rejected key ${keyId} - Key ID/Secret pair mismatch or rotated.`);
         return NextResponse.json(
           {
             success: false,

@@ -8,11 +8,11 @@ import { LEARN_PATHS, SCHOLARSHIPS } from '@/constants/catalog';
 export default function Page() {
   return (
     <ModuleShell title="Career Boosters" icon={Rocket} accent="amber"
-      description="Free, step-by-step learning paths, real scholarships and virtual internships to get ahead — every resource below is free and links to its official source.">
+      description="Free, step-by-step learning paths, real scholarships and virtual internships to get ahead - every resource below is free and links to its official source.">
 
       {/* Learn paths */}
       <h3 className="font-semibold text-ink mb-1">Free learning paths</h3>
-      <p className="text-sm text-ink-3 mb-4">Pick a track and follow the steps — all resources are free.</p>
+      <p className="text-sm text-ink-3 mb-4">Pick a track and follow the steps - all resources are free.</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-8">
         {LEARN_PATHS.map((p) => (
           <Card key={p.title} className="p-5 flex flex-col">
@@ -49,7 +49,7 @@ export default function Page() {
           </div>
           <div className="flex-1 min-w-0">
             <p className="font-semibold text-ink text-sm">150+ Virtual Internships (Class 6–12)</p>
-            <p className="text-xs text-ink-4">Free job simulations & programs from Forage, Google, IBM, NASA, ISRO and more — filter by your class.</p>
+            <p className="text-xs text-ink-4">Free job simulations & programs from Forage, Google, IBM, NASA, ISRO and more - filter by your class.</p>
           </div>
           <ArrowRight className="w-4 h-4 text-ink-4 shrink-0" />
         </Card>
@@ -57,7 +57,7 @@ export default function Page() {
 
       {/* Scholarships */}
       <div className="flex items-center gap-2 mb-3"><Award className="w-4 h-4 text-ink-3" /><h3 className="font-semibold text-ink">Scholarships</h3></div>
-      <p className="text-xs text-ink-4 mb-3 -mt-2">Real, official scholarships — amounts are indicative; confirm current terms on the official page.</p>
+      <p className="text-xs text-ink-4 mb-3 -mt-2">Real, official scholarships - amounts are indicative; confirm current terms on the official page.</p>
       <Card className="divide-y divide-line-2">
         {SCHOLARSHIPS.map((s) => (
           <a key={s.name} href={s.url} target="_blank" rel="noreferrer"

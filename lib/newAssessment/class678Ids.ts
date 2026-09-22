@@ -1,18 +1,18 @@
 /**
  * Class 6/7/8 "Career Discovery" question banks each carry their own global
- * question id (1-60) directly on every question — the single source of
+ * question id (1-60) directly on every question - the single source of
  * truth class6Scoring.ts / class7Scoring.ts / class8Scoring.ts read from
  * (e.g. "aptitude questions are id 21-30", "responses.responses[1]" for
  * Q1). The exam UI only ever answers per-category ids ("aptitude:0" ..
- * "aptitude:9" — see app/api/new-assessment/generate/route.ts's
+ * "aptitude:9" - see app/api/new-assessment/generate/route.ts's
  * dimensionMap + grouping-by-first-appearance), so scoring an answer means
  * mapping "aptitude:3" back to whatever real global id that question
- * actually has (24, say — not 3, and not "the 24th key some object happened
+ * actually has (24, say - not 3, and not "the 24th key some object happened
  * to enumerate").
  *
  * The scoring route used to just count answers in whatever order
  * Object.entries() enumerated them (relying entirely on the client having
- * inserted them in exact display order) into a 0-indexed record — silently
+ * inserted them in exact display order) into a 0-indexed record - silently
  * wrong for a student who went back and re-answered a question out of
  * sequence, and off by one even in the best case, since class6/7/8Scoring.ts
  * all index 1-60. That off-by-one was invisible for classes 6/7 (a missing
@@ -22,7 +22,7 @@
  *
  * This mirrors generate/route.ts's own grouping logic so both routes agree
  * on exactly the same question order without a second copy of that logic
- * drifting out of sync — the same class of bug this whole file exists to
+ * drifting out of sync - the same class of bug this whole file exists to
  * fix.
  */
 import { CLASS8_QUESTIONS } from "@/lib/newAssessment/class8Questions";

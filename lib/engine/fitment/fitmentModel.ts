@@ -1,9 +1,9 @@
 import { MatchCategory } from "./types";
 
-// §5 of the blueprint — the FITMENT (match) weights, distinct from the
+// §5 of the blueprint - the FITMENT (match) weights, distinct from the
 // test-composition weights stored on blueprint_parameters. These answer
 // "how much does each category drive the career match?" and must sum to 1.
-// Learning Style is deliberately 0% — it is advisory, not a matcher.
+// Learning Style is deliberately 0% - it is advisory, not a matcher.
 //
 // ⚠️ IMPORTANT: These career-specific weights differ from DOMAIN-level weights.
 // Career-specific matching (used for individual job recommendations) includes more
@@ -28,7 +28,7 @@ export const DEFAULT_MATCH_WEIGHTS: Record<MatchCategory, number> = {
 
 // Per-family nudges (blueprint §5: "people-facing families may boost EI;
 // technical families may boost Aptitude"). Applied as multipliers, then the
-// active weights are renormalised — so these express relative emphasis, not
+// active weights are renormalised - so these express relative emphasis, not
 // absolute values.
 export const FAMILY_WEIGHT_MULTIPLIERS: Record<
   string,

@@ -1,12 +1,12 @@
 /**
- * Icons — a small set of professional, stroke-based line icons (24×24,
+ * Icons - a small set of professional, stroke-based line icons (24×24,
  * currentColor) used across the app in place of emoji. Keyed by the eight
  * assessment categories plus a few generic report/flow icons.
  */
 import type { ReactNode } from "react";
 
 const P: Record<string, ReactNode> = {
-  // categories — thematically distinct, professional icons (fingerprint,
+  // categories - thematically distinct, professional icons (fingerprint,
   // target, brain, heart-pulse, book, summit flag, shield-star, gear).
   personality: <><path d="M12 20.5c-2-2.3-3.2-4.8-3.2-7.5a3.2 3.2 0 1 1 6.4 0c0 1.6-.4 3-1.1 4.3" /><path d="M8.2 19c-1.4-2.3-2.2-4.6-2.2-7a6 6 0 0 1 12 0c0 .8-.1 1.6-.3 2.4" /><path d="M12 12.7v1.2" /></>,
   career_interest: <><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5.2" /><path d="M12 3v3M21 12h-3M12 21v-3M3 12h3" /><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none" /></>,

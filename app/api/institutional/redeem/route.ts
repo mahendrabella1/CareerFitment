@@ -8,23 +8,23 @@ export const maxDuration = 20;
 const CODE_RE = /^[A-Z0-9-]{4,32}$/;
 
 /**
- * POST /api/institutional/redeem — { code, idToken }.
+ * POST /api/institutional/redeem - { code, idToken }.
  *
  * Called by /register right after a normal signup already succeeded (the
- * student's Firebase Auth account and `users/{uid}` doc — with paid:false —
+ * student's Firebase Auth account and `users/{uid}` doc - with paid:false -
  * already exist by the time this runs; register() itself is unchanged). This
  * is an EXTRA step layered on top, not a replacement: if it fails, the
  * account still exists and the student just falls through to the normal
  * PaymentGate, same as anyone else.
  *
- * All validation happens INSIDE the Firestore transaction, not before it —
+ * All validation happens INSIDE the Firestore transaction, not before it -
  * checking first and writing after would leave a window where two students
  * redeeming the same near-full link at once could both pass the check and
  * both get in, overrunning maxStudents. Firestore retries the whole callback
  * if the link doc changes before commit, so this is race-safe as written.
  *
  * The final `paid: true` write goes straight through the Admin SDK inside
- * this same transaction — unlike the client-side markPaid() pattern the
+ * this same transaction - unlike the client-side markPaid() pattern the
  * coupon-redeem flow uses (trusted only because the server verified the
  * waiver first), this write needs no Firestore rule trust at all, since the
  * Admin SDK bypasses rules entirely.

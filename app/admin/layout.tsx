@@ -1,10 +1,10 @@
 "use client";
 
 /**
- * app/admin/layout.tsx — the ONLY place admin auth is checked. Wraps every
+ * app/admin/layout.tsx - the ONLY place admin auth is checked. Wraps every
  * /admin/* route, including the sidebar dashboard sections AND the
  * standalone /admin/report/[uid] view (deliberately outside the sidebar's
- * own route group — see app/admin/(dashboard)/layout.tsx's header comment
+ * own route group - see app/admin/(dashboard)/layout.tsx's header comment
  * for why). Every page under here can assume it's already an authenticated
  * admin by the time it renders; none of them re-check isAdmin() themselves.
  */
@@ -43,7 +43,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     setSigningIn(true);
     const isDevAdmin = email.trim().toLowerCase() === DEV_ADMIN.email && password === DEV_ADMIN.password;
     try {
-      // Real Firebase sign-in — sets request.auth so Firestore rules allow the reads.
+      // Real Firebase sign-in - sets request.auth so Firestore rules allow the reads.
       await signIn(email, password);
     } catch (err) {
       const code = (err as { code?: string })?.code || "";

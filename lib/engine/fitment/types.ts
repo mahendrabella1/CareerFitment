@@ -1,5 +1,5 @@
 // Canonical dimensions the matcher works in. Every user profile and every
-// career in the library is expressed in these — see profile.ts (extraction
+// career in the library is expressed in these - see profile.ts (extraction
 // from scored sessions) and careerLibrary.ts (ideal profiles).
 
 export type RiasecLetter = "R" | "I" | "A" | "S" | "E" | "C";
@@ -55,7 +55,7 @@ export type MatchCategory =
   | "academic";
 
 // The user's profile, extracted from a scored session. Any field can be
-// `null`/empty when the session had no reliable sub-scores for it — the
+// `null`/empty when the session had no reliable sub-scores for it - the
 // matcher renormalises weights over whatever is actually available.
 export interface UserProfile {
   riasec: RiasecVector | null;
@@ -67,7 +67,7 @@ export interface UserProfile {
   ei: number | null; // 0-100 composite
   academic: { name: string; score: number }[];
   learningStyles: { name: string; score: number }[]; // advisory only
-  // How many reliable sub-scores backed each category — feeds confidence.
+  // How many reliable sub-scores backed each category - feeds confidence.
   reliability: Partial<Record<MatchCategory, number>>;
 }
 
@@ -81,7 +81,7 @@ export type CareerFamily =
   | "Media"
   | "Skilled-Trades";
 
-// A career encoded as an ideal profile — the data the blueprint (§7) says we
+// A career encoded as an ideal profile - the data the blueprint (§7) says we
 // must add. Only `riasec` + `family` are required; the richer the record, the
 // more categories contribute to its match.
 export interface Career {

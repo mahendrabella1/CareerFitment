@@ -123,7 +123,7 @@ export async function POST(req: Request) {
   // A saved session may belong to a DIFFERENT paper. The saved session lives on
   // the user profile, not on the page, so a student who left a class 9-10 paper
   // half-finished and then opened /demo-test was resumed straight back into the
-  // 9-10 paper — and the demo then scored those answers against the demo bank,
+  // 9-10 paper - and the demo then scored those answers against the demo bank,
   // where "Set 1" exists too but holds different questions of a different
   // length. Silently wrong scores, no error anywhere.
   //
@@ -137,7 +137,7 @@ export async function POST(req: Request) {
   const order = categoryOrder(stage);
   // A saved session may name sets that no longer exist (the class 9-10 bank was
   // replaced by the single 60-question set). Only honour a resume when every
-  // named set still resolves to questions — otherwise draw fresh ones rather
+  // named set still resolves to questions - otherwise draw fresh ones rather
   // than serving an empty exam.
   const resume =
     !stageMismatch &&
@@ -147,7 +147,7 @@ export async function POST(req: Request) {
 
   // Class 11 and 12 now collect current stream and desired career on a
   // dedicated pre-exam screen (NewExam.tsx's "preinfo" phase) instead of as
-  // in-exam questions — a cleaner, class-aware dropdown (the in-exam
+  // in-exam questions - a cleaner, class-aware dropdown (the in-exam
   // subject_fit:0 question was hardcoded to say "Class 11" even for Class 12
   // students) with a proper domain-grouped career list instead of a flat
   // one. Skipping them here avoids asking the same two things twice in one
@@ -158,18 +158,18 @@ export async function POST(req: Request) {
 
   // The class 11-12 bank (data/class-11-12/questions-corrected.json) uses a
   // few question-type spellings and an options-field layout the exam engine
-  // doesn't know natively — see resolvedQuestionType() / optionsForQuestion()
+  // doesn't know natively - see resolvedQuestionType() / optionsForQuestion()
   // in lib/newAssessment/data.ts, shared with the scoring route so both agree
   // on exactly what a given answer index or value means.
   const sections = order.map((cat) => {
     const raw = getSet(cat, stage, chosenSets[cat]);
-    // Only DISPLAY fields go to the client — every answer key (correct, clusters,
+    // Only DISPLAY fields go to the client - every answer key (correct, clusters,
     // scores, domains, mainCategory, subCategory, cluster) stays server-side.
     const questions = raw
       .map((q, i) => {
         const resolved = resolvedQuestionType(q.type as string, q.instruction);
         const options = optionsForQuestion(cat, i, q);
-        // Infinity ("select all that apply") doesn't survive JSON — it
+        // Infinity ("select all that apply") doesn't survive JSON - it
         // serializes to `null`, which the client's `q.maxSelect ?? 1` then
         // silently turns back into a cap of 1, locking every option after the
         // first. The real ceiling for "all" is just the option count.
@@ -186,7 +186,7 @@ export async function POST(req: Request) {
           optional: resolved.isOpen,
           maxSelect,
           // Custom 1-10 slider end-labels (e.g. "Not comfortable at all" /
-          // "Very comfortable") — falls back to the generic default in
+          // "Very comfortable") - falls back to the generic default in
           // NewExam.tsx's QuestionInput when a scale question doesn't set them.
           scaleLabel_min: (q.scaleLabel_min as string | undefined) ?? null,
           scaleLabel_max: (q.scaleLabel_max as string | undefined) ?? null,

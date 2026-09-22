@@ -4,7 +4,7 @@
  * Site-wide Meta Pixel: loads the base pixel once, fires PageView on every
  * client-side route change (App Router doesn't do this automatically), and
  * auto-tracks every button/link click on the site as a generic "CTAClick"
- * custom event — so no individual CTA needs to be wired up by hand.
+ * custom event - so no individual CTA needs to be wired up by hand.
  * Named conversion events (Lead, CompleteRegistration, Purchase) are fired
  * separately at the actual funnel points via lib/metaPixel.ts.
  */

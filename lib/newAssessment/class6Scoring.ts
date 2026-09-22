@@ -20,7 +20,7 @@ export interface Class6ScoreOutput {
     jp: string; // J or P
     type: string; // e.g., INTJ
     // 0-100: how consistently the student picked one side of each axis,
-    // not "how good" a personality — used as the dimension's scorecard/
+    // not "how good" a personality - used as the dimension's scorecard/
     // radar score, since the four letters alone aren't a number.
     score: number;
     // 0-10 per axis, midpoint 5: >=5 leans toward the first letter shown
@@ -91,14 +91,14 @@ const MI_DOMAINS = [
 ];
 
 // Domain names/images/roles all come from the shared DOMAINS catalogue in
-// lib/report/knowledge.ts — this used to keep its own local copy with G and
+// lib/report/knowledge.ts - this used to keep its own local copy with G and
 // H labelled "Entrepreneurship & Innovation" and "Agriculture &
 // Environmental Science", while the domain CARD the report actually shows
 // (Class6Report.tsx reads DOMAINS[d.domain] directly for the image/roles/
 // skills/salary) used the real "Science, Nature & Agriculture" and "Sports,
 // Hospitality & Lifestyle". A student could see a card titled
 // "Entrepreneurship & Innovation" with a farming photo and agricultural
-// roles underneath it. DOMAIN_RIASEC is shared for the same reason — it
+// roles underneath it. DOMAIN_RIASEC is shared for the same reason - it
 // used to be a Class 6-only reverse table (RIASEC_TO_DOMAINS) built against
 // those same wrong G/H meanings.
 
@@ -180,7 +180,7 @@ function scoreAptitude(responses: Class6Response): {
   );
   let correct = 0;
   const domainHits: Record<string, number> = {};
-  // How many aptitude questions were tagged with each domain at all —
+  // How many aptitude questions were tagged with each domain at all -
   // without this, calculateDomainAffinities could only see hits (a raw
   // count of correct answers), which rewarded a domain just because OTHER
   // domains happened to get fewer correct answers, not because this
@@ -232,7 +232,7 @@ function scorePersonality(responses: Class6Response): Class6ScoreOutput["persona
   // all four (ei/jp have 3 questions so max |3|, sn/tf have 2 so max |2|).
   const clarity = (Math.abs(ei) / 3 + Math.abs(sn) / 2 + Math.abs(tf) / 2 + Math.abs(jp) / 3) / 4;
   const score = Math.round(clarity * 100);
-  // sn/tf have only 2 questions deciding them, ei/jp only 3 — so answering
+  // sn/tf have only 2 questions deciding them, ei/jp only 3 - so answering
   // both/all the same way (the common case) always hit the max magnitude,
   // and the old formula read that as a literal 10.0/10 (100%). Two
   // consistent answers isn't certainty; shrink toward the midpoint by
@@ -284,13 +284,13 @@ function scoreRIASEC(responses: Class6Response): Class6ScoreOutput["riasecScores
 }
 
 // Q31-38's 5 options each lean toward a different MI domain, but not
-// always the SAME one in the same position — Q32/Q36 use Musical/
+// always the SAME one in the same position - Q32/Q36 use Musical/
 // Naturalistic in their last two slots where every other question uses
 // Bodily-Kinesthetic/Interpersonal (see data/class6-assessment-questions.json
 // Q32: "Music and rhythm"/"Nature and living things" vs Q31's "Making or
-// doing things with my hands"/"Talking and working with people") — a single
+// doing things with my hands"/"Talking and working with people") - a single
 // flat mapping silently mis-scored those two, and Q37/Q38 were never scored
-// at all. Intrapersonal never appears as a distinct option across Q31-38 —
+// at all. Intrapersonal never appears as a distinct option across Q31-38 -
 // a real limit of this bank's 5-option format, not something to fabricate
 // a slot for.
 const STRENGTHS_MAPPING: Record<number, string[]> = {
@@ -319,7 +319,7 @@ function scoreStrengths(responses: Class6Response): Class6ScoreOutput["strengthD
     }
   }
 
-  // Percentage of the times a domain was actually OFFERED, not a flat /8 —
+  // Percentage of the times a domain was actually OFFERED, not a flat /8 -
   // Musical/Naturalistic only appear in 2 of the 8 questions, so a flat /8
   // would cap them at 25% even from a perfect run.
   return Object.entries(scores)
@@ -441,11 +441,11 @@ function scoreCreativity(responses: Class6Response): Class6ScoreOutput["creativi
 }
 
 // Which of the 5 motivator tags (see scoreMotivators) reinforce each
-// domain — kept local to Class 6 since its 5-tag vocabulary (Achievement/
+// domain - kept local to Class 6 since its 5-tag vocabulary (Achievement/
 // Curiosity/Helping/Freedom/Leadership) is its own, not shared with Class
 // 11-12's 11-tag one. Every domain gets exactly 2, matching this file's own
 // DOMAIN_RIASEC/DOMAIN_MI coverage-evenness principle (lib/report/
-// knowledge.ts) — a domain with only one signal is far noisier under real
+// knowledge.ts) - a domain with only one signal is far noisier under real
 // (imperfectly consistent) answers than one averaging two.
 const DOMAIN_MOTIVATOR: Record<string, string[]> = {
   A: ["Achievement", "Leadership"], B: ["Achievement", "Freedom"],
@@ -458,7 +458,7 @@ const DOMAIN_MOTIVATOR: Record<string, string[]> = {
   O: ["Achievement", "Freedom"],
 };
 
-// A weighted mean over whichever evidence exists for a domain — same
+// A weighted mean over whichever evidence exists for a domain - same
 // "average only what was actually measured" approach, and the same
 // interest/aptitude/strengths/values weight split, as domainFit() in
 // lib/report/knowledge.ts (Class 9-10) and calculateDomainAffinities() in
@@ -466,7 +466,7 @@ const DOMAIN_MOTIVATOR: Record<string, string[]> = {
 // same way instead of three different ad-hoc formulas quietly disagreeing.
 // This replaces a flat point-additive scheme whose 5 factors didn't sum to
 // a consistent total and could push a domain's raw score past 100 before
-// the final clamp — an number that read as confidence the underlying data
+// the final clamp - an number that read as confidence the underlying data
 // never actually supported.
 function calculateDomainAffinities(data: any): Class6ScoreOutput["domainAffinities"] {
   const riasecByLetter: Record<string, number> = {};
@@ -537,5 +537,5 @@ function generateSummary(data: {
   topRiasec: { name: string };
   topDomain: { domainName: string };
 }): string {
-  return `${data.name}, you're a ${data.personality.type} learner who shows strong interest in ${data.topRiasec.name.split("(")[0].trim()}. This aligns with exploring ${data.topDomain.domainName}. Keep exploring different interests—your real path will become clearer over time!`;
+  return `${data.name}, you're a ${data.personality.type} learner who shows strong interest in ${data.topRiasec.name.split("(")[0].trim()}. This aligns with exploring ${data.topDomain.domainName}. Keep exploring different interests-your real path will become clearer over time!`;
 }

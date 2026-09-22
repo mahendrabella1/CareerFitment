@@ -47,7 +47,7 @@ export async function POST(
   const admin = getSupabaseAdmin();
 
   // Reject answers for questions that weren't actually assigned to this
-  // session — prevents a client from scoring against arbitrary question ids.
+  // session - prevents a client from scoring against arbitrary question ids.
   const { data: assigned, error: aErr } = await admin
     .from("session_questions")
     .select("question_id")

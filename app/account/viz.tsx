@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * viz — small, dependency-free SVG data-visualisation primitives shared by the
+ * viz - small, dependency-free SVG data-visualisation primitives shared by the
  * dashboard and (later) the premium report. Everything is hand-drawn SVG so it
  * stays crisp on screen and in print. One accent system: near-black ink, greys,
  * and a single light-red primary. No external chart libraries.
@@ -31,7 +31,7 @@ export const C = {
 export const clampPct = (n: number) => Math.max(2, Math.min(100, Math.round(n)));
 
 /**
- * Per-dimension identity colours — the validated 8-slot categorical palette
+ * Per-dimension identity colours - the validated 8-slot categorical palette
  * (colourblind-safe, CVD ΔE ≥ 8; see dataviz skill). Used to colour charts by
  * dimension. Page chrome stays ink/grey/red; only data marks take these hues.
  */
@@ -151,7 +151,7 @@ export function SkillBar({
 /* ---------------------------- RadarChart ------------------------------- */
 export type RadarDatum = { key: string; label: string; score: number; bench: number };
 
-/** Single-series radar. Stateless — parent owns the selected index. */
+/** Single-series radar. Stateless - parent owns the selected index. */
 export function RadarChart({
   data,
   selected = -1,
@@ -226,11 +226,11 @@ export function RadarChart({
 /** One bipolar axis, its two opposite letters, and the label shown for each. */
 export type MBTIAxis = { key: string; angle: number; posLetter: string; posLabel: string; negLetter: string; negLabel: string; score: number };
 
-/** A compact "compass" — four crossed axes through a centre point, each with a
+/** A compact "compass" - four crossed axes through a centre point, each with a
  *  marker sitting closer to whichever letter actually won. Reads as one shape
  *  instead of four disconnected bars, so the type feels like a single profile.
  *  `score` on each axis is 0-10, midpoint 5: >=5 favours posLetter. */
-export function MBTICompass({ axes, size = 232, color = C.red, centerLabel }: { axes: MBTIAxis[]; size?: number; color?: string; /** e.g. the 4-letter type code — shown in the middle instead of a bare dot when given. */ centerLabel?: string }) {
+export function MBTICompass({ axes, size = 232, color = C.red, centerLabel }: { axes: MBTIAxis[]; size?: number; color?: string; /** e.g. the 4-letter type code - shown in the middle instead of a bare dot when given. */ centerLabel?: string }) {
   const cx = size / 2, cy = size / 2, r = size / 2 - 46;
   const toXY = (angleDeg: number, radius: number) => {
     const rad = (angleDeg * Math.PI) / 180;

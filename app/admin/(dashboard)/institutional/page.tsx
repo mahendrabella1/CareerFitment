@@ -1,12 +1,12 @@
 "use client";
 
 /**
- * /admin/institutional — create and manage school signup links. A link is
+ * /admin/institutional - create and manage school signup links. A link is
  * just {origin}/register?ref={code}: a student who registers through it goes
  * through the EXACT same signup/assessment flow as anyone else, tagged with
  * this school's name (the existing, working `institution` field on their
- * profile — already filterable on the main Users table, so there's no
- * separate reporting view here) — the only difference is their fee is
+ * profile - already filterable on the main Users table, so there's no
+ * separate reporting view here) - the only difference is their fee is
  * automatically waived (see app/api/institutional/redeem/route.ts).
  *
  * Auth is handled by the parent app/admin/layout.tsx.
@@ -69,13 +69,13 @@ export default function AdminInstitutionalPage() {
     let code = generateLinkCode(schoolName);
     // Vanishingly unlikely to collide (school-name slug + 4 random chars),
     // but the code is the doc ID, so a collision would silently overwrite an
-    // existing link — check once and re-roll if it happens.
+    // existing link - check once and re-roll if it happens.
     if ((rows ?? []).some((r) => r.code === code)) code = generateLinkCode(schoolName);
 
     setSaving(true);
     try {
       // Firestore's setDoc() rejects any field whose value is literally
-      // `undefined` (unlike a plain JS object, where that's harmless) — so
+      // `undefined` (unlike a plain JS object, where that's harmless) - so
       // an empty optional field must be OMITTED from the object entirely,
       // never included with an undefined value.
       const link: InstitutionalLink = {
@@ -97,7 +97,7 @@ export default function AdminInstitutionalPage() {
       setF({ schoolName: "", contactPersonName: "", contactPersonEmail: "", contactPersonPhone: "", expiresAt: "", maxStudents: "", notes: "" });
       setShowForm(false);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not save — check Firestore admin write rules.");
+      setError(e instanceof Error ? e.message : "Could not save - check Firestore admin write rules.");
     } finally {
       setSaving(false);
     }
@@ -111,7 +111,7 @@ export default function AdminInstitutionalPage() {
       await updateDoc(doc(db, "institutional_links", link.code), { status: next });
       setRows((rs) => (rs ?? []).map((r) => (r.code === link.code ? { ...r, status: next } : r)));
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not update — check Firestore admin write rules.");
+      setError(e instanceof Error ? e.message : "Could not update - check Firestore admin write rules.");
     }
   }
 
@@ -126,7 +126,7 @@ export default function AdminInstitutionalPage() {
     <div style={{ maxWidth: 880 }}>
       <h1 style={{ fontSize: 24, fontWeight: 800, color: C.ink, margin: "0 0 6px" }}>Institutional links</h1>
       <p style={{ fontSize: 14, color: C.ink3, margin: "0 0 24px" }}>
-        A student who registers through a school&apos;s link goes through the exact same signup and assessment as anyone else — just with the fee waived. They show up in the main user table, filterable by school, same as always.
+        A student who registers through a school&apos;s link goes through the exact same signup and assessment as anyone else - just with the fee waived. They show up in the main user table, filterable by school, same as always.
       </p>
 
       {!showForm ? (
@@ -176,7 +176,7 @@ export default function AdminInstitutionalPage() {
         {rows === null ? (
           <div style={{ padding: 24, textAlign: "center", color: C.muted, fontSize: 14 }}>Loading…</div>
         ) : rows.length === 0 ? (
-          <div style={{ padding: 24, textAlign: "center", color: C.muted, fontSize: 14 }}>No institutional links yet — create one above.</div>
+          <div style={{ padding: 24, textAlign: "center", color: C.muted, fontSize: 14 }}>No institutional links yet - create one above.</div>
         ) : (
           rows.map((r) => (
             <div key={r.code} style={{ padding: "14px 18px", borderBottom: `1px solid ${C.line}` }}>

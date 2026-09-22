@@ -82,7 +82,7 @@ export function computeFitment(
 }
 
 function scoreCareer(profile: UserProfile, career: Career): CareerMatch | null {
-  // Per-category similarity (0-1) — only where the user has data AND the career
+  // Per-category similarity (0-1) - only where the user has data AND the career
   // encodes an ideal for it.
   const sims: Partial<Record<MatchCategory, number>> = {};
 
@@ -165,13 +165,13 @@ function buildGaps(
 ): string[] {
   const gaps: string[] = [];
 
-  // Aptitude shortfalls — the blueprint's headline gap example.
+  // Aptitude shortfalls - the blueprint's headline gap example.
   if (career.aptitude) {
     for (const [skill, req] of Object.entries(career.aptitude)) {
       const have = profile.aptitude[skill as keyof typeof profile.aptitude];
       if (have !== undefined && req - have >= 15) {
         gaps.push(
-          `${skill} aptitude ${Math.round(have)} vs ~${req} typical — worth strengthening.`
+          `${skill} aptitude ${Math.round(have)} vs ~${req} typical - worth strengthening.`
         );
       }
     }
@@ -180,14 +180,14 @@ function buildGaps(
   // EI shortfall for people-facing roles.
   if (career.eiMin && profile.ei !== null && career.eiMin - profile.ei >= 15) {
     gaps.push(
-      `This is a people-facing path; Emotional Intelligence ${profile.ei} vs ~${career.eiMin} helpful — build interpersonal skills.`
+      `This is a people-facing path; Emotional Intelligence ${profile.ei} vs ~${career.eiMin} helpful - build interpersonal skills.`
     );
   }
 
   // Interest mismatch note.
   if (sims.interest !== undefined && sims.interest < 0.55) {
     gaps.push(
-      "Interest alignment is moderate — validate with real exposure before committing."
+      "Interest alignment is moderate - validate with real exposure before committing."
     );
   }
 
@@ -209,7 +209,7 @@ function assessValidity(
     if (maxShare >= 0.85) {
       straightLining = true;
       notes.push(
-        "Responses look flat-lined (one option dominates) — results may be unreliable."
+        "Responses look flat-lined (one option dominates) - results may be unreliable."
       );
     }
   }
@@ -220,7 +220,7 @@ function assessValidity(
   const lowCompleteness = reliableCategoryCount < 3;
   if (lowCompleteness) {
     notes.push(
-      "Few categories produced reliable scores — treat matches as directional."
+      "Few categories produced reliable scores - treat matches as directional."
     );
   }
 

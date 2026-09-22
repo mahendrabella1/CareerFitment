@@ -1,7 +1,7 @@
 /**
  * Adapts Class 6, 7 and 8 score outputs (class6Scoring.ts / class7Scoring.ts
  * / class8Scoring.ts's own shapes) into the AssessmentSummary shape
- * FullReport.tsx already renders for class 9-10 — so classes 6-8 get the
+ * FullReport.tsx already renders for class 9-10 - so classes 6-8 get the
  * exact same report code, CSS and images instead of three separately
  * designed bespoke reports (Class6Report.tsx / Class7Report.tsx /
  * Class8Report.tsx) that inevitably drift from it and from each other. Same
@@ -22,7 +22,7 @@ import { DOMAINS } from "@/lib/report/knowledge";
  * True only for output produced by the CURRENT (15-domain) scoring engines.
  * A report saved before the domain-catalogue rebuild has a `domainAffinities`
  * array of only 8 entries scored against the OLD, differently-meaning A-H
- * letters — not just a smaller list, but affinities computed against domain
+ * letters - not just a smaller list, but affinities computed against domain
  * definitions that no longer exist. Rendering it through this adapter would
  * show a student career recommendations that don't match any current domain
  * name, so it's treated as "no report yet" instead, matching the class 11-12
@@ -44,7 +44,7 @@ export function isCurrentClass8Shape(output: unknown): output is Class8ScoreOutp
 }
 
 // Short narrative blurbs for class 6/7/8's 4-indicator creativity vocabulary
-// (Problem-Solving / Adaptability / Innovation / Future-Orientation) — same
+// (Problem-Solving / Adaptability / Innovation / Future-Orientation) - same
 // role as CREATIVITY_BLURBS in scoring11_12.ts, for the parts of the report
 // that want a sentence rather than a bare label + score.
 const CREATIVITY_BLURBS_C678: Record<string, string> = {
@@ -62,7 +62,7 @@ function creativityDetailFrom(creativity: { indicator: string; score: number }[]
     recommendations: [
       "Try one deliberately different approach to a routine task this week.",
       "Join a maker, robotics, art or innovation club to practise hands-on problem-solving.",
-      "Keep a short idea journal — jot down one 'what if' question a day.",
+      "Keep a short idea journal - jot down one 'what if' question a day.",
     ],
   };
 }
@@ -74,7 +74,7 @@ function adaptClass67ToSummary(
   journeyName: "Class 6" | "Class 7"
 ): AssessmentSummary {
   // Title uses the SHARED DOMAINS catalogue's name, not this engine's own
-  // domainName — the two always agree post-rebuild since both are sourced
+  // domainName - the two always agree post-rebuild since both are sourced
   // from lib/report/knowledge.ts, but DOMAINS is the one the domain cards
   // themselves render from, so it's the source of truth here too.
   const themes: ReportTheme[] = output.domainAffinities.map((d) => ({
@@ -93,7 +93,7 @@ function adaptClass67ToSummary(
   const topValues = output.motivators.map((m) => ({ tag: m.name, score: m.score }));
 
   // Class 6/7's aptitude section only produces one overall score (no named
-  // sub-skills like class 8 or 11-12) — a single generic entry still feeds
+  // sub-skills like class 8 or 11-12) - a single generic entry still feeds
   // the report's "sharpest in..." text and aptitudePct honestly, it just
   // won't match any of AFFINITY's specific keyword lists in domainFit()
   // (lib/report/knowledge.ts), which is correct: this bank never measured a
@@ -139,7 +139,7 @@ function adaptClass67ToSummary(
     desiredCareerFitPct: null,
     summary: output.summary || null,
     matches: [],
-    // No Big-Five sub-traits measured (MBTI-style personality only) — left
+    // No Big-Five sub-traits measured (MBTI-style personality only) - left
     // empty so FullReport falls back cleanly rather than fabricating them.
     topStrengths: [],
     riasecCode,
@@ -189,7 +189,7 @@ export function adaptClass8ToSummary(output: Class8ScoreOutput, base: Assessment
   // Class 8 uniquely has 4 named aptitude sub-scores. Labelled to match
   // AFFINITY's exact keyword vocabulary in lib/report/knowledge.ts
   // ("numerical"/"logical"/"spatial") so domainFit() can actually match them
-  // — "Pattern Recognition" has no equivalent keyword there and simply
+  // - "Pattern Recognition" has no equivalent keyword there and simply
   // won't match any domain, which is honest since no domain names it as a
   // distinguishing signal.
   const ap = output.aptitudeProfile;
@@ -233,7 +233,7 @@ export function adaptClass8ToSummary(output: Class8ScoreOutput, base: Assessment
     desiredCareer: null,
     desiredCareerFitPct: null,
     // class8Scoring.ts's own generateSummary() already produces a real,
-    // specific paragraph — reuse it directly instead of writing a new one.
+    // specific paragraph - reuse it directly instead of writing a new one.
     summary: output.summary?.profileDescription || null,
     matches: [],
     topStrengths: [],

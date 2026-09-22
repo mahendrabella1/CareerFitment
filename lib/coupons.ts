@@ -1,20 +1,20 @@
 // Coupon codes and the pricing maths that turns one into a payable amount.
 //
-// SERVER-ONLY — this pulls in lib/paymentSettings, which reaches Firestore
+// SERVER-ONLY - this pulls in lib/paymentSettings, which reaches Firestore
 // through the Admin SDK. Client components take their offer copy from
 // lib/offer.ts and their prices from /api/payment/*.
 //
 // Why it matters that this is resolved SERVER-SIDE: the browser sends a code,
 // never a price. Every route that touches money (order / coupon / redeem) calls
 // `priceWithCoupon` with the admin's own fee as the base, so a student who edits
-// the request can at best name a code that doesn't exist — they can't invent a
+// the request can at best name a code that doesn't exist - they can't invent a
 // discount, and they can't turn a ₹49 order into a ₹1 one.
 //
-// TO ADD OR CHANGE A CODE: use the admin console at /admin/coupons — it writes
+// TO ADD OR CHANGE A CODE: use the admin console at /admin/coupons - it writes
 // to the `coupons` Firestore collection this file reads (via the Admin SDK, so
 // student browsers never see this read happen). Codes are matched
 // case-insensitively and trimmed, so "ogfree", " OGFREE " and "OgFree" all work
-// — students paste these from WhatsApp and posters, and a stray space must not
+// - students paste these from WhatsApp and posters, and a stray space must not
 // read as "invalid code".
 
 import { OFFER } from "@/lib/offer";
@@ -30,7 +30,7 @@ export interface Coupon {
   label: string;
   /**
    * Applied on its own when the payment screen opens. Only the first coupon
-   * with this set to true is used (see autoCoupon below) — /admin/coupons
+   * with this set to true is used (see autoCoupon below) - /admin/coupons
    * only lets one be marked this way at a time, so the screen, the Razorpay
    * order and /admin never disagree about which discount is "the" sale price.
    */
@@ -41,21 +41,21 @@ export interface Coupon {
 
 // Used only when the `coupons` collection is empty or unreachable (a fresh
 // deployment before an admin has opened /admin/coupons, or a Firestore
-// outage) — the same two codes this app has always shipped with, so payment
+// outage) - the same two codes this app has always shipped with, so payment
 // never silently breaks. Once an admin adds a real coupon in /admin/coupons,
 // this fallback is never consulted again.
 const FALLBACK_COUPONS: readonly Coupon[] = [
   {
     code: OFFER.autoCouponCode,
     percentOff: OFFER.discountPct,
-    label: `${OFFER.name} — ${OFFER.discountPct}% off`,
+    label: `${OFFER.name} - ${OFFER.discountPct}% off`,
     auto: true,
-    note: "Applied automatically — no code needed",
+    note: "Applied automatically - no code needed",
   },
   {
     code: OFFER.freeCouponCode,
     percentOff: 100,
-    label: "Free access — 100% off",
+    label: "Free access - 100% off",
     auto: false,
     note: "Your assessment fee is fully waived",
   },
@@ -64,7 +64,7 @@ const FALLBACK_COUPONS: readonly Coupon[] = [
 export const COUPONS_COLLECTION = "coupons";
 
 /**
- * Every coupon an admin has configured. Never throws — a Firestore outage or
+ * Every coupon an admin has configured. Never throws - a Firestore outage or
  * an empty collection falls back to FALLBACK_COUPONS rather than taking
  * payment down or silently accepting every code as free.
  */
@@ -80,9 +80,9 @@ export async function getCoupons(): Promise<Coupon[]> {
       return {
         code: String(data.code || "").trim().toUpperCase(),
         percentOff,
-        label: data.label || (percentOff >= 100 ? "Free access — 100% off" : `${percentOff}% off`),
+        label: data.label || (percentOff >= 100 ? "Free access - 100% off" : `${percentOff}% off`),
         auto: Boolean(data.auto),
-        note: data.note || (data.auto ? "Applied automatically — no code needed" : "Discount applied"),
+        note: data.note || (data.auto ? "Applied automatically - no code needed" : "Discount applied"),
       };
     }).filter((c) => c.code);
   } catch (e) {
@@ -119,7 +119,7 @@ export function toPublicCoupon(c: Coupon): PublicCoupon {
 
 /** Everything the payment screen needs to render one price line. */
 export interface PricedFee {
-  /** Struck-through "was" price — the campaign list price. */
+  /** Struck-through "was" price - the campaign list price. */
   listPaise: number;
   /** The admin's configured fee, before any hand-typed coupon. */
   basePaise: number;
@@ -131,7 +131,7 @@ export interface PricedFee {
   discountPct: number;
   /** The coupon in force, or null when the student typed nothing. */
   coupon: PublicCoupon | null;
-  /** True when the fee is fully waived — use /api/payment/redeem, not /order. */
+  /** True when the fee is fully waived - use /api/payment/redeem, not /order. */
   free: boolean;
   /** True when a non-empty code was supplied and it isn't one of ours. */
   invalidCode: boolean;
@@ -139,7 +139,7 @@ export interface PricedFee {
 
 /**
  * Resolve the payable amount. `basePaise` MUST come from getPaymentSettings()
- * — never from the request body.
+ * - never from the request body.
  *
  * The rules, in order:
  *   • no code, or the sale code   → the admin's fee (the advertised price);
@@ -157,7 +157,7 @@ export async function priceWithCoupon(basePaise: number, rawCode?: unknown): Pro
   }
   // Razorpay's floor is ₹1. A coupon that lands between free and ₹1 would
   // produce an order Razorpay refuses, which reaches the student as a failed
-  // payment — waive the remainder instead.
+  // payment - waive the remainder instead.
   if (payablePaise > 0 && payablePaise < MIN_AMOUNT_PAISE) payablePaise = 0;
 
   const listPaise = Math.max(OFFER.listPaise, basePaise);

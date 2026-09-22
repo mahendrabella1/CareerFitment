@@ -1,10 +1,10 @@
 import { Career, RiasecVector } from "./types";
 
-// Curated career library — each career encoded as an ideal profile in the same
+// Curated career library - each career encoded as an ideal profile in the same
 // canonical dimensions the user profile uses (blueprint §7). Sourced from
 // O*NET-style RIASEC/aptitude/values patterns. This is a starter shortlist
 // (~40 careers) spanning the families relevant to classes 6–12 and graduates;
-// expand freely — the matcher only ranks careers you encode here.
+// expand freely - the matcher only ranks careers you encode here.
 //
 // RIASEC values are 0-100 emphasis per Holland theme; aptitude values are
 // approximate required levels (0-100); values/mi are qualitative tags.

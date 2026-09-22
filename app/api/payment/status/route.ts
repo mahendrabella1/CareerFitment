@@ -6,17 +6,17 @@ import { OFFER, discountPctBetween } from "@/lib/offer";
 
 export const dynamic = "force-dynamic";
 
-// GET /api/payment/status — tells the client whether a fee should be charged.
+// GET /api/payment/status - tells the client whether a fee should be charged.
 //
 // Two independent things have to be true for the gate to appear:
 //   • an admin has payment switched ON in /admin (settings/payment), and
 //   • the server actually has the Razorpay secret (RAZORPAY_KEY_SECRET).
 // If either is false the gate is skipped and the student goes straight to the
-// exam — that's the admin's "payment disabled" mode, and it doubles as the
+// exam - that's the admin's "payment disabled" mode, and it doubles as the
 // zero-configuration path this app has always had.
 //
 // keyId is echoed back so a broken deployment can be diagnosed from the browser
-// ("which key is production actually using?"). It is public by definition — the
+// ("which key is production actually using?"). It is public by definition - the
 // same value is handed to Razorpay Checkout on every payment.
 export async function GET() {
   const { active, settings, configured } = await isPaymentActive();
@@ -32,7 +32,7 @@ export async function GET() {
     amountPaise: settings.amountPaise,
     /** "env" = Firestore unavailable, so the admin toggle isn't in effect. */
     settingsSource: settings.source,
-    /** Code-level kill switch is on — the admin toggle is overridden. */
+    /** Code-level kill switch is on - the admin toggle is overridden. */
     forcedOff: FORCE_PAYMENT_OFF,
     keyId: razorpayKeyId(),
 

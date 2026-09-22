@@ -11,7 +11,7 @@ import Landing from "@/app/Landing";
 
 // The exam engine, the payment gate and the completion screen are loaded ON
 // DEMAND. None of them can appear until a visitor has signed in, paid and
-// started — but as static imports their JavaScript was part of the very first
+// started - but as static imports their JavaScript was part of the very first
 // download for anyone who merely opened the marketing page. Splitting them out
 // takes that weight off the only paint that decides whether a visitor stays.
 // `ssr: false` because all three are interactive-only and gated on auth state,
@@ -24,7 +24,7 @@ const Class7Assessment = dynamic(() => import("@/app/Class7Assessment"), { ssr: 
 // import, the `paidNow` state, and the check just before <NewExam>.
 //
 // It needs RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET set in the host environment.
-// Without them /api/payment/order fails and nobody can start the exam — see the
+// Without them /api/payment/order fails and nobody can start the exam - see the
 // note in lib/razorpay.ts.
 const PaymentGate = dynamic(() => import("@/app/PaymentGate"), { ssr: false, loading: () => <FullPageSpinner /> });
 const ExamComplete = dynamic(() => import("@/app/ExamComplete"), { ssr: false, loading: () => <FullPageSpinner /> });
@@ -291,15 +291,15 @@ async function fetchJson<T>(input: RequestInfo, init?: RequestInit): Promise<T> 
 
 // Feel-good lines shown on each section's intro screen (cycled by section).
 const SECTION_QUOTES = [
-  "Believe in yourself — you’re capable of amazing things.",
+  "Believe in yourself - you’re capable of amazing things.",
   "Every expert was once a beginner. Keep going!",
-  "Trust your instincts — there are no wrong answers here.",
+  "Trust your instincts - there are no wrong answers here.",
   "Great things never come from comfort zones.",
   "Your potential is endless. Just be honest and shine.",
   "Small steps every day lead to big results.",
   "You are exactly where you need to be. Keep going!",
   "Curiosity is the key that unlocks your future.",
-  "Be yourself — that’s your greatest strength.",
+  "Be yourself - that’s your greatest strength.",
 ];
 
 function fmtTime(totalSeconds: number): string {
@@ -315,7 +315,7 @@ function enterFullscreen() {
     if (el.requestFullscreen) void el.requestFullscreen();
     else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
   } catch {
-    /* fullscreen may be blocked — the fixed overlay still fills the viewport */
+    /* fullscreen may be blocked - the fixed overlay still fills the viewport */
   }
 }
 
@@ -522,7 +522,7 @@ function optionList(question: SessionQuestion) {
 }
 
 // useLayoutEffect warns when React renders on the server. This page IS
-// prerendered, so fall back to useEffect there — the effect's whole job is to
+// prerendered, so fall back to useEffect there - the effect's whole job is to
 // read window.location, which does not exist on the server anyway.
 const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
@@ -544,7 +544,7 @@ export default function AssessmentExperience() {
   //
   // THIS IS A PAGE-SPEED FIX, not a style preference. useSearchParams() in the
   // App Router forces the Suspense subtree it sits in out of the prerendered
-  // HTML — a CSR bailout. Since this component IS the whole page, the static
+  // HTML - a CSR bailout. Since this component IS the whole page, the static
   // document for "/" shipped with an empty body: no headline, no copy, nothing.
   // A visitor downloaded a blank page and then waited for ~318kB of JavaScript
   // (Firebase included) to parse and run before a single pixel appeared.
@@ -556,14 +556,14 @@ export default function AssessmentExperience() {
   // App Router only writes the new URL to window.history in an insertion
   // effect (HistoryUpdater), which runs after the render that mounts the new
   // page. So a component that reads window.location.search while rendering
-  // sees the URL it came FROM — /register, /account — and concludes
+  // sees the URL it came FROM - /register, /account - and concludes
   // begin !== "1". That is what sent every student who finished registering,
   // or pressed "Take the assessment" on the dashboard, to the marketing page
   // instead of into the exam. It only ever worked on a hard reload.
   //
   // So: start empty (which is also what the server rendered, so hydration
   // matches), then sync in a LAYOUT effect. Layout effects run after insertion
-  // effects in the same commit — the URL is up to date by then — and the
+  // effects in the same commit - the URL is up to date by then - and the
   // resulting re-render is flushed before the browser paints, so the exam
   // appears directly, with no flash of the landing page in between.
   const [search, setSearch] = useState("");
@@ -766,12 +766,12 @@ export default function AssessmentExperience() {
     setStarting(true);
     try {
       // Record the lead for CRM/analytics, then send them to create a real
-      // account and pay — this form used to hand off straight into a free,
+      // account and pay - this form used to hand off straight into a free,
       // unpaid exam (via Class6Assessment/Class7Assessment or the legacy
       // session flow) for every class, with no registration and no payment
       // gate anywhere in that path. /register collects the same milestone +
       // stage + details in its own wizard and, on success, lands on
-      // /?begin=1 — the existing signed-in flow that already puts a real
+      // /?begin=1 - the existing signed-in flow that already puts a real
       // PaymentGate (with coupon support) between account creation and the
       // exam. One payment path, reused, instead of a second unpaid one.
       await fetchJson<{ id: string }>("/api/leads", {
@@ -1075,7 +1075,7 @@ export default function AssessmentExperience() {
     try {
       await saveAssessment(summary);
     } catch {
-      /* best-effort — still send them to the dashboard */
+      /* best-effort - still send them to the dashboard */
     }
     // Hand over to the completion screen. It carries the login details and the
     // steps back into the dashboard, so it stays put until they choose to move
@@ -1111,7 +1111,7 @@ export default function AssessmentExperience() {
     );
   }
 
-  // Marketing landing — shown only when nothing is in progress.
+  // Marketing landing - shown only when nothing is in progress.
   if (!session && !results && view === "landing" && !starting && !beginHandled && !hasBegin) {
     return <Landing onStart={startFlow} />;
   }
@@ -1144,7 +1144,7 @@ export default function AssessmentExperience() {
 
           <div className="cine-inner">
             <span className="cine-badge anim-up">
-              <Sparkles size={14} /> Career fitment, engineered — not guessed
+              <Sparkles size={14} /> Career fitment, engineered - not guessed
             </span>
 
             <h1 className="cine-title anim-up d1">
@@ -1160,7 +1160,7 @@ export default function AssessmentExperience() {
             <p className="cine-sub anim-up d2">
               One {expectedQuestionCount}-question assessment. Eight scientific dimensions.
               A clear, ranked <strong>top-5 career fit</strong> with the reasons behind
-              every match — for classes 6–12, graduates &amp; professionals.
+              every match - for classes 6–12, graduates &amp; professionals.
             </p>
 
             <div className="cine-cta anim-up d3">
@@ -1262,13 +1262,13 @@ export default function AssessmentExperience() {
                   icon: <Compass size={24} />,
                   n: "01",
                   t: "Answer the questions",
-                  d: `${expectedQuestionCount} quick statements across 8 categories. No right or wrong — just go with your instinct.`,
+                  d: `${expectedQuestionCount} quick statements across 8 categories. No right or wrong - just go with your instinct.`,
                 },
                 {
                   icon: <Brain size={24} />,
                   n: "02",
                   t: "We score 8 dimensions",
-                  d: "Each category is normalised 0–100 with the right method for your age group — interests, aptitude, personality and more.",
+                  d: "Each category is normalised 0–100 with the right method for your age group - interests, aptitude, personality and more.",
                 },
                 {
                   icon: <Target size={24} />,
@@ -1293,15 +1293,15 @@ export default function AssessmentExperience() {
               <span className="lx-eyebrow">Inside the assessment</span>
               <h2>An exam experience that feels effortless</h2>
               <p className="test-lead">
-                {expectedQuestionCount} adaptive questions across 8 categories — with a
+                {expectedQuestionCount} adaptive questions across 8 categories - with a
                 calm, distraction-free interface built for focus, not pressure.
               </p>
               <ul className="test-feats">
                 {[
-                  { icon: <Timer size={18} />, t: "No time limit", d: "Go at your own pace — answer honestly, not quickly." },
+                  { icon: <Timer size={18} />, t: "No time limit", d: "Go at your own pace - answer honestly, not quickly." },
                   { icon: <Flag size={18} />, t: "Mark for review", d: "Flag any question and come back to it before you submit." },
                   { icon: <Layers size={18} />, t: "Jump anywhere", d: "A live question palette lets you move freely across the paper." },
-                  { icon: <CheckCircle2 size={18} />, t: "Auto-saved", d: "Every answer is saved instantly — never lose your progress." },
+                  { icon: <CheckCircle2 size={18} />, t: "Auto-saved", d: "Every answer is saved instantly - never lose your progress." },
                 ].map((f) => (
                   <li key={f.t}>
                     <span className="test-feat-icon">{f.icon}</span>
@@ -1355,7 +1355,7 @@ export default function AssessmentExperience() {
           <section className="lx measure reveal" id="measure">
             <div className="lx-head">
               <span className="lx-eyebrow">How we count your fit</span>
-              <h2>Not a quiz score — a real profile match</h2>
+              <h2>Not a quiz score - a real profile match</h2>
               <p>
                 Your answers build a profile in 8 dimensions. Each is weighted by how much
                 it actually predicts career fit, then matched against a career library.
@@ -1408,7 +1408,7 @@ export default function AssessmentExperience() {
                 </div>
               ))}
               <p className="measure-note">
-                Learning style is shown for advice but weighted 0% — it&apos;s how you
+                Learning style is shown for advice but weighted 0% - it&apos;s how you
                 study, not which career fits.
               </p>
             </div>
@@ -1443,7 +1443,7 @@ export default function AssessmentExperience() {
             </div>
             <div className="rs-copy">
               <span className="lx-eyebrow">The deliverable</span>
-              <h2>A clear, beautiful report — not a raw score</h2>
+              <h2>A clear, beautiful report - not a raw score</h2>
               <p>
                 Every assessment ends in a shareable report: your top-5 career fits with
                 the reasons behind each, your strengths and gaps, learning style, and a
@@ -1470,7 +1470,7 @@ export default function AssessmentExperience() {
             <div className="lx-head">
               <span className="lx-eyebrow">For every stage</span>
               <h2>The right assessment for the right age</h2>
-              <p>Each stage uses age-appropriate, established instruments — not one generic test.</p>
+              <p>Each stage uses age-appropriate, established instruments - not one generic test.</p>
             </div>
             <div className="agegrid">
               {[
@@ -1535,10 +1535,10 @@ export default function AssessmentExperience() {
             </div>
             <div className="lx-benefits">
               {[
-                { icon: <Target size={22} />, t: "Clear top-5 direction", d: "No vague labels — specific careers ranked by real fit, with the reasons spelled out." },
+                { icon: <Target size={22} />, t: "Clear top-5 direction", d: "No vague labels - specific careers ranked by real fit, with the reasons spelled out." },
                 { icon: <ShieldCheck size={22} />, t: "Established methods", d: "Age-appropriate psychometric methods (RIASEC, aptitude, Big-Five style), not a personality meme." },
                 { icon: <Lightbulb size={22} />, t: "Strengths & gaps", d: "See what you're strong at and exactly what to build to reach your target careers." },
-                { icon: <Layers size={22} />, t: "8 dimensions, one picture", d: "Interests, aptitude, personality, motivators, EI and more — combined, not averaged." },
+                { icon: <Layers size={22} />, t: "8 dimensions, one picture", d: "Interests, aptitude, personality, motivators, EI and more - combined, not averaged." },
                 { icon: <Clock size={22} />, t: "No time pressure", d: "Go at your own pace. Mark questions for review and jump around freely." },
                 { icon: <Award size={22} />, t: "A shareable report", d: "A clean report you can revisit any time online, plus a PDF copy emailed to you to discuss with a mentor." },
               ].map((b, i) => (
@@ -1559,7 +1559,7 @@ export default function AssessmentExperience() {
             </div>
             <div className="tgrid">
               {[
-                { q: "For the first time my daughter could explain why a path suits her — not just what's trending. The report made our stream decision easy.", n: "Meera R.", r: "Parent · Class 10", img: "https://i.pravatar.cc/120?img=45" },
+                { q: "For the first time my daughter could explain why a path suits her - not just what's trending. The report made our stream decision easy.", n: "Meera R.", r: "Parent · Class 10", img: "https://i.pravatar.cc/120?img=45" },
                 { q: "The top-5 matches were spot on. Seeing the strengths and the gaps side by side told me exactly what to work on.", n: "Aditya S.", r: "Class 12 student", img: "https://i.pravatar.cc/120?img=13" },
                 { q: "We use it with every counselling student. It's rigorous, clear, and the report does half our conversation for us.", n: "K. Prasad", r: "Career counsellor", img: "https://i.pravatar.cc/120?img=33" },
               ].map((t) => (
@@ -1739,11 +1739,11 @@ export default function AssessmentExperience() {
               {selectedJourney?.name ?? "Career assessment"} · {session.totalQuestions} questions
             </p>
             <ul style={EX.insList}>
-              <li style={EX.insItem}>⏱️ <span>You have about <b>1 minute per question</b> — roughly <b>{Math.round((60 * session.totalQuestions) / 60)} minutes</b> in total.</span></li>
+              <li style={EX.insItem}>⏱️ <span>You have about <b>1 minute per question</b> - roughly <b>{Math.round((60 * session.totalQuestions) / 60)} minutes</b> in total.</span></li>
               <li style={EX.insItem}>⌛ <span>A timer runs at the top. When it reaches zero, the test <b>submits automatically</b>.</span></li>
-              <li style={EX.insItem}>💡 <span>Answer honestly — there are <b>no wrong answers</b>. Go with your first instinct.</span></li>
+              <li style={EX.insItem}>💡 <span>Answer honestly - there are <b>no wrong answers</b>. Go with your first instinct.</span></li>
               <li style={EX.insItem}>🚩 <span>You can <b>Mark for review</b> and jump between questions using the navigation panel.</span></li>
-              <li style={EX.insItem}>📚 <span>Questions are grouped into <b>sections</b> — you’ll see a short intro before each.</span></li>
+              <li style={EX.insItem}>📚 <span>Questions are grouped into <b>sections</b> - you’ll see a short intro before each.</span></li>
             </ul>
             <label style={EX.insAgree}>
               <input type="checkbox" checked={agreeChecked} onChange={(e) => setAgreeChecked(e.target.checked)} />
@@ -1956,7 +1956,7 @@ export default function AssessmentExperience() {
               Assessment complete!
             </h2>
             <p style={{ color: "#64748b", fontSize: 15, margin: "0 0 26px", lineHeight: 1.6 }}>
-              Before we show your report — how would you rate this assessment
+              Before we show your report - how would you rate this assessment
               experience?
             </p>
             <div
@@ -2002,8 +2002,8 @@ export default function AssessmentExperience() {
                 margin: "0 auto 26px",
               }}
             >
-              <span>1 — Poor</span>
-              <span>10 — Excellent</span>
+              <span>1 - Poor</span>
+              <span>10 - Excellent</span>
             </div>
             <button
               type="button"

@@ -121,10 +121,10 @@
     "q": "Q39",
     "text": "Your team presents to the whole school tomorrow and nothing is ready. What do you take charge of?",
     "options": [
-     "The slides and the running order — I'll get it built.",
-     "The idea — I'll make it worth watching.",
-     "The people — I'll keep everyone going.",
-     "The talking — I'll present it."
+     "The slides and the running order - I'll get it built.",
+     "The idea - I'll make it worth watching.",
+     "The people - I'll keep everyone going.",
+     "The talking - I'll present it."
     ],
     "strengthPoints": [
      {
@@ -148,7 +148,7 @@
    {
     "type": "choice4",
     "q": "Q40",
-    "text": "You're handed something broken — an old radio, a bicycle, a piece of code — and told to make it work. How do you start?",
+    "text": "You're handed something broken - an old radio, a bicycle, a piece of code - and told to make it work. How do you start?",
     "options": [
      "Take it apart methodically and find the fault.",
      "See whether it could become something better than it was.",
@@ -240,7 +240,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three interns — Farah, Jyoti, Kabir — are scheduled for interviews in sequence. Kabir is not last. Kabir is not first. Jyoti is not last. Who is in the middle?",
+    "text": "Three interns - Farah, Jyoti, Kabir - are scheduled for interviews in sequence. Kabir is not last. Kabir is not first. Jyoti is not last. Who is in the middle?",
     "options": [
      "Cannot be determined",
      "Kabir",
@@ -389,7 +389,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three interns — Priya, Ishaan, Gopal — are scheduled for interviews in sequence. Ishaan is not in the middle. Priya is not first. Gopal is not in the middle. Gopal is not last. Who is last?",
+    "text": "Three interns - Priya, Ishaan, Gopal - are scheduled for interviews in sequence. Ishaan is not in the middle. Priya is not first. Gopal is not in the middle. Gopal is not last. Who is last?",
     "options": [
      "Gopal",
      "Cannot be determined",
@@ -538,7 +538,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three interns — Chen, Gopal, Hana — are scheduled for interviews in sequence. Chen is not first. Hana is not last. Hana is not first. Who is last?",
+    "text": "Three interns - Chen, Gopal, Hana - are scheduled for interviews in sequence. Chen is not first. Hana is not last. Hana is not first. Who is last?",
     "options": [
      "Cannot be determined",
      "Chen",
@@ -687,7 +687,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three interns — Gopal, Diya, Omar — are scheduled for interviews in sequence. Diya is not last. Omar is not in the middle. Omar is not first. Diya is not in the middle. Who is in the middle?",
+    "text": "Three interns - Gopal, Diya, Omar - are scheduled for interviews in sequence. Diya is not last. Omar is not in the middle. Omar is not first. Diya is not in the middle. Who is in the middle?",
     "options": [
      "Diya",
      "Omar",
@@ -836,7 +836,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three interns — Aisha, Jyoti, Omar — are scheduled for interviews in sequence. Jyoti is not in the middle. Omar is not first. Aisha is not first. Omar is not in the middle. Who is last?",
+    "text": "Three interns - Aisha, Jyoti, Omar - are scheduled for interviews in sequence. Jyoti is not in the middle. Omar is not first. Aisha is not first. Omar is not in the middle. Who is last?",
     "options": [
      "Omar",
      "Cannot be determined",
@@ -985,7 +985,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three interns — Leo, Sara, Noah — are scheduled for interviews in sequence. Noah is not first. Leo is not in the middle. Noah is not in the middle. Who is first?",
+    "text": "Three interns - Leo, Sara, Noah - are scheduled for interviews in sequence. Noah is not first. Leo is not in the middle. Noah is not in the middle. Who is first?",
     "options": [
      "Leo",
      "Noah",
@@ -1134,7 +1134,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three interns — Gopal, Tariq, Ishaan — are scheduled for interviews in sequence. Ishaan is not in the middle. Gopal is not last. Tariq is not last. Tariq is not in the middle. Who is in the middle?",
+    "text": "Three interns - Gopal, Tariq, Ishaan - are scheduled for interviews in sequence. Ishaan is not in the middle. Gopal is not last. Tariq is not last. Tariq is not in the middle. Who is in the middle?",
     "options": [
      "Cannot be determined",
      "Gopal",
@@ -1283,7 +1283,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three interns — Kabir, Hana, Tariq — are scheduled for interviews in sequence. Kabir is not last. Tariq is not last. Kabir is not in the middle. Who is last?",
+    "text": "Three interns - Kabir, Hana, Tariq - are scheduled for interviews in sequence. Kabir is not last. Tariq is not last. Kabir is not in the middle. Who is last?",
     "options": [
      "Kabir",
      "Tariq",
@@ -1432,7 +1432,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three interns — Tariq, Leo, Rhea — are scheduled for interviews in sequence. Rhea is not in the middle. Leo is not first. Rhea is not last. Leo is not in the middle. Who is in the middle?",
+    "text": "Three interns - Tariq, Leo, Rhea - are scheduled for interviews in sequence. Rhea is not in the middle. Leo is not first. Rhea is not last. Leo is not in the middle. Who is in the middle?",
     "options": [
      "Leo",
      "Tariq",
@@ -1581,7 +1581,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three interns — Wei, Sara, Kabir — are scheduled for interviews in sequence. Wei is not last. Kabir is not first. Kabir is not in the middle. Sara is not in the middle. Who is in the middle?",
+    "text": "Three interns - Wei, Sara, Kabir - are scheduled for interviews in sequence. Wei is not last. Kabir is not first. Kabir is not in the middle. Sara is not in the middle. Who is in the middle?",
     "options": [
      "Cannot be determined",
      "Wei",
@@ -1732,7 +1732,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three colleagues — Ishaan, Diya, Priya — are presenting to the client in order. Ishaan is not first. Priya is not in the middle. Diya is not last. Priya is not last. Who is in the middle?",
+    "text": "Three colleagues - Ishaan, Diya, Priya - are presenting to the client in order. Ishaan is not first. Priya is not in the middle. Diya is not last. Priya is not last. Who is in the middle?",
     "options": [
      "Cannot be determined",
      "Priya",
@@ -1881,7 +1881,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three colleagues — Priya, Rhea, Wei — are presenting to the client in order. Priya is not first. Rhea is not in the middle. Rhea is not last. Priya is not in the middle. Who is last?",
+    "text": "Three colleagues - Priya, Rhea, Wei - are presenting to the client in order. Priya is not first. Rhea is not in the middle. Rhea is not last. Priya is not in the middle. Who is last?",
     "options": [
      "Wei",
      "Priya",
@@ -2030,7 +2030,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three colleagues — Ishaan, Zara, Leo — are presenting to the client in order. Zara is not last. Zara is not in the middle. Ishaan is not in the middle. Who is first?",
+    "text": "Three colleagues - Ishaan, Zara, Leo - are presenting to the client in order. Zara is not last. Zara is not in the middle. Ishaan is not in the middle. Who is first?",
     "options": [
      "Zara",
      "Ishaan",
@@ -2179,7 +2179,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three colleagues — Kabir, Ben, Maya — are presenting to the client in order. Maya is not last. Kabir is not first. Maya is not in the middle. Ben is not in the middle. Who is last?",
+    "text": "Three colleagues - Kabir, Ben, Maya - are presenting to the client in order. Maya is not last. Kabir is not first. Maya is not in the middle. Ben is not in the middle. Who is last?",
     "options": [
      "Maya",
      "Ben",
@@ -2328,7 +2328,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three colleagues — Tariq, Ishaan, Rhea — are presenting to the client in order. Rhea is not first. Ishaan is not first. Rhea is not in the middle. Who is first?",
+    "text": "Three colleagues - Tariq, Ishaan, Rhea - are presenting to the client in order. Rhea is not first. Ishaan is not first. Rhea is not in the middle. Who is first?",
     "options": [
      "Cannot be determined",
      "Rhea",
@@ -2477,7 +2477,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three colleagues — Ishaan, Noah, Omar — are presenting to the client in order. Ishaan is not in the middle. Omar is not first. Noah is not in the middle. Noah is not last. Who is in the middle?",
+    "text": "Three colleagues - Ishaan, Noah, Omar - are presenting to the client in order. Ishaan is not in the middle. Omar is not first. Noah is not in the middle. Noah is not last. Who is in the middle?",
     "options": [
      "Noah",
      "Omar",
@@ -2626,7 +2626,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three colleagues — Farah, Leo, Hana — are presenting to the client in order. Hana is not in the middle. Farah is not last. Hana is not first. Farah is not in the middle. Who is in the middle?",
+    "text": "Three colleagues - Farah, Leo, Hana - are presenting to the client in order. Hana is not in the middle. Farah is not last. Hana is not first. Farah is not in the middle. Who is in the middle?",
     "options": [
      "Cannot be determined",
      "Farah",
@@ -2775,7 +2775,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three colleagues — Ben, Leo, Gopal — are presenting to the client in order. Gopal is not first. Ben is not last. Gopal is not last. Who is last?",
+    "text": "Three colleagues - Ben, Leo, Gopal - are presenting to the client in order. Gopal is not first. Ben is not last. Gopal is not last. Who is last?",
     "options": [
      "Gopal",
      "Leo",
@@ -2924,7 +2924,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three colleagues — Jyoti, Zara, Gopal — are presenting to the client in order. Zara is not first. Jyoti is not in the middle. Gopal is not in the middle. Gopal is not last. Who is first?",
+    "text": "Three colleagues - Jyoti, Zara, Gopal - are presenting to the client in order. Zara is not first. Jyoti is not in the middle. Gopal is not in the middle. Gopal is not last. Who is first?",
     "options": [
      "Jyoti",
      "Zara",
@@ -3073,7 +3073,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three colleagues — Ishaan, Diya, Gopal — are presenting to the client in order. Ishaan is not first. Gopal is not last. Ishaan is not in the middle. Gopal is not in the middle. Who is first?",
+    "text": "Three colleagues - Ishaan, Diya, Gopal - are presenting to the client in order. Ishaan is not first. Gopal is not last. Ishaan is not in the middle. Gopal is not in the middle. Who is first?",
     "options": [
      "Diya",
      "Ishaan",
@@ -3224,7 +3224,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three directors — Ben, Chen, Ishaan — are speaking at the town hall in sequence. Ishaan is not in the middle. Chen is not first. Chen is not last. Ben is not last. Who is last?",
+    "text": "Three directors - Ben, Chen, Ishaan - are speaking at the town hall in sequence. Ishaan is not in the middle. Chen is not first. Chen is not last. Ben is not last. Who is last?",
     "options": [
      "Cannot be determined",
      "Ishaan",
@@ -3373,7 +3373,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three directors — Gopal, Tariq, Ishaan — are speaking at the town hall in sequence. Tariq is not first. Ishaan is not first. Tariq is not in the middle. Who is last?",
+    "text": "Three directors - Gopal, Tariq, Ishaan - are speaking at the town hall in sequence. Tariq is not first. Ishaan is not first. Tariq is not in the middle. Who is last?",
     "options": [
      "Gopal",
      "Ishaan",
@@ -3522,7 +3522,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three directors — Hana, Tariq, Priya — are speaking at the town hall in sequence. Hana is not first. Tariq is not first. Tariq is not in the middle. Who is last?",
+    "text": "Three directors - Hana, Tariq, Priya - are speaking at the town hall in sequence. Hana is not first. Tariq is not first. Tariq is not in the middle. Who is last?",
     "options": [
      "Hana",
      "Cannot be determined",
@@ -3671,7 +3671,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three directors — Omar, Maya, Noah — are speaking at the town hall in sequence. Maya is not last. Omar is not in the middle. Omar is not first. Maya is not first. Who is in the middle?",
+    "text": "Three directors - Omar, Maya, Noah - are speaking at the town hall in sequence. Maya is not last. Omar is not in the middle. Omar is not first. Maya is not first. Who is in the middle?",
     "options": [
      "Maya",
      "Noah",
@@ -3820,7 +3820,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three directors — Priya, Gopal, Zara — are speaking at the town hall in sequence. Priya is not last. Zara is not first. Gopal is not last. Gopal is not first. Who is last?",
+    "text": "Three directors - Priya, Gopal, Zara - are speaking at the town hall in sequence. Priya is not last. Zara is not first. Gopal is not last. Gopal is not first. Who is last?",
     "options": [
      "Zara",
      "Priya",
@@ -3969,7 +3969,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three directors — Maya, Diya, Ishaan — are speaking at the town hall in sequence. Maya is not in the middle. Diya is not first. Maya is not last. Ishaan is not in the middle. Who is first?",
+    "text": "Three directors - Maya, Diya, Ishaan - are speaking at the town hall in sequence. Maya is not in the middle. Diya is not first. Maya is not last. Ishaan is not in the middle. Who is first?",
     "options": [
      "Diya",
      "Cannot be determined",
@@ -4118,7 +4118,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three directors — Ben, Rhea, Jyoti — are speaking at the town hall in sequence. Ben is not first. Rhea is not last. Jyoti is not in the middle. Rhea is not in the middle. Who is first?",
+    "text": "Three directors - Ben, Rhea, Jyoti - are speaking at the town hall in sequence. Ben is not first. Rhea is not last. Jyoti is not in the middle. Rhea is not in the middle. Who is first?",
     "options": [
      "Rhea",
      "Jyoti",
@@ -4267,7 +4267,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three directors — Priya, Maya, Ben — are speaking at the town hall in sequence. Ben is not first. Ben is not last. Maya is not first. Who is in the middle?",
+    "text": "Three directors - Priya, Maya, Ben - are speaking at the town hall in sequence. Ben is not first. Ben is not last. Maya is not first. Who is in the middle?",
     "options": [
      "Ben",
      "Maya",
@@ -4416,7 +4416,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three directors — Gopal, Kabir, Hana — are speaking at the town hall in sequence. Gopal is not first. Kabir is not first. Kabir is not in the middle. Who is first?",
+    "text": "Three directors - Gopal, Kabir, Hana - are speaking at the town hall in sequence. Gopal is not first. Kabir is not first. Kabir is not in the middle. Who is first?",
     "options": [
      "Gopal",
      "Hana",
@@ -4565,7 +4565,7 @@
    {
     "type": "mcq",
     "domain": "Problem Solving",
-    "text": "Three directors — Zara, Chen, Ishaan — are speaking at the town hall in sequence. Chen is not first. Ishaan is not first. Ishaan is not in the middle. Who is last?",
+    "text": "Three directors - Zara, Chen, Ishaan - are speaking at the town hall in sequence. Chen is not first. Ishaan is not first. Ishaan is not in the middle. Who is last?",
     "options": [
      "Ishaan",
      "Cannot be determined",

@@ -12,7 +12,7 @@ import {
   ValueTag,
 } from "./types";
 
-// The scored-session shape the matcher consumes — exactly what /score returns.
+// The scored-session shape the matcher consumes - exactly what /score returns.
 export interface ScoredParameter {
   parameterName: string;
   scoringStrategy: string;
@@ -26,8 +26,8 @@ const RIASEC_LETTERS: RiasecLetter[] = ["R", "I", "A", "S", "E", "C"];
 
 function riasecLetterFromName(name: string): RiasecLetter | null {
   const n = name.toUpperCase();
-  // Leading "R-", "R –", "SDS — R", "O*NET — R", "SII — R (..."
-  const tail = n.match(/(?:^|[–—-]\s*)([RIASEC])\s*(?:[-–—(]|$)/);
+  // Leading "R-", "R –", "SDS - R", "O*NET - R", "SII - R (..."
+  const tail = n.match(/(?:^|[–--]\s*)([RIASEC])\s*(?:[-–-(]|$)/);
   if (tail) return tail[1] as RiasecLetter;
   if (n.includes("REALISTIC")) return "R";
   if (n.includes("INVESTIGATIVE")) return "I";
@@ -120,7 +120,7 @@ function extractBigFive(param: ScoredParameter | undefined): {
   const buckets = new Map<BigFiveTrait, number[]>();
   for (const st of param.subTraits) {
     if (/lie scale|social desirability|validity|consistency/i.test(st.subTraitName)) {
-      continue; // validity items — not personality signal
+      continue; // validity items - not personality signal
     }
     for (const [re, trait, invert] of BIGFIVE_MATCHERS) {
       if (re.test(st.subTraitName)) {

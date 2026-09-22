@@ -9,11 +9,11 @@ import { isFirestoreConfigured, getFirestore } from "@/lib/firebase/admin";
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 
-// POST /api/payment/redeem — unlock the exam with a 100%-off coupon.
+// POST /api/payment/redeem - unlock the exam with a 100%-off coupon.
 //
 // This is the free twin of /api/payment/verify: there is no Razorpay order and
 // so no signature to check, and the gate opens on this route's word alone. The
-// code is therefore re-priced here from the admin's own fee — a request naming
+// code is therefore re-priced here from the admin's own fee - a request naming
 // any code that isn't a full waiver is refused, so this can never become a
 // "pay ₹0" bypass of the real fee.
 //
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
   const settings = await getPaymentSettings();
   if (!settings.enabled) {
-    // Nobody is being charged anyway — the gate has already let them through.
+    // Nobody is being charged anyway - the gate has already let them through.
     return NextResponse.json(
       { success: false, reason: "payment_disabled", message: "Payment is currently disabled." },
       { status: 409 }
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
       {
         success: false,
         reason: "not_free",
-        message: "This coupon reduces the fee but doesn't waive it — please complete the payment.",
+        message: "This coupon reduces the fee but doesn't waive it - please complete the payment.",
         payablePaise: priced.payablePaise,
       },
       { status: 400 }
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
   const name = String(p.name || "");
   const code = priced.coupon.code;
 
-  // Audit trail — best-effort, and only where admin credentials exist.
+  // Audit trail - best-effort, and only where admin credentials exist.
   if (isFirestoreConfigured()) {
     try {
       const db = await getFirestore();

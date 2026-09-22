@@ -3555,7 +3555,7 @@
      "options": [
       "Design the logo, the menu, the packaging and the look of the place.",
       "Handle pricing, billing, suppliers and the daily accounts.",
-      "Set up the kitchen equipment, wiring and layout — and fix whatever breaks.",
+      "Set up the kitchen equipment, wiring and layout - and fix whatever breaks.",
       "Make sure the food is safe, hygienic and genuinely good for people.",
       "Build the ordering website and a simple app for online orders."
      ],
@@ -3803,7 +3803,7 @@
       "An AI model that predicts the weather or spots crop disease from photos.",
       "A working model of a bridge, an engine or a solar power system.",
       "An interactive exhibit that makes a hard idea easy to understand.",
-      "A project on sports performance — nutrition, training and recovery."
+      "A project on sports performance - nutrition, training and recovery."
      ],
      "riasec": [
       {
@@ -3885,7 +3885,7 @@
       "Lead the team and coordinate with teachers, students and parents.",
       "Handle the catering, the guest experience and hospitality on the day.",
       "Set up the stage, sound, lighting and the safe electrical work.",
-      "Make it a zero-waste event — measure the waste and design it out."
+      "Make it a zero-waste event - measure the waste and design it out."
      ],
      "riasec": [
       {
@@ -3965,7 +3965,7 @@
      "options": [
       "My own artwork, prints and handmade design pieces.",
       "Free tutoring and study advice for younger students.",
-      "Free health checks — height, weight, eyesight — with simple advice.",
+      "Free health checks - height, weight, eyesight - with simple advice.",
       "Something I've sourced and priced to actually turn a profit.",
       "A booth where I build people a free one-page website on the spot."
      ],
@@ -4046,7 +4046,7 @@
      "options": [
       "Build and assemble the robot's hardware, motors and frame.",
       "Write the code and the AI that decides what the robot does.",
-      "Build an assistive device — a prosthetic hand or a mobility aid.",
+      "Build an assistive device - a prosthetic hand or a mobility aid.",
       "Research which materials and sensors work best, and test them properly.",
       "Build a robot that referees a match or trains athletes."
      ],
@@ -4205,7 +4205,7 @@
      "q": "Q9",
      "text": "You receive ₹5,000 to create a useful student project. How would you use it?",
      "options": [
-      "Build a working prototype — a device, a model or a machine.",
+      "Build a working prototype - a device, a model or a machine.",
       "Create a design product, a short film or an awareness campaign.",
       "Start a small venture and track every rupee of profit and loss.",
       "Develop an app or website that solves a real problem for students.",
@@ -4461,7 +4461,7 @@
       "Build the website, keep it fast and handle everything technical.",
       "Cover health, fitness and student wellbeing.",
       "Cover sport, food, travel and campus life.",
-      "Set up and run the studio — cameras, lighting and recording equipment."
+      "Set up and run the studio - cameras, lighting and recording equipment."
      ],
      "riasec": [
       {
@@ -4781,7 +4781,7 @@
      "q": "Q13",
      "type": "choice5",
      "theme": "A day in your life at 30",
-     "text": "Imagine yourself at age 30 — what does your workday look like?",
+     "text": "Imagine yourself at age 30 - what does your workday look like?",
      "options": [
       "1) Leading engineering, construction, or manufacturing projects",
       "2) Building and scaling software products",
@@ -5687,7 +5687,7 @@
      "q": "Q13",
      "type": "choice5",
      "theme": "A day in your life at 30",
-     "text": "Imagine your future self coming home from work — what did they do all day?",
+     "text": "Imagine your future self coming home from work - what did they do all day?",
      "options": [
       "1) Leading engineering, construction, or manufacturing projects",
       "2) Building and scaling software products",
@@ -7803,7 +7803,7 @@
      "q": "Q13",
      "type": "choice5",
      "theme": "A day in your life at 30",
-     "text": "Imagine yourself at age 30 — what does your workday look like?",
+     "text": "Imagine yourself at age 30 - what does your workday look like?",
      "options": [
       "1) Leading engineering or operations projects",
       "2) Building and scaling software or technical products",
@@ -8709,7 +8709,7 @@
      "q": "Q13",
      "type": "choice5",
      "theme": "A day in your life at 30",
-     "text": "Imagine your future self coming home from work — what did they do all day?",
+     "text": "Imagine your future self coming home from work - what did they do all day?",
      "options": [
       "1) Leading engineering or operations projects",
       "2) Building and scaling software or technical products",
@@ -10825,7 +10825,7 @@
      "q": "Q13",
      "type": "choice5",
      "theme": "A day in your life if you pivoted",
-     "text": "Imagine you pivoted into a new career — what does your workday look like?",
+     "text": "Imagine you pivoted into a new career - what does your workday look like?",
      "options": [
       "1) Leading engineering, infrastructure, or operations at a senior level",
       "2) Leading technology strategy or a technical product organisation",
@@ -11731,7 +11731,7 @@
      "q": "Q13",
      "type": "choice5",
      "theme": "A day in your life if you pivoted",
-     "text": "Imagine your pivoted self coming home from work — what did they do all day?",
+     "text": "Imagine your pivoted self coming home from work - what did they do all day?",
      "options": [
       "1) Leading engineering, infrastructure, or operations at a senior level",
       "2) Leading technology strategy or a technical product organisation",

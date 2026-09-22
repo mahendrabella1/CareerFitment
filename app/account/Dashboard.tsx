@@ -1,17 +1,17 @@
 "use client";
 
 /**
- * Dashboard — the premium /account experience (2026 redesign).
+ * Dashboard - the premium /account experience (2026 redesign).
  *
  * A calm, scannable control centre built on the saved assessment summary:
- *   · Hero      — archetype, strongest-interest ring, quick stats, actions
- *   · KPI strip — four at-a-glance tiles
- *   · Profile   — interactive 8-dimension radar + a plain-language snapshot
- *   · Matches   — ranked career fits
- *   · Dimensions— expandable accordion, each with a benchmark comparison
- *   · Mind      — how you think & work (small multiples)
- *   · Plan      — 30/90-day goal tracker with live progress
- *   · Resources — where to learn & get funded
+ *   · Hero      - archetype, strongest-interest ring, quick stats, actions
+ *   · KPI strip - four at-a-glance tiles
+ *   · Profile   - interactive 8-dimension radar + a plain-language snapshot
+ *   · Matches   - ranked career fits
+ *   · Dimensions- expandable accordion, each with a benchmark comparison
+ *   · Mind      - how you think & work (small multiples)
+ *   · Plan      - 30/90-day goal tracker with live progress
+ *   · Resources - where to learn & get funded
  *
  * Palette: white / near-black / grey with a single light-red accent. All
  * charts are hand-built SVG (see ./viz). The in-depth report lives in
@@ -57,7 +57,7 @@ import {
 import StudyAbroad from "@/app/account/features/StudyAbroad";
 import FeaturesHub from "@/app/account/FeaturesHub";
 
-// Dashboard accent — OneGrasp red theme (white, black, grey, red #db3433).
+// Dashboard accent - OneGrasp red theme (white, black, grey, red #db3433).
 const IN = "#db3433", IN_STRONG = "#b82a2b", IN_TINT = "#fef0f0", IN_LINE = "#f5d5d5";
 // The same branded "eight dimensions" illustration used on the full report cover.
 const DIMS8 = "https://onegrasp.com/wp-content/uploads/2026/07/ChatGPT-Image-Jul-10-2026-05_34_15-PM.png";
@@ -89,7 +89,7 @@ const NAV = [
 ];
 
 // Career-toolkit (colleges/exams/internships/scholarships/careers) is
-// temporarily disabled — flip to true to bring it back.
+// temporarily disabled - flip to true to bring it back.
 const SHOW_TOOLKIT = false;
 
 const CANON = [
@@ -103,7 +103,7 @@ const CAT_LABEL: Record<string, string> = {
   strengths: "Strengths", aptitude: "Aptitude",
 };
 
-// Short forms for the dimension tile row — keeps all 8 tiles on one row
+// Short forms for the dimension tile row - keeps all 8 tiles on one row
 // without scrolling on desktop. The full name still shows in the detail
 // panel below (via CAT_LABEL).
 const DIM_TAB_LABEL: Record<string, string> = {
@@ -112,7 +112,7 @@ const DIM_TAB_LABEL: Record<string, string> = {
   strengths: "Strengths", aptitude: "Aptitude",
 };
 
-// "Typical student at your stage" markers — presentational benchmark only,
+// "Typical student at your stage" markers - presentational benchmark only,
 // not part of scoring. Lets each dimension show a comparison, not just a value.
 const BENCH: Record<string, number> = {
   personality: 55, career_interest: 52, multiple_intelligence: 54, emotional_intelligence: 56,
@@ -238,7 +238,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
   const topDomainName = topField?.name ?? "your best-fit field";
   // NOT an "overall fit" percentage. There isn't one, and there can't be.
   // The top career's fitmentPct is 58 + 34 + 4 by construction and the top
-  // domainFit is 40 + 48 — both are the ceiling of a display band, so every
+  // domainFit is 40 + 48 - both are the ceiling of a display band, so every
   // student who ever took this saw the same ~96%. A number identical for
   // everyone measures nothing; showing it as a headline invited a confidence
   // the method cannot support.
@@ -248,7 +248,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
   // abstract.
   const topTheme = (a.themes ?? [])[0] ?? null;
   const topInterestScore = Math.round(topTheme?.score ?? 0);
-  const topInterestName = topTheme?.title ?? "—";
+  const topInterestName = topTheme?.title ?? "-";
   const arch = archetype(a);
   const code = a.riasecCode || (a.themes ?? []).slice(0, 3).map((t) => t.letter).join("");
   const strongest = radar.slice().sort((x, y) => y.score - x.score)[0];
@@ -283,7 +283,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
     // is the legacy combined category kept working for older accounts.
     const isClass1112 = journeyCode === "11" || journeyCode === "12" || journeyCode === "11-12";
     // A report saved before the class 11-12 question-bank/scoring rewrite is
-    // shaped like the old (partly fake/hardcoded) engine — not just missing
+    // shaped like the old (partly fake/hardcoded) engine - not just missing
     // a few fields, but scored by logic this whole pass replaced. Rendering
     // it through the new adapter either crashes on the shape mismatch or
     // silently shows stale numbers, so it's treated as "no report yet"
@@ -295,7 +295,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
     // Same staleness guard for classes 6-8: a report saved before the
     // 15-domain catalogue rebuild (see lib/report/knowledge.ts) has
     // domainAffinities scored against the OLD, differently-meaning 8-letter
-    // domains — not a smaller version of the current data, but affinities
+    // domains - not a smaller version of the current data, but affinities
     // for domains that no longer exist.
     const class6Output = (a as any).class6Output;
     const class7Output = (a as any).class7Output;
@@ -352,7 +352,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
           </div>
         ) : (
           // Every class (6, 7, 8, 9-10, 11-12) shares the exact same
-          // FullReport — each class-specific engine's own score data is
+          // FullReport - each class-specific engine's own score data is
           // adapted into the same AssessmentSummary shape 9-10 uses, so the
           // report is genuinely identical (same code, CSS, images) rather
           // than a separately designed report per class that drifts from it.
@@ -452,7 +452,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                         Your Report &amp; Career Toolkit
                       </h2>
                       <p style={{fontSize: '16px', color: C.ink3, margin: 0, marginBottom: '20px', lineHeight: 1.6}}>
-                        Access curated resources to shape your future — colleges, internships, scholarships, and proven career development strategies tailored to your profile.
+                        Access curated resources to shape your future - colleges, internships, scholarships, and proven career development strategies tailored to your profile.
                       </p>
                       <div style={{width: '80px', height: '3px', background: IN, marginTop: '16px', marginBottom: '24px', borderRadius: '2px'}}></div>
                       <button style={{backgroundColor: IN, color: '#fff', padding: '12px 28px', border: 'none', borderRadius: '6px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', transition: 'all 200ms ease'}} onClick={() => { setView("report"); window.scrollTo(0, 0); }}>
@@ -503,7 +503,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
               <section id="dimensions" className="ash-sec">
                 <div className="ogd-card">
                   <CardHead icon="radar" title="Your eight dimensions"
-                    sub="Tap a dimension below to see its full breakdown — everything from your report, right here." />
+                    sub="Tap a dimension below to see its full breakdown - everything from your report, right here." />
                   <div className="ogd-dims8">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={DIMS8} alt="The eight dimensions of your profile" loading="lazy" />
@@ -564,11 +564,11 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                 <div className="ogd-kpis">
                   <KpiTile icon="star" c={KPI[0]} label="Strongest interest" value={topInterestName}
                     sub={topTheme ? `${topInterestScore}% of your interest answers` : ""} subAccent />
-                  <KpiTile icon="career_interest" c={KPI[1]} label="Interest code" value={code || "—"} sub="Based on your career interests" />
+                  <KpiTile icon="career_interest" c={KPI[1]} label="Interest code" value={code || "-"} sub="Based on your career interests" />
                   <KpiTile icon="motivators" c={KPI[2]} label="Strongest area"
-                    value={strongest ? String(Math.round(strongest.score)) : "—"} sub={strongest ? CAT_LABEL[strongest.key] : ""} />
+                    value={strongest ? String(Math.round(strongest.score)) : "-"} sub={strongest ? CAT_LABEL[strongest.key] : ""} />
                   <KpiTile icon="heart" c={KPI[3]} label="Emotional Intelligence"
-                    value={a.ei != null ? String(Math.round(a.ei)) : "—"} sub={resultOf("emotional_intelligence", a)?.value || "Solid EQ"} />
+                    value={a.ei != null ? String(Math.round(a.ei)) : "-"} sub={resultOf("emotional_intelligence", a)?.value || "Solid EQ"} />
                 </div>
 
                 <div className="ogd-grid-radar">
@@ -598,7 +598,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
               <section id="fields" className="ash-sec">
                 <div className="ogd-card">
                   <CardHead icon="compass" title="Your best-fit fields"
-                    sub="Blended from your interests, abilities, intelligences and drivers — so these actually reinforce each other." />
+                    sub="Blended from your interests, abilities, intelligences and drivers - so these actually reinforce each other." />
                   <div className="ogd-fields">
                     {fits.slice(0, 3).map((d, i) => (
                       <div className="ogd-field" key={d.name}>
@@ -639,7 +639,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                 <GoalTracker plan={plan} storageKey={`og-goals-${a.completedAt}`} domain={topDomainName} />
               </section>
 
-              {/* ===== CAREER TOOLKIT (in-dashboard listings) — temporarily disabled ===== */}
+              {/* ===== CAREER TOOLKIT (in-dashboard listings) - temporarily disabled ===== */}
               {SHOW_TOOLKIT && (
                 <section id="resources" className="ash-sec">
                   <Toolkit tab={toolkitTab} setTab={setToolkitTab} />
@@ -658,12 +658,12 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                 <div className="ogd-card ogd-profile">
                   <CardHead icon="user" title="Your details" />
                   <div className="ogd-details">
-                    <Detail k="Full name" v={name || "—"} />
-                    <Detail k="Email" v={email || profile?.email || "—"} />
-                    <Detail k="Phone" v={profile?.phone || "—"} />
-                    <Detail k="School / College / Company" v={profile?.institution || "—"} />
-                    <Detail k="Desired career" v={profile?.desiredCareer || "—"} />
-                    <Detail k="Current status" v={profile?.clarity || "—"} />
+                    <Detail k="Full name" v={name || "-"} />
+                    <Detail k="Email" v={email || profile?.email || "-"} />
+                    <Detail k="Phone" v={profile?.phone || "-"} />
+                    <Detail k="School / College / Company" v={profile?.institution || "-"} />
+                    <Detail k="Desired career" v={profile?.desiredCareer || "-"} />
+                    <Detail k="Current status" v={profile?.clarity || "-"} />
                   </div>
                 </div>
               </section>
@@ -673,7 +673,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
             <aside className="ash-rail og-noprint">
               <div className="ogd-card rail-card">
                 <div className="rail-h">Your top match</div>
-                <div className="rail-top-nm">{topField?.name || a.topCareer || "—"}</div>
+                <div className="rail-top-nm">{topField?.name || a.topCareer || "-"}</div>
                 {topField?.tagline ? <div className="rail-top-tag">{topField.tagline}</div> : null}
                 <div className="rail-top-fit">Drawn from your <b>{topInterestName}</b> answers</div>
               </div>
@@ -716,7 +716,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                 <div className="ogd-card rail-card">
                   <div className="rail-h">Career toolkit</div>
                   <button className="rail-act" onClick={() => go("resources")}><Icon name="route" size={16} /> Explore toolkit</button>
-                  <div className="rail-toolhint">Colleges · exams · internships · scholarships — more in your menu.</div>
+                  <div className="rail-toolhint">Colleges · exams · internships · scholarships - more in your menu.</div>
                 </div>
               )}
             </aside>
@@ -765,18 +765,18 @@ function Detail({ k, v }: { k: string; v: string }) {
 function MRow({ k, v }: { k: string; v?: string | null }) {
   return (
     <div className="ash-menu-row">
-      <span>{k}</span><b>{v || "—"}</b>
+      <span>{k}</span><b>{v || "-"}</b>
     </div>
   );
 }
 
 /** In-dashboard toolkit: tabbed listings of real colleges, exams, internships,
- *  scholarships and careers — each row links to the official source. */
+ *  scholarships and careers - each row links to the official source. */
 function Toolkit({ tab, setTab }: { tab: string; setTab: (id: string) => void }) {
   const active = TOOLKIT_TABS.find((t) => t.id === tab) ?? TOOLKIT_TABS[0];
   return (
     <div className="ogd-card">
-      <CardHead icon="route" title="Career toolkit" sub="Explore real colleges, exams, internships, scholarships and careers — right here." />
+      <CardHead icon="route" title="Career toolkit" sub="Explore real colleges, exams, internships, scholarships and careers - right here." />
       <div className="tk-tabs">
         {TOOLKIT_TABS.map((t) => (
           <button key={t.id} className={`tk-tab${t.id === tab ? " on" : ""}`} onClick={() => setTab(t.id)}>
@@ -799,7 +799,7 @@ function Toolkit({ tab, setTab }: { tab: string; setTab: (id: string) => void })
 }
 
 /** The full breakdown for whichever dimension is active in the horizontal
- *  tab row above — score, benchmark, sub-traits, and the complete deep-dive
+ *  tab row above - score, benchmark, sub-traits, and the complete deep-dive
  *  (meaning, strengths, growth areas, recommended actions, next step). */
 function DimPanel({ d, a }: { d: RadarDatum; a: AssessmentSummary }) {
   const dd = categoryDeepDive(d.key, a);
@@ -886,7 +886,7 @@ function MiniList({ title, items, icon }: { title: string; items: { label: strin
 function GoalTracker({ plan, storageKey, domain }: { plan: { days30: string[]; days90: string[] }; storageKey: string; domain: string }) {
   const all = [...plan.days30, ...plan.days90];
   // Start empty for a stable first render, then load saved progress after mount
-  // (localStorage is client-only — reading it during render risks a mismatch).
+  // (localStorage is client-only - reading it during render risks a mismatch).
   const [done, setDone] = useState<Record<number, boolean>>({});
   useEffect(() => {
     try { setDone(JSON.parse(window.localStorage.getItem(storageKey) || "{}")); } catch { /* ignore */ }
@@ -1238,7 +1238,7 @@ const CSS = `
 .ogd-ex-d{font-size:11.5px;color:${C.ink3};margin-top:1px}
 .ogd-ex-go{margin-left:auto;color:${C.faint};flex:none}
 
-/* dimensions — horizontal tile row (icon + checkmark + label) + single detail panel */
+/* dimensions - horizontal tile row (icon + checkmark + label) + single detail panel */
 .ogd-dims8{margin-bottom:18px;border:1px solid ${C.line};border-radius:14px;overflow:hidden;background:${C.bg};max-height:220px}
 .ogd-dims8 img{width:100%;display:block;object-fit:cover;max-height:220px}
 @media(max-width:640px){.ogd-dims8{max-height:150px}.ogd-dims8 img{max-height:150px}}

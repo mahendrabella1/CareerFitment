@@ -11,14 +11,14 @@ import { pushLeadToCRM } from "@/lib/crm";
 
 export const dynamic = "force-dynamic";
 
-// GET  /api/leads          — list captured leads (admin view)
-// POST /api/leads          — create a lead (name/email/phone/city/age/class)
-// PATCH /api/leads         — attach a session or mark completed
+// GET  /api/leads          - list captured leads (admin view)
+// POST /api/leads          - create a lead (name/email/phone/city/age/class)
+// PATCH /api/leads         - attach a session or mark completed
 //
 // Only wired for local mode today; the Supabase/Firestore adapters plug in the
 // same way the assessment routes do.
 export async function GET(req: Request) {
-  // Listing leads is admin-only. (POST/PATCH stay open — students call them
+  // Listing leads is admin-only. (POST/PATCH stay open - students call them
   // during the public assessment flow.)
   if (!isAuthorizedAdmin(req)) {
     return NextResponse.json(

@@ -165,7 +165,7 @@ function computeValidity(questions: Question[], answers: AnswerMap): ValidityRes
       scaleMax: 0,
       threshold: 0,
       itemCount: 0,
-      message: "No validity scale in this format — bias check not applicable.",
+      message: "No validity scale in this format - bias check not applicable.",
     };
   }
 
@@ -282,7 +282,7 @@ function computeDominant(
 ): DominantResult {
   // Different temperaments have different numbers of questions, so raw points
   // would structurally favour whichever has the most items. Rank by ENDORSEMENT
-  // RATIO (score / max) first — a fair, per-person measure — and break ties by
+  // RATIO (score / max) first - a fair, per-person measure - and break ties by
   // raw score, then alphabetically. (For a fully-endorsed set this still yields
   // the same result as raw, e.g. Phlegmatic 3/3 beats Sanguine 1/1.)
   const ratio = (t: Temperament) =>
@@ -332,7 +332,7 @@ export function evaluate(
 export { TEMPERAMENTS };
 
 /* ============================================================================
- * MOCKUP JSON (matches master Excel columns) — Set 1 & Set 2 of the 20-format.
+ * MOCKUP JSON (matches master Excel columns) - Set 1 & Set 2 of the 20-format.
  * The live UI loads the full bank from data/personality-sets.json; this inline
  * sample keeps the engine usable stand-alone / in tests.
  * ==========================================================================*/

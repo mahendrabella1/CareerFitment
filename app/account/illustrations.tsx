@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * illustrations — professional flat-vector illustrations from Popsy
+ * illustrations - professional flat-vector illustrations from Popsy
  * (illustrations.popsy.co), a free library. Served in the brand "red" colour
  * variant straight from their CDN, so they look professionally designed and
  * stay on-brand without us hand-drawing anything. Each falls back to a neutral
@@ -25,7 +25,7 @@ function Art({ slug, alt, className }: { slug: string; alt: string; className?: 
   );
 }
 
-/** The hero character — a student with a laptop, exploring careers. */
+/** The hero character - a student with a laptop, exploring careers. */
 export function StudentHero({ className }: { className?: string }) {
   return <Art slug="man-with-a-laptop" alt="A student exploring career paths" className={className} />;
 }

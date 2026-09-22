@@ -110,7 +110,7 @@ export interface UserProfile {
   email: string;
   phone: string;
   institution: string; // school / college / company
-  desiredCareer: string; // e.g. Doctor, Engineer — also used in the report
+  desiredCareer: string; // e.g. Doctor, Engineer - also used in the report
   category: string; // CATEGORY_OPTIONS value, e.g. "class_11"
   journeyCode: string; // assessment journey derived from category
   clarity: string; // "current status" = one of the 4 clarity stages
@@ -171,7 +171,7 @@ interface AuthState {
   /**
    * Re-fetches the signed-in user's own Firestore doc and replaces `profile`
    * with it. Needed whenever something writes to that doc from OUTSIDE this
-   * provider — e.g. an institutional-link redemption, which marks `paid:true`
+   * provider - e.g. an institutional-link redemption, which marks `paid:true`
    * server-side via the Admin SDK right after register() already set the
    * client's `profile` to the just-created (paid:false) doc. Without this,
    * `profile` stays stuck on that first snapshot until the next full sign-in,
@@ -192,7 +192,7 @@ export function authErrorMessage(err: unknown): string {
     case "auth/invalid-email":
       return "Please enter a valid email address.";
     case "auth/weak-password":
-      return "Password is too weak — please meet all the rules below.";
+      return "Password is too weak - please meet all the rules below.";
     case "auth/invalid-credential":
     case "auth/wrong-password":
     case "auth/user-not-found":
@@ -202,7 +202,7 @@ export function authErrorMessage(err: unknown): string {
     case "auth/too-many-requests":
       return "Too many attempts. Please wait a moment and try again.";
     case "auth/network-request-failed":
-      return "Couldn't reach the sign-up server — this is a network block, not your details. Many school/college and office Wi-Fi networks (and ad-blockers) block Google/Firebase. Try mobile data / a hotspot, turn off any ad-blocker or VPN, or use a different browser (or Incognito), then try again.";
+      return "Couldn't reach the sign-up server - this is a network block, not your details. Many school/college and office Wi-Fi networks (and ad-blockers) block Google/Firebase. Try mobile data / a hotspot, turn off any ad-blocker or VPN, or use a different browser (or Incognito), then try again.";
     default:
       return (err as { message?: string })?.message || "Something went wrong. Please try again.";
   }
@@ -271,19 +271,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function refreshProfile() {
     const db = getDb();
-    // Firebase Auth's own currentUser, not the `user` state above — that's
+    // Firebase Auth's own currentUser, not the `user` state above - that's
     // set by the onAuthStateChanged listener in the effect below, a SEPARATE
     // async callback with no guaranteed ordering against a register() call
     // that just resolved a moment earlier. auth.currentUser is set by the
     // SDK itself the instant sign-up succeeds, so it's the reliable read
-    // right after register() — no dependency on React's own state timing.
+    // right after register() - no dependency on React's own state timing.
     const uid = getFirebaseAuth()?.currentUser?.uid;
     if (!db || !uid) return;
     try {
       const snap = await getDoc(doc(db, "users", uid));
       setProfile(snap.exists() ? (snap.data() as UserProfile) : null);
     } catch {
-      /* leave the existing profile in place — a stale read beats a wiped one */
+      /* leave the existing profile in place - a stale read beats a wiped one */
     }
   }
 
@@ -302,7 +302,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   // Firebase stores only a hash of the password, so there is nothing to "look
-  // up" and show a student who has forgotten theirs — a reset link is the only
+  // up" and show a student who has forgotten theirs - a reset link is the only
   // route back in, and every screen that mentions the password points here.
   async function resetPassword(email: string) {
     const auth = getFirebaseAuth();

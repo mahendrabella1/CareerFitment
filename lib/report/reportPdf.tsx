@@ -1,5 +1,5 @@
 // Server-side PDF of the career report, attached to the emailed report.
-// Uses @react-pdf/renderer primitives (not HTML) — a compact, branded, multi-page
+// Uses @react-pdf/renderer primitives (not HTML) - a compact, branded, multi-page
 // layout that auto-paginates. Rendered to a Buffer for nodemailer.
 import { Document, Page, View, Text, Link, StyleSheet, renderToBuffer } from "@react-pdf/renderer";
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
@@ -25,7 +25,7 @@ const CAT_LABEL: Record<string, string> = {
   strengths: "Strengths", aptitude: "Aptitude",
 };
 
-// 2026 palette — near-black ink + single light-red accent (matches dashboard/report).
+// 2026 palette - near-black ink + single light-red accent (matches dashboard/report).
 const NAVY = "#141417", ACCENT = "#F2555A", INK = "#141417", MUTED = "#8a8a94", LINE = "#ececef";
 const clamp = (n: number) => Math.max(4, Math.min(100, Math.round(n)));
 
@@ -170,7 +170,7 @@ function ReportDoc({ name, a, demo }: { name: string; a: AssessmentSummary; demo
               <Text style={s.liDot}>•</Text>
               <Text style={s.liText}>
                 <Link src={p.url} style={{ color: "#3f5b8b", textDecoration: "none" }}>{p.label}</Link>
-                {`  —  ${p.note}`}
+                {`  -  ${p.note}`}
               </Text>
             </View>
           ))}
@@ -269,7 +269,7 @@ function RoadmapPdf({ title, career }: { title: string; career: any }) {
       <Text style={{ ...s.colHd, marginTop: 8 }}>Entrance exams</Text>
       {(r.entranceExams ?? []).slice(0, 4).map((e: { name: string; when: string }, i: number) => (
         <View key={i} style={s.li}><Text style={s.liDot}>•</Text>
-          <Text style={s.liText}>{e.name} — {e.when}</Text></View>
+          <Text style={s.liText}>{e.name} - {e.when}</Text></View>
       ))}
 
       <Text style={{ ...s.colHd, marginTop: 6 }}>The path</Text>
@@ -289,7 +289,7 @@ function RoadmapPdf({ title, career }: { title: string; career: any }) {
           <View style={s.salRow}><Text style={s.salK}>Mid</Text><Text style={s.salV}>{r.salary.mid}</Text></View>
           <View style={s.salRow}><Text style={s.salK}>Senior</Text><Text style={s.salV}>{r.salary.senior}</Text></View>
           <Text style={{ ...s.dimNext, marginTop: 4 }}>
-            Indicative ranges, not quotes — check current figures before relying on them.
+            Indicative ranges, not quotes - check current figures before relying on them.
           </Text>
         </>
       ) : null}

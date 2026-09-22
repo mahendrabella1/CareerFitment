@@ -1,11 +1,11 @@
 // Resolve the caller's email from their Firebase ID token, using the public
-// Auth REST API rather than the Admin SDK — the payment routes run on
+// Auth REST API rather than the Admin SDK - the payment routes run on
 // deployments that may have no admin credentials at all, and an email address
 // is only ever used here to label a CRM lead / notification. Never throws:
 // a lookup failure returns "" so a mail or CRM side-effect can degrade to the
 // details the client passed instead of failing the payment.
 
-// Public Firebase web API key (safe to expose — it identifies the project, it
+// Public Firebase web API key (safe to expose - it identifies the project, it
 // does not authorise anything on its own).
 const FIREBASE_API_KEY = "AIzaSyA3fUy9CkpoNf-vjrhswJQNwqy0qSr2cL0";
 
@@ -23,7 +23,7 @@ export async function emailFromToken(idToken?: string): Promise<string> {
   }
 }
 
-/** Same lookup, but returns the uid too — used to key a coupon redemption. */
+/** Same lookup, but returns the uid too - used to key a coupon redemption. */
 export async function identityFromToken(idToken?: string): Promise<{ email: string; uid: string }> {
   if (!idToken) return { email: "", uid: "" };
   try {

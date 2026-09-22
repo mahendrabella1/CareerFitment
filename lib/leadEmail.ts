@@ -1,5 +1,5 @@
 // Internal notification email (to the OneGrasp team, not the student) for a
-// captured lead — one shared builder for both lifecycle stages: "unpaid"
+// captured lead - one shared builder for both lifecycle stages: "unpaid"
 // (just registered) and "paid" (fee verified). Best-effort: skips silently
 // if SMTP isn't configured, and never throws (a mail outage must never break
 // registration or the payment flow).
@@ -16,7 +16,7 @@ export interface LeadEmailData {
   age?: string | null;
 }
 
-const s = (v: unknown) => (v == null || v === "" ? "—" : String(v));
+const s = (v: unknown) => (v == null || v === "" ? "-" : String(v));
 
 function getTransporter() {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
@@ -43,7 +43,7 @@ const TEAM_INBOX = (process.env.TEAM_NOTIFY_EMAIL || "support@onegrasp.com").tri
  * waiting. A student who completes at 11pm and hears nothing has no way to tell
  * whether the system failed or the team simply hasn't got to it.
  *
- * Best-effort like everything else here — a mail outage must never turn a
+ * Best-effort like everything else here - a mail outage must never turn a
  * completed assessment into an error for the student.
  */
 export async function sendAssessmentCompletedNotification(input: {
@@ -54,7 +54,7 @@ export async function sendAssessmentCompletedNotification(input: {
   alignment?: number | null;
 }): Promise<boolean> {
   const t = getTransporter();
-  if (!t) return false; // SMTP not configured on this deployment — skip silently
+  if (!t) return false; // SMTP not configured on this deployment - skip silently
 
   const when = new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
   const rows: [string, string][] = [
@@ -62,7 +62,7 @@ export async function sendAssessmentCompletedNotification(input: {
     ["Email", s(input.email)],
     ["Completed at", when],
     ["Top career match", s(input.topCareer)],
-    ["Profile alignment", input.alignment != null ? `${input.alignment}/100` : "—"],
+    ["Profile alignment", input.alignment != null ? `${input.alignment}/100` : "-"],
   ];
 
   const html = `<div style="font-family:Inter,Arial,sans-serif;color:#111">
@@ -83,7 +83,7 @@ export async function sendAssessmentCompletedNotification(input: {
       to: TEAM_INBOX,
       // Replying goes straight to the student rather than to the shared inbox.
       replyTo: input.email || undefined,
-      subject: `Assessment completed — ${s(input.name) !== "—" ? s(input.name) : s(input.email)}`,
+      subject: `Assessment completed - ${s(input.name) !== "-" ? s(input.name) : s(input.email)}`,
       html,
     });
     return true;
@@ -99,7 +99,7 @@ export async function sendLeadNotificationEmail(
   extra?: { paymentId?: string; amountRupees?: number }
 ): Promise<void> {
   const t = getTransporter();
-  if (!t) return; // SMTP not configured on this deployment — skip silently
+  if (!t) return; // SMTP not configured on this deployment - skip silently
 
   const rows: [string, string][] = [
     ["Name", s(lead.name)],
@@ -113,10 +113,10 @@ export async function sendLeadNotificationEmail(
   ];
   if (status === "paid") {
     rows.push(["Payment ID", s(extra?.paymentId)]);
-    rows.push(["Amount", extra?.amountRupees != null ? `₹${extra.amountRupees.toFixed(2)}` : "—"]);
+    rows.push(["Amount", extra?.amountRupees != null ? `₹${extra.amountRupees.toFixed(2)}` : "-"]);
   }
 
-  const heading = status === "paid" ? "Assessment fee paid ✓" : "New lead — registered, not paid yet";
+  const heading = status === "paid" ? "Assessment fee paid ✓" : "New lead - registered, not paid yet";
   const sub = status === "paid"
     ? "A student has paid and started the assessment."
     : "A student has signed up but hasn't completed the assessment fee yet.";
@@ -133,7 +133,7 @@ export async function sendLeadNotificationEmail(
       from: `OneGrasp <${t.from}>`,
       to: t.from,
       replyTo: lead.email || undefined,
-      subject: `${status === "paid" ? "Assessment fee paid" : "New lead (unpaid)"} — ${s(lead.name) || s(lead.email)}`,
+      subject: `${status === "paid" ? "Assessment fee paid" : "New lead (unpaid)"} - ${s(lead.name) || s(lead.email)}`,
       html,
     });
   } catch (err) {

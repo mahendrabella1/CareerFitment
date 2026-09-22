@@ -1,5 +1,5 @@
 // Server-only push of a captured lead to the OneGrasp CRM webhook. The bearer
-// token is SERVER-ONLY — it must never be read into a NEXT_PUBLIC_* var or
+// token is SERVER-ONLY - it must never be read into a NEXT_PUBLIC_* var or
 // called from client-side code, or it leaks to anyone viewing page source /
 // devtools network tab. Called from app/api/leads/route.ts after a lead is
 // saved locally; failures are logged but never break lead capture itself.
@@ -16,15 +16,15 @@ export interface CrmLead {
   message?: string | null;
   /** "unpaid" = registered but hasn't paid yet; "paid" = fee verified. */
   status?: "unpaid" | "paid";
-  /** Fee actually charged (the admin can change it) — used in the status note. */
+  /** Fee actually charged (the admin can change it) - used in the status note. */
   amountRupees?: number;
 }
 
 export async function pushLeadToCRM(lead: CrmLead): Promise<void> {
   const token = process.env.ONEGRASP_CRM_WEBHOOK_TOKEN;
-  if (!token) return; // not configured on this deployment — skip silently
+  if (!token) return; // not configured on this deployment - skip silently
 
-  // "status" isn't part of the CRM's documented schema — a prior attempt to
+  // "status" isn't part of the CRM's documented schema - a prior attempt to
   // send it as its own top-level field got a 500 (FUNCTION_INVOCATION_FAILED)
   // back from their webhook, most likely because their CRM has its own
   // internal lead-status enum and choked on an unrecognised value. Folding

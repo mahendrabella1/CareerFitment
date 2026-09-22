@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * OfferBanner — the scrolling sale ribbon that sits at the very top of every
+ * OfferBanner - the scrolling sale ribbon that sits at the very top of every
  * public page (landing, register, sign-in, payment).
  *
  * It marquees rather than sits still because it has four things to say and one
@@ -20,7 +20,7 @@ import { OFFER, offerIsLive, formatPaise, discountPctBetween } from "@/lib/offer
 export default function OfferBanner() {
   // Start from the copy in lib/offer.ts so the first paint is correct even
   // before (or without) a round-trip, then correct it against the price the
-  // server will actually charge — an admin who changes the fee in /admin must
+  // server will actually charge - an admin who changes the fee in /admin must
   // not leave the banner quoting yesterday's number.
   const [salePaise, setSalePaise] = useState<number>(OFFER.salePaise);
 
@@ -32,7 +32,7 @@ export default function OfferBanner() {
         const n = Number(d?.amountPaise);
         if (!cancelled && Number.isFinite(n) && n > 0) setSalePaise(n);
       })
-      .catch(() => { /* marketing copy — the fallback above is good enough */ });
+      .catch(() => { /* marketing copy - the fallback above is good enough */ });
     return () => { cancelled = true; };
   }, []);
 
@@ -41,9 +41,9 @@ export default function OfferBanner() {
   const pct = discountPctBetween(OFFER.listPaise, salePaise);
   const items = [
     `🇮🇳 ${OFFER.name} is LIVE`,
-    `Flat ${pct}% OFF — was ${formatPaise(OFFER.listPaise)}, now ${formatPaise(salePaise)}`,
+    `Flat ${pct}% OFF - was ${formatPaise(OFFER.listPaise)}, now ${formatPaise(salePaise)}`,
     `Coupon ${OFFER.autoCouponCode} applied automatically at checkout`,
-    `Offer ends ${OFFER.endsOnLabel} — start your career assessment today`,
+    `Offer ends ${OFFER.endsOnLabel} - start your career assessment today`,
   ];
 
   // One "track" = the full list. Two identical tracks scroll as one strip.
@@ -65,7 +65,7 @@ export default function OfferBanner() {
         {track}
         {/* Duplicate copy: what scrolls off the left is already on screen at
             the right, so the strip never shows a seam. Hidden from screen
-            readers — the first copy already announced everything. */}
+            readers - the first copy already announced everything. */}
         <div className="ogb-track" aria-hidden="true">
           {items.map((t, i) => (
             <span className="ogb-item" key={`d${i}`}>
@@ -91,7 +91,7 @@ const CSS = `
 @keyframes ogbScroll{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
 @media(max-width:600px){.ogb-item{font-size:12px;margin-right:30px}.ogb-mask{animation-duration:26s}}
 /* A moving strip is a genuine accessibility problem for some readers: hold it
-   still when the OS asks for reduced motion — the copy is all still there. */
+   still when the OS asks for reduced motion - the copy is all still there. */
 @media(prefers-reduced-motion:reduce){.ogb-mask{animation:none}.ogb-track[aria-hidden="true"]{display:none}
   .ogb-mask{width:100%;overflow-x:auto}}
 `;

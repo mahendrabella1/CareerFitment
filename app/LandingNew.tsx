@@ -573,22 +573,22 @@ function ProofSection() {
           <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid md:grid-cols-2 gap-8">
             <motion.div variants={itemVariants} className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-8">
               <p className="text-gray-800 font-semibold mb-4 italic">"The assessment helped us understand our child beyond just marks. We had a real conversation about their strengths and interests for the first time."</p>
-              <p className="font-bold text-gray-900">— Parent, Mumbai</p>
+              <p className="font-bold text-gray-900">- Parent, Mumbai</p>
             </motion.div>
 
             <motion.div variants={itemVariants} className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-8">
               <p className="text-gray-800 font-semibold mb-4 italic">"I discovered that I'm good at things I never realized. It gave me confidence to explore careers I didn't think were for me."</p>
-              <p className="font-bold text-gray-900">— Student, Class 10</p>
+              <p className="font-bold text-gray-900">- Student, Class 10</p>
             </motion.div>
 
             <motion.div variants={itemVariants} className="bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-200 rounded-xl p-8">
               <p className="text-gray-800 font-semibold mb-4 italic">"The report is incredibly detailed. We used it to guide our counseling sessions with students. It made a real difference."</p>
-              <p className="font-bold text-gray-900">— School Counselor</p>
+              <p className="font-bold text-gray-900">- School Counselor</p>
             </motion.div>
 
             <motion.div variants={itemVariants} className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-200 rounded-xl p-8">
               <p className="text-gray-800 font-semibold mb-4 italic">"We chose Science based on marks. After the assessment, we realized we should explore Commerce. This changed our child's entire trajectory."</p>
-              <p className="font-bold text-gray-900">— Parent, Bangalore</p>
+              <p className="font-bold text-gray-900">- Parent, Bangalore</p>
             </motion.div>
           </motion.div>
         </motion.div>
@@ -604,7 +604,7 @@ function FAQSection() {
   const faqs = [
     {
       q: "Is this just a personality test?",
-      a: "No. It combines eight different dimensions—personality, interests, intelligence, emotional intelligence, learning preferences, motivators, strengths, and aptitude. It's a much more comprehensive profile.",
+      a: "No. It combines eight different dimensions-personality, interests, intelligence, emotional intelligence, learning preferences, motivators, strengths, and aptitude. It's a much more comprehensive profile.",
     },
     {
       q: "Can this assessment decide my child's career for them?",
@@ -612,7 +612,7 @@ function FAQSection() {
     },
     {
       q: "What if my child changes their mind later?",
-      a: "That's completely normal and expected. The purpose is to understand the student's profile and support exploration. Interests and goals evolve—the assessment creates clarity at this moment.",
+      a: "That's completely normal and expected. The purpose is to understand the student's profile and support exploration. Interests and goals evolve-the assessment creates clarity at this moment.",
     },
     {
       q: "Is it only for career selection?",
