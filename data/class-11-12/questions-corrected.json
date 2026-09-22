@@ -238,14 +238,14 @@
           ]
         },
         {
-          "text": "You get a completely free afternoon to explore one topic on YouTube, Coursera, or a podcast. Which topic are you clicking on first?",
+          "text": "You get a free month to explore a career area. Which would you choose?",
           "options": [
-            "How It's Made or DIY teardowns—understanding the mechanics of engines, robotics, or hardware.",
-            "Deep-dive scientific breakdowns—unraveling quantum physics, neurobiology, or complex global trends.",
-            "Behind-the-scenes creative breakdowns—film editing techniques, music production secrets, or graphic design trends.",
-            "Human psychology or personal growth—understanding why people think the way they do and how to help them thrive.",
-            "Entrepreneur stories—how modern founders pitch ideas, scale startups, and lead industries.",
-            "Productivity systems or data visualization—mastering financial models, Excel hacks, or digital organization tools."
+            "Engineering/technology projects.",
+            "Scientific research/data analysis.",
+            "Design/media/creative work.",
+            "Psychology/education/healthcare/community work.",
+            "Business/management/entrepreneurship.",
+            "Finance/accounting/business operations."
           ],
           "mapping": [
             "R",
@@ -276,14 +276,14 @@
           ]
         },
         {
-          "text": "You get a free month to explore a career area. Which would you choose?",
+          "text": "If you could build serious real-world experience right now, what area would you dive into?",
           "options": [
-            "Engineering/technology projects.",
-            "Scientific research/data analysis.",
-            "Design/media/creative work.",
-            "Psychology/education/healthcare/community work.",
-            "Business/management/entrepreneurship.",
-            "Finance/accounting/business operations."
+            "Robotics, machine tuning, and physical fabrication.",
+            "Data modeling, algorithmic research, and deep-dive analysis.",
+            "Brand identity, motion graphics, and creative production.",
+            "Mental health advocacy, youth mentoring, and community aid.",
+            "Startup / pitching business ventures, marketing, and team leadership.",
+            "Financial planning, resource management, and clean data systems."
           ],
           "mapping": [
             "R",
