@@ -849,17 +849,18 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
     const currentSelections = value ? JSON.parse(value) : [];
     const canSelect = currentSelections.length < maxSelections;
     // Career Selector's two "up to THREE" questions (career_selector:1/2)
-    // each pick from the same 210-career master list — a one-per-row
-    // checkbox list (and, before that, wrapped chips) both rendered all 210
-    // inline, making the PAGE itself very long/heavy. A collapsed
-    // search-dropdown fixes that: closed by default (just your up-to-3 picks
-    // as removable tags), and the full list only appears inside its own
-    // small panel when you click in — that panel scrolls internally, the
-    // page doesn't have to. Scoped to just these two question ids on
-    // purpose — every other multi-select in the app (short option counts,
-    // longer descriptive option text) stays the original checkbox-row
-    // layout, which reads better for those.
-    const useDropdown = q.id === "career_selector:1" || q.id === "career_selector:2";
+    // each pick from the same 210-career master list, and career_fit:1
+    // ("Which areas are you currently considering?") picks up to 3 from 24
+    // fields — a one-per-row checkbox list (and, before that, wrapped
+    // chips) rendered all of them inline, making the PAGE itself very
+    // long/heavy. A collapsed search-dropdown fixes that: closed by
+    // default (just your up-to-3 picks as removable tags), and the full
+    // list only appears inside its own small panel when you click in —
+    // that panel scrolls internally, the page doesn't have to. Scoped to
+    // just these three question ids on purpose — every other multi-select
+    // in the app (short option counts, longer descriptive option text)
+    // stays the original checkbox-row layout, which reads better for those.
+    const useDropdown = q.id === "career_selector:1" || q.id === "career_selector:2" || q.id === "career_fit:1";
     if (useDropdown) {
       return <CareerMultiPicker opts={opts} value={value} maxSelections={maxSelections} onChange={onChange} />;
     }
@@ -890,11 +891,12 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
     );
   }
 
-  // subject_fit:2 ("Which subject do you enjoy the most?") as a plain native
-  // dropdown instead of a 15-row radio list — a single-choice pick from a
-  // modest, familiar list of subject names doesn't need the search-combobox
-  // built for Career Selector's 210-career questions, just a normal select.
-  if (q.id === "subject_fit:2") {
+  // subject_fit:2/3 ("Which subject do you enjoy the most?" / "...find most
+  // difficult?") as a plain native dropdown instead of a 15-row radio list —
+  // a single-choice pick from a modest, familiar list of subject names
+  // doesn't need the search-combobox built for Career Selector's 210-career
+  // questions, just a normal select.
+  if (q.id === "subject_fit:2" || q.id === "subject_fit:3") {
     const opts = q.options ?? [];
     return (
       <select
