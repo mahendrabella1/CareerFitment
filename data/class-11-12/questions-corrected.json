@@ -80,10 +80,10 @@
         {
           "text": "You spend several days preparing a project and receive a much lower evaluation than expected. What would be your most natural response?",
           "options": [
-            "Analyse what went wrong.",
-            "Ask for feedback from a teacher or evaluator.",
-            "Try a different approach next time.",
-            "Move on quickly to the next task."
+            "Analyse exactly where I went wrong.",
+            "Ask the evaluator or teacher for detailed feedback.",
+            "Feel disappointed but try a different approach next time.",
+            "Move on quickly and focus on the next task."
           ],
           "mapping": [
             "T",
