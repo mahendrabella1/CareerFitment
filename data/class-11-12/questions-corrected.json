@@ -809,16 +809,16 @@
           ]
         },
         {
-          "text": "Which combination sounds most like your natural strengths?",
+          "text": ". Which combination best describes what you're naturally  good at?",
           "options": [
-            "Linguistic: Words, writing & communication",
-            "Analytical: Numbers, patterns & systematic logic",
-            "Visual: Spatial design, art & aesthetic layout",
-            "Interpersonal: Empathy, leadership & social connection",
-            "Intrapersonal: Self-awareness, focus & independent reflection",
-            "Naturalistic: Environmental observation & life sciences",
-            "Auditory: Music, sound design & rhythm",
-            "Kinesthetic: Hands-on fabrication, tools & physical agility"
+            "Words + communication",
+            "Numbers + logic",
+            "Visualisation + design",
+            "People + relationships",
+            "Self-awareness + reflection",
+            "Nature + observation",
+            "Music + rhythm",
+            "Practical action + physical activity"
           ],
           "mapping": [
             "Linguistic",
