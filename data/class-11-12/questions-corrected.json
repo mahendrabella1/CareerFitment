@@ -105,25 +105,6 @@
     "11-12": {
       "Set 1": [
         {
-          "text": "When a group project faces a major roadblock, what is your natural instinct to jump in and fix?",
-          "options": [
-            "Fix the technical issue.",
-            "Analyse the problem.",
-            "Redesign the approach.",
-            "Talk to the team.",
-            "Take charge.",
-            "Organize the schedule."
-          ],
-          "mapping": [
-            "R",
-            "I",
-            "A",
-            "S",
-            "E",
-            "C"
-          ]
-        },
-        {
           "text": "If you had two free weeks and full funding, what would you spend your time doing?",
           "options": [
             "Building: Coding, assembling, or fixing something.",
@@ -200,7 +181,7 @@
           ]
         },
         {
-          "text": "Which extracurricular activity would you most likely choose?",
+          "text": "Which extracurricular activity would you choose?",
           "options": [
             "Robotics/maker club.",
             "Science/research club.",
@@ -322,6 +303,30 @@
             "Communication/helping skills.",
             "Leadership/business skills.",
             "Financial/data/organisational skills."
+          ],
+          "mapping": [
+            "R",
+            "I",
+            "A",
+            "S",
+            "E",
+            "C"
+          ]
+        }
+      ]
+    },
+    "_archived_not_a_stage_do_not_use": {
+      "_readme": "Not a real StageKey (see lib/newAssessment/data.ts) - never loaded by pickSets()/getSet(), which only resolve literal stage strings like \"11-12\". This is a plain reference record of a question removed from live career_interest scoring, kept here since JSON has no comment syntax.",
+      "removedQuestions": [
+        {
+          "text": "When a group project faces a major roadblock, what is your natural instinct to jump in and fix?",
+          "options": [
+            "Fix the technical issue.",
+            "Analyse the problem.",
+            "Redesign the approach.",
+            "Talk to the team.",
+            "Take charge.",
+            "Organize the schedule."
           ],
           "mapping": [
             "R",
