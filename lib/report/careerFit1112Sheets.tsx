@@ -1278,12 +1278,9 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                 )}
 
                 <div style={BREAK}>
-                  <SecHead center eyebrow="Where to go next" title="Explore exams, certifications & internships"
-                    sub="Real, official places to start - the exact exam/registration portals for this field, and live internship listings on your own OneGrasp dashboard." />
+                  <SecHead center eyebrow="Where to go next" title="Explore internships"
+                    sub="Live internship listings on your own OneGrasp dashboard." />
                   <div style={{ marginTop: 14, display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
-                    {(CLUSTER_EXPLORE_LINKS[selector.career.cluster] ?? []).map((l) => (
-                      <a key={l.url} href={l.url} target="_blank" rel="noreferrer" style={{ fontSize: 12.5, fontWeight: 700, color: clusterColor(selector!.career!.cluster), background: `${clusterColor(selector!.career!.cluster)}12`, border: `1px solid ${clusterColor(selector!.career!.cluster)}45`, padding: "9px 16px", borderRadius: 10, textDecoration: "none" }}>{l.label} ↗</a>
-                    ))}
                     <a href={`${SITE_URL_1112}/account/internships-new`} target="_blank" rel="noreferrer" style={{ fontSize: 12.5, fontWeight: 700, color: "#fff", background: clusterColor(selector.career.cluster), padding: "9px 16px", borderRadius: 10, textDecoration: "none" }}>Browse live internships on your dashboard ↗</a>
                   </div>
                 </div>
