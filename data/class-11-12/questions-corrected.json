@@ -1190,12 +1190,6 @@
     "11-12": {
       "Set 1": [
         {
-          "text": "How clear are you about what you want to study after Class 12?",
-          "type": "scale",
-          "scaleLabel_min": "I have no idea",
-          "scaleLabel_max": "I know exactly what I want"
-        },
-        {
           "text": "Which areas are you currently considering? Select up to THREE.",
           "options": [
             "Engineering",

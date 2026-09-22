@@ -137,15 +137,21 @@ const SUBJECT_FIT_FIELDS: Record<number, FieldSpec> = {
   6: { field: "streamChoiceReasons", kind: "multi" },
   7: { field: "explorationInterest", kind: "index" },
 };
+// index 0 was "clarity" (How clear are you about what you want to study
+// after Class 12?) - that question was removed from the bank, so `clarity`
+// on career_fit's context now permanently stays at emptyContext()'s default
+// (5) instead of a real answer. Everything below is re-indexed down by one
+// to match the bank's new question order; scoring11_12.ts's clarityScore /
+// generateCareerAdvice() still read career_fit.clarity, they just always
+// get the default now.
 const CAREER_FIT_FIELDS: Record<number, FieldSpec> = {
-  0: { field: "clarity", kind: "index" },
-  1: { field: "consideringAreas", kind: "multi" },
-  2: { field: "degreeCertainty", kind: "text" },
-  3: { field: "pathwayFlexibility", kind: "index" },
-  4: { field: "topConcerns", kind: "multi" },
-  5: { field: "decisionStage", kind: "text" },
-  6: { field: "decisionConfidence", kind: "index" },
-  7: { field: "pathwayType", kind: "text" },
+  0: { field: "consideringAreas", kind: "multi" },
+  1: { field: "degreeCertainty", kind: "text" },
+  2: { field: "pathwayFlexibility", kind: "index" },
+  3: { field: "topConcerns", kind: "multi" },
+  4: { field: "decisionStage", kind: "text" },
+  5: { field: "decisionConfidence", kind: "index" },
+  6: { field: "pathwayType", kind: "text" },
 };
 const CAREER_SELECTOR_FIELDS: Record<number, FieldSpec> = {
   0: { field: "primaryCareer", kind: "text" },

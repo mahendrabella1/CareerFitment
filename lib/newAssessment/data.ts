@@ -55,13 +55,13 @@ const ORDER_9_10: Category[] = [
 // (1 Personality ... 8 Emotional Intelligence = the CORE, then 9 Subject
 // Fit, 10 Career/Stream/Degree Fit, 11 Career Selector). "multiple_intelligence"
 // now has its own real, dedicated question set in data/class-11-12/
-// questions-corrected.json (the 8 Gardner MI domains) — genuinely separate
+// questions-corrected.json (the 8 Gardner MI domains) - genuinely separate
 // from "strengths" (the 6 real workplace-competency domains: Problem
 // Solving, Leadership, Creative Thinking, Design Thinking, Influencing,
 // Strategic Thinking). They used to share the exact same MI-tagged question
 // bank, which made the Strengths dimension's own page just re-display the
 // Multiple Intelligence page's data under a different name. No "creativity"
-// here — that 9th scored dimension was removed for 11-12 entirely (back to
+// here - that 9th scored dimension was removed for 11-12 entirely (back to
 // the same fixed 8 dimensions as class 9-10); its question bank entry is
 // simply never pulled from once it's out of this order.
 const ORDER_11_12: Category[] = [
@@ -160,14 +160,14 @@ export function getSet(cat: Category, stage: StageKey, setName: string): RawQ[] 
 // grouped label an exam UI would normally show ("Science: Physics, ..."), so
 // those two prefer `detailed_options` over `simplified_options`. Every other
 // grouped question in that bank shows the shorter, friendlier simplified list.
-const PREFER_DETAILED_OPTIONS = new Set(["subject_fit:1", "career_fit:1"]);
+const PREFER_DETAILED_OPTIONS = new Set(["subject_fit:1", "career_fit:0"]);
 
 /**
  * Resolves the option list an exam question actually shows, for a raw
  * question object straight out of the bank. The class 11-12 bank has no
- * plain `options` field for grouped/text questions — only `detailed_options`
+ * plain `options` field for grouped/text questions - only `detailed_options`
  * (fine-grained, used where the exact item text is needed downstream) and
- * `simplified_options` (fewer, grouped — the default for display). Shared by
+ * `simplified_options` (fewer, grouped - the default for display). Shared by
  * the question-generation route and the scoring route so both agree on
  * exactly which option a given answer index refers to.
  */

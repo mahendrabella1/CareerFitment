@@ -856,18 +856,19 @@ function QuestionInput({ q, value, onChange }: { q: Q; value: string; onChange: 
     const currentSelections = value ? JSON.parse(value) : [];
     const canSelect = currentSelections.length < maxSelections;
     // Career Selector's two "up to THREE" questions (career_selector:1/2)
-    // each pick from the same 210-career master list, and career_fit:1
-    // ("Which areas are you currently considering?") picks up to 3 from 24
-    // fields — a one-per-row checkbox list (and, before that, wrapped
-    // chips) rendered all of them inline, making the PAGE itself very
-    // long/heavy. A collapsed search-dropdown fixes that: closed by
+    // each pick from the same 210-career master list, and career_fit:0
+    // ("Which areas are you currently considering?" - shifted from index 1
+    // to 0 after the clarity question ahead of it was removed) picks up to
+    // 3 from 24 fields — a one-per-row checkbox list (and, before that,
+    // wrapped chips) rendered all of them inline, making the PAGE itself
+    // very long/heavy. A collapsed search-dropdown fixes that: closed by
     // default (just your up-to-3 picks as removable tags), and the full
     // list only appears inside its own small panel when you click in —
     // that panel scrolls internally, the page doesn't have to. Scoped to
     // just these three question ids on purpose — every other multi-select
     // in the app (short option counts, longer descriptive option text)
     // stays the original checkbox-row layout, which reads better for those.
-    const useDropdown = q.id === "career_selector:1" || q.id === "career_selector:2" || q.id === "career_fit:1";
+    const useDropdown = q.id === "career_selector:1" || q.id === "career_selector:2" || q.id === "career_fit:0";
     if (useDropdown) {
       return <CareerMultiPicker opts={opts} value={value} maxSelections={maxSelections} onChange={onChange} />;
     }
