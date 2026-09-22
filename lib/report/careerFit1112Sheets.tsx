@@ -2,36 +2,36 @@
 
 /**
  * The Class 11-12 Career Fitment / Career Suitability / Career Selector
- * pages — replaces FullReport.tsx's shared 15-domain "Best-fit Domains"
+ * pages - replaces FullReport.tsx's shared 15-domain "Best-fit Domains"
  * section for classes 11/12 (see hideCareerFitSections there) and the older,
  * simpler "snapshot-stream-fit" / "career-suitability" / "career-selector-
  * match" sheets this file used to share space with in class11ExtraSheets.tsx
- * (removed from there — this is a straight replacement, not an addition, to
+ * (removed from there - this is a straight replacement, not an addition, to
  * avoid showing two disagreeing rankings in one report).
  *
- * Four pages, each a full page rather than a cramped column — the original
+ * Four pages, each a full page rather than a cramped column - the original
  * 3-column-on-one-page layout (matching the mapping kit's own mockup) didn't
  * have room for real per-role detail, and a bare list of role names isn't
  * useful on its own: a student needs to know what degree gets them there,
  * not just the job title.
  *
- *  1. Career Fitment — top 5 domains ranked purely against the student's
+ *  1. Career Fitment - top 5 domains ranked purely against the student's
  *     measured profile (ignores stream entirely), 5 roles per domain, each
  *     with its match score, typical degree and entrance exam. Domain-level
  *     salary (India/Abroad) shown once per domain.
- *  2. Career Suitability — the same ranking, kept to only what the
+ *  2. Career Suitability - the same ranking, kept to only what the
  *     student's actual stream can reach (Native Fit). Same per-role detail.
- *  3. Career Selector — the specific career the student named: current
+ *  3. Career Selector - the specific career the student named: current
  *     stream, fit type, where it ranks in their own Fitment list, its
  *     typical degree/exam, close alternatives in the same domain, and the
  *     full step-by-step roadmap.
- *  4. Class 12 only — estimated exam score shown as context (never a
- *     filter — the mapping kit's own Report_Sections_Logic is explicit that
+ *  4. Class 12 only - estimated exam score shown as context (never a
+ *     filter - the mapping kit's own Report_Sections_Logic is explicit that
  *     "the score itself is ignored for matching"), plus a WIDENED
  *     suitability list (Native Fit + Bridge) with the same rich per-role
  *     detail, so a stream like PCB shows real breadth, not just the one
  *     obvious path. Matches the kit's own guidance: "this is just Career
- *     Suitability with a wider candidate pool — no new engine needed."
+ *     Suitability with a wider candidate pool - no new engine needed."
  *
  * Ranking logic lives in lib/report/careerFitEngine1112.ts; the domain/
  * career/roadmap/degree/salary data itself in lib/report/careerfit1112.ts.
@@ -54,16 +54,16 @@ import { degreesForStream, ELIGIBILITY_SYMBOL, ELIGIBILITY_LABEL, type DegreeEli
 import { topDimensionsForStudent, type ScoredDimension } from "@/lib/report/dimensionCareerGuide";
 import { percentileBandFor } from "@/lib/report/jeePercentileGuide";
 
-// Same fallback pattern as lib/studentEmail.ts's SITE_URL — this report can
+// Same fallback pattern as lib/studentEmail.ts's SITE_URL - this report can
 // be viewed as a downloaded/emailed PDF, not just in-app, so links into the
 // dashboard (e.g. the internships listing) need an absolute URL, not a
 // relative path that would 404 outside the app shell.
 const SITE_URL_1112 = (process.env.NEXT_PUBLIC_SITE_URL || "https://careerfitment.onegrasp.com").replace(/\/+$/, "");
 
 // A distinct icon + a stable colour per STANDARD CLUSTER (the 16 National
-// Career Clusters — see careerfit1112.ts's StandardCluster) so these pages
+// Career Clusters - see careerfit1112.ts's StandardCluster) so these pages
 // read as illustrated cards rather than plain bordered text. 16 distinct
-// hues rather than cycling the report's 5-colour RANK_COLOURS — cycling
+// hues rather than cycling the report's 5-colour RANK_COLOURS - cycling
 // would give 3+ clusters the identical colour on the bar chart, which reads
 // as a bug there in a way it doesn't on a single top-5 list.
 const CLUSTER_COLOURS: Record<string, string> = {
@@ -91,7 +91,7 @@ function clusterIcon(cluster: string): string {
   return CLUSTER_ICON[cluster] ?? "match";
 }
 
-// The OLD 27-domain colour/icon lookup — kept only for the "every degree
+// The OLD 27-domain colour/icon lookup - kept only for the "every degree
 // open to you" section below (DegreeCategoryBlock), which is still keyed on
 // DOMAINS_1112 via degreeStreamMatrix.ts's own `salaryDomain` field and
 // wasn't part of this cluster redesign. Everything else in this file uses
@@ -103,7 +103,7 @@ function domainColor(domain: string): string {
 }
 
 // The same colour chip + icon treatment every illustrated card in this
-// report uses for its header — reused here so a domain/cluster block reads
+// report uses for its header - reused here so a domain/cluster block reads
 // as one system with DomainCard, not a second visual language.
 function DomainChip({ domain, size = 30, kind = "cluster" }: { domain: string; size?: number; kind?: "cluster" | "domain" }) {
   const color = kind === "cluster" ? clusterColor(domain) : domainColor(domain);
@@ -115,11 +115,11 @@ function DomainChip({ domain, size = 30, kind = "cluster" }: { domain: string; s
   );
 }
 
-// `center` is used on Career Selector's sub-sections specifically — that
+// `center` is used on Career Selector's sub-sections specifically - that
 // page reads as one continuous explainer rather than a table-dense report
 // page, so its sub-headings match the big centred PageHead above them
 // instead of the left-aligned style the denser Fitment/Suitability/JEE
-// pages use (kept as-is there — centering every heading on those genuinely
+// pages use (kept as-is there - centering every heading on those genuinely
 // table-heavy pages wouldn't read better, just different).
 function SecHead({ eyebrow, title, sub, center }: { eyebrow: string; title: string; sub?: string; center?: boolean }) {
   return (
@@ -131,7 +131,7 @@ function SecHead({ eyebrow, title, sub, center }: { eyebrow: string; title: stri
   );
 }
 
-// A big, centred heading — reuses the SAME .domhead/.domhead-eye/
+// A big, centred heading - reuses the SAME .domhead/.domhead-eye/
 // .domhead-title/.domhead-sub classes FullReport.tsx's own "Your top 5
 // domains" page already uses, so this matches the rest of the report's
 // established large-title style instead of introducing a second one.
@@ -175,14 +175,14 @@ const th: React.CSSProperties = { textAlign: "left", padding: "9px 10px", fontSi
 const td: React.CSSProperties = { padding: "10px 10px", fontSize: 12, color: "var(--ink-2)", borderBottom: "1px solid var(--line-2, var(--line))", verticalAlign: "middle" };
 
 // The overview page's 3 lenses share ONE outer border and ONE header bar
-// (like a real <table>'s <thead>) rather than 3 separately-boxed panels —
+// (like a real <table>'s <thead>) rather than 3 separately-boxed panels -
 // column dividers (border-left on the body columns) connect the header cells
 // straight down into the body, so this reads as one table. The body columns
 // still size independently (grid + align-items:start, no rowSpan/shared
-// row-height) — a rowSpan=5 Selector cell next to two 5-row lists of very
+// row-height) - a rowSpan=5 Selector cell next to two 5-row lists of very
 // different lengths is what left a large dead gap before.
 // A tinted colour band per lens (blue/green/orange) with an icon circle,
-// instead of one shared dark bar split into 3 text-only cells — each of the
+// instead of one shared dark bar split into 3 text-only cells - each of the
 // three lenses (Fitment/Suitability/Selector) now reads as its own
 // distinctly-coloured card, matching how the rest of this report already
 // colour-codes a lens (Pill tones, chart bars) rather than using colour only
@@ -203,12 +203,12 @@ function OverviewHeadCell({ icon, title, subtitle, desc, color, borderLeft }: { 
     </div>
   );
 }
-// A compact, chevron-terminated row — rank badge, domain name + fit % on one
-// line, roles listed underneath as plain sub-text — so all 5 rows read at a
+// A compact, chevron-terminated row - rank badge, domain name + fit % on one
+// line, roles listed underneath as plain sub-text - so all 5 rows read at a
 // glance without needing to open a card. The full per-role percentage/degree/
 // exam breakdown still lives on the Fitment/Suitability detail pages that
 // follow; this is the "at a glance" summary, not a duplicate of that detail.
-// Plain white rows throughout (no zebra striping) — the tinted number badge
+// Plain white rows throughout (no zebra striping) - the tinted number badge
 // and the divider line already separate one row from the next.
 function OverviewRow({ rank, name, pct, color, roles }: { rank: number; name: string; pct: number; color: string; roles: string[] }) {
   return (
@@ -231,7 +231,7 @@ function OverviewEmpty({ text }: { text: string }) {
   return <p style={{ fontSize: 11.5, color: "var(--muted)", textAlign: "center", padding: "20px 14px", margin: 0 }}>{text}</p>;
 }
 // A small, hand-drawn mountain-and-flag scene (plain inline SVG, no external
-// asset) for the bottom of the Selector column — its job is purely to fill
+// asset) for the bottom of the Selector column - its job is purely to fill
 // the real empty space left below the shorter Selector content once that
 // column is stretched to match Fitment/Suitability's height, the same way
 // the reference layout uses it, not to be a literal illustration of anything.
@@ -252,13 +252,13 @@ function SummitIllustration() {
     </div>
   );
 }
-// A numbered path down the left side — a circle per phase joined by a
-// connecting line, journey-map style ("I AM HERE, I CAN STUDY, ...") —
+// A numbered path down the left side - a circle per phase joined by a
+// connecting line, journey-map style ("I AM HERE, I CAN STUDY, ...") -
 // rendering the STANDARD, pre-authored per-cluster roadmap (CLUSTER_ROADMAPS,
 // clusterRoadmaps1112.ts), not a roadmap dynamically built around the
 // student's specific desired career or stream. Every real degree/
 // qualification name in it is generic to the cluster, so it reads the same
-// for every student who lands on that cluster — the "here's the realistic
+// for every student who lands on that cluster - the "here's the realistic
 // path for this domain" answer, not a comparison to any one career.
 function ClusterRoadmapPath({ phases, color }: { phases: ClusterRoadmapPhase[]; color: string }) {
   return (
@@ -271,7 +271,7 @@ function ClusterRoadmapPath({ phases, color }: { phases: ClusterRoadmapPhase[]; 
           </div>
           <div style={{ minWidth: 0, flex: 1, paddingBottom: i < phases.length - 1 ? 28 : 4 }}>
             {/* The phase name is the "where am I" anchor for this whole
-                block — a tinted pill makes it the loudest thing on the
+                block - a tinted pill makes it the loudest thing on the
                 card instead of reading the same weight as its own section
                 headings below it. */}
             <span style={{ display: "inline-block", fontSize: 13.5, fontWeight: 800, color, background: `${color}14`, padding: "4px 12px", borderRadius: 999 }}>{p.name}</span>
@@ -300,7 +300,7 @@ const VERDICT_TONE: Record<string, { c: string; bg: string }> = {
 };
 function verdictColor(v: string): string { return VERDICT_TONE[v]?.c ?? "var(--ink-2)"; }
 
-// "Developing"/"Emerging" instead of a blunt "Low"/"Very Low" — same
+// "Developing"/"Emerging" instead of a blunt "Low"/"Very Low" - same
 // reasoning as bandOf() in FullReport.tsx: a below-average score should
 // read as a stage, not a verdict on the student.
 function LevelLabel(v: number): string {
@@ -312,7 +312,7 @@ function LevelLabel(v: number): string {
 }
 
 
-// One axis's mini-bar (used for both Psy. Analysis and Skill & Abilities) —
+// One axis's mini-bar (used for both Psy. Analysis and Skill & Abilities) -
 // a level word + numeric score above a coloured SkillBar, exactly the shape
 // the reference "Career Paths" table uses for each of its two score columns.
 function AxisCell({ value, color }: { value: number; color: string }) {
@@ -326,7 +326,7 @@ function AxisCell({ value, color }: { value: number; color: string }) {
 
 // The roles inside a domain, as a literal table matching the reference
 // "Career Paths" cluster format exactly: Career Path | Psy. Analysis |
-// Skill and Abilities | Comment — two SEPARATE axes (not one blended score)
+// Skill and Abilities | Comment - two SEPARATE axes (not one blended score)
 // so a role that scores well on ability but poorly on genuine interest
 // reads honestly as "Medium Choice", not a misleading "Top Choice".
 // See scoreCareerAxes1112()/verdictFor1112() in careerFitEngine1112.ts.
@@ -364,7 +364,7 @@ function RolesTable({ careers }: { careers: RankedCareer1112[] }) {
 }
 
 // The old approach pulled these from MI1/MI2/keyAptitude (e.g.
-// "Logical-Mathematical", "Numerical Reasoning") — psychometric TRAIT
+// "Logical-Mathematical", "Numerical Reasoning") - psychometric TRAIT
 // labels, not things a student can actually go learn, and since ~44% of all
 // 332 careers share Logical-Mathematical as their #1 code, an analytically-
 // leaning student saw nearly the same 3-5 tags repeat across STEM, Finance,
@@ -372,11 +372,11 @@ function RolesTable({ careers }: { careers: RankedCareer1112[] }) {
 //
 // CLUSTER_ROADMAPS' own "Skills I acquire" (phase 2) was tried next, but
 // that text is written for ONE specific path through the cluster, not the
-// cluster as a whole — STEM's phase 2 names "CAD and one analysis/
+// cluster as a whole - STEM's phase 2 names "CAD and one analysis/
 // simulation tool" because it's written from an engineering-student's
 // route through STEM, but that's meaningless for the same cluster's
 // Physics, Biotechnology or Statistics careers. This table instead uses a
-// dedicated list per cluster, chosen to genuinely span its full breadth —
+// dedicated list per cluster, chosen to genuinely span its full breadth -
 // broad, transferable skills every career in that cluster draws on, not a
 // tool or technique specific to one sub-field within it.
 const CLUSTER_CORE_SKILLS: Record<StandardCluster, string[]> = {
@@ -402,13 +402,13 @@ function clusterCoreSkills(cluster: string): string[] {
 }
 
 // A one-line, plainly-true description of what the cluster actually
-// involves — shown under the domain name in the consolidated table so a
+// involves - shown under the domain name in the consolidated table so a
 // student can tell what "STEM" or "Human Services" means without already
 // knowing the cluster taxonomy. Generic-but-accurate by design (it has to
 // hold for every career inside the cluster, not just one path through it),
 // same authorship standard as CLUSTER_CORE_SKILLS above.
 // STEM is the one StandardCluster name that's a bare acronym rather than
-// plain English — every other cluster (Health Science, Marketing, ...) is
+// plain English - every other cluster (Health Science, Marketing, ...) is
 // already self-explanatory. Spelled out once wherever the cluster name is a
 // page/section HEADING (clusterHeading below); left bare in dense, repeated
 // contexts (the bar chart, the consolidated overview table) where the full
@@ -444,7 +444,7 @@ const CLUSTER_TAGLINE: Record<StandardCluster, string> = {
 // Every STANDARD_CLUSTERS.salaryIndia string already follows the same
 // Every STANDARD_CLUSTERS.salaryIndia string has exactly 3 "·"-separated
 // bands in entry/mid/senior ORDER, but not every band ends in the literal
-// word "entry"/"mid"/"senior" — several end in a parenthetical role
+// word "entry"/"mid"/"senior" - several end in a parenthetical role
 // description instead (e.g. Health Science's "...(doctors post-PG)",
 // Finance's "...(CFO / fund management)"). An earlier version tried to
 // detect the label from a keyword match against the tail of the string,
@@ -452,7 +452,7 @@ const CLUSTER_TAGLINE: Record<StandardCluster, string> = {
 // text had more words following it, and printed the WHOLE unparsed string
 // twice (once as a label, once as a fallback value) whenever no keyword
 // matched at all. This version never guesses which band a string belongs
-// to — position alone decides that — and only ever strips a bare, trailing
+// to - position alone decides that - and only ever strips a bare, trailing
 // occurrence of the label word (safe because it only fires when that exact
 // word is the very last thing in the string), so no real content is ever
 // dropped or duplicated.
@@ -466,12 +466,12 @@ function stripTrailingLabel(text: string): string {
     .trim();
 }
 function salaryBands(india: string | undefined): { headline: string; mid: string; senior: string } {
-  if (!india) return { headline: "—", mid: "", senior: "" };
+  if (!india) return { headline: "-", mid: "", senior: "" };
   const [entry, mid, senior] = india.split(/\s*·\s*/).map((s) => s.trim());
   return { headline: stripTrailingLabel(entry ?? india), mid: mid ? stripTrailingLabel(mid) : "", senior: senior ? stripTrailingLabel(senior) : "" };
 }
 
-// The compact "at a glance" table version of a domain-group list — S.No ·
+// The compact "at a glance" table version of a domain-group list - S.No ·
 // Domain · Roles · Skills · Salaries · Explore, one row per cluster, as
 // requested for the top of the Fitment/Suitability pages. The detailed
 // per-role Psy.Analysis/Skill/Comment breakdown (DomainBlock/RolesTable)
@@ -480,7 +480,7 @@ function salaryBands(india: string | undefined): { headline: string; mid: string
 function SecLabel({ children }: { children: React.ReactNode }) {
   return <div style={{ fontSize: 9, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)" }}>{children}</div>;
 }
-// A stacked list of cards, one per domain, instead of a wide <table> — a
+// A stacked list of cards, one per domain, instead of a wide <table> - a
 // 7-column table (domain/roles/skills/salary/companies/explore) forced
 // horizontal scrolling on anything narrower than ~900px, and one long list
 // (skills, companies) in a single cell stretched the WHOLE row's height,
@@ -514,7 +514,7 @@ function ClusterSummaryTable({ groups, showCompanies }: { groups: DomainGroup111
 
             <div className="domcard-grid">
               <div className="domcard-sec">
-                {/* Just the role names — the fit % is already the whole
+                {/* Just the role names - the fit % is already the whole
                     point of the domain's own rank on the overview page and
                     the per-role table further down this same page; showing
                     it a third time here, on every row, was pure repetition. */}
@@ -530,7 +530,7 @@ function ClusterSummaryTable({ groups, showCompanies }: { groups: DomainGroup111
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: 8 }}>
                   {clusterCoreSkills(g.domain).length ? clusterCoreSkills(g.domain).map((s) => (
                     <span key={s} style={{ fontSize: 10.5, background: "var(--line-2, #f2f2f4)", color: "var(--ink-2)", fontWeight: 600, borderRadius: 6, padding: "3px 8px", lineHeight: 1.35 }}>{s}</span>
-                  )) : <span style={{ fontSize: 11, color: "var(--muted)" }}>—</span>}
+                  )) : <span style={{ fontSize: 11, color: "var(--muted)" }}>-</span>}
                 </div>
               </div>
               <div className="domcard-sec">
@@ -556,7 +556,7 @@ function ClusterSummaryTable({ groups, showCompanies }: { groups: DomainGroup111
 
             {showCompanies && (
               <div style={{ padding: "12px 18px", borderTop: "1px solid var(--line-2, var(--line))" }}>
-                {/* One wrapping row, capped to 3+2 — the full list (up to 13
+                {/* One wrapping row, capped to 3+2 - the full list (up to 13
                     names) as one comma-joined sentence is what made this read
                     as one long, unstructured wall of text. Govt/PSU names get
                     the cluster-coloured tint so they stand out from regulars. */}
@@ -580,14 +580,14 @@ function ClusterSummaryTable({ groups, showCompanies }: { groups: DomainGroup111
   );
 }
 
-// The "10 real funded programmes" table (CLUSTER_FUNDED_PROGRAMS) — one
+// The "10 real funded programmes" table (CLUSTER_FUNDED_PROGRAMS) - one
 // sub-block per cluster the student is ranked into, each with its own small
 // table (program / overview / eligibility / stipend / on completion),
 // matching FREE_STIPEND_ROUTE's existing shape/tone exactly. A cluster with
 // no researched programmes yet is skipped silently rather than shown as an
-// empty table — an empty table reads as "there's nothing here," which isn't
+// empty table - an empty table reads as "there's nothing here," which isn't
 // true, it just isn't researched yet (see CLUSTER_FUNDED_PROGRAMS's own comment).
-// Government-vs-industry is presentational only — a keyword check over
+// Government-vs-industry is presentational only - a keyword check over
 // fields that already exist (name/verify/url), not a new researched fact.
 // Every program still names its own real conducting body regardless of
 // which pill it gets; this just colour-codes the distinction at a glance.
@@ -598,17 +598,17 @@ function fundingBadge(p: FundedProgram): { label: string; tone: string; bg: stri
     ? { label: "Government-Backed", tone: "#2a5aa0", bg: "#eaf1fb", icon: "bank" }
     : { label: "Industry-Led", tone: "#a3620b", bg: "#fdf1de", icon: "bank" };
 }
-// Program names in this data follow "SHORT NAME — full sponsor/description"
-// (e.g. "NDA — National Defence Academy") — split at that dash for a bold
+// Program names in this data follow "SHORT NAME - full sponsor/description"
+// (e.g. "NDA - National Defence Academy") - split at that dash for a bold
 // short headline plus a subtitle, instead of one long run-on title.
 function splitProgramName(name: string): { headline: string; sub: string | null } {
-  const idx = name.indexOf(" — ");
+  const idx = name.indexOf(" - ");
   return idx === -1 ? { headline: name, sub: null } : { headline: name.slice(0, idx), sub: name.slice(idx + 3) };
 }
 function urlHost(url: string): string {
   try { return new URL(url).hostname.replace(/^www\./, ""); } catch { return url; }
 }
-// Splits a stat's value into a bold lead clause plus a muted detail clause —
+// Splits a stat's value into a bold lead clause plus a muted detail clause -
 // tries a real sentence break first, then a semicolon, then an em-dash,
 // using whichever gives a genuine two-part split. This is NOT the old
 // shortHeadline() truncation bug (which cut a value mid-word with an
@@ -618,11 +618,11 @@ function urlHost(url: string): string {
 // Two things the single ". "-only version got wrong, both visible in real
 // data: (1) a long value with no period at all (just one at the very end,
 // e.g. a single 200-character sentence) rendered as ONE long, fully-bold
-// block — much taller and heavier than its neighbouring stats, which is
+// block - much taller and heavier than its neighbouring stats, which is
 // exactly the "long long things, uneven" look being fixed here; trying a
 // semicolon/dash first gives those values a short bold lead too. (2) a bare
 // "period then space" match doesn't know the difference between a real
-// sentence break and an abbreviation like "vs." or "e.g." — it would split
+// sentence break and an abbreviation like "vs." or "e.g." - it would split
 // "...programmes vs. its own..." right after "vs.", cutting a clause in
 // half mid-thought. Requiring a capital letter, digit or currency symbol
 // right after the period is what a real new sentence almost always starts
@@ -631,21 +631,21 @@ function splitLead(text: string): { lead: string; rest: string | null } {
   const patterns: RegExp[] = [
     /^(.*?\.)\s+(?=[A-Z0-9₹$])(.{8,})$/,
     /^(.*?;)\s+(.{8,})$/,
-    /^(.*?—)\s*(.{8,})$/,
+    /^(.*?-)\s*(.{8,})$/,
   ];
   for (const re of patterns) {
     const m = text.match(re);
-    if (m) return { lead: m[1].replace(/[.;—]\s*$/, "").trim(), rest: m[2].trim() };
+    if (m) return { lead: m[1].replace(/[.;-]\s*$/, "").trim(), rest: m[2].trim() };
   }
   return { lead: text, rest: null };
 }
 
 // Real logos, sourced from Wikimedia Commons and verified (fetched, 200 OK)
-// before use — same standard as every other fact in this file. Only the
+// before use - same standard as every other fact in this file. Only the
 // sponsors below have a confirmed, working file; every other programme
 // keeps the plain colour-badge fallback rather than guessing a logo that
 // might be wrong or might not exist. Matched against the program's own
-// `name` text, first match wins — ordered narrowest-sponsor-first so e.g.
+// `name` text, first match wins - ordered narrowest-sponsor-first so e.g.
 // "TCS iON" doesn't accidentally match a broader term first.
 const WIKIMEDIA_FILE = (name: string) => `https://commons.wikimedia.org/wiki/Special:FilePath/${name}`;
 const SPONSOR_LOGOS: { test: RegExp; url: string }[] = [
@@ -668,7 +668,7 @@ function FundedProgramCard({ p, color }: { p: FundedProgram; color: string }) {
   const badge = fundingBadge(p);
   const { headline, sub } = splitProgramName(p.name);
   const logo = sponsorLogo(p.name);
-  // Fixed per-stat colours (not the cluster colour) — the three things being
+  // Fixed per-stat colours (not the cluster colour) - the three things being
   // compared (who qualifies / how much / what you get) are the same three
   // categories on every card, so giving each its own consistent colour reads
   // faster across a grid of many cards than one colour repeated three times.
@@ -697,7 +697,7 @@ function FundedProgramCard({ p, color }: { p: FundedProgram; color: string }) {
               {badge.label}
             </span>
           </div>
-          {/* One consistent colour for the whole description — summary and
+          {/* One consistent colour for the whole description - summary and
               structure used to switch tone mid-sentence, which read as a
               rendering glitch rather than a deliberate distinction. */}
           <p style={{ margin: "10px 0 0", fontSize: 14.5, color: "var(--ink-2)", lineHeight: 1.6 }}>{p.summary} {p.structure}</p>
@@ -709,8 +709,8 @@ function FundedProgramCard({ p, color }: { p: FundedProgram; color: string }) {
           const { lead, rest } = splitLead(s.value);
           return (
             <div key={s.label} style={{ padding: "0 20px", borderLeft: i > 0 ? "1px solid var(--line-2, var(--line))" : "none" }}>
-              {/* The LABEL is the highlighted thing here — bold and in the
-                  stat's own colour — not the value text below it, which is
+              {/* The LABEL is the highlighted thing here - bold and in the
+                  stat's own colour - not the value text below it, which is
                   just information to read, not something to shout. */}
               <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 9 }}>
                 <span style={{ width: 30, height: 30, borderRadius: "50%", background: `${s.color}16`, display: "grid", placeItems: "center", flex: "none" }}>
@@ -734,7 +734,7 @@ function FundedProgramCard({ p, color }: { p: FundedProgram; color: string }) {
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 12.5, color: "var(--muted)" }}>
           <Icon name="info" size={14} />
-          Details may change — refer to the official source for the latest information.
+          Details may change - refer to the official source for the latest information.
         </div>
       </div>
     </div>
@@ -760,7 +760,7 @@ function FundedProgramsSection({ groups }: { groups: DomainGroup1112[] }) {
                 <div style={{ fontSize: 20, fontWeight: 800, color: "var(--ink)", letterSpacing: ".08em", textTransform: "uppercase" }}>{clusterHeading(g.domain)}</div>
                 <div style={{ fontSize: 15, color: "var(--ink-2)", marginTop: 4 }}>{CLUSTER_TAGLINE[g.domain as StandardCluster] ?? ""}</div>
               </div>
-              {/* Two distinct pills — "this is real" and "this pays/waives
+              {/* Two distinct pills - "this is real" and "this pays/waives
                   something" are two separate claims, not one combined label. */}
               <div style={{ display: "flex", alignItems: "center", gap: 10, flex: "none" }}>
                 <span style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 700, color: "#1f7a55", background: "#eaf6f0", padding: "8px 16px", borderRadius: 999 }}>
@@ -782,10 +782,10 @@ function FundedProgramsSection({ groups }: { groups: DomainGroup1112[] }) {
   );
 }
 
-// A domain card matching class 9-10's DomainCard shell (`.dom` — the coloured
+// A domain card matching class 9-10's DomainCard shell (`.dom` - the coloured
 // top border, radius and shadow every illustrated card in this report uses)
 // so Career Fitment/Suitability read as the SAME report format, not a
-// separately designed page — just without the hero image/tagline/"how to
+// separately designed page - just without the hero image/tagline/"how to
 // join"/skills text DomainCard has, since DOMAINS_1112 has no authored copy
 // for those and fabricating it would repeat the mistake cut earlier for
 // college cutoffs. Roles are a literal table (see RolesTable) per the
@@ -795,12 +795,12 @@ function DomainBlock({ g, rank, badge }: { g: DomainGroup1112; rank: number; bad
   const color = clusterColor(g.domain);
   const rcVars = { ["--rc" as string]: color, ["--rc-tint" as string]: color + "12", ["--rc-line" as string]: color + "38" } as React.CSSProperties;
   // The domain's own rank is 70% interest / 30% skill (see groupByCluster1112
-  // in careerFitEngine1112.ts) — a domain earns a high rank mainly by strong,
+  // in careerFitEngine1112.ts) - a domain earns a high rank mainly by strong,
   // consistent INTEREST across it. Each role's own verdict below is stricter,
   // requiring interest AND skill to both clear a bar. That's not a
   // contradiction: a #1-ranked domain can legitimately show "Medium Choice"
   // on every role when interest is what's driving the rank and skill hasn't
-  // caught up yet (expected before actually studying the field) — but
+  // caught up yet (expected before actually studying the field) - but
   // without saying so, it just reads as the domain rank being wrong. This
   // note only shows when that gap is real (interest meaningfully ahead of
   // skill across the shown roles), not on every domain.
@@ -818,7 +818,7 @@ function DomainBlock({ g, rank, badge }: { g: DomainGroup1112; rank: number; bad
       </div>
       {interestLed && (
         <div style={{ padding: "10px 18px", background: "var(--rc-tint)", borderBottom: "1px solid var(--rc-line)", fontSize: 11.5, color: "var(--ink-2)", lineHeight: 1.5 }}>
-          <b style={{ color: "var(--ink)" }}>Why this domain ranks here despite "Medium Choice" roles:</b> your interest in {g.domain} is strong and consistent — that's what earns it this rank. Skill reflects where you are today, not a ceiling — it's expected to still be developing before you've actually studied the field, and builds once you do.
+          <b style={{ color: "var(--ink)" }}>Why this domain ranks here despite "Medium Choice" roles:</b> your interest in {g.domain} is strong and consistent - that's what earns it this rank. Skill reflects where you are today, not a ceiling - it's expected to still be developing before you've actually studied the field, and builds once you do.
         </div>
       )}
       <div className="dom-bd">
@@ -836,11 +836,11 @@ function DomainBlock({ g, rank, badge }: { g: DomainGroup1112; rank: number; bad
   );
 }
 
-// One category's card in the "every degree open to you" section — a header
+// One category's card in the "every degree open to you" section - a header
 // (category name + salary, taken from the category's own salaryDomain) plus
 // one line per degree with its real eligibility mark for THIS student's
 // stream (🟢 fully eligible, 🟡 conditional, 🟢🟡/🟡🔴 the workbook's own
-// borderline marks — see degreeStreamMatrix.ts for why those aren't
+// borderline marks - see degreeStreamMatrix.ts for why those aren't
 // collapsed to a single colour).
 function DegreeCategoryBlock({ category, rows, streamKey }: { category: string; rows: DegreeEligibilityRow[]; streamKey: StreamKey1112 }) {
   const salaryDomain = rows[0]?.salaryDomain ?? "";
@@ -854,7 +854,7 @@ function DegreeCategoryBlock({ category, rows, streamKey }: { category: string; 
       </div>
       {sal && (
         <div style={{ fontSize: 11, color: "var(--muted)", marginBottom: 8 }}>
-          Salary — India: {sal.india} &nbsp;|&nbsp; Abroad: {sal.abroad}
+          Salary - India: {sal.india} &nbsp;|&nbsp; Abroad: {sal.abroad}
         </div>
       )}
       <div style={{ display: "flex", flexDirection: "column" }}>
@@ -865,7 +865,7 @@ function DegreeCategoryBlock({ category, rows, streamKey }: { category: string; 
             <div key={r.degree} style={{ display: "flex", alignItems: "baseline", gap: 8, padding: "5px 0", borderTop: "1px solid var(--line)", fontSize: 12 }}>
               <span style={{ flex: "none" }}>{ELIGIBILITY_SYMBOL[mark]}</span>
               <span style={{ fontWeight: 700, color: "var(--ink)" }}>{r.degree}</span>
-              <span style={{ color: "var(--muted)", fontSize: 11 }}>— {ELIGIBILITY_LABEL[mark]}</span>
+              <span style={{ color: "var(--muted)", fontSize: 11 }}>- {ELIGIBILITY_LABEL[mark]}</span>
             </div>
           );
         })}
@@ -874,13 +874,13 @@ function DegreeCategoryBlock({ category, rows, streamKey }: { category: string; 
   );
 }
 
-// One card in the "based on your specific strengths" section — a single
+// One card in the "based on your specific strengths" section - a single
 // named dimension (e.g. "Coding Interest", not a whole domain) picked
 // because the student's own measured profile scored highest on it, with
 // the workbook's real question/courses/jobs/skills/salary/government-jobs
 // for that exact dimension. See dimensionCareerGuide.ts for how the score
 // is derived and why a few dimensions (Risk Orientation, Work Environment,
-// Motivators) never appear here — no measured field in this app proxies them.
+// Motivators) never appear here - no measured field in this app proxies them.
 function DimensionBlock({ d, rank }: { d: ScoredDimension; rank: number }) {
   const color = RANK_COLOURS[(rank - 1) % RANK_COLOURS.length];
   const row = (label: string, value: string) => (
@@ -913,22 +913,22 @@ function DimensionBlock({ d, rank }: { d: ScoredDimension; rank: number }) {
   );
 }
 
-// The 6-category legend the "Comment" column reads against — static,
+// The 6-category legend the "Comment" column reads against - static,
 // explanatory, doesn't depend on student data, matching the reference
 // report's own "Scenarios" block.
 const SCENARIOS: { label: string; tone: string; text: string }[] = [
-  { label: "Top Choice", tone: VERDICT_TONE["Top Choice"].c, text: "Both your interest and your skills are strong here — a genuine best fit." },
-  { label: "Medium Choice", tone: VERDICT_TONE["Medium Choice"].c, text: "Worth considering — but either your interest or your skills need more building here, not both." },
-  { label: "Low Choice", tone: VERDICT_TONE["Low Choice"].c, text: "Both your measured interest and skills are low here — not a strong match right now." },
+  { label: "Top Choice", tone: VERDICT_TONE["Top Choice"].c, text: "Both your interest and your skills are strong here - a genuine best fit." },
+  { label: "Medium Choice", tone: VERDICT_TONE["Medium Choice"].c, text: "Worth considering - but either your interest or your skills need more building here, not both." },
+  { label: "Low Choice", tone: VERDICT_TONE["Low Choice"].c, text: "Both your measured interest and skills are low here - not a strong match right now." },
 ];
 function ScenariosLegend() {
   return (
     <div style={{ border: "1px solid var(--line)", borderRadius: 12, padding: "14px 16px" }}>
-      <div className="subhd" style={{ marginBottom: 10 }}>Scenarios — how to read the Comment column</div>
+      <div className="subhd" style={{ marginBottom: 10 }}>Scenarios - how to read the Comment column</div>
       <ol style={{ margin: 0, paddingLeft: 18, display: "flex", flexDirection: "column", gap: 8 }}>
         {SCENARIOS.map((s) => (
           <li key={s.label} style={{ fontSize: 12, color: "var(--ink-2)", lineHeight: 1.55 }}>
-            <b style={{ color: s.tone }}>{s.label}</b> — {s.text}
+            <b style={{ color: s.tone }}>{s.label}</b> - {s.text}
           </li>
         ))}
       </ol>
@@ -941,17 +941,17 @@ function ScenariosLegend() {
 // points somewhere real instead of being collected and never read back.
 const CONCERN_POINTERS: Record<string, string> = {
   "Course Suitability: Picking the wrong course or struggling with academic difficulty.":
-    "That's exactly what this ranking is for — every cluster below is ordered by how well it fits your own measured interests and abilities, not by popularity.",
+    "That's exactly what this ranking is for - every cluster below is ordered by how well it fits your own measured interests and abilities, not by popularity.",
   "Admissions & Competition: Cracking tough entrance exams and getting into a good college.":
     "The Career Selector page ahead names the specific entrance exam for your chosen career, with a full roadmap to it.",
   "Career Outcomes: Getting a stable job, good salary, and career growth.":
     "Each cluster below shows its real entry/mid/senior salary range in India and abroad, under \"Typical earnings.\"",
   "Financial Cost: Affordability, high fees, or student expenses.":
-    "See the Funded Programmes table on the Career Suitability page ahead — genuinely funded or stipend-linked routes, not just any paid course.",
+    "See the Funded Programmes table on the Career Suitability page ahead - genuinely funded or stipend-linked routes, not just any paid course.",
   "Family & Location: Parents' expectations or having to relocate.":
-    "Worth sharing your top clusters below with your family directly — a concrete, ranked list from your own answers is easier to discuss than a vague direction.",
+    "Worth sharing your top clusters below with your family directly - a concrete, ranked list from your own answers is easier to discuss than a vague direction.",
   "Confusion / Lack of Info: Feeling overwhelmed, limited, or unaware of the options.":
-    "That's what the ranking below is for — it narrows 332 careers down to the ones your own profile actually points toward.",
+    "That's what the ranking below is for - it narrows 332 careers down to the ones your own profile actually points toward.",
 };
 function ConcernPointers({ concerns }: { concerns: string[] }) {
   const known = concerns.filter((c) => CONCERN_POINTERS[c]);
@@ -962,7 +962,7 @@ function ConcernPointers({ concerns }: { concerns: string[] }) {
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {known.map((c) => (
           <div key={c} style={{ fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.55 }}>
-            <b style={{ color: "var(--ink)" }}>{c.split(":")[0]}</b> — {CONCERN_POINTERS[c]}
+            <b style={{ color: "var(--ink)" }}>{c.split(":")[0]}</b> - {CONCERN_POINTERS[c]}
           </div>
         ))}
       </div>
@@ -972,20 +972,20 @@ function ConcernPointers({ concerns }: { concerns: string[] }) {
 
 // Horizontal bar chart of every cluster's own fit score (topScore, the same
 // distinct-RIASEC-deduped interest average groupByCluster1112 already
-// computes) — hand-rolled SVG, since this repo has no charting library.
+// computes) - hand-rolled SVG, since this repo has no charting library.
 // Only clusters the student scored above 0 on are
 // drawn (a cluster with literally zero matching interest signal isn't a
-// bar worth showing, not a bug) — sorted strongest first, one colour per
+// bar worth showing, not a bug) - sorted strongest first, one colour per
 // cluster from CLUSTER_COLOURS so no two bars are ever confusably identical.
 function ClusterBarChart({ groups }: { groups: DomainGroup1112[] }) {
   const rows = groups.filter((g) => g.topScore > 0);
   if (!rows.length) return null;
   // padL has to fit the longest label ("Law, Public Safety, Corrections &
-  // Security", "Transportation, Distribution & Logistics") at 11.5px bold —
+  // Security", "Transportation, Distribution & Logistics") at 11.5px bold -
   // anything narrower clips those labels off the SVG's left edge instead of
   // just cramping them, since text-anchor="end" grows leftward from padL-12.
   // rowH is tall enough that 16 rows fill the page's real available height
-  // (the sheet is a fixed A4 page — a short chart just leaves the rest of
+  // (the sheet is a fixed A4 page - a short chart just leaves the rest of
   // the page blank) instead of only using the top third of it.
   const W = 760, rowH = 45, padL = 350, padR = 56, padT = 6, padB = 6;
   const H = padT + padB + rows.length * rowH;
@@ -1020,7 +1020,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
   // (Career Selector's desired/alternative/excluded careers, Career Fit's
   // considered field areas and pathway-type preference, Subject Fit's
   // enjoyed/hardest subject) instead of leaving Fitment/Suitability purely
-  // RIASEC-driven — see RankingContext1112's own header comment in
+  // RIASEC-driven - see RankingContext1112's own header comment in
   // careerFitEngine1112.ts for why.
   const rankingCtx = {
     desiredCareerText: desiredCareer,
@@ -1035,18 +1035,18 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
 
   const fitmentRanked = rankFitment1112(l1, rankingCtx);
   const fitmentGroups = groupByCluster1112(fitmentRanked, 5, 5);
-  // Every one of the 16 clusters' scores, for the cluster-fit bar chart —
+  // Every one of the 16 clusters' scores, for the cluster-fit bar chart -
   // domainLimit=16 (not 5) so nothing is cut, rolesPerGroup=1 since the
   // chart only needs each cluster's topScore, not its role list.
   const allClusterScores = groupByCluster1112(fitmentRanked, 16, 1);
-  // Roles Fitment already showed, per cluster — Suitability skips these so
+  // Roles Fitment already showed, per cluster - Suitability skips these so
   // the two pages don't print the identical role list for a shared cluster;
   // it shows the NEXT tier of roles instead (still real, still ranked).
   const fitmentShownIds = new Set(fitmentGroups.flatMap((g) => g.careers.map((c) => c.career.id)));
 
   // Widen Suitability to include Bridge-fit careers (not just Native Fit)
   // when the student's own reasons for their current stream suggest it
-  // wasn't a fully self-driven choice — family/mentor steer, peer influence
+  // wasn't a fully self-driven choice - family/mentor steer, peer influence
   // or outright uncertainty, without also picking "my own choice". A student
   // in that position may have real interest sitting just outside their
   // current stream, which a Native-Fit-only page would never surface.
@@ -1060,21 +1060,33 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
 
   const selector = desiredCareer ? selectCareer1112(desiredCareer, l1, streamKey) : null;
 
-  // "Possibilities" for the Selector page — close alternatives in the same
+  // "Possibilities" for the Selector page - close alternatives in the same
   // cluster as the chosen career, so "I want X but here's what's realistic"
   // has real, ranked neighbours rather than just a single yes/no verdict.
+  // Sourced from suitabilityRanked (the student's own Career Suitability
+  // ranking), not the raw catalog - these are the same-cluster roles the
+  // student's actual profile is best suited to, in fit order, not just
+  // whichever 4 happen to come first in CAREERS_1112. This also means
+  // excluded careers ("which career areas would you NOT want to pursue")
+  // are correctly filtered out here too, since suitabilityRanked already
+  // goes through rankFitment1112's excludedCareerIds filter - the raw
+  // catalog never did, despite this file's own comment elsewhere claiming
+  // exclusions apply "everywhere... Selector's own close alternatives".
   const alternatives: Career1112[] = selector?.career
-    ? CAREERS_1112.filter((c) => c.cluster === selector.career!.cluster && c.id !== selector.career!.id).slice(0, 4)
+    ? suitabilityRanked
+        .filter((r) => r.career.cluster === selector.career!.cluster && r.career.id !== selector.career!.id)
+        .slice(0, 4)
+        .map((r) => r.career)
     : [];
 
   // This roadmap is the STANDARD, pre-authored path for Career Suitability's
-  // #1 domain (CLUSTER_ROADMAPS, clusterRoadmaps1112.ts) — generic to that
+  // #1 domain (CLUSTER_ROADMAPS, clusterRoadmaps1112.ts) - generic to that
   // domain, not built around the student's specific desired career or
   // stream. The short "you are here → destination" banner above already
   // covers the desired career directly (on track / bridge / hard gate + the
   // exam to take); this section answers a different, always-the-same-source
-  // question — "what does a realistic path in your best-fit domain actually
-  // look like" — so it never name-drops the desired career or the stream.
+  // question - "what does a realistic path in your best-fit domain actually
+  // look like" - so it never name-drops the desired career or the stream.
   const roadmapDomain = suitabilityGroups[0]?.domain ?? null;
   const realisticRoadmap = roadmapDomain ? CLUSTER_ROADMAPS[roadmapDomain as StandardCluster] : null;
 
@@ -1085,7 +1097,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
       node: (
         <>
           <PageHead eyebrow="Across the standard career clusters" title="Your Career Cluster Fit"
-            sub="How strongly your measured interests, aptitude and strengths line up with each of the Career Clusters — the same industry-standard groupings used across career guidance, not a scheme unique to this report." />
+            sub="How strongly your measured interests, aptitude and strengths line up with each of the Career Clusters - the same industry-standard groupings used across career guidance, not a scheme unique to this report." />
           <div style={{ marginTop: 24, border: "1px solid var(--line)", borderRadius: 13, padding: "28px 24px" }}>
             <ClusterBarChart groups={allClusterScores} />
           </div>
@@ -1098,17 +1110,17 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
       node: (
         <>
           <PageHead eyebrow="Fitment · Suitability · Selector, side by side" title="Your Career Path at a Glance"
-            sub="Compare what fits you, what fits your stream, and explore your ideal career — all in one view." />
+            sub="Compare what fits you, what fits your stream, and explore your ideal career - all in one view." />
           <div className="full-bleed" style={{ marginTop: 22, border: "1px solid var(--line)", borderRadius: 16, overflow: "hidden", boxShadow: "0 1px 3px rgba(0,0,0,.05), 0 10px 26px rgba(0,0,0,.05)" }}>
             {/* Each lens gets its own tinted colour band + icon circle
-                (blue/green/orange) instead of one shared dark bar — reads as
+                (blue/green/orange) instead of one shared dark bar - reads as
                 3 distinct cards sharing one table frame. */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
               <OverviewHeadCell icon="score" title="Career Fitment" subtitle="What fits you" desc="Domains that align with your interests and strengths." color="#2f6bff" />
               <OverviewHeadCell icon="cap" title="Career Suitability" subtitle="What fits your stream" desc="Domains that match your academic background." color="#12996b" borderLeft />
               <OverviewHeadCell icon="match" title="Career Selector" subtitle="Your desired career" desc="Your most suitable career based on your profile." color="#e08a1e" borderLeft />
             </div>
-            {/* Body: 3 columns stretched to equal height (grid default) — the
+            {/* Body: 3 columns stretched to equal height (grid default) - the
                 Selector column is flex-column with its illustration pinned to
                 the bottom via marginTop:auto, so its shorter content doesn't
                 leave a bare gap under it; it fills down to match
@@ -1164,17 +1176,17 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
       node: (
         <>
           <PageHead eyebrow="What fits YOU" title="Career Fitment"
-            sub="Your top 5 domains, ranked purely by your assessment. Ignores your stream entirely — this is what your interests, aptitude and strength domains point toward, with no filter for what's currently reachable. Career Suitability, next, applies the real-world stream filter." />
+            sub="Your top 5 domains, ranked purely by your assessment. Ignores your stream entirely - this is what your interests, aptitude and strength domains point toward, with no filter for what's currently reachable. Career Suitability, next, applies the real-world stream filter." />
           <div style={{ marginTop: 20 }}>
             <ConcernPointers concerns={output.layer4.topConcerns ?? []} />
-            {/* The consolidated table is the whole story here — Career
+            {/* The consolidated table is the whole story here - Career
                 Suitability, next, is where each of these domains gets the
                 full per-role breakdown, since that's the realistic, stream-
                 filtered list worth reading in that much depth. */}
             {fitmentGroups.length ? <ClusterSummaryTable groups={fitmentGroups} /> : <p>No matches yet.</p>}
           </div>
           <p className="disclaimer" style={{ marginTop: 16 }}>
-            You're free to explore any career, in any domain — this is a starting point, not a fixed path.
+            You're free to explore any career, in any domain - this is a starting point, not a fixed path.
           </p>
         </>
       ),
@@ -1185,10 +1197,10 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
       node: (
         <>
           <PageHead eyebrow="What's realistic for your stream" title="Career Suitability"
-            sub={`Your top domains that ${streamKey || "your current stream"} actually reaches. Same ranking as Career Fitment, kept to only the careers you're already fully eligible for from your current stream (Native Fit) — no bridge step needed for any role shown here. Roles already listed under a domain in Career Fitment aren't repeated here — these are the next-best real options in the same domain.`} />
+            sub={`Your top domains that ${streamKey || "your current stream"} actually reaches. Same ranking as Career Fitment, kept to only the careers you're already fully eligible for from your current stream (Native Fit) - no bridge step needed for any role shown here. Roles already listed under a domain in Career Fitment aren't repeated here - these are the next-best real options in the same domain.`} />
           <div style={{ marginTop: 20 }}>
             {suitabilityGroups.length ? <ClusterSummaryTable groups={suitabilityGroups} showCompanies /> : (
-              <p style={{ fontSize: 13, color: "var(--ink-2)" }}>Nothing in your top fitment domains is a Native Fit for your current stream yet — see the roadmap page next for bridge options toward what you actually want.</p>
+              <p style={{ fontSize: 13, color: "var(--ink-2)" }}>Nothing in your top fitment domains is a Native Fit for your current stream yet - see the roadmap page next for bridge options toward what you actually want.</p>
             )}
           </div>
           {suitabilityGroups.length > 0 && <div style={{ marginTop: 24, marginBottom: 16 }}><ScenariosLegend /></div>}
@@ -1199,12 +1211,12 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
           </div>
           {suitabilityGroups.length > 0 && (
             <div style={BREAK}>
-              <SecHead eyebrow="Real, verified funding — not JEE-score-gated" title="Funded programmes in your top domains"
-                sub="Genuinely funded or stipend-linked routes into these fields — government training, sponsorship or apprenticeship programmes, not ordinary paid courses. Every fact here comes from an official source, verified before publishing, not a guess." />
+              <SecHead eyebrow="Real, verified funding - not JEE-score-gated" title="Funded programmes in your top domains"
+                sub="Genuinely funded or stipend-linked routes into these fields - government training, sponsorship or apprenticeship programmes, not ordinary paid courses. Every fact here comes from an official source, verified before publishing, not a guess." />
               <div style={{ marginTop: 16 }}>
                 <FundedProgramsSection groups={suitabilityGroups} />
                 {!suitabilityGroups.some((g) => CLUSTER_FUNDED_PROGRAMS[g.domain as keyof typeof CLUSTER_FUNDED_PROGRAMS]?.length) && (
-                  <p style={{ fontSize: 12.5, color: "var(--ink-2)" }}>We haven't researched verified funded programmes for your specific top domains yet — this section is filled in cluster by cluster as it's confirmed against official sources, not guessed to fill space.</p>
+                  <p style={{ fontSize: 12.5, color: "var(--ink-2)" }}>We haven't researched verified funded programmes for your specific top domains yet - this section is filled in cluster by cluster as it's confirmed against official sources, not guessed to fill space.</p>
                 )}
               </div>
             </div>
@@ -1219,13 +1231,13 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
         <>
           <PageHead eyebrow="Your favourite career path" title="Career Selector"
             sub={desiredCareer
-              ? `${desiredCareer} — your starting point, and the full journey to get there. The roadmap ahead is built for the long run, not just the next exam.`
-              : "You didn't name a career — the roadmap ahead is still built for the long run, not just the next exam."} />
+              ? `${desiredCareer} - your starting point, and the full journey to get there. The roadmap ahead is built for the long run, not just the next exam.`
+              : "You didn't name a career - the roadmap ahead is still built for the long run, not just the next exam."} />
           {desiredCareer ? (
             selector?.career ? (
               <div style={{ marginTop: 20 }}>
                 {/* The big, unmissable starting-point banner the whole page
-                    hangs off — everything below answers "how do I get from
+                    hangs off - everything below answers "how do I get from
                     here to there", so "here" and "there" need to be obvious
                     at a glance, not buried in a small muted line. */}
                 <div style={{
@@ -1258,7 +1270,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                 {roadmapDomain && realisticRoadmap && (
                   <div style={BREAK}>
                     <SecHead center eyebrow={`${clusterHeading(roadmapDomain)} · your best-fit domain`} title="Your realistic path"
-                      sub={`The standard path into a ${clusterHeading(roadmapDomain)} career — where you are now, through to senior/leadership roles. This is the same realistic route for anyone in this domain, not built around one specific job title.`} />
+                      sub={`The standard path into a ${clusterHeading(roadmapDomain)} career - where you are now, through to senior/leadership roles. This is the same realistic route for anyone in this domain, not built around one specific job title.`} />
                     <div style={{ marginTop: 16 }}>
                       <ClusterRoadmapPath phases={realisticRoadmap.phases} color={clusterColor(roadmapDomain)} />
                     </div>
@@ -1267,7 +1279,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
 
                 <div style={BREAK}>
                   <SecHead center eyebrow="Where to go next" title="Explore exams, certifications & internships"
-                    sub="Real, official places to start — the exact exam/registration portals for this field, and live internship listings on your own OneGrasp dashboard." />
+                    sub="Real, official places to start - the exact exam/registration portals for this field, and live internship listings on your own OneGrasp dashboard." />
                   <div style={{ marginTop: 14, display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
                     {(CLUSTER_EXPLORE_LINKS[selector.career.cluster] ?? []).map((l) => (
                       <a key={l.url} href={l.url} target="_blank" rel="noreferrer" style={{ fontSize: 12.5, fontWeight: 700, color: clusterColor(selector!.career!.cluster), background: `${clusterColor(selector!.career!.cluster)}12`, border: `1px solid ${clusterColor(selector!.career!.cluster)}45`, padding: "9px 16px", borderRadius: 10, textDecoration: "none" }}>{l.label} ↗</a>
@@ -1291,7 +1303,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                     <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: 8, maxWidth: 520, marginLeft: "auto", marginRight: "auto" }}>
                       {alternatives.map((c) => (
                         <div key={c.id} style={{ fontSize: 12, color: "var(--ink-2)", padding: "6px 0", borderTop: "1px solid var(--line)" }}>
-                          <b style={{ color: "var(--ink)" }}>{c.name}</b> — {c.typicalDegree}
+                          <b style={{ color: "var(--ink)" }}>{c.name}</b> - {c.typicalDegree}
                         </div>
                       ))}
                     </div>
@@ -1299,10 +1311,10 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                 )}
               </div>
             ) : (
-              <p style={{ marginTop: 20, fontSize: 13, color: "var(--ink-2)" }}>&ldquo;{desiredCareer}&rdquo; isn&apos;t in our {totalCareers}-career reference list yet — talk to your counsellor about the specific path, using Career Fitment and Career Suitability above as your general direction.</p>
+              <p style={{ marginTop: 20, fontSize: 13, color: "var(--ink-2)" }}>&ldquo;{desiredCareer}&rdquo; isn&apos;t in our {totalCareers}-career reference list yet - talk to your counsellor about the specific path, using Career Fitment and Career Suitability above as your general direction.</p>
             )
           ) : (
-            <p style={{ marginTop: 20, fontSize: 13, color: "var(--ink-2)" }}>You didn&apos;t name a specific career, so there&apos;s nothing to check here yet — Career Fitment and Career Suitability still stand on their own.</p>
+            <p style={{ marginTop: 20, fontSize: 13, color: "var(--ink-2)" }}>You didn&apos;t name a specific career, so there&apos;s nothing to check here yet - Career Fitment and Career Suitability still stand on their own.</p>
           )}
         </>
       ),
@@ -1312,7 +1324,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
   if (isClass12) {
     const resolvedStreamKey: StreamKey1112 = STREAM_KEY_1112[streamKey] ?? "Vocational/Other";
     const degreesByCategory = degreesForStream(resolvedStreamKey, { includeConditional: true });
-    // Commented out per feedback, not deleted — re-enable by uncommenting
+    // Commented out per feedback, not deleted - re-enable by uncommenting
     // this line and the matching JSX block below.
     // const topDimensions = topDimensionsForStudent(resolvedStreamKey, l1, 3);
     const jeeBand = percentileBandFor(output.layer4.estimatedPercentage);
@@ -1323,7 +1335,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
       node: (
         <>
           <PageHead eyebrow="By degree programme" title={`Every undergraduate programme ${streamKey || "your stream"} can apply to`}
-            sub="Not ranked by fit — this is the raw landscape: every real degree programme across every field, with the honest admission reality for your specific stream (some colleges are stricter than others, which is what the 🟢🟡/🟡🔴 marks capture)." />
+            sub="Not ranked by fit - this is the raw landscape: every real degree programme across every field, with the honest admission reality for your specific stream (some colleges are stricter than others, which is what the 🟢🟡/🟡🔴 marks capture)." />
           <div style={{ marginTop: 16, columnCount: degreesByCategory.size ? 2 : 1, columnGap: 24, columnRule: "1px solid var(--line)" }}>
             {degreesByCategory.size ? Array.from(degreesByCategory.entries()).map(([category, rows]) => (
               <div key={category} style={{ breakInside: "avoid" }}>
@@ -1332,11 +1344,11 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
             )) : <p style={{ fontSize: 13, color: "var(--ink-2)" }}>We don't have a specific degree-eligibility mapping for your stream yet.</p>}
           </div>
 
-          {/* Commented out per feedback, not deleted — re-enable by
+          {/* Commented out per feedback, not deleted - re-enable by
               uncommenting this block and the topDimensions line above.
           <div style={BREAK}>
             <SecHead eyebrow="By your specific strengths" title="What your top individual strengths point toward"
-              sub="Different from both lists above — not a domain or a degree, but the 3 specific named strengths (e.g. Coding Interest, not just 'Computer & IT') your own profile scored highest on, each with the exact courses, roles, skills and government pathways for that strength." />
+              sub="Different from both lists above - not a domain or a degree, but the 3 specific named strengths (e.g. Coding Interest, not just 'Computer & IT') your own profile scored highest on, each with the exact courses, roles, skills and government pathways for that strength." />
             <div style={{ marginTop: 16 }}>
               {topDimensions.length ? topDimensions.map((d, i) => <DimensionBlock key={d.dimension} d={d} rank={i + 1} />) : (
                 <p style={{ fontSize: 13, color: "var(--ink-2)" }}>We don&apos;t have a specific strengths breakdown for your stream yet.</p>
@@ -1348,7 +1360,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
           {(resolvedStreamKey === "MPC" || resolvedStreamKey === "PCMB") && jeeBand && (
             <div style={BREAK}>
               <SecHead eyebrow="If you're appearing for JEE Main" title={`What your ${jeeBand.label} band has recently opened up`}
-                sub="Based on real 2026 JEE Main percentile-to-institution trends, not a promise — cutoffs genuinely shift every year by category, home-state quota and counselling round. Always confirm current eligibility on the official JoSAA/CSAB portal before deciding." />
+                sub="Based on real 2026 JEE Main percentile-to-institution trends, not a promise - cutoffs genuinely shift every year by category, home-state quota and counselling round. Always confirm current eligibility on the official JoSAA/CSAB portal before deciding." />
               <div style={{ marginTop: 14, border: "1px solid var(--line)", borderRadius: 12, padding: "16px 18px" }}>
                 <p style={{ margin: "0 0 10px", fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.6 }}>{jeeBand.realistic}</p>
                 <div className="subhd">What this band has recently reached</div>
