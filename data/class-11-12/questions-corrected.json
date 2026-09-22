@@ -257,14 +257,14 @@
           ]
         },
         {
-          "text": "Which responsibility would you prefer in a major project?",
+          "text": "Your group is launching something big. Which role do you claim immediately?",
           "options": [
-            "Build the physical/hardware solution.",
-            "Research, analyse or code the software/data solution.",
-            "Create the design/content.",
-            "Coordinate the people involved.",
-            "Lead the project and make strategic decisions.",
-            "Manage documentation, schedules and data."
+            "The Builder — assemble the tech and make it run.",
+            "The Investigator — research the facts and run the numbers.",
+            "The Creative — design the vibe, visuals, and content.",
+            "The Anchor — check in on teammates and keep morale high.",
+            "The Shot-Caller — pitch the vision and make executive calls.",
+            "The Architect — set deadlines, track tasks, and keep files clean."
           ],
           "mapping": [
             "R",
@@ -276,14 +276,14 @@
           ]
         },
         {
-          "text": "You get a free month to explore a career area. Which would you choose?",
+          "text": "If you could build serious real-world experience right now, what area would you dive into?",
           "options": [
-            "Engineering/technology projects.",
-            "Scientific research/data analysis.",
-            "Design/media/creative work.",
-            "Psychology/education/healthcare/community work.",
-            "Business/management/entrepreneurship.",
-            "Finance/accounting/business operations."
+            "Robotics, machine tuning, and physical fabrication.",
+            "Data modeling, algorithmic research, and deep-dive analysis.",
+            "Brand identity, motion graphics, and creative production.",
+            "Mental health advocacy, youth mentoring, and community aid.",
+            "Startup / pitching business ventures, marketing, and team leadership.",
+            "Financial planning, resource management, and clean data systems."
           ],
           "mapping": [
             "R",
