@@ -954,7 +954,7 @@ function CareerMultiPicker({ opts, value, maxSelections, onChange }: { opts: str
 
   return (
     <div ref={boxRef} style={{ position: "relative" }}>
-      <div style={S.pickerBox} onClick={() => canSelect && setOpen(true)}>
+      <div style={{ ...S.pickerBox, ...(open ? S.pickerBoxOpen : {}) }} onClick={() => canSelect && setOpen(true)}>
         {currentSelections.map((idxStr) => {
           const i = parseInt(idxStr, 10);
           return (
@@ -967,14 +967,18 @@ function CareerMultiPicker({ opts, value, maxSelections, onChange }: { opts: str
         {canSelect && (
           <input
             style={S.pickerInput}
-            placeholder={currentSelections.length === 0 ? "Type to search and select…" : "Add another…"}
+            placeholder={currentSelections.length === 0 ? "Click to browse all options, or type to search…" : "Add another…"}
             value={search}
             onFocus={() => setOpen(true)}
             onChange={(e) => { setSearch(e.target.value); setOpen(true); }}
           />
         )}
+        {canSelect && <Icon name="chevronRight" size={16} style={{ flexShrink: 0, color: "#9aa1ad", transform: open ? "rotate(-90deg)" : "rotate(90deg)", transition: "transform .15s" }} />}
       </div>
-      <div style={{ padding: "8px 2px 0", fontSize: 12, color: "#666" }}>{currentSelections.length} of {maxSelections} selected</div>
+      <div style={{ padding: "8px 2px 0", fontSize: 12, color: "#666" }}>
+        {currentSelections.length} of {maxSelections} selected
+        {canSelect && !open && <span> — click the box above to see every option</span>}
+      </div>
       {open && canSelect && (
         <div style={S.pickerPanel}>
           {filtered.length === 0 ? (
@@ -1104,6 +1108,7 @@ const S: Record<string, React.CSSProperties> = {
   // Career Selector's two 210-option "up to THREE" questions only — see
   // CareerMultiPicker / the useDropdown condition in QuestionInput.
   pickerBox: { display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8, minHeight: 48, padding: "8px 12px", border: `1.5px solid ${LINE}`, borderRadius: 12, background: "#fff", cursor: "text" },
+  pickerBoxOpen: { borderColor: BLUE, boxShadow: `0 0 0 3px ${BLUE}1f` },
   pickerTag: { display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 8px 6px 12px", borderRadius: 999, background: BLUE_SOFT, color: INK, fontSize: 13.5, fontWeight: 600 },
   pickerTagX: { display: "grid", placeItems: "center", width: 18, height: 18, borderRadius: "50%", border: "none", background: "rgba(0,0,0,.08)", color: INK, fontSize: 13, lineHeight: 1, cursor: "pointer" },
   pickerInput: { flex: 1, minWidth: 140, border: "none", outline: "none", fontSize: 14.5, color: INK, background: "transparent" },
