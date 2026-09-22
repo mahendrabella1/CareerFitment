@@ -1287,7 +1287,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
 
                 <div style={BREAK}>
                   <SecHead center eyebrow="What this role draws on" title="Skills and abilities that matter here" />
-                  <div style={{ marginTop: 12, display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  <div style={{ marginTop: 12, display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center" }}>
                     {skillTagsFor1112(selector.career).map((s) => (
                       <span key={s} style={{ fontSize: 12, fontWeight: 700, color: clusterColor(selector!.career!.cluster), background: `${clusterColor(selector!.career!.cluster)}14`, border: `1px solid ${clusterColor(selector!.career!.cluster)}38`, padding: "6px 13px", borderRadius: 999 }}>{s}</span>
                     ))}
