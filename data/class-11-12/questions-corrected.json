@@ -411,7 +411,7 @@
           "subdomain": "Logical Reasoning"
         },
         {
-          "text": "Premises: All architects are creative. Some engineers are architects. No creative person is careless. Which of the following conclusions must be true?",
+          "text": "Premises:\nAll architects are creative.\nSome engineers are architects.\nNo creative person is careless.\n\nWhich of the following conclusions must be true?",
           "options": [
             "Some engineers are not careless.",
             "All engineers are creative.",

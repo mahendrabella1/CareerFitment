@@ -1158,7 +1158,7 @@ const S: Record<string, React.CSSProperties> = {
   qNum: { display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: 42, background: BLUE, color: "#fff", fontSize: 16, fontWeight: 800, padding: "6px 15px", borderRadius: 8, marginBottom: 10, marginLeft: 2 },
   qCard: { background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: "24px 28px 14px", boxShadow: "0 2px 12px rgba(20,20,40,.05)" },
   qHead: { display: "flex", alignItems: "flex-start", gap: 14, marginBottom: 4 },
-  qText: { flex: 1, fontSize: 19, fontWeight: 700, lineHeight: 1.5, color: INK },
+  qText: { flex: 1, fontSize: 19, fontWeight: 700, lineHeight: 1.5, color: INK, whiteSpace: "pre-line" },
   qHeadBtns: { display: "flex", gap: 8, flexShrink: 0 },
   speakBtn: { width: 36, height: 36, borderRadius: "50%", background: NAVY, color: "#fff", border: "none", display: "grid", placeItems: "center", cursor: "pointer" },
   reviewIcon: { width: 36, height: 36, borderRadius: "50%", background: "#f1f5f9", color: "#9aa3b2", border: `1px solid ${LINE}`, display: "grid", placeItems: "center", cursor: "pointer" },
