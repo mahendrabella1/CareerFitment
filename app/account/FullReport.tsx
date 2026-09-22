@@ -34,7 +34,7 @@ import {
   percentileOf, subTraits, type Domain,
   traitProfile, resultOf, domainFit, type DomainFit,
   FUTURE, LEARNING, JOB_PORTALS, SCHOLARSHIPS_2026,
-  PARENT_TIPS, eiQuadrants,
+  PARENT_TIPS, eiQuadrants, hasGenuineEiTop,
 } from "@/lib/report/knowledge";
 
 /* ------------------------------- assets -------------------------------- */
@@ -98,7 +98,14 @@ function topResultFor(key: string, a: AssessmentSummary, riasec: { letter: strin
   switch (key) {
     case "career_interest": return riasec.slice().sort((x, y) => y.score - x.score)[0]?.title;
     case "multiple_intelligence": return (a.topIntelligences ?? []).slice().sort((x, y) => y.score - x.score)[0]?.name;
-    case "emotional_intelligence": return eiQuadrants(a).slice().sort((x, y) => y.value - x.value)[0]?.label;
+    case "emotional_intelligence": {
+      // Only name a "top" quadrant when it's a genuine standout, not array
+      // order surviving a scores tie - EI has just 4 questions (one per
+      // quadrant), so an exact tie across all four is a common, real
+      // outcome, not a rare edge case. See hasGenuineEiTop's own comment.
+      const quads = eiQuadrants(a).slice().sort((x, y) => y.value - x.value);
+      return hasGenuineEiTop(quads) ? quads[0]?.label : undefined;
+    }
     case "learning_styles": return (a.learningStyles ?? []).slice().sort((x, y) => y.score - x.score)[0]?.name;
     case "motivators": return (a.topValues ?? []).slice().sort((x, y) => y.score - x.score)[0]?.tag;
     case "strengths": return (a.strengthsBreakdown ?? []).slice().sort((x, y) => y.score - x.score)[0]?.name;

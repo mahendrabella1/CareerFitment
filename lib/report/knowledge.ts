@@ -415,12 +415,11 @@ export function categoryDeepDive(key: string, a: AssessmentSummary): DeepDive {
     case "emotional_intelligence": {
       const ei = a.ei ?? p;
       const quads = eiQuadrants(a).slice().sort((x, y) => y.value - x.value);
-      const topQ = quads[0]?.label;
-      // Only name a "lightest area" when it's a genuinely different quadrant
-      // - with just 1 measured (some journeys only measure 2 of the 4), the
-      // top and bottom would otherwise be the same quadrant contradicting
-      // itself as both "strongest" and "lightest".
-      const lowQ = quads.length > 1 ? quads[quads.length - 1]?.label : undefined;
+      // Only name a "strongest"/"lightest" quadrant when it's a genuine
+      // standout, not array order surviving a scores tie - see
+      // hasGenuineEiTop/Bottom's own comment for why a tie is common here.
+      const topQ = hasGenuineEiTop(quads) ? quads[0]?.label : undefined;
+      const lowQ = hasGenuineEiBottom(quads) ? quads[quads.length - 1]?.label : undefined;
       return {
         meaning: `Your emotional intelligence (EQ) reads at ${ei}% - how well you notice your own feelings, manage your reactions, read other people, and handle relationships. It's one of the strongest predictors of how well someone does in teamwork and leadership.`,
         strengths: band(ei) !== "low"
@@ -1010,6 +1009,21 @@ export function eiQuadrants(a: AssessmentSummary): { label: string; value: numbe
   });
 }
 
+/** True only when `quads[0]` is a genuine standout, not array order
+ *  surviving a scores tie. EI has just 4 questions (one per quadrant), so an
+ *  exact tie across all four - e.g. a student who happened to pick one
+ *  different-lettered option per question - is a common, real outcome, not
+ *  a rare edge case. Array.sort() is stable, so a tie always left the FIRST
+ *  quadrant in EI_QUADRANTS' own array order sitting in position 0,
+ *  regardless of the student's actual answers - exactly the same failure
+ *  mode `personality`'s `measured` check exists to avoid above. */
+export function hasGenuineEiTop(quads: { value: number }[]): boolean {
+  return quads.length > 0 && (quads.length < 2 || quads[0].value > quads[1].value);
+}
+function hasGenuineEiBottom(quads: { value: number }[]): boolean {
+  return quads.length > 0 && (quads.length < 2 || quads[quads.length - 1].value < quads[quads.length - 2].value);
+}
+
 /** A short, unambiguous "here is your result" for each dimension. */
 export function resultOf(key: string, a: AssessmentSummary): { label: string; value: string } | null {
   const two = (arr?: { n: string }[]) => (arr ?? []).slice(0, 2).map((x) => x.n).join(" · ");
@@ -1025,7 +1039,8 @@ export function resultOf(key: string, a: AssessmentSummary): { label: string; va
     }
     case "multiple_intelligence": return { label: "Top intelligences", value: two((a.topIntelligences ?? []).map((x) => ({ n: x.name }))) };
     case "emotional_intelligence": {
-      const top = eiQuadrants(a).slice().sort((x, y) => y.value - x.value)[0];
+      const quads = eiQuadrants(a).slice().sort((x, y) => y.value - x.value);
+      const top = hasGenuineEiTop(quads) ? quads[0] : undefined;
       return { label: "EQ level", value: top ? `${eiBand(a.ei ?? 0)} · strongest in ${top.label}` : eiBand(a.ei ?? 0) };
     }
     case "learning_styles": { const t = a.learningStyles?.[0]?.name; return t ? { label: "Your learning style", value: t } : null; }
