@@ -701,20 +701,6 @@ function FundedProgramCard({ p, color }: { p: FundedProgram; color: string }) {
               structure used to switch tone mid-sentence, which read as a
               rendering glitch rather than a deliberate distinction. */}
           <p style={{ margin: "10px 0 0", fontSize: 14.5, color: "var(--ink-2)", lineHeight: 1.6 }}>{p.summary} {p.structure}</p>
-          {/* Some of these genuinely-funded programmes only become
-              applicable after a student is already in (or has finished) a
-              UG/PG degree - real information worth knowing at this stage,
-              but not something to act on yet. Called out here, clearly
-              separate from the Eligibility stat below, so it can't be
-              mistaken for a next step available right now. */}
-          {p.notYetReachable && (
-            <div style={{ display: "flex", gap: 10, alignItems: "flex-start", marginTop: 14, padding: "12px 16px", borderRadius: 10, background: "#fff6e8", border: "1px solid #f5d9a0" }}>
-              <Icon name="info" size={16} style={{ color: "#a3620b", flex: "none", marginTop: 1 }} />
-              <div style={{ fontSize: 13, color: "#7a4d09", lineHeight: 1.5 }}>
-                <b>Not available straight after Class 12.</b> {p.notYetReachable}
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
