@@ -1096,21 +1096,16 @@
         {
           "text": "Which subjects are you currently studying? Select all that apply.",
           "options": [
-            "Physics",
-            "Chemistry",
-            "Mathematics",
-            "Biology",
-            "Computer Science / IP / IT",
-            "Accountancy",
-            "Business Studies",
-            "Economics",
-            "History",
-            "Political Science",
-            "Geography",
-            "Psychology",
-            "Sociology",
-            "Languages (English/Hindi/Regional)",
-            "Other"
+            "Sciences: Physics, Chemistry, Mathematics, Biology, Computer Science / IP / IT",
+            "Commerce: Accountancy, Business Studies, Economics, Mathematics",
+            "Humanities / Arts: History, Political Science, Geography, Psychology, Sociology",
+            "General / Common: Languages (English/Hindi/Regional), Other"
+          ],
+          "expandsTo": [
+            ["Physics", "Chemistry", "Mathematics", "Biology", "Computer Science / IP / IT"],
+            ["Accountancy", "Business Studies", "Economics", "Mathematics"],
+            ["History", "Political Science", "Geography", "Psychology", "Sociology"],
+            ["Languages (English/Hindi/Regional)", "Other"]
           ],
           "type": "multiple",
           "instruction": "Select all that apply."

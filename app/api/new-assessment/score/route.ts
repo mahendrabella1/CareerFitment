@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     // (see class6Scoring.ts / class7Scoring.ts / class8Scoring.ts /
     // scoring11_12.ts). The generic scoreAssessment() engine reads a
     // DIFFERENT, never-shown-to-the-student "6-8"/"11-12" bank keyed by the
-    // same stage name — calling it here used to score real answers against
+    // same stage name - calling it here used to score real answers against
     // the wrong questions and silently attach meaningless topStrengths/radar/
     // matches data that no report for these classes ever displays. Build a
     // minimal, honest summary instead and let the class-specific output do
@@ -65,7 +65,7 @@ export async function POST(req: Request) {
       (summary as any).class8Output = classOutput;
     } else if (body.category === "class_11" || body.category === "class_12" || body.category === "class_11_12") {
       // Class 11 and 12 are now separate registration categories but share
-      // the exact same 81-question bank and scoring engine — only the
+      // the exact same 81-question bank and scoring engine - only the
       // reported journey label differs. "class_11_12" is kept working for
       // accounts registered before the split.
       const responses: Class11Response = convertAnswersToClass11Format(body.answers, body.chosenSets);
@@ -92,7 +92,7 @@ export async function POST(req: Request) {
 }
 
 // Minimal, valid AssessmentSummary shell for classes scored entirely by
-// their own dedicated function — the real content lives in class6Output /
+// their own dedicated function - the real content lives in class6Output /
 // class7Output / class8Output / class11Output, which every report for these
 // classes reads directly.
 function baseSummary(journeyCode: string, journeyName: string): AssessmentSummary {
@@ -112,7 +112,7 @@ function baseSummary(journeyCode: string, journeyName: string): AssessmentSummar
 }
 
 // The 7 raw options shown for subject_fit:0 ("What is your current Class 11
-// stream?" — Science-Maths, Science-Biology, Science-Both, Commerce,
+// stream?" - Science-Maths, Science-Biology, Science-Both, Commerce,
 // Humanities/Arts, Vocational/Diploma, Other), positionally mapped to the
 // canonical stream keys scoring11_12.ts's STREAM_DOMAIN_FIT /
 // getAvailablePathways switch on. Tied to that question's exact option
@@ -124,7 +124,7 @@ type FieldSpec = { field: string; kind: FieldKind };
 
 // Index -> target field for each Section 9/10/11 question, matching
 // data/class-11-12/questions-corrected.json's exact question order.
-// "index" kind stores the raw parsed number as-is — correct both for a
+// "index" kind stores the raw parsed number as-is - correct both for a
 // literal option index and for a 1-10 slider's value (the slider's `value`
 // string IS the number itself, so no special "scale" kind is needed).
 const SUBJECT_FIT_FIELDS: Record<number, FieldSpec> = {
@@ -223,11 +223,29 @@ function convertAnswersToClass11Format(answers: Record<string, string>, chosenSe
       let selectedIdx: string[];
       try { selectedIdx = JSON.parse(value); } catch { return; }
       if (!Array.isArray(selectedIdx) || !opts) return;
-      target[spec.field] = selectedIdx.map((s) => opts[parseInt(s, 10)]).filter((s): s is string => Boolean(s));
+      // subject_fit:1 shows 4 broad category options ("Sciences: Physics,
+      // Chemistry, ...") instead of 15 individual subjects, but
+      // SUBJECT_CLUSTER_AFFINITY in careerFitEngine1112.ts still matches
+      // individual subject names one at a time — the bank's optional
+      // expandsTo field (one subject array per option, parallel to options)
+      // lets a picked category expand back into its real subjects here
+      // rather than storing the literal grouped label text, which would
+      // never match anything and silently drop this ranking signal.
+      const expandsTo = Array.isArray(raw?.expandsTo) ? (raw!.expandsTo as unknown[]) : null;
+      if (expandsTo) {
+        const set = new Set<string>();
+        selectedIdx.forEach((s) => {
+          const items = expandsTo[parseInt(s, 10)];
+          if (Array.isArray(items)) items.forEach((x) => typeof x === "string" && set.add(x));
+        });
+        target[spec.field] = [...set];
+      } else {
+        target[spec.field] = selectedIdx.map((s) => opts[parseInt(s, 10)]).filter((s): s is string => Boolean(s));
+      }
       return;
     }
 
-    // "stream" / "text" / "index" — all single-select answers, a plain
+    // "stream" / "text" / "index" - all single-select answers, a plain
     // option index.
     const optionIndex = parseInt(value, 10);
     if (Number.isNaN(optionIndex)) return;
@@ -245,7 +263,7 @@ function convertAnswersToClass11Format(answers: Record<string, string>, chosenSe
     career_interest: dimensions.career_interest,
     aptitude: dimensions.aptitude,
     strength_domains: dimensions.strength_domains,
-    // The Strengths bank has 2 randomly-assigned sets — scoring11_12.ts needs
+    // The Strengths bank has 2 randomly-assigned sets - scoring11_12.ts needs
     // to know which one these strength_domains answers actually came from.
     strengthsSetName: chosenSets?.strengths,
     multiple_intelligence: dimensions.multiple_intelligence,
@@ -260,14 +278,14 @@ function convertAnswersToClass11Format(answers: Record<string, string>, chosenSe
 
 // Class 11/12's current stream and desired career are now collected on a
 // pre-exam screen (NewExam.tsx's "preinfo" phase) rather than as in-exam
-// questions — see the matching PRE_EXAM_SKIP comment in the generate route.
+// questions - see the matching PRE_EXAM_SKIP comment in the generate route.
 // convertAnswersToClass11Format() above leaves subject_fit.currentStream and
 // career_selector.primaryCareer at their emptyContext() defaults since those
 // two in-exam questions are no longer generated; this fills them in from the
 // pre-exam answers instead, using the same synthetic "preinfo:*" keys
 // NewExam.tsx writes into the same `answers` object as everything else.
 // NewExam.tsx's STREAM_OPTIONS splits Commerce into CommerceMaths/
-// CommerceNoMaths (matters for careerfit1112.ts's stream-fit matrix) — but
+// CommerceNoMaths (matters for careerfit1112.ts's stream-fit matrix) - but
 // subject_fit.currentStream and STREAM_DOMAIN_FIT (scoring11_12.ts) only
 // know the coarser pre-split vocabulary, so both bucket down to "Commerce"
 // here while responses.currentStreamDetailed keeps the exact choice.
