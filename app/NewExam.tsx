@@ -308,9 +308,16 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
     const id = window.setInterval(() => setRemainingSec((s) => Math.max(0, s - 1)), 1000);
     return () => window.clearInterval(id);
   }, [phase]);
-  useEffect(() => { // auto-save every 20s
+  useEffect(() => { // auto-save every 60s
+    // Widened from 20s: this timer-based save is a redundant safety net on
+    // top of the per-question-navigation save right below (which already
+    // fires on the far more common "lost progress" case - moving on from a
+    // question). On Firestore's free Spark tier, the 20s interval alone
+    // could add ~270 writes per student over a full 90-minute exam; at 60s
+    // that's ~90, a real difference at 20+ concurrent students on a plan
+    // with a hard daily write cap and no warning before it's hit.
     if (phase !== "exam") return;
-    const id = window.setInterval(() => saveNow(), 20000);
+    const id = window.setInterval(() => saveNow(), 60000);
     return () => window.clearInterval(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
