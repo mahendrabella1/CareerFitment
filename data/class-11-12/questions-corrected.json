@@ -714,12 +714,12 @@
     "11-12": {
       "Set 1": [
         {
-          "text": "Which activity are you naturally strongest at?",
+          "text": "If you had to teach someone how to do something, what is your go-to method?",
           "options": [
-            "Writing or explaining ideas clearly.",
-            "Solving numerical or logical problems.",
-            "Understanding diagrams, maps or visual information.",
-            "Demonstrating something through physical activity."
+            "Breaking it down through speech or writing.",
+            "Walking through the data, math, and step-by-step logic.",
+            "Drawing a sketch, diagram, or mental map.",
+            "Physically demonstrating it hands-on."
           ],
           "mapping": [
             "Linguistic",
