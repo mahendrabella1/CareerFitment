@@ -1183,7 +1183,7 @@
           "instruction": "Select up to TWO."
         },
         {
-          "text": "If your assessment showed that another academic/career pathway could suit you better, how open would you be to exploring it? This is a very important Class 11 diagnostic question.",
+          "text": "If your assessment showed that another academic/career pathway could suit you better, how open would you be to exploring it?",
           "type": "scale",
           "scaleLabel_min": "Not open at all",
           "scaleLabel_max": "Completely open"
