@@ -2,7 +2,7 @@
  * Class 11-12 Career Fitment / Suitability / Selector data model.
  *
  * Sourced from two workbooks the user supplied ("careerfit_mapping_kit.xlsx"
- * and "11-12th Streams list.xlsx") — a purpose-built data model for exactly
+ * and "11-12th Streams list.xlsx") - a purpose-built data model for exactly
  * this report section, distinct from the shared 15-domain catalogue in
  * lib/report/knowledge.ts (which serves classes 6-10 and the 8-dimension
  * pages). Two systems, not a fork of one: the shared catalogue has no
@@ -16,18 +16,18 @@
  * Travel & Tourism/Hospitality Management/Event Management all exist as real
  * degree programs there) and Agriculture & Allied Sciences (B.Sc Agriculture/
  * Horticulture/Forestry/Fisheries/Agribusiness, all real, all Science-stream
- * gated — same shape as the kit's other SCI_ANY-group domains).
+ * gated - same shape as the kit's other SCI_ANY-group domains).
  *
  * CAREERS_1112 is the kit's own 55-career seed database verbatim, plus 8
  * additions closing those two domain gaps: 5 Hospitality & Tourism careers
  * adapted from lib/engine/fitment/careerLibrary.ts (a separate, real,
  * hand-tagged ~32-career library already live behind /dashboard/career-library
- * — its full 0-100 RIASEC vectors were collapsed to the kit's top-3-letter
+ * - its full 0-100 RIASEC vectors were collapsed to the kit's top-3-letter
  * code format here), and 3 Agriculture & Allied Sciences careers built by
  * hand using the kit's own tagging method (RIASEC/MI/aptitude/stream/values/
  * shape), cross-checked against the Streams workbook's actual eligibility
  * matrix for B.Sc Agriculture-family programs (Science streams native,
- * Commerce/Humanities gated — the SCI_ANY pattern).
+ * Commerce/Humanities gated - the SCI_ANY pattern).
  *
  * IMPORTANT: `requiredGroup` (not the free-text `eligibleStreamsText`) is the
  * authoritative source for stream-fit computations, via ROADMAP_MATRIX below.
@@ -35,7 +35,7 @@
  * disagrees with its own systematically-generated Career_Roadmap_Matrix in a
  * few places (e.g. Economist lists "Commerce" as eligible in the text column
  * but its MATHS_ONLY required-group scores Commerce-without-Maths as a
- * Bridge, not Native Fit) — the roadmap matrix is what the kit's own
+ * Bridge, not Native Fit) - the roadmap matrix is what the kit's own
  * Report_Sections_Logic sheet names as "the primary table the Career
  * Selector queries at runtime", so that's the one this code treats as ground
  * truth. eligibleStreamsText is display-only narrative.
@@ -68,34 +68,34 @@ export type AptLevel = "Low-Medium" | "Medium" | "Medium-High" | "High";
  * from. Every career belongs to exactly one; ROADMAP_MATRIX below is keyed
  * on (group, StreamKey) and is what actually determines Fit_Type.
  *  - SCI_PCM: needs Physics+Chemistry+Maths (Engineering, Architecture, core Physics)
- *  - SCI_PCB: needs Physics+Chemistry+Biology (Medicine, Dentistry — NEET-gated)
+ *  - SCI_PCB: needs Physics+Chemistry+Biology (Medicine, Dentistry - NEET-gated)
  *  - SCI_ANY: needs Physics+Chemistry, either Maths or Biology (Biotech, Pure Science,
  *    and the B.Tech-style agri-engineering/food-tech/dairy-tech careers, which
  *    real 2026 eligibility pages confirm admit PCM students directly)
  *  - AGRI_SCIENCE: the actual B.Sc Agriculture/Horticulture/Forestry/Fisheries
- *    track specifically — genuinely reachable from MPC at most state
+ *    track specifically - genuinely reachable from MPC at most state
  *    agricultural universities, but as a Bridge (a Biology "deficiency
  *    course" alongside year 1), not Native Fit: the newer CUET-routed
  *    central ICAR admission for these exact degrees requires Biology
  *    upfront. Split out from SCI_ANY because that group's "Native Fit for
- *    MPC, no bridge" reading was too generous for this specific track —
+ *    MPC, no bridge" reading was too generous for this specific track -
  *    see jeePercentileGuide.ts-style verify-before-relying-on-it framing.
  *  - ENV_SCIENCE: the B.Sc Environmental Science / Ecology track. An earlier
  *    version of this file lumped these into SCI_ANY as "Native Fit for MPC,
- *    no bridge" — re-checked against current published eligibility pages and
+ *    no bridge" - re-checked against current published eligibility pages and
  *    that reading doesn't hold up: most describe Physics/Chemistry/Biology
  *    as the expected combination for this specific degree (Biology is core
  *    to the subject matter, not incidental), with PCM-only acceptance real
  *    but institution-by-institution, not the default. Treated the same way
- *    as AGRI_SCIENCE — Bridge for MPC, Native for BiPC/PCMB — rather than
+ *    as AGRI_SCIENCE - Bridge for MPC, Native for BiPC/PCMB - rather than
  *    Native Fit for MPC outright.
  *  - LIFE_SCIENCE_PCB: core Botany/Zoology/Microbiology/Marine-Biology-type
- *    degrees specifically — genuinely stricter than AGRI_SCIENCE/ENV_SCIENCE's
+ *    degrees specifically - genuinely stricter than AGRI_SCIENCE/ENV_SCIENCE's
  *    bridge: most GOVERNMENT colleges require Biology outright for these. A
  *    narrow set of private/distance-learning programs (e.g. BSc ZBC
  *    combinations) admit PCM directly, but that's the exception, not the
  *    default path, so this reads as a Hard Gate for MPC with those
- *    alternatives named, not a Bridge — reusing SCI_PCB's own Hard Gate text
+ *    alternatives named, not a Bridge - reusing SCI_PCB's own Hard Gate text
  *    would have been wrong too, since that text is written specifically
  *    around NEET-UG/Medicine, which doesn't gate these degrees at all.
  *  - MATHS_ONLY: needs strong Maths, not full PCM/PCB (CS/IT, AI/Data, Finance, Actuarial)
@@ -113,7 +113,7 @@ export type CareerPathShape =
 /**
  * The 7 stream keys the kit's Career_Roadmap_Matrix and Careers sheet use.
  * More granular than this app's existing STREAM_KEY_BY_INDEX (scoring11_12.ts
- * / score/route.ts), which has one flat "Commerce" — the kit splits it by
+ * / score/route.ts), which has one flat "Commerce" - the kit splits it by
  * Maths because that single fact changes Fit_Type for the whole MATHS_ONLY
  * group (Data Science, Finance, Actuarial, Statistics...). See
  * STREAM_KEY_1112 below for the mapping from the app's existing stream keys.
@@ -129,10 +129,10 @@ export type StreamKey1112 =
 
 export interface Domain1112 {
   name: string;
-  /** Free-text summary of which streams typically feed this domain — display only. */
+  /** Free-text summary of which streams typically feed this domain - display only. */
   typicalStreams: string;
   notes: string;
-  /** Reused verbatim from the shared 15-domain catalogue's own verified salary bands (lib/report/knowledge.ts) via a domain mapping — not new figures. */
+  /** Reused verbatim from the shared 15-domain catalogue's own verified salary bands (lib/report/knowledge.ts) via a domain mapping - not new figures. */
   salaryIndia: string;
   salaryAbroad: string;
   /** true for the 2 domains added beyond the kit's original 23 (see file header). */
@@ -143,17 +143,17 @@ export const DOMAINS_1112: Domain1112[] = [
   { name: "Engineering", typicalStreams: "MPC, PCMB", notes: "Physical/technical systems: mechanical, civil, electronics, robotics.", salaryIndia: "₹3.5–7 LPA entry · ₹10–22 LPA mid · ₹30 LPA+ as lead / project manager", salaryAbroad: "$60k–85k entry · $95k–140k mid (US / EU / Gulf)" },
   { name: "Computer Science / IT", typicalStreams: "MPC, Commerce+Maths, Vocational", notes: "Software, systems, cybersecurity.", salaryIndia: "₹4–10 LPA entry · ₹15–38 LPA mid · ₹55 LPA+ senior / lead", salaryAbroad: "$75k–115k entry · $130k–210k mid (US) · €50k–95k (EU)" },
   { name: "AI / Data Science", typicalStreams: "MPC, Commerce+Maths", notes: "Machine learning, data analysis, applied statistics.", salaryIndia: "₹4–10 LPA entry · ₹15–38 LPA mid · ₹55 LPA+ senior / lead", salaryAbroad: "$75k–115k entry · $130k–210k mid (US) · €50k–95k (EU)" },
-  // Was two domains ("Medicine" + "Healthcare") — merged into one. They
+  // Was two domains ("Medicine" + "Healthcare") - merged into one. They
   // shared near-identical salary text and heavily overlapping RIASEC
   // signatures (most BiPC-track roles score Social/Investigative-leaning),
   // so a bio-leaning profile routinely surfaced both as separate top-5
-  // entries — reading to a student as "why do I keep getting the same
+  // entries - reading to a student as "why do I keep getting the same
   // thing twice" rather than two genuinely distinct fields. All 14
   // "Healthcare" careers (Nurse, Physiotherapist, Pharmacist, etc.) below
   // now carry domain: "Medicine" alongside the doctors/surgeons.
   { name: "Medicine", typicalStreams: "BiPC, PCMB", notes: "Clinical practice via NEET-UG (MBBS, BDS, etc.) and allied health: nursing, physiotherapy, pharmacy, nutrition.", salaryIndia: "₹3–6 LPA (allied / nursing) · ₹8–20 LPA (doctors post-PG) · ₹30 LPA+ specialists", salaryAbroad: "$60k–90k (nursing / allied) · $200k+ (licensed physicians, US)" },
   { name: "Biotechnology / Life Sciences", typicalStreams: "BiPC, PCMB", notes: "Applied biology in pharma, agri, industrial research.", salaryIndia: "₹3–6 LPA entry · ₹8–16 LPA mid · ₹22 LPA+ (agri-tech, biotech R&D)", salaryAbroad: "$50k–75k entry · $90k–135k mid (biotech / agri-tech, US / EU)" },
-  { name: "Pure Science", typicalStreams: "MPC, BiPC, PCMB", notes: "Physics, chemistry, microbiology — research-oriented.", salaryIndia: "₹3–6 LPA entry (research) · ₹8–18 LPA mid · ₹25 LPA+ (senior scientist / professor)", salaryAbroad: "$55k–80k entry · $95k–150k mid (R&D, US / EU)" },
+  { name: "Pure Science", typicalStreams: "MPC, BiPC, PCMB", notes: "Physics, chemistry, microbiology - research-oriented.", salaryIndia: "₹3–6 LPA entry (research) · ₹8–18 LPA mid · ₹25 LPA+ (senior scientist / professor)", salaryAbroad: "$55k–80k entry · $95k–150k mid (R&D, US / EU)" },
   { name: "Mathematics / Statistics", typicalStreams: "MPC, Commerce+Maths", notes: "Applied/theoretical maths, actuarial science, quant roles.", salaryIndia: "₹3–6 LPA entry (research) · ₹8–18 LPA mid · ₹25 LPA+ (senior scientist / professor)", salaryAbroad: "$55k–80k entry · $95k–150k mid (R&D, US / EU)" },
   { name: "Commerce / Accounting", typicalStreams: "Commerce", notes: "CA, CMA, and related accounting professions.", salaryIndia: "₹3.5–8 LPA entry · ₹12–30 LPA mid · ₹45 LPA+ (CFO / fund management)", salaryAbroad: "$60k–95k entry · $110k–190k mid (US / EU / Singapore)" },
   { name: "Finance / Investment", typicalStreams: "Commerce, MPC", notes: "Banking, investment analysis, portfolio management.", salaryIndia: "₹3.5–8 LPA entry · ₹12–30 LPA mid · ₹45 LPA+ (CFO / fund management)", salaryAbroad: "$60k–95k entry · $110k–190k mid (US / EU / Singapore)" },
@@ -164,16 +164,16 @@ export const DOMAINS_1112: Domain1112[] = [
   { name: "Psychology", typicalStreams: "Humanities, BiPC, Any", notes: "Clinical, counselling, and organisational psychology.", salaryIndia: "₹2.5–5 LPA entry · ₹6–14 LPA mid · ₹20 LPA+ (senior academic / clinical roles)", salaryAbroad: "$40k–65k entry · $75k–120k mid (varies by country / licensure)" },
   { name: "Social Sciences", typicalStreams: "Humanities", notes: "Sociology, political science, anthropology.", salaryIndia: "₹2.5–5 LPA entry · ₹6–14 LPA mid · ₹20 LPA+ (senior academic / clinical roles)", salaryAbroad: "$40k–65k entry · $75k–120k mid (varies by country / licensure)" },
   { name: "Humanities", typicalStreams: "Humanities, Any", notes: "History, literature, writing, cultural research.", salaryIndia: "₹2.5–5 LPA entry · ₹7–15 LPA mid · ₹22 LPA+ senior (editor / director / strategist)", salaryAbroad: "$40k–65k entry · $80k–130k mid (US / EU)" },
-  { name: "Design", typicalStreams: "Any", notes: "UX/UI, graphic, fashion design — portfolio/entrance driven.", salaryIndia: "₹3–6 LPA entry · ₹8–18 LPA mid · ₹25 LPA+ senior (architecture / product design)", salaryAbroad: "$50k–75k entry · $90k–140k mid (US / EU)" },
+  { name: "Design", typicalStreams: "Any", notes: "UX/UI, graphic, fashion design - portfolio/entrance driven.", salaryIndia: "₹3–6 LPA entry · ₹8–18 LPA mid · ₹25 LPA+ senior (architecture / product design)", salaryAbroad: "$50k–75k entry · $90k–140k mid (US / EU)" },
   { name: "Architecture", typicalStreams: "MPC, PCMB (via NATA/JEE)", notes: "Building and spatial design.", salaryIndia: "₹3–6 LPA entry · ₹8–18 LPA mid · ₹25 LPA+ senior (architecture / product design)", salaryAbroad: "$50k–75k entry · $90k–140k mid (US / EU)" },
   { name: "Media / Communication", typicalStreams: "Any", notes: "Journalism, film/video production, PR.", salaryIndia: "₹2.5–5 LPA entry · ₹7–15 LPA mid · ₹22 LPA+ senior (editor / director / strategist)", salaryAbroad: "$40k–65k entry · $80k–130k mid (US / EU)" },
   { name: "Government / Public Service", typicalStreams: "Any (via UPSC/state exams)", notes: "Civil services and public administration.", salaryIndia: "₹3–6 LPA entry · ₹8–18 LPA mid · higher in law practice & senior civil services", salaryAbroad: "$45k–70k entry · $85k–140k mid (varies widely by country)" },
   { name: "Defence", typicalStreams: "Any (via NDA/CDS)", notes: "Armed forces commissioned officer roles.", salaryIndia: "₹4–8 LPA entry · ₹10–25 LPA mid · ₹40 LPA+ (senior pilots / officers)", salaryAbroad: "$50k–80k entry · $100k–180k mid (international pilots / officers)" },
   { name: "Research", typicalStreams: "MPC, BiPC, PCMB", notes: "Academic/scientific research careers across disciplines.", salaryIndia: "₹3–6 LPA entry (research) · ₹8–18 LPA mid · ₹25 LPA+ (senior scientist / professor)", salaryAbroad: "$55k–80k entry · $95k–150k mid (R&D, US / EU)" },
-  { name: "Hospitality & Tourism", typicalStreams: "Any", notes: "Hotels, travel, events, culinary — portfolio/interview driven, no stream gate.", salaryIndia: "₹2.5–5 LPA entry · ₹6–14 LPA mid · ₹20 LPA+ (senior hotel / event management)", salaryAbroad: "$40k–65k entry · $75k–120k mid (hospitality management)", added: true },
+  { name: "Hospitality & Tourism", typicalStreams: "Any", notes: "Hotels, travel, events, culinary - portfolio/interview driven, no stream gate.", salaryIndia: "₹2.5–5 LPA entry · ₹6–14 LPA mid · ₹20 LPA+ (senior hotel / event management)", salaryAbroad: "$40k–65k entry · $75k–120k mid (hospitality management)", added: true },
   { name: "Agriculture & Allied Sciences", typicalStreams: "MPC, BiPC, PCMB", notes: "Farming science, agribusiness, food technology, horticulture.", salaryIndia: "₹3–6 LPA entry · ₹8–16 LPA mid · ₹22 LPA+ (agri-tech, biotech R&D)", salaryAbroad: "$50k–75k entry · $90k–135k mid (biotech / agri-tech, US / EU)", added: true },
   // Three further gaps closed after the initial 25 (kit's 23 + the two
-  // above) — confirmed real, Class 11-12-relevant pathways by the Streams
+  // above) - confirmed real, Class 11-12-relevant pathways by the Streams
   // workbook (Education via B.Ed-track degrees; Environment & Sustainability
   // and Sports & Fitness both appear there with real degree programs) that
   // the mapping kit's own Domain_Reference happened to omit entirely.
@@ -183,11 +183,11 @@ export const DOMAINS_1112: Domain1112[] = [
 ];
 
 /**
- * The 16 standard clusters' own salary text — merged from the DOMAINS_1112
+ * The 16 standard clusters' own salary text - merged from the DOMAINS_1112
  * entries each cluster absorbs (widest entry/mid/senior span across its
  * constituent domains), not freshly invented. Marketing, Manufacturing and
  * Transportation/Distribution/Logistics have no constituent DOMAINS_1112
- * entry of their own (see the Career1112.cluster comment) — their figures
+ * entry of their own (see the Career1112.cluster comment) - their figures
  * are adapted from the single closest domain those reassigned careers came
  * from (Business/Management, Engineering and Defence respectively), with
  * the role-title fragment reworded to match (e.g. "founder equity" →
@@ -214,14 +214,14 @@ export const STANDARD_CLUSTERS: StandardClusterInfo[] = [
 ];
 
 /**
- * Standard "Explore" links per cluster — the official entrance-exam or
+ * Standard "Explore" links per cluster - the official entrance-exam or
  * registration portal a student in that cluster would actually need,
  * matching the reference report's own UPSC/CLAT/CTET-style pattern. Every
  * URL verified live (WebSearch) before shipping, not carried over from
- * memory — several official domains here (e.g. NTA-run exams increasingly
+ * memory - several official domains here (e.g. NTA-run exams increasingly
  * living under exams.nta.nic.in rather than their old dedicated subdomains)
  * would have been wrong if guessed. Reused as-is across every career in a
- * cluster rather than one link per career — this is a portal, not per-role
+ * cluster rather than one link per career - this is a portal, not per-role
  * content, so pooling it once per cluster is accurate, not a shortcut.
  */
 export interface ExploreLink { label: string; url: string }
@@ -236,7 +236,7 @@ export const CLUSTER_EXPLORE_LINKS: Record<StandardCluster, ExploreLink[]> = {
   ],
   "Health Science": [
     { label: "NEET-UG (NTA)", url: "https://neet.nta.nic.in/" },
-    { label: "CUET UG (NTA) — allied health/nursing routes", url: "https://cuet.nta.nic.in/" },
+    { label: "CUET UG (NTA) - allied health/nursing routes", url: "https://cuet.nta.nic.in/" },
   ],
   "Finance": [
     { label: "CA Foundation (ICAI)", url: "https://www.icai.org/" },
@@ -248,26 +248,26 @@ export const CLUSTER_EXPLORE_LINKS: Record<StandardCluster, ExploreLink[]> = {
   ],
   "Law, Public Safety, Corrections & Security": [
     { label: "CLAT (Consortium of NLUs)", url: "https://consortiumofnlus.ac.in/" },
-    { label: "UPSC — civil/police services", url: "https://upsc.gov.in/" },
+    { label: "UPSC - civil/police services", url: "https://upsc.gov.in/" },
   ],
   "Human Services": [
-    { label: "RCI — psychology/counselling registration", url: "https://rehabcouncil.nic.in/" },
+    { label: "RCI - psychology/counselling registration", url: "https://rehabcouncil.nic.in/" },
     { label: "CUET UG (NTA)", url: "https://cuet.nta.nic.in/" },
   ],
   "Arts, A/V Technology & Communications": [
-    { label: "NID DAT — design admissions", url: "https://admissions.nid.edu/" },
+    { label: "NID DAT - design admissions", url: "https://admissions.nid.edu/" },
     { label: "UCEED (IIT Bombay)", url: "https://www.uceed.iitb.ac.in/" },
   ],
   "Architecture & Construction": [
     { label: "NATA (Council of Architecture)", url: "https://www.nata.in/" },
-    { label: "JEE Main — B.Arch (NTA)", url: "https://jeemain.nta.nic.in/" },
+    { label: "JEE Main - B.Arch (NTA)", url: "https://jeemain.nta.nic.in/" },
   ],
   "Government & Public Administration": [
-    { label: "UPSC — civil services", url: "https://upsc.gov.in/" },
+    { label: "UPSC - civil services", url: "https://upsc.gov.in/" },
     { label: "SSC", url: "https://ssc.gov.in/" },
   ],
   "Hospitality & Tourism": [
-    { label: "NCHM JEE (NTA) — hotel management", url: "https://exams.nta.nic.in/nchm-jee/" },
+    { label: "NCHM JEE (NTA) - hotel management", url: "https://exams.nta.nic.in/nchm-jee/" },
     { label: "CUET UG (NTA)", url: "https://cuet.nta.nic.in/" },
   ],
   "Agriculture, Food & Natural Resources": [
@@ -280,30 +280,30 @@ export const CLUSTER_EXPLORE_LINKS: Record<StandardCluster, ExploreLink[]> = {
   ],
   "Marketing": [
     { label: "CUET UG (NTA)", url: "https://cuet.nta.nic.in/" },
-    { label: "CAT (IIM) — MBA marketing specialisation", url: "https://iimcat.ac.in/" },
+    { label: "CAT (IIM) - MBA marketing specialisation", url: "https://iimcat.ac.in/" },
   ],
   "Manufacturing": [
     { label: "JEE Main (NTA)", url: "https://jeemain.nta.nic.in/" },
   ],
   "Transportation, Distribution & Logistics": [
     { label: "NDA (UPSC)", url: "https://upsc.gov.in/" },
-    { label: "IMU-CET — merchant navy", url: "https://www.imu.edu.in/" },
-    { label: "DGCA — commercial pilot licensing", url: "https://www.dgca.gov.in/" },
+    { label: "IMU-CET - merchant navy", url: "https://www.imu.edu.in/" },
+    { label: "DGCA - commercial pilot licensing", url: "https://www.dgca.gov.in/" },
   ],
 };
 
 /**
- * Real, funded/stipend/scholarship-style programmes per cluster — the
+ * Real, funded/stipend/scholarship-style programmes per cluster - the
  * `FREE_STIPEND_ROUTE` shape (jeePercentileGuide.ts) generalised beyond
  * Engineering. Every entry here is sourced from either the user-supplied
  * "Class 12 -> Study/Training -> Career" reference PDF (government/
- * research/defence/maritime/apprenticeship routes — Government & Public
+ * research/defence/maritime/apprenticeship routes - Government & Public
  * Administration, Transportation and STEM below) or a live WebSearch this
  * session, never carried over from memory. `Manufacturing`/`Business
- * Management & Administration`/etc. do not have populated arrays yet — an
+ * Management & Administration`/etc. do not have populated arrays yet - an
  * empty array there means "not researched yet," not "nothing real exists,"
  * and should never be treated as a finished, complete set. Only genuinely
- * funded/stipend/sponsorship-linked routes belong here — a paid private
+ * funded/stipend/sponsorship-linked routes belong here - a paid private
  * course (e.g. a commercial pilot licence) is a real path but not a funded
  * PROGRAMME, so it stays in CLUSTER_EXPLORE_LINKS instead of here.
  */
@@ -315,19 +315,27 @@ export interface FundedProgram {
   stipend: string;
   outcome: string;
   verify: string;
-  /** The verify citation's own official site — lets the report render it as a real clickable link instead of dead text. */
+  /** The verify citation's own official site - lets the report render it as a real clickable link instead of dead text. */
   url: string;
+  /** Set ONLY when `eligibility` requires already being enrolled in (or
+   *  having completed) a UG/PG programme - i.e. this is genuinely not
+   *  something a Class 11-12 reader can act on yet, just a real, useful
+   *  thing to know is waiting for them later. Undefined means "reachable
+   *  straight after Class 12", the default/common case for this whole list.
+   *  Rendered as its own clearly-labelled banner on the card so it can't be
+   *  mistaken for something to act on now. */
+  notYetReachable?: string;
 }
 export const CLUSTER_FUNDED_PROGRAMS: Partial<Record<StandardCluster, FundedProgram[]>> = {
   "Government & Public Administration": [
     {
-      name: "NDA — National Defence Academy",
+      name: "NDA - National Defence Academy",
       summary: "Tri-service (Army/Navy/Air Force) officer-training route, entered straight after Class 12.",
       eligibility: "Class 12 pass, age 16.5–19.5; Physics/Chemistry/Maths required for the Navy/Air Force and Naval Academy routes.",
       structure: "UPSC written exam → SSB interview → medical/merit → 3 years at NDA, then service-specific training.",
       stipend: "A fixed cadet-training stipend of ₹56,100/month during the service-academy training period (per UPSC's own NDA notification).",
       outcome: "Commissioned officer (Army/Navy/Air Force) on successful completion, starting at Level 10 of the officer pay matrix.",
-      verify: "Apply via upsc.gov.in when the NDA notification opens (twice a year) — stipend figures and service conditions should always be checked against the current notification.",
+      verify: "Apply via upsc.gov.in when the NDA notification opens (twice a year) - stipend figures and service conditions should always be checked against the current notification.",
       url: "https://upsc.gov.in",
     },
     {
@@ -337,7 +345,7 @@ export const CLUSTER_FUNDED_PROGRAMS: Partial<Record<StandardCluster, FundedProg
       structure: "Integrated technical + military training over the prescribed period, ending in an engineering degree and commission.",
       stipend: "Cadet training is government-supported throughout; exact stipend/allowance terms are notification-specific.",
       outcome: "Engineering degree + officer commission in a technical Army branch, with progression under Army service rules.",
-      verify: "joinindianarmy.nic.in — Technical Entry Scheme notifications.",
+      verify: "joinindianarmy.nic.in - Technical Entry Scheme notifications.",
       url: "https://joinindianarmy.nic.in",
     },
     {
@@ -347,39 +355,41 @@ export const CLUSTER_FUNDED_PROGRAMS: Partial<Record<StandardCluster, FundedProg
       structure: "Written exam / physical test / medical → training → a 4-year service engagement.",
       stipend: "A rising salary/package throughout the 4-year engagement, plus a lump-sum exit (\"Seva Nidhi\") package.",
       outcome: "A fixed-term 4-year service; roughly a quarter are retained for continued service, the rest exit with the Seva Nidhi package and certain further-study/recruitment preferences.",
-      verify: "joinindianarmy.nic.in / joinindiannavy.gov.in / the Indian Air Force's current Agniveer Vayu notification — retention shares and terms are scheme-specific and can change.",
+      verify: "joinindianarmy.nic.in / joinindiannavy.gov.in / the Indian Air Force's current Agniveer Vayu notification - retention shares and terms are scheme-specific and can change.",
       url: "https://joinindianarmy.nic.in",
     },
     {
       name: "UPSC Civil Services Examination",
-      summary: "Not a Class-12 programme — the degree-level route into IAS/IPS/IFS/IRS and allied services, worth knowing early since it shapes which degree/stream choices keep this door open.",
+      summary: "Not a Class-12 programme - the degree-level route into IAS/IPS/IFS/IRS and allied services, worth knowing early since it shapes which degree/stream choices keep this door open.",
       eligibility: "Any bachelor's degree in any discipline; age 21–32 for the general category (relaxations apply for other categories).",
       structure: "Preliminary exam → Main exam → Personality Test (interview).",
-      stipend: "No stipend during preparation — pay begins only after selection and foundation training.",
+      stipend: "No stipend during preparation - pay begins only after selection and foundation training.",
       outcome: "Officer-level government service across IAS, IPS, IFS, IRS and other central/allied services, by final rank and service preference.",
-      verify: "upsc.gov.in — Civil Services Examination notification, released annually.",
+      verify: "upsc.gov.in - Civil Services Examination notification, released annually.",
       url: "https://upsc.gov.in",
+      notYetReachable: "Requires a completed Bachelor's degree first - not reachable straight after Class 12. Worth knowing about now since it shapes which degree/stream choices keep this door open.",
     },
     {
       name: "SSC CGL (Combined Graduate Level)",
       summary: "A much higher-volume, faster route than the UPSC civil services into central government ministries and departments, for any bachelor's degree.",
       eligibility: "Bachelor's degree in any discipline; age limits vary by specific post (commonly 18–32).",
       structure: "Tier I and Tier II computer-based exams; some posts add a skill or typing test.",
-      stipend: "Not a training stipend — direct recruitment into a salaried Group B/C government post.",
+      stipend: "Not a training stipend - direct recruitment into a salaried Group B/C government post.",
       outcome: "A government post across a wide range of central ministries/departments, assigned by rank and post preference.",
-      verify: "ssc.gov.in — SSC CGL notification, released annually.",
+      verify: "ssc.gov.in - SSC CGL notification, released annually.",
       url: "https://ssc.gov.in",
+      notYetReachable: "Requires a completed Bachelor's degree first - not reachable straight after Class 12. This is what to aim for once you've graduated.",
     },
   ],
   "Transportation, Distribution & Logistics": [
     {
-      name: "Indian Naval Academy — 10+2 B.Tech Cadet Entry",
-      summary: "A direct officer-entry pathway combining a 4-year engineering degree with Naval training, fully government-funded — not ordinary college admission.",
+      name: "Indian Naval Academy - 10+2 B.Tech Cadet Entry",
+      summary: "A direct officer-entry pathway combining a 4-year engineering degree with Naval training, fully government-funded - not ordinary college admission.",
       eligibility: "Class 12 with the prescribed PCM/English criteria, shortlisted via the current JEE Main-based mechanism.",
       structure: "Selection → 4-year B.Tech + Naval training at the Indian Naval Academy, Ezhimala, Kerala → Permanent Commission pathway.",
-      stipend: "The Navy bears prescribed training/education costs and cadet benefits throughout — exact current terms are notification-specific.",
+      stipend: "The Navy bears prescribed training/education costs and cadet benefits throughout - exact current terms are notification-specific.",
       outcome: "A B.Tech degree plus a Permanent Commission as a Naval officer (executive or technical stream), subject to medical, conduct, academic and service conditions.",
-      verify: "joinindiannavy.gov.in — 10+2 B.Tech Cadet Entry notifications.",
+      verify: "joinindiannavy.gov.in - 10+2 B.Tech Cadet Entry notifications.",
       url: "https://www.joinindiannavy.gov.in",
     },
     {
@@ -387,17 +397,17 @@ export const CLUSTER_FUNDED_PROGRAMS: Partial<Record<StandardCluster, FundedProg
       summary: "The direct route to a Merchant Navy deck-officer career.",
       eligibility: "10+2 with a 60%+ PCM average and 50%+ English (10th or 12th), a valid IMU-CET rank, and age/medical requirements (per the 2026-27 prospectus).",
       structure: "3-year residential B.Sc Nautical Science at an Indian Maritime University campus.",
-      stipend: "Not a universal stipend model at this stage — check individual company-sponsorship options separately.",
+      stipend: "Not a universal stipend model at this stage - check individual company-sponsorship options separately.",
       outcome: "Deck Cadet → officer-level certification → Third/Second Officer → Chief Officer → Master/Captain, subject to sea-time, examinations, medical fitness and maritime regulations.",
-      verify: "imu.edu.in — IMU-CET notification and current prospectus.",
+      verify: "imu.edu.in - IMU-CET notification and current prospectus.",
       url: "https://www.imu.edu.in",
     },
     {
-      name: "DNS (Diploma in Nautical Science) — sponsorship-linked",
+      name: "DNS (Diploma in Nautical Science) - sponsorship-linked",
       summary: "A more training-intensive maritime route that can connect a student directly with a shipping/ship-management company as a sponsor.",
       eligibility: "IMU-CET eligibility, plus any additional conditions set by the specific institute or sponsoring company.",
       structure: "DNS → structured maritime training → onboard sea time → competency/degree progression.",
-      stipend: "Sponsorship terms vary by company — a genuine funded/employment-linked pathway, not a fixed government stipend.",
+      stipend: "Sponsorship terms vary by company - a genuine funded/employment-linked pathway, not a fixed government stipend.",
       outcome: "Progresses toward the same Merchant Navy officer ladder as the B.Sc Nautical Science route, contingent on training, medical, exam and company requirements.",
       verify: "imu.edu.in and the specific affiliated institute's current sponsorship notices.",
       url: "https://www.imu.edu.in",
@@ -405,72 +415,72 @@ export const CLUSTER_FUNDED_PROGRAMS: Partial<Record<StandardCluster, FundedProg
   ],
   "STEM": [
     {
-      name: "IIST — Indian Institute of Space Science and Technology",
+      name: "IIST - Indian Institute of Space Science and Technology",
       summary: "A specialised aerospace/space-technology degree with real, merit-based fee waivers and a path toward ISRO recruitment (not automatic).",
       eligibility: "Class 12 PCM; admission via JEE Advanced marks, with category-specific minimum thresholds published each year.",
       structure: "4-year B.Tech (Aerospace Engineering / Electronics & Communication-Avionics / CSE-Data Science) or a 5-year dual-degree programme.",
       stipend: "The top 5 admitted UG/dual-degree students by JEE Advanced AIR (≤1000) get a full first-year fee waiver, subject to a CGPA condition; CGPA 9.0+ students can get a 50% tuition waiver the following semester.",
-      outcome: "An engineering degree plus eligibility — not a guarantee — for ISRO/DoS recruitment under notified vacancies and stated CGPA/completion/medical conditions.",
-      verify: "iist.ac.in — 2026 admission announcements and financial-assistance pages.",
+      outcome: "An engineering degree plus eligibility - not a guarantee - for ISRO/DoS recruitment under notified vacancies and stated CGPA/completion/medical conditions.",
+      verify: "iist.ac.in - 2026 admission announcements and financial-assistance pages.",
       url: "https://www.iist.ac.in",
     },
     {
-      name: "NISER — National Institute of Science Education and Research",
+      name: "NISER - National Institute of Science Education and Research",
       summary: "A 5-year integrated, research-intensive science education with scholarship/fellowship opportunities.",
       eligibility: "Class 12 science students, via the NEST admission route.",
       structure: "5-year Integrated M.Sc-oriented education across Physics, Chemistry, Mathematics, Biology and interdisciplinary science.",
       stipend: "Scholarship/fellowship mechanisms available depending on the programme and national/institutional schemes, subject to current rules.",
-      outcome: "A strong foundation for PhD study, scientific research, national laboratories, academia and R&D — no automatic government job.",
-      verify: "niser.ac.in — NEST admission information.",
+      outcome: "A strong foundation for PhD study, scientific research, national laboratories, academia and R&D - no automatic government job.",
+      verify: "niser.ac.in - NEST admission information.",
       url: "https://www.niser.ac.in",
     },
     {
-      name: "IISERs — Indian Institutes of Science Education and Research",
+      name: "IISERs - Indian Institutes of Science Education and Research",
       summary: "A family of research-oriented institutions offering an integrated science education broadly similar to NISER's.",
       eligibility: "Class 12 science, via the admission mechanism prescribed for the relevant year.",
       structure: "Integrated BS-MS and other undergraduate science programmes, depending on institute and admission cycle.",
       stipend: "Scholarship/fellowship opportunities can be available depending on eligibility and national/institutional schemes.",
-      outcome: "Research, PhD, academia, scientific computing, R&D and technology-sector careers — no automatic government employment.",
+      outcome: "Research, PhD, academia, scientific computing, R&D and technology-sector careers - no automatic government employment.",
       verify: "The relevant IISER's own admission and scholarship pages for that academic year.",
       url: "https://www.iiseradmission.in",
     },
     {
       name: "DRDO Apprenticeship (graduate / diploma / ITI)",
-      summary: "Paid, time-limited practical training at a DRDO laboratory — mainly for candidates who already hold the required qualification, not a direct Class-12 route.",
+      summary: "Paid, time-limited practical training at a DRDO laboratory - mainly for candidates who already hold the required qualification, not a direct Class-12 route.",
       eligibility: "ITI, diploma or degree in the relevant discipline, per each laboratory's specific notification.",
       structure: "A 1-year apprenticeship at a DRDO laboratory (e.g. DEAL Dehradun, INMAS Delhi).",
       stipend: "2026 figures: graduate apprentices ₹12,300/month, diploma apprentices ₹10,900/month, ITI apprentices ₹9,600/month.",
-      outcome: "Real R&D/technical experience — DRDO's own notice explicitly states completion does not confer a right to a temporary or permanent job.",
-      verify: "drdo.gov.in/drdo/en/offerings/vacancies — current apprenticeship notices.",
+      outcome: "Real R&D/technical experience - DRDO's own notice explicitly states completion does not confer a right to a temporary or permanent job.",
+      verify: "drdo.gov.in/drdo/en/offerings/vacancies - current apprenticeship notices.",
       url: "https://www.drdo.gov.in/drdo/en/offerings/vacancies",
     },
     {
       name: "ISRO Apprenticeship",
       summary: "A paid, qualification-specific apprenticeship at an ISRO centre.",
-      eligibility: "Usually requires the qualification stated in that specific notification — often diploma/ITI/degree, not plain Class 12.",
+      eligibility: "Usually requires the qualification stated in that specific notification - often diploma/ITI/degree, not plain Class 12.",
       structure: "Structured workplace training and skill development at an ISRO centre.",
       stipend: "2026 notice: diploma apprentice roles at ₹10,900/month, ITI trainee roles at ₹9,600/month for specified disciplines.",
-      outcome: "Real space-sector technical experience — not a promise of automatic ISRO employment.",
-      verify: "isro.gov.in — current apprenticeship/recruitment notices.",
+      outcome: "Real space-sector technical experience - not a promise of automatic ISRO employment.",
+      verify: "isro.gov.in - current apprenticeship/recruitment notices.",
       url: "https://www.isro.gov.in",
     },
     {
       name: "BARC / DAE route",
-      summary: "Not a direct Class-12 \"study and get a guaranteed scientist job\" institution — a longer route that runs through a science/engineering degree first.",
+      summary: "Not a direct Class-12 \"study and get a guaranteed scientist job\" institution - a longer route that runs through a science/engineering degree first.",
       eligibility: "Scientist/engineer careers here normally require higher education (B.Sc/B.Tech/Integrated M.Sc) and a separate, competitive recruitment process.",
       structure: "Class 12 → B.Sc/B.Tech/Integrated M.Sc → a relevant postgraduate/research qualification where needed → DAE/BARC recruitment or training route (NISER is one strong feeder programme).",
       stipend: "Training/apprenticeship/student-project stipends vary by the specific BARC/DAE programme.",
-      outcome: "A nuclear-science/R&D career — permanent BARC employment should never be promised just from entering a DAE-linked academic programme.",
-      verify: "barc.gov.in/careers — current recruitment/results notices.",
+      outcome: "A nuclear-science/R&D career - permanent BARC employment should never be promised just from entering a DAE-linked academic programme.",
+      verify: "barc.gov.in/careers - current recruitment/results notices.",
       url: "https://www.barc.gov.in/careers",
     },
     {
       name: "Government PSU Apprenticeships (Railways, HAL, BEL, BHEL, ONGC, NTPC, IOCL, HPCL, BPCL and others)",
       summary: "Large public-sector employers periodically recruit ITI/diploma/graduate apprentices, depending on workforce needs.",
-      eligibility: "Usually ITI, diploma or degree — plain Class 12 eligibility is less common here than in the defence/service routes above.",
+      eligibility: "Usually ITI, diploma or degree - plain Class 12 eligibility is less common here than in the defence/service routes above.",
       structure: "Time-bound apprenticeship under the applicable NATS/NAPS rules or the specific institution's own scheme.",
-      stipend: "A stipend under the applicable apprenticeship rules — the exact amount varies by employer and qualification level.",
-      outcome: "Apprenticeship is training, not a permanent appointment — any subsequent recruitment is a separate, competitive process unless a specific notification states otherwise.",
+      stipend: "A stipend under the applicable apprenticeship rules - the exact amount varies by employer and qualification level.",
+      outcome: "Apprenticeship is training, not a permanent appointment - any subsequent recruitment is a separate, competitive process unless a specific notification states otherwise.",
       verify: "The specific employer's current apprenticeship notification, and the Apprenticeship/NATS/NAPS portal.",
       url: "https://nats.education.gov.in",
     },
@@ -479,57 +489,58 @@ export const CLUSTER_FUNDED_PROGRAMS: Partial<Record<StandardCluster, FundedProg
     {
       name: "TCS iON / ACE (Tata Consultancy Services)",
       summary: "A large-scale, paid apprenticeship-to-hire track for engineering graduates, alongside NATS-backed IT apprenticeships more broadly.",
-      eligibility: "Varies by track — TCS's own graduate-apprentice programmes vs. its (unpaid, certificate-only) virtual internships; check the specific programme's eligibility before assuming stipend applies.",
+      eligibility: "Varies by track - TCS's own graduate-apprentice programmes vs. its (unpaid, certificate-only) virtual internships; check the specific programme's eligibility before assuming stipend applies.",
       structure: "A structured 1-year (or programme-specific) training and apprenticeship track at TCS.",
-      stipend: "TCS iON's paid graduate-apprentice track pays around ₹25,000/month; separately, general TCS internships range roughly ₹5,000–30,000/month — but TCS iON's virtual internships specifically are unpaid (certificate-only), so the exact track matters.",
-      outcome: "Real industry experience and, for the paid apprentice tracks, a stipend — not an automatic full-time offer.",
-      verify: "tcs.com/careers — current TCS iON/apprenticeship programme pages (terms vary by specific track).",
+      stipend: "TCS iON's paid graduate-apprentice track pays around ₹25,000/month; separately, general TCS internships range roughly ₹5,000–30,000/month - but TCS iON's virtual internships specifically are unpaid (certificate-only), so the exact track matters.",
+      outcome: "Real industry experience and, for the paid apprentice tracks, a stipend - not an automatic full-time offer.",
+      verify: "tcs.com/careers - current TCS iON/apprenticeship programme pages (terms vary by specific track).",
       url: "https://www.tcs.com/careers",
     },
     {
-      name: "NATS — National Apprenticeship Training Scheme (IT/ITES employers)",
+      name: "NATS - National Apprenticeship Training Scheme (IT/ITES employers)",
       summary: "The same government-backed apprenticeship used across other clusters applies directly to IT/software roles at any registered IT employer.",
       eligibility: "ITI/diploma/graduate qualification in an IT-relevant discipline, placed with a registered employer.",
       structure: "A fixed-term workplace apprenticeship under the Apprentices Act, 1961.",
       stipend: "Revised minimums from April 2026: ₹9,600/month (technician/vocational), ₹10,900/month (diploma), ₹12,300/month (graduate), with 50% government reimbursement to the employer.",
-      outcome: "Real IT workplace experience and a stipend — not a guaranteed permanent role.",
-      verify: "nats.education.gov.in — current registration and stipend details.",
+      outcome: "Real IT workplace experience and a stipend - not a guaranteed permanent role.",
+      verify: "nats.education.gov.in - current registration and stipend details.",
       url: "https://nats.education.gov.in",
     },
   ],
   "Health Science": [
     {
-      name: "AFMC — Armed Forces Medical College, Pune",
-      summary: "A government-funded MBBS with military training built in — heavily subsidised fees, not a private-college price tag.",
+      name: "AFMC - Armed Forces Medical College, Pune",
+      summary: "A government-funded MBBS with military training built in - heavily subsidised fees, not a private-college price tag.",
       eligibility: "Qualify NEET-UG, then clear AFMC's own screening round; broadly open to both men and women cadets.",
       structure: "4.5-year MBBS with military-oriented training at AFMC, Pune, followed by a compulsory rotatory internship.",
       stipend: "Total tuition for the full programme is ₹65,000 (heavily subsidised, not per-year private-college fees); a monthly stipend and allowances apply during training per defence norms, with a specific stipend during the internship year.",
       outcome: "MBBS degree plus a Short Service/Permanent Commission pathway in the Armed Forces Medical Services, subject to service bond and conditions.",
-      verify: "afmc.nic.in — current Information Brochure for MBBS admission.",
+      verify: "afmc.nic.in - current Information Brochure for MBBS admission.",
       url: "https://afmc.nic.in",
     },
   ],
   "Finance": [
     {
       name: "CA Articleship (ICAI)",
-      summary: "Not a scholarship — a paid, compulsory 3-year practical-training component of the CA course itself, so a CA student earns while training.",
+      summary: "Not a scholarship - a paid, compulsory 3-year practical-training component of the CA course itself, so a CA student earns while training.",
       eligibility: "Registered CA student (via CA Foundation or direct-entry routes) placed with a practising Chartered Accountant or firm.",
       structure: "3 years of practical training (\"articleship\") under a practising CA, alongside the CA Intermediate/Final exams.",
-      stipend: "ICAI-prescribed minimums (cities with 20 lakh+ population): ₹4,000/month in year 1, ₹5,000 in year 2, ₹6,000 in year 3; smaller towns carry lower statutory minimums (~₹2,000–3,000). Final-year Industrial Training pays a fixed minimum of ₹15,000/month (effective January 2026). Reputed firms — especially the Big 4 — commonly pay well above the minimum, typically ₹18,000–35,000/month.",
+      stipend: "ICAI-prescribed minimums (cities with 20 lakh+ population): ₹4,000/month in year 1, ₹5,000 in year 2, ₹6,000 in year 3; smaller towns carry lower statutory minimums (~₹2,000–3,000). Final-year Industrial Training pays a fixed minimum of ₹15,000/month (effective January 2026). Reputed firms - especially the Big 4 - commonly pay well above the minimum, typically ₹18,000–35,000/month.",
       outcome: "Practical experience that's mandatory for qualifying as a Chartered Accountant, plus real income throughout training.",
-      verify: "icai.org — current articleship stipend regulations (rates are periodically revised).",
+      verify: "icai.org - current articleship stipend regulations (rates are periodically revised).",
       url: "https://www.icai.org",
+      notYetReachable: "Articleship itself starts only after clearing CA Foundation and CA Intermediate (typically 2+ years) - but you CAN register for CA Foundation right after Class 12 to begin this path.",
     },
   ],
   "Business Management & Administration": [
     {
-      name: "NATS — National Apprenticeship Training Scheme",
+      name: "NATS - National Apprenticeship Training Scheme",
       summary: "A government-backed, paid apprenticeship any graduate/diploma holder can use to get real workplace experience, including in business/operations-adjacent roles.",
       eligibility: "Recent graduates or diploma holders (technician/diploma/graduate categories), placed with a registered employer.",
       structure: "A fixed-term workplace apprenticeship under the Apprentices Act, 1961, run by the Ministry of Education since 1973.",
-      stipend: "Revised minimums from April 2026: ₹9,600/month (technician/vocational), ₹10,900/month (diploma), ₹12,300/month (graduate) — with the government reimbursing 50% of the prescribed minimum stipend to the employer via Direct Benefit Transfer.",
-      outcome: "Real workplace experience and a stipend — not a job guarantee; many apprentices are considered for full-time roles at the same employer but that's the employer's own call.",
-      verify: "nats.education.gov.in — current registration and stipend details.",
+      stipend: "Revised minimums from April 2026: ₹9,600/month (technician/vocational), ₹10,900/month (diploma), ₹12,300/month (graduate) - with the government reimbursing 50% of the prescribed minimum stipend to the employer via Direct Benefit Transfer.",
+      outcome: "Real workplace experience and a stipend - not a job guarantee; many apprentices are considered for full-time roles at the same employer but that's the employer's own call.",
+      verify: "nats.education.gov.in - current registration and stipend details.",
       url: "https://nats.education.gov.in",
     },
   ],
@@ -539,34 +550,37 @@ export const CLUSTER_FUNDED_PROGRAMS: Partial<Record<StandardCluster, FundedProg
       summary: "Need-and-merit-based tuition support at India's top design institute, not available everywhere in this field but real where it applies.",
       eligibility: "Admitted NID student (B.Des/M.Des) who demonstrates both academic merit and financial need; the JRD Tata and M.P. Charan scholarships are specifically for M.Des students from economically weaker sections with strong academic records.",
       structure: "Applied for after admission, through NID's own scholarship process each academic year.",
-      stipend: "Typically covers a portion or all of tuition fees (not accommodation or other costs) — exact amounts and income thresholds are set and revised by NID each year.",
+      stipend: "Typically covers a portion or all of tuition fees (not accommodation or other costs) - exact amounts and income thresholds are set and revised by NID each year.",
       outcome: "Reduced or waived tuition for the design degree; doesn't itself guarantee a job, but removes a major cost barrier to attending.",
-      verify: "admissions.nid.edu — current scholarship guidelines for the academic year.",
+      verify: "admissions.nid.edu - current scholarship guidelines for the academic year.",
       url: "https://admissions.nid.edu",
+      notYetReachable: "Only for students already admitted to NID's B.Des/M.Des programme - apply for this after you're in, not as a way to get in.",
     },
   ],
   "Architecture & Construction": [
     {
       name: "AICTE Pragati / Saksham Scholarships",
-      summary: "The same real, verified AICTE scholarships already used for Engineering apply here too — B.Arch is an AICTE-recognised technical degree.",
+      summary: "The same real, verified AICTE scholarships already used for Engineering apply here too - B.Arch is an AICTE-recognised technical degree.",
       eligibility: "Pragati: girl students, 1st year (or 2nd via lateral entry) of an AICTE-approved programme, family income up to ₹8 lakh/year. Saksham: students with 40%+ disability, same income cap. Both apply via the National Scholarship Portal (NSP).",
       structure: "Applied for after admission into an AICTE-approved B.Arch or allied technical programme.",
       stipend: "₹50,000/year, paid directly to the student's bank account (DBT).",
-      outcome: "Direct financial support toward the degree — not a job placement scheme.",
-      verify: "National Scholarship Portal (scholarships.gov.in/NSP) — current AICTE scholarship guidelines.",
+      outcome: "Direct financial support toward the degree - not a job placement scheme.",
+      verify: "National Scholarship Portal (scholarships.gov.in/NSP) - current AICTE scholarship guidelines.",
       url: "https://scholarships.gov.in",
+      notYetReachable: "Only for students already in the 1st (or 2nd, via lateral entry) year of an AICTE-approved degree programme - not reachable straight after Class 12.",
     },
   ],
   "Hospitality & Tourism": [
     {
       name: "Post-Matric / Central Sector Scholarship access via Central IHMs",
       summary: "Central Institutes of Hotel Management don't run their own dedicated stipend scheme, but do facilitate access to the general national Post-Matric (state) and Central Sector (central government) scholarship schemes for eligible students.",
-      eligibility: "Set by the underlying national scholarship scheme (state-domicile and income/category criteria for Post-Matric; merit/income criteria for Central Sector) — check current thresholds.",
+      eligibility: "Set by the underlying national scholarship scheme (state-domicile and income/category criteria for Post-Matric; merit/income criteria for Central Sector) - check current thresholds.",
       structure: "Applied for through the National Scholarship Portal once admitted to a Central IHM's B.Sc Hospitality & Hotel Administration programme.",
-      stipend: "Varies by the specific underlying scheme — not a fixed IHM-specific amount.",
+      stipend: "Varies by the specific underlying scheme - not a fixed IHM-specific amount.",
       outcome: "Reduced cost of the degree; a separate NCHMCT Research Fellowship exists for those going on to a PhD in hospitality management.",
       verify: "nchm.gov.in and scholarships.gov.in/NSP for current scheme details.",
       url: "https://nchm.gov.in",
+      notYetReachable: "Only for students already admitted to a Central IHM's B.Sc Hospitality & Hotel Administration programme - apply for this after you're in, not as a way to get in.",
     },
   ],
   "Agriculture, Food & Natural Resources": [
@@ -576,9 +590,10 @@ export const CLUSTER_FUNDED_PROGRAMS: Partial<Record<StandardCluster, FundedProg
       eligibility: "Full-time UG student at an ICAR-funded Agricultural University located outside the student's own state of domicile; not employed even part-time; good conduct and regular attendance certified by the institution.",
       structure: "Applied for through the National Scholarship Portal once admitted via ICAR AIEEA or the relevant state agricultural university entrance.",
       stipend: "₹3,000/month.",
-      outcome: "Direct financial support throughout the UG degree — not a job placement scheme.",
-      verify: "education.icar.gov.in — current NTS-UG guidelines and deadlines (recent cycle closed 31 October).",
+      outcome: "Direct financial support throughout the UG degree - not a job placement scheme.",
+      verify: "education.icar.gov.in - current NTS-UG guidelines and deadlines (recent cycle closed 31 October).",
       url: "https://education.icar.gov.in",
+      notYetReachable: "Only for students already enrolled full-time in an ICAR-funded agricultural UG programme, outside their home state - not reachable straight after Class 12.",
     },
   ],
   "Manufacturing": [
@@ -588,22 +603,22 @@ export const CLUSTER_FUNDED_PROGRAMS: Partial<Record<StandardCluster, FundedProg
       eligibility: "ITI/diploma/graduate qualification in a manufacturing-relevant discipline, placed with a registered manufacturing employer.",
       structure: "A fixed-term workplace apprenticeship under the Apprentices Act, 1961.",
       stipend: "Revised minimums from April 2026: ₹9,600/month (technician/vocational), ₹10,900/month (diploma), ₹12,300/month (graduate), with 50% government reimbursement to the employer.",
-      outcome: "Real shop-floor/production experience and a stipend — not a guaranteed permanent role.",
-      verify: "nats.education.gov.in — current registration and stipend details.",
+      outcome: "Real shop-floor/production experience and a stipend - not a guaranteed permanent role.",
+      verify: "nats.education.gov.in - current registration and stipend details.",
       url: "https://nats.education.gov.in",
     },
   ],
 };
 
 /**
- * "Who actually hires here" — regular (private-sector) and government
+ * "Who actually hires here" - regular (private-sector) and government
  * employers, per cluster (not per individual role: researched, verified
  * lists for 332 separate careers would be an order of magnitude more work
- * for names that mostly overlap within one cluster anyway — see the
+ * for names that mostly overlap within one cluster anyway - see the
  * groupByCluster1112 comment in careerFitEngine1112.ts for the same
  * per-cluster-not-per-career reasoning). Every name below came back from a
  * live WebSearch this session, not memory. Clusters not yet listed here
- * haven't been researched yet — CLUSTER_COMPANIES[x] being undefined means
+ * haven't been researched yet - CLUSTER_COMPANIES[x] being undefined means
  * "not done," never "no real employers exist."
  */
 export interface ClusterCompanies { regular: string[]; govt: string[] }
@@ -627,7 +642,7 @@ export const CLUSTER_COMPANIES: Partial<Record<StandardCluster, ClusterCompanies
 };
 
 // The 16 National Career Clusters standard (US Dept. of Education / Advance
-// CTE, 2002-2024) — a coarser, industry-standard grouping layered on top of
+// CTE, 2002-2024) - a coarser, industry-standard grouping layered on top of
 // DOMAINS_1112's own 27 domains via a crosswalk (verified in this session's
 // "Career Cluster Map" reference doc). Most domains map straight across;
 // a handful of individual careers are reassigned below their domain's
@@ -654,11 +669,11 @@ export interface Career1112 {
   keyAptitude: AptCode;
   aptitudeLevel: AptLevel;
   requiredGroup: RequiredGroup;
-  eligibleStreamsText: string; // display only — see file header
+  eligibleStreamsText: string; // display only - see file header
   values: string;
   shape: CareerPathShape;
   description: string;
-  /** A representative undergraduate route — not the only one, but the most common. */
+  /** A representative undergraduate route - not the only one, but the most common. */
   typicalDegree: string;
   /** The entrance exam(s) that degree is typically reached through. */
   typicalEntranceExam: string;
@@ -669,7 +684,7 @@ export interface Career1112 {
 export const CAREERS_1112: Career1112[] = [
   { id: 1, name: "Mechanical Engineer", domain: "Engineering", cluster: "STEM", riasec: "RIC", mi1: "MI_VISUAL", mi2: "MI_ANALYTICAL", keyAptitude: "APT_SPATIAL", aptitudeLevel: "Medium-High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Stability", shape: "Corporate career", description: "Designs and builds mechanical systems and machines.", typicalDegree: "B.Tech Mechanical", typicalEntranceExam: "JEE Main/Advanced or a state engineering CET" },
   { id: 2, name: "Electronics & Communication Engineer", domain: "Engineering", cluster: "STEM", riasec: "RIE", mi1: "MI_ANALYTICAL", mi2: "MI_KINESTHETIC", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium-High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Stability", shape: "Corporate career", description: "Designs communication systems, circuits and electronic hardware.", typicalDegree: "B.Tech Electronics & Communication", typicalEntranceExam: "JEE Main/Advanced or a state engineering CET" },
-  { id: 3, name: "Civil Engineer", domain: "Engineering", cluster: "STEM", riasec: "RCI", mi1: "MI_KINESTHETIC", mi2: "MI_VISUAL", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Stability", shape: "Corporate career", description: "Plans and builds infrastructure — buildings, roads, bridges.", typicalDegree: "B.Tech Civil", typicalEntranceExam: "JEE Main/Advanced or a state engineering CET" },
+  { id: 3, name: "Civil Engineer", domain: "Engineering", cluster: "STEM", riasec: "RCI", mi1: "MI_KINESTHETIC", mi2: "MI_VISUAL", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Stability", shape: "Corporate career", description: "Plans and builds infrastructure - buildings, roads, bridges.", typicalDegree: "B.Tech Civil", typicalEntranceExam: "JEE Main/Advanced or a state engineering CET" },
   { id: 4, name: "Robotics Engineer", domain: "Engineering", cluster: "STEM", riasec: "RIA", mi1: "MI_KINESTHETIC", mi2: "MI_ANALYTICAL", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC", values: "Risk/Growth", shape: "Entrepreneurship", description: "Builds automated and intelligent physical/mechanical systems.", typicalDegree: "B.Tech Robotics", typicalEntranceExam: "JEE Main/Advanced or a state engineering CET" },
   { id: 5, name: "Software Engineer", domain: "Computer Science / IT", cluster: "Information Technology", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_LINGUISTIC", keyAptitude: "APT_LOGICAL", aptitudeLevel: "High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths", values: "Growth", shape: "Corporate career", description: "Designs, builds and maintains software systems.", typicalDegree: "B.Tech CSE / BCA / B.Sc Computer Science", typicalEntranceExam: "JEE Main, CUET or university entrance test" },
   { id: 6, name: "Full-Stack Developer", domain: "Computer Science / IT", cluster: "Information Technology", riasec: "IRA", mi1: "MI_ANALYTICAL", mi2: "MI_VISUAL", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium-High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths, Vocational", values: "Growth", shape: "Entrepreneurship", description: "Builds both the front-end and back-end of web/app products.", typicalDegree: "B.Tech CSE / BCA / B.Sc Computer Science", typicalEntranceExam: "JEE Main, CUET or university entrance test" },
@@ -690,8 +705,8 @@ export const CAREERS_1112: Career1112[] = [
   { id: 21, name: "Statistician", domain: "Mathematics / Statistics", cluster: "STEM", riasec: "ICE", mi1: "MI_ANALYTICAL", mi2: "MI_INTRAPERSONAL", keyAptitude: "APT_DATA", aptitudeLevel: "High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths", values: "Stability", shape: "Corporate career", description: "Designs studies and analyses data to draw sound conclusions.", typicalDegree: "B.Sc/B.Stat Mathematics or Statistics", typicalEntranceExam: "CUET, ISI/CMI entrance, or university entrance" },
   { id: 22, name: "Actuary", domain: "Mathematics / Statistics", cluster: "STEM", riasec: "ICE", mi1: "MI_ANALYTICAL", mi2: "MI_LINGUISTIC", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths", values: "Stability", shape: "Professional/Technical", description: "Quantifies and manages financial risk, mainly in insurance.", typicalDegree: "B.Sc Actuarial Science / Statistics + Institute of Actuaries exams", typicalEntranceExam: "University entrance; actuarial exams run separately" },
   { id: 23, name: "Mathematician", domain: "Mathematics / Statistics", cluster: "STEM", riasec: "IAC", mi1: "MI_ANALYTICAL", mi2: "MI_INTRAPERSONAL", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC", values: "Growth", shape: "Research/academia", description: "Applies advanced mathematics to research or quantitative finance.", typicalDegree: "B.Sc/B.Stat Mathematics or Statistics", typicalEntranceExam: "CUET, ISI/CMI entrance, or university entrance" },
-  { id: 24, name: "Chartered Accountant (CA)", domain: "Commerce / Accounting", cluster: "Finance", riasec: "CEI", mi1: "MI_ANALYTICAL", mi2: "MI_LINGUISTIC", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium-High", requiredGroup: "OPEN", eligibleStreamsText: "Commerce, MPC", values: "Stability", shape: "Professional/Technical", description: "Audits, advises on tax and manages financial compliance.", typicalDegree: "CA — via ICAI (no separate bachelor's required)", typicalEntranceExam: "CA Foundation, after Class 12" },
-  { id: 25, name: "Cost & Management Accountant", domain: "Commerce / Accounting", cluster: "Finance", riasec: "CIE", mi1: "MI_ANALYTICAL", mi2: "MI_LINGUISTIC", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Stability", shape: "Professional/Technical", description: "Manages cost analysis and internal financial control.", typicalDegree: "CMA — via ICMAI", typicalEntranceExam: "CMA Foundation, after Class 12" },
+  { id: 24, name: "Chartered Accountant (CA)", domain: "Commerce / Accounting", cluster: "Finance", riasec: "CEI", mi1: "MI_ANALYTICAL", mi2: "MI_LINGUISTIC", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium-High", requiredGroup: "OPEN", eligibleStreamsText: "Commerce, MPC", values: "Stability", shape: "Professional/Technical", description: "Audits, advises on tax and manages financial compliance.", typicalDegree: "CA - via ICAI (no separate bachelor's required)", typicalEntranceExam: "CA Foundation, after Class 12" },
+  { id: 25, name: "Cost & Management Accountant", domain: "Commerce / Accounting", cluster: "Finance", riasec: "CIE", mi1: "MI_ANALYTICAL", mi2: "MI_LINGUISTIC", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Stability", shape: "Professional/Technical", description: "Manages cost analysis and internal financial control.", typicalDegree: "CMA - via ICMAI", typicalEntranceExam: "CMA Foundation, after Class 12" },
   { id: 26, name: "Investment Banker", domain: "Finance / Investment", cluster: "Finance", riasec: "ECI", mi1: "MI_ANALYTICAL", mi2: "MI_LINGUISTIC", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "Commerce, MPC", values: "Growth", shape: "Corporate career", description: "Raises capital and advises on major financial deals.", typicalDegree: "B.Com/BBA Finance (+ CFA later)", typicalEntranceExam: "CUET or university entrance" },
   { id: 27, name: "Financial Analyst", domain: "Finance / Investment", cluster: "Finance", riasec: "ICE", mi1: "MI_ANALYTICAL", mi2: "MI_LINGUISTIC", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium-High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "Commerce, MPC", values: "Stability", shape: "Corporate career", description: "Evaluates investments and financial performance.", typicalDegree: "B.Com/BBA Finance (+ CFA later)", typicalEntranceExam: "CUET or university entrance" },
   { id: 28, name: "Portfolio Manager", domain: "Finance / Investment", cluster: "Finance", riasec: "EIC", mi1: "MI_ANALYTICAL", mi2: "MI_INTRAPERSONAL", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "Commerce, MPC", values: "Growth", shape: "Corporate career", description: "Manages investment portfolios to meet return targets.", typicalDegree: "B.Com/BBA Finance (+ CFA later)", typicalEntranceExam: "CUET or university entrance" },
@@ -744,9 +759,9 @@ export const CAREERS_1112: Career1112[] = [
   { id: 75, name: "Design Engineer", domain: "Engineering", cluster: "STEM", riasec: "RAI", mi1: "MI_VISUAL", mi2: "MI_KINESTHETIC", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Stability", shape: "Corporate career", description: "Turns product concepts into detailed, manufacturable 3D designs and prototypes.", typicalDegree: "B.Tech Design", typicalEntranceExam: "JEE Main/Advanced or a state engineering CET", added: true },
   { id: 76, name: "Web Developer", domain: "Computer Science / IT", cluster: "Information Technology", riasec: "RIA", mi1: "MI_ANALYTICAL", mi2: "MI_VISUAL", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths", values: "Growth", shape: "Corporate career", description: "Builds and maintains the websites and web applications people use in a browser.", typicalDegree: "B.Tech CSE / BCA / B.Sc Computer Science", typicalEntranceExam: "JEE Main, CUET or university entrance test", added: true },
   { id: 77, name: "Mobile App Developer", domain: "Computer Science / IT", cluster: "Information Technology", riasec: "IRA", mi1: "MI_ANALYTICAL", mi2: "MI_KINESTHETIC", keyAptitude: "APT_SPATIAL", aptitudeLevel: "Medium-High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths", values: "Growth", shape: "Corporate career", description: "Builds native and cross-platform apps for phones and tablets.", typicalDegree: "B.Tech CSE / BCA / B.Sc Computer Science", typicalEntranceExam: "JEE Main, CUET or university entrance test", added: true },
-  { id: 78, name: "Cloud Architect", domain: "Computer Science / IT", cluster: "Information Technology", riasec: "ICR", mi1: "MI_ANALYTICAL", mi2: "MI_VISUAL", keyAptitude: "APT_LOGICAL", aptitudeLevel: "High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths", values: "Growth", shape: "Corporate career", description: "Designs the cloud infrastructure applications run on — scalable, secure and cost-efficient.", typicalDegree: "B.Tech CSE / BCA / B.Sc Computer Science", typicalEntranceExam: "JEE Main, CUET or university entrance test", added: true },
+  { id: 78, name: "Cloud Architect", domain: "Computer Science / IT", cluster: "Information Technology", riasec: "ICR", mi1: "MI_ANALYTICAL", mi2: "MI_VISUAL", keyAptitude: "APT_LOGICAL", aptitudeLevel: "High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths", values: "Growth", shape: "Corporate career", description: "Designs the cloud infrastructure applications run on - scalable, secure and cost-efficient.", typicalDegree: "B.Tech CSE / BCA / B.Sc Computer Science", typicalEntranceExam: "JEE Main, CUET or university entrance test", added: true },
   { id: 79, name: "DevOps Engineer", domain: "Computer Science / IT", cluster: "Information Technology", riasec: "ICR", mi1: "MI_ANALYTICAL", mi2: "MI_KINESTHETIC", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium-High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths", values: "Growth", shape: "Corporate career", description: "Automates how software gets built, tested and deployed, keeping releases fast and reliable.", typicalDegree: "B.Tech CSE / BCA / B.Sc Computer Science", typicalEntranceExam: "JEE Main, CUET or university entrance test", added: true },
-  { id: 80, name: "Site Reliability Engineer", domain: "Computer Science / IT", cluster: "Information Technology", riasec: "ICR", mi1: "MI_ANALYTICAL", mi2: "MI_INTRAPERSONAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium-High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths", values: "Growth", shape: "Corporate career", description: "Keeps production systems running — monitoring uptime and fixing what breaks under real load.", typicalDegree: "B.Tech CSE / BCA / B.Sc Computer Science", typicalEntranceExam: "JEE Main, CUET or university entrance test", added: true },
+  { id: 80, name: "Site Reliability Engineer", domain: "Computer Science / IT", cluster: "Information Technology", riasec: "ICR", mi1: "MI_ANALYTICAL", mi2: "MI_INTRAPERSONAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium-High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths", values: "Growth", shape: "Corporate career", description: "Keeps production systems running - monitoring uptime and fixing what breaks under real load.", typicalDegree: "B.Tech CSE / BCA / B.Sc Computer Science", typicalEntranceExam: "JEE Main, CUET or university entrance test", added: true },
   { id: 81, name: "Ethical Hacker", domain: "Computer Science / IT", cluster: "Information Technology", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_INTRAPERSONAL", keyAptitude: "APT_ABSTRACT", aptitudeLevel: "High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths", values: "Growth", shape: "Corporate career", description: "Legally breaks into systems to find security holes before real attackers do.", typicalDegree: "B.Tech CSE / BCA / B.Sc Computer Science", typicalEntranceExam: "JEE Main, CUET or university entrance test", added: true },
   { id: 82, name: "Network Engineer", domain: "Computer Science / IT", cluster: "Information Technology", riasec: "RIC", mi1: "MI_ANALYTICAL", mi2: "MI_KINESTHETIC", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths", values: "Growth", shape: "Corporate career", description: "Designs and maintains the networks that connect computers, servers and data centres.", typicalDegree: "B.Tech CSE / BCA / B.Sc Computer Science", typicalEntranceExam: "JEE Main, CUET or university entrance test", added: true },
   { id: 83, name: "Database Administrator", domain: "Computer Science / IT", cluster: "Information Technology", riasec: "CIR", mi1: "MI_ANALYTICAL", mi2: "MI_VISUAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths", values: "Growth", shape: "Corporate career", description: "Keeps an organisation's databases running, backed up, secure and performing well.", typicalDegree: "B.Tech CSE / BCA / B.Sc Computer Science", typicalEntranceExam: "JEE Main, CUET or university entrance test", added: true },
@@ -782,7 +797,7 @@ export const CAREERS_1112: Career1112[] = [
   { id: 113, name: "Public Health Specialist", domain: "Medicine", cluster: "Health Science", riasec: "SIE", mi1: "MI_INTERPERSONAL", mi2: "MI_ANALYTICAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium", requiredGroup: "SCI_PCB", eligibleStreamsText: "BiPC", values: "Meaning", shape: "Professional/Technical", description: "Designs and runs programmes that improve health outcomes across whole populations.", typicalDegree: "Bachelor's + MPH (Public Health)", typicalEntranceExam: "University entrance for the bachelor's; MPH is postgraduate", added: true },
   { id: 114, name: "Healthcare Administrator", domain: "Medicine", cluster: "Health Science", riasec: "ECS", mi1: "MI_INTERPERSONAL", mi2: "MI_ANALYTICAL", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium", requiredGroup: "SCI_PCB", eligibleStreamsText: "BiPC", values: "Meaning", shape: "Professional/Technical", description: "Manages the operations, staff and finances of a hospital or clinic.", typicalDegree: "BHA / Any bachelor's + Hospital Administration diploma", typicalEntranceExam: "University entrance", added: true },
   { id: 115, name: "Emergency Medical Technician", domain: "Medicine", cluster: "Health Science", riasec: "RSE", mi1: "MI_KINESTHETIC", mi2: "MI_INTERPERSONAL", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium", requiredGroup: "SCI_PCB", eligibleStreamsText: "BiPC", values: "Meaning", shape: "Professional/Technical", description: "Provides emergency medical care and transport at accident and crisis scenes.", typicalDegree: "B.Sc Emergency Medical Technology / Paramedic Science", typicalEntranceExam: "University/state allied-health entrance", added: true },
-  { id: 116, name: "Molecular Biologist", domain: "Biotechnology / Life Sciences", cluster: "STEM", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_VISUAL", keyAptitude: "APT_DATA", aptitudeLevel: "High", requiredGroup: "SCI_ANY", eligibleStreamsText: "MPC, BiPC, PCMB", values: "Growth", shape: "Research/academia", description: "Studies the molecular basis of life — DNA, RNA and proteins — in a lab.", typicalDegree: "B.Sc/B.Tech Biotechnology", typicalEntranceExam: "State CET or university entrance (some accept NEET/JEE)", added: true },
+  { id: 116, name: "Molecular Biologist", domain: "Biotechnology / Life Sciences", cluster: "STEM", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_VISUAL", keyAptitude: "APT_DATA", aptitudeLevel: "High", requiredGroup: "SCI_ANY", eligibleStreamsText: "MPC, BiPC, PCMB", values: "Growth", shape: "Research/academia", description: "Studies the molecular basis of life - DNA, RNA and proteins - in a lab.", typicalDegree: "B.Sc/B.Tech Biotechnology", typicalEntranceExam: "State CET or university entrance (some accept NEET/JEE)", added: true },
   { id: 117, name: "Geneticist", domain: "Biotechnology / Life Sciences", cluster: "STEM", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_INTRAPERSONAL", keyAptitude: "APT_ABSTRACT", aptitudeLevel: "High", requiredGroup: "SCI_ANY", eligibleStreamsText: "MPC, BiPC, PCMB", values: "Growth", shape: "Research/academia", description: "Studies how genes are inherited and how they influence traits and disease.", typicalDegree: "B.Sc/B.Tech Biotechnology", typicalEntranceExam: "State CET or university entrance (some accept NEET/JEE)", added: true },
   { id: 118, name: "Biochemist", domain: "Biotechnology / Life Sciences", cluster: "STEM", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_NATURALISTIC", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "High", requiredGroup: "SCI_ANY", eligibleStreamsText: "MPC, BiPC, PCMB", values: "Growth", shape: "Research/academia", description: "Studies the chemical processes that happen inside living cells.", typicalDegree: "B.Sc/B.Tech Biotechnology", typicalEntranceExam: "State CET or university entrance (some accept NEET/JEE)", added: true },
   { id: 119, name: "Bioinformatics Scientist", domain: "Biotechnology / Life Sciences", cluster: "STEM", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_VISUAL", keyAptitude: "APT_ABSTRACT", aptitudeLevel: "High", requiredGroup: "SCI_ANY", eligibleStreamsText: "MPC, BiPC, PCMB", values: "Growth", shape: "Research/academia", description: "Writes software and applies statistics to analyse large biological datasets like genomes.", typicalDegree: "B.Sc/B.Tech Biotechnology", typicalEntranceExam: "State CET or university entrance (some accept NEET/JEE)", added: true },
@@ -790,19 +805,19 @@ export const CAREERS_1112: Career1112[] = [
   { id: 121, name: "Biomedical Researcher", domain: "Biotechnology / Life Sciences", cluster: "STEM", riasec: "IRA", mi1: "MI_ANALYTICAL", mi2: "MI_NATURALISTIC", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium-High", requiredGroup: "SCI_ANY", eligibleStreamsText: "MPC, BiPC, PCMB", values: "Growth", shape: "Research/academia", description: "Runs lab experiments that translate biology into new medical treatments.", typicalDegree: "B.Sc/B.Tech Biotechnology", typicalEntranceExam: "State CET or university entrance (some accept NEET/JEE)", added: true },
   { id: 122, name: "Pharmaceutical Researcher", domain: "Biotechnology / Life Sciences", cluster: "STEM", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_INTRAPERSONAL", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "High", requiredGroup: "SCI_ANY", eligibleStreamsText: "MPC, BiPC, PCMB", values: "Growth", shape: "Research/academia", description: "Researches and tests new drug compounds before they reach clinical trials.", typicalDegree: "B.Sc/B.Tech Biotechnology", typicalEntranceExam: "State CET or university entrance (some accept NEET/JEE)", added: true },
   { id: 123, name: "Marine Biologist", domain: "Biotechnology / Life Sciences", cluster: "STEM", riasec: "IRA", mi1: "MI_NATURALISTIC", mi2: "MI_ANALYTICAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium-High", requiredGroup: "LIFE_SCIENCE_PCB", eligibleStreamsText: "BiPC, PCMB", values: "Growth", shape: "Research/academia", description: "Studies ocean life and marine ecosystems, often through fieldwork.", typicalDegree: "B.Sc Marine Biology / Zoology", typicalEntranceExam: "State CET or university entrance", added: true },
-  { id: 124, name: "Ecologist", domain: "Biotechnology / Life Sciences", cluster: "STEM", riasec: "IRA", mi1: "MI_NATURALISTIC", mi2: "MI_ANALYTICAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium", requiredGroup: "ENV_SCIENCE", eligibleStreamsText: "BiPC, PCMB (native); MPC — Biology often preferred, verify per college", values: "Growth", shape: "Research/academia", description: "Studies how living things interact with each other and their environment.", typicalDegree: "B.Sc Environmental Science / Ecology", typicalEntranceExam: "State CET or university entrance (some accept NEET/JEE)", added: true },
-  { id: 125, name: "Botanist", domain: "Biotechnology / Life Sciences", cluster: "STEM", riasec: "IRA", mi1: "MI_NATURALISTIC", mi2: "MI_VISUAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium", requiredGroup: "LIFE_SCIENCE_PCB", eligibleStreamsText: "BiPC, PCMB", values: "Growth", shape: "Research/academia", description: "Studies plants — their biology, growth and role in ecosystems.", typicalDegree: "B.Sc Botany", typicalEntranceExam: "State CET or university entrance", added: true },
+  { id: 124, name: "Ecologist", domain: "Biotechnology / Life Sciences", cluster: "STEM", riasec: "IRA", mi1: "MI_NATURALISTIC", mi2: "MI_ANALYTICAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium", requiredGroup: "ENV_SCIENCE", eligibleStreamsText: "BiPC, PCMB (native); MPC - Biology often preferred, verify per college", values: "Growth", shape: "Research/academia", description: "Studies how living things interact with each other and their environment.", typicalDegree: "B.Sc Environmental Science / Ecology", typicalEntranceExam: "State CET or university entrance (some accept NEET/JEE)", added: true },
+  { id: 125, name: "Botanist", domain: "Biotechnology / Life Sciences", cluster: "STEM", riasec: "IRA", mi1: "MI_NATURALISTIC", mi2: "MI_VISUAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium", requiredGroup: "LIFE_SCIENCE_PCB", eligibleStreamsText: "BiPC, PCMB", values: "Growth", shape: "Research/academia", description: "Studies plants - their biology, growth and role in ecosystems.", typicalDegree: "B.Sc Botany", typicalEntranceExam: "State CET or university entrance", added: true },
   { id: 126, name: "Zoologist", domain: "Biotechnology / Life Sciences", cluster: "STEM", riasec: "IRA", mi1: "MI_NATURALISTIC", mi2: "MI_KINESTHETIC", keyAptitude: "APT_DATA", aptitudeLevel: "Medium", requiredGroup: "LIFE_SCIENCE_PCB", eligibleStreamsText: "BiPC, PCMB", values: "Growth", shape: "Research/academia", description: "Studies animal behaviour, physiology and habitats.", typicalDegree: "B.Sc Zoology", typicalEntranceExam: "State CET or university entrance", added: true },
   { id: 127, name: "Astrophysicist", domain: "Pure Science", cluster: "STEM", riasec: "IRA", mi1: "MI_ANALYTICAL", mi2: "MI_VISUAL", keyAptitude: "APT_ABSTRACT", aptitudeLevel: "High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Research/academia", description: "Studies the physics of stars, galaxies and the universe using data and theory.", typicalDegree: "B.Sc (Physics/Chemistry/Maths, as relevant)", typicalEntranceExam: "CUET or university entrance", added: true },
   { id: 128, name: "Astronomer", domain: "Pure Science", cluster: "STEM", riasec: "IRA", mi1: "MI_ANALYTICAL", mi2: "MI_NATURALISTIC", keyAptitude: "APT_SPATIAL", aptitudeLevel: "Medium-High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Research/academia", description: "Observes and catalogues celestial objects using telescopes and instruments.", typicalDegree: "B.Sc (Physics/Chemistry/Maths, as relevant)", typicalEntranceExam: "CUET or university entrance", added: true },
-  { id: 129, name: "Organic Chemist", domain: "Pure Science", cluster: "STEM", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_VISUAL", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium-High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Research/academia", description: "Studies and synthesises carbon-based compounds — the basis of most drugs and materials.", typicalDegree: "B.Sc (Physics/Chemistry/Maths, as relevant)", typicalEntranceExam: "CUET or university entrance", added: true },
+  { id: 129, name: "Organic Chemist", domain: "Pure Science", cluster: "STEM", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_VISUAL", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium-High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Research/academia", description: "Studies and synthesises carbon-based compounds - the basis of most drugs and materials.", typicalDegree: "B.Sc (Physics/Chemistry/Maths, as relevant)", typicalEntranceExam: "CUET or university entrance", added: true },
   { id: 130, name: "Analytical Chemist", domain: "Pure Science", cluster: "STEM", riasec: "ICR", mi1: "MI_ANALYTICAL", mi2: "MI_INTRAPERSONAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium-High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Research/academia", description: "Identifies and measures the exact chemical composition of substances in a lab.", typicalDegree: "B.Sc (Physics/Chemistry/Maths, as relevant)", typicalEntranceExam: "CUET or university entrance", added: true },
   { id: 131, name: "Theoretical Physicist", domain: "Pure Science", cluster: "STEM", riasec: "IAR", mi1: "MI_ANALYTICAL", mi2: "MI_INTRAPERSONAL", keyAptitude: "APT_ABSTRACT", aptitudeLevel: "High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Research/academia", description: "Develops mathematical theories that explain how the physical universe works.", typicalDegree: "B.Sc (Physics/Chemistry/Maths, as relevant)", typicalEntranceExam: "CUET or university entrance", added: true },
   { id: 132, name: "Particle Physicist", domain: "Pure Science", cluster: "STEM", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_INTRAPERSONAL", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Research/academia", description: "Studies the fundamental particles and forces of nature, often using large experiments.", typicalDegree: "B.Sc (Physics/Chemistry/Maths, as relevant)", typicalEntranceExam: "CUET or university entrance", added: true },
   { id: 133, name: "Geophysicist", domain: "Pure Science", cluster: "STEM", riasec: "IRA", mi1: "MI_ANALYTICAL", mi2: "MI_NATURALISTIC", keyAptitude: "APT_DATA", aptitudeLevel: "High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Research/academia", description: "Studies the Earth's physical structure using seismic, gravity and magnetic data.", typicalDegree: "B.Sc (Physics/Chemistry/Maths, as relevant)", typicalEntranceExam: "CUET or university entrance", added: true },
   { id: 134, name: "Meteorologist", domain: "Pure Science", cluster: "STEM", riasec: "IRA", mi1: "MI_ANALYTICAL", mi2: "MI_NATURALISTIC", keyAptitude: "APT_DATA", aptitudeLevel: "Medium-High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Research/academia", description: "Forecasts weather by analysing atmospheric data and models.", typicalDegree: "B.Sc (Physics/Chemistry/Maths, as relevant)", typicalEntranceExam: "CUET or university entrance", added: true },
   { id: 135, name: "Oceanographer", domain: "Pure Science", cluster: "STEM", riasec: "IRA", mi1: "MI_NATURALISTIC", mi2: "MI_ANALYTICAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Research/academia", description: "Studies the physics, chemistry and biology of the world's oceans.", typicalDegree: "B.Sc (Physics/Chemistry/Maths, as relevant)", typicalEntranceExam: "CUET or university entrance", added: true },
-  { id: 136, name: "Materials Scientist", domain: "Pure Science", cluster: "STEM", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_KINESTHETIC", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium-High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Research/academia", description: "Develops and tests new materials — metals, polymers, ceramics — for real-world use.", typicalDegree: "B.Sc (Physics/Chemistry/Maths, as relevant)", typicalEntranceExam: "CUET or university entrance", added: true },
+  { id: 136, name: "Materials Scientist", domain: "Pure Science", cluster: "STEM", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_KINESTHETIC", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium-High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Research/academia", description: "Develops and tests new materials - metals, polymers, ceramics - for real-world use.", typicalDegree: "B.Sc (Physics/Chemistry/Maths, as relevant)", typicalEntranceExam: "CUET or university entrance", added: true },
   { id: 137, name: "Nanotechnologist", domain: "Pure Science", cluster: "STEM", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_VISUAL", keyAptitude: "APT_SPATIAL", aptitudeLevel: "High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Research/academia", description: "Designs and manipulates matter at the nanometre scale for new materials and devices.", typicalDegree: "B.Sc (Physics/Chemistry/Maths, as relevant)", typicalEntranceExam: "CUET or university entrance", added: true },
   { id: 138, name: "Mathematics Professor", domain: "Mathematics / Statistics", cluster: "STEM", riasec: "IAS", mi1: "MI_ANALYTICAL", mi2: "MI_LINGUISTIC", keyAptitude: "APT_ABSTRACT", aptitudeLevel: "High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths", values: "Stability", shape: "Corporate career", description: "Teaches and researches mathematics at the university level.", typicalDegree: "B.Sc/B.Stat Mathematics or Statistics", typicalEntranceExam: "CUET, ISI/CMI entrance, or university entrance", added: true },
   { id: 139, name: "Applied Mathematician", domain: "Mathematics / Statistics", cluster: "STEM", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_VISUAL", keyAptitude: "APT_ABSTRACT", aptitudeLevel: "High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths", values: "Stability", shape: "Corporate career", description: "Uses mathematical modelling to solve real-world engineering and science problems.", typicalDegree: "B.Sc/B.Stat Mathematics or Statistics", typicalEntranceExam: "CUET, ISI/CMI entrance, or university entrance", added: true },
@@ -875,7 +890,7 @@ export const CAREERS_1112: Career1112[] = [
   { id: 210, name: "Art Director", domain: "Design", cluster: "Arts, A/V Technology & Communications", riasec: "AEI", mi1: "MI_VISUAL", mi2: "MI_INTERPERSONAL", keyAptitude: "APT_SPATIAL", aptitudeLevel: "Medium-High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Meaning", shape: "Entrepreneurship", description: "Sets the overall visual style and creative direction for a project or brand.", typicalDegree: "B.Des", typicalEntranceExam: "NID DAT, UCEED, or NIFT entrance", added: true },
   { id: 211, name: "Creative Director", domain: "Design", cluster: "Arts, A/V Technology & Communications", riasec: "AEI", mi1: "MI_VISUAL", mi2: "MI_INTERPERSONAL", keyAptitude: "APT_VERBAL", aptitudeLevel: "High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Meaning", shape: "Entrepreneurship", description: "Leads the creative vision across an agency or brand's entire output.", typicalDegree: "B.Des", typicalEntranceExam: "NID DAT, UCEED, or NIFT entrance", added: true },
   { id: 212, name: "Photographer", domain: "Design", cluster: "Arts, A/V Technology & Communications", riasec: "ARI", mi1: "MI_VISUAL", mi2: "MI_KINESTHETIC", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Low-Medium", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Meaning", shape: "Entrepreneurship", description: "Captures and edits photographs for clients, media or personal projects.", typicalDegree: "B.Des", typicalEntranceExam: "NID DAT, UCEED, or NIFT entrance", added: true },
-  { id: 213, name: "Landscape Architect", domain: "Architecture", cluster: "Architecture & Construction", riasec: "AIR", mi1: "MI_VISUAL", mi2: "MI_NATURALISTIC", keyAptitude: "APT_DATA", aptitudeLevel: "Medium-High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Professional/Technical", description: "Designs outdoor spaces — parks, gardens and public landscapes.", typicalDegree: "B.Arch", typicalEntranceExam: "NATA or the JEE B.Arch paper", added: true },
+  { id: 213, name: "Landscape Architect", domain: "Architecture", cluster: "Architecture & Construction", riasec: "AIR", mi1: "MI_VISUAL", mi2: "MI_NATURALISTIC", keyAptitude: "APT_DATA", aptitudeLevel: "Medium-High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Professional/Technical", description: "Designs outdoor spaces - parks, gardens and public landscapes.", typicalDegree: "B.Arch", typicalEntranceExam: "NATA or the JEE B.Arch paper", added: true },
   { id: 214, name: "Urban Designer", domain: "Architecture", cluster: "Architecture & Construction", riasec: "AIC", mi1: "MI_VISUAL", mi2: "MI_ANALYTICAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium-High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Professional/Technical", description: "Designs the layout and public spaces of neighbourhoods and city districts.", typicalDegree: "B.Arch", typicalEntranceExam: "NATA or the JEE B.Arch paper", added: true },
   { id: 215, name: "Urban Planner", domain: "Architecture", cluster: "Architecture & Construction", riasec: "ICA", mi1: "MI_ANALYTICAL", mi2: "MI_VISUAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium-High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Professional/Technical", description: "Plans land use, zoning and infrastructure for cities and towns.", typicalDegree: "B.Arch", typicalEntranceExam: "NATA or the JEE B.Arch paper", added: true },
   { id: 216, name: "News Reporter", domain: "Media / Communication", cluster: "Arts, A/V Technology & Communications", riasec: "ESA", mi1: "MI_LINGUISTIC", mi2: "MI_INTERPERSONAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Meaning", shape: "Corporate career", description: "Gathers facts and reports breaking news stories for print, TV or digital media.", typicalDegree: "BA Journalism & Mass Communication", typicalEntranceExam: "CUET or university entrance", added: true },
@@ -896,15 +911,15 @@ export const CAREERS_1112: Career1112[] = [
   { id: 232, name: "District Collector", domain: "Government / Public Service", cluster: "Government & Public Administration", riasec: "ESI", mi1: "MI_INTERPERSONAL", mi2: "MI_LINGUISTIC", keyAptitude: "APT_VERBAL", aptitudeLevel: "High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Meaning", shape: "Public service", description: "Heads a district's administration, law and order and development programmes.", typicalDegree: "Any bachelor's degree", typicalEntranceExam: "UPSC Civil Services Exam (or state PSC)", added: true },
   { id: 233, name: "Police Officer", domain: "Government / Public Service", cluster: "Government & Public Administration", riasec: "RES", mi1: "MI_KINESTHETIC", mi2: "MI_INTERPERSONAL", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Meaning", shape: "Public service", description: "Enforces law, investigates crime and maintains public order at the state level.", typicalDegree: "Any bachelor's degree", typicalEntranceExam: "UPSC Civil Services Exam (or state PSC)", added: true },
   { id: 234, name: "Intelligence Officer", domain: "Government / Public Service", cluster: "Government & Public Administration", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_INTRAPERSONAL", keyAptitude: "APT_ABSTRACT", aptitudeLevel: "High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Meaning", shape: "Public service", description: "Gathers and analyses intelligence for national security agencies.", typicalDegree: "Any bachelor's degree", typicalEntranceExam: "UPSC Civil Services Exam (or state PSC)", added: true },
-  { id: 235, name: "Municipal Officer", domain: "Government / Public Service", cluster: "Government & Public Administration", riasec: "CES", mi1: "MI_ANALYTICAL", mi2: "MI_INTERPERSONAL", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Meaning", shape: "Public service", description: "Administers civic services — roads, sanitation, licensing — for a city or town.", typicalDegree: "Any bachelor's degree", typicalEntranceExam: "UPSC Civil Services Exam (or state PSC)", added: true },
+  { id: 235, name: "Municipal Officer", domain: "Government / Public Service", cluster: "Government & Public Administration", riasec: "CES", mi1: "MI_ANALYTICAL", mi2: "MI_INTERPERSONAL", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Meaning", shape: "Public service", description: "Administers civic services - roads, sanitation, licensing - for a city or town.", typicalDegree: "Any bachelor's degree", typicalEntranceExam: "UPSC Civil Services Exam (or state PSC)", added: true },
   { id: 236, name: "Army Officer", domain: "Defence", cluster: "Government & Public Administration", riasec: "RES", mi1: "MI_KINESTHETIC", mi2: "MI_INTERPERSONAL", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium-High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Stability", shape: "Public service", description: "Leads troops and operations in the Indian Army, entering via NDA or CDS.", typicalDegree: "Any bachelor's, or NDA directly after Class 12", typicalEntranceExam: "NDA (after Class 12) or CDS (after graduation)", added: true },
   { id: 237, name: "Navy Officer", domain: "Defence", cluster: "Government & Public Administration", riasec: "RIE", mi1: "MI_KINESTHETIC", mi2: "MI_ANALYTICAL", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium-High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Stability", shape: "Public service", description: "Commands and operates naval vessels and operations, entering via NDA or CDS.", typicalDegree: "Any bachelor's, or NDA directly after Class 12", typicalEntranceExam: "NDA (after Class 12) or CDS (after graduation)", added: true },
   { id: 238, name: "Air Force Officer", domain: "Defence", cluster: "Government & Public Administration", riasec: "RIC", mi1: "MI_KINESTHETIC", mi2: "MI_ANALYTICAL", keyAptitude: "APT_LOGICAL", aptitudeLevel: "High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Stability", shape: "Public service", description: "Flies and commands Air Force operations, entering via NDA or AFCAT.", typicalDegree: "Any bachelor's, or NDA directly after Class 12", typicalEntranceExam: "NDA (after Class 12), CDS, or AFCAT", added: true },
-  { id: 239, name: "Military Engineer", domain: "Defence", cluster: "Government & Public Administration", riasec: "RIC", mi1: "MI_VISUAL", mi2: "MI_ANALYTICAL", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium-High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Stability", shape: "Public service", description: "Builds and maintains combat engineering infrastructure — bridges, fortifications, demolitions.", typicalDegree: "Any bachelor's, or direct entry after Class 12", typicalEntranceExam: "NDA, CDS, or AFCAT", added: true },
+  { id: 239, name: "Military Engineer", domain: "Defence", cluster: "Government & Public Administration", riasec: "RIC", mi1: "MI_VISUAL", mi2: "MI_ANALYTICAL", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium-High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Stability", shape: "Public service", description: "Builds and maintains combat engineering infrastructure - bridges, fortifications, demolitions.", typicalDegree: "Any bachelor's, or direct entry after Class 12", typicalEntranceExam: "NDA, CDS, or AFCAT", added: true },
   { id: 240, name: "Defence Scientist", domain: "Defence", cluster: "Government & Public Administration", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_VISUAL", keyAptitude: "APT_ABSTRACT", aptitudeLevel: "High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Stability", shape: "Public service", description: "Researches and develops defence technology at organisations like DRDO.", typicalDegree: "Any bachelor's, or direct entry after Class 12", typicalEntranceExam: "NDA, CDS, or AFCAT", added: true },
   { id: 241, name: "Defence Analyst", domain: "Defence", cluster: "Government & Public Administration", riasec: "IEC", mi1: "MI_ANALYTICAL", mi2: "MI_INTRAPERSONAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium-High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Stability", shape: "Public service", description: "Analyses military strategy, threats and defence policy for government or think tanks.", typicalDegree: "Any bachelor's, or direct entry after Class 12", typicalEntranceExam: "NDA, CDS, or AFCAT", added: true },
-  { id: 242, name: "Commercial Pilot", domain: "Defence", cluster: "Transportation, Distribution & Logistics", riasec: "RIE", mi1: "MI_KINESTHETIC", mi2: "MI_ANALYTICAL", keyAptitude: "APT_SPATIAL", aptitudeLevel: "Medium-High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Stability", shape: "Public service", description: "Flies passenger or cargo aircraft for a commercial or charter airline.", typicalDegree: "Commercial Pilot License (CPL) — flying school, not a university degree", typicalEntranceExam: "DGCA medical + entrance exam of the flying school", added: true },
-  { id: 243, name: "Airline Pilot", domain: "Defence", cluster: "Transportation, Distribution & Logistics", riasec: "RES", mi1: "MI_KINESTHETIC", mi2: "MI_INTERPERSONAL", keyAptitude: "APT_SPATIAL", aptitudeLevel: "Medium-High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Stability", shape: "Public service", description: "Flies scheduled passenger routes for a commercial airline.", typicalDegree: "Commercial Pilot License (CPL) — flying school, not a university degree", typicalEntranceExam: "DGCA medical + entrance exam of the flying school", added: true },
+  { id: 242, name: "Commercial Pilot", domain: "Defence", cluster: "Transportation, Distribution & Logistics", riasec: "RIE", mi1: "MI_KINESTHETIC", mi2: "MI_ANALYTICAL", keyAptitude: "APT_SPATIAL", aptitudeLevel: "Medium-High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Stability", shape: "Public service", description: "Flies passenger or cargo aircraft for a commercial or charter airline.", typicalDegree: "Commercial Pilot License (CPL) - flying school, not a university degree", typicalEntranceExam: "DGCA medical + entrance exam of the flying school", added: true },
+  { id: 243, name: "Airline Pilot", domain: "Defence", cluster: "Transportation, Distribution & Logistics", riasec: "RES", mi1: "MI_KINESTHETIC", mi2: "MI_INTERPERSONAL", keyAptitude: "APT_SPATIAL", aptitudeLevel: "Medium-High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Stability", shape: "Public service", description: "Flies scheduled passenger routes for a commercial airline.", typicalDegree: "Commercial Pilot License (CPL) - flying school, not a university degree", typicalEntranceExam: "DGCA medical + entrance exam of the flying school", added: true },
   { id: 244, name: "Helicopter Pilot", domain: "Defence", cluster: "Transportation, Distribution & Logistics", riasec: "RIE", mi1: "MI_KINESTHETIC", mi2: "MI_VISUAL", keyAptitude: "APT_SPATIAL", aptitudeLevel: "High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Stability", shape: "Public service", description: "Flies helicopters for transport, rescue, tourism or offshore operations.", typicalDegree: "Commercial Pilot License (CPL), helicopter rating", typicalEntranceExam: "DGCA medical + entrance exam of the flying school", added: true },
   { id: 245, name: "Air Traffic Controller", domain: "Defence", cluster: "Transportation, Distribution & Logistics", riasec: "ICR", mi1: "MI_ANALYTICAL", mi2: "MI_INTRAPERSONAL", keyAptitude: "APT_DATA", aptitudeLevel: "High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Stability", shape: "Public service", description: "Directs aircraft movements to keep flights safe and on schedule from the ground.", typicalDegree: "Any bachelor's (Science preferred) + AAI training", typicalEntranceExam: "Airports Authority of India (AAI) recruitment exam", added: true },
   { id: 246, name: "Merchant Navy Officer", domain: "Defence", cluster: "Transportation, Distribution & Logistics", riasec: "RES", mi1: "MI_KINESTHETIC", mi2: "MI_INTERPERSONAL", keyAptitude: "APT_SPATIAL", aptitudeLevel: "Medium", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Stability", shape: "Public service", description: "Commands and operates merchant/cargo ships transporting goods internationally.", typicalDegree: "B.Sc Nautical Science / Marine Engineering", typicalEntranceExam: "IMU CET (Indian Maritime University)", added: true },
@@ -954,18 +969,18 @@ export const CAREERS_1112: Career1112[] = [
   { id: 290, name: "Curriculum Developer", domain: "Education", cluster: "Education & Training", riasec: "IAC", mi1: "MI_ANALYTICAL", mi2: "MI_LINGUISTIC", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium-High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Meaning", shape: "Public service", description: "Designs what students learn and in what sequence, across a subject or school system.", typicalDegree: "B.Ed (after a bachelor's) or B.El.Ed integrated", typicalEntranceExam: "University-specific B.Ed/B.El.Ed entrance", added: true },
   { id: 291, name: "Education Consultant", domain: "Education", cluster: "Education & Training", riasec: "EIS", mi1: "MI_INTERPERSONAL", mi2: "MI_ANALYTICAL", keyAptitude: "APT_VERBAL", aptitudeLevel: "Medium", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Meaning", shape: "Public service", description: "Advises schools or students on academic strategy, curriculum or admissions.", typicalDegree: "B.Ed (after a bachelor's) or B.El.Ed integrated", typicalEntranceExam: "University-specific B.Ed/B.El.Ed entrance", added: true },
   { id: 292, name: "Academic Advisor", domain: "Education", cluster: "Education & Training", riasec: "SEI", mi1: "MI_INTERPERSONAL", mi2: "MI_LINGUISTIC", keyAptitude: "APT_VERBAL", aptitudeLevel: "Medium", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Meaning", shape: "Public service", description: "Guides students on course selection, academic planning and college pathways.", typicalDegree: "B.Ed (after a bachelor's) or B.El.Ed integrated", typicalEntranceExam: "University-specific B.Ed/B.El.Ed entrance", added: true },
-  { id: 293, name: "Environmental Consultant", domain: "Environment & Sustainability", cluster: "Agriculture, Food & Natural Resources", riasec: "IEC", mi1: "MI_ANALYTICAL", mi2: "MI_NATURALISTIC", keyAptitude: "APT_DATA", aptitudeLevel: "Medium-High", requiredGroup: "ENV_SCIENCE", eligibleStreamsText: "BiPC, PCMB (native); MPC — Biology often preferred, verify per college", values: "Meaning", shape: "Research/academia", description: "Advises companies and governments on environmental compliance and impact.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
-  { id: 294, name: "Environmental Analyst", domain: "Environment & Sustainability", cluster: "Agriculture, Food & Natural Resources", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_NATURALISTIC", keyAptitude: "APT_DATA", aptitudeLevel: "Medium", requiredGroup: "ENV_SCIENCE", eligibleStreamsText: "BiPC, PCMB (native); MPC — Biology often preferred, verify per college", values: "Meaning", shape: "Research/academia", description: "Collects and analyses environmental data to inform regulation and reporting.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
+  { id: 293, name: "Environmental Consultant", domain: "Environment & Sustainability", cluster: "Agriculture, Food & Natural Resources", riasec: "IEC", mi1: "MI_ANALYTICAL", mi2: "MI_NATURALISTIC", keyAptitude: "APT_DATA", aptitudeLevel: "Medium-High", requiredGroup: "ENV_SCIENCE", eligibleStreamsText: "BiPC, PCMB (native); MPC - Biology often preferred, verify per college", values: "Meaning", shape: "Research/academia", description: "Advises companies and governments on environmental compliance and impact.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
+  { id: 294, name: "Environmental Analyst", domain: "Environment & Sustainability", cluster: "Agriculture, Food & Natural Resources", riasec: "IRC", mi1: "MI_ANALYTICAL", mi2: "MI_NATURALISTIC", keyAptitude: "APT_DATA", aptitudeLevel: "Medium", requiredGroup: "ENV_SCIENCE", eligibleStreamsText: "BiPC, PCMB (native); MPC - Biology often preferred, verify per college", values: "Meaning", shape: "Research/academia", description: "Collects and analyses environmental data to inform regulation and reporting.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
   { id: 295, name: "Sustainability Manager", domain: "Environment & Sustainability", cluster: "Business Management & Administration", riasec: "ECI", mi1: "MI_INTERPERSONAL", mi2: "MI_ANALYTICAL", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Meaning", shape: "Research/academia", description: "Runs an organisation's sustainability programmes and emissions targets.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
   { id: 296, name: "Sustainability Consultant", domain: "Environment & Sustainability", cluster: "Business Management & Administration", riasec: "EIC", mi1: "MI_ANALYTICAL", mi2: "MI_INTERPERSONAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium-High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Meaning", shape: "Research/academia", description: "Advises businesses on reducing environmental impact and meeting sustainability goals.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
-  { id: 297, name: "Climate Scientist", domain: "Environment & Sustainability", cluster: "Agriculture, Food & Natural Resources", riasec: "IRA", mi1: "MI_ANALYTICAL", mi2: "MI_NATURALISTIC", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "High", requiredGroup: "ENV_SCIENCE", eligibleStreamsText: "BiPC, PCMB (native); MPC — Biology often preferred, verify per college", values: "Meaning", shape: "Research/academia", description: "Studies long-term climate patterns and models future climate change.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
+  { id: 297, name: "Climate Scientist", domain: "Environment & Sustainability", cluster: "Agriculture, Food & Natural Resources", riasec: "IRA", mi1: "MI_ANALYTICAL", mi2: "MI_NATURALISTIC", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "High", requiredGroup: "ENV_SCIENCE", eligibleStreamsText: "BiPC, PCMB (native); MPC - Biology often preferred, verify per college", values: "Meaning", shape: "Research/academia", description: "Studies long-term climate patterns and models future climate change.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
   { id: 298, name: "Climate Policy Analyst", domain: "Environment & Sustainability", cluster: "Government & Public Administration", riasec: "IEC", mi1: "MI_ANALYTICAL", mi2: "MI_LINGUISTIC", keyAptitude: "APT_DATA", aptitudeLevel: "Medium-High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Meaning", shape: "Research/academia", description: "Analyses and shapes government policy on climate change and emissions.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
   { id: 299, name: "Solar Energy Engineer", domain: "Environment & Sustainability", cluster: "STEM", riasec: "RIC", mi1: "MI_VISUAL", mi2: "MI_ANALYTICAL", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium-High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Research/academia", description: "Designs and installs solar power generation systems.", typicalDegree: "B.Tech Renewable Energy Engineering / Electrical Engineering (Solar)", typicalEntranceExam: "JEE Main/Advanced or a state engineering CET", added: true },
   { id: 300, name: "Wind Energy Engineer", domain: "Environment & Sustainability", cluster: "STEM", riasec: "RIC", mi1: "MI_ANALYTICAL", mi2: "MI_VISUAL", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium-High", requiredGroup: "SCI_PCM", eligibleStreamsText: "MPC, PCMB", values: "Meaning", shape: "Research/academia", description: "Designs and maintains wind turbine power generation systems.", typicalDegree: "B.Tech Renewable Energy Engineering / Electrical Engineering", typicalEntranceExam: "JEE Main/Advanced or a state engineering CET", added: true },
-  { id: 301, name: "Energy Analyst", domain: "Environment & Sustainability", cluster: "Agriculture, Food & Natural Resources", riasec: "ICE", mi1: "MI_ANALYTICAL", mi2: "MI_INTRAPERSONAL", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium-High", requiredGroup: "ENV_SCIENCE", eligibleStreamsText: "BiPC, PCMB (native); MPC — Biology often preferred, verify per college", values: "Meaning", shape: "Research/academia", description: "Analyses energy markets, consumption and efficiency for businesses or utilities.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
-  { id: 302, name: "Conservation Scientist", domain: "Environment & Sustainability", cluster: "Agriculture, Food & Natural Resources", riasec: "IRA", mi1: "MI_NATURALISTIC", mi2: "MI_ANALYTICAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium", requiredGroup: "ENV_SCIENCE", eligibleStreamsText: "BiPC, PCMB (native); MPC — Biology often preferred, verify per college", values: "Meaning", shape: "Research/academia", description: "Studies and manages natural resources like forests, soil and wildlife.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
-  { id: 303, name: "Water Resource Manager", domain: "Environment & Sustainability", cluster: "Agriculture, Food & Natural Resources", riasec: "RIC", mi1: "MI_NATURALISTIC", mi2: "MI_ANALYTICAL", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium", requiredGroup: "ENV_SCIENCE", eligibleStreamsText: "BiPC, PCMB (native); MPC — Biology often preferred, verify per college", values: "Meaning", shape: "Research/academia", description: "Manages water supply, quality and allocation for a region or utility.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
-  { id: 304, name: "Waste Management Specialist", domain: "Environment & Sustainability", cluster: "Agriculture, Food & Natural Resources", riasec: "RCI", mi1: "MI_ANALYTICAL", mi2: "MI_KINESTHETIC", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium", requiredGroup: "ENV_SCIENCE", eligibleStreamsText: "BiPC, PCMB (native); MPC — Biology often preferred, verify per college", values: "Meaning", shape: "Research/academia", description: "Plans waste collection, recycling and disposal systems.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
+  { id: 301, name: "Energy Analyst", domain: "Environment & Sustainability", cluster: "Agriculture, Food & Natural Resources", riasec: "ICE", mi1: "MI_ANALYTICAL", mi2: "MI_INTRAPERSONAL", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium-High", requiredGroup: "ENV_SCIENCE", eligibleStreamsText: "BiPC, PCMB (native); MPC - Biology often preferred, verify per college", values: "Meaning", shape: "Research/academia", description: "Analyses energy markets, consumption and efficiency for businesses or utilities.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
+  { id: 302, name: "Conservation Scientist", domain: "Environment & Sustainability", cluster: "Agriculture, Food & Natural Resources", riasec: "IRA", mi1: "MI_NATURALISTIC", mi2: "MI_ANALYTICAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium", requiredGroup: "ENV_SCIENCE", eligibleStreamsText: "BiPC, PCMB (native); MPC - Biology often preferred, verify per college", values: "Meaning", shape: "Research/academia", description: "Studies and manages natural resources like forests, soil and wildlife.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
+  { id: 303, name: "Water Resource Manager", domain: "Environment & Sustainability", cluster: "Agriculture, Food & Natural Resources", riasec: "RIC", mi1: "MI_NATURALISTIC", mi2: "MI_ANALYTICAL", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium", requiredGroup: "ENV_SCIENCE", eligibleStreamsText: "BiPC, PCMB (native); MPC - Biology often preferred, verify per college", values: "Meaning", shape: "Research/academia", description: "Manages water supply, quality and allocation for a region or utility.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
+  { id: 304, name: "Waste Management Specialist", domain: "Environment & Sustainability", cluster: "Agriculture, Food & Natural Resources", riasec: "RCI", mi1: "MI_ANALYTICAL", mi2: "MI_KINESTHETIC", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium", requiredGroup: "ENV_SCIENCE", eligibleStreamsText: "BiPC, PCMB (native); MPC - Biology often preferred, verify per college", values: "Meaning", shape: "Research/academia", description: "Plans waste collection, recycling and disposal systems.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
   { id: 305, name: "ESG Analyst", domain: "Environment & Sustainability", cluster: "Finance", riasec: "ICE", mi1: "MI_ANALYTICAL", mi2: "MI_INTRAPERSONAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium-High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Meaning", shape: "Research/academia", description: "Assesses companies' environmental, social and governance performance for investors.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
   { id: 306, name: "Environmental Policy Advisor", domain: "Environment & Sustainability", cluster: "Government & Public Administration", riasec: "SIE", mi1: "MI_LINGUISTIC", mi2: "MI_ANALYTICAL", keyAptitude: "APT_VERBAL", aptitudeLevel: "Medium-High", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Meaning", shape: "Research/academia", description: "Advises governments or organisations on environmental law and policy.", typicalDegree: "B.Sc Environmental Science", typicalEntranceExam: "CUET or university entrance", added: true },
   { id: 307, name: "Sports Coach", domain: "Sports & Fitness", cluster: "Hospitality & Tourism", riasec: "RES", mi1: "MI_KINESTHETIC", mi2: "MI_INTERPERSONAL", keyAptitude: "APT_SPATIAL", aptitudeLevel: "Medium", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Growth", shape: "Professional/Technical", description: "Trains athletes or teams on technique, strategy and match performance.", typicalDegree: "B.P.Ed / B.Sc Sports Science", typicalEntranceExam: "University-specific sports science entrance", added: true },
@@ -985,7 +1000,7 @@ export const CAREERS_1112: Career1112[] = [
   { id: 321, name: "Cricket Coach", domain: "Sports & Fitness", cluster: "Hospitality & Tourism", riasec: "RSE", mi1: "MI_KINESTHETIC", mi2: "MI_ANALYTICAL", keyAptitude: "APT_DATA", aptitudeLevel: "Medium", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Growth", shape: "Professional/Technical", description: "Coaches cricket technique, strategy and match preparation.", typicalDegree: "B.P.Ed / B.Sc Sports Science", typicalEntranceExam: "University-specific sports science entrance", added: true },
   { id: 322, name: "Football Coach", domain: "Sports & Fitness", cluster: "Hospitality & Tourism", riasec: "RES", mi1: "MI_KINESTHETIC", mi2: "MI_ANALYTICAL", keyAptitude: "APT_LOGICAL", aptitudeLevel: "Medium", requiredGroup: "OPEN", eligibleStreamsText: "Any", values: "Growth", shape: "Professional/Technical", description: "Coaches football technique, tactics and team strategy.", typicalDegree: "B.P.Ed / B.Sc Sports Science", typicalEntranceExam: "University-specific sports science entrance", added: true },
   // Widening three thin domains (Economics 4→10, Architecture 5→10, Social
-  // Sciences 5→11) — real, standard job titles in each field, tagged
+  // Sciences 5→11) - real, standard job titles in each field, tagged
   // consistently with that domain's existing entries above.
   { id: 323, name: "Econometrician", domain: "Economics", cluster: "Finance", riasec: "IEC", mi1: "MI_ANALYTICAL", mi2: "MI_LINGUISTIC", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths", values: "Meaning", shape: "Research/academia", description: "Builds statistical models of economic relationships and data.", typicalDegree: "BA/B.Sc Economics", typicalEntranceExam: "CUET or university-specific entrance (e.g. DSE, ISI)", added: true },
   { id: 324, name: "Behavioral Economist", domain: "Economics", cluster: "Finance", riasec: "IEC", mi1: "MI_ANALYTICAL", mi2: "MI_INTERPERSONAL", keyAptitude: "APT_NUMERICAL", aptitudeLevel: "Medium-High", requiredGroup: "MATHS_ONLY", eligibleStreamsText: "MPC, Commerce+Maths", values: "Meaning", shape: "Research/academia", description: "Studies how psychology shapes real-world economic decisions.", typicalDegree: "BA/B.Sc Economics", typicalEntranceExam: "CUET or university-specific entrance (e.g. DSE, ISI)", added: true },
@@ -1008,11 +1023,11 @@ export const CAREERS_1112: Career1112[] = [
 
 /**
  * Maps a stream key to the kit's 7-key vocabulary. Accepts both
- * NewExam.tsx's exact STREAM_OPTIONS keys (preferred — includes the
+ * NewExam.tsx's exact STREAM_OPTIONS keys (preferred - includes the
  * Commerce Maths/no-Maths split via Class11Response.currentStreamDetailed)
  * and the coarser subject_fit.currentStream/STREAM_KEY_BY_INDEX vocabulary
  * used elsewhere (scoring11_12.ts, score/route.ts) as a fallback, where a
- * bare "Commerce" — no detailed value available — defaults to the no-Maths
+ * bare "Commerce" - no detailed value available - defaults to the no-Maths
  * bucket: the more conservative assumption, since it won't overstate a
  * Commerce student's fit for Maths-gated domains like Data Science or
  * Actuarial Science.
@@ -1037,83 +1052,83 @@ export interface RoadmapEntry {
 }
 
 /**
- * The kit's Career_Roadmap_Matrix, verbatim — verified to fully collapse to
+ * The kit's Career_Roadmap_Matrix, verbatim - verified to fully collapse to
  * exactly these 35 (group × stream) combinations with zero inconsistency
  * across all 385 original rows (every career sharing a group has identical
  * Fit_Type/Action_Summary/Detailed_Steps for a given stream).
  */
 export const ROADMAP_MATRIX: Record<RequiredGroup, Record<StreamKey1112, RoadmapEntry>> = {
   SCI_PCM: {
-    MPC: { fitType: "Native Fit", actionSummary: "On track — prepare for the relevant entrance exam", detailedSteps: "Physics, Chemistry and Maths are already covered. Proceed to JEE Main/Advanced (Engineering), NATA/JEE B.Arch (Architecture) or the relevant subject-specific entrance depending on the exact role." },
-    BiPC: { fitType: "Bridge — Maths depth uncertain", actionSummary: "Usually no drop year; confirm Maths eligibility", detailedSteps: "Physics and Chemistry are already covered; the open question is Maths depth. If Maths was taken as an additional subject, you are JEE-eligible — focus revision there. If not, add Maths as an improvement/private subject before Class 12 boards where your board allows it. If neither is possible, a drop year to add PCM formally is the fallback; in the meantime, Biomedical Engineering or Biotechnology entrances are BiPC-native alternatives in the same broad domain." },
-    PCMB: { fitType: "Native Fit", actionSummary: "On track — prepare for the relevant entrance exam", detailedSteps: "All required subjects are covered. Proceed directly to the relevant entrance exam prep." },
-    "Commerce+Maths": { fitType: "Bridge — No Physics/Chemistry", actionSummary: "No drop year needed if using the BCA/BSc route", detailedSteps: "Maths is covered but Physics/Chemistry are missing, and most core Engineering entrances (JEE) require full PCM. Two options: (1) Drop year to formally redo PCM and sit JEE. (2) Skip JEE entirely and enter the same field via BCA, BSc (Computer Science/Applied Maths), or BBA-Analytics-style programs, which need only strong Maths, not full PCM — no year lost." },
-    "Commerce (CEC, no Maths)": { fitType: "Hard Gate — No science, no Maths depth", actionSummary: "Requires drop year to redo PCM", detailedSteps: "Neither Physics/Chemistry nor strong Maths are in place. A drop year to redo Class 11-12 in Science (PCM) is the direct route; otherwise this domain is not realistically reachable without it." },
-    Humanities: { fitType: "Hard Gate — No science subjects", actionSummary: "Requires drop year to redo PCM", detailedSteps: "No Physics/Chemistry/Maths depth. A drop year into MPC is the direct route to core Engineering/Architecture entrances." },
-    "Vocational/Other": { fitType: "Hard Gate — No science subjects", actionSummary: "Requires drop year to redo PCM", detailedSteps: "Same gap as above. Confirm your board's rules on re-entering Science after a vocational track before committing to a drop year." },
+    MPC: { fitType: "Native Fit", actionSummary: "On track - prepare for the relevant entrance exam", detailedSteps: "Physics, Chemistry and Maths are already covered. Proceed to JEE Main/Advanced (Engineering), NATA/JEE B.Arch (Architecture) or the relevant subject-specific entrance depending on the exact role." },
+    BiPC: { fitType: "Bridge - Maths depth uncertain", actionSummary: "Usually no drop year; confirm Maths eligibility", detailedSteps: "Physics and Chemistry are already covered; the open question is Maths depth. If Maths was taken as an additional subject, you are JEE-eligible - focus revision there. If not, add Maths as an improvement/private subject before Class 12 boards where your board allows it. If neither is possible, a drop year to add PCM formally is the fallback; in the meantime, Biomedical Engineering or Biotechnology entrances are BiPC-native alternatives in the same broad domain." },
+    PCMB: { fitType: "Native Fit", actionSummary: "On track - prepare for the relevant entrance exam", detailedSteps: "All required subjects are covered. Proceed directly to the relevant entrance exam prep." },
+    "Commerce+Maths": { fitType: "Bridge - No Physics/Chemistry", actionSummary: "No drop year needed if using the BCA/BSc route", detailedSteps: "Maths is covered but Physics/Chemistry are missing, and most core Engineering entrances (JEE) require full PCM. Two options: (1) Drop year to formally redo PCM and sit JEE. (2) Skip JEE entirely and enter the same field via BCA, BSc (Computer Science/Applied Maths), or BBA-Analytics-style programs, which need only strong Maths, not full PCM - no year lost." },
+    "Commerce (CEC, no Maths)": { fitType: "Hard Gate - No science, no Maths depth", actionSummary: "Requires drop year to redo PCM", detailedSteps: "Neither Physics/Chemistry nor strong Maths are in place. A drop year to redo Class 11-12 in Science (PCM) is the direct route; otherwise this domain is not realistically reachable without it." },
+    Humanities: { fitType: "Hard Gate - No science subjects", actionSummary: "Requires drop year to redo PCM", detailedSteps: "No Physics/Chemistry/Maths depth. A drop year into MPC is the direct route to core Engineering/Architecture entrances." },
+    "Vocational/Other": { fitType: "Hard Gate - No science subjects", actionSummary: "Requires drop year to redo PCM", detailedSteps: "Same gap as above. Confirm your board's rules on re-entering Science after a vocational track before committing to a drop year." },
   },
   MATHS_ONLY: {
-    MPC: { fitType: "Native Fit", actionSummary: "On track — strong advantage", detailedSteps: "Maths depth is already strong. Proceed via JEE (for CS-focused engineering colleges) or directly via BSc/BCA/integrated programs that only require Maths at 10+2." },
-    BiPC: { fitType: "Bridge — Maths depth uncertain", actionSummary: "No drop year needed; self-study is usually enough", detailedSteps: "If Maths was not studied, self-study core Statistics/Quantitative fundamentals through Class 11-12 and take an online certification (Python, Statistics, basic ML) to build proof of ability. Most BSc Statistics/Data Science and BCA-style programs accept a Science-stream 12th with a bridge/foundation course, without needing to repeat a year." },
-    PCMB: { fitType: "Native Fit", actionSummary: "On track — strong advantage", detailedSteps: "Maths and full science depth are already covered." },
-    "Commerce+Maths": { fitType: "Native Fit", actionSummary: "On track — well positioned", detailedSteps: "Maths is already covered. Proceed via BCA, BSc Statistics/Economics, BBA-Analytics, or Commerce-friendly quant routes (e.g. CFA pathway for finance-specific roles)." },
-    "Commerce (CEC, no Maths)": { fitType: "Bridge — Add Maths", actionSummary: "No drop year needed; add Maths as extra/self-study", detailedSteps: "Add Maths as an improvement or additional subject where your board allows it, or self-study it seriously alongside a foundation-year program — many private universities offer a 1-year Maths bridge specifically for this gap. No need to repeat Class 11-12." },
-    Humanities: { fitType: "Bridge — Add Maths", actionSummary: "No drop year needed; foundation-year route recommended", detailedSteps: "Self-study Maths/Statistics fundamentals and target a degree program with a built-in foundation/bridge year for non-Maths-background students (common for Data Science and Economics programs)." },
-    "Vocational/Other": { fitType: "Bridge — Add Maths", actionSummary: "No drop year needed; foundation-year route recommended", detailedSteps: "Same as Humanities above — self-study plus a foundation-year-enabled degree program avoids losing a year." },
+    MPC: { fitType: "Native Fit", actionSummary: "On track - strong advantage", detailedSteps: "Maths depth is already strong. Proceed via JEE (for CS-focused engineering colleges) or directly via BSc/BCA/integrated programs that only require Maths at 10+2." },
+    BiPC: { fitType: "Bridge - Maths depth uncertain", actionSummary: "No drop year needed; self-study is usually enough", detailedSteps: "If Maths was not studied, self-study core Statistics/Quantitative fundamentals through Class 11-12 and take an online certification (Python, Statistics, basic ML) to build proof of ability. Most BSc Statistics/Data Science and BCA-style programs accept a Science-stream 12th with a bridge/foundation course, without needing to repeat a year." },
+    PCMB: { fitType: "Native Fit", actionSummary: "On track - strong advantage", detailedSteps: "Maths and full science depth are already covered." },
+    "Commerce+Maths": { fitType: "Native Fit", actionSummary: "On track - well positioned", detailedSteps: "Maths is already covered. Proceed via BCA, BSc Statistics/Economics, BBA-Analytics, or Commerce-friendly quant routes (e.g. CFA pathway for finance-specific roles)." },
+    "Commerce (CEC, no Maths)": { fitType: "Bridge - Add Maths", actionSummary: "No drop year needed; add Maths as extra/self-study", detailedSteps: "Add Maths as an improvement or additional subject where your board allows it, or self-study it seriously alongside a foundation-year program - many private universities offer a 1-year Maths bridge specifically for this gap. No need to repeat Class 11-12." },
+    Humanities: { fitType: "Bridge - Add Maths", actionSummary: "No drop year needed; foundation-year route recommended", detailedSteps: "Self-study Maths/Statistics fundamentals and target a degree program with a built-in foundation/bridge year for non-Maths-background students (common for Data Science and Economics programs)." },
+    "Vocational/Other": { fitType: "Bridge - Add Maths", actionSummary: "No drop year needed; foundation-year route recommended", detailedSteps: "Same as Humanities above - self-study plus a foundation-year-enabled degree program avoids losing a year." },
   },
   SCI_PCB: {
-    MPC: { fitType: "Hard Gate — Missing Biology", actionSummary: "Requires stream change or drop year", detailedSteps: "MPC has no Biology, which NEET-UG mandates. Realistic options: (1) If still early in Class 11, switch to BiPC now if the school permits. (2) Study Biology as an additional/private subject alongside boards, where the board allows it, then sit NEET the same year as Class 12. (3) Drop one year after Class 12 to study Biology intensively (via open schooling/private candidature) and attempt NEET the following year. (4) Consider MPC-native alternatives in the same broad domain instead of switching: Biomedical Engineering or Biotechnology via JEE/state CETs." },
-    BiPC: { fitType: "Native Fit", actionSummary: "On track — prepare for NEET-UG", detailedSteps: "Biology, Physics and Chemistry are already covered. Focus Class 11-12 on NEET-UG syllabus depth and start structured NEET coaching/self-study early; no stream change needed." },
-    PCMB: { fitType: "Native Fit", actionSummary: "On track — prepare for NEET-UG", detailedSteps: "All required subjects are covered. Proceed directly to NEET-UG preparation." },
-    "Commerce+Maths": { fitType: "Hard Gate — No science subjects", actionSummary: "Requires drop year to redo Science stream", detailedSteps: "No Physics/Chemistry/Biology at all. The realistic path is a drop year to repeat Class 11-12 in BiPC via a school or open-schooling board, then attempt NEET-UG. If a full drop year is not acceptable, consider NEET-independent healthcare-adjacent fields (e.g. Health Administration, Hospital Management) that accept a Commerce background directly." },
-    "Commerce (CEC, no Maths)": { fitType: "Hard Gate — No science subjects", actionSummary: "Requires drop year to redo Science stream", detailedSteps: "Same gap as Commerce+Maths above — no core science subjects. Drop year to redo BiPC is the direct route to NEET; otherwise explore Health Administration/Hospital Management as a Commerce-native adjacent field." },
-    Humanities: { fitType: "Hard Gate — No science subjects", actionSummary: "Requires drop year to redo Science stream", detailedSteps: "No Physics/Chemistry/Biology. Direct route is a drop year to redo Class 11-12 in BiPC, then NEET. Adjacent Humanities-native alternative: Psychology (clinical/counselling) needs no stream change." },
-    "Vocational/Other": { fitType: "Hard Gate — No science subjects", actionSummary: "Requires drop year to redo Science stream", detailedSteps: "Same as above — a drop year into BiPC is the direct route to Medicine/Dentistry. Confirm your board's rules on re-entering the Science stream after a vocational track." },
+    MPC: { fitType: "Hard Gate - Missing Biology", actionSummary: "Requires stream change or drop year", detailedSteps: "MPC has no Biology, which NEET-UG mandates. Realistic options: (1) If still early in Class 11, switch to BiPC now if the school permits. (2) Study Biology as an additional/private subject alongside boards, where the board allows it, then sit NEET the same year as Class 12. (3) Drop one year after Class 12 to study Biology intensively (via open schooling/private candidature) and attempt NEET the following year. (4) Consider MPC-native alternatives in the same broad domain instead of switching: Biomedical Engineering or Biotechnology via JEE/state CETs." },
+    BiPC: { fitType: "Native Fit", actionSummary: "On track - prepare for NEET-UG", detailedSteps: "Biology, Physics and Chemistry are already covered. Focus Class 11-12 on NEET-UG syllabus depth and start structured NEET coaching/self-study early; no stream change needed." },
+    PCMB: { fitType: "Native Fit", actionSummary: "On track - prepare for NEET-UG", detailedSteps: "All required subjects are covered. Proceed directly to NEET-UG preparation." },
+    "Commerce+Maths": { fitType: "Hard Gate - No science subjects", actionSummary: "Requires drop year to redo Science stream", detailedSteps: "No Physics/Chemistry/Biology at all. The realistic path is a drop year to repeat Class 11-12 in BiPC via a school or open-schooling board, then attempt NEET-UG. If a full drop year is not acceptable, consider NEET-independent healthcare-adjacent fields (e.g. Health Administration, Hospital Management) that accept a Commerce background directly." },
+    "Commerce (CEC, no Maths)": { fitType: "Hard Gate - No science subjects", actionSummary: "Requires drop year to redo Science stream", detailedSteps: "Same gap as Commerce+Maths above - no core science subjects. Drop year to redo BiPC is the direct route to NEET; otherwise explore Health Administration/Hospital Management as a Commerce-native adjacent field." },
+    Humanities: { fitType: "Hard Gate - No science subjects", actionSummary: "Requires drop year to redo Science stream", detailedSteps: "No Physics/Chemistry/Biology. Direct route is a drop year to redo Class 11-12 in BiPC, then NEET. Adjacent Humanities-native alternative: Psychology (clinical/counselling) needs no stream change." },
+    "Vocational/Other": { fitType: "Hard Gate - No science subjects", actionSummary: "Requires drop year to redo Science stream", detailedSteps: "Same as above - a drop year into BiPC is the direct route to Medicine/Dentistry. Confirm your board's rules on re-entering the Science stream after a vocational track." },
   },
   SCI_ANY: {
     MPC: { fitType: "Native Fit", actionSummary: "On track", detailedSteps: "Physics/Chemistry are covered; proceed to the relevant state CET or university entrance for this field." },
     BiPC: { fitType: "Native Fit", actionSummary: "On track", detailedSteps: "Biology/Physics/Chemistry are covered; proceed to the relevant state CET or university entrance for this field." },
     PCMB: { fitType: "Native Fit", actionSummary: "On track", detailedSteps: "All required science subjects are covered." },
-    "Commerce+Maths": { fitType: "Hard Gate — No core science", actionSummary: "Requires drop year to add Science", detailedSteps: "No Physics/Chemistry/Biology. A drop year to redo Class 11-12 in Science (either MPC or BiPC, either is acceptable for most Biotech/Pure Science programs) is the direct route." },
-    "Commerce (CEC, no Maths)": { fitType: "Hard Gate — No core science", actionSummary: "Requires drop year to add Science", detailedSteps: "Same gap as above — a drop year into Science is the direct route." },
-    Humanities: { fitType: "Hard Gate — No core science", actionSummary: "Requires drop year to add Science", detailedSteps: "Same gap as above — a drop year into Science is the direct route." },
-    "Vocational/Other": { fitType: "Hard Gate — No core science", actionSummary: "Requires drop year to add Science", detailedSteps: "Same gap as above. Confirm your board's rules on re-entering Science after a vocational track." },
+    "Commerce+Maths": { fitType: "Hard Gate - No core science", actionSummary: "Requires drop year to add Science", detailedSteps: "No Physics/Chemistry/Biology. A drop year to redo Class 11-12 in Science (either MPC or BiPC, either is acceptable for most Biotech/Pure Science programs) is the direct route." },
+    "Commerce (CEC, no Maths)": { fitType: "Hard Gate - No core science", actionSummary: "Requires drop year to add Science", detailedSteps: "Same gap as above - a drop year into Science is the direct route." },
+    Humanities: { fitType: "Hard Gate - No core science", actionSummary: "Requires drop year to add Science", detailedSteps: "Same gap as above - a drop year into Science is the direct route." },
+    "Vocational/Other": { fitType: "Hard Gate - No core science", actionSummary: "Requires drop year to add Science", detailedSteps: "Same gap as above. Confirm your board's rules on re-entering Science after a vocational track." },
   },
   AGRI_SCIENCE: {
-    MPC: { fitType: "Bridge — Biology foundation usually needed", actionSummary: "Usually no drop year; expect a Biology deficiency course after admission", detailedSteps: "Physics, Chemistry and Maths already meet the general eligibility most state agricultural universities publish (10+2 with PCB/PCM/Agriculture, ~50% aggregate) — so a drop year usually isn't needed. The real catch: without Biology, most universities require you to complete a prescribed 'Biology deficiency course' alongside your first year. One exception to watch for — the newer CUET-based central ICAR route specifically for B.Sc Agriculture/Horticulture/Forestry currently asks for Biology upfront, so if you're targeting a central ICAR institute specifically (not a state university), verify that college's current subject requirement before assuming PCM alone is enough." },
-    BiPC: { fitType: "Native Fit", actionSummary: "On track — no bridge step", detailedSteps: "Physics, Chemistry and Biology are already covered — proceed to your target university's own agriculture entrance (state CET, ICAR AIEEA, or CUET) with no deficiency course needed." },
-    PCMB: { fitType: "Native Fit", actionSummary: "On track — no bridge step", detailedSteps: "All required subjects, including Biology, are already covered." },
-    "Commerce+Maths": { fitType: "Hard Gate — No Physics/Chemistry/Biology", actionSummary: "Requires drop year to redo Science", detailedSteps: "No core science subjects at all. A drop year to redo Class 11-12 in Science (BiPC avoids the later Biology deficiency course; MPC still works but keeps that requirement) is the direct route." },
-    "Commerce (CEC, no Maths)": { fitType: "Hard Gate — No Physics/Chemistry/Biology", actionSummary: "Requires drop year to redo Science", detailedSteps: "Same gap as above — a drop year into Science is the direct route." },
-    Humanities: { fitType: "Hard Gate — No Physics/Chemistry/Biology", actionSummary: "Requires drop year to redo Science", detailedSteps: "Same gap as above — a drop year into Science is the direct route." },
-    "Vocational/Other": { fitType: "Hard Gate — No Physics/Chemistry/Biology", actionSummary: "Requires drop year to redo Science", detailedSteps: "Same gap as above. Confirm your board's rules on re-entering Science after a vocational track." },
+    MPC: { fitType: "Bridge - Biology foundation usually needed", actionSummary: "Usually no drop year; expect a Biology deficiency course after admission", detailedSteps: "Physics, Chemistry and Maths already meet the general eligibility most state agricultural universities publish (10+2 with PCB/PCM/Agriculture, ~50% aggregate) - so a drop year usually isn't needed. The real catch: without Biology, most universities require you to complete a prescribed 'Biology deficiency course' alongside your first year. One exception to watch for - the newer CUET-based central ICAR route specifically for B.Sc Agriculture/Horticulture/Forestry currently asks for Biology upfront, so if you're targeting a central ICAR institute specifically (not a state university), verify that college's current subject requirement before assuming PCM alone is enough." },
+    BiPC: { fitType: "Native Fit", actionSummary: "On track - no bridge step", detailedSteps: "Physics, Chemistry and Biology are already covered - proceed to your target university's own agriculture entrance (state CET, ICAR AIEEA, or CUET) with no deficiency course needed." },
+    PCMB: { fitType: "Native Fit", actionSummary: "On track - no bridge step", detailedSteps: "All required subjects, including Biology, are already covered." },
+    "Commerce+Maths": { fitType: "Hard Gate - No Physics/Chemistry/Biology", actionSummary: "Requires drop year to redo Science", detailedSteps: "No core science subjects at all. A drop year to redo Class 11-12 in Science (BiPC avoids the later Biology deficiency course; MPC still works but keeps that requirement) is the direct route." },
+    "Commerce (CEC, no Maths)": { fitType: "Hard Gate - No Physics/Chemistry/Biology", actionSummary: "Requires drop year to redo Science", detailedSteps: "Same gap as above - a drop year into Science is the direct route." },
+    Humanities: { fitType: "Hard Gate - No Physics/Chemistry/Biology", actionSummary: "Requires drop year to redo Science", detailedSteps: "Same gap as above - a drop year into Science is the direct route." },
+    "Vocational/Other": { fitType: "Hard Gate - No Physics/Chemistry/Biology", actionSummary: "Requires drop year to redo Science", detailedSteps: "Same gap as above. Confirm your board's rules on re-entering Science after a vocational track." },
   },
   ENV_SCIENCE: {
-    MPC: { fitType: "Bridge — Biology usually preferred", actionSummary: "Usually no drop year; verify the specific college's requirement first", detailedSteps: "Physics and Chemistry are covered, and some universities do admit Physics/Chemistry/Maths students directly — but published eligibility for B.Sc Environmental Science most commonly names Physics/Chemistry/Biology as the expected combination, since Biology is core to the subject matter here, not incidental. Treat this as college-by-college: check the specific university's current prospectus before assuming PCM alone is enough, and where Biology is required, ask about a bridge/deficiency-course option before ruling the college out." },
-    BiPC: { fitType: "Native Fit", actionSummary: "On track — no bridge step", detailedSteps: "Physics, Chemistry and Biology are already covered — proceed to your target university's own admission process (10+2 merit or CUET, depending on the institute) with no deficiency course needed." },
-    PCMB: { fitType: "Native Fit", actionSummary: "On track — no bridge step", detailedSteps: "All commonly-expected subjects, including Biology, are already covered." },
-    "Commerce+Maths": { fitType: "Hard Gate — No core science", actionSummary: "Requires drop year to add Science", detailedSteps: "No Physics/Chemistry/Biology. A drop year to redo Class 11-12 in Science (BiPC is the more directly-aligned choice for this field) is the direct route." },
-    "Commerce (CEC, no Maths)": { fitType: "Hard Gate — No core science", actionSummary: "Requires drop year to add Science", detailedSteps: "Same gap as above — a drop year into Science is the direct route." },
-    Humanities: { fitType: "Hard Gate — No core science", actionSummary: "Requires drop year to add Science", detailedSteps: "Same gap as above — a drop year into Science is the direct route." },
-    "Vocational/Other": { fitType: "Hard Gate — No core science", actionSummary: "Requires drop year to add Science", detailedSteps: "Same gap as above. Confirm your board's rules on re-entering Science after a vocational track." },
+    MPC: { fitType: "Bridge - Biology usually preferred", actionSummary: "Usually no drop year; verify the specific college's requirement first", detailedSteps: "Physics and Chemistry are covered, and some universities do admit Physics/Chemistry/Maths students directly - but published eligibility for B.Sc Environmental Science most commonly names Physics/Chemistry/Biology as the expected combination, since Biology is core to the subject matter here, not incidental. Treat this as college-by-college: check the specific university's current prospectus before assuming PCM alone is enough, and where Biology is required, ask about a bridge/deficiency-course option before ruling the college out." },
+    BiPC: { fitType: "Native Fit", actionSummary: "On track - no bridge step", detailedSteps: "Physics, Chemistry and Biology are already covered - proceed to your target university's own admission process (10+2 merit or CUET, depending on the institute) with no deficiency course needed." },
+    PCMB: { fitType: "Native Fit", actionSummary: "On track - no bridge step", detailedSteps: "All commonly-expected subjects, including Biology, are already covered." },
+    "Commerce+Maths": { fitType: "Hard Gate - No core science", actionSummary: "Requires drop year to add Science", detailedSteps: "No Physics/Chemistry/Biology. A drop year to redo Class 11-12 in Science (BiPC is the more directly-aligned choice for this field) is the direct route." },
+    "Commerce (CEC, no Maths)": { fitType: "Hard Gate - No core science", actionSummary: "Requires drop year to add Science", detailedSteps: "Same gap as above - a drop year into Science is the direct route." },
+    Humanities: { fitType: "Hard Gate - No core science", actionSummary: "Requires drop year to add Science", detailedSteps: "Same gap as above - a drop year into Science is the direct route." },
+    "Vocational/Other": { fitType: "Hard Gate - No core science", actionSummary: "Requires drop year to add Science", detailedSteps: "Same gap as above. Confirm your board's rules on re-entering Science after a vocational track." },
   },
   LIFE_SCIENCE_PCB: {
-    MPC: { fitType: "Hard Gate — Biology required at most colleges", actionSummary: "A drop year is the reliable route; a narrow set of private/distance programs accept PCM directly", detailedSteps: "Most government colleges require Biology at 10+2 for a genuine B.Sc Botany/Zoology/Marine Biology-type degree — Physics and Chemistry alone don't substitute here the way they do for Environmental Science or Agriculture. A drop year to add Biology (via your board's improvement/additional-subject route, or a full BiPC redo) is the dependable path if a government college is the goal. A smaller number of private universities and distance-learning programs (e.g. combined BSc Zoology/Botany/Chemistry tracks) do admit PCM students directly with a modest aggregate requirement — worth checking specifically, but treat it as a narrower option, not the default." },
-    BiPC: { fitType: "Native Fit", actionSummary: "On track — no bridge step", detailedSteps: "Physics, Chemistry and Biology are already covered — proceed to your target university's own entrance (state CET, CUET, or the university's own test) with no deficiency course needed." },
-    PCMB: { fitType: "Native Fit", actionSummary: "On track — no bridge step", detailedSteps: "All required subjects, including Biology, are already covered." },
-    "Commerce+Maths": { fitType: "Hard Gate — No Physics/Chemistry/Biology", actionSummary: "Requires drop year to redo Science", detailedSteps: "No core science subjects at all. A drop year to redo Class 11-12 in BiPC is the direct route." },
-    "Commerce (CEC, no Maths)": { fitType: "Hard Gate — No Physics/Chemistry/Biology", actionSummary: "Requires drop year to redo Science", detailedSteps: "Same gap as above — a drop year into BiPC is the direct route." },
-    Humanities: { fitType: "Hard Gate — No Physics/Chemistry/Biology", actionSummary: "Requires drop year to redo Science", detailedSteps: "Same gap as above — a drop year into BiPC is the direct route." },
-    "Vocational/Other": { fitType: "Hard Gate — No Physics/Chemistry/Biology", actionSummary: "Requires drop year to redo Science", detailedSteps: "Same gap as above. Confirm your board's rules on re-entering Science after a vocational track." },
+    MPC: { fitType: "Hard Gate - Biology required at most colleges", actionSummary: "A drop year is the reliable route; a narrow set of private/distance programs accept PCM directly", detailedSteps: "Most government colleges require Biology at 10+2 for a genuine B.Sc Botany/Zoology/Marine Biology-type degree - Physics and Chemistry alone don't substitute here the way they do for Environmental Science or Agriculture. A drop year to add Biology (via your board's improvement/additional-subject route, or a full BiPC redo) is the dependable path if a government college is the goal. A smaller number of private universities and distance-learning programs (e.g. combined BSc Zoology/Botany/Chemistry tracks) do admit PCM students directly with a modest aggregate requirement - worth checking specifically, but treat it as a narrower option, not the default." },
+    BiPC: { fitType: "Native Fit", actionSummary: "On track - no bridge step", detailedSteps: "Physics, Chemistry and Biology are already covered - proceed to your target university's own entrance (state CET, CUET, or the university's own test) with no deficiency course needed." },
+    PCMB: { fitType: "Native Fit", actionSummary: "On track - no bridge step", detailedSteps: "All required subjects, including Biology, are already covered." },
+    "Commerce+Maths": { fitType: "Hard Gate - No Physics/Chemistry/Biology", actionSummary: "Requires drop year to redo Science", detailedSteps: "No core science subjects at all. A drop year to redo Class 11-12 in BiPC is the direct route." },
+    "Commerce (CEC, no Maths)": { fitType: "Hard Gate - No Physics/Chemistry/Biology", actionSummary: "Requires drop year to redo Science", detailedSteps: "Same gap as above - a drop year into BiPC is the direct route." },
+    Humanities: { fitType: "Hard Gate - No Physics/Chemistry/Biology", actionSummary: "Requires drop year to redo Science", detailedSteps: "Same gap as above - a drop year into BiPC is the direct route." },
+    "Vocational/Other": { fitType: "Hard Gate - No Physics/Chemistry/Biology", actionSummary: "Requires drop year to redo Science", detailedSteps: "Same gap as above. Confirm your board's rules on re-entering Science after a vocational track." },
   },
   OPEN: {
-    MPC: { fitType: "Native Fit", actionSummary: "No bridge needed — any stream qualifies", detailedSteps: "This field does not gate on Class 11-12 stream. Focus on the field-specific entrance exam or portfolio (e.g. CLAT for Law, CUET/university entrance for most degrees, NID/UCEED-style portfolio+aptitude test for Design, UPSC/NDA/CDS for Government/Defence) and build relevant extracurricular proof (writing samples, business projects, portfolio pieces) during Class 11-12." },
-    BiPC: { fitType: "Native Fit", actionSummary: "No bridge needed — any stream qualifies", detailedSteps: "This field does not gate on Class 11-12 stream. Focus on the field-specific entrance exam or portfolio (e.g. CLAT for Law, CUET/university entrance for most degrees, NID/UCEED-style portfolio+aptitude test for Design, UPSC/NDA/CDS for Government/Defence) and build relevant extracurricular proof (writing samples, business projects, portfolio pieces) during Class 11-12." },
-    PCMB: { fitType: "Native Fit", actionSummary: "No bridge needed — any stream qualifies", detailedSteps: "This field does not gate on Class 11-12 stream. Focus on the field-specific entrance exam or portfolio (e.g. CLAT for Law, CUET/university entrance for most degrees, NID/UCEED-style portfolio+aptitude test for Design, UPSC/NDA/CDS for Government/Defence) and build relevant extracurricular proof (writing samples, business projects, portfolio pieces) during Class 11-12." },
-    "Commerce+Maths": { fitType: "Native Fit", actionSummary: "No bridge needed — any stream qualifies", detailedSteps: "This field does not gate on Class 11-12 stream. Focus on the field-specific entrance exam or portfolio (e.g. CLAT for Law, CUET/university entrance for most degrees, NID/UCEED-style portfolio+aptitude test for Design, UPSC/NDA/CDS for Government/Defence) and build relevant extracurricular proof (writing samples, business projects, portfolio pieces) during Class 11-12." },
-    "Commerce (CEC, no Maths)": { fitType: "Native Fit", actionSummary: "No bridge needed — any stream qualifies", detailedSteps: "This field does not gate on Class 11-12 stream. Focus on the field-specific entrance exam or portfolio (e.g. CLAT for Law, CUET/university entrance for most degrees, NID/UCEED-style portfolio+aptitude test for Design, UPSC/NDA/CDS for Government/Defence) and build relevant extracurricular proof (writing samples, business projects, portfolio pieces) during Class 11-12." },
-    Humanities: { fitType: "Native Fit", actionSummary: "No bridge needed — any stream qualifies", detailedSteps: "This field does not gate on Class 11-12 stream. Focus on the field-specific entrance exam or portfolio (e.g. CLAT for Law, CUET/university entrance for most degrees, NID/UCEED-style portfolio+aptitude test for Design, UPSC/NDA/CDS for Government/Defence) and build relevant extracurricular proof (writing samples, business projects, portfolio pieces) during Class 11-12." },
-    "Vocational/Other": { fitType: "Native Fit", actionSummary: "No bridge needed — any stream qualifies", detailedSteps: "This field does not gate on Class 11-12 stream. Focus on the field-specific entrance exam or portfolio (e.g. CLAT for Law, CUET/university entrance for most degrees, NID/UCEED-style portfolio+aptitude test for Design, UPSC/NDA/CDS for Government/Defence) and build relevant extracurricular proof (writing samples, business projects, portfolio pieces) during Class 11-12." },
+    MPC: { fitType: "Native Fit", actionSummary: "No bridge needed - any stream qualifies", detailedSteps: "This field does not gate on Class 11-12 stream. Focus on the field-specific entrance exam or portfolio (e.g. CLAT for Law, CUET/university entrance for most degrees, NID/UCEED-style portfolio+aptitude test for Design, UPSC/NDA/CDS for Government/Defence) and build relevant extracurricular proof (writing samples, business projects, portfolio pieces) during Class 11-12." },
+    BiPC: { fitType: "Native Fit", actionSummary: "No bridge needed - any stream qualifies", detailedSteps: "This field does not gate on Class 11-12 stream. Focus on the field-specific entrance exam or portfolio (e.g. CLAT for Law, CUET/university entrance for most degrees, NID/UCEED-style portfolio+aptitude test for Design, UPSC/NDA/CDS for Government/Defence) and build relevant extracurricular proof (writing samples, business projects, portfolio pieces) during Class 11-12." },
+    PCMB: { fitType: "Native Fit", actionSummary: "No bridge needed - any stream qualifies", detailedSteps: "This field does not gate on Class 11-12 stream. Focus on the field-specific entrance exam or portfolio (e.g. CLAT for Law, CUET/university entrance for most degrees, NID/UCEED-style portfolio+aptitude test for Design, UPSC/NDA/CDS for Government/Defence) and build relevant extracurricular proof (writing samples, business projects, portfolio pieces) during Class 11-12." },
+    "Commerce+Maths": { fitType: "Native Fit", actionSummary: "No bridge needed - any stream qualifies", detailedSteps: "This field does not gate on Class 11-12 stream. Focus on the field-specific entrance exam or portfolio (e.g. CLAT for Law, CUET/university entrance for most degrees, NID/UCEED-style portfolio+aptitude test for Design, UPSC/NDA/CDS for Government/Defence) and build relevant extracurricular proof (writing samples, business projects, portfolio pieces) during Class 11-12." },
+    "Commerce (CEC, no Maths)": { fitType: "Native Fit", actionSummary: "No bridge needed - any stream qualifies", detailedSteps: "This field does not gate on Class 11-12 stream. Focus on the field-specific entrance exam or portfolio (e.g. CLAT for Law, CUET/university entrance for most degrees, NID/UCEED-style portfolio+aptitude test for Design, UPSC/NDA/CDS for Government/Defence) and build relevant extracurricular proof (writing samples, business projects, portfolio pieces) during Class 11-12." },
+    Humanities: { fitType: "Native Fit", actionSummary: "No bridge needed - any stream qualifies", detailedSteps: "This field does not gate on Class 11-12 stream. Focus on the field-specific entrance exam or portfolio (e.g. CLAT for Law, CUET/university entrance for most degrees, NID/UCEED-style portfolio+aptitude test for Design, UPSC/NDA/CDS for Government/Defence) and build relevant extracurricular proof (writing samples, business projects, portfolio pieces) during Class 11-12." },
+    "Vocational/Other": { fitType: "Native Fit", actionSummary: "No bridge needed - any stream qualifies", detailedSteps: "This field does not gate on Class 11-12 stream. Focus on the field-specific entrance exam or portfolio (e.g. CLAT for Law, CUET/university entrance for most degrees, NID/UCEED-style portfolio+aptitude test for Design, UPSC/NDA/CDS for Government/Defence) and build relevant extracurricular proof (writing samples, business projects, portfolio pieces) during Class 11-12." },
   },
 };
 
