@@ -27,7 +27,7 @@ const RIASEC_LETTERS: RiasecLetter[] = ["R", "I", "A", "S", "E", "C"];
 function riasecLetterFromName(name: string): RiasecLetter | null {
   const n = name.toUpperCase();
   // Leading "R-", "R –", "SDS - R", "O*NET - R", "SII - R (..."
-  const tail = n.match(/(?:^|[–--]\s*)([RIASEC])\s*(?:[-–-(]|$)/);
+  const tail = n.match(/(?:^|[–—-]\s*)([RIASEC])\s*(?:[-–—(]|$)/);
   if (tail) return tail[1] as RiasecLetter;
   if (n.includes("REALISTIC")) return "R";
   if (n.includes("INVESTIGATIVE")) return "I";
