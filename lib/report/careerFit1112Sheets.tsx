@@ -687,16 +687,17 @@ function FundedProgramCard({ p, color }: { p: FundedProgram; color: string }) {
           <div key={s.label} style={{ padding: "0 20px", borderLeft: i > 0 ? "1px solid var(--line-2, var(--line))" : "none", minWidth: 0 }}>
             {/* The LABEL is the highlighted thing here - bold and in the
                 stat's own colour - not the value text below it, which is
-                just information to read, not something to shout. Each
-                value is one thin, truncated line - the full text is still
-                there as a title tooltip, not dropped. */}
+                just information to read, not something to shout. The value
+                is capped at 2 real lines (not squeezed to 1 - that hid the
+                actual text behind an ellipsis almost immediately); the full
+                text is also on the title tooltip as a fallback. */}
             <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 6 }}>
               <span style={{ width: 30, height: 30, borderRadius: "50%", background: `${s.color}16`, display: "grid", placeItems: "center", flex: "none" }}>
                 <Icon name={s.icon} size={15} style={{ color: s.color }} />
               </span>
               <span style={{ fontSize: 13, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: s.color }}>{s.label}</span>
             </div>
-            <div title={s.value} style={{ fontSize: 14, fontWeight: 400, color: "var(--ink-2)", lineHeight: 1.5, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{s.value}</div>
+            <div title={s.value} style={{ fontSize: 13, fontWeight: 400, color: "var(--ink-2)", lineHeight: 1.4, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{s.value}</div>
           </div>
         ))}
       </div>
