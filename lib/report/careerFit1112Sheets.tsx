@@ -607,36 +607,15 @@ function splitProgramName(name: string): { headline: string; sub: string | null 
 function urlHost(url: string): string {
   try { return new URL(url).hostname.replace(/^www\./, ""); } catch { return url; }
 }
-// Splits a stat's value into a bold lead clause plus a muted detail clause -
-// tries a real sentence break first, then a semicolon, then an em-dash,
-// using whichever gives a genuine two-part split. This is NOT the old
-// shortHeadline() truncation bug (which cut a value mid-word with an
-// ellipsis and then repeated the FULL value again right below it); it never
-// drops or duplicates a single word of the real text.
-//
-// Two things the single ". "-only version got wrong, both visible in real
-// data: (1) a long value with no period at all (just one at the very end,
-// e.g. a single 200-character sentence) rendered as ONE long, fully-bold
-// block - much taller and heavier than its neighbouring stats, which is
-// exactly the "long long things, uneven" look being fixed here; trying a
-// semicolon/dash first gives those values a short bold lead too. (2) a bare
-// "period then space" match doesn't know the difference between a real
-// sentence break and an abbreviation like "vs." or "e.g." - it would split
-// "...programmes vs. its own..." right after "vs.", cutting a clause in
-// half mid-thought. Requiring a capital letter, digit or currency symbol
-// right after the period is what a real new sentence almost always starts
-// with, and an abbreviation almost never does.
-function splitLead(text: string): { lead: string; rest: string | null } {
-  const patterns: RegExp[] = [
-    /^(.*?\.)\s+(?=[A-Z0-9₹$])(.{8,})$/,
-    /^(.*?;)\s+(.{8,})$/,
-    /^(.*?-)\s*(.{8,})$/,
-  ];
-  for (const re of patterns) {
-    const m = text.match(re);
-    if (m) return { lead: m[1].replace(/[.;-]\s*$/, "").trim(), rest: m[2].trim() };
-  }
-  return { lead: text, rest: null };
+// Every FundedProgram.eligibility string follows "Stream: ... Percentage:
+// ... Exam: ..." (plus sometimes trailing age/notification caveats after
+// Exam) - the card only needs Stream + Percentage, so this drops
+// everything from "Exam:" onward and strips parenthetical asides, turning
+// a 3-sentence paragraph into one short line.
+function shortEligibility(text: string): string {
+  const cut = text.split(/\.\s*Exam:/)[0];
+  const stripped = cut.replace(/\s*\([^)]*\)/g, "").replace(/\s{2,}/g, " ").trim();
+  return stripped.endsWith(".") ? stripped : `${stripped}.`;
 }
 
 // Real logos, sourced from Wikimedia Commons and verified (fetched, 200 OK)
@@ -672,7 +651,7 @@ function FundedProgramCard({ p, color }: { p: FundedProgram; color: string }) {
   // categories on every card, so giving each its own consistent colour reads
   // faster across a grid of many cards than one colour repeated three times.
   const stats = [
-    { label: "Eligibility", value: p.eligibility, icon: "user", color: "#2a5aa0" },
+    { label: "Eligibility", value: shortEligibility(p.eligibility), icon: "user", color: "#2a5aa0" },
     { label: "Stipend", value: p.stipend, icon: "card", color: "#1f7a55" },
     { label: "On completion", value: p.outcome, icon: "score", color: "#a3620b" },
   ];
@@ -703,25 +682,23 @@ function FundedProgramCard({ p, color }: { p: FundedProgram; color: string }) {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", marginTop: 20, paddingTop: 20, borderTop: "1px solid var(--line-2, var(--line))" }}>
-        {stats.map((s, i) => {
-          const { lead, rest } = splitLead(s.value);
-          return (
-            <div key={s.label} style={{ padding: "0 20px", borderLeft: i > 0 ? "1px solid var(--line-2, var(--line))" : "none" }}>
-              {/* The LABEL is the highlighted thing here - bold and in the
-                  stat's own colour - not the value text below it, which is
-                  just information to read, not something to shout. */}
-              <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 9 }}>
-                <span style={{ width: 30, height: 30, borderRadius: "50%", background: `${s.color}16`, display: "grid", placeItems: "center", flex: "none" }}>
-                  <Icon name={s.icon} size={15} style={{ color: s.color }} />
-                </span>
-                <span style={{ fontSize: 13, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: s.color }}>{s.label}</span>
-              </div>
-              <div style={{ fontSize: 14.5, fontWeight: 400, color: "var(--ink-2)", lineHeight: 1.5 }}>{lead}</div>
-              {rest && <div style={{ fontSize: 13, fontWeight: 400, color: "var(--muted)", marginTop: 5, lineHeight: 1.5 }}>{rest}</div>}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", marginTop: 16, paddingTop: 16, borderTop: "1px solid var(--line-2, var(--line))" }}>
+        {stats.map((s, i) => (
+          <div key={s.label} style={{ padding: "0 20px", borderLeft: i > 0 ? "1px solid var(--line-2, var(--line))" : "none", minWidth: 0 }}>
+            {/* The LABEL is the highlighted thing here - bold and in the
+                stat's own colour - not the value text below it, which is
+                just information to read, not something to shout. Each
+                value is one thin, truncated line - the full text is still
+                there as a title tooltip, not dropped. */}
+            <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 6 }}>
+              <span style={{ width: 30, height: 30, borderRadius: "50%", background: `${s.color}16`, display: "grid", placeItems: "center", flex: "none" }}>
+                <Icon name={s.icon} size={15} style={{ color: s.color }} />
+              </span>
+              <span style={{ fontSize: 13, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: s.color }}>{s.label}</span>
             </div>
-          );
-        })}
+            <div title={s.value} style={{ fontSize: 14, fontWeight: 400, color: "var(--ink-2)", lineHeight: 1.5, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{s.value}</div>
+          </div>
+        ))}
       </div>
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginTop: 20, paddingTop: 18, borderTop: "1px solid var(--line-2, var(--line))" }}>
@@ -982,7 +959,8 @@ function ClusterBarChart({ groups }: { groups: DomainGroup1112[] }) {
   // padL has to fit the longest label ("Law, Public Safety, Corrections &
   // Security", "Transportation, Distribution & Logistics") at 11.5px bold -
   // anything narrower clips those labels off the SVG's left edge instead of
-  // just cramping them, since text-anchor="end" grows leftward from padL-12.
+  // just cramping them. Labels are left-aligned from a fixed x=16, growing
+  // rightward like normal text, rather than anchored to the bars' left edge.
   // rowH is tall enough that 16 rows fill the page's real available height
   // (the sheet is a fixed A4 page - a short chart just leaves the rest of
   // the page blank) instead of only using the top third of it.
@@ -997,7 +975,7 @@ function ClusterBarChart({ groups }: { groups: DomainGroup1112[] }) {
         const color = clusterColor(r.domain);
         return (
           <g key={r.domain}>
-            <text x={padL - 12} y={y + rowH / 2 + 4} textAnchor="end" fontSize={13} fontWeight={700} fill="var(--ink)">{r.domain}</text>
+            <text x={16} y={y + rowH / 2 + 4} textAnchor="start" fontSize={13} fontWeight={700} fill="var(--ink)">{r.domain}</text>
             <rect x={padL} y={y + 8} width={W - padL - padR} height={rowH - 16} rx={5} fill={color} opacity={0.14} />
             <rect x={padL} y={y + 8} width={barW(r.topScore)} height={rowH - 16} rx={5} fill={color} />
             <text x={padL + barW(r.topScore) + 8} y={y + rowH / 2 + 4} fontSize={13} fontWeight={800} fill="var(--ink)">{r.topScore.toFixed(0)}%</text>
