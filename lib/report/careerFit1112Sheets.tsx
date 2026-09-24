@@ -1079,15 +1079,16 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
         .map((r) => r.career)
     : [];
 
-  // This roadmap is the STANDARD, pre-authored path for Career Suitability's
-  // #1 domain (CLUSTER_ROADMAPS, clusterRoadmaps1112.ts) - generic to that
-  // domain, not built around the student's specific desired career or
-  // stream. The short "you are here → destination" banner above already
-  // covers the desired career directly (on track / bridge / hard gate + the
-  // exam to take); this section answers a different, always-the-same-source
-  // question - "what does a realistic path in your best-fit domain actually
-  // look like" - so it never name-drops the desired career or the stream.
-  const roadmapDomain = suitabilityGroups[0]?.domain ?? null;
+  // The STANDARD, pre-authored career-stage path (CLUSTER_ROADMAPS,
+  // clusterRoadmaps1112.ts) for the student's OWN desired career's cluster -
+  // e.g. picking "Software Engineer" shows the IT roadmap, "Doctor" shows
+  // the Health Science one, regardless of stream (MPC/BiPC/etc.) or of
+  // whatever cluster happens to rank #1 on their Career Suitability list.
+  // The short "you are here → destination" banner above covers the
+  // stream-to-career bridge (on track / bridge / hard gate + the exam to
+  // take); this section is the longer entry-to-senior progression within
+  // that same desired career's field.
+  const roadmapDomain = selector?.career?.cluster ?? null;
   const realisticRoadmap = roadmapDomain ? CLUSTER_ROADMAPS[roadmapDomain as StandardCluster] : null;
 
   const sheets: ReportSheet[] = [
@@ -1269,8 +1270,8 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
 
                 {roadmapDomain && realisticRoadmap && (
                   <div style={BREAK}>
-                    <SecHead center eyebrow={`${clusterHeading(roadmapDomain)} · your best-fit domain`} title="Your realistic path"
-                      sub={`The standard path into a ${clusterHeading(roadmapDomain)} career - where you are now, through to senior/leadership roles. This is the same realistic route for anyone in this domain, not built around one specific job title.`} />
+                    <SecHead center eyebrow={`Path to ${selector.career.name}`} title="Your realistic path"
+                      sub={`The standard path into a ${clusterHeading(roadmapDomain)} career like ${selector.career.name} - where you are now, through to senior/leadership roles.`} />
                     <div style={{ marginTop: 16 }}>
                       <ClusterRoadmapPath phases={realisticRoadmap.phases} color={clusterColor(roadmapDomain)} />
                     </div>
