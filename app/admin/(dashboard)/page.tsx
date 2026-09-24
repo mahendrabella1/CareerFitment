@@ -199,7 +199,7 @@ export default function AdminUsersPage() {
                             behind it, or the click does nothing and reads as
                             broken. */}
                         {a ? (
-                          <Link href={`/admin/report/${u.uid}`} style={S.nameBtn} title="Open this student's report">
+                          <Link href={`/admin/report/${u.uid}`} target="_blank" rel="noopener noreferrer" style={S.nameBtn} title="Open this student's report">
                             {u.name || "-"}
                           </Link>
                         ) : (
@@ -231,7 +231,7 @@ export default function AdminUsersPage() {
                       <td style={S.td}>
                         {a ? (
                           <div style={S.reportCell}>
-                            <Link href={`/admin/report/${u.uid}`} style={S.viewBtn}>
+                            <Link href={`/admin/report/${u.uid}`} target="_blank" rel="noopener noreferrer" style={S.viewBtn}>
                               <Icon name="explain" size={14} /> View report
                             </Link>
                             {(() => {
