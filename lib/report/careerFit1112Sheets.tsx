@@ -23,8 +23,7 @@
  *     student's actual stream can reach (Native Fit). Same per-role detail.
  *  3. Career Selector - the specific career the student named: current
  *     stream, fit type, where it ranks in their own Fitment list, its
- *     typical degree/exam, close alternatives in the same domain, and the
- *     full step-by-step roadmap.
+ *     typical degree/exam, and the full step-by-step roadmap.
  *  4. Class 12 only - estimated exam score shown as context (never a
  *     filter - the mapping kit's own Report_Sections_Logic is explicit that
  *     "the score itself is ignored for matching"), plus a WIDENED
@@ -1060,35 +1059,15 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
 
   const selector = desiredCareer ? selectCareer1112(desiredCareer, l1, streamKey) : null;
 
-  // "Possibilities" for the Selector page - close alternatives in the same
-  // cluster as the chosen career, so "I want X but here's what's realistic"
-  // has real, ranked neighbours rather than just a single yes/no verdict.
-  // Sourced from suitabilityRanked (the student's own Career Suitability
-  // ranking), not the raw catalog - these are the same-cluster roles the
-  // student's actual profile is best suited to, in fit order, not just
-  // whichever 4 happen to come first in CAREERS_1112. This also means
-  // excluded careers ("which career areas would you NOT want to pursue")
-  // are correctly filtered out here too, since suitabilityRanked already
-  // goes through rankFitment1112's excludedCareerIds filter - the raw
-  // catalog never did, despite this file's own comment elsewhere claiming
-  // exclusions apply "everywhere... Selector's own close alternatives".
-  const alternatives: Career1112[] = selector?.career
-    ? suitabilityRanked
-        .filter((r) => r.career.cluster === selector.career!.cluster && r.career.id !== selector.career!.id)
-        .slice(0, 4)
-        .map((r) => r.career)
-    : [];
-
-  // The STANDARD, pre-authored career-stage path (CLUSTER_ROADMAPS,
-  // clusterRoadmaps1112.ts) for the student's OWN desired career's cluster -
-  // e.g. picking "Software Engineer" shows the IT roadmap, "Doctor" shows
-  // the Health Science one, regardless of stream (MPC/BiPC/etc.) or of
-  // whatever cluster happens to rank #1 on their Career Suitability list.
-  // The short "you are here → destination" banner above covers the
-  // stream-to-career bridge (on track / bridge / hard gate + the exam to
-  // take); this section is the longer entry-to-senior progression within
-  // that same desired career's field.
-  const roadmapDomain = selector?.career?.cluster ?? null;
+  // This roadmap is the STANDARD, pre-authored path for Career Suitability's
+  // #1 domain (CLUSTER_ROADMAPS, clusterRoadmaps1112.ts) - generic to that
+  // domain, not built around the student's specific desired career or
+  // stream. The short "you are here → destination" banner above already
+  // covers the desired career directly (on track / bridge / hard gate + the
+  // exam to take); this section answers a different, always-the-same-source
+  // question - "what does a realistic path in your best-fit domain actually
+  // look like" - so it never name-drops the desired career or the stream.
+  const roadmapDomain = suitabilityGroups[0]?.domain ?? null;
   const realisticRoadmap = roadmapDomain ? CLUSTER_ROADMAPS[roadmapDomain as StandardCluster] : null;
 
   const sheets: ReportSheet[] = [
@@ -1270,8 +1249,8 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
 
                 {roadmapDomain && realisticRoadmap && (
                   <div style={BREAK}>
-                    <SecHead center eyebrow={`Path to ${selector.career.name}`} title="Your realistic path"
-                      sub={`The standard path into a ${clusterHeading(roadmapDomain)} career like ${selector.career.name} - where you are now, through to senior/leadership roles.`} />
+                    <SecHead center eyebrow={`${clusterHeading(roadmapDomain)} · your best-fit domain`} title="Your realistic path"
+                      sub={`The standard path into a ${clusterHeading(roadmapDomain)} career - where you are now, through to senior/leadership roles. This is the same realistic route for anyone in this domain, not built around one specific job title.`} />
                     <div style={{ marginTop: 16 }}>
                       <ClusterRoadmapPath phases={realisticRoadmap.phases} color={clusterColor(roadmapDomain)} />
                     </div>
@@ -1294,19 +1273,6 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                     ))}
                   </div>
                 </div>
-
-                {alternatives.length > 0 && (
-                  <div style={BREAK}>
-                    <SecHead center eyebrow="If this specific role doesn't work out" title={`Close alternatives in ${selector.career.cluster}`} />
-                    <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: 8, maxWidth: 520, marginLeft: "auto", marginRight: "auto" }}>
-                      {alternatives.map((c) => (
-                        <div key={c.id} style={{ fontSize: 12, color: "var(--ink-2)", padding: "6px 0", borderTop: "1px solid var(--line)" }}>
-                          <b style={{ color: "var(--ink)" }}>{c.name}</b> - {c.typicalDegree}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
             ) : (
               <p style={{ marginTop: 20, fontSize: 13, color: "var(--ink-2)" }}>&ldquo;{desiredCareer}&rdquo; isn&apos;t in our {totalCareers}-career reference list yet - talk to your counsellor about the specific path, using Career Fitment and Career Suitability above as your general direction.</p>
