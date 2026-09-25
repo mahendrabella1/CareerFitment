@@ -58,6 +58,7 @@ const P: Record<string, ReactNode> = {
   bell: <><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.7 21a2 2 0 0 1-3.4 0" /></>,
   card: <><rect x="2.5" y="5.5" width="19" height="13" rx="2.5" /><path d="M2.5 10h19" /><path d="M6 14.5h3.5" /></>,
   bank: <><path d="M3 10 12 4l9 6" /><path d="M4 10h16" /><path d="M6 10v9M10 10v9M14 10v9M18 10v9" /><path d="M3.5 20.5h17" /></>,
+  archive: <><rect x="3" y="4" width="18" height="4.5" rx="1" /><path d="M4.5 8.5v10a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-10" /><path d="M10 13h4" /></>,
 };
 
 export function Icon({ name, size = 22, stroke = 1.7, style }: { name: string; size?: number; stroke?: number; style?: React.CSSProperties }) {

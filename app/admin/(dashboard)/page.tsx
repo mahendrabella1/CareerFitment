@@ -63,6 +63,18 @@ export default function AdminUsersPage() {
     }
   }
 
+  async function archiveUser(u: UserProfile) {
+    const db = getDb();
+    if (!db) return;
+    if (!confirm(`Archive ${u.name || u.email}? Their dashboard login will be blocked until you restore them from Archives.`)) return;
+    try {
+      await updateDoc(doc(db, "users", u.uid), { archived: true, archivedAt: new Date().toISOString() });
+      setRows((rs) => (rs ?? []).map((r) => (r.uid === u.uid ? { ...r, archived: true } : r)));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not archive this user - check Firestore admin write rules.");
+    }
+  }
+
   async function sendReport(u: UserProfile) {
     setSent((s) => ({ ...s, [u.uid]: "sending" }));
     const r = await emailReport(u);
@@ -104,7 +116,9 @@ export default function AdminUsersPage() {
   }, [schools, rows]);
 
   const filtered = useMemo(() => {
-    let list = rows ?? [];
+    // Archived users live on their own /admin/archives page instead of
+    // cluttering this list - see archiveUser() below.
+    let list = (rows ?? []).filter((u) => !u.archived);
     if (schoolFilter) list = list.filter((u) => (u.institution || "") === schoolFilter);
     const term = q.trim().toLowerCase();
     if (term) list = list.filter((u) =>
@@ -249,6 +263,12 @@ export default function AdminUsersPage() {
                                 </button>
                               );
                             })()}
+                            {/* Only offered once an assessment is complete -
+                                archiving is for finished profiles, not ones
+                                still mid-assessment. */}
+                            <button style={S.archiveBtn} onClick={() => void archiveUser(u)}>
+                              <Icon name="archive" size={13} /> Archive
+                            </button>
                           </div>
                         ) : "-"}
                       </td>
@@ -317,5 +337,6 @@ const S: Record<string, React.CSSProperties> = {
 
   reportCell: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" },
   viewBtn: { display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 13px", background: C.ink, color: "#fff", border: "none", borderRadius: 8, fontSize: 12.5, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", textDecoration: "none" },
+  archiveBtn: { display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 13px", background: "#fff", color: C.redStrong, border: `1px solid ${C.redLine}`, borderRadius: 8, fontSize: 12.5, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" },
   nameBtn: { background: "none", border: "none", padding: 0, font: "inherit", color: C.ink, fontWeight: 700, cursor: "pointer", textAlign: "left", textDecoration: "underline", textDecorationColor: C.line, textUnderlineOffset: 3 },
 };

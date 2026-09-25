@@ -45,6 +45,25 @@ export default function AccountPage() {
   const a = profile?.latestAssessment;
   const signOut = () => { void logout().then(() => router.push("/signin")); };
 
+  // Archived by an admin (see app/admin/(dashboard)/archives) - login still
+  // succeeds, but the dashboard itself is replaced by this message instead
+  // of rendering their (still-intact) data.
+  if (profile?.archived) {
+    return (
+      <div style={S.page}>
+        <style dangerouslySetInnerHTML={{ __html: PAGE_CSS }} />
+        <header style={S.header} className="og-noprint">
+          <Link href="/" style={{ textDecoration: "none" }}><Logo height={38} /></Link>
+          <button style={S.logout} onClick={signOut}>Sign out</button>
+        </header>
+        <Centered>
+          <h3 style={S.emptyTitle}>Your dashboard has been revoked</h3>
+          <p style={S.muted}>Please contact the administrator or management for more information.</p>
+        </Centered>
+      </div>
+    );
+  }
+
   // Completed assessment → the full app-shell dashboard (owns its own chrome).
   // Mounted at this level rather than inside the report view because the
   // dashboard shows the same findings in condensed form - both are read-only,

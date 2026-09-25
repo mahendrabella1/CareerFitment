@@ -10,6 +10,7 @@ const NAV = [
   { href: "/admin/payment", label: "Payment Settings", icon: "card" },
   { href: "/admin/coupons", label: "Coupon Codes", icon: "bookmark" },
   { href: "/admin/institutional", label: "Institutional Links", icon: "school" },
+  { href: "/admin/archives", label: "Archives", icon: "archive" },
 ];
 
 export default function AdminSidebar() {

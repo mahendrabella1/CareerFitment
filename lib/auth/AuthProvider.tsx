@@ -137,6 +137,12 @@ export interface UserProfile {
   // server-side by /api/payment/verify after signature verification).
   paid?: boolean;
   paymentStatus?: string;
+  // Admin "Archives" (app/admin/(dashboard)/archives): an admin can archive
+  // a student who has already completed their assessment, revoking their
+  // own dashboard access (checked in app/account/page.tsx) without deleting
+  // any of their data. Restoring just flips this back to false.
+  archived?: boolean;
+  archivedAt?: string;
 }
 
 export type RegisterInput = {
