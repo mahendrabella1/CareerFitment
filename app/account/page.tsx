@@ -58,7 +58,7 @@ export default function AccountPage() {
         </header>
         <Centered>
           <h3 style={S.emptyTitle}>Your dashboard has been revoked</h3>
-          <p style={S.muted}>Please contact the administrator or management for more information.</p>
+          <p style={S.muted}>Please contact the Excellencia administrator or management for more information.</p>
         </Centered>
       </div>
     );
