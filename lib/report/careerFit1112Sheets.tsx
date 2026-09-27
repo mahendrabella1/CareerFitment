@@ -49,6 +49,7 @@ import {
 } from "@/lib/report/careerFitEngine1112";
 import { DOMAINS_1112, STANDARD_CLUSTERS, CLUSTER_EXPLORE_LINKS, CLUSTER_COMPANIES, CLUSTER_FUNDED_PROGRAMS, CAREERS_1112, STREAM_KEY_1112, roadmapFor, type RoadmapEntry, type Career1112, type StreamKey1112, type StandardCluster, type FundedProgram } from "@/lib/report/careerfit1112";
 import { CLUSTER_ROADMAPS, type ClusterRoadmapPhase } from "@/lib/report/clusterRoadmaps1112";
+import { detailedRoadmapFor, type DetailedCareerRoadmap } from "@/lib/report/careerRoadmapDetailed1112";
 import { degreesForStream, ELIGIBILITY_SYMBOL, ELIGIBILITY_LABEL, type DegreeEligibilityRow } from "@/lib/report/degreeStreamMatrix";
 import { topDimensionsForStudent, type ScoredDimension } from "@/lib/report/dimensionCareerGuide";
 import { percentileBandFor } from "@/lib/report/jeePercentileGuide";
@@ -289,6 +290,196 @@ function ClusterRoadmapPath({ phases, color }: { phases: ClusterRoadmapPhase[]; 
         </div>
       ))}
     </div>
+  );
+}
+
+// Splits a researched line on its first ": " or " — " separator so the
+// label half (e.g. "Stream", "IIT Bombay", "Government") can render bold
+// against the muted detail that follows - same "Label: description"
+// convention the source research already writes in throughout, just made
+// visually explicit instead of relying on the reader to notice the colon.
+// Deliberately does NOT treat a plain hyphen as a separator - the data has
+// compound words like "E-commerce" and "T-Hub" that a hyphen-based split
+// would wrongly chop into a 1-letter "label", and checked against all 50
+// researched careers, every genuine label uses ":" or "—", never a bare "-".
+function splitLabel(text: string): { label: string | null; rest: string } {
+  const m = text.match(/^([^:—]{2,60}?)\s*(:|—)\s*(.+)$/s);
+  if (m && m[3].length > 1) return { label: m[1].trim(), rest: m[3].trim() };
+  return { label: null, rest: text };
+}
+function DetailLine({ text, color }: { text: string; color: string }) {
+  const { label, rest } = splitLabel(text);
+  return (
+    <div style={{ fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.6 }}>
+      {label && <b style={{ color }}>{label}: </b>}
+      {rest}
+    </div>
+  );
+}
+function DetailList({ lines, color }: { lines: string[]; color: string }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      {lines.map((l, i) => <DetailLine key={i} text={l} color={color} />)}
+    </div>
+  );
+}
+
+// careerProgression / completeRoadmap: a flat ladder of short stage names -
+// same dot-and-connecting-line visual language as ClusterRoadmapPath above,
+// just one line per step instead of a whole sub-sectioned phase card, since
+// these are a straight A→B→C→D climb, not "I AM HERE, I CAN STUDY, ..."
+// blocks with their own detail underneath.
+function VerticalStepChain({ steps, color }: { steps: string[]; color: string }) {
+  return (
+    <div style={{ marginTop: 6 }}>
+      {steps.map((s, i) => (
+        <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: "none" }}>
+            <span style={{ width: 9, height: 9, borderRadius: "50%", background: color, flex: "none", marginTop: 4 }} />
+            {i < steps.length - 1 && <div style={{ width: 2, flex: 1, background: `linear-gradient(${color}60, ${color}18)`, minHeight: 18 }} />}
+          </div>
+          <div style={{ fontSize: 12.5, fontWeight: i === steps.length - 1 ? 800 : 600, color: i === steps.length - 1 ? color : "var(--ink)", paddingBottom: i < steps.length - 1 ? 10 : 0 }}>{s}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// afterUgPathways alternates a short route label ("Common — Core
+// Engineering") with its own "A → B → C" chain on the next line - paired up
+// here and each chain split into wrapping chips so 4 parallel routes (Common/
+// Alternative/Specialized/Research) read as 4 distinct mini-paths, not one
+// run-on paragraph.
+function InlineChain({ text, color }: { text: string; color: string }) {
+  const steps = text.split("→").map((s) => s.trim()).filter(Boolean);
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 6 }}>
+      {steps.map((s, i) => (
+        <span key={i} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={{ fontSize: 11.5, fontWeight: 700, color: "var(--ink)", background: `${color}0f`, border: `1px solid ${color}30`, borderRadius: 999, padding: "4px 10px" }}>{s}</span>
+          {i < steps.length - 1 && <span style={{ color, fontSize: 12, fontWeight: 800 }}>→</span>}
+        </span>
+      ))}
+    </div>
+  );
+}
+// A real multi-step chain always has 3+ steps (2+ arrows) - a route LABEL
+// can still contain a single arrow of its own ("Alternative — Software →
+// ML"), so testing for "contains →" at all would misclassify that label as
+// the chain line itself and desync every pair after it. Verified against
+// all 50 researched careers: this threshold pairs every one cleanly.
+function isChainLine(line: string): boolean {
+  return (line.match(/→/g)?.length ?? 0) >= 2;
+}
+function PairedChainList({ lines, color }: { lines: string[]; color: string }) {
+  const rows: { label: string; chain: string }[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    if (!isChainLine(lines[i]) && isChainLine(lines[i + 1] ?? "")) {
+      rows.push({ label: lines[i], chain: lines[i + 1] });
+      i++;
+    }
+  }
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      {rows.map((r, i) => (
+        <div key={i}>
+          <div style={{ fontSize: 11.5, fontWeight: 800, color, marginBottom: 6 }}>{r.label}</div>
+          <InlineChain text={r.chain} color={color} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function YearFocusGrid({ years, color }: { years: { year: string; focus: string }[]; color: string }) {
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10 }}>
+      {years.map((y, i) => (
+        <div key={i} style={{ border: `1px solid ${color}30`, borderRadius: 10, padding: "10px 13px", background: `${color}08` }}>
+          <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color }}>{y.year}</div>
+          <div style={{ fontSize: 12, color: "var(--ink-2)", marginTop: 4, lineHeight: 1.5 }}>{y.focus}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// The full, individually-researched in-depth roadmap for one career (see
+// careerRoadmapDetailed1112.ts) - shown INSTEAD of the generic 16-cluster
+// ClusterRoadmapPath whenever the student's desired career has one. Follows
+// the source research's own 14-section structure one-for-one (SecHead+BREAK
+// per section, this file's established pattern) rather than re-grouping it,
+// since that structure was already designed to read as a real journey.
+function DetailedCareerRoadmapView({ r, careerName, color }: { r: DetailedCareerRoadmap; careerName: string; color: string }) {
+  const Sec = ({ eyebrow, title, sub, children }: { eyebrow: string; title: string; sub?: string; children: React.ReactNode }) => (
+    <div style={BREAK}>
+      <SecHead center eyebrow={eyebrow} title={title} sub={sub} />
+      <div style={{ marginTop: 14 }}>{children}</div>
+    </div>
+  );
+  return (
+    <>
+      <div style={BREAK}>
+        <SecHead center eyebrow={`In-depth roadmap · ${careerName}`} title="Your realistic path"
+          sub={r.tagline ?? `The full, step-by-step path into ${careerName} - school through to senior roles, built around this specific career, not a generic cluster.`} />
+      </div>
+      <Sec eyebrow="01 · School / 11-12" title="Where to start">
+        <DetailList lines={r.school} color={color} />
+      </Sec>
+      <Sec eyebrow="02 · UG pathways" title="Degrees that lead here">
+        <DetailList lines={r.ugPathways} color={color} />
+      </Sec>
+      <Sec eyebrow="03 · Top colleges - India" title="Where to study">
+        <DetailList lines={r.topColleges} color={color} />
+      </Sec>
+      <Sec eyebrow="04 · Financial support" title="Scholarships">
+        <DetailList lines={r.scholarships} color={color} />
+      </Sec>
+      <Sec eyebrow="05 · UG development" title="What each year should build">
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <YearFocusGrid years={r.ugDevelopment.years} color={color} />
+          {r.ugDevelopment.notes.length > 0 && <DetailList lines={r.ugDevelopment.notes} color={color} />}
+        </div>
+      </Sec>
+      <Sec eyebrow="06 · Internships" title="Where to intern">
+        <DetailList lines={r.internships} color={color} />
+      </Sec>
+      <Sec eyebrow="07 · After UG" title="Career pathway options">
+        <PairedChainList lines={r.afterUgPathways} color={color} />
+      </Sec>
+      <Sec eyebrow="08 · PG & specialization" title="Going further">
+        <DetailList lines={r.pgSpecialization} color={color} />
+      </Sec>
+      <Sec eyebrow="09 · Job options" title="What you could actually be hired as">
+        <DetailList lines={r.jobOptions} color={color} />
+      </Sec>
+      <Sec eyebrow="10 · Skills & certifications" title="What to build along the way">
+        <DetailList lines={r.skills} color={color} />
+      </Sec>
+      <Sec eyebrow="11 · Abroad - education" title="If you want to study abroad">
+        <DetailList lines={r.abroadEducation} color={color} />
+      </Sec>
+      <Sec eyebrow="12 · Abroad - jobs" title="If you want to work abroad">
+        <DetailList lines={r.abroadJobs} color={color} />
+      </Sec>
+      <Sec eyebrow="13 · Career progression" title="The long climb">
+        <VerticalStepChain steps={r.careerProgression} color={color} />
+      </Sec>
+      <Sec eyebrow="14 · Complete roadmap" title="Start to finish, at a glance">
+        <VerticalStepChain steps={r.completeRoadmap} color={color} />
+        {r.keyDistinction && (
+          <p style={{ fontSize: 12, color: "var(--ink-2)", lineHeight: 1.6, marginTop: 16, paddingTop: 14, borderTop: "1px solid var(--line-2, var(--line))" }}>
+            <b style={{ color: "var(--ink)" }}>Worth knowing: </b>{r.keyDistinction}
+          </p>
+        )}
+        {r.disclaimer && (
+          <p style={{ fontSize: 11, color: "var(--muted)", lineHeight: 1.5, marginTop: 10, display: "flex", alignItems: "flex-start", gap: 6 }}>
+            <Icon name="info" size={13} style={{ flex: "none", marginTop: 1 }} />
+            {r.disclaimer}
+          </p>
+        )}
+      </Sec>
+    </>
   );
 }
 
@@ -1038,6 +1229,15 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
 
   const selector = desiredCareer ? selectCareer1112(desiredCareer, l1, streamKey) : null;
 
+  // A real, individually-researched in-depth roadmap for the student's
+  // EXACT desired career (see careerRoadmapDetailed1112.ts) - covers a
+  // growing subset of CAREERS_1112 (50 of 332 so far). When this exists it
+  // replaces the generic cluster roadmap below entirely, since it's a
+  // strict superset of what that gives (school → UG → colleges →
+  // scholarships → internships → PG → jobs → skills → abroad → progression,
+  // all specific to this one career rather than the whole cluster).
+  const detailedRoadmap = detailedRoadmapFor(selector?.career?.name);
+
   // This roadmap is the STANDARD, pre-authored path for Career Suitability's
   // #1 domain (CLUSTER_ROADMAPS, clusterRoadmaps1112.ts) - generic to that
   // domain, not built around the student's specific desired career or
@@ -1226,7 +1426,9 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                   <b style={{ color: "var(--ink)" }}>Entrance exam for {selector.career.name}:</b> {selector.career.typicalEntranceExam}
                 </div>
 
-                {roadmapDomain && realisticRoadmap && (
+                {detailedRoadmap ? (
+                  <DetailedCareerRoadmapView r={detailedRoadmap} careerName={selector.career.name} color={clusterColor(selector.career.cluster)} />
+                ) : roadmapDomain && realisticRoadmap ? (
                   <div style={BREAK}>
                     <SecHead center eyebrow={`${clusterHeading(roadmapDomain)} · your best-fit domain`} title="Your realistic path"
                       sub={`The standard path into a ${clusterHeading(roadmapDomain)} career - where you are now, through to senior/leadership roles. This is the same realistic route for anyone in this domain, not built around one specific job title.`} />
@@ -1234,7 +1436,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                       <ClusterRoadmapPath phases={realisticRoadmap.phases} color={clusterColor(roadmapDomain)} />
                     </div>
                   </div>
-                )}
+                ) : null}
 
                 <div style={BREAK}>
                   <SecHead center eyebrow="Where to go next" title="Explore internships"
