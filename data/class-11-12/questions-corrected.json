@@ -504,7 +504,14 @@
             "Show others what it can do.",
             "Ask friends how they would use it."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         },
         {
           "text": "You and your friends want to start a YouTube/Instagram channel. What excites you most?",
@@ -516,7 +523,14 @@
             "Building an audience.",
             "Creating a community."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         },
         {
           "text": "You are playing a new game and keep losing at the same level. What do you do?",
@@ -528,7 +542,14 @@
             "Watch how others play it.",
             "Play with someone and learn together."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         },
         {
           "text": "A viral trend suddenly becomes popular. What are you most likely to do?",
@@ -540,7 +561,14 @@
             "Get friends involved.",
             "See what people are saying about it."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         },
         {
           "text": "Your friends ask you to plan a weekend experience. What would you naturally do?",
@@ -552,7 +580,14 @@
             "Take charge of the plan.",
             "Make sure everyone enjoys it."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         },
         {
           "text": "You are given ₹50,000 to create something for your generation. What would you do?",
@@ -564,7 +599,14 @@
             "Build something people would follow or support.",
             "Create something that brings people together."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         },
         {
           "text": "Two group members are arguing over opposing ideas for an assignment. How do you respond?",
@@ -576,7 +618,14 @@
             "Persuade both sides to compromise and decide.",
             "Listen empathetically and restore team harmony."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         },
         {
           "text": "You have a free weekend with no tests or homework. How would you prefer to spend it?",
@@ -588,7 +637,14 @@
             "Join a debate, network, or organize a student meetup.",
             "Hang out with friends, listen to stories, or help others."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         },
         {
           "text": "When making a major decision about your future stream or college path, what matters most?",
@@ -600,7 +656,14 @@
             "Leadership, status, and influence.",
             "Alignment with personal values and positive social impact."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         }
       ],
       "Set 2": [
@@ -614,7 +677,14 @@
             "Take charge, rally a team, and divide the work.",
             "Gather everyone's input to reach a group consensus."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         },
         {
           "text": "Your team has to create an exhibition stall for a major school fest. What is your first instinct?",
@@ -626,7 +696,14 @@
             "Pitch to teachers to get the best location.",
             "Assign roles so everyone is happy and comfortable."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         },
         {
           "text": "A major presentation file gets corrupted 1 hour before submission. What do you do?",
@@ -638,7 +715,14 @@
             "Talk to the teacher to get an extension.",
             "Calm down the team and split the remaining work."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         },
         {
           "text": "You have to choose between two opportunities. What influences you most?",
@@ -650,7 +734,14 @@
             "Which one lets you take responsibility.",
             "How it affects the people involved."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         },
         {
           "text": "Your teacher asks the class to improve something in school. What interests you most?",
@@ -662,7 +753,14 @@
             "Getting people behind the idea.",
             "Making it useful for everyone."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         },
         {
           "text": "When picking a topic for an independent research paper, what type appeals to you most?",
@@ -674,7 +772,14 @@
             "A social or political issue where you argue a strong view.",
             "A community topic focused on human psychology and helping people."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         },
         {
           "text": "You received a lower grade than expected on an important test. What is your immediate reaction?",
@@ -686,7 +791,14 @@
             "Speak with the teacher for feedback and extra credit.",
             "Discuss it with a friend, process emotions, and stay positive."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         },
         {
           "text": "Fast forward 5 years. What kind of daily work environment sounds best to you?",
@@ -698,7 +810,14 @@
             "A high-impact company where you lead, present, and influence.",
             "A supportive space focused on teaching, counseling, or helping."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         },
         {
           "text": "When introduced to a completely new topic or skill, how do you learn it best?",
@@ -710,7 +829,14 @@
             "Explain or teach the concept to someone else.",
             "Learn through group discussions and team exercises."
           ],
-          "mapping": ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic", "Execution & Achievement", "Influence & Leadership", "Relationship & Adaptability"]
+          "mapping": [
+            "Intellectual & Analytical",
+            "Creative & Innovative",
+            "Strategic & Futuristic",
+            "Execution & Achievement",
+            "Influence & Leadership",
+            "Relationship & Adaptability"
+          ]
         }
       ]
     }
@@ -1107,10 +1233,30 @@
             "General / Common: Languages (English/Hindi/Regional), Other"
           ],
           "expandsTo": [
-            ["Physics", "Chemistry", "Mathematics", "Biology", "Computer Science / IP / IT"],
-            ["Accountancy", "Business Studies", "Economics", "Mathematics"],
-            ["History", "Political Science", "Geography", "Psychology", "Sociology"],
-            ["Languages (English/Hindi/Regional)", "Other"]
+            [
+              "Physics",
+              "Chemistry",
+              "Mathematics",
+              "Biology",
+              "Computer Science / IP / IT"
+            ],
+            [
+              "Accountancy",
+              "Business Studies",
+              "Economics",
+              "Mathematics"
+            ],
+            [
+              "History",
+              "Political Science",
+              "Geography",
+              "Psychology",
+              "Sociology"
+            ],
+            [
+              "Languages (English/Hindi/Regional)",
+              "Other"
+            ]
           ],
           "type": "choice_single"
         },
@@ -1498,7 +1644,27 @@
             "Athletic Trainer",
             "Sports Medicine Specialist",
             "Sports Doctor",
-            "Yoga Instructor"
+            "Yoga Instructor",
+            "AI Engineer",
+            "Automation Engineer",
+            "Cloud Engineer",
+            "Construction Manager",
+            "Content Creator",
+            "Counsellor",
+            "Environmental Engineer",
+            "Event Designer",
+            "Forestry Officer",
+            "Geologist",
+            "IT Support Specialist",
+            "Media Professional",
+            "Music Producer",
+            "Paramedic",
+            "Quantity Surveyor",
+            "Sales Engineer",
+            "Science Communicator",
+            "Social Worker",
+            "Technical Trainer",
+            "Veterinarian"
           ],
           "type": "choice_single"
         },
@@ -1714,7 +1880,27 @@
             "Athletic Trainer",
             "Sports Medicine Specialist",
             "Sports Doctor",
-            "Yoga Instructor"
+            "Yoga Instructor",
+            "AI Engineer",
+            "Automation Engineer",
+            "Cloud Engineer",
+            "Construction Manager",
+            "Content Creator",
+            "Counsellor",
+            "Environmental Engineer",
+            "Event Designer",
+            "Forestry Officer",
+            "Geologist",
+            "IT Support Specialist",
+            "Media Professional",
+            "Music Producer",
+            "Paramedic",
+            "Quantity Surveyor",
+            "Sales Engineer",
+            "Science Communicator",
+            "Social Worker",
+            "Technical Trainer",
+            "Veterinarian"
           ],
           "type": "multiple",
           "instruction": "Select up to THREE."
@@ -1931,7 +2117,27 @@
             "Athletic Trainer",
             "Sports Medicine Specialist",
             "Sports Doctor",
-            "Yoga Instructor"
+            "Yoga Instructor",
+            "AI Engineer",
+            "Automation Engineer",
+            "Cloud Engineer",
+            "Construction Manager",
+            "Content Creator",
+            "Counsellor",
+            "Environmental Engineer",
+            "Event Designer",
+            "Forestry Officer",
+            "Geologist",
+            "IT Support Specialist",
+            "Media Professional",
+            "Music Producer",
+            "Paramedic",
+            "Quantity Surveyor",
+            "Sales Engineer",
+            "Science Communicator",
+            "Social Worker",
+            "Technical Trainer",
+            "Veterinarian"
           ],
           "type": "multiple",
           "instruction": "Select up to THREE."

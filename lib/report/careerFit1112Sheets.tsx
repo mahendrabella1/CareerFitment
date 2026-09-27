@@ -411,61 +411,67 @@ function YearFocusGrid({ years, color }: { years: { year: string; focus: string 
 // per section, this file's established pattern) rather than re-grouping it,
 // since that structure was already designed to read as a real journey.
 function DetailedCareerRoadmapView({ r, careerName, color }: { r: DetailedCareerRoadmap; careerName: string; color: string }) {
-  const Sec = ({ eyebrow, title, sub, children }: { eyebrow: string; title: string; sub?: string; children: React.ReactNode }) => (
-    <div style={BREAK}>
-      <SecHead center eyebrow={eyebrow} title={title} sub={sub} />
-      <div style={{ marginTop: 14 }}>{children}</div>
-    </div>
-  );
+  // Not every career's research fills every section (e.g. one entry's "UG
+  // Pathways" is genuinely blank in the source doc) - skip renders nothing
+  // rather than showing an empty heading with nothing under it.
+  const Sec = ({ eyebrow, title, sub, skip, children }: { eyebrow: string; title: string; sub?: string; skip?: boolean; children: React.ReactNode }) => {
+    if (skip) return null;
+    return (
+      <div style={BREAK}>
+        <SecHead center eyebrow={eyebrow} title={title} sub={sub} />
+        <div style={{ marginTop: 14 }}>{children}</div>
+      </div>
+    );
+  };
   return (
     <>
       <div style={BREAK}>
         <SecHead center eyebrow={`In-depth roadmap · ${careerName}`} title="Your realistic path"
           sub={r.tagline ?? `The full, step-by-step path into ${careerName} - school through to senior roles, built around this specific career, not a generic cluster.`} />
       </div>
-      <Sec eyebrow="01 · School / 11-12" title="Where to start">
+      <Sec eyebrow="01 · School / 11-12" title="Where to start" skip={!r.school.length}>
         <DetailList lines={r.school} color={color} />
       </Sec>
-      <Sec eyebrow="02 · UG pathways" title="Degrees that lead here">
+      <Sec eyebrow="02 · UG pathways" title="Degrees that lead here" skip={!r.ugPathways.length}>
         <DetailList lines={r.ugPathways} color={color} />
       </Sec>
-      <Sec eyebrow="03 · Top colleges - India" title="Where to study">
+      <Sec eyebrow="03 · Top colleges - India" title="Where to study" skip={!r.topColleges.length}>
         <DetailList lines={r.topColleges} color={color} />
       </Sec>
-      <Sec eyebrow="04 · Financial support" title="Scholarships">
+      <Sec eyebrow="04 · Financial support" title="Scholarships" skip={!r.scholarships.length}>
         <DetailList lines={r.scholarships} color={color} />
       </Sec>
-      <Sec eyebrow="05 · UG development" title="What each year should build">
+      <Sec eyebrow="05 · UG development" title="What each year should build" skip={!r.ugDevelopment.years.length && !r.ugDevelopment.notes.length}>
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <YearFocusGrid years={r.ugDevelopment.years} color={color} />
           {r.ugDevelopment.notes.length > 0 && <DetailList lines={r.ugDevelopment.notes} color={color} />}
         </div>
       </Sec>
-      <Sec eyebrow="06 · Internships" title="Where to intern">
+      <Sec eyebrow="06 · Internships" title="Where to intern" skip={!r.internships.length}>
         <DetailList lines={r.internships} color={color} />
       </Sec>
-      <Sec eyebrow="07 · After UG" title="Career pathway options">
+      <Sec eyebrow="07 · After UG" title="Career pathway options" skip={!r.afterUgPathways.length}>
         <PairedChainList lines={r.afterUgPathways} color={color} />
       </Sec>
-      <Sec eyebrow="08 · PG & specialization" title="Going further">
+      <Sec eyebrow="08 · PG & specialization" title="Going further" skip={!r.pgSpecialization.length}>
         <DetailList lines={r.pgSpecialization} color={color} />
       </Sec>
-      <Sec eyebrow="09 · Job options" title="What you could actually be hired as">
+      <Sec eyebrow="09 · Job options" title="What you could actually be hired as" skip={!r.jobOptions.length}>
         <DetailList lines={r.jobOptions} color={color} />
       </Sec>
-      <Sec eyebrow="10 · Skills & certifications" title="What to build along the way">
+      <Sec eyebrow="10 · Skills & certifications" title="What to build along the way" skip={!r.skills.length}>
         <DetailList lines={r.skills} color={color} />
       </Sec>
-      <Sec eyebrow="11 · Abroad - education" title="If you want to study abroad">
+      <Sec eyebrow="11 · Abroad - education" title="If you want to study abroad" skip={!r.abroadEducation.length}>
         <DetailList lines={r.abroadEducation} color={color} />
       </Sec>
-      <Sec eyebrow="12 · Abroad - jobs" title="If you want to work abroad">
+      <Sec eyebrow="12 · Abroad - jobs" title="If you want to work abroad" skip={!r.abroadJobs.length}>
         <DetailList lines={r.abroadJobs} color={color} />
       </Sec>
-      <Sec eyebrow="13 · Career progression" title="The long climb">
+      <Sec eyebrow="13 · Career progression" title="The long climb" skip={!r.careerProgression.length}>
         <VerticalStepChain steps={r.careerProgression} color={color} />
       </Sec>
-      <Sec eyebrow="14 · Complete roadmap" title="Start to finish, at a glance">
+      <Sec eyebrow="14 · Complete roadmap" title="Start to finish, at a glance" skip={!r.completeRoadmap.length}>
         <VerticalStepChain steps={r.completeRoadmap} color={color} />
         {r.keyDistinction && (
           <p style={{ fontSize: 12, color: "var(--ink-2)", lineHeight: 1.6, marginTop: 16, paddingTop: 14, borderTop: "1px solid var(--line-2, var(--line))" }}>
