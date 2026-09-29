@@ -18,7 +18,7 @@ import { useAuth, type ExamSession } from "@/lib/auth/AuthProvider";
 import { getFirebaseAuth } from "@/lib/firebase/client";
 import { DOMAINS_1112, careersByDomain, CAREERS_1112 } from "@/lib/report/careerfit1112";
 import { UG_DOMAINS, coursesForDegree, degreeInfo } from "@/lib/report/degreeTaxonomyGrad";
-import { ALL_JOB_ROLES_GRAD } from "@/lib/report/careerClustersGrad";
+import { CAREER_CLUSTERS_18, CLUSTER_ROLES } from "@/lib/report/careerClustersGrad";
 
 // Same canonical stream keys/order as STREAM_KEY_BY_INDEX in
 // app/api/new-assessment/score/route.ts and STREAM_DOMAIN_FIT in
@@ -45,15 +45,27 @@ const STREAM_OPTIONS: { key: string; label: string }[] = [
 ];
 
 // Graduates (UG) pre-exam picker options. The desired-career field is
-// deliberately wide and degree/stream-independent - every CAREERS_1112 name
-// (the 308-career researched set already used by Class 11-12) plus every
-// unique job role across all 18 UG career clusters (~3,300 roles from the
-// Excel source), deduplicated. A single career_selector:0 bundle-list
-// question used to gate this to 18 coarse options; a free-text field with
-// this full list as suggestions is both wider and simpler.
-const GRAD_CAREER_NAMES: string[] = Array.from(
-  new Set([...CAREERS_1112.map((c) => c.name), ...ALL_JOB_ROLES_GRAD])
-).sort((a, b) => a.localeCompare(b));
+// deliberately wide and degree/stream-independent - every unique job role
+// across all 18 UG career clusters (~3,300 roles from the Excel source),
+// grouped by cluster, plus a final "Other researched careers" group for any
+// CAREERS_1112 name (the 308-career researched set already used by Class
+// 11-12) not already covered by those cluster role lists. A plain <select>
+// with <optgroup>s, not a free-text + <datalist> field - native <datalist>
+// is unreliable at this scale across browsers (confirmed: a real entry like
+// "Software Engineer" silently failed to surface while typing), and the
+// student shouldn't have to type at all when a dropdown already works for
+// the identically-sized 11-12 career picker just above.
+const CAREER_GROUPS_GRAD: { group: string; options: string[] }[] = (() => {
+  const covered = new Set<string>();
+  const groups = CAREER_CLUSTERS_18.map((cluster) => {
+    const roles = (CLUSTER_ROLES[cluster] ?? []).slice().sort((a, b) => a.localeCompare(b));
+    roles.forEach((r) => covered.add(r));
+    return { group: cluster, options: roles };
+  });
+  const extra = CAREERS_1112.map((c) => c.name).filter((n) => !covered.has(n)).sort((a, b) => a.localeCompare(b));
+  if (extra.length) groups.push({ group: "Other researched careers", options: extra });
+  return groups;
+})();
 
 const GRAD_YEAR_OPTIONS: { key: string; label: string }[] = [
   { key: "1", label: "1st Year" },
@@ -578,17 +590,14 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
           </select>
 
           <label style={preS.label}>Which one specific career role would you most like to explore right now?</label>
-          <input
-            style={preS.select}
-            type="text"
-            list="grad-career-list"
-            placeholder="Start typing any career - e.g. AI Engineer, Chartered Accountant…"
-            value={preGradCareer}
-            onChange={(e) => setPreGradCareer(e.target.value)}
-          />
-          <datalist id="grad-career-list">
-            {GRAD_CAREER_NAMES.map((c) => <option key={c} value={c} />)}
-          </datalist>
+          <select style={preS.select} value={preGradCareer} onChange={(e) => setPreGradCareer(e.target.value)}>
+            <option value="" disabled>Select a career…</option>
+            {CAREER_GROUPS_GRAD.map((g) => (
+              <optgroup key={g.group} label={g.group}>
+                {g.options.map((c) => <option key={c} value={c}>{c}</option>)}
+              </optgroup>
+            ))}
+          </select>
 
           <button
             style={{ ...S.primary, width: "100%", marginTop: 22, ...(canContinue ? {} : S.disabled) }}
