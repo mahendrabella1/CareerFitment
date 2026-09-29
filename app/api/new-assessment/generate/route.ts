@@ -192,7 +192,7 @@ export async function POST(req: Request) {
           scaleLabel_max: (q.scaleLabel_max as string | undefined) ?? null,
         };
       })
-      .filter((q) => !(stage === "11-12" && PRE_EXAM_SKIP.has(q.id)));
+      .filter((q) => !((stage === "11-12" || stage === "ug") && PRE_EXAM_SKIP.has(q.id)));
     return {
       category: cat,
       title: CATEGORY_META[cat].title,

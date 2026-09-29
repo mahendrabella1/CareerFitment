@@ -30,6 +30,8 @@ import { C, Ring, SkillBar, RadarChart, type RadarDatum } from "@/app/account/vi
 import { adaptClass11ToSummary, isCurrentClass11Shape } from "@/lib/report/adaptClass11";
 import { buildClass11ExtraSheets } from "@/lib/report/class11ExtraSheets";
 import { buildCareerFit1112Sheets } from "@/lib/report/careerFit1112Sheets";
+import { adaptGraduateToSummary, isCurrentGraduateShape } from "@/lib/report/adaptGraduate";
+import { buildCareerFitGradSheets } from "@/lib/report/careerFitGradSheets";
 import {
   adaptClass6ToSummary, adaptClass7ToSummary, adaptClass8ToSummary,
   isCurrentClass6Shape, isCurrentClass7Shape, isCurrentClass8Shape,
@@ -292,6 +294,11 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
     const class11Ready = isClass1112 && isCurrentClass11Shape(class11Output);
     const class11Stale = isClass1112 && !!class11Output && !class11Ready;
 
+    const isGraduate = journeyCode === "grad";
+    const graduateOutput = (a as any).graduateOutput;
+    const graduateReady = isGraduate && isCurrentGraduateShape(graduateOutput);
+    const graduateStale = isGraduate && !!graduateOutput && !graduateReady;
+
     // Same staleness guard for classes 6-8: a report saved before the
     // 15-domain catalogue rebuild (see lib/report/knowledge.ts) has
     // domainAffinities scored against the OLD, differently-meaning 8-letter
@@ -317,6 +324,9 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
         ...buildCareerFit1112Sheets(class11Output, c1112Category),
         ...buildClass11ExtraSheets(class11Output),
       ];
+    } else if (graduateReady) {
+      reportSummary = adaptGraduateToSummary(graduateOutput, a);
+      reportExtraSheets = buildCareerFitGradSheets(graduateOutput);
     } else if (class6Ready) {
       reportSummary = adaptClass6ToSummary(class6Output, a);
     } else if (class7Ready) {
@@ -337,7 +347,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
           </span>
         </div>
 
-        {class11Stale || class678Stale ? (
+        {class11Stale || class678Stale || graduateStale ? (
           <div style={{ maxWidth: 560, margin: "80px auto", textAlign: "center", padding: "0 20px" }}>
             <h2 style={{ fontSize: 20, fontWeight: 800, color: "#141417", marginBottom: 10 }}>
               Your report needs a quick refresh
@@ -361,7 +371,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
             name={name}
             institution={profile?.institution || undefined}
             studentClass={profile?.category ? categoryLabel(profile.category) : undefined}
-            hideCareerFitSections={class11Ready}
+            hideCareerFitSections={class11Ready || graduateReady}
             extraSheets={[
               ...reportExtraSheets,
               ...extraSections

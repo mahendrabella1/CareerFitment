@@ -4,6 +4,7 @@ import aptitudeBank from "@/data/aptitude-questions.json";
 import strengthsBank from "@/data/strengths-questions.json";
 import clustersData from "@/data/career-clusters.json";
 import class1112Bank from "@/data/class-11-12/questions-corrected.json";
+import graduatesBank from "@/data/graduates/questions-corrected.json";
 
 export type Category =
   | "personality"
@@ -17,10 +18,20 @@ export type Category =
   | "subject_fit"
   | "career_fit"
   | "career_selector"
-  | "creativity";
+  | "creativity"
+  | "degree_fit"
+  | "career_cluster_fit";
 
 
-export type StageKey = "6-8" | "9-10" | "11-12" | "grad" | "early" | "prof";
+// "ug" (Graduates / undergraduates) is deliberately its own stage key, not
+// a reuse of "grad" - "grad" already has generic, 9-10-style question sets
+// in the SHARED assessment-questions.json/aptitude-questions.json/
+// strengths-questions.json (used today by grad/early/prof). Reusing "grad"
+// here would either collide with those or require carefully overriding
+// them; a fresh key keeps the dedicated Graduates bank (mergeGraduates()
+// below) completely separate, the same way "11-12" never touches "9-10"'s
+// shared-bank entries.
+export type StageKey = "6-8" | "9-10" | "11-12" | "ug" | "grad" | "early" | "prof";
 
 // Order shown in the exam. Cognitive sections (Aptitude, Strengths) come last so
 // students warm up on self-report first.
@@ -78,9 +89,30 @@ const ORDER_11_12: Category[] = [
   "career_selector",
 ];
 
+// Graduates order matches the source question doc's own 11 numbered
+// sections (1 Personality ... 8 Cognitive/MI, then 9 Degree & Academic
+// Fit, 10 Career Cluster Fit, 11 Career Selector) - the same core-then-
+// contextual shape as ORDER_11_12, with "degree_fit"/"career_cluster_fit"
+// as this stage's own contextual categories (its subject_fit/career_fit
+// analogs) rather than reusing 11-12's, since those are stream-specific.
+const ORDER_UG: Category[] = [
+  "personality",
+  "career_interest",
+  "aptitude",
+  "strengths",
+  "motivators",
+  "learning_styles",
+  "emotional_intelligence",
+  "multiple_intelligence",
+  "degree_fit",
+  "career_cluster_fit",
+  "career_selector",
+];
+
 export function categoryOrder(stage: StageKey): Category[] {
   if (stage === "9-10") return ORDER_9_10;
   if (stage === "11-12") return ORDER_11_12;
+  if (stage === "ug") return ORDER_UG;
   return CATEGORY_ORDER;
 }
 
@@ -97,16 +129,18 @@ export const CATEGORY_META: Record<Category, { title: string; blurb: string }> =
   subject_fit: { title: "Subject & Academic Fit", blurb: "Tell us about your current stream, subjects, and how confident you feel." },
   career_fit: { title: "Career & Stream Fit", blurb: "Understand how your current education aligns with available careers." },
   career_selector: { title: "Your Career Aspiration", blurb: "What career are you thinking about? Share your thoughts." },
+  degree_fit: { title: "Degree & Academic Fit", blurb: "Tell us how your current degree is going." },
+  career_cluster_fit: { title: "Career Cluster Fit", blurb: "Which broad career areas are you drawn to right now?" },
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type RawQ = Record<string, any>;
 type Bank = Record<string, Record<string, Record<string, RawQ[]>>>;
-const BANK: Bank = mergeClass1112({
+const BANK: Bank = mergeGraduates(mergeClass1112({
   ...(bank as unknown as Bank),
   aptitude: aptitudeBank as unknown as Bank[string],
   strengths: strengthsBank as unknown as Bank[string],
-});
+}));
 
 /**
  * Adds the "11-12" stage with actual Class 11-12 questions from the user's Excel.
@@ -116,6 +150,17 @@ function mergeClass1112(base: Bank): Bank {
   const class1112 = class1112Bank as unknown as Bank;
   const out: Bank = { ...base };
   for (const [cat, stages] of Object.entries(class1112)) {
+    out[cat] = { ...(out[cat] ?? {}), ...stages };
+  }
+  return out;
+}
+
+/** Adds the "ug" stage (Graduates) - see the StageKey comment above for why
+ *  this is a dedicated bank/stage rather than reusing "grad". */
+function mergeGraduates(base: Bank): Bank {
+  const grad = graduatesBank as unknown as Bank;
+  const out: Bank = { ...base };
+  for (const [cat, stages] of Object.entries(grad)) {
     out[cat] = { ...(out[cat] ?? {}), ...stages };
   }
   return out;
@@ -134,7 +179,7 @@ export function stageForCategory(cat: string): StageKey {
     case "class_11_12":
     case "class_11":
     case "class_12": return "11-12";
-    case "graduate": return "grad";
+    case "graduate": return "ug";
     case "early_professional": return "early";
     case "experienced_professional": return "prof";
     default: return "grad";

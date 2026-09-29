@@ -1,0 +1,6168 @@
+{
+  "domains": [
+    {
+      "name": "Engineering & Technology",
+      "degrees": [
+        "B.Tech / B.E. (Bachelor of Technology / Engineering)"
+      ]
+    },
+    {
+      "name": "Architecture, Planning & Design",
+      "degrees": [
+        "B.Arch (Bachelor of Architecture)",
+        "B.Plan (Bachelor of Planning)"
+      ]
+    },
+    {
+      "name": "Science",
+      "degrees": [
+        "B.Sc (Bachelor of Science - General / Honours)"
+      ]
+    },
+    {
+      "name": "Computer Applications",
+      "degrees": [
+        "BCA (Bachelor of Computer Applications)"
+      ]
+    },
+    {
+      "name": "Commerce",
+      "degrees": [
+        "B.Com (Bachelor of Commerce)"
+      ]
+    },
+    {
+      "name": "Management",
+      "degrees": [
+        "BBA / BMS / BBM (Bachelor of Business Administration / Management Studies)"
+      ]
+    },
+    {
+      "name": "Hospitality, Travel & Aviation",
+      "degrees": [
+        "BHM / B.Sc Hospitality & Hotel Administration / BTTM"
+      ]
+    },
+    {
+      "name": "Humanities & Social Sciences",
+      "degrees": [
+        "BA (Bachelor of Arts - General / Honours)"
+      ]
+    },
+    {
+      "name": "Media, Design & Creative Arts",
+      "degrees": [
+        "B.Des (Bachelor of Design)",
+        "BFA (Bachelor of Fine Arts)",
+        "BJMC / B.A. Journalism & Mass Communication",
+        "BPA (Bachelor of Performing Arts)"
+      ]
+    },
+    {
+      "name": "Law",
+      "degrees": [
+        "Law - LLB / BA LLB / BBA LLB / B.Com LLB / B.Sc LLB (Integrated)"
+      ]
+    },
+    {
+      "name": "Medical & Health Sciences",
+      "degrees": [
+        "MBBS (Bachelor of Medicine & Bachelor of Surgery)",
+        "BDS (Bachelor of Dental Surgery)",
+        "BAMS (Ayurveda)",
+        "BHMS (Homoeopathy)",
+        "BUMS (Unani)",
+        "BNYS (Naturopathy & Yogic Sciences)",
+        "BSMS (Siddha)",
+        "BVSc & AH (Veterinary Science & Animal Husbandry)"
+      ]
+    },
+    {
+      "name": "Pharmacy",
+      "degrees": [
+        "B.Pharm (Bachelor of Pharmacy)",
+        "Pharm.D (Doctor of Pharmacy)"
+      ]
+    },
+    {
+      "name": "Nursing & Allied Health",
+      "degrees": [
+        "B.Sc Nursing",
+        "Allied Health Sciences (B.Sc / BPT / BOT / BMLT etc.)"
+      ]
+    },
+    {
+      "name": "Education & Teacher Training",
+      "degrees": [
+        "B.Ed (Bachelor of Education)",
+        "Other Teacher Education (D.El.Ed / B.El.Ed / B.P.Ed / ITEP / Integrated B.Sc-B.Ed / BA-B.Ed)"
+      ]
+    },
+    {
+      "name": "Agriculture & Allied Sciences",
+      "degrees": [
+        "B.Sc (Hons) Agriculture and Allied"
+      ]
+    },
+    {
+      "name": "Commerce & Professional Courses",
+      "degrees": [
+        "Professional Certifications - CA / CS / CMA / ACCA / CFA / CPA-India"
+      ]
+    },
+    {
+      "name": "Skill-Based & Vocational",
+      "degrees": [
+        "B.Voc (Bachelor of Vocation) & Skill Degrees"
+      ]
+    },
+    {
+      "name": "Integrated & Dual Degree Programmes",
+      "degrees": [
+        "Integrated / Dual-Degree Programmes (BS-MS, B.Tech+M.Tech, B.Sc-M.Sc, BA-MA)"
+      ]
+    },
+    {
+      "name": "Interdisciplinary & Liberal Education",
+      "degrees": [
+        "BS (4-Year Bachelor of Science - IIT / IISc / Online & Research-oriented)",
+        "Liberal Arts / Liberal Studies (BA / B.Sc Liberal Arts & Sciences)",
+        "B.FTech / B.Des Fashion (NIFT-style) & Fashion Technology",
+        "Yoga, Wellness & Alternative Health (B.Sc/BA Yoga, Naturopathy, Sowa-Rigpa, Wellness)"
+      ]
+    },
+    {
+      "name": "Aviation, Maritime & Defence",
+      "degrees": [
+        "Aviation & Aerospace Programmes (B.Sc Aviation / CPL Integrated / AME / BBA Aviation)",
+        "Merchant Navy / Maritime Programmes (B.Sc Nautical / B.Tech Marine / GME / DNS / ETO)",
+        "Defence & Uniformed Services Entry Pathways (UG-level)"
+      ]
+    },
+    {
+      "name": "Diploma, ITI & Skill Programmes",
+      "degrees": [
+        "Diploma (Polytechnic - 10th / 12th entry)",
+        "ITI Trades (NCVT / SCVT - 10th / 12th entry)"
+      ]
+    }
+  ],
+  "degrees": {
+    "B.Tech / B.E. (Bachelor of Technology / Engineering)": {
+      "domain": "Engineering & Technology",
+      "duration": "4 years",
+      "eligibility": "10+2 with PCM",
+      "entranceExams": "JEE Main, JEE Advanced, BITSAT, VITEEE, SRMJEEE, state CETs (TS EAMCET, AP EAPCET, MHT-CET, KCET, KEAM, WBJEE, etc.)",
+      "courses": [
+        {
+          "course": "Computer Science & Engineering (CSE)",
+          "roles": [
+            "Software Engineer",
+            "Full Stack Developer",
+            "Web Developer",
+            "Frontend Developer",
+            "Backend Developer",
+            "Mobile App Developer",
+            "DevOps Engineer",
+            "QA/Test Automation Engineer",
+            "Cloud Engineer",
+            "Systems Analyst"
+          ]
+        },
+        {
+          "course": "Information Technology (IT)",
+          "roles": [
+            "Software Developer",
+            "Network Engineer",
+            "Database Administrator",
+            "IT Consultant",
+            "System Administrator",
+            "Business Analyst",
+            "Technical Support Engineer",
+            "ERP/SAP Consultant"
+          ]
+        },
+        {
+          "course": "CSE - Artificial Intelligence & Machine Learning",
+          "roles": [
+            "ML Engineer",
+            "AI Engineer",
+            "Data Scientist",
+            "NLP Engineer",
+            "Computer Vision Engineer",
+            "MLOps Engineer",
+            "Prompt/LLM Application Developer",
+            "AI Research Associate"
+          ]
+        },
+        {
+          "course": "CSE - Data Science",
+          "roles": [
+            "Data Analyst",
+            "Data Scientist",
+            "Data Engineer",
+            "BI Developer",
+            "Analytics Consultant",
+            "Big Data Engineer",
+            "Statistician"
+          ]
+        },
+        {
+          "course": "CSE - Cyber Security",
+          "roles": [
+            "Security Analyst",
+            "Ethical Hacker/Penetration Tester",
+            "SOC Analyst",
+            "Security Engineer",
+            "Digital Forensics Analyst",
+            "GRC Analyst",
+            "Cryptography Engineer"
+          ]
+        },
+        {
+          "course": "CSE - Cloud Computing",
+          "roles": [
+            "Cloud Architect",
+            "Cloud Engineer",
+            "Site Reliability Engineer",
+            "DevOps Engineer",
+            "Solutions Architect",
+            "Cloud Security Engineer"
+          ]
+        },
+        {
+          "course": "CSE - Internet of Things (IoT)",
+          "roles": [
+            "IoT Developer",
+            "Embedded Software Engineer",
+            "IoT Solutions Architect",
+            "Firmware Engineer",
+            "Edge Computing Engineer",
+            "Sensor Systems Engineer"
+          ]
+        },
+        {
+          "course": "CSE - Blockchain Technology",
+          "roles": [
+            "Blockchain Developer",
+            "Smart Contract Engineer",
+            "Web3 Developer",
+            "Blockchain Architect",
+            "Crypto Analyst"
+          ]
+        },
+        {
+          "course": "CSE - Game Development / AR-VR",
+          "roles": [
+            "Game Developer",
+            "Unity/Unreal Developer",
+            "AR/VR Developer",
+            "3D Graphics Programmer",
+            "Technical Artist"
+          ]
+        },
+        {
+          "course": "Computer Science & Business Systems (CSBS)",
+          "roles": [
+            "Business Analyst",
+            "Software Engineer",
+            "Product Analyst",
+            "Technology Consultant",
+            "Data Analyst",
+            "Associate Product Manager"
+          ]
+        },
+        {
+          "course": "Software Engineering",
+          "roles": [
+            "Software Engineer",
+            "Software Architect",
+            "Build & Release Engineer",
+            "QA Lead",
+            "Technical Lead"
+          ]
+        },
+        {
+          "course": "Electronics & Communication Engineering (ECE)",
+          "roles": [
+            "Embedded Systems Engineer",
+            "VLSI Design Engineer",
+            "Design Verification Engineer",
+            "Telecom Engineer",
+            "RF Engineer",
+            "Hardware Design Engineer",
+            "Firmware Engineer",
+            "Network Engineer"
+          ]
+        },
+        {
+          "course": "Electrical & Electronics Engineering (EEE)",
+          "roles": [
+            "Electrical Design Engineer",
+            "Power Systems Engineer",
+            "Control Systems Engineer",
+            "Substation Engineer",
+            "PLC/SCADA Engineer",
+            "Maintenance Engineer",
+            "Energy Auditor",
+            "Graduate Engineer Trainee (PSU)"
+          ]
+        },
+        {
+          "course": "Electrical Engineering",
+          "roles": [
+            "Electrical Engineer",
+            "Transmission & Distribution Engineer",
+            "Power Plant Engineer",
+            "Project Engineer",
+            "Electrical Inspector",
+            "Electric Vehicle Systems Engineer"
+          ]
+        },
+        {
+          "course": "Electronics & Instrumentation Engineering (EIE)",
+          "roles": [
+            "Instrumentation Engineer",
+            "Automation Engineer",
+            "Process Control Engineer",
+            "Calibration Engineer",
+            "PLC/DCS Engineer",
+            "Field Service Engineer"
+          ]
+        },
+        {
+          "course": "Electronics & Telecommunication Engineering (E&TC)",
+          "roles": [
+            "Telecom Engineer",
+            "Network Planning Engineer",
+            "Optical Fibre Engineer",
+            "5G/Wireless Engineer",
+            "Embedded Engineer",
+            "Signal Processing Engineer"
+          ]
+        },
+        {
+          "course": "Electronics & Computer Engineering",
+          "roles": [
+            "Embedded Software Engineer",
+            "Software Developer",
+            "IoT Engineer",
+            "Hardware Engineer",
+            "Test Engineer"
+          ]
+        },
+        {
+          "course": "Mechanical Engineering",
+          "roles": [
+            "Design Engineer",
+            "CAD/CAE Engineer",
+            "Production Engineer",
+            "Maintenance Engineer",
+            "Quality Engineer",
+            "Manufacturing Engineer",
+            "HVAC Engineer",
+            "Project Engineer",
+            "Graduate Engineer Trainee"
+          ]
+        },
+        {
+          "course": "Mechatronics Engineering",
+          "roles": [
+            "Mechatronics Engineer",
+            "Automation Engineer",
+            "Robotics Engineer",
+            "PLC Programmer",
+            "Industrial Systems Engineer",
+            "Control Engineer"
+          ]
+        },
+        {
+          "course": "Robotics & Automation Engineering",
+          "roles": [
+            "Robotics Engineer",
+            "Automation Engineer",
+            "Motion Control Engineer",
+            "Industrial Robot Programmer",
+            "AI Robotics Developer"
+          ]
+        },
+        {
+          "course": "Automobile Engineering",
+          "roles": [
+            "Automotive Design Engineer",
+            "Vehicle Testing Engineer",
+            "Powertrain Engineer",
+            "Service Engineer",
+            "EV Battery Engineer",
+            "Quality Engineer",
+            "Homologation Engineer"
+          ]
+        },
+        {
+          "course": "Aerospace / Aeronautical Engineering",
+          "roles": [
+            "Aerospace Design Engineer",
+            "Avionics Engineer",
+            "Flight Test Engineer",
+            "Aircraft Maintenance Engineer",
+            "Propulsion Engineer",
+            "Stress Analyst",
+            "Scientist/Engineer (ISRO/DRDO/HAL)"
+          ]
+        },
+        {
+          "course": "Civil Engineering",
+          "roles": [
+            "Site Engineer",
+            "Structural Engineer",
+            "Quantity Surveyor",
+            "Planning Engineer",
+            "Highways/Transportation Engineer",
+            "Geotechnical Engineer",
+            "Estimation Engineer",
+            "Project Manager",
+            "Government Engineer (PWD/Railways)"
+          ]
+        },
+        {
+          "course": "Construction Engineering & Management",
+          "roles": [
+            "Construction Manager",
+            "Project Planner",
+            "Billing Engineer",
+            "Contracts Manager",
+            "Quality Control Engineer",
+            "Safety Engineer"
+          ]
+        },
+        {
+          "course": "Chemical Engineering",
+          "roles": [
+            "Process Engineer",
+            "Production Engineer",
+            "Plant Operations Engineer",
+            "Safety Engineer",
+            "R&D Engineer",
+            "Quality Control Chemist",
+            "Environmental Engineer"
+          ]
+        },
+        {
+          "course": "Petroleum Engineering",
+          "roles": [
+            "Drilling Engineer",
+            "Reservoir Engineer",
+            "Production Engineer",
+            "Well Logging Engineer",
+            "Petroleum Geologist",
+            "Refinery Process Engineer"
+          ]
+        },
+        {
+          "course": "Petrochemical / Plastic / Polymer Engineering",
+          "roles": [
+            "Polymer Engineer",
+            "Plastics Process Engineer",
+            "Materials Engineer",
+            "Quality Engineer",
+            "R&D Engineer",
+            "Packaging Technologist"
+          ]
+        },
+        {
+          "course": "Mining Engineering",
+          "roles": [
+            "Mining Engineer",
+            "Mine Planning Engineer",
+            "Mine Safety Officer",
+            "Surveyor",
+            "Blasting Engineer",
+            "Geologist Assistant"
+          ]
+        },
+        {
+          "course": "Metallurgical & Materials Engineering",
+          "roles": [
+            "Metallurgical Engineer",
+            "Materials Engineer",
+            "Corrosion Engineer",
+            "Quality Engineer",
+            "Foundry Engineer",
+            "Failure Analysis Engineer"
+          ]
+        },
+        {
+          "course": "Ceramic Engineering",
+          "roles": [
+            "Ceramic Engineer",
+            "Refractory Engineer",
+            "Glass Technologist",
+            "Materials Scientist",
+            "Production Engineer"
+          ]
+        },
+        {
+          "course": "Biotechnology Engineering",
+          "roles": [
+            "Bioprocess Engineer",
+            "Research Associate",
+            "Quality Control Analyst",
+            "Production Officer",
+            "Regulatory Affairs Associate",
+            "Fermentation Technologist"
+          ]
+        },
+        {
+          "course": "Biomedical Engineering",
+          "roles": [
+            "Biomedical Engineer",
+            "Clinical Engineer",
+            "Medical Device Engineer",
+            "Service Engineer (Medical Equipment)",
+            "Regulatory Affairs Specialist",
+            "Rehabilitation Engineer"
+          ]
+        },
+        {
+          "course": "Genetic Engineering",
+          "roles": [
+            "Genetic Engineer",
+            "Research Associate",
+            "Molecular Biology Technician",
+            "Bioinformatics Analyst",
+            "Quality Analyst"
+          ]
+        },
+        {
+          "course": "Agricultural Engineering",
+          "roles": [
+            "Farm Machinery Engineer",
+            "Irrigation Engineer",
+            "Soil & Water Conservation Engineer",
+            "Agri-Tech Engineer",
+            "Post-Harvest Technologist",
+            "Agricultural Officer"
+          ]
+        },
+        {
+          "course": "Food Technology",
+          "roles": [
+            "Food Technologist",
+            "Quality Assurance Executive",
+            "Production Manager (Food)",
+            "R&D Executive",
+            "Food Safety Auditor",
+            "Regulatory Officer (FSSAI)"
+          ]
+        },
+        {
+          "course": "Dairy Technology",
+          "roles": [
+            "Dairy Technologist",
+            "Plant Manager (Dairy)",
+            "Quality Controller",
+            "Product Development Executive",
+            "Milk Procurement Officer"
+          ]
+        },
+        {
+          "course": "Textile Engineering / Technology",
+          "roles": [
+            "Textile Engineer",
+            "Production Manager (Textile)",
+            "Quality Controller",
+            "Merchandiser",
+            "Process Engineer",
+            "Textile Designer"
+          ]
+        },
+        {
+          "course": "Leather Technology",
+          "roles": [
+            "Leather Technologist",
+            "Production Executive",
+            "Quality Controller",
+            "Footwear Designer",
+            "Merchandiser"
+          ]
+        },
+        {
+          "course": "Printing & Packaging Technology",
+          "roles": [
+            "Packaging Technologist",
+            "Print Production Manager",
+            "Quality Controller",
+            "Prepress Specialist",
+            "Packaging Designer"
+          ]
+        },
+        {
+          "course": "Marine Engineering",
+          "roles": [
+            "Marine Engineer (Merchant Navy)",
+            "Ship Maintenance Engineer",
+            "Port Engineer",
+            "Ship Surveyor",
+            "Offshore Engineer"
+          ]
+        },
+        {
+          "course": "Naval Architecture & Ship Building",
+          "roles": [
+            "Naval Architect",
+            "Ship Designer",
+            "Ship Surveyor",
+            "Shipyard Engineer",
+            "Offshore Structure Engineer"
+          ]
+        },
+        {
+          "course": "Environmental Engineering",
+          "roles": [
+            "Environmental Engineer",
+            "Pollution Control Officer",
+            "Water Treatment Engineer",
+            "EHS Officer",
+            "Sustainability Consultant",
+            "Waste Management Engineer"
+          ]
+        },
+        {
+          "course": "Industrial & Production Engineering",
+          "roles": [
+            "Industrial Engineer",
+            "Production Planner",
+            "Lean Six Sigma Engineer",
+            "Supply Chain Analyst",
+            "Quality Engineer",
+            "Operations Executive"
+          ]
+        },
+        {
+          "course": "Industrial Engineering & Management",
+          "roles": [
+            "Operations Analyst",
+            "Industrial Engineer",
+            "Supply Chain Executive",
+            "Process Improvement Engineer",
+            "Project Coordinator"
+          ]
+        },
+        {
+          "course": "Fire Technology & Safety Engineering",
+          "roles": [
+            "Safety Officer",
+            "Fire Safety Engineer",
+            "Fire Officer",
+            "EHS Manager",
+            "Industrial Hygienist",
+            "Risk Assessor"
+          ]
+        },
+        {
+          "course": "Energy / Renewable Energy Engineering",
+          "roles": [
+            "Solar Engineer",
+            "Wind Energy Engineer",
+            "Energy Analyst",
+            "Energy Auditor",
+            "Renewable Project Engineer",
+            "EV Charging Systems Engineer"
+          ]
+        },
+        {
+          "course": "Nanotechnology",
+          "roles": [
+            "Nanotechnologist",
+            "Research Associate",
+            "Materials Scientist",
+            "Semiconductor Process Engineer",
+            "R&D Engineer"
+          ]
+        },
+        {
+          "course": "Engineering Physics",
+          "roles": [
+            "R&D Engineer",
+            "Photonics Engineer",
+            "Scientist Trainee",
+            "Data Analyst",
+            "Semiconductor Engineer"
+          ]
+        },
+        {
+          "course": "Mathematics & Computing",
+          "roles": [
+            "Data Scientist",
+            "Quantitative Analyst",
+            "Software Engineer",
+            "Cryptographer",
+            "Operations Research Analyst"
+          ]
+        },
+        {
+          "course": "Geoinformatics / Geomatics Engineering",
+          "roles": [
+            "GIS Analyst",
+            "Remote Sensing Specialist",
+            "Surveyor",
+            "Photogrammetry Engineer",
+            "Urban Data Analyst"
+          ]
+        },
+        {
+          "course": "Instrumentation & Control Engineering",
+          "roles": [
+            "Control Systems Engineer",
+            "Automation Engineer",
+            "Instrumentation Engineer",
+            "Process Control Engineer",
+            "PLC/SCADA Engineer"
+          ]
+        },
+        {
+          "course": "Space Technology / Avionics",
+          "roles": [
+            "Avionics Engineer",
+            "Satellite Systems Engineer",
+            "Ground Systems Engineer",
+            "Embedded Engineer",
+            "Launch Vehicle Engineer"
+          ]
+        },
+        {
+          "course": "CSE - Artificial Intelligence & Data Science (AI&DS)",
+          "roles": [
+            "AI Engineer",
+            "Data Scientist",
+            "ML Engineer",
+            "Data Engineer",
+            "Analytics Consultant",
+            "GenAI Application Developer"
+          ]
+        },
+        {
+          "course": "CSE - Cyber Security & IoT incl. Blockchain",
+          "roles": [
+            "Security Engineer",
+            "IoT Security Analyst",
+            "Blockchain Developer",
+            "SOC Analyst",
+            "Embedded Security Engineer"
+          ]
+        },
+        {
+          "course": "Computer Science & Design (CSD)",
+          "roles": [
+            "UI/UX Engineer",
+            "Product Designer-Developer",
+            "Frontend Engineer",
+            "Creative Technologist",
+            "Interaction Developer"
+          ]
+        },
+        {
+          "course": "Computer Engineering",
+          "roles": [
+            "Software Engineer",
+            "Systems Programmer",
+            "Embedded Developer",
+            "Network Engineer",
+            "Hardware-Software Integration Engineer"
+          ]
+        },
+        {
+          "course": "Information Science & Engineering (ISE)",
+          "roles": [
+            "Software Developer",
+            "Data Analyst",
+            "Systems Analyst",
+            "Database Engineer",
+            "IT Consultant"
+          ]
+        },
+        {
+          "course": "Computer Science & Engineering (Networks)",
+          "roles": [
+            "Network Engineer",
+            "Network Security Engineer",
+            "Cloud Network Architect",
+            "NOC Engineer",
+            "Telecom IT Engineer"
+          ]
+        },
+        {
+          "course": "Quantum Science & Engineering / Quantum Computing",
+          "roles": [
+            "Quantum Software Developer",
+            "Quantum Algorithm Researcher",
+            "Quantum Hardware Engineer",
+            "Quantum Communication Engineer",
+            "Research Associate (Quantum)"
+          ]
+        },
+        {
+          "course": "Semiconductor Technology / VLSI Design & Technology",
+          "roles": [
+            "Chip Design Engineer",
+            "Semiconductor Process Engineer",
+            "Fab Engineer",
+            "Physical Design Engineer",
+            "Design Verification Engineer",
+            "ATE/Test Engineer"
+          ]
+        },
+        {
+          "course": "Electric Vehicle Technology",
+          "roles": [
+            "EV Powertrain Engineer",
+            "Battery Management System Engineer",
+            "Charging Infrastructure Engineer",
+            "EV Design Engineer",
+            "Vehicle Software Engineer"
+          ]
+        },
+        {
+          "course": "Drone / Unmanned Aerial Systems Technology",
+          "roles": [
+            "Drone Design Engineer",
+            "UAV Systems Engineer",
+            "Drone Pilot/Operator (Remote Pilot)",
+            "Drone Data Analyst",
+            "Flight Control Software Engineer"
+          ]
+        },
+        {
+          "course": "Space Engineering / Space Technology",
+          "roles": [
+            "Satellite Systems Engineer",
+            "Launch Vehicle Engineer",
+            "Space Systems Test Engineer",
+            "Payload Engineer",
+            "Ground Segment Engineer"
+          ]
+        },
+        {
+          "course": "Agricultural Engineering with Data Analytics",
+          "roles": [
+            "AgriTech Engineer",
+            "Precision Agriculture Analyst",
+            "Remote Sensing Analyst",
+            "Farm Automation Engineer",
+            "IoT Agri Solutions Engineer"
+          ]
+        },
+        {
+          "course": "Chemical Engineering with Data Analytics",
+          "roles": [
+            "Process Data Scientist",
+            "Process Simulation Engineer",
+            "Chemical Plant Analytics Engineer",
+            "Digital Twin Engineer",
+            "R&D Engineer"
+          ]
+        },
+        {
+          "course": "Hydrogen & Fuel Cell Technology",
+          "roles": [
+            "Hydrogen Systems Engineer",
+            "Fuel Cell Engineer",
+            "Electrolyser Design Engineer",
+            "Energy Transition Analyst",
+            "Process Safety Engineer"
+          ]
+        },
+        {
+          "course": "Battery & Energy Storage Technology",
+          "roles": [
+            "Battery Design Engineer",
+            "Cell Chemistry Engineer",
+            "BMS Engineer",
+            "Energy Storage Systems Engineer",
+            "Battery Test Engineer"
+          ]
+        },
+        {
+          "course": "Smart Manufacturing / Industry 4.0",
+          "roles": [
+            "Industry 4.0 Engineer",
+            "Smart Factory Engineer",
+            "MES/SCADA Engineer",
+            "Manufacturing Data Analyst",
+            "Automation Consultant"
+          ]
+        },
+        {
+          "course": "Additive Manufacturing (3D Printing)",
+          "roles": [
+            "Additive Manufacturing Engineer",
+            "3D Printing Technician",
+            "Rapid Prototyping Engineer",
+            "Design-for-AM Specialist",
+            "Materials Engineer"
+          ]
+        },
+        {
+          "course": "Computational Engineering / Computational Science",
+          "roles": [
+            "Simulation Engineer",
+            "CFD/FEA Analyst",
+            "HPC Engineer",
+            "Scientific Software Developer",
+            "Modelling Scientist"
+          ]
+        },
+        {
+          "course": "Computational Biology / Bioinformatics Engineering",
+          "roles": [
+            "Bioinformatics Engineer",
+            "Computational Biologist",
+            "Genomics Data Analyst",
+            "Drug Discovery Data Scientist",
+            "Biotech Software Developer"
+          ]
+        },
+        {
+          "course": "Health Informatics / Medical Informatics Engineering",
+          "roles": [
+            "Health Data Analyst",
+            "Clinical Informatics Specialist",
+            "EHR Systems Engineer",
+            "Healthtech Developer",
+            "Medical Software Engineer"
+          ]
+        },
+        {
+          "course": "Big Data Analytics",
+          "roles": [
+            "Big Data Engineer",
+            "Data Pipeline Engineer",
+            "Hadoop/Spark Developer",
+            "Analytics Engineer",
+            "BI Architect"
+          ]
+        },
+        {
+          "course": "Machine Intelligence / Intelligent Systems",
+          "roles": [
+            "ML Engineer",
+            "Autonomous Systems Engineer",
+            "AI Systems Architect",
+            "Research Engineer",
+            "Decision Systems Analyst"
+          ]
+        },
+        {
+          "course": "Artificial Intelligence & Robotics",
+          "roles": [
+            "Robotics Software Engineer",
+            "AI Engineer",
+            "Autonomous Vehicle Engineer",
+            "Perception Engineer",
+            "Automation Specialist"
+          ]
+        },
+        {
+          "course": "Cyber-Physical Systems",
+          "roles": [
+            "CPS Engineer",
+            "Embedded Systems Engineer",
+            "Industrial IoT Engineer",
+            "Control Software Engineer",
+            "Systems Integration Engineer"
+          ]
+        },
+        {
+          "course": "Extended Reality (AR/VR/Metaverse)",
+          "roles": [
+            "XR Developer",
+            "Metaverse Developer",
+            "3D Interaction Designer",
+            "Unity Engineer",
+            "Simulation Developer"
+          ]
+        },
+        {
+          "course": "Sustainable / Green Engineering",
+          "roles": [
+            "Sustainability Engineer",
+            "Green Building Engineer",
+            "Carbon Accounting Analyst",
+            "Energy Efficiency Consultant",
+            "ESG Technical Analyst"
+          ]
+        },
+        {
+          "course": "Systems Engineering",
+          "roles": [
+            "Systems Engineer",
+            "Requirements Engineer",
+            "Integration Engineer",
+            "Reliability Engineer",
+            "Technical Programme Manager"
+          ]
+        },
+        {
+          "course": "Design Engineering / Engineering Design",
+          "roles": [
+            "Product Design Engineer",
+            "Design Engineer (R&D)",
+            "CAD/PLM Specialist",
+            "Prototyping Engineer",
+            "Innovation Engineer"
+          ]
+        },
+        {
+          "course": "Nuclear Engineering",
+          "roles": [
+            "Nuclear Engineer",
+            "Reactor Operations Engineer",
+            "Radiation Safety Officer",
+            "Scientific Officer (BARC/NPCIL)",
+            "Nuclear Materials Engineer"
+          ]
+        },
+        {
+          "course": "Power Engineering",
+          "roles": [
+            "Power Plant Engineer",
+            "Grid Engineer",
+            "Thermal Plant Operations Engineer",
+            "Transmission Engineer",
+            "Energy Manager"
+          ]
+        },
+        {
+          "course": "Railway Engineering / Rail Transportation",
+          "roles": [
+            "Railway Engineer (IRSE/IRSME track)",
+            "Signalling Engineer",
+            "Rolling Stock Engineer",
+            "Metro Systems Engineer",
+            "Track Design Engineer"
+          ]
+        },
+        {
+          "course": "Smart Infrastructure / Smart Cities Engineering",
+          "roles": [
+            "Smart City Engineer",
+            "Infrastructure Analyst",
+            "Urban IoT Engineer",
+            "BIM Coordinator",
+            "Utilities Planning Engineer"
+          ]
+        },
+        {
+          "course": "Water Resources / Hydrology Engineering",
+          "roles": [
+            "Hydrologist",
+            "Water Resources Engineer",
+            "Irrigation Engineer",
+            "Dam Safety Engineer",
+            "Flood Modelling Analyst"
+          ]
+        },
+        {
+          "course": "Disaster Management Engineering",
+          "roles": [
+            "Disaster Risk Analyst",
+            "Structural Resilience Engineer",
+            "Emergency Planner",
+            "Geohazard Analyst",
+            "Risk Assessment Engineer"
+          ]
+        },
+        {
+          "course": "Geological / Applied Geology Engineering",
+          "roles": [
+            "Geological Engineer",
+            "Exploration Geologist",
+            "Geotechnical Engineer",
+            "Mineral Resource Analyst",
+            "Groundwater Engineer"
+          ]
+        },
+        {
+          "course": "Ocean Engineering",
+          "roles": [
+            "Ocean Engineer",
+            "Offshore Structural Engineer",
+            "Coastal Engineer",
+            "Marine Robotics Engineer",
+            "Hydrographic Surveyor"
+          ]
+        },
+        {
+          "course": "Aircraft Maintenance Engineering (AME - DGCA)",
+          "roles": [
+            "Aircraft Maintenance Engineer (B1/B2)",
+            "Avionics Technician",
+            "Airline Line Maintenance Engineer",
+            "MRO Planning Engineer",
+            "Quality Auditor (Aviation)"
+          ]
+        },
+        {
+          "course": "Telecommunication / Wireless (5G/6G) Engineering",
+          "roles": [
+            "5G Network Engineer",
+            "RAN Engineer",
+            "Telecom Software Engineer",
+            "Optical Network Engineer",
+            "Spectrum Analyst"
+          ]
+        },
+        {
+          "course": "Optoelectronics / Photonics Engineering",
+          "roles": [
+            "Photonics Engineer",
+            "Laser Systems Engineer",
+            "Optical Design Engineer",
+            "Sensor Engineer",
+            "Fibre Optics Engineer"
+          ]
+        },
+        {
+          "course": "Micro & Nano Electronics",
+          "roles": [
+            "MEMS Engineer",
+            "Nano-Fabrication Engineer",
+            "Device Characterisation Engineer",
+            "Process Integration Engineer",
+            "R&D Engineer"
+          ]
+        },
+        {
+          "course": "Pharmaceutical Engineering",
+          "roles": [
+            "Pharma Process Engineer",
+            "Validation Engineer",
+            "Biopharma Production Engineer",
+            "Regulatory CMC Specialist",
+            "Equipment Design Engineer"
+          ]
+        },
+        {
+          "course": "Sports Engineering / Technology",
+          "roles": [
+            "Sports Equipment Designer",
+            "Biomechanics Analyst",
+            "Wearable Tech Engineer",
+            "Sports Data Analyst",
+            "Performance Technologist"
+          ]
+        },
+        {
+          "course": "Food Processing Technology",
+          "roles": [
+            "Food Process Engineer",
+            "Packaging Technologist",
+            "Cold Chain Engineer",
+            "Plant Manager (Food)",
+            "Food Safety Auditor"
+          ]
+        },
+        {
+          "course": "Pulp, Paper & Coating Technology",
+          "roles": [
+            "Paper Technologist",
+            "Process Engineer",
+            "Coating Specialist",
+            "Quality Manager",
+            "R&D Chemist"
+          ]
+        },
+        {
+          "course": "Sugar / Oil / Paint / Rubber Technology",
+          "roles": [
+            "Sugar Technologist",
+            "Oil Technologist",
+            "Paint Technologist",
+            "Rubber Technologist",
+            "Quality Control Manager"
+          ]
+        },
+        {
+          "course": "Textile & Fashion Technology",
+          "roles": [
+            "Textile Technologist",
+            "Apparel Production Manager",
+            "Fashion Technologist",
+            "Quality Manager",
+            "Sourcing Specialist"
+          ]
+        },
+        {
+          "course": "Software Product Engineering (Industry-integrated)",
+          "roles": [
+            "Product Engineer",
+            "Full Stack Developer",
+            "DevOps Engineer",
+            "Software Architect (Trainee)",
+            "QA Automation Engineer"
+          ]
+        },
+        {
+          "course": "CSE - Full Stack / DevOps / SRE (Industry-integrated)",
+          "roles": [
+            "Full Stack Developer",
+            "DevOps Engineer",
+            "SRE",
+            "Platform Engineer",
+            "Cloud Support Engineer"
+          ]
+        },
+        {
+          "course": "Green Computing / Sustainable IT",
+          "roles": [
+            "Green IT Consultant",
+            "Data Centre Efficiency Engineer",
+            "Sustainability Software Engineer",
+            "Energy-Aware Systems Developer"
+          ]
+        },
+        {
+          "course": "Human-Computer Interaction / Cognitive Computing",
+          "roles": [
+            "HCI Researcher",
+            "UX Engineer",
+            "Cognitive Systems Developer",
+            "Accessibility Engineer",
+            "Behavioural Data Analyst"
+          ]
+        },
+        {
+          "course": "Automotive Electronics / Autonomous Vehicles",
+          "roles": [
+            "ADAS Engineer",
+            "Autonomous Driving Engineer",
+            "Automotive Embedded Engineer",
+            "AUTOSAR Developer",
+            "Vehicle Network Engineer"
+          ]
+        },
+        {
+          "course": "Mechanical Engineering (Smart Mechanical / Mechatronics & Automation)",
+          "roles": [
+            "Automation Engineer",
+            "Robotics Engineer",
+            "Digital Twin Engineer",
+            "CAE Engineer",
+            "Smart Systems Designer"
+          ]
+        },
+        {
+          "course": "Digital Manufacturing & Design",
+          "roles": [
+            "Digital Manufacturing Engineer",
+            "Product Data Manager",
+            "CAM Engineer",
+            "Simulation Engineer",
+            "PLM Specialist"
+          ]
+        },
+        {
+          "course": "Biomanufacturing / Bioengineering",
+          "roles": [
+            "Bioprocess Engineer",
+            "Biomanufacturing Technician",
+            "Cell Therapy Process Engineer",
+            "Bio-QA Specialist",
+            "Tissue Engineer"
+          ]
+        },
+        {
+          "course": "Neuro-Engineering / Brain-Computer Interfaces",
+          "roles": [
+            "Neurotech Engineer",
+            "BCI Developer",
+            "Neural Signal Analyst",
+            "Biomedical Instrumentation Engineer",
+            "Research Engineer"
+          ]
+        }
+      ]
+    },
+    "B.Arch (Bachelor of Architecture)": {
+      "domain": "Architecture, Planning & Design",
+      "duration": "5 years",
+      "eligibility": "10+2 with PCM + NATA/JEE Main Paper 2",
+      "entranceExams": "NATA, JEE Main Paper 2",
+      "courses": [
+        {
+          "course": "Architecture",
+          "roles": [
+            "Architect",
+            "Urban Designer",
+            "Interior Architect",
+            "Project Architect",
+            "Conservation Architect",
+            "BIM Specialist",
+            "Government Architect"
+          ]
+        },
+        {
+          "course": "Sustainable / Green Architecture",
+          "roles": [
+            "Green Building Consultant",
+            "Sustainability Architect",
+            "Energy Modelling Specialist",
+            "LEED/GRIHA Consultant",
+            "Environmental Designer"
+          ]
+        },
+        {
+          "course": "Landscape Architecture",
+          "roles": [
+            "Landscape Architect",
+            "Site Planner",
+            "Horticulture Designer",
+            "Urban Landscape Designer",
+            "Environmental Planner"
+          ]
+        },
+        {
+          "course": "Interior Architecture & Design",
+          "roles": [
+            "Interior Architect",
+            "Space Designer",
+            "Sustainable Interior Consultant",
+            "FF&E Specialist",
+            "Design Manager"
+          ]
+        },
+        {
+          "course": "Digital Architecture / Computational Design",
+          "roles": [
+            "Computational Designer",
+            "BIM Manager",
+            "Parametric Designer",
+            "Digital Fabrication Specialist",
+            "Architectural Technologist"
+          ]
+        },
+        {
+          "course": "Heritage Conservation Architecture",
+          "roles": [
+            "Conservation Architect",
+            "Heritage Consultant",
+            "Restoration Specialist",
+            "Archaeological Survey Architect",
+            "Museum Designer"
+          ]
+        }
+      ]
+    },
+    "B.Plan (Bachelor of Planning)": {
+      "domain": "Architecture, Planning & Design",
+      "duration": "4 years",
+      "eligibility": "10+2 with Maths",
+      "entranceExams": "JEE Main Paper 2, state entrances",
+      "courses": [
+        {
+          "course": "Urban & Regional Planning",
+          "roles": [
+            "Urban Planner",
+            "Town Planner (Govt)",
+            "Regional Planner",
+            "GIS Planner",
+            "Smart City Consultant",
+            "Development Authority Officer"
+          ]
+        },
+        {
+          "course": "Housing / Transport / Environmental Planning",
+          "roles": [
+            "Transport Planner",
+            "Housing Policy Analyst",
+            "Environmental Planner",
+            "Infrastructure Consultant",
+            "Urban Researcher"
+          ]
+        },
+        {
+          "course": "Landscape / Transport / Infrastructure Planning",
+          "roles": [
+            "Transport Planner",
+            "Landscape Planner",
+            "Infrastructure Planner",
+            "GIS Planner",
+            "Urban Analyst"
+          ]
+        }
+      ]
+    },
+    "B.Sc (Bachelor of Science - General / Honours)": {
+      "domain": "Science",
+      "duration": "3 years (4 years under NEP Honours)",
+      "eligibility": "10+2 Science (stream-specific)",
+      "entranceExams": "CUET-UG, university/state entrances, merit",
+      "courses": [
+        {
+          "course": "Physics",
+          "roles": [
+            "Research Assistant",
+            "Lab Technician",
+            "Physics Teacher/Lecturer",
+            "Data Analyst",
+            "Scientist Trainee (ISRO/DRDO/BARC)",
+            "Medical Physicist (after PG)"
+          ]
+        },
+        {
+          "course": "Chemistry",
+          "roles": [
+            "Chemist",
+            "Quality Control Analyst",
+            "R&D Chemist",
+            "Lab Analyst",
+            "Chemistry Teacher",
+            "Formulation Scientist"
+          ]
+        },
+        {
+          "course": "Mathematics",
+          "roles": [
+            "Data Analyst",
+            "Actuarial Analyst",
+            "Quantitative Analyst",
+            "Statistician",
+            "Teacher/Lecturer",
+            "Banking Officer"
+          ]
+        },
+        {
+          "course": "Statistics",
+          "roles": [
+            "Statistician",
+            "Data Analyst",
+            "Biostatistician",
+            "Market Research Analyst",
+            "Survey Analyst",
+            "Actuarial Associate"
+          ]
+        },
+        {
+          "course": "Computer Science",
+          "roles": [
+            "Software Developer",
+            "Web Developer",
+            "System Administrator",
+            "Data Analyst",
+            "QA Tester",
+            "IT Support Engineer"
+          ]
+        },
+        {
+          "course": "Data Science / Analytics",
+          "roles": [
+            "Data Analyst",
+            "Junior Data Scientist",
+            "BI Analyst",
+            "Reporting Analyst",
+            "Data Engineer Trainee"
+          ]
+        },
+        {
+          "course": "Electronics",
+          "roles": [
+            "Electronics Technician",
+            "Embedded Engineer",
+            "Service Engineer",
+            "Hardware Tester",
+            "Telecom Technician"
+          ]
+        },
+        {
+          "course": "Biotechnology",
+          "roles": [
+            "Research Associate",
+            "Lab Technician",
+            "QC Analyst",
+            "Biotech Executive",
+            "Clinical Research Associate",
+            "Bioprocess Technician"
+          ]
+        },
+        {
+          "course": "Microbiology",
+          "roles": [
+            "Microbiologist",
+            "Quality Control Analyst",
+            "Food Microbiologist",
+            "Clinical Lab Technologist",
+            "Research Assistant",
+            "Pharma QA Executive"
+          ]
+        },
+        {
+          "course": "Biochemistry",
+          "roles": [
+            "Biochemist",
+            "Clinical Biochemist",
+            "Research Assistant",
+            "Quality Analyst",
+            "Lab Technologist",
+            "Pharma Executive"
+          ]
+        },
+        {
+          "course": "Zoology",
+          "roles": [
+            "Zoologist",
+            "Wildlife Researcher",
+            "Lab Technician",
+            "Fisheries Officer",
+            "Teacher",
+            "Forest Department Roles"
+          ]
+        },
+        {
+          "course": "Botany",
+          "roles": [
+            "Botanist",
+            "Plant Pathologist",
+            "Herbarium Curator",
+            "Horticulturist",
+            "Research Assistant",
+            "Forest Officer"
+          ]
+        },
+        {
+          "course": "Life Sciences / Biological Sciences",
+          "roles": [
+            "Research Assistant",
+            "Lab Analyst",
+            "Teacher/Lecturer",
+            "Clinical Research Coordinator",
+            "Science Content Writer"
+          ]
+        },
+        {
+          "course": "Genetics",
+          "roles": [
+            "Genetic Counsellor (after PG)",
+            "Lab Technologist",
+            "Research Associate",
+            "Cytogenetics Technician",
+            "Bioinformatics Assistant"
+          ]
+        },
+        {
+          "course": "Bioinformatics",
+          "roles": [
+            "Bioinformatics Analyst",
+            "Computational Biologist",
+            "Data Curator",
+            "Research Associate",
+            "Genomics Data Analyst"
+          ]
+        },
+        {
+          "course": "Environmental Science",
+          "roles": [
+            "Environmental Consultant",
+            "EHS Officer",
+            "Pollution Control Board Officer",
+            "Sustainability Analyst",
+            "Ecologist",
+            "Water Quality Analyst"
+          ]
+        },
+        {
+          "course": "Geology / Earth Science",
+          "roles": [
+            "Geologist",
+            "Hydrogeologist",
+            "Mining Geologist",
+            "Exploration Geologist",
+            "Geoscientist (ONGC/GSI after PG)",
+            "Geotechnical Analyst"
+          ]
+        },
+        {
+          "course": "Geography",
+          "roles": [
+            "GIS Analyst",
+            "Cartographer",
+            "Urban Planner Assistant",
+            "Remote Sensing Technician",
+            "Teacher",
+            "Civil Services Aspirant Roles"
+          ]
+        },
+        {
+          "course": "Meteorology / Atmospheric Science",
+          "roles": [
+            "Weather Analyst",
+            "Meteorologist (IMD after PG)",
+            "Climate Data Analyst",
+            "Aviation Weather Observer"
+          ]
+        },
+        {
+          "course": "Forensic Science",
+          "roles": [
+            "Forensic Analyst",
+            "Crime Scene Investigator",
+            "Forensic Lab Assistant",
+            "Fingerprint Expert",
+            "Cyber Forensics Assistant",
+            "Document Examiner"
+          ]
+        },
+        {
+          "course": "Agricultural Science (B.Sc General)",
+          "roles": [
+            "Agricultural Officer",
+            "Seed Technologist",
+            "Agronomy Assistant",
+            "Field Officer (Agri Inputs)",
+            "Soil Tester"
+          ]
+        },
+        {
+          "course": "Food Science & Nutrition",
+          "roles": [
+            "Food Technologist",
+            "Nutritionist",
+            "Quality Assurance Executive",
+            "Dietitian Assistant",
+            "Product Development Executive",
+            "Food Safety Officer"
+          ]
+        },
+        {
+          "course": "Nutrition & Dietetics",
+          "roles": [
+            "Dietitian",
+            "Clinical Nutritionist",
+            "Sports Nutritionist",
+            "Wellness Consultant",
+            "Diet Counsellor",
+            "Food Service Manager"
+          ]
+        },
+        {
+          "course": "Home Science",
+          "roles": [
+            "Home Science Teacher",
+            "Nutritionist",
+            "Textile Designer",
+            "Early Childhood Educator",
+            "Extension Worker",
+            "Interior Decorator"
+          ]
+        },
+        {
+          "course": "Psychology",
+          "roles": [
+            "Counsellor (Assistant)",
+            "HR Executive",
+            "Behavioural Therapist Assistant",
+            "Research Assistant",
+            "School Counsellor",
+            "Career Counsellor"
+          ]
+        },
+        {
+          "course": "Anthropology",
+          "roles": [
+            "Research Assistant",
+            "Social Researcher",
+            "NGO Program Officer",
+            "Museum Assistant",
+            "Civil Services Aspirant Roles"
+          ]
+        },
+        {
+          "course": "Applied Sciences / Industrial Chemistry",
+          "roles": [
+            "Industrial Chemist",
+            "Process Chemist",
+            "QC Chemist",
+            "Production Supervisor",
+            "R&D Assistant"
+          ]
+        },
+        {
+          "course": "Electronic Media / Multimedia",
+          "roles": [
+            "Video Editor",
+            "Multimedia Producer",
+            "Content Creator",
+            "Animator",
+            "Sound Editor"
+          ]
+        },
+        {
+          "course": "Animation & VFX",
+          "roles": [
+            "Animator",
+            "VFX Artist",
+            "Compositor",
+            "Motion Graphics Designer",
+            "Rigging Artist",
+            "Storyboard Artist"
+          ]
+        },
+        {
+          "course": "Fashion & Apparel (B.Sc)",
+          "roles": [
+            "Fashion Merchandiser",
+            "Apparel Production Executive",
+            "Quality Controller",
+            "Pattern Maker",
+            "Buyer"
+          ]
+        },
+        {
+          "course": "Sports Science",
+          "roles": [
+            "Sports Scientist",
+            "Fitness Trainer",
+            "Strength & Conditioning Coach",
+            "Sports Analyst",
+            "Wellness Coach"
+          ]
+        },
+        {
+          "course": "Aviation Science",
+          "roles": [
+            "Ground Operations Executive",
+            "Airline Customer Service",
+            "Air Traffic Assistant",
+            "Aviation Safety Officer",
+            "Cabin Crew (with training)"
+          ]
+        },
+        {
+          "course": "Nautical Science",
+          "roles": [
+            "Deck Cadet",
+            "Third Officer (Merchant Navy)",
+            "Ship Operations Executive",
+            "Port Operations Executive",
+            "Marine Surveyor (later)"
+          ]
+        },
+        {
+          "course": "Marine Biology / Fisheries Science",
+          "roles": [
+            "Fisheries Officer",
+            "Aquaculture Manager",
+            "Marine Biologist",
+            "Hatchery Manager",
+            "Research Assistant"
+          ]
+        },
+        {
+          "course": "Physiotherapy-related Basic Sciences",
+          "roles": [
+            "Lab Demonstrator",
+            "Research Assistant",
+            "Health Sciences Educator",
+            "Medical Coder",
+            "Clinical Research Coordinator"
+          ]
+        },
+        {
+          "course": "Data Science & Artificial Intelligence",
+          "roles": [
+            "AI/ML Associate",
+            "Data Scientist (Junior)",
+            "Data Analyst",
+            "Python Developer",
+            "Analytics Associate"
+          ]
+        },
+        {
+          "course": "Artificial Intelligence / Machine Learning",
+          "roles": [
+            "AI Developer",
+            "ML Engineer (Junior)",
+            "Chatbot Developer",
+            "Data Annotator Lead",
+            "Research Assistant"
+          ]
+        },
+        {
+          "course": "Cyber Security / Digital Forensics",
+          "roles": [
+            "SOC Analyst",
+            "Cyber Forensics Analyst",
+            "Security Analyst",
+            "Incident Response Associate",
+            "Network Security Executive"
+          ]
+        },
+        {
+          "course": "Cloud Computing / Big Data Analytics",
+          "roles": [
+            "Cloud Support Associate",
+            "Data Engineer (Junior)",
+            "DevOps Trainee",
+            "Big Data Analyst",
+            "System Administrator"
+          ]
+        },
+        {
+          "course": "Applied Statistics & Analytics",
+          "roles": [
+            "Data Analyst",
+            "Statistical Programmer",
+            "Survey Analyst",
+            "Market Analyst",
+            "Biostatistics Associate"
+          ]
+        },
+        {
+          "course": "Actuarial Science",
+          "roles": [
+            "Actuarial Analyst",
+            "Insurance Analyst",
+            "Risk Analyst",
+            "Pricing Analyst",
+            "Actuarial Trainee (IAI)"
+          ]
+        },
+        {
+          "course": "Quantitative Finance / Financial Mathematics",
+          "roles": [
+            "Quant Analyst (Junior)",
+            "Risk Analyst",
+            "Financial Modeller",
+            "Trading Analyst",
+            "Portfolio Analyst"
+          ]
+        },
+        {
+          "course": "Econometrics / Economics (Hons)",
+          "roles": [
+            "Economic Analyst",
+            "Research Associate",
+            "Data Analyst",
+            "Banking Analyst",
+            "Policy Assistant"
+          ]
+        },
+        {
+          "course": "Astrophysics / Astronomy / Space Science",
+          "roles": [
+            "Research Assistant",
+            "Planetarium Educator",
+            "Space Data Analyst",
+            "Scientist Trainee",
+            "Science Communicator"
+          ]
+        },
+        {
+          "course": "Materials Science / Nanoscience",
+          "roles": [
+            "Materials Technician",
+            "Nano Lab Assistant",
+            "R&D Assistant",
+            "Quality Analyst",
+            "Research Associate"
+          ]
+        },
+        {
+          "course": "Polymer Science / Industrial Chemistry",
+          "roles": [
+            "Polymer Technologist",
+            "QC Chemist",
+            "Production Chemist",
+            "Formulation Assistant",
+            "R&D Assistant"
+          ]
+        },
+        {
+          "course": "Applied Physics / Photonics / Instrumentation",
+          "roles": [
+            "Instrumentation Technician",
+            "Optics Technician",
+            "Lab Engineer",
+            "Calibration Engineer",
+            "R&D Assistant"
+          ]
+        },
+        {
+          "course": "Biophysics / Biomedical Science",
+          "roles": [
+            "Research Assistant",
+            "Clinical Lab Associate",
+            "Biomedical Technician",
+            "Diagnostics Executive",
+            "Science Writer"
+          ]
+        },
+        {
+          "course": "Medical Biotechnology / Molecular Biology / Genomics",
+          "roles": [
+            "Research Associate",
+            "Molecular Diagnostics Technician",
+            "Genomics Lab Analyst",
+            "Clinical Research Associate",
+            "QC Analyst"
+          ]
+        },
+        {
+          "course": "Neuroscience / Cognitive Science",
+          "roles": [
+            "Research Assistant",
+            "Neuro Lab Technician",
+            "UX Research Assistant",
+            "Behavioural Data Analyst",
+            "Clinical Research Coordinator"
+          ]
+        },
+        {
+          "course": "Immunology / Virology / Industrial Microbiology",
+          "roles": [
+            "Immunology Technician",
+            "Vaccine QC Analyst",
+            "Fermentation Technologist",
+            "Research Associate",
+            "Biopharma Executive"
+          ]
+        },
+        {
+          "course": "Marine Science / Oceanography",
+          "roles": [
+            "Marine Research Assistant",
+            "Oceanographic Technician",
+            "Fisheries Analyst",
+            "Coastal Zone Analyst",
+            "Environmental Surveyor"
+          ]
+        },
+        {
+          "course": "Climate Science / Climate Change Studies",
+          "roles": [
+            "Climate Data Analyst",
+            "Sustainability Associate",
+            "Carbon Analyst",
+            "Environmental Research Assistant",
+            "ESG Analyst (Junior)"
+          ]
+        },
+        {
+          "course": "Sustainability / Environmental Studies",
+          "roles": [
+            "Sustainability Executive",
+            "Environmental Consultant (Junior)",
+            "CSR Executive",
+            "Waste Management Officer",
+            "ESG Associate"
+          ]
+        },
+        {
+          "course": "Wildlife Biology / Ecology / Conservation",
+          "roles": [
+            "Wildlife Biologist (Junior)",
+            "Conservation Officer",
+            "Field Ecologist",
+            "Forest Guard",
+            "NGO Conservation Officer"
+          ]
+        },
+        {
+          "course": "Renewable Energy Science",
+          "roles": [
+            "Solar Technician",
+            "Energy Analyst",
+            "Renewable Project Assistant",
+            "Energy Auditor (Junior)",
+            "Wind Site Assessor"
+          ]
+        },
+        {
+          "course": "Remote Sensing & GIS",
+          "roles": [
+            "GIS Technician",
+            "Remote Sensing Analyst",
+            "Cartographer",
+            "Geospatial Data Assistant",
+            "Surveying Assistant"
+          ]
+        },
+        {
+          "course": "Disaster Management",
+          "roles": [
+            "Disaster Response Officer",
+            "Emergency Planner (Junior)",
+            "Risk Analyst",
+            "NGO Relief Coordinator",
+            "DMA Assistant"
+          ]
+        },
+        {
+          "course": "Fire & Industrial Safety",
+          "roles": [
+            "Safety Officer",
+            "Fire Safety Officer",
+            "EHS Executive",
+            "Industrial Hygiene Technician",
+            "Safety Auditor"
+          ]
+        },
+        {
+          "course": "Culinary Science / Bakery & Confectionery",
+          "roles": [
+            "Baker/Pastry Chef",
+            "Food Product Developer",
+            "Quality Analyst (Bakery)",
+            "Culinary Entrepreneur",
+            "Food Stylist"
+          ]
+        },
+        {
+          "course": "Hospitality Science",
+          "roles": [
+            "Front Office Associate",
+            "F&B Associate",
+            "Housekeeping Executive",
+            "Guest Relations Executive",
+            "Event Associate"
+          ]
+        },
+        {
+          "course": "Fashion Technology / Textile Science",
+          "roles": [
+            "Fashion Technologist",
+            "Textile Quality Analyst",
+            "Merchandiser",
+            "Apparel Production Executive",
+            "Sourcing Executive"
+          ]
+        },
+        {
+          "course": "Interior Design (B.Sc)",
+          "roles": [
+            "Interior Designer",
+            "Space Planner",
+            "Design Assistant",
+            "Visualiser",
+            "Site Supervisor"
+          ]
+        },
+        {
+          "course": "Visual Communication / Film Making / Cinematography",
+          "roles": [
+            "Video Editor",
+            "Cinematographer",
+            "Assistant Director",
+            "Film Editor",
+            "Content Producer"
+          ]
+        },
+        {
+          "course": "Photography / Sound Engineering",
+          "roles": [
+            "Photographer",
+            "Sound Engineer",
+            "Audio Editor",
+            "Studio Technician",
+            "Videographer"
+          ]
+        },
+        {
+          "course": "Game Design / Digital Art",
+          "roles": [
+            "Game Artist",
+            "Level Designer",
+            "3D Artist",
+            "Concept Artist",
+            "Game Tester"
+          ]
+        },
+        {
+          "course": "Digital Marketing / Social Media Analytics",
+          "roles": [
+            "Digital Marketing Executive",
+            "SEO Analyst",
+            "Social Media Analyst",
+            "Content Strategist",
+            "Performance Marketer"
+          ]
+        },
+        {
+          "course": "Clinical / Counselling / Child Psychology",
+          "roles": [
+            "Counsellor",
+            "Child Development Assistant",
+            "Behavioural Therapist Assistant",
+            "School Counsellor",
+            "Research Assistant"
+          ]
+        },
+        {
+          "course": "Sports Psychology / Sports Management",
+          "roles": [
+            "Sports Psychologist Assistant",
+            "Sports Manager",
+            "Talent Scout",
+            "Sports Marketing Executive",
+            "Fitness Consultant"
+          ]
+        },
+        {
+          "course": "Yoga / Naturopathy / Health & Wellness",
+          "roles": [
+            "Yoga Instructor",
+            "Wellness Coach",
+            "Naturopathy Assistant",
+            "Spa/Wellness Manager",
+            "Lifestyle Consultant"
+          ]
+        },
+        {
+          "course": "Human Development / Early Childhood Development",
+          "roles": [
+            "Early Childhood Educator",
+            "Child Development Officer",
+            "Anganwadi Supervisor",
+            "Family Counsellor",
+            "NGO Program Officer"
+          ]
+        },
+        {
+          "course": "Cooperative / Rural Development / Rural Studies",
+          "roles": [
+            "Rural Development Officer",
+            "Cooperative Bank Officer",
+            "NGO Program Officer",
+            "Micro-finance Executive",
+            "Extension Worker"
+          ]
+        },
+        {
+          "course": "Aviation (Hons) / Airport Ground Handling",
+          "roles": [
+            "Ground Handling Executive",
+            "Airport Operations Executive",
+            "Cargo Executive",
+            "Airline Reservation Executive",
+            "Aviation Security Officer"
+          ]
+        },
+        {
+          "course": "Merchant Navy - Maritime Science",
+          "roles": [
+            "Deck Cadet",
+            "Engine Cadet",
+            "Port Operations Executive",
+            "Ship Agent",
+            "Maritime Logistics Executive"
+          ]
+        },
+        {
+          "course": "Statistics & Computer Science / Mathematics & Computing",
+          "roles": [
+            "Data Scientist (Junior)",
+            "Software Developer",
+            "Quant Analyst",
+            "Cryptography Assistant",
+            "Analytics Associate"
+          ]
+        }
+      ]
+    },
+    "BCA (Bachelor of Computer Applications)": {
+      "domain": "Computer Applications",
+      "duration": "3 years (4 years under NEP)",
+      "eligibility": "10+2 (any stream; Maths preferred)",
+      "entranceExams": "CUET-UG, IPU CET, SET, NIMCET-prep for MCA, university entrances",
+      "courses": [
+        {
+          "course": "General BCA",
+          "roles": [
+            "Software Developer",
+            "Web Developer",
+            "Junior Programmer",
+            "IT Support Executive",
+            "Database Executive",
+            "Testing Engineer"
+          ]
+        },
+        {
+          "course": "BCA - Data Science / Analytics",
+          "roles": [
+            "Data Analyst",
+            "Junior Data Scientist",
+            "BI Executive",
+            "Python Developer",
+            "Reporting Analyst"
+          ]
+        },
+        {
+          "course": "BCA - Artificial Intelligence & ML",
+          "roles": [
+            "AI/ML Trainee",
+            "Python Developer",
+            "Data Annotation Lead",
+            "Chatbot Developer",
+            "Junior AI Engineer"
+          ]
+        },
+        {
+          "course": "BCA - Cyber Security / Ethical Hacking",
+          "roles": [
+            "Security Analyst",
+            "SOC Analyst",
+            "Network Security Executive",
+            "Penetration Tester (Junior)",
+            "Forensics Assistant"
+          ]
+        },
+        {
+          "course": "BCA - Cloud Computing / DevOps",
+          "roles": [
+            "Cloud Support Engineer",
+            "DevOps Trainee",
+            "System Administrator",
+            "Linux Administrator",
+            "AWS/Azure Associate"
+          ]
+        },
+        {
+          "course": "BCA - Mobile App / Web / Game Development",
+          "roles": [
+            "Android Developer",
+            "iOS Developer",
+            "Full Stack Developer",
+            "Game Developer",
+            "UI Developer"
+          ]
+        },
+        {
+          "course": "BCA - Digital Marketing / E-Commerce",
+          "roles": [
+            "Digital Marketing Executive",
+            "SEO Specialist",
+            "E-Commerce Executive",
+            "Social Media Manager",
+            "Web Analyst"
+          ]
+        },
+        {
+          "course": "BCA - Blockchain / Web3",
+          "roles": [
+            "Blockchain Developer (Junior)",
+            "Web3 Developer",
+            "Smart Contract Tester",
+            "Crypto Analyst",
+            "DApp Developer"
+          ]
+        },
+        {
+          "course": "BCA - IoT / Robotics",
+          "roles": [
+            "IoT Developer",
+            "Embedded Programmer",
+            "Robotics Programmer (Junior)",
+            "Automation Technician"
+          ]
+        },
+        {
+          "course": "BCA - AR/VR / Game Development",
+          "roles": [
+            "AR/VR Developer",
+            "Game Developer",
+            "Unity Programmer",
+            "3D Interaction Designer"
+          ]
+        },
+        {
+          "course": "BCA - Business Analytics / FinTech",
+          "roles": [
+            "Business Analyst (Junior)",
+            "Fintech Developer",
+            "Data Analyst",
+            "MIS Executive",
+            "Payment Systems Analyst"
+          ]
+        },
+        {
+          "course": "BCA - Multimedia & Animation / UI-UX",
+          "roles": [
+            "UI/UX Designer",
+            "Web Designer",
+            "Multimedia Developer",
+            "Graphic Designer",
+            "Front-End Developer"
+          ]
+        },
+        {
+          "course": "BCA - Software Testing / QA",
+          "roles": [
+            "QA Tester",
+            "Automation Tester",
+            "Test Engineer",
+            "Bug Analyst",
+            "Performance Tester"
+          ]
+        },
+        {
+          "course": "BCA - Full Stack Development (MERN / Java / Python)",
+          "roles": [
+            "Full Stack Developer",
+            "MERN Developer",
+            "Java Developer",
+            "Python Developer",
+            "Web App Developer"
+          ]
+        }
+      ]
+    },
+    "B.Com (Bachelor of Commerce)": {
+      "domain": "Commerce",
+      "duration": "3 years (4 years under NEP)",
+      "eligibility": "10+2 (Commerce preferred)",
+      "entranceExams": "CUET-UG, IPU CET, university entrances, merit",
+      "courses": [
+        {
+          "course": "B.Com General",
+          "roles": [
+            "Accountant",
+            "Accounts Executive",
+            "Tax Assistant",
+            "Banking Associate",
+            "Audit Assistant",
+            "Data Entry Operator",
+            "Financial Analyst (Junior)"
+          ]
+        },
+        {
+          "course": "B.Com Honours",
+          "roles": [
+            "Financial Analyst",
+            "Accountant",
+            "Audit Associate",
+            "Investment Analyst",
+            "Banking Probationary Officer"
+          ]
+        },
+        {
+          "course": "B.Com - Accounting & Finance",
+          "roles": [
+            "Accountant",
+            "Financial Analyst",
+            "Credit Analyst",
+            "Finance Executive",
+            "Audit Associate",
+            "Treasury Assistant"
+          ]
+        },
+        {
+          "course": "B.Com - Banking & Insurance",
+          "roles": [
+            "Bank Clerk/PO",
+            "Insurance Advisor",
+            "Underwriter (Junior)",
+            "Relationship Manager",
+            "Loan Officer",
+            "Claims Executive"
+          ]
+        },
+        {
+          "course": "B.Com - Taxation",
+          "roles": [
+            "GST Executive",
+            "Tax Consultant",
+            "Income Tax Assistant",
+            "Tax Analyst",
+            "Compliance Executive"
+          ]
+        },
+        {
+          "course": "B.Com - Computer Applications",
+          "roles": [
+            "Accounts Executive (Tally/ERP)",
+            "Data Analyst",
+            "ERP Executive",
+            "IT Support",
+            "Business Analyst (Junior)"
+          ]
+        },
+        {
+          "course": "B.Com - Financial Markets",
+          "roles": [
+            "Equity Research Analyst",
+            "Dealer/Trader (Junior)",
+            "Stock Broker Associate",
+            "Mutual Fund Advisor",
+            "Derivatives Analyst"
+          ]
+        },
+        {
+          "course": "B.Com - Foreign Trade / International Business",
+          "roles": [
+            "Export-Import Executive",
+            "Logistics Coordinator",
+            "Documentation Executive",
+            "Trade Analyst",
+            "Customs Executive"
+          ]
+        },
+        {
+          "course": "B.Com - E-Commerce",
+          "roles": [
+            "E-Commerce Executive",
+            "Marketplace Manager",
+            "Catalogue Specialist",
+            "Digital Operations Executive",
+            "Supply Chain Coordinator"
+          ]
+        },
+        {
+          "course": "B.Com - Logistics & Supply Chain",
+          "roles": [
+            "Logistics Executive",
+            "Supply Chain Analyst",
+            "Warehouse Manager",
+            "Procurement Executive",
+            "Freight Forwarder"
+          ]
+        },
+        {
+          "course": "B.Com - Corporate Secretaryship",
+          "roles": [
+            "Company Secretary Trainee",
+            "Compliance Executive",
+            "Legal Executive",
+            "Governance Associate",
+            "Registrar Assistant"
+          ]
+        },
+        {
+          "course": "B.Com - Accounting & Taxation (Integrated with CA/CMA/CS)",
+          "roles": [
+            "Article Assistant",
+            "Audit Associate",
+            "Cost Accountant Trainee",
+            "Company Secretary Trainee",
+            "Finance Analyst"
+          ]
+        },
+        {
+          "course": "Banking, Accounting & Finance (BAF)",
+          "roles": [
+            "Accountant",
+            "Banking Associate",
+            "Finance Executive",
+            "Audit Assistant",
+            "Financial Analyst"
+          ]
+        },
+        {
+          "course": "Financial Markets (BFM) / Banking & Insurance (BBI)",
+          "roles": [
+            "Stock Market Analyst",
+            "Dealer",
+            "Insurance Executive",
+            "Bank Officer",
+            "Wealth Advisor"
+          ]
+        },
+        {
+          "course": "B.Com - Fintech / Digital Finance",
+          "roles": [
+            "Fintech Analyst",
+            "Payments Executive",
+            "Digital Banking Associate",
+            "RegTech Analyst",
+            "Product Analyst"
+          ]
+        },
+        {
+          "course": "B.Com - Business Analytics",
+          "roles": [
+            "Business Analyst",
+            "Data Analyst",
+            "Finance Analyst",
+            "MIS Executive",
+            "Reporting Analyst"
+          ]
+        },
+        {
+          "course": "B.Com - Investment / Wealth Management",
+          "roles": [
+            "Investment Advisor",
+            "Wealth Associate",
+            "Equity Analyst",
+            "Mutual Fund Distributor",
+            "Financial Planner"
+          ]
+        },
+        {
+          "course": "B.Com - Marketing / Retail / HR",
+          "roles": [
+            "Marketing Executive",
+            "Retail Executive",
+            "HR Executive",
+            "Sales Executive",
+            "Recruiter"
+          ]
+        },
+        {
+          "course": "B.Com - Cost & Management Accounting",
+          "roles": [
+            "Cost Accountant Assistant",
+            "Costing Executive",
+            "MIS Analyst",
+            "Budget Analyst",
+            "Inventory Accountant"
+          ]
+        },
+        {
+          "course": "B.Com - Forensic Accounting / Auditing",
+          "roles": [
+            "Forensic Accounting Associate",
+            "Audit Executive",
+            "Fraud Analyst",
+            "Compliance Associate",
+            "Risk Analyst"
+          ]
+        },
+        {
+          "course": "B.Com - Actuarial / Insurance",
+          "roles": [
+            "Insurance Underwriter (Junior)",
+            "Claims Analyst",
+            "Actuarial Trainee",
+            "Policy Executive",
+            "Insurance Sales Executive"
+          ]
+        },
+        {
+          "course": "B.Com - Entrepreneurship / Startups",
+          "roles": [
+            "Startup Operations Executive",
+            "Business Development Associate",
+            "Founder/Entrepreneur",
+            "Finance Executive (Startup)"
+          ]
+        },
+        {
+          "course": "B.Com - Travel & Tourism / Aviation",
+          "roles": [
+            "Travel Consultant",
+            "Ticketing Executive",
+            "Airline Finance Associate",
+            "Tourism Executive"
+          ]
+        }
+      ]
+    },
+    "BBA / BMS / BBM (Bachelor of Business Administration / Management Studies)": {
+      "domain": "Management",
+      "duration": "3 years (4 years under NEP)",
+      "eligibility": "10+2 (any stream)",
+      "entranceExams": "IPMAT, CUET-UG, NPAT, SET, SAT, university entrances",
+      "courses": [
+        {
+          "course": "BBA General",
+          "roles": [
+            "Management Trainee",
+            "Business Development Executive",
+            "Operations Executive",
+            "HR Executive",
+            "Marketing Executive",
+            "Sales Executive"
+          ]
+        },
+        {
+          "course": "BBA - Finance",
+          "roles": [
+            "Financial Analyst",
+            "Credit Analyst",
+            "Banking Associate",
+            "Investment Analyst",
+            "Financial Planner"
+          ]
+        },
+        {
+          "course": "BBA - Marketing",
+          "roles": [
+            "Marketing Executive",
+            "Brand Executive",
+            "Sales Manager (Junior)",
+            "Market Researcher",
+            "Digital Marketer"
+          ]
+        },
+        {
+          "course": "BBA - Human Resource Management",
+          "roles": [
+            "HR Executive",
+            "Recruiter/Talent Acquisition",
+            "Payroll Executive",
+            "Training Coordinator",
+            "HR Analyst"
+          ]
+        },
+        {
+          "course": "BBA - Business Analytics",
+          "roles": [
+            "Business Analyst",
+            "Data Analyst",
+            "MIS Executive",
+            "Analytics Associate",
+            "Operations Analyst"
+          ]
+        },
+        {
+          "course": "BBA - International Business",
+          "roles": [
+            "Export Executive",
+            "Global Business Analyst",
+            "Trade Compliance Executive",
+            "Business Development Executive"
+          ]
+        },
+        {
+          "course": "BBA - Digital Marketing",
+          "roles": [
+            "SEO/SEM Executive",
+            "Social Media Manager",
+            "Content Strategist",
+            "Performance Marketer",
+            "Web Analyst"
+          ]
+        },
+        {
+          "course": "BBA - Entrepreneurship / Family Business",
+          "roles": [
+            "Entrepreneur/Founder",
+            "Business Development Manager",
+            "Startup Operations Manager",
+            "Family Business Manager"
+          ]
+        },
+        {
+          "course": "BBA - Aviation Management",
+          "roles": [
+            "Airport Operations Executive",
+            "Ground Staff",
+            "Airline Customer Service",
+            "Aviation Logistics Executive",
+            "Cargo Executive"
+          ]
+        },
+        {
+          "course": "BBA - Hospital / Healthcare Management",
+          "roles": [
+            "Hospital Administrator",
+            "Healthcare Operations Executive",
+            "Patient Relations Officer",
+            "Medical Insurance Coordinator"
+          ]
+        },
+        {
+          "course": "BBA - Logistics & Supply Chain",
+          "roles": [
+            "Supply Chain Executive",
+            "Logistics Coordinator",
+            "Procurement Executive",
+            "Inventory Planner",
+            "Warehouse Supervisor"
+          ]
+        },
+        {
+          "course": "BBA - Retail Management",
+          "roles": [
+            "Store Manager",
+            "Retail Operations Executive",
+            "Category Executive",
+            "Visual Merchandiser",
+            "Buyer"
+          ]
+        },
+        {
+          "course": "BBA - Sports / Event / Media Management",
+          "roles": [
+            "Event Manager",
+            "Sports Marketing Executive",
+            "Media Planner",
+            "Talent Manager",
+            "Brand Activation Executive"
+          ]
+        },
+        {
+          "course": "Integrated Programme in Management (IPM - BBA+MBA)",
+          "roles": [
+            "Management Consultant (after MBA stage)",
+            "Product Manager",
+            "Business Analyst",
+            "Investment Banking Analyst",
+            "Marketing Manager"
+          ]
+        },
+        {
+          "course": "BBA - Fintech",
+          "roles": [
+            "Fintech Associate",
+            "Credit Analyst",
+            "Payments Analyst",
+            "Digital Banking Executive",
+            "Product Analyst"
+          ]
+        },
+        {
+          "course": "BBA - Data Science & AI for Business",
+          "roles": [
+            "Business Analyst",
+            "Data Analyst",
+            "AI Product Associate",
+            "Analytics Executive",
+            "MIS Analyst"
+          ]
+        },
+        {
+          "course": "BBA - Digital Business / E-Commerce / Social Media",
+          "roles": [
+            "Digital Business Executive",
+            "E-Commerce Manager (Junior)",
+            "Community Manager",
+            "Growth Executive",
+            "Marketplace Analyst"
+          ]
+        },
+        {
+          "course": "BBA - Banking & Insurance",
+          "roles": [
+            "Bank Officer",
+            "Insurance Executive",
+            "Loan Officer",
+            "Relationship Executive",
+            "Claims Executive"
+          ]
+        },
+        {
+          "course": "BBA - Sports Management",
+          "roles": [
+            "Sports Manager",
+            "Team Operations Executive",
+            "Sports Marketing Executive",
+            "League Coordinator",
+            "Athlete Manager"
+          ]
+        },
+        {
+          "course": "BBA - Innovation & Design Thinking",
+          "roles": [
+            "Innovation Associate",
+            "Product Executive",
+            "Startup Associate",
+            "Design Strategist (Junior)",
+            "Business Development Executive"
+          ]
+        },
+        {
+          "course": "BBA - Luxury / Fashion / Brand Management",
+          "roles": [
+            "Brand Executive",
+            "Luxury Retail Executive",
+            "Fashion Marketing Executive",
+            "Buyer",
+            "Visual Merchandiser"
+          ]
+        },
+        {
+          "course": "BBA - Event / Media / Film Business",
+          "roles": [
+            "Event Executive",
+            "Media Buyer",
+            "Production Executive",
+            "Talent Coordinator",
+            "Content Marketing Executive"
+          ]
+        },
+        {
+          "course": "BBA - Real Estate / Construction Management",
+          "roles": [
+            "Real Estate Executive",
+            "Sales Manager (Property)",
+            "Project Coordinator",
+            "Property Analyst",
+            "Site Admin"
+          ]
+        },
+        {
+          "course": "BBA - Cooperative / Agri / Rural Management",
+          "roles": [
+            "Agri Business Executive",
+            "Cooperative Officer",
+            "Rural Marketing Executive",
+            "Micro-finance Officer"
+          ]
+        },
+        {
+          "course": "BBA - Sustainability / ESG",
+          "roles": [
+            "ESG Analyst",
+            "Sustainability Executive",
+            "CSR Executive",
+            "Green Business Associate"
+          ]
+        },
+        {
+          "course": "BBA - Public Policy / Political Management",
+          "roles": [
+            "Policy Analyst",
+            "Campaign Manager (Junior)",
+            "Political Consultant",
+            "Government Affairs Executive"
+          ]
+        }
+      ]
+    },
+    "BHM / B.Sc Hospitality & Hotel Administration / BTTM": {
+      "domain": "Hospitality, Travel & Aviation",
+      "duration": "3-4 years",
+      "eligibility": "10+2 (any stream)",
+      "entranceExams": "NCHM JEE, university/institute entrances",
+      "courses": [
+        {
+          "course": "Hotel Management / Hospitality Administration",
+          "roles": [
+            "Front Office Executive",
+            "Chef/Commis",
+            "F&B Service Executive",
+            "Housekeeping Supervisor",
+            "Hotel Manager Trainee",
+            "Guest Relations Executive"
+          ]
+        },
+        {
+          "course": "Culinary Arts",
+          "roles": [
+            "Chef de Partie",
+            "Sous Chef",
+            "Pastry Chef",
+            "Food Stylist",
+            "Cruise Ship Chef",
+            "Food Entrepreneur"
+          ]
+        },
+        {
+          "course": "Tourism & Travel Management",
+          "roles": [
+            "Travel Consultant",
+            "Tour Operator",
+            "Destination Manager",
+            "Airline Ticketing Executive",
+            "Travel Blogger/Content Creator"
+          ]
+        },
+        {
+          "course": "Event Management",
+          "roles": [
+            "Event Coordinator",
+            "Wedding Planner",
+            "Exhibition Manager",
+            "Conference Organizer",
+            "Brand Activation Manager"
+          ]
+        },
+        {
+          "course": "Airline & Airport Management",
+          "roles": [
+            "Cabin Crew",
+            "Ground Staff",
+            "Airport Operations Officer",
+            "Customer Service Executive",
+            "Cargo Handling Executive"
+          ]
+        }
+      ]
+    },
+    "BA (Bachelor of Arts - General / Honours)": {
+      "domain": "Humanities & Social Sciences",
+      "duration": "3 years (4 years under NEP)",
+      "eligibility": "10+2 (any stream)",
+      "entranceExams": "CUET-UG, university entrances, merit",
+      "courses": [
+        {
+          "course": "English Literature",
+          "roles": [
+            "Content Writer",
+            "Editor",
+            "Copywriter",
+            "Teacher/Lecturer",
+            "Journalist",
+            "Technical Writer",
+            "Translator"
+          ]
+        },
+        {
+          "course": "Hindi / Regional Languages (Telugu, Tamil, Kannada, Malayalam, Marathi, Bengali, Gujarati, Punjabi, Odia, Urdu, etc.)",
+          "roles": [
+            "Teacher/Lecturer",
+            "Translator",
+            "Content Writer",
+            "Editor",
+            "Radio Jockey",
+            "Government Language Officer"
+          ]
+        },
+        {
+          "course": "Sanskrit",
+          "roles": [
+            "Sanskrit Teacher/Lecturer",
+            "Researcher",
+            "Translator",
+            "Manuscript Curator",
+            "Vedic Studies Scholar",
+            "Archaeology Assistant"
+          ]
+        },
+        {
+          "course": "Foreign Languages (French, German, Spanish, Japanese, Korean, Chinese, Arabic)",
+          "roles": [
+            "Interpreter/Translator",
+            "Language Trainer",
+            "Localization Specialist",
+            "BPO Language Support",
+            "Embassy/Consulate Roles",
+            "Tour Guide"
+          ]
+        },
+        {
+          "course": "History",
+          "roles": [
+            "Teacher/Lecturer",
+            "Archaeologist (after PG)",
+            "Museum Curator",
+            "Archivist",
+            "Civil Services Aspirant",
+            "Heritage Consultant"
+          ]
+        },
+        {
+          "course": "Political Science",
+          "roles": [
+            "Civil Services Aspirant",
+            "Policy Analyst",
+            "Political Consultant",
+            "Research Associate",
+            "Journalist",
+            "NGO Program Officer"
+          ]
+        },
+        {
+          "course": "Economics",
+          "roles": [
+            "Economist (Junior)",
+            "Research Analyst",
+            "Banking Associate",
+            "Data Analyst",
+            "Policy Researcher",
+            "Financial Analyst"
+          ]
+        },
+        {
+          "course": "Sociology",
+          "roles": [
+            "Social Researcher",
+            "NGO Program Manager",
+            "HR Executive",
+            "Community Development Officer",
+            "Policy Analyst"
+          ]
+        },
+        {
+          "course": "Psychology (BA)",
+          "roles": [
+            "Counsellor",
+            "HR Executive",
+            "Research Assistant",
+            "School Counsellor",
+            "Behavioural Analyst"
+          ]
+        },
+        {
+          "course": "Philosophy",
+          "roles": [
+            "Teacher/Lecturer",
+            "Writer/Editor",
+            "Ethics Consultant",
+            "Researcher",
+            "Civil Services Aspirant"
+          ]
+        },
+        {
+          "course": "Public Administration",
+          "roles": [
+            "Civil Services Aspirant",
+            "Government Clerk/Officer",
+            "Policy Analyst",
+            "NGO Manager",
+            "Municipal Officer"
+          ]
+        },
+        {
+          "course": "Geography (BA)",
+          "roles": [
+            "GIS Analyst",
+            "Cartographer",
+            "Teacher",
+            "Planning Assistant",
+            "Civil Services Aspirant"
+          ]
+        },
+        {
+          "course": "Journalism & Mass Communication (BA)",
+          "roles": [
+            "Reporter",
+            "Content Writer",
+            "News Anchor",
+            "PR Executive",
+            "Video Producer",
+            "Social Media Manager"
+          ]
+        },
+        {
+          "course": "Education (BA)",
+          "roles": [
+            "Teacher",
+            "Education Counsellor",
+            "Curriculum Assistant",
+            "Learning Content Developer",
+            "Academic Coordinator"
+          ]
+        },
+        {
+          "course": "Music (Vocal / Instrumental)",
+          "roles": [
+            "Music Teacher",
+            "Playback/Live Performer",
+            "Music Composer",
+            "Sound Assistant",
+            "Radio Artist"
+          ]
+        },
+        {
+          "course": "Dance / Theatre / Performing Arts",
+          "roles": [
+            "Performer",
+            "Choreographer",
+            "Theatre Artist",
+            "Drama Teacher",
+            "Casting Assistant"
+          ]
+        },
+        {
+          "course": "Fine Arts (BA)",
+          "roles": [
+            "Artist",
+            "Art Teacher",
+            "Illustrator",
+            "Gallery Assistant",
+            "Art Restorer"
+          ]
+        },
+        {
+          "course": "Library & Information Science (BLIS/B.Lib)",
+          "roles": [
+            "Librarian",
+            "Library Assistant",
+            "Information Officer",
+            "Digital Archivist",
+            "Documentation Officer"
+          ]
+        },
+        {
+          "course": "Criminology & Police Administration",
+          "roles": [
+            "Police/Security Officer",
+            "Investigator",
+            "Forensic Assistant",
+            "Corrections Officer",
+            "Crime Analyst"
+          ]
+        },
+        {
+          "course": "Defence & Strategic Studies",
+          "roles": [
+            "Defence Services Aspirant",
+            "Security Analyst",
+            "Policy Researcher",
+            "Civil Services Aspirant",
+            "Intelligence Analyst (via exams)"
+          ]
+        },
+        {
+          "course": "Social Work (BSW)",
+          "roles": [
+            "Social Worker",
+            "NGO Program Officer",
+            "Community Organizer",
+            "Child Welfare Officer",
+            "CSR Executive",
+            "Healthcare Social Worker"
+          ]
+        },
+        {
+          "course": "Theology / Religious Studies",
+          "roles": [
+            "Religious Educator",
+            "Chaplain/Priest",
+            "Researcher",
+            "Community Leader",
+            "Interfaith Program Officer"
+          ]
+        },
+        {
+          "course": "Linguistics",
+          "roles": [
+            "Language Analyst",
+            "Localization Specialist",
+            "NLP Data Annotator",
+            "Translator",
+            "Speech Language Researcher"
+          ]
+        },
+        {
+          "course": "Home Science (BA)",
+          "roles": [
+            "Nutrition Assistant",
+            "Early Childhood Educator",
+            "Textile Designer",
+            "Family Counsellor",
+            "Extension Officer"
+          ]
+        },
+        {
+          "course": "Rural Development / Women's Studies / Gender Studies",
+          "roles": [
+            "Rural Development Officer",
+            "NGO Project Coordinator",
+            "Gender Researcher",
+            "Policy Analyst",
+            "CSR Executive"
+          ]
+        },
+        {
+          "course": "Ancient Indian History, Culture & Archaeology",
+          "roles": [
+            "Archaeology Assistant",
+            "Museum Assistant",
+            "Heritage Guide",
+            "Epigraphy Assistant",
+            "Civil Services Aspirant"
+          ]
+        },
+        {
+          "course": "Museology / Heritage Management",
+          "roles": [
+            "Museum Curator (Junior)",
+            "Heritage Manager",
+            "Conservation Assistant",
+            "Exhibition Coordinator",
+            "Archivist"
+          ]
+        },
+        {
+          "course": "Buddhist / Islamic / Christian / Jain / Comparative Religion Studies",
+          "roles": [
+            "Religious Studies Teacher",
+            "Researcher",
+            "Interfaith Officer",
+            "Cultural Program Officer",
+            "Translator"
+          ]
+        },
+        {
+          "course": "Vedic Studies / Indology / Yoga Philosophy / Jyotisha",
+          "roles": [
+            "Vedic Teacher",
+            "Indology Researcher",
+            "Yoga Philosopher",
+            "Jyotisha Consultant",
+            "Cultural Officer"
+          ]
+        },
+        {
+          "course": "Peace & Conflict Studies / Human Rights",
+          "roles": [
+            "Human Rights Associate",
+            "NGO Officer",
+            "Conflict Analyst",
+            "Advocacy Officer",
+            "UN Volunteer"
+          ]
+        },
+        {
+          "course": "International Studies / Diplomacy",
+          "roles": [
+            "Foreign Affairs Aspirant",
+            "Research Analyst",
+            "Embassy Support Executive",
+            "International Relations Executive",
+            "Journalist"
+          ]
+        },
+        {
+          "course": "Applied Economics / Financial Economics",
+          "roles": [
+            "Economic Analyst",
+            "Banking Executive",
+            "Policy Analyst",
+            "Research Associate",
+            "Market Analyst"
+          ]
+        },
+        {
+          "course": "Environmental Studies / Ecology",
+          "roles": [
+            "Environmental Educator",
+            "Sustainability Executive",
+            "NGO Program Officer",
+            "Environmental Researcher",
+            "Eco-tourism Guide"
+          ]
+        },
+        {
+          "course": "Tribal Studies / Regional Studies / Area Studies",
+          "roles": [
+            "Tribal Welfare Officer",
+            "Field Researcher",
+            "Development Officer",
+            "NGO Program Officer"
+          ]
+        },
+        {
+          "course": "Digital Humanities / Cultural Studies",
+          "roles": [
+            "Digital Archivist",
+            "Content Curator",
+            "Cultural Researcher",
+            "Editor",
+            "Media Analyst"
+          ]
+        },
+        {
+          "course": "Creative Writing / Film Studies / Screenwriting",
+          "roles": [
+            "Screenwriter",
+            "Content Writer",
+            "Story Analyst",
+            "Script Editor",
+            "Film Critic"
+          ]
+        },
+        {
+          "course": "Media & Communication / Digital Media / Podcasting",
+          "roles": [
+            "Content Creator",
+            "Podcast Producer",
+            "Social Media Manager",
+            "Digital Editor",
+            "Media Planner"
+          ]
+        },
+        {
+          "course": "Advertising / Public Relations / Event Management (BA)",
+          "roles": [
+            "Copywriter",
+            "PR Executive",
+            "Event Executive",
+            "Brand Executive",
+            "Creative Associate"
+          ]
+        },
+        {
+          "course": "Translation & Interpretation (German / French / Japanese / Korean / Chinese / Arabic)",
+          "roles": [
+            "Translator",
+            "Interpreter",
+            "Localization Specialist",
+            "Embassy Roles",
+            "Language Trainer"
+          ]
+        },
+        {
+          "course": "Tourism & Hospitality Studies (BA)",
+          "roles": [
+            "Tour Guide",
+            "Travel Executive",
+            "Heritage Tour Manager",
+            "Hotel Front Desk",
+            "Destination Marketer"
+          ]
+        },
+        {
+          "course": "Applied Psychology / Counselling / Neuropsychology",
+          "roles": [
+            "Counsellor",
+            "Behavioural Trainer",
+            "HR Executive",
+            "Research Assistant",
+            "NGO Counsellor"
+          ]
+        },
+        {
+          "course": "Geography & Environmental Planning",
+          "roles": [
+            "GIS Assistant",
+            "Planner Assistant",
+            "Environment Officer",
+            "Cartographer",
+            "Teacher"
+          ]
+        },
+        {
+          "course": "Sports Studies / Physical Education (BA)",
+          "roles": [
+            "Sports Coach",
+            "PE Teacher",
+            "Sports Administrator",
+            "Fitness Trainer",
+            "Sports Journalist"
+          ]
+        },
+        {
+          "course": "Political Economy / Public Policy / Governance",
+          "roles": [
+            "Policy Analyst",
+            "Civil Services Aspirant",
+            "Think-tank Research Assistant",
+            "Government Affairs Executive",
+            "NGO Officer"
+          ]
+        },
+        {
+          "course": "Social Entrepreneurship / Development Communication",
+          "roles": [
+            "Social Entrepreneur",
+            "Development Communication Executive",
+            "CSR Executive",
+            "NGO Program Officer",
+            "Community Media Producer"
+          ]
+        }
+      ]
+    },
+    "B.Des (Bachelor of Design)": {
+      "domain": "Media, Design & Creative Arts",
+      "duration": "4 years",
+      "eligibility": "10+2 (any stream)",
+      "entranceExams": "UCEED, NID DAT, NIFT, CEED-prep, Symbiosis SET, institute entrances",
+      "courses": [
+        {
+          "course": "Product / Industrial Design",
+          "roles": [
+            "Product Designer",
+            "Industrial Designer",
+            "CAD Designer",
+            "Design Researcher",
+            "Packaging Designer"
+          ]
+        },
+        {
+          "course": "Communication / Graphic Design",
+          "roles": [
+            "Graphic Designer",
+            "Visual Designer",
+            "Brand Designer",
+            "Art Director",
+            "Motion Graphics Designer",
+            "Illustrator"
+          ]
+        },
+        {
+          "course": "UI/UX & Interaction Design",
+          "roles": [
+            "UI Designer",
+            "UX Designer",
+            "UX Researcher",
+            "Interaction Designer",
+            "Product Designer (Digital)"
+          ]
+        },
+        {
+          "course": "Fashion Design",
+          "roles": [
+            "Fashion Designer",
+            "Apparel Designer",
+            "Stylist",
+            "Pattern Maker",
+            "Fashion Merchandiser",
+            "Costume Designer"
+          ]
+        },
+        {
+          "course": "Textile Design",
+          "roles": [
+            "Textile Designer",
+            "Surface Pattern Designer",
+            "Weave Designer",
+            "Print Designer",
+            "Fabric Sourcing Specialist"
+          ]
+        },
+        {
+          "course": "Interior Design",
+          "roles": [
+            "Interior Designer",
+            "Space Planner",
+            "Set/Exhibition Designer",
+            "Furniture Designer",
+            "Design Consultant"
+          ]
+        },
+        {
+          "course": "Animation & Game Design",
+          "roles": [
+            "Animator",
+            "Game Designer",
+            "Level Designer",
+            "Concept Artist",
+            "3D Modeller",
+            "VFX Artist"
+          ]
+        },
+        {
+          "course": "Jewellery / Accessory Design",
+          "roles": [
+            "Jewellery Designer",
+            "CAD Jewellery Modeller",
+            "Accessory Designer",
+            "Gemologist (with training)",
+            "Retail Designer"
+          ]
+        },
+        {
+          "course": "Film & Video Communication",
+          "roles": [
+            "Video Editor",
+            "Cinematographer",
+            "Film Director (Assistant)",
+            "Sound Designer",
+            "Content Producer"
+          ]
+        },
+        {
+          "course": "Game Design / Games Art",
+          "roles": [
+            "Game Designer",
+            "Game Artist",
+            "Level Designer",
+            "Narrative Designer",
+            "Technical Artist"
+          ]
+        },
+        {
+          "course": "Transportation / Automobile Design",
+          "roles": [
+            "Automobile Designer",
+            "Clay Modeller",
+            "Vehicle Interior Designer",
+            "CMF Designer",
+            "Concept Designer"
+          ]
+        },
+        {
+          "course": "Design for Social Innovation / Sustainable Design",
+          "roles": [
+            "Service Designer",
+            "Social Innovation Designer",
+            "Sustainability Designer",
+            "Design Researcher",
+            "Impact Consultant"
+          ]
+        },
+        {
+          "course": "Toy & Game Design",
+          "roles": [
+            "Toy Designer",
+            "Product Designer",
+            "Game Designer",
+            "Play Researcher",
+            "Packaging Designer"
+          ]
+        },
+        {
+          "course": "Ceramic & Glass Design",
+          "roles": [
+            "Ceramic Designer",
+            "Glass Artist",
+            "Studio Potter",
+            "Product Designer",
+            "Craft Entrepreneur"
+          ]
+        },
+        {
+          "course": "Lifestyle / Accessory / Footwear / Leather Design",
+          "roles": [
+            "Footwear Designer",
+            "Accessory Designer",
+            "Leather Product Designer",
+            "Lifestyle Product Designer",
+            "Trend Forecaster"
+          ]
+        },
+        {
+          "course": "Exhibition / Retail / Spatial Design",
+          "roles": [
+            "Exhibition Designer",
+            "Retail Space Designer",
+            "Set Designer",
+            "Experience Designer",
+            "Visual Merchandiser"
+          ]
+        },
+        {
+          "course": "Healthcare / Medical Product Design",
+          "roles": [
+            "Medical Product Designer",
+            "Healthcare UX Designer",
+            "Design Researcher",
+            "Assistive Product Designer"
+          ]
+        },
+        {
+          "course": "Data Visualisation / Information Design",
+          "roles": [
+            "Data Visualisation Designer",
+            "Information Designer",
+            "Infographic Designer",
+            "Dashboard Designer",
+            "Design Analyst"
+          ]
+        },
+        {
+          "course": "Motion / Animation / VFX Design",
+          "roles": [
+            "Motion Designer",
+            "3D Animator",
+            "VFX Artist",
+            "Compositor",
+            "Title Designer"
+          ]
+        }
+      ]
+    },
+    "BFA (Bachelor of Fine Arts)": {
+      "domain": "Media, Design & Creative Arts",
+      "duration": "4 years",
+      "eligibility": "10+2 (any stream) + portfolio/entrance",
+      "entranceExams": "University/college entrance, portfolio review",
+      "courses": [
+        {
+          "course": "Painting",
+          "roles": [
+            "Painter/Artist",
+            "Art Teacher",
+            "Illustrator",
+            "Muralist",
+            "Art Curator",
+            "Gallery Manager"
+          ]
+        },
+        {
+          "course": "Sculpture",
+          "roles": [
+            "Sculptor",
+            "Art Teacher",
+            "Public Art Designer",
+            "Set Designer",
+            "Restoration Assistant"
+          ]
+        },
+        {
+          "course": "Applied Art / Visual Communication",
+          "roles": [
+            "Graphic Designer",
+            "Illustrator",
+            "Art Director",
+            "Advertising Designer",
+            "Layout Artist"
+          ]
+        },
+        {
+          "course": "Photography",
+          "roles": [
+            "Photographer",
+            "Photojournalist",
+            "Fashion Photographer",
+            "Photo Editor",
+            "Videographer"
+          ]
+        },
+        {
+          "course": "Print Making",
+          "roles": [
+            "Printmaker",
+            "Art Teacher",
+            "Illustrator",
+            "Book Designer",
+            "Studio Artist"
+          ]
+        },
+        {
+          "course": "Art History & Aesthetics",
+          "roles": [
+            "Art Historian",
+            "Museum Curator",
+            "Art Critic",
+            "Gallery Assistant",
+            "Heritage Researcher"
+          ]
+        },
+        {
+          "course": "Ceramics / Craft / Textile Arts",
+          "roles": [
+            "Ceramic Artist",
+            "Craft Designer",
+            "Textile Artist",
+            "Studio Entrepreneur",
+            "Art Teacher"
+          ]
+        },
+        {
+          "course": "Digital Art / New Media Art",
+          "roles": [
+            "Digital Artist",
+            "NFT/Digital Collectibles Artist",
+            "Illustrator",
+            "Motion Artist",
+            "Concept Artist"
+          ]
+        },
+        {
+          "course": "Visual Arts - Illustration / Comics / Graphic Novels",
+          "roles": [
+            "Illustrator",
+            "Comic Artist",
+            "Storyboard Artist",
+            "Children's Book Illustrator",
+            "Concept Artist"
+          ]
+        },
+        {
+          "course": "Art Direction / Set & Costume Design",
+          "roles": [
+            "Art Director",
+            "Set Designer",
+            "Costume Designer",
+            "Production Designer",
+            "Props Master"
+          ]
+        }
+      ]
+    },
+    "BJMC / B.A. Journalism & Mass Communication": {
+      "domain": "Media, Design & Creative Arts",
+      "duration": "3 years",
+      "eligibility": "10+2 (any stream)",
+      "entranceExams": "CUET-UG, IIMC entrance, university entrances",
+      "courses": [
+        {
+          "course": "Print & Digital Journalism",
+          "roles": [
+            "Reporter",
+            "Sub-Editor",
+            "Content Writer",
+            "Digital Journalist",
+            "Correspondent",
+            "Fact-Checker"
+          ]
+        },
+        {
+          "course": "Television & Broadcast Journalism",
+          "roles": [
+            "News Anchor",
+            "TV Reporter",
+            "Video Journalist",
+            "Producer",
+            "Camera Assistant",
+            "News Editor"
+          ]
+        },
+        {
+          "course": "Public Relations & Corporate Communication",
+          "roles": [
+            "PR Executive",
+            "Corporate Communications Executive",
+            "Media Relations Manager",
+            "Spokesperson",
+            "Brand Communication Specialist"
+          ]
+        },
+        {
+          "course": "Advertising & Marketing Communication",
+          "roles": [
+            "Copywriter",
+            "Account Executive",
+            "Creative Strategist",
+            "Media Planner",
+            "Brand Executive"
+          ]
+        },
+        {
+          "course": "Radio / Film / Media Studies",
+          "roles": [
+            "Radio Jockey",
+            "Scriptwriter",
+            "Film Editor",
+            "Assistant Director",
+            "Production Coordinator",
+            "Content Producer"
+          ]
+        },
+        {
+          "course": "New Media / Digital Media",
+          "roles": [
+            "Social Media Manager",
+            "Content Creator",
+            "Digital Content Strategist",
+            "Podcast Producer",
+            "Video Editor"
+          ]
+        },
+        {
+          "course": "Data Journalism / Fact-Checking",
+          "roles": [
+            "Data Journalist",
+            "Fact-Checker",
+            "Investigative Researcher",
+            "OSINT Analyst",
+            "Newsroom Analyst"
+          ]
+        },
+        {
+          "course": "Podcasting / Audio / Digital Storytelling",
+          "roles": [
+            "Podcast Producer",
+            "Audio Editor",
+            "Audio Journalist",
+            "Storyteller",
+            "Radio Producer"
+          ]
+        },
+        {
+          "course": "Sports / Business / Science Journalism",
+          "roles": [
+            "Sports Journalist",
+            "Business Reporter",
+            "Science Communicator",
+            "Feature Writer",
+            "Beat Reporter"
+          ]
+        },
+        {
+          "course": "Film Studies / Cinema Journalism",
+          "roles": [
+            "Film Critic",
+            "Entertainment Reporter",
+            "Film Festival Coordinator",
+            "Content Producer"
+          ]
+        }
+      ]
+    },
+    "BPA (Bachelor of Performing Arts)": {
+      "domain": "Media, Design & Creative Arts",
+      "duration": "3 years",
+      "eligibility": "10+2 (any stream) + audition",
+      "entranceExams": "University/college auditions",
+      "courses": [
+        {
+          "course": "Vocal / Instrumental Music",
+          "roles": [
+            "Musician",
+            "Music Teacher",
+            "Music Composer",
+            "Playback Singer",
+            "Sound Assistant"
+          ]
+        },
+        {
+          "course": "Classical Dance (Bharatanatyam, Kuchipudi, Kathak, Odissi, etc.)",
+          "roles": [
+            "Dancer",
+            "Dance Teacher",
+            "Choreographer",
+            "Cultural Program Coordinator",
+            "Dance Therapist (with training)"
+          ]
+        },
+        {
+          "course": "Theatre / Acting",
+          "roles": [
+            "Actor",
+            "Theatre Director",
+            "Drama Teacher",
+            "Casting Associate",
+            "Scriptwriter"
+          ]
+        }
+      ]
+    },
+    "Law - LLB / BA LLB / BBA LLB / B.Com LLB / B.Sc LLB (Integrated)": {
+      "domain": "Law",
+      "duration": "3 years (LLB) / 5 years (Integrated)",
+      "eligibility": "LLB: any graduation / Integrated: 10+2",
+      "entranceExams": "CLAT, AILET, LSAT-India, SLAT, MH-CET Law, TS LAWCET, AP LAWCET",
+      "courses": [
+        {
+          "course": "LLB (3-year) - General",
+          "roles": [
+            "Advocate",
+            "Litigation Associate",
+            "Legal Advisor",
+            "Legal Executive",
+            "Judicial Services Aspirant",
+            "Notary/Legal Consultant"
+          ]
+        },
+        {
+          "course": "Corporate Law",
+          "roles": [
+            "Corporate Counsel",
+            "Contracts Manager",
+            "M&A Associate",
+            "Company Secretary",
+            "Compliance Officer",
+            "Law Firm Associate"
+          ]
+        },
+        {
+          "course": "Criminal Law",
+          "roles": [
+            "Criminal Lawyer",
+            "Public Prosecutor (via exams)",
+            "Legal Aid Counsel",
+            "Judicial Services Aspirant",
+            "Forensic Legal Consultant"
+          ]
+        },
+        {
+          "course": "Civil / Constitutional Law",
+          "roles": [
+            "Civil Lawyer",
+            "Constitutional Litigator",
+            "Legal Researcher",
+            "Public Interest Litigator",
+            "Judicial Clerk"
+          ]
+        },
+        {
+          "course": "Intellectual Property Law",
+          "roles": [
+            "IP Associate",
+            "Patent Agent (after exam)",
+            "Trademark Attorney",
+            "IP Paralegal",
+            "Technology Transfer Officer"
+          ]
+        },
+        {
+          "course": "Cyber Law",
+          "roles": [
+            "Cyber Law Consultant",
+            "Data Privacy Officer",
+            "Compliance Manager",
+            "Digital Forensics Legal Advisor",
+            "Legal Analyst (Tech)"
+          ]
+        },
+        {
+          "course": "Taxation Law",
+          "roles": [
+            "Tax Lawyer",
+            "GST Consultant",
+            "Tax Litigation Associate",
+            "Compliance Manager",
+            "Indirect Tax Advisor"
+          ]
+        },
+        {
+          "course": "Labour & Employment Law",
+          "roles": [
+            "Labour Law Consultant",
+            "HR Legal Advisor",
+            "Industrial Relations Manager",
+            "Legal Executive"
+          ]
+        },
+        {
+          "course": "Environmental Law",
+          "roles": [
+            "Environmental Lawyer",
+            "EHS Compliance Officer",
+            "NGO Legal Advisor",
+            "Policy Researcher",
+            "NGT Litigator"
+          ]
+        },
+        {
+          "course": "Human Rights Law",
+          "roles": [
+            "Human Rights Lawyer",
+            "NGO Legal Officer",
+            "Legal Aid Counsel",
+            "Policy Researcher",
+            "International Organization Roles"
+          ]
+        },
+        {
+          "course": "International Law",
+          "roles": [
+            "International Law Consultant",
+            "Foreign Ministry Aspirant",
+            "Arbitration Associate",
+            "UN/International Org Roles",
+            "Trade Law Associate"
+          ]
+        },
+        {
+          "course": "Business Law (BBA LLB / B.Com LLB)",
+          "roles": [
+            "Corporate Counsel",
+            "Compliance Officer",
+            "Contracts Specialist",
+            "Law Firm Associate",
+            "Legal Manager"
+          ]
+        },
+        {
+          "course": "Science & Technology Law (B.Sc LLB)",
+          "roles": [
+            "Patent Attorney",
+            "IP Associate",
+            "Tech Law Consultant",
+            "Legal Analyst",
+            "Regulatory Affairs Lawyer"
+          ]
+        },
+        {
+          "course": "Technology Law / AI Governance",
+          "roles": [
+            "Tech Lawyer",
+            "AI Policy Associate",
+            "Data Protection Associate",
+            "Compliance Analyst",
+            "Legal Tech Consultant"
+          ]
+        },
+        {
+          "course": "Data Protection & Privacy Law",
+          "roles": [
+            "Data Protection Officer (Junior)",
+            "Privacy Analyst",
+            "Compliance Associate",
+            "Contracts Analyst",
+            "Cyber Law Assistant"
+          ]
+        },
+        {
+          "course": "Media & Entertainment Law",
+          "roles": [
+            "Entertainment Lawyer",
+            "Contracts Associate",
+            "IP Associate",
+            "Talent Agency Legal Executive",
+            "Broadcast Compliance Officer"
+          ]
+        },
+        {
+          "course": "Sports Law",
+          "roles": [
+            "Sports Lawyer",
+            "Contracts Associate",
+            "Federation Legal Officer",
+            "Arbitration Associate"
+          ]
+        },
+        {
+          "course": "Banking & Insurance Law",
+          "roles": [
+            "Banking Lawyer",
+            "Insurance Legal Executive",
+            "Recovery Officer",
+            "Compliance Analyst",
+            "Loan Documentation Associate"
+          ]
+        },
+        {
+          "course": "Competition Law / Securities Law",
+          "roles": [
+            "Competition Law Associate",
+            "Securities Lawyer",
+            "SEBI Compliance Executive",
+            "Regulatory Analyst"
+          ]
+        },
+        {
+          "course": "Alternative Dispute Resolution / Arbitration & Mediation",
+          "roles": [
+            "Arbitration Associate",
+            "Mediator",
+            "Conciliator",
+            "Legal Consultant",
+            "ADR Case Manager"
+          ]
+        },
+        {
+          "course": "Consumer Protection / Health Law",
+          "roles": [
+            "Consumer Lawyer",
+            "Health Law Consultant",
+            "Hospital Legal Advisor",
+            "Policy Associate"
+          ]
+        },
+        {
+          "course": "Insolvency & Bankruptcy Law",
+          "roles": [
+            "IBC Associate",
+            "Resolution Professional Assistant",
+            "Insolvency Analyst",
+            "Corporate Restructuring Associate"
+          ]
+        },
+        {
+          "course": "Real Estate / Infrastructure / Energy Law",
+          "roles": [
+            "Real Estate Lawyer",
+            "RERA Consultant",
+            "Infrastructure Legal Associate",
+            "Energy Regulatory Associate"
+          ]
+        },
+        {
+          "course": "Aviation / Space / Maritime Law",
+          "roles": [
+            "Aviation Legal Advisor",
+            "Maritime Lawyer",
+            "Space Law Researcher",
+            "Shipping Legal Executive"
+          ]
+        },
+        {
+          "course": "Gender / Family / Animal Law",
+          "roles": [
+            "Family Lawyer",
+            "Legal Aid Counsel",
+            "Gender Rights Advocate",
+            "Animal Welfare Legal Officer",
+            "Mediator"
+          ]
+        },
+        {
+          "course": "Constitutional Law / Jurisprudence / Legal Theory",
+          "roles": [
+            "Legal Researcher",
+            "Judicial Clerk",
+            "Constitutional Litigator",
+            "Academic (Law)",
+            "Policy Associate"
+          ]
+        }
+      ]
+    },
+    "MBBS (Bachelor of Medicine & Bachelor of Surgery)": {
+      "domain": "Medical & Health Sciences",
+      "duration": "5.5 years (incl. 1 year internship)",
+      "eligibility": "10+2 with PCB (min. 50% General) and NEET-UG",
+      "entranceExams": "NEET-UG",
+      "courses": [
+        {
+          "course": "MBBS",
+          "roles": [
+            "Doctor/Medical Officer",
+            "Resident Doctor",
+            "Junior Resident (PG prep)",
+            "Medical Officer (Govt/PHC)",
+            "Medical Researcher",
+            "Clinical Research Physician",
+            "Medical Writer"
+          ]
+        }
+      ]
+    },
+    "BDS (Bachelor of Dental Surgery)": {
+      "domain": "Medical & Health Sciences",
+      "duration": "5 years (incl. 1 year internship)",
+      "eligibility": "10+2 with PCB and NEET-UG",
+      "entranceExams": "NEET-UG",
+      "courses": [
+        {
+          "course": "Dental Surgery",
+          "roles": [
+            "Dentist",
+            "Dental Surgeon (Clinic)",
+            "Dental Officer (Govt)",
+            "Clinical Dental Practitioner",
+            "Dental Researcher",
+            "Dental College Lecturer (after PG)"
+          ]
+        }
+      ]
+    },
+    "BAMS (Ayurveda)": {
+      "domain": "Medical & Health Sciences",
+      "duration": "5.5 years",
+      "eligibility": "10+2 with PCB and NEET-UG",
+      "entranceExams": "NEET-UG",
+      "courses": [
+        {
+          "course": "Ayurvedic Medicine & Surgery",
+          "roles": [
+            "Ayurvedic Physician",
+            "Ayush Medical Officer",
+            "Panchakarma Therapist",
+            "Ayurvedic Product Consultant",
+            "Wellness/Spa Consultant",
+            "Ayurveda Researcher"
+          ]
+        }
+      ]
+    },
+    "BHMS (Homoeopathy)": {
+      "domain": "Medical & Health Sciences",
+      "duration": "5.5 years",
+      "eligibility": "10+2 with PCB and NEET-UG",
+      "entranceExams": "NEET-UG",
+      "courses": [
+        {
+          "course": "Homoeopathic Medicine & Surgery",
+          "roles": [
+            "Homoeopathic Physician",
+            "Ayush Medical Officer",
+            "Homeopathy Product Consultant",
+            "Clinical Researcher",
+            "Wellness Consultant"
+          ]
+        }
+      ]
+    },
+    "BUMS (Unani)": {
+      "domain": "Medical & Health Sciences",
+      "duration": "5.5 years",
+      "eligibility": "10+2 with PCB and NEET-UG",
+      "entranceExams": "NEET-UG",
+      "courses": [
+        {
+          "course": "Unani Medicine & Surgery",
+          "roles": [
+            "Unani Physician",
+            "Ayush Medical Officer",
+            "Hakim/Clinic Practitioner",
+            "Unani Drug Consultant",
+            "Researcher"
+          ]
+        }
+      ]
+    },
+    "BNYS (Naturopathy & Yogic Sciences)": {
+      "domain": "Medical & Health Sciences",
+      "duration": "5.5 years",
+      "eligibility": "10+2 with PCB and NEET-UG",
+      "entranceExams": "NEET-UG",
+      "courses": [
+        {
+          "course": "Naturopathy & Yoga",
+          "roles": [
+            "Naturopathy Physician",
+            "Yoga Therapist",
+            "Wellness Centre Manager",
+            "Ayush Medical Officer",
+            "Lifestyle Consultant"
+          ]
+        }
+      ]
+    },
+    "BSMS (Siddha)": {
+      "domain": "Medical & Health Sciences",
+      "duration": "5.5 years",
+      "eligibility": "10+2 with PCB and NEET-UG",
+      "entranceExams": "NEET-UG",
+      "courses": [
+        {
+          "course": "Siddha Medicine & Surgery",
+          "roles": [
+            "Siddha Physician",
+            "Ayush Medical Officer",
+            "Siddha Drug Consultant",
+            "Varma Therapist",
+            "Researcher"
+          ]
+        }
+      ]
+    },
+    "BVSc & AH (Veterinary Science & Animal Husbandry)": {
+      "domain": "Medical & Health Sciences",
+      "duration": "5.5 years",
+      "eligibility": "10+2 with PCB and NEET-UG",
+      "entranceExams": "NEET-UG",
+      "courses": [
+        {
+          "course": "Veterinary Science",
+          "roles": [
+            "Veterinary Doctor",
+            "Veterinary Officer (Govt)",
+            "Livestock Inspector",
+            "Animal Health Researcher",
+            "Pharma/Animal Nutrition Executive",
+            "Wildlife Veterinarian"
+          ]
+        }
+      ]
+    },
+    "B.Pharm (Bachelor of Pharmacy)": {
+      "domain": "Pharmacy",
+      "duration": "4 years",
+      "eligibility": "10+2 with PCB/PCM",
+      "entranceExams": "GPAT (for PG), TS EAMCET/AP EAPCET (B.Pharm), state CETs, merit",
+      "courses": [
+        {
+          "course": "Pharmaceutical Sciences",
+          "roles": [
+            "Pharmacist",
+            "Drug Inspector",
+            "Production Executive (Pharma)",
+            "QC/QA Analyst",
+            "Regulatory Affairs Executive",
+            "Medical Representative",
+            "Pharmacovigilance Associate"
+          ]
+        },
+        {
+          "course": "Pharmaceutical Chemistry",
+          "roles": [
+            "Formulation Scientist",
+            "Analytical Chemist",
+            "R&D Executive",
+            "QC Chemist",
+            "Process Development Associate"
+          ]
+        },
+        {
+          "course": "Pharmacology / Clinical Research",
+          "roles": [
+            "Clinical Research Associate",
+            "Drug Safety Associate",
+            "Pharmacovigilance Executive",
+            "Clinical Data Coordinator",
+            "Medical Coding Executive"
+          ]
+        },
+        {
+          "course": "Pharmaceutical Technology / Pharmaceutics",
+          "roles": [
+            "Formulation Executive",
+            "Production Officer",
+            "QA Executive",
+            "Regulatory Executive"
+          ]
+        },
+        {
+          "course": "Herbal / Ayurvedic Pharmacy (B.Pharm Ayurveda)",
+          "roles": [
+            "Ayurvedic Drug Manufacturer",
+            "Herbal QA Officer",
+            "Ayush Drug Inspector",
+            "Herbal Product Developer"
+          ]
+        },
+        {
+          "course": "Cosmetic Science / Cosmetology",
+          "roles": [
+            "Cosmetic Formulator",
+            "Quality Analyst",
+            "Product Developer",
+            "Beauty Brand Executive"
+          ]
+        },
+        {
+          "course": "Pharma Data / Pharmacovigilance & Regulatory (Skill-integrated)",
+          "roles": [
+            "PV Associate",
+            "Regulatory Affairs Associate",
+            "Drug Safety Associate",
+            "Medical Writer",
+            "Clinical Data Coordinator"
+          ]
+        }
+      ]
+    },
+    "Pharm.D (Doctor of Pharmacy)": {
+      "domain": "Pharmacy",
+      "duration": "6 years (5 study + 1 internship)",
+      "eligibility": "10+2 with PCB/PCM",
+      "entranceExams": "State CETs, NEET (some states)",
+      "courses": [
+        {
+          "course": "Doctor of Pharmacy",
+          "roles": [
+            "Clinical Pharmacist",
+            "Hospital Pharmacist",
+            "Pharmacovigilance Physician Assistant",
+            "Clinical Research Associate",
+            "Drug Information Specialist",
+            "Medical Advisor (Pharma)"
+          ]
+        }
+      ]
+    },
+    "B.Sc Nursing": {
+      "domain": "Nursing & Allied Health",
+      "duration": "4 years",
+      "eligibility": "10+2 with PCB",
+      "entranceExams": "NEET-UG (most states), AIIMS Nursing, state CETs",
+      "courses": [
+        {
+          "course": "Nursing",
+          "roles": [
+            "Staff Nurse",
+            "Nursing Officer (Govt)",
+            "Community Health Nurse",
+            "ICU/Critical Care Nurse",
+            "Nurse Educator",
+            "Nurse Practitioner (after PG)"
+          ]
+        },
+        {
+          "course": "Post-Basic B.Sc Nursing",
+          "roles": [
+            "Staff Nurse",
+            "Ward Supervisor",
+            "Nursing Tutor",
+            "Community Health Officer",
+            "Clinical Instructor"
+          ]
+        }
+      ]
+    },
+    "Allied Health Sciences (B.Sc / BPT / BOT / BMLT etc.)": {
+      "domain": "Nursing & Allied Health",
+      "duration": "3-4.5 years",
+      "eligibility": "10+2 with PCB (some accept PCM)",
+      "entranceExams": "State CETs, NEET (for BPT in many states), institute entrances, merit",
+      "courses": [
+        {
+          "course": "Physiotherapy (BPT)",
+          "roles": [
+            "Physiotherapist",
+            "Sports Physiotherapist",
+            "Rehabilitation Specialist",
+            "Clinical Physiotherapist",
+            "Physio Consultant",
+            "Lecturer (after MPT)"
+          ]
+        },
+        {
+          "course": "Occupational Therapy (BOT)",
+          "roles": [
+            "Occupational Therapist",
+            "Rehabilitation Therapist",
+            "Paediatric OT",
+            "Mental Health Therapist",
+            "Special Education Support"
+          ]
+        },
+        {
+          "course": "Medical Laboratory Technology (BMLT / B.Sc MLT)",
+          "roles": [
+            "Lab Technologist",
+            "Pathology Lab Technician",
+            "Blood Bank Technician",
+            "Clinical Lab Scientist",
+            "Diagnostic Centre Manager"
+          ]
+        },
+        {
+          "course": "Radiology & Imaging Technology",
+          "roles": [
+            "Radiographer",
+            "CT/MRI Technologist",
+            "Ultrasound Technician",
+            "Imaging Specialist",
+            "Cath-Lab Technician"
+          ]
+        },
+        {
+          "course": "Optometry (B.Optom)",
+          "roles": [
+            "Optometrist",
+            "Contact Lens Specialist",
+            "Vision Therapist",
+            "Optical Store Manager",
+            "Clinical Researcher"
+          ]
+        },
+        {
+          "course": "Anaesthesia & Operation Theatre Technology",
+          "roles": [
+            "OT Technician",
+            "Anaesthesia Technician",
+            "Surgical Assistant",
+            "CSSD Technician",
+            "Critical Care Technician"
+          ]
+        },
+        {
+          "course": "Dialysis Technology",
+          "roles": [
+            "Dialysis Technician",
+            "Nephrology Technologist",
+            "Renal Care Technician",
+            "ICU Support Technician"
+          ]
+        },
+        {
+          "course": "Cardiac Care / Cardiovascular Technology",
+          "roles": [
+            "Cardiac Technician",
+            "ECG/Echo Technician",
+            "Cath-Lab Technologist",
+            "Cardiac Care Technologist",
+            "Perfusion Assistant"
+          ]
+        },
+        {
+          "course": "Perfusion Technology",
+          "roles": [
+            "Perfusionist",
+            "Cardiac Surgery Technologist",
+            "ECMO Specialist",
+            "Clinical Perfusion Assistant"
+          ]
+        },
+        {
+          "course": "Emergency & Trauma Care Technology",
+          "roles": [
+            "Emergency Medical Technician",
+            "Paramedic",
+            "Trauma Care Technician",
+            "Ambulance Coordinator",
+            "Disaster Response Assistant"
+          ]
+        },
+        {
+          "course": "Respiratory Care Technology",
+          "roles": [
+            "Respiratory Therapist",
+            "Ventilator Technician",
+            "Pulmonary Function Technician",
+            "ICU Technologist"
+          ]
+        },
+        {
+          "course": "Neuro-Electrophysiology Technology",
+          "roles": [
+            "EEG/EMG Technician",
+            "Neurophysiology Technologist",
+            "Sleep Lab Technician",
+            "Neuro Lab Assistant"
+          ]
+        },
+        {
+          "course": "Audiology & Speech-Language Pathology (BASLP)",
+          "roles": [
+            "Audiologist",
+            "Speech-Language Pathologist",
+            "Hearing Aid Specialist",
+            "Early Intervention Therapist",
+            "Clinical Researcher"
+          ]
+        },
+        {
+          "course": "Physician Assistant",
+          "roles": [
+            "Physician Assistant",
+            "Clinical Assistant",
+            "Emergency Care Assistant",
+            "Medical Officer Support",
+            "Ward Coordinator"
+          ]
+        },
+        {
+          "course": "Public Health (BPH / B.Sc Public Health)",
+          "roles": [
+            "Public Health Officer",
+            "Health Program Coordinator",
+            "Epidemiology Assistant",
+            "NGO Health Worker",
+            "Community Health Officer"
+          ]
+        },
+        {
+          "course": "Medical Records & Health Information",
+          "roles": [
+            "Medical Record Officer",
+            "Health Information Manager",
+            "Medical Coder",
+            "Hospital Data Executive",
+            "Clinical Documentation Specialist"
+          ]
+        },
+        {
+          "course": "Clinical Nutrition & Dietetics",
+          "roles": [
+            "Clinical Dietitian",
+            "Nutritionist",
+            "Diet Consultant",
+            "Wellness Coach",
+            "Public Health Nutritionist"
+          ]
+        },
+        {
+          "course": "Genetic Counselling / Medical Biotechnology",
+          "roles": [
+            "Genetic Counsellor Assistant",
+            "Clinical Lab Scientist",
+            "Research Associate",
+            "Diagnostics Executive",
+            "Molecular Diagnostics Technician"
+          ]
+        },
+        {
+          "course": "Community Health / Health Assistant",
+          "roles": [
+            "ASHA Supervisor",
+            "Community Health Officer",
+            "Health Educator",
+            "Public Health Assistant",
+            "Sanitary Inspector"
+          ]
+        },
+        {
+          "course": "Prosthetics & Orthotics",
+          "roles": [
+            "Prosthetist/Orthotist",
+            "Rehabilitation Technician",
+            "Orthopaedic Appliance Specialist",
+            "Assistive Device Consultant"
+          ]
+        },
+        {
+          "course": "Radiotherapy Technology",
+          "roles": [
+            "Radiotherapy Technologist",
+            "Linear Accelerator Operator",
+            "Oncology Technician",
+            "Treatment Planning Assistant"
+          ]
+        },
+        {
+          "course": "Cath Lab / Interventional Cardiology Technology",
+          "roles": [
+            "Cath-Lab Technologist",
+            "Interventional Technician",
+            "Cardiac Imaging Technician",
+            "Hemodynamic Technician"
+          ]
+        },
+        {
+          "course": "Medical Sonography / Ultrasound Technology",
+          "roles": [
+            "Sonographer",
+            "Ultrasound Technician",
+            "Obstetric Ultrasound Technician",
+            "Vascular Sonographer"
+          ]
+        },
+        {
+          "course": "Nuclear Medicine Technology",
+          "roles": [
+            "Nuclear Medicine Technologist",
+            "PET-CT Technologist",
+            "Radiopharmacy Technician",
+            "Radiation Safety Assistant"
+          ]
+        },
+        {
+          "course": "Critical Care Technology",
+          "roles": [
+            "ICU Technician",
+            "Critical Care Technologist",
+            "Ventilator Specialist",
+            "Emergency Technologist"
+          ]
+        },
+        {
+          "course": "Blood Banking Technology / Transfusion Technology",
+          "roles": [
+            "Blood Bank Technician",
+            "Transfusion Technologist",
+            "Donor Coordinator",
+            "Immunohaematology Technician"
+          ]
+        },
+        {
+          "course": "Cytotechnology / Histotechnology",
+          "roles": [
+            "Cytotechnologist",
+            "Histotechnologist",
+            "Pathology Lab Technician",
+            "Cancer Screening Technician"
+          ]
+        },
+        {
+          "course": "Ophthalmic Technology / Orthoptics",
+          "roles": [
+            "Ophthalmic Technician",
+            "Orthoptist",
+            "Optical Coherence Technician",
+            "Eye Care Assistant"
+          ]
+        },
+        {
+          "course": "Sleep Technology / Endoscopy Technology",
+          "roles": [
+            "Sleep Technician",
+            "Endoscopy Technician",
+            "Polysomnography Technologist",
+            "GI Lab Technician"
+          ]
+        },
+        {
+          "course": "Physiotherapy - Sports / Neuro / Paediatric Rehabilitation",
+          "roles": [
+            "Sports Physiotherapist",
+            "Neuro-Rehab Therapist",
+            "Paediatric Therapist",
+            "Clinical Physiotherapist"
+          ]
+        },
+        {
+          "course": "Tele-health / Digital Health Technology",
+          "roles": [
+            "Telehealth Coordinator",
+            "Digital Health Executive",
+            "Remote Patient Monitoring Technician",
+            "Health App Support"
+          ]
+        },
+        {
+          "course": "Hospital Management / Healthcare Administration (B.Sc)",
+          "roles": [
+            "Hospital Executive",
+            "Patient Relations Officer",
+            "Medical Records Executive",
+            "Front Office Manager (Hospital)"
+          ]
+        },
+        {
+          "course": "Clinical Research (B.Sc)",
+          "roles": [
+            "Clinical Research Coordinator",
+            "Clinical Data Associate",
+            "Pharmacovigilance Associate",
+            "Regulatory Affairs Associate",
+            "Medical Coder"
+          ]
+        },
+        {
+          "course": "Forensic Nursing / Psychiatric Nursing (Post-Basic)",
+          "roles": [
+            "Forensic Nurse",
+            "Psychiatric Nurse",
+            "Community Mental Health Nurse",
+            "Nursing Officer"
+          ]
+        },
+        {
+          "course": "Ayurveda Allied (Panchakarma Technician / Ayurveda Pharmacy)",
+          "roles": [
+            "Panchakarma Therapist",
+            "Ayurveda Pharmacist",
+            "Ayush Assistant",
+            "Wellness Therapist",
+            "Herbal Products Executive"
+          ]
+        },
+        {
+          "course": "Medical Imaging Technology - MRI / CT Specialisation",
+          "roles": [
+            "MRI Technologist",
+            "CT Technologist",
+            "Radiographer",
+            "PACS Administrator",
+            "Imaging Supervisor"
+          ]
+        },
+        {
+          "course": "Anaesthesia Assistant / Perfusion / Cardiac Anaesthesia Tech",
+          "roles": [
+            "Anaesthesia Technologist",
+            "Cardiac OT Technologist",
+            "Perfusion Assistant",
+            "Pain Clinic Technician"
+          ]
+        },
+        {
+          "course": "Public Health Nutrition / Community Nutrition",
+          "roles": [
+            "Public Health Nutritionist",
+            "Community Nutrition Officer",
+            "NGO Nutritionist",
+            "ICDS Supervisor"
+          ]
+        },
+        {
+          "course": "Geriatric Care / Palliative Care Assistant",
+          "roles": [
+            "Geriatric Caregiver",
+            "Palliative Care Assistant",
+            "Home Health Aide",
+            "Elderly Care Coordinator"
+          ]
+        }
+      ]
+    },
+    "B.Ed (Bachelor of Education)": {
+      "domain": "Education & Teacher Training",
+      "duration": "2 years",
+      "eligibility": "Any graduation (50%)",
+      "entranceExams": "State Ed.CETs, TS Ed.CET, AP Ed.CET, university entrances",
+      "courses": [
+        {
+          "course": "B.Ed - Subject Pedagogy (Science / Maths / Social Studies / Languages / Commerce)",
+          "roles": [
+            "School Teacher (TGT/PGT)",
+            "Government Teacher (via TET/DSC)",
+            "Academic Coordinator",
+            "Curriculum Developer",
+            "Education Consultant",
+            "Online Tutor"
+          ]
+        },
+        {
+          "course": "B.Ed - Special Education",
+          "roles": [
+            "Special Educator",
+            "Resource Teacher",
+            "Inclusive Education Coordinator",
+            "Learning Support Specialist",
+            "Rehabilitation Professional (RCI)"
+          ]
+        }
+      ]
+    },
+    "Other Teacher Education (D.El.Ed / B.El.Ed / B.P.Ed / ITEP / Integrated B.Sc-B.Ed / BA-B.Ed)": {
+      "domain": "Education & Teacher Training",
+      "duration": "2-4 years",
+      "eligibility": "10+2 (or graduation for B.P.Ed/D.El.Ed as applicable)",
+      "entranceExams": "State entrance exams, NCET (for ITEP), CUET-UG",
+      "courses": [
+        {
+          "course": "Elementary Education (D.El.Ed / B.El.Ed)",
+          "roles": [
+            "Primary Teacher (PRT)",
+            "Government Primary Teacher (TET)",
+            "Early Childhood Educator",
+            "Educational Coordinator"
+          ]
+        },
+        {
+          "course": "Physical Education (B.P.Ed)",
+          "roles": [
+            "Physical Education Teacher",
+            "Sports Coach",
+            "Fitness Trainer",
+            "Sports Officer",
+            "School Sports Coordinator"
+          ]
+        },
+        {
+          "course": "Integrated Teacher Education (ITEP / B.Sc-B.Ed / BA-B.Ed)",
+          "roles": [
+            "School Teacher",
+            "Subject Specialist",
+            "Curriculum Developer",
+            "Educational Content Developer",
+            "Education Consultant"
+          ]
+        },
+        {
+          "course": "Early Childhood Care & Education (Montessori / NTT / PPTTC)",
+          "roles": [
+            "Pre-Primary Teacher",
+            "Montessori Teacher",
+            "Preschool Coordinator",
+            "Daycare Manager",
+            "Early Learning Specialist"
+          ]
+        },
+        {
+          "course": "Integrated B.Ed with Educational Technology",
+          "roles": [
+            "EdTech Teacher",
+            "Instructional Designer",
+            "Digital Content Developer",
+            "E-learning Specialist"
+          ]
+        },
+        {
+          "course": "Teacher Education - Vocational / Music / Art / Yoga Education",
+          "roles": [
+            "Art Teacher",
+            "Music Teacher",
+            "Yoga Teacher",
+            "Vocational Instructor",
+            "School Activity Coordinator"
+          ]
+        },
+        {
+          "course": "Early Intervention / Inclusive Education (B.Ed Special)",
+          "roles": [
+            "Special Educator",
+            "Early Intervention Specialist",
+            "Resource Teacher",
+            "Inclusive Education Coordinator"
+          ]
+        }
+      ]
+    },
+    "B.Sc (Hons) Agriculture and Allied": {
+      "domain": "Agriculture & Allied Sciences",
+      "duration": "4 years",
+      "eligibility": "10+2 with PCB/PCM/Agriculture",
+      "entranceExams": "ICAR AIEEA (via CUET-UG), state agri CETs (TS EAMCET Agri, AP EAPCET Agri)",
+      "courses": [
+        {
+          "course": "Agriculture",
+          "roles": [
+            "Agricultural Officer",
+            "Agronomist",
+            "Seed Technologist",
+            "Farm Manager",
+            "Agri-Input Sales Manager",
+            "Bank Agri Field Officer"
+          ]
+        },
+        {
+          "course": "Horticulture",
+          "roles": [
+            "Horticulturist",
+            "Nursery Manager",
+            "Floriculture Specialist",
+            "Plantation Manager",
+            "Horticulture Officer"
+          ]
+        },
+        {
+          "course": "Forestry",
+          "roles": [
+            "Forest Range Officer (via exam)",
+            "Forest Guard",
+            "Wildlife Conservationist",
+            "Forest Ecologist",
+            "Social Forestry Officer"
+          ]
+        },
+        {
+          "course": "Fisheries Science",
+          "roles": [
+            "Fisheries Officer",
+            "Aquaculture Manager",
+            "Hatchery Manager",
+            "Fish Processing Technologist",
+            "Marine Products Export Executive"
+          ]
+        },
+        {
+          "course": "Sericulture",
+          "roles": [
+            "Sericulture Officer",
+            "Silk Production Manager",
+            "Cocoon Quality Inspector",
+            "Extension Officer",
+            "Textile Sourcing Executive"
+          ]
+        },
+        {
+          "course": "Agricultural Business Management / Agri-Business",
+          "roles": [
+            "Agri-Business Executive",
+            "Rural Marketing Manager",
+            "Agri Supply Chain Manager",
+            "Commodity Trader",
+            "Agri-Start-up Founder"
+          ]
+        },
+        {
+          "course": "Community Science",
+          "roles": [
+            "Extension Officer",
+            "Nutrition Educator",
+            "Early Childhood Educator",
+            "Rural Development Officer",
+            "NGO Program Officer"
+          ]
+        },
+        {
+          "course": "Natural Farming / Organic Agriculture",
+          "roles": [
+            "Organic Farm Manager",
+            "Certification Officer",
+            "Agri Consultant",
+            "Sustainable Agriculture Officer",
+            "Agri Entrepreneur"
+          ]
+        },
+        {
+          "course": "Precision Agriculture / Agri-Tech",
+          "roles": [
+            "Precision Agriculture Specialist",
+            "Agri Drone Operator",
+            "Farm Data Analyst",
+            "AgriTech Field Officer",
+            "IoT Agri Consultant"
+          ]
+        },
+        {
+          "course": "Agricultural Marketing & Cooperation",
+          "roles": [
+            "Agri Marketing Officer",
+            "Cooperative Officer",
+            "Commodity Trader",
+            "Warehouse Manager",
+            "Agri Credit Officer"
+          ]
+        },
+        {
+          "course": "Seed Science & Technology",
+          "roles": [
+            "Seed Technologist",
+            "Seed Quality Analyst",
+            "Plant Breeder Assistant",
+            "Seed Marketing Officer"
+          ]
+        },
+        {
+          "course": "Dairy / Animal Husbandry / Poultry Science",
+          "roles": [
+            "Dairy Farm Manager",
+            "Poultry Manager",
+            "Animal Husbandry Officer",
+            "Livestock Inspector",
+            "Feed Nutritionist"
+          ]
+        },
+        {
+          "course": "Soil & Water Conservation / Watershed Management",
+          "roles": [
+            "Watershed Officer",
+            "Soil Conservation Officer",
+            "Irrigation Consultant",
+            "NGO Field Officer"
+          ]
+        },
+        {
+          "course": "Post-Harvest / Agri Processing Technology",
+          "roles": [
+            "Post-Harvest Technologist",
+            "Agri Processing Manager",
+            "Cold Storage Manager",
+            "Food Quality Officer"
+          ]
+        },
+        {
+          "course": "Medicinal & Aromatic Plants / Floriculture / Landscaping",
+          "roles": [
+            "Herbal Farm Manager",
+            "Floriculturist",
+            "Landscape Gardener",
+            "Nursery Owner",
+            "Herbal Product Executive"
+          ]
+        },
+        {
+          "course": "Natural Farming / Vertical Farming / Hydroponics",
+          "roles": [
+            "Hydroponics Farm Manager",
+            "Vertical Farm Technician",
+            "Natural Farming Consultant",
+            "AgriPreneur"
+          ]
+        },
+        {
+          "course": "Agricultural Engineering - Farm Power & Machinery",
+          "roles": [
+            "Farm Machinery Engineer",
+            "Tractor Service Engineer",
+            "Irrigation Engineer",
+            "Agri Equipment Sales Engineer"
+          ]
+        }
+      ]
+    },
+    "Professional Certifications - CA / CS / CMA / ACCA / CFA / CPA-India": {
+      "domain": "Commerce & Professional Courses",
+      "duration": "Varies (3-5 years including articleship)",
+      "eligibility": "10+2 (any stream; Commerce/Maths preferred)",
+      "entranceExams": "ICAI CA Foundation, ICSI CSEET, ICMAI Foundation, ACCA, CFA Institute exams",
+      "courses": [
+        {
+          "course": "Chartered Accountancy (CA - ICAI)",
+          "roles": [
+            "Chartered Accountant (Practice)",
+            "Statutory Auditor",
+            "Tax Consultant",
+            "CFO",
+            "Finance Controller",
+            "Investment Banker",
+            "Forensic Auditor"
+          ]
+        },
+        {
+          "course": "Company Secretary (CS - ICSI)",
+          "roles": [
+            "Company Secretary",
+            "Compliance Officer",
+            "Corporate Governance Manager",
+            "Legal Manager",
+            "Registrar & Transfer Agent"
+          ]
+        },
+        {
+          "course": "Cost & Management Accountancy (CMA - ICMAI)",
+          "roles": [
+            "Cost Accountant",
+            "Cost Auditor",
+            "Management Accountant",
+            "Financial Controller",
+            "Pricing Analyst"
+          ]
+        },
+        {
+          "course": "ACCA (UK) / CPA (US) / CMA (US)",
+          "roles": [
+            "International Auditor",
+            "Financial Analyst",
+            "Group Reporting Manager",
+            "Audit Manager",
+            "Tax Manager"
+          ]
+        },
+        {
+          "course": "CFA / FRM / Actuarial (IAI)",
+          "roles": [
+            "Equity Research Analyst",
+            "Risk Manager",
+            "Portfolio Manager",
+            "Actuary",
+            "Investment Analyst"
+          ]
+        }
+      ]
+    },
+    "B.Voc (Bachelor of Vocation) & Skill Degrees": {
+      "domain": "Skill-Based & Vocational",
+      "duration": "3 years",
+      "eligibility": "10+2 or diploma",
+      "entranceExams": "University/institution admissions, merit",
+      "courses": [
+        {
+          "course": "B.Voc - Software Development",
+          "roles": [
+            "Junior Developer",
+            "Web Developer",
+            "IT Support",
+            "QA Tester",
+            "Technical Assistant"
+          ]
+        },
+        {
+          "course": "B.Voc - Retail Management",
+          "roles": [
+            "Store Manager",
+            "Retail Sales Executive",
+            "Visual Merchandiser",
+            "Inventory Manager",
+            "Customer Experience Executive"
+          ]
+        },
+        {
+          "course": "B.Voc - Banking Financial Services & Insurance (BFSI)",
+          "roles": [
+            "Bank Officer",
+            "Insurance Advisor",
+            "Loan Executive",
+            "Financial Services Executive",
+            "Relationship Manager"
+          ]
+        },
+        {
+          "course": "B.Voc - Tourism & Hospitality",
+          "roles": [
+            "Travel Executive",
+            "Front Office Executive",
+            "Tour Guide",
+            "Guest Relations",
+            "Event Coordinator"
+          ]
+        },
+        {
+          "course": "B.Voc - Automobile Servicing",
+          "roles": [
+            "Service Advisor",
+            "Automobile Technician",
+            "Workshop Supervisor",
+            "Quality Inspector"
+          ]
+        },
+        {
+          "course": "B.Voc - Healthcare / Medical Lab",
+          "roles": [
+            "Lab Technician",
+            "Health Assistant",
+            "Patient Care Coordinator",
+            "Medical Records Assistant"
+          ]
+        },
+        {
+          "course": "B.Voc - Media & Entertainment",
+          "roles": [
+            "Video Editor",
+            "Animator",
+            "Content Creator",
+            "Sound Assistant",
+            "Production Assistant"
+          ]
+        },
+        {
+          "course": "B.Voc - Logistics & Supply Chain",
+          "roles": [
+            "Logistics Executive",
+            "Warehouse Supervisor",
+            "Procurement Assistant",
+            "Supply Chain Coordinator"
+          ]
+        },
+        {
+          "course": "B.Voc - Beauty & Wellness / Fashion",
+          "roles": [
+            "Beauty Consultant",
+            "Fashion Assistant",
+            "Salon Manager",
+            "Wellness Coach",
+            "Retail Fashion Executive"
+          ]
+        },
+        {
+          "course": "B.Voc - Electric Vehicle Technology",
+          "roles": [
+            "EV Technician",
+            "Charging Station Operator",
+            "EV Service Advisor",
+            "Battery Technician",
+            "Automotive Diagnostics Technician"
+          ]
+        },
+        {
+          "course": "B.Voc - Drone Technology",
+          "roles": [
+            "Drone Pilot",
+            "Drone Technician",
+            "Aerial Survey Assistant",
+            "Drone Data Processor",
+            "Agri-Drone Operator"
+          ]
+        },
+        {
+          "course": "B.Voc - Solar / Renewable Energy Technician",
+          "roles": [
+            "Solar Installer",
+            "Solar Technician",
+            "Site Supervisor",
+            "Energy Auditor Assistant",
+            "Maintenance Technician"
+          ]
+        },
+        {
+          "course": "B.Voc - Digital Marketing / E-Commerce",
+          "roles": [
+            "Digital Marketing Executive",
+            "E-Commerce Executive",
+            "Social Media Executive",
+            "SEO Executive",
+            "Catalogue Executive"
+          ]
+        },
+        {
+          "course": "B.Voc - Data Analytics / AI Applications",
+          "roles": [
+            "Data Analyst (Junior)",
+            "AI Application Support",
+            "Reporting Executive",
+            "Data Operations Associate"
+          ]
+        },
+        {
+          "course": "B.Voc - Cyber Security / Networking",
+          "roles": [
+            "Network Technician",
+            "Cyber Security Associate",
+            "NOC Executive",
+            "IT Support Engineer"
+          ]
+        },
+        {
+          "course": "B.Voc - Animation / Graphics / Multimedia",
+          "roles": [
+            "Animator",
+            "Graphic Designer",
+            "Video Editor",
+            "Multimedia Artist",
+            "Game Artist"
+          ]
+        },
+        {
+          "course": "B.Voc - Fashion Design / Apparel Manufacturing",
+          "roles": [
+            "Fashion Assistant",
+            "Pattern Maker",
+            "Apparel Supervisor",
+            "Merchandiser",
+            "Tailoring Entrepreneur"
+          ]
+        },
+        {
+          "course": "B.Voc - Food Processing / Food Technology",
+          "roles": [
+            "Food Processing Supervisor",
+            "QC Technician",
+            "Production Assistant",
+            "Food Safety Assistant"
+          ]
+        },
+        {
+          "course": "B.Voc - Automation / Mechatronics / CNC",
+          "roles": [
+            "CNC Operator",
+            "Automation Technician",
+            "PLC Technician",
+            "Maintenance Technician",
+            "Mechatronics Technician"
+          ]
+        },
+        {
+          "course": "B.Voc - Agriculture / Horticulture / Organic Farming",
+          "roles": [
+            "Farm Supervisor",
+            "Nursery Manager",
+            "Organic Farm Technician",
+            "Agri Extension Assistant"
+          ]
+        },
+        {
+          "course": "B.Voc - Interior Design / Construction Technology",
+          "roles": [
+            "Interior Assistant",
+            "Site Supervisor",
+            "Construction Technician",
+            "Estimator Assistant"
+          ]
+        },
+        {
+          "course": "B.Voc - Physiotherapy / Nursing Assistant / Medical Imaging",
+          "roles": [
+            "Physiotherapy Assistant",
+            "Nursing Assistant",
+            "Imaging Technician",
+            "Patient Care Technician"
+          ]
+        },
+        {
+          "course": "B.Voc - Beauty, Cosmetology & Wellness",
+          "roles": [
+            "Beautician",
+            "Cosmetologist",
+            "Salon Manager",
+            "Spa Therapist",
+            "Makeup Artist"
+          ]
+        },
+        {
+          "course": "B.Voc - Media / Film Production / Sound",
+          "roles": [
+            "Sound Assistant",
+            "Film Production Assistant",
+            "Editor",
+            "Camera Assistant"
+          ]
+        },
+        {
+          "course": "B.Voc - Aviation / Airport Management",
+          "roles": [
+            "Ground Staff",
+            "Airport Executive",
+            "Cabin Crew Trainee",
+            "Cargo Handler"
+          ]
+        },
+        {
+          "course": "B.Voc - Sports & Fitness Management",
+          "roles": [
+            "Fitness Trainer",
+            "Gym Manager",
+            "Sports Coach Assistant",
+            "Wellness Coach"
+          ]
+        }
+      ]
+    },
+    "Integrated / Dual-Degree Programmes (BS-MS, B.Tech+M.Tech, B.Sc-M.Sc, BA-MA)": {
+      "domain": "Integrated & Dual Degree Programmes",
+      "duration": "5 years",
+      "eligibility": "10+2 (Science/relevant stream)",
+      "entranceExams": "JEE Advanced/Main, IISER Aptitude Test, KVPY-successor/NEST, CUET, university entrances",
+      "courses": [
+        {
+          "course": "IISER / NISER Integrated BS-MS (Physics / Chemistry / Biology / Maths / Earth Sciences)",
+          "roles": [
+            "Research Scientist",
+            "Research Associate",
+            "Data Scientist",
+            "Lecturer/Professor (after PhD)",
+            "Scientist (DRDO/ISRO/CSIR)"
+          ]
+        },
+        {
+          "course": "Integrated B.Tech + M.Tech (e.g. CSE, ECE, Mechanical)",
+          "roles": [
+            "R&D Engineer",
+            "Senior Engineer",
+            "Research Associate",
+            "Technology Specialist",
+            "Faculty (after PhD)"
+          ]
+        },
+        {
+          "course": "Integrated M.Sc (Physics / Chemistry / Maths / Biotech / Life Sciences)",
+          "roles": [
+            "Research Associate",
+            "Scientist",
+            "Lecturer",
+            "Lab Manager",
+            "Data Analyst"
+          ]
+        },
+        {
+          "course": "Integrated MA (Economics / English / Development Studies)",
+          "roles": [
+            "Economist",
+            "Policy Analyst",
+            "Researcher",
+            "Lecturer (after NET)",
+            "Consultant"
+          ]
+        },
+        {
+          "course": "Integrated LLB (LLB+LLM)",
+          "roles": [
+            "Corporate Lawyer",
+            "Legal Researcher",
+            "Advocate",
+            "Law Firm Associate",
+            "Lecturer (after NET)"
+          ]
+        }
+      ]
+    },
+    "BS (4-Year Bachelor of Science - IIT / IISc / Online & Research-oriented)": {
+      "domain": "Interdisciplinary & Liberal Education",
+      "duration": "4 years",
+      "eligibility": "10+2 with PCM (some accept any stream + qualifier)",
+      "entranceExams": "JEE Advanced, JEE Main, IISc UG entrance (via CUET/JEE/NEET), IIT Madras qualifier, institute entrance",
+      "courses": [
+        {
+          "course": "BS - Data Science & Applications (IIT online/on-campus)",
+          "roles": [
+            "Data Scientist",
+            "Data Analyst",
+            "ML Engineer",
+            "Business Analyst",
+            "Data Engineer"
+          ]
+        },
+        {
+          "course": "BS - Electronic Systems (IIT online)",
+          "roles": [
+            "Embedded Engineer",
+            "Electronics Design Engineer",
+            "IoT Engineer",
+            "Hardware Engineer",
+            "Systems Engineer"
+          ]
+        },
+        {
+          "course": "BS - Data Science & Artificial Intelligence",
+          "roles": [
+            "AI Engineer",
+            "Data Scientist",
+            "Research Engineer",
+            "ML Engineer",
+            "Analytics Consultant"
+          ]
+        },
+        {
+          "course": "BS - Computer Science & Data Analysis",
+          "roles": [
+            "Software Developer",
+            "Data Analyst",
+            "Cloud Engineer",
+            "ML Associate",
+            "Analytics Engineer"
+          ]
+        },
+        {
+          "course": "BS (Research) - Physics / Chemistry / Maths / Biology / Materials",
+          "roles": [
+            "Research Scientist",
+            "PhD Candidate",
+            "Data Scientist",
+            "R&D Associate",
+            "Quant Analyst"
+          ]
+        },
+        {
+          "course": "BS - Medical Sciences & Technology",
+          "roles": [
+            "Medical Device Engineer",
+            "Healthtech Product Associate",
+            "Clinical Data Analyst",
+            "Bioinformatics Analyst",
+            "Regulatory Associate"
+          ]
+        },
+        {
+          "course": "BS - Economics / Finance",
+          "roles": [
+            "Economic Analyst",
+            "Quant Analyst",
+            "Financial Analyst",
+            "Policy Researcher",
+            "Data Analyst"
+          ]
+        }
+      ]
+    },
+    "Liberal Arts / Liberal Studies (BA / B.Sc Liberal Arts & Sciences)": {
+      "domain": "Interdisciplinary & Liberal Education",
+      "duration": "3-4 years",
+      "eligibility": "10+2 (any stream)",
+      "entranceExams": "SAT, CUET-UG, university-specific tests (Ashoka, Krea, FLAME, Azim Premji, Shiv Nadar, Jindal)",
+      "courses": [
+        {
+          "course": "Liberal Arts & Sciences (Major-Minor flexible)",
+          "roles": [
+            "Policy Analyst",
+            "Consultant",
+            "Researcher",
+            "Content Strategist",
+            "Product Associate",
+            "Civil Services Aspirant"
+          ]
+        },
+        {
+          "course": "Politics, Philosophy & Economics (PPE)",
+          "roles": [
+            "Policy Analyst",
+            "Consultant",
+            "Public Affairs Associate",
+            "Journalist",
+            "Researcher"
+          ]
+        },
+        {
+          "course": "Psychology & Neuroscience",
+          "roles": [
+            "Research Assistant",
+            "UX Researcher",
+            "Counsellor",
+            "Behavioural Analyst",
+            "HR Analyst"
+          ]
+        },
+        {
+          "course": "Data, Society & Technology",
+          "roles": [
+            "Data Analyst",
+            "Product Associate",
+            "Tech Policy Analyst",
+            "Research Associate",
+            "Digital Strategist"
+          ]
+        },
+        {
+          "course": "Economics & Finance (Liberal)",
+          "roles": [
+            "Financial Analyst",
+            "Economic Researcher",
+            "Consultant",
+            "Banking Associate",
+            "Data Analyst"
+          ]
+        },
+        {
+          "course": "Media, Communication & Culture",
+          "roles": [
+            "Content Strategist",
+            "Brand Manager (Junior)",
+            "Journalist",
+            "Communications Executive",
+            "Creative Producer"
+          ]
+        },
+        {
+          "course": "Environmental Studies & Sustainability",
+          "roles": [
+            "Sustainability Analyst",
+            "ESG Associate",
+            "Environmental Consultant",
+            "Policy Researcher",
+            "NGO Program Officer"
+          ]
+        },
+        {
+          "course": "Design & Innovation Studies",
+          "roles": [
+            "Design Researcher",
+            "Innovation Associate",
+            "Product Analyst",
+            "Service Designer",
+            "Creative Strategist"
+          ]
+        }
+      ]
+    },
+    "B.FTech / B.Des Fashion (NIFT-style) & Fashion Technology": {
+      "domain": "Interdisciplinary & Liberal Education",
+      "duration": "4 years",
+      "eligibility": "10+2 (any stream; B.FTech needs PCM)",
+      "entranceExams": "NIFT Entrance Exam, CUET-UG, university entrances",
+      "courses": [
+        {
+          "course": "Apparel Production Technology (B.FTech)",
+          "roles": [
+            "Apparel Production Manager",
+            "Merchandiser",
+            "Quality Manager",
+            "Process Engineer",
+            "Sourcing Manager"
+          ]
+        },
+        {
+          "course": "Fashion Communication / Fashion Styling",
+          "roles": [
+            "Fashion Stylist",
+            "Fashion Journalist",
+            "Visual Merchandiser",
+            "Brand Communicator",
+            "Fashion Photographer"
+          ]
+        },
+        {
+          "course": "Knitwear / Leather / Accessory Design",
+          "roles": [
+            "Knitwear Designer",
+            "Accessory Designer",
+            "Leather Designer",
+            "Trend Analyst"
+          ]
+        },
+        {
+          "course": "Fashion Business / Retail Management",
+          "roles": [
+            "Fashion Buyer",
+            "Retail Manager",
+            "Brand Manager",
+            "Merchandise Planner",
+            "E-commerce Manager"
+          ]
+        }
+      ]
+    },
+    "Aviation & Aerospace Programmes (B.Sc Aviation / CPL Integrated / AME / BBA Aviation)": {
+      "domain": "Aviation, Maritime & Defence",
+      "duration": "3-4 years",
+      "eligibility": "10+2 with PCM (for pilot/AME) or any stream (BBA/B.Sc Aviation)",
+      "entranceExams": "DGCA Class-1/2 medical, CPL ground exams, IGRUA/NIFT/institute entrances, CUET-UG",
+      "courses": [
+        {
+          "course": "Commercial Pilot Licence (CPL - B.Sc Aviation)",
+          "roles": [
+            "Commercial Pilot (First Officer)",
+            "Flight Instructor",
+            "Charter Pilot",
+            "Cargo Pilot",
+            "Helicopter Pilot"
+          ]
+        },
+        {
+          "course": "Air Traffic Management / Air Navigation Services",
+          "roles": [
+            "Air Traffic Controller (AAI)",
+            "Flight Dispatcher",
+            "Aeronautical Information Specialist",
+            "Airport Operations Controller"
+          ]
+        },
+        {
+          "course": "Airport Management / Ground Operations / Cargo",
+          "roles": [
+            "Airport Manager",
+            "Ground Operations Executive",
+            "Cargo Manager",
+            "Aviation Security Officer",
+            "Load Controller"
+          ]
+        },
+        {
+          "course": "Cabin Crew / In-flight Services",
+          "roles": [
+            "Cabin Crew",
+            "Senior Cabin Crew",
+            "Purser",
+            "In-flight Service Manager",
+            "Airline Trainer"
+          ]
+        },
+        {
+          "course": "Aerospace Manufacturing / MRO",
+          "roles": [
+            "MRO Engineer",
+            "Aerospace Technician",
+            "Quality Inspector (Aviation)",
+            "Maintenance Planner",
+            "Composite Technician"
+          ]
+        },
+        {
+          "course": "Drone Pilot Licensing & UAS Operations",
+          "roles": [
+            "Remote Pilot",
+            "UAS Operations Manager",
+            "Drone Instructor",
+            "Aerial Survey Specialist"
+          ]
+        }
+      ]
+    },
+    "Merchant Navy / Maritime Programmes (B.Sc Nautical / B.Tech Marine / GME / DNS / ETO)": {
+      "domain": "Aviation, Maritime & Defence",
+      "duration": "3-4 years",
+      "eligibility": "10+2 with PCM (ETO/Deck/Engine), medical fitness",
+      "entranceExams": "IMU-CET, institute entrances, DG Shipping approval",
+      "courses": [
+        {
+          "course": "Deck Cadet / Nautical Science (DNS/B.Sc Nautical)",
+          "roles": [
+            "Third Officer",
+            "Second Officer",
+            "Chief Officer",
+            "Master (Captain)",
+            "Marine Pilot"
+          ]
+        },
+        {
+          "course": "Marine Engineering (GME / B.Tech Marine)",
+          "roles": [
+            "Fourth Engineer",
+            "Third Engineer",
+            "Second Engineer",
+            "Chief Engineer",
+            "Superintendent Engineer"
+          ]
+        },
+        {
+          "course": "Electro-Technical Officer (ETO) Course",
+          "roles": [
+            "Electro-Technical Officer",
+            "Ship Electrician",
+            "Marine Automation Engineer",
+            "Offshore Electrical Engineer"
+          ]
+        },
+        {
+          "course": "Port & Shipping Management / Maritime Logistics",
+          "roles": [
+            "Port Operations Manager",
+            "Shipping Agent",
+            "Chartering Executive",
+            "Freight Forwarder",
+            "Maritime Logistics Manager"
+          ]
+        },
+        {
+          "course": "Offshore / Ship Building / Dredging Technology",
+          "roles": [
+            "Offshore Technician",
+            "Ship Building Engineer",
+            "Dredging Operator",
+            "Rig Engineer"
+          ]
+        }
+      ]
+    },
+    "Defence & Uniformed Services Entry Pathways (UG-level)": {
+      "domain": "Aviation, Maritime & Defence",
+      "duration": "3-4 years training / service",
+      "eligibility": "10+2 / graduation (as per scheme)",
+      "entranceExams": "NDA, CDS, AFCAT, TES, Indian Navy Entries, Agnipath (Agniveer), CAPF-AC, Coast Guard, SSB interview",
+      "courses": [
+        {
+          "course": "NDA (Army / Navy / Air Force wings)",
+          "roles": [
+            "Army Officer",
+            "Naval Officer",
+            "Air Force Officer",
+            "Defence Instructor",
+            "Staff Officer"
+          ]
+        },
+        {
+          "course": "Technical Entry Scheme (TES) / Navy B.Tech Entry / AFCAT Technical",
+          "roles": [
+            "Technical Officer (Army/Navy/IAF)",
+            "Aeronautical Engineer Officer",
+            "Electronics Officer",
+            "Mechanical Engineer Officer"
+          ]
+        },
+        {
+          "course": "AFCAT Flying / Ground Duty",
+          "roles": [
+            "Fighter/Transport Pilot",
+            "Ground Duty Officer (Admin/Logistics)",
+            "Meteorology Officer",
+            "Air Traffic Officer"
+          ]
+        },
+        {
+          "course": "Agniveer (Army / Navy / Air Force)",
+          "roles": [
+            "Agniveer (Soldier/Sailor/Airman)",
+            "Technician (Defence)",
+            "Clerk/Store Keeper (Defence)",
+            "Post-service Skilled Roles"
+          ]
+        },
+        {
+          "course": "Central Armed Police Forces / State Police (Officer entry)",
+          "roles": [
+            "Assistant Commandant (CAPF)",
+            "Sub-Inspector",
+            "Inspector",
+            "DSP (State PSC)",
+            "Security Officer"
+          ]
+        }
+      ]
+    },
+    "Yoga, Wellness & Alternative Health (B.Sc/BA Yoga, Naturopathy, Sowa-Rigpa, Wellness)": {
+      "domain": "Interdisciplinary & Liberal Education",
+      "duration": "3-4 years",
+      "eligibility": "10+2 (any stream; some PCB)",
+      "entranceExams": "University entrances, CUET-UG, AIIA/institute entrances",
+      "courses": [
+        {
+          "course": "B.Sc / BA Yoga & Yogic Science",
+          "roles": [
+            "Yoga Teacher",
+            "Yoga Therapist",
+            "Wellness Consultant",
+            "Yoga Trainer (Corporate)",
+            "Retreat Manager"
+          ]
+        },
+        {
+          "course": "Naturopathy / Spa Therapy / Ayurveda Wellness",
+          "roles": [
+            "Spa Therapist",
+            "Naturopathy Consultant",
+            "Wellness Centre Manager",
+            "Lifestyle Coach"
+          ]
+        },
+        {
+          "course": "Sowa-Rigpa / Traditional Medicine Studies",
+          "roles": [
+            "Sowa-Rigpa Practitioner",
+            "Traditional Medicine Researcher",
+            "Herbal Consultant"
+          ]
+        },
+        {
+          "course": "Sports Science, Coaching & Exercise Physiology",
+          "roles": [
+            "Fitness Coach",
+            "Sports Scientist",
+            "Strength Coach",
+            "Sports Nutritionist",
+            "Physical Trainer"
+          ]
+        }
+      ]
+    },
+    "Diploma (Polytechnic - 10th / 12th entry)": {
+      "domain": "Diploma, ITI & Skill Programmes",
+      "duration": "3 years (2 years lateral / 1-2 years for some)",
+      "eligibility": "10th pass (lateral entry after 12th/ITI)",
+      "entranceExams": "State polytechnic entrance (POLYCET, DET), board admissions, merit",
+      "courses": [
+        {
+          "course": "Diploma - Civil Engineering",
+          "roles": [
+            "Junior Engineer (Civil)",
+            "Site Supervisor",
+            "Draftsman",
+            "Surveyor",
+            "Estimator",
+            "Quality Inspector"
+          ]
+        },
+        {
+          "course": "Diploma - Mechanical Engineering",
+          "roles": [
+            "Junior Engineer (Mech)",
+            "Machine Operator/Technician",
+            "Maintenance Supervisor",
+            "Tool Room Technician",
+            "Production Supervisor"
+          ]
+        },
+        {
+          "course": "Diploma - Electrical & Electronics Engineering",
+          "roles": [
+            "Junior Engineer (Electrical)",
+            "Electrician Supervisor",
+            "Lineman Supervisor",
+            "Maintenance Technician",
+            "Substation Operator"
+          ]
+        },
+        {
+          "course": "Diploma - Electronics & Communication",
+          "roles": [
+            "Electronics Technician",
+            "Telecom Technician",
+            "Service Engineer",
+            "Embedded Technician",
+            "Network Technician"
+          ]
+        },
+        {
+          "course": "Diploma - Computer Engineering / Information Technology",
+          "roles": [
+            "Web Developer (Junior)",
+            "Software Tester",
+            "IT Support Technician",
+            "Network Technician",
+            "Programmer Trainee"
+          ]
+        },
+        {
+          "course": "Diploma - Automobile Engineering",
+          "roles": [
+            "Automobile Technician",
+            "Service Advisor",
+            "Workshop Supervisor",
+            "Quality Inspector"
+          ]
+        },
+        {
+          "course": "Diploma - Chemical / Petrochemical / Plastic Engineering",
+          "roles": [
+            "Plant Operator",
+            "Chemical Technician",
+            "QC Technician",
+            "Production Supervisor"
+          ]
+        },
+        {
+          "course": "Diploma - Mining / Metallurgy / Ceramic Engineering",
+          "roles": [
+            "Mining Sirdar/Foreman",
+            "Mine Surveyor",
+            "Metallurgical Technician",
+            "Foundry Supervisor"
+          ]
+        },
+        {
+          "course": "Diploma - Textile / Garment / Fashion Technology",
+          "roles": [
+            "Textile Technician",
+            "Garment Supervisor",
+            "Pattern Maker",
+            "Quality Checker",
+            "Fashion Assistant"
+          ]
+        },
+        {
+          "course": "Diploma - Architecture Assistantship / Interior Design",
+          "roles": [
+            "Architectural Draftsman",
+            "Interior Assistant",
+            "Site Supervisor",
+            "3D Visualiser"
+          ]
+        },
+        {
+          "course": "Diploma - Printing / Packaging Technology",
+          "roles": [
+            "Print Technician",
+            "Prepress Operator",
+            "Packaging Technician",
+            "Quality Inspector"
+          ]
+        },
+        {
+          "course": "Diploma - Mechatronics / Robotics / Instrumentation",
+          "roles": [
+            "Instrumentation Technician",
+            "Automation Technician",
+            "PLC Technician",
+            "Robotics Technician"
+          ]
+        },
+        {
+          "course": "Diploma - Marine Engineering / Fire & Safety",
+          "roles": [
+            "Marine Fitter/Engine Rating",
+            "Fire Safety Technician",
+            "Safety Supervisor",
+            "Fireman"
+          ]
+        },
+        {
+          "course": "Diploma - Food Technology / Dairy / Leather",
+          "roles": [
+            "Food Processing Technician",
+            "Dairy Technician",
+            "Leather Technician",
+            "QC Analyst"
+          ]
+        },
+        {
+          "course": "Diploma - Pharmacy (D.Pharm)",
+          "roles": [
+            "Pharmacist",
+            "Retail Pharmacy Owner",
+            "Drug Store Manager",
+            "Pharmacy Assistant",
+            "Medical Representative"
+          ]
+        },
+        {
+          "course": "Diploma - Medical Lab Technology (DMLT) / Radiology / Optometry",
+          "roles": [
+            "Lab Technician",
+            "Radiology Technician",
+            "Optometry Assistant",
+            "Phlebotomist",
+            "X-Ray Technician"
+          ]
+        },
+        {
+          "course": "Diploma - Nursing (GNM / ANM)",
+          "roles": [
+            "Staff Nurse (GNM)",
+            "Auxiliary Nurse Midwife",
+            "Community Health Worker",
+            "Nursing Attendant",
+            "Health Worker"
+          ]
+        },
+        {
+          "course": "Diploma - Agriculture / Horticulture / Sericulture",
+          "roles": [
+            "Agri Assistant",
+            "Farm Supervisor",
+            "Nursery Technician",
+            "Seed Inspector",
+            "Agri Extension Assistant"
+          ]
+        },
+        {
+          "course": "Diploma - Hotel Management / Catering Technology",
+          "roles": [
+            "Commis Chef",
+            "F&B Steward",
+            "Front Office Assistant",
+            "Housekeeping Supervisor",
+            "Kitchen Assistant"
+          ]
+        },
+        {
+          "course": "Diploma - Animation / Multimedia / Film / Photography",
+          "roles": [
+            "Animator",
+            "Photographer",
+            "Video Editor",
+            "Studio Assistant",
+            "Multimedia Artist"
+          ]
+        },
+        {
+          "course": "Diploma - Cyber Security / AI / Data Analytics / Cloud",
+          "roles": [
+            "IT Support",
+            "Data Entry/Analytics Assistant",
+            "Cloud Support Technician",
+            "Security Operations Technician"
+          ]
+        },
+        {
+          "course": "Diploma - Renewable Energy / EV Technology / Solar",
+          "roles": [
+            "Solar Technician",
+            "EV Service Technician",
+            "Energy Auditor Assistant",
+            "Wind Turbine Technician"
+          ]
+        },
+        {
+          "course": "Diploma - Elementary / Early Childhood Education (D.El.Ed, NTT)",
+          "roles": [
+            "Primary Teacher",
+            "Pre-Primary Teacher",
+            "Montessori Teacher",
+            "Aanganwadi Worker"
+          ]
+        },
+        {
+          "course": "Diploma - Yoga / Beauty & Wellness / Cosmetology",
+          "roles": [
+            "Yoga Instructor",
+            "Beautician",
+            "Cosmetologist",
+            "Salon Technician"
+          ]
+        }
+      ]
+    },
+    "ITI Trades (NCVT / SCVT - 10th / 12th entry)": {
+      "domain": "Diploma, ITI & Skill Programmes",
+      "duration": "1-2 years",
+      "eligibility": "10th / 8th pass",
+      "entranceExams": "ITI admission (state DGT portals), merit-based",
+      "courses": [
+        {
+          "course": "Electrician / Wireman / Lineman",
+          "roles": [
+            "Electrician",
+            "Wireman",
+            "Lineman",
+            "Maintenance Electrician",
+            "Electrical Contractor"
+          ]
+        },
+        {
+          "course": "Fitter / Turner / Machinist / Tool & Die Maker",
+          "roles": [
+            "Fitter",
+            "Turner",
+            "Machinist",
+            "CNC Operator",
+            "Tool & Die Maker"
+          ]
+        },
+        {
+          "course": "Welder / Sheet Metal / Foundryman",
+          "roles": [
+            "Welder (TIG/MIG/ARC)",
+            "Sheet Metal Worker",
+            "Fabricator",
+            "Pipe Fitter",
+            "Boilermaker"
+          ]
+        },
+        {
+          "course": "Plumber / Carpenter / Mason / Painter",
+          "roles": [
+            "Plumber",
+            "Carpenter",
+            "Mason",
+            "Painter & Decorator",
+            "Building Maintenance Technician"
+          ]
+        },
+        {
+          "course": "Mechanic (Motor Vehicle / Diesel / Two-Wheeler / EV)",
+          "roles": [
+            "Automobile Mechanic",
+            "Diesel Mechanic",
+            "Two-Wheeler Mechanic",
+            "EV Mechanic",
+            "Service Technician"
+          ]
+        },
+        {
+          "course": "Mechanic (Refrigeration & AC / Electronics / Mobile Phone)",
+          "roles": [
+            "HVAC Technician",
+            "Electronics Mechanic",
+            "Mobile Repair Technician",
+            "Appliance Service Technician"
+          ]
+        },
+        {
+          "course": "COPA / Computer Operator & Programming Assistant",
+          "roles": [
+            "Data Entry Operator",
+            "Computer Operator",
+            "Office Assistant",
+            "IT Support Executive"
+          ]
+        },
+        {
+          "course": "Draughtsman (Civil / Mechanical) / Surveyor",
+          "roles": [
+            "Draughtsman",
+            "Surveyor",
+            "CAD Operator",
+            "Site Assistant"
+          ]
+        },
+        {
+          "course": "Cutting & Sewing / Fashion Design & Technology / Embroidery",
+          "roles": [
+            "Tailor",
+            "Garment Cutter",
+            "Fashion Assistant",
+            "Embroidery Designer",
+            "Boutique Owner"
+          ]
+        },
+        {
+          "course": "Hair & Skin Care / Cosmetology / Beauty",
+          "roles": [
+            "Beautician",
+            "Hair Stylist",
+            "Makeup Artist",
+            "Salon Owner"
+          ]
+        },
+        {
+          "course": "Dress Making / Weaving / Handloom",
+          "roles": [
+            "Weaver",
+            "Handloom Entrepreneur",
+            "Dress Maker",
+            "Textile Supervisor"
+          ]
+        },
+        {
+          "course": "Solar Technician / Drone Technician / Smart Agriculture Technician",
+          "roles": [
+            "Solar Technician",
+            "Drone Technician",
+            "Smart Agri Technician",
+            "Field Service Technician"
+          ]
+        }
+      ]
+    }
+  }
+}

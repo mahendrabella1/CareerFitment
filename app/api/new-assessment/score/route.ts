@@ -4,6 +4,7 @@ import { scoreClass6Assessment, type Class6Response } from "@/lib/newAssessment/
 import { scoreClass7Assessment, type Class7Response } from "@/lib/newAssessment/class7Scoring";
 import { scoreClass8Assessment, type Class8Response } from "@/lib/newAssessment/class8Scoring";
 import { scoreClass11Assessment, type Class11Response } from "@/lib/newAssessment/scoring11_12";
+import { scoreGraduateAssessment, type GraduateResponse } from "@/lib/newAssessment/scoringGrad";
 import { convertClass678Answers } from "@/lib/newAssessment/class678Ids";
 import { getSet, optionsForQuestion, resolvedQuestionType, type Category, type StageKey } from "@/lib/newAssessment/data";
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
@@ -77,8 +78,15 @@ export async function POST(req: Request) {
         ["11-12", "Class 11-12"];
       summary = baseSummary(journeyCode, journeyName);
       (summary as any).class11Output = classOutput;
+    } else if (body.category === "graduate") {
+      const responses: GraduateResponse = convertAnswersToGraduateFormat(body.answers);
+      applyPreExamAnswersGrad(responses, body.answers);
+      const gradOutput = scoreGraduateAssessment(responses);
+      summary = baseSummary("grad", "Graduate");
+      (summary as any).graduateOutput = gradOutput;
     } else {
-      // For other stages (9-10, graduates, etc), use standard scoring
+      // For other stages (9-10, early professional, experienced professional,
+      // etc), use standard scoring
       summary = scoreAssessment(body.stage, body.chosenSets, body.answers);
     }
 
@@ -310,6 +318,123 @@ function convertAnswersToClass11Format(answers: Record<string, string>, chosenSe
 function coarseStream(detailed: string): string {
   if (detailed === "CommerceMaths" || detailed === "CommerceNoMaths") return "Commerce";
   return detailed;
+}
+
+// ---------------------------------------------------------------- Graduates
+
+const DEGREE_FIT_FIELDS: Record<number, FieldSpec> = {
+  0: { field: "satisfactionSource", kind: "text" },
+  1: { field: "satisfactionScore", kind: "index" },
+  2: { field: "reasons", kind: "multi" },
+};
+const CAREER_CLUSTER_FIT_FIELDS: Record<number, FieldSpec> = {
+  0: { field: "topClusters", kind: "multi" },
+  1: { field: "workTypePreference", kind: "text" },
+  2: { field: "confidence", kind: "index" },
+  3: { field: "concerns", kind: "multi" },
+  4: { field: "decisionStage", kind: "text" },
+};
+
+const emptyGradContext = () => ({
+  degree_fit: { satisfactionSource: "", satisfactionScore: 5, reasons: [] as string[] },
+  career_cluster_fit: {
+    topClusters: [] as string[], workTypePreference: "", confidence: 5, concerns: [] as string[], decisionStage: "",
+  },
+});
+
+// Mirrors convertAnswersToClass11Format() above, for the Graduates (UG)
+// bank instead - same "category:index" -> value decoding, same
+// resolvedQuestionType()/optionsForQuestion() helpers so this always agrees
+// with what the generate route actually showed the student.
+function convertAnswersToGraduateFormat(answers: Record<string, string>): GraduateResponse {
+  const dimensions: Record<string, Record<string, number | number[]>> = {
+    personality: {}, career_interest: {}, aptitude: {}, strengths: {},
+    motivators: {}, learning_styles: {}, emotional_intelligence: {}, multiple_intelligence: {},
+  };
+  const context = emptyGradContext();
+  const stage: StageKey = "ug";
+  const rawByCategory: Partial<Record<"degree_fit" | "career_cluster_fit", ReturnType<typeof getSet>>> = {
+    degree_fit: getSet("degree_fit", stage, "Set 1"),
+    career_cluster_fit: getSet("career_cluster_fit", stage, "Set 1"),
+  };
+  const FIELD_MAPS = { degree_fit: DEGREE_FIT_FIELDS, career_cluster_fit: CAREER_CLUSTER_FIT_FIELDS };
+
+  Object.entries(answers).forEach(([key, value]) => {
+    const [category, indexStr] = key.split(":");
+    const index = parseInt(indexStr, 10);
+
+    if (category === "personality" || category === "career_interest" || category === "aptitude" ||
+        category === "motivators" || category === "learning_styles" || category === "emotional_intelligence" ||
+        category === "strengths") {
+      const optionIndex = parseInt(value, 10);
+      if (Number.isNaN(optionIndex)) return;
+      dimensions[category][indexStr] = optionIndex;
+      return;
+    }
+    if (category === "multiple_intelligence") {
+      // Q3 is "select up to TWO" (a JSON array of indices); Q0-2 are plain
+      // single-select indices.
+      try {
+        const parsed = JSON.parse(value);
+        dimensions.multiple_intelligence[indexStr] = Array.isArray(parsed) ? parsed.map((s) => parseInt(s, 10)) : parseInt(value, 10);
+      } catch {
+        const optionIndex = parseInt(value, 10);
+        if (!Number.isNaN(optionIndex)) dimensions.multiple_intelligence[indexStr] = optionIndex;
+      }
+      return;
+    }
+
+    if (category !== "degree_fit" && category !== "career_cluster_fit") return;
+    const spec = FIELD_MAPS[category][index];
+    if (!spec) return;
+
+    const raw = rawByCategory[category]?.[index];
+    const resolved = raw ? resolvedQuestionType(raw.type as string, raw.instruction) : undefined;
+    const opts = raw ? optionsForQuestion(category, index, raw) : null;
+    const target = context[category] as Record<string, unknown>;
+
+    if (spec.kind === "multi") {
+      if (!resolved?.isMulti) return;
+      let selectedIdx: string[];
+      try { selectedIdx = JSON.parse(value); } catch { return; }
+      if (!Array.isArray(selectedIdx) || !opts) return;
+      target[spec.field] = selectedIdx.map((s) => opts[parseInt(s, 10)]).filter((s): s is string => Boolean(s));
+      return;
+    }
+
+    const optionIndex = parseInt(value, 10);
+    if (Number.isNaN(optionIndex)) return;
+    if (spec.kind === "index") {
+      target[spec.field] = optionIndex;
+    } else if (opts) {
+      target[spec.field] = opts[optionIndex] ?? "";
+    }
+  });
+
+  return {
+    personality: dimensions.personality as Record<string, number>,
+    career_interest: dimensions.career_interest as Record<string, number>,
+    aptitude: dimensions.aptitude as Record<string, number>,
+    strengths: dimensions.strengths as Record<string, number>,
+    motivators: dimensions.motivators as Record<string, number>,
+    learning_styles: dimensions.learning_styles as Record<string, number>,
+    emotional_intelligence: dimensions.emotional_intelligence as Record<string, number>,
+    multiple_intelligence: dimensions.multiple_intelligence,
+    degree_fit: context.degree_fit,
+    career_cluster_fit: context.career_cluster_fit,
+    domain: "", degree: "", course: "", year: "", desiredCareer: "",
+  };
+}
+
+// Graduates' degree/course/year/desired-career are collected on the
+// pre-exam screen (NewExam.tsx "preinfo" phase, stage "ug"), the same
+// "preinfo:*" synthetic-key pattern 11-12 uses for its stream/career.
+function applyPreExamAnswersGrad(responses: GraduateResponse, answers: Record<string, string>): void {
+  responses.domain = answers["preinfo:domain"] ?? "";
+  responses.degree = answers["preinfo:degree"] ?? "";
+  responses.course = answers["preinfo:course"] ?? "";
+  responses.year = answers["preinfo:year"] ?? "";
+  responses.desiredCareer = answers["preinfo:career"] ?? "";
 }
 
 function applyPreExamAnswers(responses: Class11Response, answers: Record<string, string>, category: string): void {

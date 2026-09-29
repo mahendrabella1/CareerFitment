@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { useAuth, type ExamSession } from "@/lib/auth/AuthProvider";
 import { getFirebaseAuth } from "@/lib/firebase/client";
 import { DOMAINS_1112, careersByDomain } from "@/lib/report/careerfit1112";
+import { UG_DOMAINS, coursesForDegree } from "@/lib/report/degreeTaxonomyGrad";
 
 // Same canonical stream keys/order as STREAM_KEY_BY_INDEX in
 // app/api/new-assessment/score/route.ts and STREAM_DOMAIN_FIT in
@@ -40,6 +41,32 @@ const STREAM_OPTIONS: { key: string; label: string }[] = [
   { key: "Arts", label: "Humanities / Arts" },
   { key: "Vocational", label: "Vocational / Diploma" },
   { key: STREAM_OTHER, label: "Other" },
+];
+
+// Graduates (UG) pre-exam picker options. GRAD_CAREER_OPTIONS is the exact
+// same 19-item list as the in-exam career_selector:0 question in
+// data/graduates/questions-corrected.json - kept in sync manually since
+// collecting it here means that question is skipped in-exam (see
+// PRE_EXAM_SKIP in the generate route), the same pattern 11-12 uses for
+// its own preCareer picker.
+const GRAD_CAREER_OTHER = "Other (please specify)";
+const GRAD_CAREER_OPTIONS: string[] = [
+  "Software Engineer / AI Engineer", "Data Scientist / Data Analyst", "Research Scientist",
+  "Doctor / Medical Professional", "Clinical Psychologist", "Sports Scientist / Performance Analyst",
+  "Food Technologist / Agri-Scientist", "Renewable Energy Engineer / Sustainability Consultant",
+  "Architect / Civil Engineer", "Financial Analyst / Finance Professional",
+  "Lawyer / Legal & Compliance Professional", "Policy Analyst / Public Administration Professional",
+  "Teacher / Curriculum Designer", "UX Designer / Content & Communication Professional",
+  "Manufacturing / Production Engineer", "Supply Chain / Logistics Manager",
+  "Hospitality / Travel Professional", "Defence / Emergency Services Professional",
+  GRAD_CAREER_OTHER,
+];
+const GRAD_YEAR_OPTIONS: { key: string; label: string }[] = [
+  { key: "1", label: "1st Year" },
+  { key: "2", label: "2nd Year" },
+  { key: "3", label: "3rd Year" },
+  { key: "4", label: "4th Year / Final Year" },
+  { key: "other", label: "Integrated / Other" },
 ];
 
 // The report shows this back as a single reference number (a Ring on the
@@ -200,6 +227,16 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
   const [preStream, setPreStream] = useState("");
   const [preCareer, setPreCareer] = useState("");
   const [prePercentage, setPrePercentage] = useState("");
+  // Graduates (UG) pre-exam screen - degree/course cascading picker + year
+  // + desired career, in place of 11-12's stream picker. See the "preinfo"
+  // phase render below (stage === "ug" branch) and PRE_EXAM_SKIP in the
+  // generate route.
+  const [preDomain, setPreDomain] = useState("");
+  const [preDegree, setPreDegree] = useState("");
+  const [preCourse, setPreCourse] = useState("");
+  const [preYear, setPreYear] = useState("");
+  const [preGradCareer, setPreGradCareer] = useState("");
+  const [preGradCareerOther, setPreGradCareerOther] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [err, setErr] = useState("");
   const [remainingSec, setRemainingSec] = useState(TOTAL_SEC);
@@ -250,7 +287,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
             setPhase("resume");
           } else {
             setRemainingSec(TOTAL_SEC);
-            setPhase(j.data.stage === "11-12" ? "preinfo" : "intro");
+            setPhase(j.data.stage === "11-12" || j.data.stage === "ug" ? "preinfo" : "intro");
           }
         } else { setErr(j.message || "Could not load the assessment."); setPhase("error"); }
       })
@@ -336,6 +373,19 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
   // along through the normal save/resume/submit path with no other plumbing
   // - see applyPreExamAnswers() in app/api/new-assessment/score/route.ts.
   function continueFromPreInfo() {
+    if (data?.stage === "ug") {
+      const gradCareer = preGradCareer === GRAD_CAREER_OTHER ? preGradCareerOther.trim() : preGradCareer;
+      setAnswers((a) => ({
+        ...a,
+        "preinfo:domain": preDomain,
+        "preinfo:degree": preDegree,
+        "preinfo:course": preCourse,
+        "preinfo:year": preYear,
+        "preinfo:career": gradCareer,
+      }));
+      setPhase("intro");
+      return;
+    }
     const stream = preStream === STREAM_OTHER ? "" : preStream;
     setAnswers((a) => ({
       ...a,
@@ -364,7 +414,8 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
       if (j.success && j.data?.sections?.length) {
         setData(j.data); setAnswers({}); setReview({}); setCur(0); setRemainingSec(TOTAL_SEC);
         setPreStream(""); setPreCareer(""); setPrePercentage("");
-        setPhase(j.data.stage === "11-12" ? "preinfo" : "intro");
+        setPreDomain(""); setPreDegree(""); setPreCourse(""); setPreYear(""); setPreGradCareer(""); setPreGradCareerOther("");
+        setPhase(j.data.stage === "11-12" || j.data.stage === "ug" ? "preinfo" : "intro");
       } else { setErr(j.message || "Could not load."); setPhase("error"); }
     } catch (e) { setErr(String((e as Error)?.message || e)); setPhase("error"); }
   }
@@ -500,6 +551,69 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
         </div>
       </div>
     );
+
+  if (phase === "preinfo" && data && data.stage === "ug") {
+    const availableDegrees = UG_DOMAINS.find((d) => d.name === preDomain)?.degrees ?? [];
+    const availableCourses = preDegree ? coursesForDegree(preDegree) : [];
+    const gradCareerValid = preGradCareer !== "" && (preGradCareer !== GRAD_CAREER_OTHER || preGradCareerOther.trim() !== "");
+    const canContinue = preDomain !== "" && preDegree !== "" && preCourse !== "" && preYear !== "" && gradCareerValid;
+    return (
+      <div style={S.introWrap}><style dangerouslySetInnerHTML={{ __html: CSS }} />
+        <div style={S.introCard} className="og-exam-introcard">
+          <div style={{ marginBottom: 16 }}><Logo height={30} /></div>
+          <h2 style={S.introTitle}>A couple of quick questions</h2>
+          <p style={S.introSub}>Before the timed assessment starts, tell us about what you're studying right now.</p>
+
+          <label style={preS.label}>Which broad field is your degree in?</label>
+          <select style={preS.select} value={preDomain} onChange={(e) => { setPreDomain(e.target.value); setPreDegree(""); setPreCourse(""); }}>
+            <option value="" disabled>Select a field…</option>
+            {UG_DOMAINS.map((d) => <option key={d.name} value={d.name}>{d.name}</option>)}
+          </select>
+
+          <label style={preS.label}>What is your degree?</label>
+          <select style={preS.select} value={preDegree} disabled={!preDomain} onChange={(e) => { setPreDegree(e.target.value); setPreCourse(""); }}>
+            <option value="" disabled>{preDomain ? "Select your degree…" : "Select a field first…"}</option>
+            {availableDegrees.map((deg) => <option key={deg} value={deg}>{deg}</option>)}
+          </select>
+
+          <label style={preS.label}>What is your course / specialization?</label>
+          <select style={preS.select} value={preCourse} disabled={!preDegree} onChange={(e) => setPreCourse(e.target.value)}>
+            <option value="" disabled>{preDegree ? "Select your course…" : "Select a degree first…"}</option>
+            {availableCourses.map((c) => <option key={c.course} value={c.course}>{c.course}</option>)}
+          </select>
+
+          <label style={preS.label}>What year are you in?</label>
+          <select style={preS.select} value={preYear} onChange={(e) => setPreYear(e.target.value)}>
+            <option value="" disabled>Select your year…</option>
+            {GRAD_YEAR_OPTIONS.map((y) => <option key={y.key} value={y.key}>{y.label}</option>)}
+          </select>
+
+          <label style={preS.label}>Which one specific career role would you most like to explore right now?</label>
+          <select style={preS.select} value={preGradCareer} onChange={(e) => setPreGradCareer(e.target.value)}>
+            <option value="" disabled>Select a career…</option>
+            {GRAD_CAREER_OPTIONS.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+          {preGradCareer === GRAD_CAREER_OTHER && (
+            <input
+              style={preS.select}
+              type="text"
+              placeholder="Tell us the specific role…"
+              value={preGradCareerOther}
+              onChange={(e) => setPreGradCareerOther(e.target.value)}
+            />
+          )}
+
+          <button
+            style={{ ...S.primary, width: "100%", marginTop: 22, ...(canContinue ? {} : S.disabled) }}
+            disabled={!canContinue}
+            onClick={continueFromPreInfo}
+          >
+            Continue →
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (phase === "preinfo" && data) {
     const isClass12 = category === "class_12";

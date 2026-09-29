@@ -1,6 +1,6 @@
 # CareerFitment - Class-Group Scope Map
 
-This project runs three **independent** assessment/report engines, one per class group. They share almost no code, but a few files ARE genuinely shared - those are the highest-risk files to touch, because a change made "for" one group silently reaches all of them.
+This project runs four **independent** assessment/report engines, one per class group. They share almost no code, but a few files ARE genuinely shared - those are the highest-risk files to touch, because a change made "for" one group silently reaches all of them.
 
 **Standing rule: before editing any file below, identify which group(s) it belongs to and say so before making the change.** If a request's own scope would touch more than one group, or touches a Shared file, flag that explicitly before editing - don't discover it after the fact. After finishing, verify with `git status`/`git diff` that only files in the intended group(s) actually changed.
 
@@ -36,15 +36,35 @@ Class 6 and 7 are structurally identical (same question counts/order/mapping tab
 | Report pages | `app/account/FullReport.tsx`, `PersonalityMBTI.tsx` |
 | Category order | `ORDER_11_12` in `lib/newAssessment/data.ts` |
 
+## Graduates (UG)
+
+For undergraduates currently mid-degree (registration category `"graduate"`, stage key `"ug"` - deliberately its OWN stage key, not a reuse of the shared bank's pre-existing generic `"grad"` entries). Built to mirror Class 11-12's architecture: a pre-exam degree/course picker instead of a stream picker, its own dedicated question bank/scorer/adapter, bypassing the generic `scoreAssessment()` path entirely.
+
+| Area | File(s) |
+|---|---|
+| Scoring | `lib/newAssessment/scoringGrad.ts` |
+| Questions | `data/graduates/questions-corrected.json` (stage key `"ug"`) |
+| Degree/course taxonomy | `lib/report/degreeTaxonomyGrad.ts` (from `data/graduates/degree-taxonomy.json`) - powers the pre-exam Domain→Degree→Course picker |
+| Career cluster taxonomy | `lib/report/careerClustersGrad.ts` (18 real clusters, from `data/graduates/career-clusters.json`) |
+| Cluster roadmap content | `lib/report/clusterRoadmapsGrad.ts` (from `data/graduates/cluster-roadmaps.json`) - the 7-section generic roadmap per cluster (yearly skill-building, govt/private internships, certifications, job roles, PG in India, study abroad, career advancement/PhD). Job roles/PG programmes/PhD programmes/entrance exams are pulled directly from source Excel data; yearly-skill-building/internship-sector/certification/study-abroad guidance is authored synthesis, not dedicated primary research the way Class 11-12's 308 career-specific roadmaps are - flagged for review before being treated as authoritative. |
+| Report sheets | `lib/report/careerFitGradSheets.tsx` |
+| Report adapter | `lib/report/adaptGraduate.ts` |
+| Category order | `ORDER_UG` in `lib/newAssessment/data.ts` |
+
+Graduates' Career Selector reuses Class 11-12's `CAREERS_1112`/`career-roadmaps-detailed.json` (via `findCareer1112()`/`detailedRoadmapFor()`, read-only) when a student's typed desired career resolves to one of those 308 researched careers - deliberately NOT a separate data file, to avoid re-authoring what already exists. This is the one place Graduates code imports FROM `careerfit1112.ts`/`careerRoadmapDetailed1112.ts` - read-only, never the reverse.
+
+As of this build, the `graduate` registration category is still gated `enabled: false` in `app/register/page.tsx`'s `MILESTONES` - flip only after a real manual walkthrough (register a test account, take the assessment, view the report), since no browser-based UI verification has been done yet.
+
 ## Shared across ALL groups - highest risk, edit with care
 
 | File | Used by | Why it's risky |
 |---|---|---|
 | `lib/newAssessment/data.ts` | All | Holds every `CATEGORY_ORDER`/`ORDER_*` constant, `CATEGORY_META`, and the generic question-bank loader - a change meant for one stage's order/labels can silently reorder or relabel another stage's assessment. |
-| `data/assessment-questions.json` | 9-10, grad, early, prof (NOT 6-8, NOT 11-12, which have their own dedicated files) | One bank shared by 4 stages under different top-level stage keys (`"9-10"`, `"grad"`, `"early"`, `"prof"`) - editing the wrong stage key, or a bank's shared tag vocabulary, can affect stages you didn't intend to touch. |
+| `data/assessment-questions.json` | 9-10, grad, early, prof (NOT 6-8, NOT 11-12, NOT Graduates/ug, which all have their own dedicated files) | One bank shared by 4 stages under different top-level stage keys (`"9-10"`, `"grad"`, `"early"`, `"prof"`) - editing the wrong stage key, or a bank's shared tag vocabulary, can affect stages you didn't intend to touch. |
 | `lib/report/knowledge.ts` | All (via `domainFit()`) | The 15-domain (A-O) catalogue used by every class's "best-fit domain" cards, plus `categoryDeepDive()` text shared across dimensions common to multiple groups. Class 9-10 also feeds its 8-cluster letters (A-H) through this same A-O-keyed logic - see the flagged mislabeling note in `app/account/FullReport.tsx` around `themes`/`riasecScores`. |
-| `app/account/FullReport.tsx`, `Dashboard.tsx`, `DashboardMobile.tsx` | All | Common report/dashboard shells that branch per class - a shared helper changed for one class's display can affect the others' rendering. |
-| `app/api/new-assessment/score/route.ts` | All | Single API route that dispatches to whichever class's scorer based on the submitted stage - a shared parsing helper touched for one stage can break another's answer parsing. |
+| `app/account/FullReport.tsx`, `Dashboard.tsx`, `DashboardMobile.tsx`, `app/admin/report/[uid]/page.tsx` | All | Common report/dashboard shells that branch per class - a shared helper changed for one class's display can affect the others' rendering. |
+| `app/api/new-assessment/score/route.ts`, `app/api/new-assessment/generate/route.ts` | All | The two API routes that dispatch to whichever class's scorer/question-set based on the submitted stage - a shared parsing helper touched for one stage can break another's answer parsing. |
+| `app/NewExam.tsx` | All | The single exam-taking UI component every stage renders through, including the pre-exam "preinfo" screen (stream+career for 11-12, degree+course+year+career for Graduates) - a shared helper or the `phase` state machine touched for one stage's pre-exam flow can break another's. |
 
 ## Known pre-existing quirks (not yet fixed, flagged here so they aren't mistaken for new bugs)
 
