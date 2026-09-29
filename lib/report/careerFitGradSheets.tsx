@@ -66,6 +66,108 @@ function clusterColor(cluster: string): string {
   return RANK_COLOURS[i % RANK_COLOURS.length];
 }
 
+// One-line description per cluster - same tone/format as careerFit1112Sheets.tsx's
+// own CLUSTER_TAGLINE (editorial, not a researched fact, so authored directly
+// rather than searched - same standard that file already holds itself to).
+const CLUSTER_TAGLINE_GRAD: Record<string, string> = {
+  "Engineering, Technology & Computing": "Design, build and scale the technology and systems that power modern life.",
+  "Science, Mathematics & Research": "Investigate, experiment and discover - from lab research to data-driven science.",
+  "Healthcare & Medicine": "Care for people's health, from clinical practice to allied health and diagnostics.",
+  "Psychology, Humanities & Social Sciences": "Understand people, society and the mind through research, counselling and social work.",
+  "Sports, Fitness & Human Performance": "Train, coach and optimise the human body for performance and wellbeing.",
+  "Agriculture, Food & Life Sciences": "Work with crops, livestock, food systems and biological sciences sustainably.",
+  "Environment, Energy & Sustainability": "Protect ecosystems and build a cleaner, more sustainable energy future.",
+  "Architecture, Construction & Built Environment": "Design and build the spaces and structures people live and work in.",
+  "Business, Finance & Entrepreneurship": "Manage money, run organisations and build new ventures.",
+  "Law, Legal & Compliance": "Uphold justice, interpret regulation and advise on legal and compliance matters.",
+  "Government, Public Administration & Policy": "Serve the public through policy, administration and civil service.",
+  "Education & Learning": "Teach, mentor and design learning experiences for others.",
+  "Media, Communication, Arts & Design": "Create visual, written and digital work that informs, persuades or entertains.",
+  "Manufacturing & Industrial Production": "Design, produce and maintain the physical goods and machinery people rely on.",
+  "Supply Chain, Procurement & Logistics": "Move goods, manage inventory and keep global supply chains running.",
+  "Travel, Tourism, Hospitality & Transport": "Deliver experiences across travel, hotels, food service and transport.",
+  "Defence, Security & Emergency Services": "Protect people and nations through defence, policing and emergency response.",
+  "Personal Care, Beauty & Wellness": "Help people look and feel their best through beauty, grooming and wellness services.",
+};
+
+// Transferable skills per cluster - same editorial standard as
+// careerFit1112Sheets.tsx's CLUSTER_CORE_SKILLS (broad, cluster-wide
+// skills every role in it draws on, not a tool specific to one sub-field).
+const CLUSTER_CORE_SKILLS_GRAD: Record<string, string[]> = {
+  "Engineering, Technology & Computing": ["Problem-solving & systems thinking", "Programming/technical fundamentals", "Data structures & algorithms", "Debugging & troubleshooting", "Tool & framework fluency", "Collaboration on technical teams"],
+  "Science, Mathematics & Research": ["Analytical & quantitative reasoning", "Experimental design", "Data analysis & statistics", "Scientific writing", "Lab/technical methodology", "Critical evaluation of evidence"],
+  "Healthcare & Medicine": ["Clinical/technical competence", "Patient communication & empathy", "Attention to detail under pressure", "Ethical judgement", "Teamwork in clinical settings", "Continuous learning (protocols evolve)"],
+  "Psychology, Humanities & Social Sciences": ["Active listening & empathy", "Research & qualitative analysis", "Written & verbal communication", "Cultural sensitivity", "Ethical reasoning", "Case documentation"],
+  "Sports, Fitness & Human Performance": ["Exercise & movement science", "Coaching & motivation", "Injury-prevention awareness", "Performance measurement", "Nutrition fundamentals", "Client/athlete communication"],
+  "Agriculture, Food & Life Sciences": ["Biological & agronomic knowledge", "Field & lab observation", "Data-driven decision-making", "Sustainability practices", "Applied problem-solving", "Patience with long growth cycles"],
+  "Environment, Energy & Sustainability": ["Environmental data analysis", "Regulatory & policy awareness", "Systems & lifecycle thinking", "Fieldwork & monitoring", "Technical reporting", "Stakeholder communication"],
+  "Architecture, Construction & Built Environment": ["Spatial & visual thinking", "Technical drawing/CAD software", "Project & site management", "Structural & materials understanding", "Regulatory & safety codes", "Client communication"],
+  "Business, Finance & Entrepreneurship": ["Numerical & analytical thinking", "Financial literacy", "Strategic & commercial thinking", "Leadership & ownership", "Communication & negotiation", "Spreadsheet/financial-tool fluency"],
+  "Law, Legal & Compliance": ["Legal research & reasoning", "Drafting & written precision", "Argumentation & advocacy", "Regulatory/compliance knowledge", "Attention to detail", "Ethical judgement"],
+  "Government, Public Administration & Policy": ["Policy analysis", "Public communication", "Administrative & procedural knowledge", "Stakeholder coordination", "Ethical & regulatory awareness", "Written reporting"],
+  "Education & Learning": ["Instructional design", "Communication & explanation", "Patience & adaptability", "Assessment & feedback", "Classroom/session management", "Continuous subject learning"],
+  "Media, Communication, Arts & Design": ["Creative & visual thinking", "Storytelling & writing", "Design/editing tool fluency", "Audience awareness", "Project & deadline management", "Portfolio building"],
+  "Manufacturing & Industrial Production": ["Process & quality control", "Technical/mechanical aptitude", "Safety & compliance awareness", "Production planning", "Problem-solving on the line", "Tool & equipment fluency"],
+  "Supply Chain, Procurement & Logistics": ["Planning & forecasting", "Vendor/negotiation skills", "Data & inventory analysis", "Process optimisation", "Cross-functional coordination", "ERP/logistics-tool fluency"],
+  "Travel, Tourism, Hospitality & Transport": ["Customer service & communication", "Cultural awareness", "Operational coordination", "Problem-solving under pressure", "Attention to detail", "Multitasking in fast-paced settings"],
+  "Defence, Security & Emergency Services": ["Discipline & physical fitness", "Situational awareness", "Teamwork under pressure", "Risk assessment", "Protocol & procedure adherence", "Leadership in high-stakes settings"],
+  "Personal Care, Beauty & Wellness": ["Technical/hands-on skill", "Client communication & consultation", "Attention to trends & technique", "Hygiene & safety standards", "Patience & attentiveness", "Building repeat clientele"],
+};
+
+// Entry/mid/senior salary bands, India - checked against live sources this
+// session (Sept 2026), same "verify against a current source" standard as
+// careerfit1112.ts's own CLUSTER_SALARY. Ranges reflect real spread across
+// sub-roles within a cluster (e.g. IT-services vs product-company entry
+// pay), not a single false-precise number.
+const CLUSTER_SALARY_GRAD: Record<string, string> = {
+  "Engineering, Technology & Computing": "₹3.5–7 LPA entry (IT services) to ₹6–15 LPA (product/startups) · ₹12–25 LPA mid · ₹25 LPA+ senior/specialist",
+  "Science, Mathematics & Research": "₹4–8 LPA entry · ₹10–20 LPA mid · ₹25–60 LPA+ (PhD/research-lab senior roles)",
+  "Healthcare & Medicine": "₹7–9.6 LPA entry (govt, post-internship) to ₹8–15 LPA (private, Tier-1 cities) · rises sharply with specialisation",
+  "Psychology, Humanities & Social Sciences": "₹1.2–3 LPA entry (social work/counselling) · ₹4–8 LPA mid (HR/L&D-adjacent roles pay more)",
+  "Sports, Fitness & Human Performance": "₹1.8–3.4 LPA entry · grows with clientele, certifications and brand tier",
+  "Agriculture, Food & Life Sciences": "₹2.5–5 LPA entry · ₹6–12 LPA mid (agribusiness/agritech)",
+  "Environment, Energy & Sustainability": "₹3.6–5 LPA entry (environmental engineering) · ₹8–15 LPA mid (renewable energy/consulting)",
+  "Architecture, Construction & Built Environment": "₹3–5 LPA entry · ₹4–12 LPA mid (established firms) · rises with a strong project portfolio",
+  "Business, Finance & Entrepreneurship": "₹3.5–8 LPA entry · ₹12–30 LPA mid · ₹45 LPA+ (CFO/fund management)",
+  "Law, Legal & Compliance": "₹3–6 LPA entry (most firms) · ₹15–30 LPA+ at top-tier law firms · rises sharply with reputation and litigation/deal experience",
+  "Government, Public Administration & Policy": "₹56,100/month basic pay (Level 10) at entry via UPSC/state services - roughly ₹1–1.5 lakh/month gross with allowances",
+  "Education & Learning": "₹2.5–4.5 LPA entry (school/govt) · ₹6–12 LPA mid (EdTech, senior faculty)",
+  "Media, Communication, Arts & Design": "₹2.5–4.5 LPA entry (design) to ₹3.5–4 LPA (content/writing) · ₹8–15 LPA mid (agency/high-growth sectors)",
+  "Manufacturing & Industrial Production": "₹3–6 LPA entry · ₹8–15 LPA mid (production/process leadership)",
+  "Supply Chain, Procurement & Logistics": "₹2–5 LPA entry (₹5–9 LPA with MBA-SCM/engineering background) · ₹8–22 LPA mid (FMCG/product companies)",
+  "Travel, Tourism, Hospitality & Transport": "₹2.4–4.2 LPA entry · ₹8–10 LPA for top-brand campus recruits · rises with hotel/airline tier",
+  "Defence, Security & Emergency Services": "Roughly ₹12–15 LPA equivalent in-hand at entry officer rank (basic pay + MSP + allowances) - non-officer ranks start lower; pay scales are fixed by rank, not negotiated",
+  "Personal Care, Beauty & Wellness": "₹1.5–3.5 LPA entry · ₹5–6 LPA+ senior (established stylists/therapists with a client base)",
+};
+
+// "Who actually hires here" per cluster - regular/private employers and
+// government bodies, checked against live sources this session where a
+// specific search was run; several regular-sector names are the same
+// real, already-verified companies careerfit1112.ts's own CLUSTER_COMPANIES
+// lists for the equivalent 11-12 cluster (Delhivery/Blue Dart, L&T/Tata
+// Motors, Taj/ITC Hotels, etc.) - real companies don't change because the
+// class group does.
+const CLUSTER_COMPANIES_GRAD: Record<string, { regular: string[]; govt: string[] }> = {
+  "Engineering, Technology & Computing": { regular: ["TCS", "Infosys", "Wipro", "L&T", "Tata Motors", "Razorpay"], govt: ["ISRO", "DRDO", "BHEL", "C-DAC"] },
+  "Science, Mathematics & Research": { regular: ["Tech company R&D labs (Google, Microsoft, Amazon India)", "Pharma/biotech research divisions"], govt: ["CSIR institutes", "ISRO", "DRDO", "BARC"] },
+  "Healthcare & Medicine": { regular: ["Apollo Hospitals", "Fortis Healthcare", "Max Healthcare", "Manipal Hospitals"], govt: ["AIIMS", "State government medical colleges/hospitals", "ESIC hospitals"] },
+  "Psychology, Humanities & Social Sciences": { regular: ["YourDOST", "iCall (TISS)", "Practo Mental Health", "NGOs and social-sector organisations"], govt: ["NIMHANS", "District Mental Health Programme"] },
+  "Sports, Fitness & Human Performance": { regular: ["Cult.fit", "Gold's Gym", "Anytime Fitness", "Sports academies"], govt: ["Sports Authority of India (SAI)"] },
+  "Agriculture, Food & Life Sciences": { regular: ["ITC Agri Business Division", "Godrej Agrovet", "DeHaat", "Ninjacart", "Bayer", "Syngenta"], govt: ["ICAR institutes", "State agricultural universities"] },
+  "Environment, Energy & Sustainability": { regular: ["Tata Power Solar", "ReNew Power", "Environmental consultancies"], govt: ["Ministry of Environment, Forest & Climate Change", "State Pollution Control Boards"] },
+  "Architecture, Construction & Built Environment": { regular: ["Larsen & Toubro (L&T)", "GMR Airports", "Morphogenesis", "Hafeez Contractor", "CP Kukreja Architects"], govt: ["NBCC (India)", "Central Public Works Department (CPWD)"] },
+  "Business, Finance & Entrepreneurship": { regular: ["Kotak Mahindra", "HDFC Bank", "ICICI Bank", "McKinsey & Company", "Deloitte", "PwC"], govt: ["State Bank of India (SBI)", "Reserve Bank of India (RBI)"] },
+  "Law, Legal & Compliance": { regular: ["Cyril Amarchand Mangaldas", "Khaitan & Co", "AZB & Partners", "Trilegal"], govt: ["State judicial services", "PSU legal departments"] },
+  "Government, Public Administration & Policy": { regular: ["Policy think tanks (NITI Aayog-adjacent)", "Consulting firms' government-advisory arms"], govt: ["IAS/IPS/IFS/IRS (via UPSC Civil Services)", "State Civil Services"] },
+  "Education & Learning": { regular: ["PhysicsWallah", "upGrad", "Unacademy", "Vedantu"], govt: ["Kendriya Vidyalaya Sangathan", "Navodaya Vidyalaya Samiti"] },
+  "Media, Communication, Arts & Design": { regular: ["Ogilvy India", "Dentsu India", "McCann Erickson India", "GroupM Media India"], govt: ["Doordarshan", "All India Radio"] },
+  "Manufacturing & Industrial Production": { regular: ["Larsen & Toubro (L&T)", "Tata Motors", "Bajaj Auto", "Mahindra & Mahindra"], govt: ["BHEL", "Hindustan Aeronautics Limited (HAL)", "Bharat Electronics Limited (BEL)"] },
+  "Supply Chain, Procurement & Logistics": { regular: ["Delhivery", "Blue Dart Express", "DHL", "FMCG majors (HUL, ITC, Nestlé)"], govt: ["Indian Railways", "Airports Authority of India"] },
+  "Travel, Tourism, Hospitality & Transport": { regular: ["Indian Hotels Company / Taj (IHCL)", "ITC Hotels", "Marriott", "The Oberoi Group", "Air India"], govt: ["India Tourism Development Corporation (ITDC)", "State tourism boards"] },
+  "Defence, Security & Emergency Services": { regular: [], govt: ["Indian Army", "Indian Navy", "Indian Air Force", "CRPF/BSF/CISF"] },
+  "Personal Care, Beauty & Wellness": { regular: ["Lakmé Salon", "Naturals", "VLCC", "Enrich Salon"], govt: [] },
+};
+
 /** Resolve a Career Selector answer against CAREERS_1112 first (splitting
  *  on "/" in case of a legacy bundle answer), then the Excel's own role
  *  list, returning which tier matched. */
@@ -193,52 +295,95 @@ function ConcernPointers({ concerns }: { concerns: string[] }) {
 }
 
 // ---------------------------------------------------------------- Cluster card
+// Salary strings above follow "entry · mid · senior" (or similar), joined
+// by " · " - same split/strip approach as careerFit1112Sheets.tsx's own
+// salaryBands(), kept as an independent copy since these are two separate
+// class-group files.
+function stripTrailingLabel(s: string): string {
+  return s.replace(/\s*\bentry\b\s*$/i, "").trim();
+}
+function salaryBandsGrad(india: string | undefined): { headline: string; rest: string[] } {
+  if (!india) return { headline: "-", rest: [] };
+  const [entry, ...rest] = india.split(/\s*·\s*/).map((s) => s.trim());
+  return { headline: stripTrailingLabel(entry ?? india), rest };
+}
+
+function SecLabelGrad({ children }: { children: React.ReactNode }) {
+  return <div style={{ fontSize: 9, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)" }}>{children}</div>;
+}
+
 // Analog of ClusterSummaryTable's per-domain card in careerFit1112Sheets.tsx
-// - same colored-left-border/numbered-badge/score layout, minus the salary
-// and "top companies" columns 11-12 has real verified data for and
-// Graduates doesn't yet (not fabricated here).
+// - same colored-left-border/numbered-badge/score header, same 3-column
+// domcard-grid (Key roles / Skills to acquire / Salary+exam links) reusing
+// FullReport.tsx's shared .frx .domcard-grid CSS both files render inside,
+// plus a description line and PG entrance-exam links pulled from the same
+// real clusterRoadmapsGrad.ts data gradExtraSheets.tsx already uses -
+// closing the design gap against 11-12's card, not just visually matching it.
 function ClusterCard({ cluster, score, rank }: { cluster: string; score: number; rank: number }) {
   const color = clusterColor(cluster);
-  const roles = (CLUSTER_ROLES[cluster] ?? []).slice(0, 6);
-  const emergingCount = clusterRoadmapGradFor(cluster)?.emergingAreas.length ?? 0;
+  const roles = (CLUSTER_ROLES[cluster] ?? []).slice(0, 4);
+  const roadmap = clusterRoadmapGradFor(cluster);
+  const emergingCount = roadmap?.emergingAreas.length ?? 0;
   const tier = fitLabel(score);
+  const bands = salaryBandsGrad(CLUSTER_SALARY_GRAD[cluster]);
+  const exams = roadmap?.pgInIndia.entranceExams ?? [];
   return (
     <div style={{ border: "1px solid var(--line)", borderLeft: `4px solid ${color}`, borderRadius: 14, overflow: "hidden", marginBottom: 14 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 18px", background: `${color}0a`, borderBottom: "1px solid var(--line)" }}>
         <span style={{ width: 26, height: 26, borderRadius: "50%", background: color, color: "#fff", fontWeight: 800, fontSize: 12.5, display: "grid", placeItems: "center", flex: "none" }}>{rank}</span>
         <div style={{ minWidth: 0, flex: 1 }}>
           <div style={{ fontWeight: 800, color: "var(--ink)", fontSize: 14.5 }}>{cluster}</div>
-          {emergingCount > 0 && <div style={{ fontSize: 10.5, color, fontWeight: 700, marginTop: 1 }}>🔥 {emergingCount} emerging course{emergingCount > 1 ? "s" : ""} in this cluster</div>}
+          <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 1 }}>{CLUSTER_TAGLINE_GRAD[cluster] ?? ""}</div>
+          {emergingCount > 0 && <div style={{ fontSize: 10.5, color, fontWeight: 700, marginTop: 3 }}>🔥 {emergingCount} emerging course{emergingCount > 1 ? "s" : ""} in this cluster</div>}
         </div>
         <div style={{ textAlign: "right", flex: "none" }}>
           <div style={{ fontSize: 15.5, fontWeight: 900, color: tier.color, letterSpacing: "-.01em" }}>{tier.label}</div>
           <div style={{ fontSize: 8.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)" }}>Fit</div>
         </div>
       </div>
-      <div style={{ padding: "14px 18px" }}>
-        <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 8 }}>Key roles</div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
-          {roles.map((r) => (
-            <span key={r} style={{ fontSize: 12, fontWeight: 700, color: "var(--ink)", background: `${color}0c`, border: `1px solid ${color}25`, borderRadius: 8, padding: "5px 10px" }}>{r}</span>
-          ))}
+      <div className="domcard-grid">
+        <div className="domcard-sec">
+          <SecLabelGrad>Key roles</SecLabelGrad>
+          <div style={{ display: "flex", flexDirection: "column", gap: 7, marginTop: 8 }}>
+            {roles.map((r) => <span key={r} style={{ fontSize: 12.5, fontWeight: 700, color: "var(--ink)" }}>{r}</span>)}
+          </div>
+        </div>
+        <div className="domcard-sec">
+          <SecLabelGrad>Skills to acquire</SecLabelGrad>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: 8 }}>
+            {(CLUSTER_CORE_SKILLS_GRAD[cluster] ?? []).map((s) => (
+              <span key={s} style={{ fontSize: 10.5, background: "var(--line-2, #f2f2f4)", color: "var(--ink-2)", fontWeight: 600, borderRadius: 6, padding: "3px 8px", lineHeight: 1.35 }}>{s}</span>
+            ))}
+          </div>
+        </div>
+        <div className="domcard-sec">
+          <SecLabelGrad>Salary (India)</SecLabelGrad>
+          <div style={{ fontSize: 13.5, fontWeight: 800, color: "var(--ink)", marginTop: 8, lineHeight: 1.4 }}>{bands.headline}</div>
+          {bands.rest.map((r, i) => <div key={i} style={{ fontSize: 11, fontWeight: 700, color: "var(--ink-2)", marginTop: 4 }}>{r}</div>)}
+          {exams.length > 0 && (
+            <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 4 }}>
+              <SecLabelGrad>PG entrance exams</SecLabelGrad>
+              {exams.slice(0, 2).map((e, i) => <span key={i} style={{ fontSize: 11, fontWeight: 700, color, marginTop: 4 }}>{e}</span>)}
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-// Suitability-page version of ClusterCard, with one real, honest addition:
-// 11-12's Suitability table shows a scored fit number PER ROLE, because it
-// has an individual riasec/mi/aptitude signature for each of its 360
-// careers. Graduates doesn't have that per-role data (only a cluster-level
-// signature - see scoringGrad.ts's CLUSTER_SIGNATURE comment), so rather
-// than faking per-role precision this differentiates roles on an axis it
-// DOES have real data for: whether the role comes from the student's own
-// actual degree+course (rolesForDegreeCourse - a concrete, verifiable
-// match) versus just being a general role in the cluster. The cluster's
-// own fit is shown once, honestly labelled "Cluster fit", using the same
-// fitLabel() band as everywhere else in this file rather than a separate
-// "Top/Medium/Low Choice" wording.
+// Suitability-page version of ClusterCard, with the same real additions
+// (description, salary, exam links) plus two things specific to
+// Suitability: "top companies that hire" (CLUSTER_COMPANIES_GRAD, same
+// pattern as 11-12's showCompanies) and an explanation of why this cluster
+// ranks here - honest about the one real limitation versus 11-12: this
+// score is cluster-level (RIASEC+Strengths+MI blended), not the per-role
+// Psy.Analysis/Skill breakdown 11-12 can show because it has an individual
+// signature for each of its 360 careers - Graduates doesn't have that yet
+// (see scoringGrad.ts's CLUSTER_SIGNATURE comment), so this differentiates
+// roles on an axis it DOES have real data for instead: whether the role
+// comes from the student's own actual degree+course versus a general role
+// in the cluster.
 function SuitabilityDomainBlock({ cluster, score, rank, degree, course }: { cluster: string; score: number; rank: number; degree: string; course: string }) {
   const color = clusterColor(cluster);
   const isOwnCluster = !!degree && !!course && clusterForDegreeCourse(degree, course) === cluster;
@@ -246,7 +391,11 @@ function SuitabilityDomainBlock({ cluster, score, rank, degree, course }: { clus
   const ownRolesSet = new Set(ownRoles);
   const generalRoles = (CLUSTER_ROLES[cluster] ?? []).filter((r) => !ownRolesSet.has(r)).slice(0, 8);
   const tier = fitLabel(score);
-  const emergingCount = clusterRoadmapGradFor(cluster)?.emergingAreas.length ?? 0;
+  const roadmap = clusterRoadmapGradFor(cluster);
+  const emergingCount = roadmap?.emergingAreas.length ?? 0;
+  const bands = salaryBandsGrad(CLUSTER_SALARY_GRAD[cluster]);
+  const exams = roadmap?.pgInIndia.entranceExams ?? [];
+  const companies = CLUSTER_COMPANIES_GRAD[cluster];
 
   return (
     <div style={{ border: "1px solid var(--line)", borderLeft: `4px solid ${color}`, borderRadius: 14, overflow: "hidden", marginBottom: 20 }}>
@@ -254,39 +403,71 @@ function SuitabilityDomainBlock({ cluster, score, rank, degree, course }: { clus
         <span style={{ width: 26, height: 26, borderRadius: "50%", background: color, color: "#fff", fontWeight: 800, fontSize: 12.5, display: "grid", placeItems: "center", flex: "none" }}>{rank}</span>
         <div style={{ minWidth: 0, flex: 1 }}>
           <div style={{ fontWeight: 800, color: "var(--ink)", fontSize: 14.5 }}>{cluster}</div>
-          {isOwnCluster && <div style={{ fontSize: 10.5, color, fontWeight: 700, marginTop: 1 }}>Matches your actual degree &amp; course</div>}
-          {!isOwnCluster && emergingCount > 0 && <div style={{ fontSize: 10.5, color, fontWeight: 700, marginTop: 1 }}>🔥 {emergingCount} emerging course{emergingCount > 1 ? "s" : ""}</div>}
+          <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 1 }}>{CLUSTER_TAGLINE_GRAD[cluster] ?? ""}</div>
+          {isOwnCluster && <div style={{ fontSize: 10.5, color, fontWeight: 700, marginTop: 3 }}>Matches your actual degree &amp; course</div>}
+          {!isOwnCluster && emergingCount > 0 && <div style={{ fontSize: 10.5, color, fontWeight: 700, marginTop: 3 }}>🔥 {emergingCount} emerging course{emergingCount > 1 ? "s" : ""}</div>}
         </div>
         <div style={{ textAlign: "right", flex: "none" }}>
           <div style={{ fontSize: 15.5, fontWeight: 900, color: tier.color, letterSpacing: "-.01em" }}>{tier.label}</div>
           <div style={{ fontSize: 8.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)" }}>Cluster fit</div>
         </div>
       </div>
-      <div style={{ padding: "14px 18px" }}>
-        {ownRoles.length > 0 && (
-          <div style={{ marginBottom: 14 }}>
-            <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color, marginBottom: 8 }}>Roles your {course || "course"} leads to directly</div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
-              {ownRoles.slice(0, 10).map((r) => (
-                <span key={r} style={{ fontSize: 12, fontWeight: 700, color: "#fff", background: color, borderRadius: 8, padding: "5px 10px" }}>{r}</span>
-              ))}
-            </div>
-          </div>
-        )}
-        {generalRoles.length > 0 && (
-          <div>
-            <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 8 }}>{ownRoles.length > 0 ? "Other roles in this cluster" : "Key roles"}</div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
-              {generalRoles.map((r) => (
-                <span key={r} style={{ fontSize: 12, fontWeight: 700, color: "var(--ink)", background: `${color}0c`, border: `1px solid ${color}25`, borderRadius: 8, padding: "5px 10px" }}>{r}</span>
-              ))}
-            </div>
-          </div>
-        )}
+
+      <div style={{ padding: "12px 18px 0" }}>
+        <p style={{ margin: 0, fontSize: 12, color: "var(--ink-2)", lineHeight: 1.55 }}>
+          <b style={{ color: "var(--ink)" }}>Why this cluster ranks here: </b>
+          your measured RIASEC interest, strengths and multiple-intelligence profile line up with what {cluster.toLowerCase()} actually draws on{isOwnCluster ? ", and it's also the field your own degree and course lead into directly." : "."} This is a cluster-wide fit, not a per-role score - Graduates doesn't yet have an individual signature for each of the ~3,300 real roles in the data the way the 360 Class 11-12 careers each do, so the roles below are differentiated by whether they come from your own degree+course instead.
+        </p>
       </div>
-      <div style={{ padding: "10px 18px", borderTop: "1px solid var(--line-2, var(--line))", display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-        <span style={{ fontSize: 11, fontWeight: 800, color: tier.color }}>{tier.label} fit</span>
-        <span style={{ fontSize: 11, color: "var(--muted)" }}>— based on your measured profile against this cluster as a whole, not any one specific role.</span>
+
+      <div className="domcard-grid" style={{ marginTop: 8 }}>
+        <div className="domcard-sec">
+          {ownRoles.length > 0 && (
+            <div style={{ marginBottom: 14 }}>
+              <SecLabelGrad>Roles your {course || "course"} leads to</SecLabelGrad>
+              <div style={{ display: "flex", flexDirection: "column", gap: 7, marginTop: 8 }}>
+                {ownRoles.slice(0, 5).map((r) => <span key={r} style={{ fontSize: 12.5, fontWeight: 700, color }}>{r}</span>)}
+              </div>
+            </div>
+          )}
+          <SecLabelGrad>{ownRoles.length > 0 ? "Other roles in this cluster" : "Key roles"}</SecLabelGrad>
+          <div style={{ display: "flex", flexDirection: "column", gap: 7, marginTop: 8 }}>
+            {generalRoles.slice(0, 4).map((r) => <span key={r} style={{ fontSize: 12.5, fontWeight: 700, color: "var(--ink)" }}>{r}</span>)}
+          </div>
+        </div>
+        <div className="domcard-sec">
+          <SecLabelGrad>Skills to acquire</SecLabelGrad>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: 8 }}>
+            {(CLUSTER_CORE_SKILLS_GRAD[cluster] ?? []).map((s) => (
+              <span key={s} style={{ fontSize: 10.5, background: "var(--line-2, #f2f2f4)", color: "var(--ink-2)", fontWeight: 600, borderRadius: 6, padding: "3px 8px", lineHeight: 1.35 }}>{s}</span>
+            ))}
+          </div>
+        </div>
+        <div className="domcard-sec">
+          <SecLabelGrad>Salary (India)</SecLabelGrad>
+          <div style={{ fontSize: 13.5, fontWeight: 800, color: "var(--ink)", marginTop: 8, lineHeight: 1.4 }}>{bands.headline}</div>
+          {bands.rest.map((r, i) => <div key={i} style={{ fontSize: 11, fontWeight: 700, color: "var(--ink-2)", marginTop: 4 }}>{r}</div>)}
+          {exams.length > 0 && (
+            <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 4 }}>
+              <SecLabelGrad>PG entrance exams</SecLabelGrad>
+              {exams.slice(0, 2).map((e, i) => <span key={i} style={{ fontSize: 11, fontWeight: 700, color, marginTop: 4 }}>{e}</span>)}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div style={{ padding: "12px 18px", borderTop: "1px solid var(--line-2, var(--line))" }}>
+        <SecLabelGrad>Top companies that hire</SecLabelGrad>
+        {companies ? (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
+            {companies.regular.slice(0, 3).map((c) => (
+              <span key={c} style={{ fontSize: 10.5, fontWeight: 700, color: "var(--ink-2)", background: "var(--line-2, #f2f2f4)", borderRadius: 999, padding: "3px 10px" }}>{c}</span>
+            ))}
+            {companies.govt.slice(0, 2).map((c) => (
+              <span key={c} style={{ fontSize: 10.5, fontWeight: 700, color, background: `${color}12`, borderRadius: 999, padding: "3px 10px" }}>{c}</span>
+            ))}
+          </div>
+        ) : <span style={{ fontSize: 11, color: "var(--muted)" }}>Not researched yet</span>}
       </div>
     </div>
   );
