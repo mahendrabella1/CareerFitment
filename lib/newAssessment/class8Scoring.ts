@@ -650,8 +650,16 @@ function scoreStrengthDomains(responses: Class8Response): StrengthDomain[] {
   // this bank's Q31-38 never offer Intrapersonal or Naturalistic at all (a
   // real limit of this bank's content, not something to fabricate a slot
   // for), and the other 6 domains appear unevenly too.
-  return Object.entries(domains)
-    .map(([domain, count]) => {
+  //
+  // Iterate `of` (every domain ever OFFERED as an option), not `domains`
+  // (only domains the student actually picked at least once) - a domain
+  // the student never happened to choose still needs to show up here at a
+  // real 0%, not vanish from the list entirely. Previously a student who,
+  // say, never once picked the Spatial option across all 8 MI questions
+  // would see no Spatial row at all in their report instead of "Spatial: 0%".
+  return Object.entries(of)
+    .map(([domain]) => {
+      const count = domains[domain] || 0;
       const score = of[domain] ? Math.round((count / of[domain]) * 100) : 0;
       return {
         domain,
@@ -776,8 +784,13 @@ function scoreEmotionalAwareness(responses: Class8Response): EIComponent[] {
 
   // Percentage of the times a component was actually OFFERED, not a flat
   // /5 - several components only appear on one of the 5 questions.
-  return Object.entries(scores)
-    .map(([component, count]) => {
+  //
+  // Iterate `of` (every component ever offered), not `scores` (only ones
+  // the student actually picked) - see the identical fix and rationale in
+  // scoreStrengthDomains above.
+  return Object.entries(of)
+    .map(([component]) => {
+      const count = scores[component] || 0;
       const score = of[component] ? Math.round((count / of[component]) * 100) : 0;
       return {
         component,
@@ -815,8 +828,12 @@ function scoreCreativity(responses: Class8Response): CreativityIndicator[] {
     return "Advanced";
   };
 
-  return Object.entries(scores)
-    .map(([indicator, count]) => {
+  // Iterate `of` (every indicator ever offered), not `scores` (only ones
+  // the student actually picked) - see the identical fix and rationale in
+  // scoreStrengthDomains above.
+  return Object.entries(of)
+    .map(([indicator]) => {
+      const count = scores[indicator] || 0;
       const score = of[indicator] ? Math.round((count / of[indicator]) * 100) : 0;
       return {
         indicator,
@@ -885,7 +902,21 @@ function calculateDomainAffinities(data: any): DomainAffinity[] {
     const reasoning: string[] = [];
     let num = 0, den = 0;
 
-    const riasecCodes = DOMAIN_RIASEC[domain] || [];
+    // Class 8's RIASEC bank (Q11-20) never offers a Conventional (C) option -
+    // every question's 5 options are R/I/A/S/E only (verified against
+    // class8Questions.ts), so scoreRIASEC() always returns C:0, not
+    // "unmeasured". Left in the shared DOMAIN_RIASEC's averaging, that
+    // phantom 0 silently halved the RIASEC term for every domain paired
+    // with C (B Finance & Commerce, D Computer Science & IT, J Law/Govt/
+    // Public Service, M Defence/Aviation/Transportation) - e.g. a student
+    // answering every RIASEC question with a computer/tech option still
+    // saw D's RIASEC score averaged down to ~50% of their real
+    // Investigative score, letting an unrelated domain with two real,
+    // non-zero codes (e.g. F Life Sciences & Agriculture: I+R) rank above
+    // it. Exclude C here rather than editing the shared table, since C's
+    // absence is specific to this bank's content, not a fact about the
+    // domain-RIASEC relationship itself (other classes' banks do score C).
+    const riasecCodes = (DOMAIN_RIASEC[domain] || []).filter((c) => c !== "C");
     const riasecScores = riasecCodes.map((c) => riasecByCode[c]).filter((v): v is number => v != null);
     if (riasecScores.length) {
       const avg = riasecScores.reduce((s, v) => s + v, 0) / riasecScores.length;
@@ -901,7 +932,22 @@ function calculateDomainAffinities(data: any): DomainAffinity[] {
       reasoning.push(`Aptitude: ${aptFields.join(", ")}`);
     }
 
-    const miDomains = DOMAIN_MI[domain] || [];
+    // Class 8's MI bank (Q31-38) never offers Naturalistic or Intrapersonal
+    // as options at all (see scoreStrengthDomains' own comment above), so
+    // strengthByDomain never has an entry for them. Left unfiltered, the
+    // shared DOMAIN_MI's two-code pairing for domains that include one of
+    // these (F Life Sciences & Agriculture, G Pure Sciences & Research, N
+    // Environment & Sustainability - Naturalistic; B Finance & Commerce, K
+    // - Intrapersonal) collapses to a single remaining code - and an
+    // unaveraged single value reads as a "full" score, while every other
+    // domain's average is genuinely diluted by two real measurements. That
+    // silently inflated F/G/N/B/K's Strengths term relative to domains
+    // whose both MI anchors are actually measurable (e.g. D Computer
+    // Science & IT: Logical-Mathematical + Spatial, both real), which is
+    // why a computer/tech-leaning profile could still see an unrelated
+    // science domain outrank Computer Science & IT even after the RIASEC
+    // fix above. Same exclusion rationale as C above.
+    const miDomains = (DOMAIN_MI[domain] || []).filter((m) => m !== "Naturalistic" && m !== "Intrapersonal");
     const miScores = miDomains.map((m) => strengthByDomain[m]).filter((v): v is number => v != null);
     if (miScores.length) {
       const avg = miScores.reduce((s, v) => s + v, 0) / miScores.length;
