@@ -260,6 +260,19 @@ function scorePersonality(responses: Class6Response): Class6ScoreOutput["persona
   };
 }
 
+// Reads the option->code mapping straight off each question in the bank
+// (data/class6-assessment-questions.json already tags every option with its
+// intended letter/domain via `mapping`) instead of a hardcoded per-question
+// table - a hardcoded table silently drifts out of sync the moment a
+// question's options are reordered or re-authored (this file used to hold
+// one, and Q16's 5th option - "Organizing and coordinating tasks", tagged
+// "C" for Conventional in the bank - was being scored as "E" because of it).
+// Reading the bank directly makes that class of bug structurally impossible.
+function bankMapping(id: number): string[] | undefined {
+  const q = ((questionBank as any).questions || []).find((q: any) => q.id === id);
+  return q?.mapping as string[] | undefined;
+}
+
 function scoreRIASEC(responses: Class6Response): Class6ScoreOutput["riasecScores"] {
   const scores: Record<string, number> = {
     R: 0, I: 0, A: 0, S: 0, E: 0, C: 0
@@ -267,11 +280,10 @@ function scoreRIASEC(responses: Class6Response): Class6ScoreOutput["riasecScores
 
   // Questions 11-20: RIASEC scoring
   for (let q = 11; q <= 20; q++) {
+    const mapping = bankMapping(q);
     const optionIndex = responses.responses[q];
-    const mapping = ["R", "I", "A", "S", "E"];
-    if (optionIndex < mapping.length) {
-      scores[mapping[optionIndex]]++;
-    }
+    const letter = mapping?.[optionIndex];
+    if (letter && letter in scores) scores[letter]++;
   }
 
   return Object.entries(scores)
@@ -283,45 +295,36 @@ function scoreRIASEC(responses: Class6Response): Class6ScoreOutput["riasecScores
     .sort((a, b) => b.score - a.score);
 }
 
-// Q31-38's 5 options each lean toward a different MI domain, but not
-// always the SAME one in the same position - Q32/Q36 use Musical/
-// Naturalistic in their last two slots where every other question uses
-// Bodily-Kinesthetic/Interpersonal (see data/class6-assessment-questions.json
-// Q32: "Music and rhythm"/"Nature and living things" vs Q31's "Making or
-// doing things with my hands"/"Talking and working with people") - a single
-// flat mapping silently mis-scored those two, and Q37/Q38 were never scored
-// at all. Intrapersonal never appears as a distinct option across Q31-38 -
-// a real limit of this bank's 5-option format, not something to fabricate
-// a slot for.
-const STRENGTHS_MAPPING: Record<number, string[]> = {
-  31: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
-  32: ["Linguistic", "Logical-Mathematical", "Spatial", "Musical", "Naturalistic"],
-  33: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
-  34: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
-  35: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
-  36: ["Linguistic", "Logical-Mathematical", "Spatial", "Musical", "Naturalistic"],
-  37: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
-  38: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
+// The bank tags MI options with short forms ("Logical-Math") that don't
+// always match the canonical DOMAIN_MI vocabulary this scorer's domain-
+// affinity step keys on ("Logical-Mathematical") - normalise on the way in
+// so a real answer still links to the right domain.
+const MI_LABEL_ALIAS: Record<string, string> = {
+  "Logical-Math": "Logical-Mathematical",
 };
 
 function scoreStrengths(responses: Class6Response): Class6ScoreOutput["strengthDomains"] {
   const scores: Record<string, number> = {};
   const of: Record<string, number> = {};
-  MI_DOMAINS.forEach(d => scores[d] = 0);
 
   for (let q = 31; q <= 38; q++) {
+    const mapping = bankMapping(q);
+    if (!mapping) continue;
     const optionIndex = responses.responses[q];
-    const mapping = STRENGTHS_MAPPING[q];
-    mapping.forEach((domain) => { of[domain] = (of[domain] || 0) + 1; });
-    if (optionIndex >= 0 && optionIndex < mapping.length) {
-      const domain = mapping[optionIndex];
+    mapping.forEach((raw) => {
+      const domain = MI_LABEL_ALIAS[raw] ?? raw;
+      of[domain] = (of[domain] || 0) + 1;
+    });
+    const rawDomain = mapping[optionIndex];
+    if (rawDomain) {
+      const domain = MI_LABEL_ALIAS[rawDomain] ?? rawDomain;
       scores[domain] = (scores[domain] || 0) + 1;
     }
   }
 
   // Percentage of the times a domain was actually OFFERED, not a flat /8 -
-  // Musical/Naturalistic only appear in 2 of the 8 questions, so a flat /8
-  // would cap them at 25% even from a perfect run.
+  // several MI domains only appear in a couple of the 8 questions, so a flat
+  // /8 would cap them well under 100% even from a perfect run.
   return Object.entries(scores)
     .map(([name, score]) => ({
       name,
@@ -342,11 +345,10 @@ function scoreMotivators(responses: Class6Response): Class6ScoreOutput["motivato
 
   // Questions 39-45: Motivators
   for (let q = 39; q <= 45; q++) {
+    const mapping = bankMapping(q);
     const optionIndex = responses.responses[q];
-    const mapping = ["Achievement", "Curiosity", "Helping", "Freedom", "Leadership"];
-    if (optionIndex < mapping.length) {
-      scores[mapping[optionIndex]]++;
-    }
+    const name = mapping?.[optionIndex];
+    if (name) scores[name] = (scores[name] ?? 0) + 1;
   }
 
   return Object.entries(scores)
@@ -391,17 +393,10 @@ function scoreEmotional(responses: Class6Response): Class6ScoreOutput["emotional
 
   // Questions 51-55: Emotional & Social Awareness
   for (let q = 51; q <= 55; q++) {
+    const mapping = bankMapping(q);
     const optionIndex = responses.responses[q];
-    const mappings: Record<number, string[]> = {
-      0: ["Self-Awareness", "Empathy", "Social-Management", "Self-Awareness", "Relationship-Building"],
-      1: ["Relationship-Building", "Self-Awareness", "Empathy", "Self-Awareness", "Relationship-Building"],
-      2: ["Self-Awareness", "Empathy", "Social-Management", "Social-Management", "Empathy"],
-      3: ["Social-Management", "Social-Management", "Self-Awareness", "Self-Awareness", "Social-Management"]
-    };
-    if (optionIndex in mappings) {
-      const dim = mappings[optionIndex][q - 51];
-      scores[dim]++;
-    }
+    const dim = mapping?.[optionIndex];
+    if (dim) scores[dim] = (scores[dim] ?? 0) + 1;
   }
 
   return Object.entries(scores)
@@ -419,17 +414,10 @@ function scoreCreativity(responses: Class6Response): Class6ScoreOutput["creativi
 
   // Questions 56-60: Creativity & Future Readiness
   for (let q = 56; q <= 60; q++) {
+    const mapping = bankMapping(q);
     const optionIndex = responses.responses[q];
-    const mappings: Record<number, string[]> = {
-      0: ["Adaptability", "Adaptability", "Adaptability", "Future-Orientation", "Future-Orientation"],
-      1: ["Problem-Solving", "Adaptability", "Adaptability", "Future-Orientation", "Innovation"],
-      2: ["Innovation", "Problem-Solving", "Innovation", "Innovation", "Future-Orientation"],
-      3: ["Problem-Solving", "Problem-Solving", "Problem-Solving", "Future-Orientation", "Adaptability"]
-    };
-    if (optionIndex in mappings) {
-      const indicator = mappings[optionIndex][q - 56];
-      scores[indicator]++;
-    }
+    const indicator = mapping?.[optionIndex];
+    if (indicator) scores[indicator] = (scores[indicator] ?? 0) + 1;
   }
 
   return Object.entries(scores)
