@@ -63,6 +63,7 @@ export interface FlagshipTrack {
   careers: string[];
   skills: string[];
   certifications: string[];
+  pgOptions: string[];
   progression: string[];
 }
 export interface FlagshipDomainRoadmap {
@@ -79,6 +80,8 @@ export interface FlagshipDomainRoadmap {
   governmentInternships: FlagshipGovInternship[];
   tracks: FlagshipTrack[];
   abroadPrograms: string[];
+  abroadJobs: string[];
+  abroadJobsNote: string;
   completeJourney: { age: string; stage: string }[];
   disclaimer: string;
 }
@@ -198,6 +201,7 @@ export const FLAGSHIP_ROADMAPS_1112: Partial<Record<string, FlagshipDomainRoadma
         careers: ["Audit", "Tax", "Financial reporting", "Controllership", "Corporate finance", "CFO track"],
         skills: ["Financial accounting", "Auditing standards", "Direct & indirect tax", "Financial reporting"],
         certifications: ["CA (ICAI) - Foundation can be provisionally registered after Class 10; the Foundation exam itself is taken only after appearing in Class 12", "CMA (ICMAI) - Foundation accessible after the required school qualification", "ACCA"],
+        pgOptions: ["M.Com (where a further degree is useful alongside CA/CMA)", "No PG degree is required to qualify as a CA/CMA - the professional qualification itself is the credential"],
         progression: ["Audit/Accounts Associate", "Senior Associate", "Manager", "Senior Manager", "Controller / Finance Director / CFO"],
       },
       {
@@ -206,6 +210,7 @@ export const FLAGSHIP_ROADMAPS_1112: Partial<Record<string, FlagshipDomainRoadma
         careers: ["Equity Research", "Investment Analyst", "Portfolio Management", "Asset Management", "Wealth Management"],
         skills: ["Equity research", "Fundamental analysis", "Valuation (DCF)", "Portfolio theory", "Fixed income"],
         certifications: ["CFA - Level I can be taken when your exam window is within 23 months of graduation; Level II needs you within 11 months of graduation; Level III needs a completed bachelor's degree (or 4,000 hours of relevant work experience)", "NISM Series XV - Research Analyst (revised syllabus from January 2026, SEBI no longer requires a specific finance/commerce degree to sit it)"],
+        pgOptions: ["MSc Finance", "MBA Finance"],
         progression: ["Investment Analyst", "Senior Investment Analyst", "Portfolio Manager / Associate", "Senior Portfolio Manager", "Investment Director / CIO"],
       },
       {
@@ -214,6 +219,7 @@ export const FLAGSHIP_ROADMAPS_1112: Partial<Record<string, FlagshipDomainRoadma
         careers: ["Financial Analyst", "FP&A Analyst", "Treasury Analyst"],
         skills: ["Excel", "Financial modelling", "Budgeting & forecasting", "Variance analysis", "Power BI", "SQL", "ERP systems"],
         certifications: ["CMA", "MBA Finance (later, not entry-level)"],
+        pgOptions: ["MBA Finance", "MSc Finance", "CMA/CA depending on the specific role"],
         progression: ["Financial Analyst", "Senior Financial Analyst", "Finance Manager", "Senior Finance Manager", "Finance Director", "CFO"],
       },
       {
@@ -222,6 +228,7 @@ export const FLAGSHIP_ROADMAPS_1112: Partial<Record<string, FlagshipDomainRoadma
         careers: ["Credit Analyst", "Corporate Banking", "Retail Banking", "Treasury", "Banking Operations"],
         skills: ["Credit analysis", "Banking operations", "Risk basics", "Regulatory awareness"],
         certifications: ["JAIIB/CAIIB (once employed in banking)", "NISM modules relevant to the specific banking role"],
+        pgOptions: ["MBA Finance/Banking", "PG Diploma in Banking & Finance (several bank-run PGDBF programmes)"],
         progression: ["Banking Analyst", "Relationship/Credit Manager", "Senior Manager", "Regional/Business Head"],
       },
       {
@@ -230,6 +237,7 @@ export const FLAGSHIP_ROADMAPS_1112: Partial<Record<string, FlagshipDomainRoadma
         careers: ["Investment Banking Analyst", "M&A Analyst", "Valuation Analyst", "Transaction Advisory Analyst"],
         skills: ["Three-statement modelling", "DCF", "Comparable-company analysis", "Precedent transactions", "Pitch books", "Advanced Excel & PowerPoint"],
         certifications: ["CFA (widely valued, not mandatory)", "In-house/on-the-job training is the real qualifier here"],
+        pgOptions: ["MBA Finance (a common route into IB at the Associate level)", "MSc Finance"],
         progression: ["Investment Banking Analyst", "Associate", "Vice President", "Director", "Managing Director"],
       },
       {
@@ -238,6 +246,7 @@ export const FLAGSHIP_ROADMAPS_1112: Partial<Record<string, FlagshipDomainRoadma
         careers: ["Credit risk", "Market risk", "Operational risk analyst roles"],
         skills: ["Statistics & probability", "Financial modelling", "Risk reporting", "SQL/Python (increasingly expected)"],
         certifications: ["FRM (Financial Risk Manager, GARP)"],
+        pgOptions: ["MSc Finance/Risk Management", "MBA Finance/Risk"],
         progression: ["Risk Analyst", "Senior Risk Analyst", "Risk Manager", "Head of Risk / CRO"],
       },
       {
@@ -246,10 +255,13 @@ export const FLAGSHIP_ROADMAPS_1112: Partial<Record<string, FlagshipDomainRoadma
         careers: ["FinTech Analyst", "Financial Data Analyst", "Risk Analytics Analyst"],
         skills: ["SQL", "Python", "Power BI", "APIs", "Payments & digital banking basics"],
         certifications: ["No single mandatory certification - a strong project portfolio (dashboards, small automations) matters more here than a credential"],
+        pgOptions: ["MSc Financial Technology", "MSc Finance + Analytics", "MBA FinTech/Business Analytics"],
         progression: ["FinTech/Data Analyst", "Senior Analyst", "Product/Analytics Lead", "Head of FinTech Product or Analytics"],
       },
     ],
     abroadPrograms: ["MSc Finance", "MSc Financial Economics", "MSc Accounting", "MSc Investment Management", "MSc Risk Management", "MSc Financial Analytics", "MSc FinTech", "MSc Economics", "MBA Finance"],
+    abroadJobs: ["Financial Analyst", "Investment Analyst", "Risk Analyst", "FP&A Analyst", "Corporate Banking Analyst", "Treasury Analyst", "Financial Data Analyst", "Investment Operations Analyst"],
+    abroadJobsNote: "Before counting on any of these: check work-authorisation rules, post-study work visa length, whether the destination country requires its own professional qualification (a CFA/CA charter doesn't automatically transfer), local accounting/financial regulations, total cost of the degree, and realistic graduate employment rates - not just whether the role sounds appealing.",
     completeJourney: [
       { age: "16-18", stage: "Class 11-12: Commerce + Maths, finance fundamentals, CUET/entrance preparation" },
       { age: "18-19", stage: "UG Year 1: Accounting + Economics + Excel, first finance project, first virtual simulation" },

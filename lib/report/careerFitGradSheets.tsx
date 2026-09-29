@@ -473,23 +473,53 @@ function SuitabilityDomainBlock({ cluster, score, rank, degree, course }: { clus
   );
 }
 
-function ClusterRoadmapView({ r, color }: { r: GradClusterRoadmap; color: string }) {
-  const Sec = ({ title, children, skip }: { title: string; children: React.ReactNode; skip?: boolean }) => {
-    if (skip) return null;
-    return (
-      <div style={{ marginTop: 20 }}>
-        <div style={{ fontSize: 12.5, fontWeight: 800, color, marginBottom: 8 }}>{title}</div>
-        {children}
+// The 7-step numbered, colour-per-step container - same visual structure
+// (numbered badge, icon, pastel gradient header card, eyebrow chip) as
+// careerFit1112Sheets.tsx's RoadmapSectionFrame/ROADMAP_SECTION_META, kept
+// as an independent local copy rather than a shared import (11-12 and UG
+// are separate class-group files per the project's scope map). Content
+// stays exactly the 7 real sections GradClusterRoadmap already has - only
+// the visual design changes here, not what's shown.
+const GRAD_ROADMAP_SECTION_META: { icon: string; label: string; eyebrow: string; accent: string; pastel: string }[] = [
+  { icon: "route", label: "Grow year by year", eyebrow: "01 · What each year should build", accent: "#c46a52", pastel: "#fff1ed" },
+  { icon: "briefcase", label: "Get real-world exposure", eyebrow: "02 · Internships", accent: "#477d9b", pastel: "#edf7fb" },
+  { icon: "check", label: "Stack useful proof", eyebrow: "03 · Certifications in demand", accent: "#a47737", pastel: "#fff8ea" },
+  { icon: "match", label: "Picture the role", eyebrow: "04 · Careers you can be hired as", accent: "#4c8b65", pastel: "#eef9f0" },
+  { icon: "star", label: "Go deeper", eyebrow: "05 · PG to consider - in India", accent: "#6a72b8", pastel: "#f0f2ff" },
+  { icon: "compass", label: "Think globally", eyebrow: "06 · Study abroad", accent: "#4f78a6", pastel: "#eef5ff" },
+  { icon: "score", label: "Your next chapter", eyebrow: "07 · Going forward - career advancement", accent: "#c05f59", pastel: "#fff0ef" },
+];
+function GradRoadmapSectionFrame({ index, title, sub, children }: { index: number; title: string; sub?: string; children: React.ReactNode }) {
+  const meta = GRAD_ROADMAP_SECTION_META[index - 1];
+  return (
+    <div style={{ marginTop: 18, paddingTop: 14, borderTop: `1px solid ${meta.accent}35` }}>
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, padding: "10px 12px", borderRadius: 13, background: `linear-gradient(110deg, ${meta.pastel}, #fff)`, border: `1px solid ${meta.accent}35`, boxShadow: `0 3px 10px ${meta.accent}12` }}>
+        <div style={{ position: "relative", flex: "none" }}>
+          <span style={{ width: 42, height: 42, borderRadius: 13, display: "grid", placeItems: "center", background: meta.accent, color: "#fff", boxShadow: `0 5px 11px ${meta.accent}35` }}>
+            <Icon name={meta.icon} size={19} />
+          </span>
+          <span style={{ position: "absolute", right: -7, bottom: -7, width: 22, height: 22, borderRadius: "50%", display: "grid", placeItems: "center", background: "#fff", border: `2px solid ${meta.accent}`, color: meta.accent, fontSize: 9, fontWeight: 900 }}>{String(index).padStart(2, "0")}</span>
+        </div>
+        <div style={{ minWidth: 0, flex: 1 }}>
+          <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: ".08em", textTransform: "uppercase", color: meta.accent }}>{meta.label}</div>
+          <h2 style={{ margin: "3px 0 0", fontSize: 18.5, lineHeight: 1.2, letterSpacing: "-.02em", color: "var(--ink)" }}>{title}</h2>
+          {sub ? <p style={{ margin: "6px 0 0", fontSize: 12, lineHeight: 1.5, color: "var(--ink-2)" }}>{sub}</p> : null}
+        </div>
+        <span style={{ flex: "none", alignSelf: "flex-start", maxWidth: 220, padding: "8px 11px", borderRadius: 9, background: `${meta.accent}18`, border: `1.5px solid ${meta.accent}55`, color: meta.accent, boxShadow: `0 3px 8px ${meta.accent}18`, fontSize: 10.5, lineHeight: 1.25, fontWeight: 950, letterSpacing: ".07em", textTransform: "uppercase", textAlign: "right" }}>{meta.eyebrow}</span>
       </div>
-    );
-  };
+      <div style={{ marginTop: 10 }}>{children}</div>
+    </div>
+  );
+}
+
+function ClusterRoadmapView({ r, color }: { r: GradClusterRoadmap; color: string }) {
   const chip: React.CSSProperties = {
     display: "inline-block", fontSize: 11.5, fontWeight: 600, color: "var(--ink-2)",
     background: `${color}0c`, border: `1px solid ${color}30`, borderRadius: 8, padding: "5px 10px", margin: "0 6px 6px 0",
   };
   return (
     <div>
-      <Sec title="What to build each year">
+      <GradRoadmapSectionFrame index={1} title="What to build each year">
         <p style={{ fontSize: 12.5, color: "var(--ink-2)", marginBottom: 10 }}><b>Technical:</b> {r.yearlySkillBuilding.technical}</p>
         <p style={{ fontSize: 12.5, color: "var(--ink-2)", marginBottom: 10 }}><b>Non-technical:</b> {r.yearlySkillBuilding.nonTechnical}</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10 }}>
@@ -500,27 +530,36 @@ function ClusterRoadmapView({ r, color }: { r: GradClusterRoadmap; color: string
             </div>
           ))}
         </div>
-      </Sec>
-      <Sec title="Internships">
+      </GradRoadmapSectionFrame>
+
+      <GradRoadmapSectionFrame index={2} title="Internships">
         <p style={{ fontSize: 12.5, color: "var(--ink-2)", marginBottom: 6 }}><b>Government:</b> {r.internships.government}</p>
         <p style={{ fontSize: 12.5, color: "var(--ink-2)" }}><b>Private:</b> {r.internships.private}</p>
-      </Sec>
-      <Sec title="Certifications in demand"><p style={{ fontSize: 12.5, color: "var(--ink-2)" }}>{r.certifications}</p></Sec>
-      <Sec title="Careers you can be hired as">
+      </GradRoadmapSectionFrame>
+
+      <GradRoadmapSectionFrame index={3} title="Certifications in demand">
+        <p style={{ fontSize: 12.5, color: "var(--ink-2)" }}>{r.certifications}</p>
+      </GradRoadmapSectionFrame>
+
+      <GradRoadmapSectionFrame index={4} title="Careers you can be hired as">
         <div>{r.jobRoles.map((role) => <span key={role} style={chip}>{role}</span>)}</div>
-      </Sec>
-      <Sec title="Emerging areas to watch" skip={r.emergingAreas.length === 0}>
-        <p style={{ fontSize: 11.5, color: "var(--muted)", marginBottom: 10 }}>Specific courses flagged as emerging (2023-26) in current course data, with the real roles they lead to.</p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 10 }}>
-          {r.emergingAreas.map((e) => (
-            <div key={e.course} style={{ padding: "10px 12px", border: `1px solid ${color}25`, borderRadius: 10, background: `${color}06` }}>
-              <div style={{ fontSize: 11.5, fontWeight: 800, color, marginBottom: 4 }}>{e.course}</div>
-              <div style={{ fontSize: 11.5, color: "var(--ink-2)" }}>{e.roles.join(" · ")}</div>
+        {r.emergingAreas.length > 0 && (
+          <div style={{ marginTop: 16 }}>
+            <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 6 }}>Emerging areas to watch</div>
+            <p style={{ fontSize: 11.5, color: "var(--muted)", marginBottom: 10 }}>Specific courses flagged as emerging (2023-26) in current course data, with the real roles they lead to.</p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 10 }}>
+              {r.emergingAreas.map((e) => (
+                <div key={e.course} style={{ padding: "10px 12px", border: `1px solid ${color}25`, borderRadius: 10, background: `${color}06` }}>
+                  <div style={{ fontSize: 11.5, fontWeight: 800, color, marginBottom: 4 }}>{e.course}</div>
+                  <div style={{ fontSize: 11.5, color: "var(--ink-2)" }}>{e.roles.join(" · ")}</div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </Sec>
-      <Sec title="PG to consider - in India">
+          </div>
+        )}
+      </GradRoadmapSectionFrame>
+
+      <GradRoadmapSectionFrame index={5} title="PG to consider - in India">
         {r.pgInIndia.note ? (
           <p style={{ fontSize: 12.5, color: "var(--ink-2)" }}>{r.pgInIndia.note}</p>
         ) : (
@@ -531,9 +570,13 @@ function ClusterRoadmapView({ r, color }: { r: GradClusterRoadmap; color: string
             )}
           </>
         )}
-      </Sec>
-      <Sec title="Study abroad"><p style={{ fontSize: 12.5, color: "var(--ink-2)" }}>{r.studyAbroad}</p></Sec>
-      <Sec title="Going forward - career advancement" skip={!!r.careerAdvancement.note && r.careerAdvancement.phdProgrammes.length === 0}>
+      </GradRoadmapSectionFrame>
+
+      <GradRoadmapSectionFrame index={6} title="Study abroad">
+        <p style={{ fontSize: 12.5, color: "var(--ink-2)" }}>{r.studyAbroad}</p>
+      </GradRoadmapSectionFrame>
+
+      <GradRoadmapSectionFrame index={7} title="Going forward - career advancement">
         {r.careerAdvancement.note && <p style={{ fontSize: 12.5, color: "var(--ink-2)", marginBottom: 8 }}>{r.careerAdvancement.note}</p>}
         {r.careerAdvancement.phdProgrammes.length > 0 && (
           <div style={{ marginBottom: 8 }}>{r.careerAdvancement.phdProgrammes.map((p) => <span key={p} style={chip}>{p}</span>)}</div>
@@ -541,7 +584,7 @@ function ClusterRoadmapView({ r, color }: { r: GradClusterRoadmap; color: string
         {r.careerAdvancement.phdRoles.length > 0 && (
           <p style={{ fontSize: 12, color: "var(--ink-2)" }}><b>Roles this can lead to:</b> {r.careerAdvancement.phdRoles.slice(0, 8).join(" · ")}</p>
         )}
-      </Sec>
+      </GradRoadmapSectionFrame>
     </div>
   );
 }

@@ -50,7 +50,7 @@ import {
 import { DOMAINS_1112, STANDARD_CLUSTERS, CLUSTER_EXPLORE_LINKS, CLUSTER_COMPANIES, CLUSTER_FUNDED_PROGRAMS, CAREERS_1112, STREAM_KEY_1112, roadmapFor, type RoadmapEntry, type Career1112, type StreamKey1112, type StandardCluster, type FundedProgram } from "@/lib/report/careerfit1112";
 import { CLUSTER_ROADMAPS, type ClusterRoadmapPhase } from "@/lib/report/clusterRoadmaps1112";
 import type { DetailedCareerRoadmap } from "@/lib/report/careerRoadmapDetailed1112";
-import { flagshipRoadmapFor, type FlagshipDomainRoadmap } from "@/lib/report/flagshipRoadmaps1112";
+import { flagshipRoadmapFor, type FlagshipDomainRoadmap, type FlagshipTrack } from "@/lib/report/flagshipRoadmaps1112";
 import { degreesForStream, ELIGIBILITY_SYMBOL, ELIGIBILITY_LABEL, type DegreeEligibilityRow } from "@/lib/report/degreeStreamMatrix";
 import { topDimensionsForStudent, type ScoredDimension } from "@/lib/report/dimensionCareerGuide";
 import { percentileBandFor } from "@/lib/report/jeePercentileGuide";
@@ -689,12 +689,37 @@ function DegreeRolesTable({ cluster, color }: { cluster: StandardCluster; color:
   );
 }
 
+// Groups a set of FlagshipTrack items under their own track-name subheading
+// within a numbered roadmap step - used for the steps (08-10, 13) that
+// branch by sub-career track rather than showing one flat list.
+function TrackGroupedChips({ tracks, field, color }: { tracks: FlagshipTrack[]; field: "careers" | "skills" | "certifications" | "pgOptions"; color: string }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      {tracks.map((t) => (
+        <div key={t.name}>
+          <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 7 }}>{t.name}</div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+            {t[field].map((item) => (
+              <span key={item} style={{ fontSize: 11.5, fontWeight: 700, color: "var(--ink)", background: `${color}0c`, border: `1px solid ${color}25`, borderRadius: 7, padding: "4px 9px" }}>{item}</span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // The genuinely deep, independently-researched treatment for a cluster
 // that has one (see flagshipRoadmaps1112.ts) - shown INSTEAD of
-// domainRoadmapFor()'s generic content when available. Deliberately a
-// different shape from DetailedCareerRoadmapView's flat 14 sections -
-// this one branches by sub-career track (Investment/Banking/Risk/...),
-// which a single career's roadmap never needs to.
+// domainRoadmapFor()'s generic content when available. Reuses the exact
+// same 14-step, numbered, colour-per-section container
+// (RoadmapSectionFrame/ROADMAP_SECTION_META) DetailedCareerRoadmapView
+// already established for a researched career's own roadmap - the
+// difference here is depth of content within each step (real tables,
+// tiers and track-branching), not a different visual design. Steps 1-6
+// stay common; steps 7-13 branch by sub-career track (Investment/Banking/
+// Risk/...), matching how a student's actual path only diverges once
+// they're choosing a specialisation, not before.
 function FlagshipRoadmapView({ r, cluster, color }: { r: FlagshipDomainRoadmap; cluster: string; color: string }) {
   const chip: React.CSSProperties = { fontSize: 11.5, fontWeight: 700, color: "var(--ink)", background: `${color}0c`, border: `1px solid ${color}25`, borderRadius: 7, padding: "4px 9px" };
   return (
@@ -709,202 +734,194 @@ function FlagshipRoadmapView({ r, cluster, color }: { r: FlagshipDomainRoadmap; 
           <p style={{ maxWidth: 680, margin: "0 auto", fontSize: 13, lineHeight: 1.6, color: "rgba(255,255,255,.96)" }}>{r.tagline}</p>
         </div>
       </div>
-
-      <div style={BREAK}>
-        <SecHead center eyebrow="Where to start" title="Stream, subjects and combinations"
-          sub={r.recommendedStream} />
-        <div style={{ overflowX: "auto", marginTop: 16 }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead><tr><th style={th}>Subject</th><th style={{ ...th, width: 160 }}>Importance</th><th style={th}>Why</th></tr></thead>
-            <tbody>
-              {r.subjects.map((s, i) => (
-                <tr key={s.subject} style={{ background: i % 2 ? "var(--line-2, #f7f7f8)" : "transparent" }}>
-                  <td style={{ ...td, fontWeight: 800, color: "var(--ink)" }}>{s.subject}</td>
-                  <td style={td}>{s.importance}</td>
-                  <td style={td}>{s.why}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div style={{ marginTop: 16, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 10 }}>
-          {r.subjectCombinations.map((c) => (
-            <div key={c.name} style={{ border: `1px solid ${color}25`, borderRadius: 10, padding: "10px 13px", background: `${color}06` }}>
-              <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 4 }}>{c.name}</div>
-              <div style={{ fontSize: 12, color: "var(--ink-2)" }}>{c.combo}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div style={BREAK}>
-        <SecHead center eyebrow="Every real route" title="UG degrees you can pursue" />
-        <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 14 }}>
-          {r.degreeGroups.map((g) => (
-            <div key={g.category}>
-              <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 8, letterSpacing: ".03em", textTransform: "uppercase" }}>{g.category}</div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
-                {g.degrees.map((d) => <span key={d} style={chip}>{d}</span>)}
+      <RoadmapIndex />
+      <div>
+        <RoadmapSectionFrame index={1} eyebrow="01 · School / 11-12" title="Where to start" color={color} sub={r.recommendedStream}>
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead><tr><th style={th}>Subject</th><th style={{ ...th, width: 150 }}>Importance</th><th style={th}>Why</th></tr></thead>
+              <tbody>
+                {r.subjects.map((s, i) => (
+                  <tr key={s.subject} style={{ background: i % 2 ? "var(--line-2, #f7f7f8)" : "transparent" }}>
+                    <td style={{ ...td, fontWeight: 800, color: "var(--ink)" }}>{s.subject}</td>
+                    <td style={td}>{s.importance}</td>
+                    <td style={td}>{s.why}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div style={{ marginTop: 14, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 10 }}>
+            {r.subjectCombinations.map((c) => (
+              <div key={c.name} style={{ border: `1px solid ${color}25`, borderRadius: 10, padding: "10px 13px", background: `${color}06` }}>
+                <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 4 }}>{c.name}</div>
+                <div style={{ fontSize: 12, color: "var(--ink-2)" }}>{c.combo}</div>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
+            ))}
+          </div>
+        </RoadmapSectionFrame>
 
-      <div style={BREAK}>
-        <SecHead center eyebrow="Not sure which path" title="Decision tree - pick your goal" />
-        <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 8 }}>
-          {r.decisionTree.map((d) => (
-            <div key={d.goal} style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", padding: "10px 14px", border: `1px solid ${color}25`, borderRadius: 10, background: `${color}06` }}>
-              <span style={{ fontSize: 12.5, fontWeight: 800, color: "var(--ink)", minWidth: 200 }}>Want {d.goal.toLowerCase()}?</span>
-              <span style={{ fontSize: 12, color, fontWeight: 800 }}>→</span>
-              <span style={{ fontSize: 12.5, color: "var(--ink-2)" }}>{d.path}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+        <RoadmapSectionFrame index={2} eyebrow="02 · UG pathways" title="Every real degree route" color={color}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {r.degreeGroups.map((g) => (
+              <div key={g.category}>
+                <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 7, letterSpacing: ".03em", textTransform: "uppercase" }}>{g.category}</div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>{g.degrees.map((d) => <span key={d} style={chip}>{d}</span>)}</div>
+              </div>
+            ))}
+          </div>
+        </RoadmapSectionFrame>
 
-      <div style={BREAK}>
-        <SecHead center eyebrow="Beyond one city" title="Top colleges - India"
-          sub="Grouped by tier so you can see the full range, not just one city's colleges." />
-        <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 18 }}>
-          {r.collegeTiers.map((t) => (
-            <div key={t.tier}>
-              <div style={{ fontSize: 12.5, fontWeight: 800, color: "var(--ink)" }}>{t.tier}</div>
-              <div style={{ fontSize: 11.5, color: "var(--muted)", marginTop: 2, marginBottom: 10 }}>{t.note}</div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 10 }}>
-                {t.colleges.map((c) => (
-                  <div key={c.name} style={{ border: `1px solid ${color}25`, borderRadius: 10, padding: "10px 13px", background: `${color}06` }}>
-                    <div style={{ fontSize: 12, fontWeight: 800, color: "var(--ink)" }}>{c.name}</div>
-                    <div style={{ fontSize: 11, color: "var(--ink-2)", marginTop: 2 }}>{c.route}</div>
+        <RoadmapSectionFrame index={3} eyebrow="03 · Top colleges - India" title="Beyond one city"
+          sub="Grouped by tier so you can see the full range, not just one city's colleges." color={color}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+            {r.collegeTiers.map((t) => (
+              <div key={t.tier}>
+                <div style={{ fontSize: 12.5, fontWeight: 800, color: "var(--ink)" }}>{t.tier}</div>
+                <div style={{ fontSize: 11.5, color: "var(--muted)", marginTop: 2, marginBottom: 10 }}>{t.note}</div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 10 }}>
+                  {t.colleges.map((c) => (
+                    <div key={c.name} style={{ border: `1px solid ${color}25`, borderRadius: 10, padding: "10px 13px", background: `${color}06` }}>
+                      <div style={{ fontSize: 12, fontWeight: 800, color: "var(--ink)" }}>{c.name}</div>
+                      <div style={{ fontSize: 11, color: "var(--ink-2)", marginTop: 2 }}>{c.route}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </RoadmapSectionFrame>
+
+        <RoadmapSectionFrame index={4} eyebrow="04 · Financial support" title="Make the investment manageable" color={color}>
+          <p style={{ fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.6, margin: 0 }}>{r.financialSupportNote}</p>
+        </RoadmapSectionFrame>
+
+        <RoadmapSectionFrame index={5} eyebrow="05 · UG development" title="What each year should build" color={color}>
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead><tr><th style={th}>Year</th><th style={th}>Academic focus</th><th style={th}>Skills</th><th style={th}>Experience</th><th style={th}>Output</th></tr></thead>
+              <tbody>
+                {r.yearPlan.map((y, i) => (
+                  <tr key={y.year} style={{ background: i % 2 ? "var(--line-2, #f7f7f8)" : "transparent" }}>
+                    <td style={{ ...td, fontWeight: 800, color: "var(--ink)" }}>{y.year}</td>
+                    <td style={td}>{y.academicFocus}</td>
+                    <td style={td}>{y.skills}</td>
+                    <td style={td}>{y.experience}</td>
+                    <td style={td}>{y.output}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </RoadmapSectionFrame>
+
+        <RoadmapSectionFrame index={6} eyebrow="06 · Internships" title="Get real-world exposure" color={color}>
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 4 }}>{r.virtualSimulations.platform} - free, before your first real internship</div>
+            <div style={{ fontSize: 11.5, color: "var(--muted)", marginBottom: 10 }}>{r.virtualSimulations.note}</div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10 }}>
+              {r.virtualSimulations.items.map((it) => (
+                <div key={it.name} style={{ border: `1px solid ${color}25`, borderRadius: 10, padding: "10px 13px", background: `${color}06` }}>
+                  <div style={{ fontSize: 12, fontWeight: 800, color: "var(--ink)", marginBottom: 6 }}>{it.name}</div>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>{it.skills.map((s) => <span key={s} style={{ fontSize: 10.5, color: "var(--ink-2)", background: "#fff", border: `1px solid ${color}20`, borderRadius: 6, padding: "3px 7px" }}>{s}</span>)}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          {r.governmentInternships.length > 0 && (
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 10 }}>Government internships - real, but check the eligibility first</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {r.governmentInternships.map((g) => (
+                  <div key={g.name} style={{ border: `1px solid ${color}25`, borderRadius: 12, padding: "14px 16px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10, flexWrap: "wrap" }}>
+                      <div style={{ fontSize: 13.5, fontWeight: 800, color: "var(--ink)" }}>{g.name}</div>
+                      <a href={g.url} target="_blank" rel="noreferrer" style={{ fontSize: 11, fontWeight: 700, color, textDecoration: "none" }}>{g.body} ↗</a>
+                    </div>
+                    <p style={{ fontSize: 12, color: "var(--ink-2)", margin: "6px 0 0", lineHeight: 1.55 }}><b style={{ color: "var(--ink)" }}>Eligibility: </b>{g.eligibility}</p>
+                    <p style={{ fontSize: 12, color: "var(--ink-2)", margin: "4px 0 0", lineHeight: 1.55 }}><b style={{ color: "var(--ink)" }}>Stipend: </b>{g.stipend}</p>
+                    <p style={{ fontSize: 11, color: "var(--muted)", margin: "4px 0 0" }}>{g.verify}</p>
                   </div>
                 ))}
               </div>
             </div>
-          ))}
-        </div>
-        <p style={{ fontSize: 11.5, color: "var(--muted)", marginTop: 14, lineHeight: 1.5 }}>{r.financialSupportNote}</p>
-      </div>
+          )}
+        </RoadmapSectionFrame>
 
-      <div style={BREAK}>
-        <SecHead center eyebrow="Exact, year by year" title="What each UG year should build" />
-        <div style={{ overflowX: "auto", marginTop: 16 }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead><tr><th style={th}>Year</th><th style={th}>Academic focus</th><th style={th}>Skills</th><th style={th}>Experience</th><th style={th}>Output</th></tr></thead>
-            <tbody>
-              {r.yearPlan.map((y, i) => (
-                <tr key={y.year} style={{ background: i % 2 ? "var(--line-2, #f7f7f8)" : "transparent" }}>
-                  <td style={{ ...td, fontWeight: 800, color: "var(--ink)" }}>{y.year}</td>
-                  <td style={td}>{y.academicFocus}</td>
-                  <td style={td}>{y.skills}</td>
-                  <td style={td}>{y.experience}</td>
-                  <td style={td}>{y.output}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div style={BREAK}>
-        <SecHead center eyebrow={r.virtualSimulations.platform} title="Free virtual experience, before your first real internship"
-          sub={r.virtualSimulations.note} />
-        <div style={{ marginTop: 16, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 10 }}>
-          {r.virtualSimulations.items.map((it) => (
-            <div key={it.name} style={{ border: `1px solid ${color}25`, borderRadius: 10, padding: "10px 13px", background: `${color}06` }}>
-              <div style={{ fontSize: 12, fontWeight: 800, color: "var(--ink)", marginBottom: 6 }}>{it.name}</div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
-                {it.skills.map((s) => <span key={s} style={{ fontSize: 10.5, color: "var(--ink-2)", background: "#fff", border: `1px solid ${color}20`, borderRadius: 6, padding: "3px 7px" }}>{s}</span>)}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {r.governmentInternships.length > 0 && (
-        <div style={BREAK}>
-          <SecHead center eyebrow="Real, but check the eligibility first" title="Government internships worth knowing about" />
-          <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 12 }}>
-            {r.governmentInternships.map((g) => (
-              <div key={g.name} style={{ border: `1px solid ${color}25`, borderRadius: 12, padding: "14px 16px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10, flexWrap: "wrap" }}>
-                  <div style={{ fontSize: 13.5, fontWeight: 800, color: "var(--ink)" }}>{g.name}</div>
-                  <a href={g.url} target="_blank" rel="noreferrer" style={{ fontSize: 11, fontWeight: 700, color, textDecoration: "none" }}>{g.body} ↗</a>
+        <RoadmapSectionFrame index={7} eyebrow="07 · After UG" title="Choose your track"
+          sub="The first few years look similar for everyone - from here, each track is genuinely different." color={color}>
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 10 }}>Not sure which path - decision tree</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {r.decisionTree.map((d) => (
+                <div key={d.goal} style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", padding: "10px 14px", border: `1px solid ${color}25`, borderRadius: 10, background: `${color}06` }}>
+                  <span style={{ fontSize: 12.5, fontWeight: 800, color: "var(--ink)", minWidth: 200 }}>Want {d.goal.toLowerCase()}?</span>
+                  <span style={{ fontSize: 12, color, fontWeight: 800 }}>→</span>
+                  <span style={{ fontSize: 12.5, color: "var(--ink-2)" }}>{d.path}</span>
                 </div>
-                <p style={{ fontSize: 12, color: "var(--ink-2)", margin: "6px 0 0", lineHeight: 1.55 }}><b style={{ color: "var(--ink)" }}>Eligibility: </b>{g.eligibility}</p>
-                <p style={{ fontSize: 12, color: "var(--ink-2)", margin: "4px 0 0", lineHeight: 1.55 }}><b style={{ color: "var(--ink)" }}>Stipend: </b>{g.stipend}</p>
-                <p style={{ fontSize: 11, color: "var(--muted)", margin: "4px 0 0" }}>{g.verify}</p>
+              ))}
+            </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {r.tracks.map((t) => (
+              <div key={t.name} style={{ border: `1px solid ${color}30`, borderRadius: 12, padding: "12px 16px", background: `${color}05` }}>
+                <div style={{ fontSize: 13, fontWeight: 800, color: "var(--ink)" }}>{t.name}</div>
+                <div style={{ fontSize: 12, color, fontWeight: 700, marginTop: 3 }}>{t.pathway}</div>
               </div>
             ))}
           </div>
-        </div>
-      )}
+        </RoadmapSectionFrame>
 
-      <div style={BREAK}>
-        <SecHead center eyebrow="Choose your track" title="After UG - branch into a specialisation"
-          sub="The first few years look similar for everyone - from here, each track is genuinely different." />
-        <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 16 }}>
-          {r.tracks.map((t) => (
-            <div key={t.name} style={{ border: `1px solid ${color}30`, borderRadius: 14, padding: "16px 18px", background: `${color}05` }}>
-              <div style={{ fontSize: 14.5, fontWeight: 800, color: "var(--ink)" }}>{t.name}</div>
-              <div style={{ fontSize: 12, color, fontWeight: 700, marginTop: 3 }}>{t.pathway}</div>
-              <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 14 }}>
-                <div>
-                  <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 6 }}>Careers</div>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>{t.careers.map((c) => <span key={c} style={chip}>{c}</span>)}</div>
+        <RoadmapSectionFrame index={8} eyebrow="08 · PG & specialization" title="Go deeper, by track" color={color}>
+          <TrackGroupedChips tracks={r.tracks} field="pgOptions" color={color} />
+        </RoadmapSectionFrame>
+
+        <RoadmapSectionFrame index={9} eyebrow="09 · Job options" title="Picture the role, by track" color={color}>
+          <TrackGroupedChips tracks={r.tracks} field="careers" color={color} />
+        </RoadmapSectionFrame>
+
+        <RoadmapSectionFrame index={10} eyebrow="10 · Skills & certifications" title="Stack useful proof, by track" color={color}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+            {r.tracks.map((t) => (
+              <div key={t.name}>
+                <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 7 }}>{t.name}</div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
+                  {t.skills.map((s) => <span key={s} style={chip}>{s}</span>)}
                 </div>
-                <div>
-                  <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 6 }}>Skills</div>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>{t.skills.map((s) => <span key={s} style={chip}>{s}</span>)}</div>
-                </div>
-              </div>
-              <div style={{ marginTop: 12 }}>
-                <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 6 }}>Certifications</div>
                 <ul style={{ margin: 0, paddingLeft: 16, display: "flex", flexDirection: "column", gap: 3 }}>
                   {t.certifications.map((c) => <li key={c} style={{ fontSize: 11.5, color: "var(--ink-2)", lineHeight: 1.55 }}>{c}</li>)}
                 </ul>
               </div>
-              <div style={{ marginTop: 12, display: "flex", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
-                <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: "var(--muted)", marginRight: 4 }}>Progression:</div>
-                {t.progression.map((p, i) => (
-                  <span key={p} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                    <span style={{ fontSize: 11.5, fontWeight: 700, color: "var(--ink)" }}>{p}</span>
-                    {i < t.progression.length - 1 && <span style={{ color, fontWeight: 800 }}>→</span>}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+            ))}
+          </div>
+        </RoadmapSectionFrame>
 
-      <div style={BREAK}>
-        <SecHead center eyebrow="If you want to study abroad" title="Master's programmes to consider" />
-        <div style={{ marginTop: 14, display: "flex", flexWrap: "wrap", gap: 7, justifyContent: "center" }}>
-          {r.abroadPrograms.map((p) => <span key={p} style={chip}>{p}</span>)}
-        </div>
-      </div>
+        <RoadmapSectionFrame index={11} eyebrow="11 · Abroad - education" title="Think globally" color={color}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>{r.abroadPrograms.map((p) => <span key={p} style={chip}>{p}</span>)}</div>
+        </RoadmapSectionFrame>
 
-      <div style={BREAK}>
-        <SecHead center eyebrow="Start to finish" title="Your complete journey" />
-        <div style={{ marginTop: 16 }}>
-          {r.completeJourney.map((j, i) => (
-            <div key={j.age} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: "none" }}>
-                <span style={{ width: 9, height: 9, borderRadius: "50%", background: color, flex: "none", marginTop: 4 }} />
-                {i < r.completeJourney.length - 1 && <div style={{ width: 2, flex: 1, background: `linear-gradient(${color}60, ${color}18)`, minHeight: 24 }} />}
+        <RoadmapSectionFrame index={12} eyebrow="12 · Abroad - jobs" title="Work globally" sub={r.abroadJobsNote} color={color}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>{r.abroadJobs.map((j) => <span key={j} style={chip}>{j}</span>)}</div>
+        </RoadmapSectionFrame>
+
+        <RoadmapSectionFrame index={13} eyebrow="13 · Career progression" title="See the progression, by track" color={color}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+            {r.tracks.map((t) => (
+              <div key={t.name}>
+                <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 8 }}>{t.name}</div>
+                <VerticalStepChain steps={t.progression} color={color} />
               </div>
-              <div style={{ paddingBottom: i < r.completeJourney.length - 1 ? 12 : 0 }}>
-                <div style={{ fontSize: 11.5, fontWeight: 800, color }}>{j.age}</div>
-                <div style={{ fontSize: 12.5, color: "var(--ink)", marginTop: 2 }}>{j.stage}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <p style={{ fontSize: 11, color: "var(--muted)", marginTop: 16, display: "flex", alignItems: "flex-start", gap: 6 }}>
-          <Icon name="info" size={13} style={{ flex: "none", marginTop: 1 }} />
-          {r.disclaimer}
-        </p>
+            ))}
+          </div>
+        </RoadmapSectionFrame>
+
+        <RoadmapSectionFrame index={14} eyebrow="14 · Complete roadmap" title="Your full route" color={color}>
+          <VerticalStepChain steps={r.completeJourney.map((j) => `${j.age}: ${j.stage}`)} color={color} />
+          <p style={{ fontSize: 11, color: "var(--muted)", marginTop: 16, display: "flex", alignItems: "flex-start", gap: 6 }}>
+            <Icon name="info" size={13} style={{ flex: "none", marginTop: 1 }} />
+            {r.disclaimer}
+          </p>
+        </RoadmapSectionFrame>
       </div>
     </>
   );
