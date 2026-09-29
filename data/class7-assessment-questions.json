@@ -532,6 +532,11 @@
     "24"
    ],
    "correctAnswer": 1,
+   "correct": 1,
+   "domainAffinity": [
+    "B",
+    "C"
+   ],
    "code": "numerical"
   },
   {
@@ -545,6 +550,11 @@
     "★"
    ],
    "correctAnswer": 2,
+   "correct": 2,
+   "domainAffinity": [
+    "C",
+    "D"
+   ],
    "code": "pattern"
   },
   {
@@ -592,6 +602,11 @@
     "8"
    ],
    "correctAnswer": 2,
+   "correct": 2,
+   "domainAffinity": [
+    "B",
+    "C"
+   ],
    "code": "numerical"
   },
   {
@@ -639,6 +654,11 @@
     "It disappears"
    ],
    "correctAnswer": 0,
+   "correct": 0,
+   "domainAffinity": [
+    "C",
+    "H"
+   ],
    "code": "spatial"
   },
   {
@@ -652,6 +672,11 @@
     "42"
    ],
    "correctAnswer": 2,
+   "correct": 2,
+   "domainAffinity": [
+    "C",
+    "D"
+   ],
    "code": "numerical"
   },
   {
@@ -688,6 +713,11 @@
     "Leaf"
    ],
    "correctAnswer": 0,
+   "correct": 0,
+   "domainAffinity": [
+    "F",
+    "G"
+   ],
    "code": "logical"
   },
   {

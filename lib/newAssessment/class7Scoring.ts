@@ -80,17 +80,6 @@ const RIASEC_NAMES = {
   C: "Conventional (Organizing Data, Systems)"
 };
 
-const MI_DOMAINS = [
-  "Linguistic (Words, Languages)",
-  "Logical-Mathematical (Numbers, Patterns)",
-  "Spatial (Visual, Shapes, Imagination)",
-  "Bodily-Kinesthetic (Movement, Hands-On)",
-  "Musical (Sound, Rhythm, Music)",
-  "Interpersonal (People, Communication)",
-  "Intrapersonal (Self-Understanding)",
-  "Naturalistic (Nature, Living Things)"
-];
-
 // Domain names/images/roles all come from the shared DOMAINS catalogue in
 // lib/report/knowledge.ts - this used to keep its own local copy with G and
 // H labelled "Entrepreneurship & Innovation" and "Agriculture &
@@ -261,6 +250,21 @@ function scorePersonality(responses: Class7Response): Class7ScoreOutput["persona
   };
 }
 
+// Reads the option->code mapping straight off each question in the bank
+// (data/class7-assessment-questions.json already tags every option with its
+// intended letter/domain via `mapping`) instead of a hardcoded per-question
+// table - a hardcoded table silently drifts out of sync the moment a
+// question's options are reordered or re-authored. This file used to keep
+// separate hardcoded tables per section, tuned against Class 6's bank
+// content; Class 7's own bank uses a genuinely different vocabulary in
+// several sections (see scoreEmotional/scoreCreativity below), which those
+// hardcoded tables had never been updated to match. Reading the bank
+// directly makes that class of bug structurally impossible.
+function bankMapping(id: number): string[] | undefined {
+  const q = ((questionBank as any).questions || []).find((q: any) => q.id === id);
+  return q?.mapping as string[] | undefined;
+}
+
 function scoreRIASEC(responses: Class7Response): Class7ScoreOutput["riasecScores"] {
   const scores: Record<string, number> = {
     R: 0, I: 0, A: 0, S: 0, E: 0, C: 0
@@ -268,11 +272,10 @@ function scoreRIASEC(responses: Class7Response): Class7ScoreOutput["riasecScores
 
   // Questions 11-20: RIASEC scoring
   for (let q = 11; q <= 20; q++) {
+    const mapping = bankMapping(q);
     const optionIndex = responses.responses[q];
-    const mapping = ["R", "I", "A", "S", "E"];
-    if (optionIndex < mapping.length) {
-      scores[mapping[optionIndex]]++;
-    }
+    const letter = mapping?.[optionIndex];
+    if (letter && letter in scores) scores[letter]++;
   }
 
   return Object.entries(scores)
@@ -284,43 +287,22 @@ function scoreRIASEC(responses: Class7Response): Class7ScoreOutput["riasecScores
     .sort((a, b) => b.score - a.score);
 }
 
-// Q31-38's 5 options each lean toward a different MI domain, but not
-// always the SAME one in the same position - Q32/Q36 use Musical/
-// Naturalistic in their last two slots where every other question uses
-// Bodily-Kinesthetic/Interpersonal (matching data/class7-assessment-questions.json's
-// own Q32/Q36 wording) - a single flat mapping silently mis-scored those
-// two, and Q37/Q38 were never scored at all. Intrapersonal never appears as
-// a distinct option across Q31-38 - a real limit of this bank's 5-option
-// format, not something to fabricate a slot for.
-const STRENGTHS_MAPPING: Record<number, string[]> = {
-  31: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
-  32: ["Linguistic", "Logical-Mathematical", "Spatial", "Musical", "Naturalistic"],
-  33: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
-  34: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
-  35: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
-  36: ["Linguistic", "Logical-Mathematical", "Spatial", "Musical", "Naturalistic"],
-  37: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
-  38: ["Linguistic", "Logical-Mathematical", "Spatial", "Bodily-Kinesthetic", "Interpersonal"],
-};
-
 function scoreStrengths(responses: Class7Response): Class7ScoreOutput["strengthDomains"] {
   const scores: Record<string, number> = {};
   const of: Record<string, number> = {};
-  MI_DOMAINS.forEach(d => scores[d] = 0);
 
   for (let q = 31; q <= 38; q++) {
+    const mapping = bankMapping(q);
+    if (!mapping) continue;
     const optionIndex = responses.responses[q];
-    const mapping = STRENGTHS_MAPPING[q];
     mapping.forEach((domain) => { of[domain] = (of[domain] || 0) + 1; });
-    if (optionIndex >= 0 && optionIndex < mapping.length) {
-      const domain = mapping[optionIndex];
-      scores[domain] = (scores[domain] || 0) + 1;
-    }
+    const domain = mapping[optionIndex];
+    if (domain) scores[domain] = (scores[domain] || 0) + 1;
   }
 
   // Percentage of the times a domain was actually OFFERED, not a flat /8 -
-  // Musical/Naturalistic only appear in 2 of the 8 questions, so a flat /8
-  // would cap them at 25% even from a perfect run.
+  // several MI domains only appear in a couple of the 8 questions, so a flat
+  // /8 would cap them well under 100% even from a perfect run.
   return Object.entries(scores)
     .map(([name, score]) => ({
       name,
@@ -331,21 +313,24 @@ function scoreStrengths(responses: Class7Response): Class7ScoreOutput["strengthD
 }
 
 function scoreMotivators(responses: Class7Response): Class7ScoreOutput["motivators"] {
+  // Class 7's own bank uses Achievement/Curiosity/Helping/Independence/
+  // Recognition - not Class 6's Freedom/Leadership. The previous hardcoded
+  // array here was a copy of Class 6's, so a Class 7 student who picked
+  // "Independence" saw it reported back to them as "Freedom".
   const scores: Record<string, number> = {
     "Achievement": 0,
     "Curiosity": 0,
     "Helping": 0,
-    "Freedom": 0,
-    "Leadership": 0
+    "Independence": 0,
+    "Recognition": 0
   };
 
   // Questions 39-45: Motivators
   for (let q = 39; q <= 45; q++) {
+    const mapping = bankMapping(q);
     const optionIndex = responses.responses[q];
-    const mapping = ["Achievement", "Curiosity", "Helping", "Freedom", "Leadership"];
-    if (optionIndex < mapping.length) {
-      scores[mapping[optionIndex]]++;
-    }
+    const name = mapping?.[optionIndex];
+    if (name) scores[name] = (scores[name] ?? 0) + 1;
   }
 
   return Object.entries(scores)
@@ -384,77 +369,81 @@ function scoreLearningStyle(responses: Class7Response): Class7ScoreOutput["learn
 }
 
 function scoreEmotional(responses: Class7Response): Class7ScoreOutput["emotionalAwareness"] {
-  const dimensions = ["Self-Awareness", "Empathy", "Social-Management", "Relationship-Building"];
+  // Class 7's own bank uses a richer, different vocabulary per question
+  // (Regulation, Avoidance, Self-Expression, Cooperation, Growth-Orientation
+  // and more - see data/class7-assessment-questions.json Q51-55) than Class
+  // 6's fixed Self-Awareness/Empathy/Social-Management/Relationship-Building
+  // set. The previous hardcoded per-position table here was a copy of
+  // Class 6's and had no notion of Class 7's real categories at all, so
+  // most answers were silently mis-bucketed into the wrong Class-6-style
+  // label. Reading straight from the bank fixes that, and lets whichever
+  // dimensions the bank actually offers appear in the output.
   const scores: Record<string, number> = {};
-  dimensions.forEach(d => scores[d] = 0);
+  const of: Record<string, number> = {};
 
   // Questions 51-55: Emotional & Social Awareness
   for (let q = 51; q <= 55; q++) {
+    const mapping = bankMapping(q);
+    if (!mapping) continue;
     const optionIndex = responses.responses[q];
-    const mappings: Record<number, string[]> = {
-      0: ["Self-Awareness", "Empathy", "Social-Management", "Self-Awareness", "Relationship-Building"],
-      1: ["Relationship-Building", "Self-Awareness", "Empathy", "Self-Awareness", "Relationship-Building"],
-      2: ["Self-Awareness", "Empathy", "Social-Management", "Social-Management", "Empathy"],
-      3: ["Social-Management", "Social-Management", "Self-Awareness", "Self-Awareness", "Social-Management"]
-    };
-    if (optionIndex in mappings) {
-      const dim = mappings[optionIndex][q - 51];
-      scores[dim]++;
-    }
+    mapping.forEach((dim) => { of[dim] = (of[dim] || 0) + 1; });
+    const dim = mapping[optionIndex];
+    if (dim) scores[dim] = (scores[dim] || 0) + 1;
   }
 
+  // Percentage of the times a dimension was actually OFFERED, not a flat
+  // /5 - several dimensions only appear on one of the 5 questions.
   return Object.entries(scores)
     .map(([dimension, score]) => ({
       dimension,
-      score: Math.round((score / 5) * 100)
+      score: of[dimension] ? Math.round((score / of[dimension]) * 100) : 0,
     }))
     .sort((a, b) => b.score - a.score);
 }
 
 function scoreCreativity(responses: Class7Response): Class7ScoreOutput["creativity"] {
-  const indicators = ["Problem-Solving", "Adaptability", "Innovation", "Future-Orientation"];
+  // Same fix as scoreEmotional above - Class 7's bank uses its own 13-way
+  // vocabulary (Divergent, Integrative, Early-Adopter, Planner, Adaptive...)
+  // for Q56-60, not Class 6's fixed 4-indicator set. The previous hardcoded
+  // table here was Class 6's, and shared essentially no vocabulary with
+  // what Class 7 students actually answered.
   const scores: Record<string, number> = {};
-  indicators.forEach(i => scores[i] = 0);
+  const of: Record<string, number> = {};
 
   // Questions 56-60: Creativity & Future Readiness
   for (let q = 56; q <= 60; q++) {
+    const mapping = bankMapping(q);
+    if (!mapping) continue;
     const optionIndex = responses.responses[q];
-    const mappings: Record<number, string[]> = {
-      0: ["Adaptability", "Adaptability", "Adaptability", "Future-Orientation", "Future-Orientation"],
-      1: ["Problem-Solving", "Adaptability", "Adaptability", "Future-Orientation", "Innovation"],
-      2: ["Innovation", "Problem-Solving", "Innovation", "Innovation", "Future-Orientation"],
-      3: ["Problem-Solving", "Problem-Solving", "Problem-Solving", "Future-Orientation", "Adaptability"]
-    };
-    if (optionIndex in mappings) {
-      const indicator = mappings[optionIndex][q - 56];
-      scores[indicator]++;
-    }
+    mapping.forEach((ind) => { of[ind] = (of[ind] || 0) + 1; });
+    const indicator = mapping[optionIndex];
+    if (indicator) scores[indicator] = (scores[indicator] || 0) + 1;
   }
 
   return Object.entries(scores)
     .map(([indicator, score]) => ({
       indicator,
-      score: Math.round((score / 5) * 100)
+      score: of[indicator] ? Math.round((score / of[indicator]) * 100) : 0,
     }))
     .sort((a, b) => b.score - a.score);
 }
 
 // Which of the 5 motivator tags (see scoreMotivators) reinforce each
 // domain - kept local to Class 7 since its 5-tag vocabulary (Achievement/
-// Curiosity/Helping/Freedom/Leadership) isn't shared with Class 11-12's
+// Curiosity/Helping/Independence/Recognition) isn't shared with Class 11-12's
 // 11-tag one. Every domain gets exactly 2, matching this file's own
 // DOMAIN_RIASEC/DOMAIN_MI coverage-evenness principle (lib/report/
 // knowledge.ts) - a domain with only one signal is far noisier under real
 // (imperfectly consistent) answers than one averaging two.
 const DOMAIN_MOTIVATOR: Record<string, string[]> = {
-  A: ["Achievement", "Leadership"], B: ["Achievement", "Freedom"],
-  C: ["Achievement", "Freedom"], D: ["Curiosity", "Achievement"],
+  A: ["Achievement", "Recognition"], B: ["Achievement", "Independence"],
+  C: ["Achievement", "Independence"], D: ["Curiosity", "Achievement"],
   E: ["Helping", "Curiosity"], F: ["Curiosity", "Helping"],
-  G: ["Curiosity", "Achievement"], H: ["Freedom", "Curiosity"],
-  I: ["Freedom", "Curiosity"], J: ["Helping", "Leadership"],
-  K: ["Helping", "Curiosity"], L: ["Freedom", "Leadership"],
-  M: ["Leadership", "Achievement"], N: ["Curiosity", "Helping"],
-  O: ["Achievement", "Freedom"],
+  G: ["Curiosity", "Achievement"], H: ["Independence", "Curiosity"],
+  I: ["Independence", "Curiosity"], J: ["Helping", "Recognition"],
+  K: ["Helping", "Curiosity"], L: ["Independence", "Recognition"],
+  M: ["Recognition", "Achievement"], N: ["Curiosity", "Helping"],
+  O: ["Achievement", "Independence"],
 };
 
 // A weighted mean over whichever evidence exists for a domain - same
