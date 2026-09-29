@@ -318,8 +318,66 @@ function DetailLine({ text, color }: { text: string; color: string }) {
 }
 function DetailList({ lines, color }: { lines: string[]; color: string }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-      {lines.map((l, i) => <DetailLine key={i} text={l} color={color} />)}
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(175px, 1fr))", gap: 8 }}>
+      {lines.map((l, i) => (
+        <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", padding: "9px 10px", border: `1px solid ${color}22`, borderRadius: 10, background: i % 2 ? "#fff" : `${color}08`, minWidth: 0 }}>
+          <span style={{ width: 22, height: 22, borderRadius: 7, display: "grid", placeItems: "center", flex: "none", color, background: `${color}16`, fontSize: 9.5, fontWeight: 900 }}>{String(i + 1).padStart(2, "0")}</span>
+          <DetailLine text={l} color={color} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const ROADMAP_SECTION_META: { icon: string; label: string; eyebrow: string; variant: string; accent: string; pastel: string }[] = [
+  { icon: "school", label: "Build your foundation", eyebrow: "01 · School / 11-12", variant: "foundation", accent: "#4778c8", pastel: "#eef4ff" },
+  { icon: "cap", label: "Choose your launchpad", eyebrow: "02 · UG pathways", variant: "pathway", accent: "#8065bd", pastel: "#f4efff" },
+  { icon: "school", label: "Find your learning environment", eyebrow: "03 · Top colleges - India", variant: "places", accent: "#318d91", pastel: "#ebf8f7" },
+  { icon: "card", label: "Make the investment manageable", eyebrow: "04 · Financial support", variant: "support", accent: "#b4772c", pastel: "#fff7e8" },
+  { icon: "route", label: "Grow year by year", eyebrow: "05 · UG development", variant: "timeline", accent: "#c46a52", pastel: "#fff1ed" },
+  { icon: "briefcase", label: "Get real-world exposure", eyebrow: "06 · Internships", variant: "experience", accent: "#477d9b", pastel: "#edf7fb" },
+  { icon: "signpost", label: "Keep your options open", eyebrow: "07 · After UG", variant: "routes", accent: "#9b667f", pastel: "#fff0f7" },
+  { icon: "star", label: "Go deeper", eyebrow: "08 · PG & specialization", variant: "specialise", accent: "#6a72b8", pastel: "#f0f2ff" },
+  { icon: "match", label: "Picture the role", eyebrow: "09 · Job options", variant: "roles", accent: "#4c8b65", pastel: "#eef9f0" },
+  { icon: "check", label: "Stack useful proof", eyebrow: "10 · Skills & certifications", variant: "skills", accent: "#a47737", pastel: "#fff8ea" },
+  { icon: "compass", label: "Think globally", eyebrow: "11 · Abroad - education", variant: "abroad", accent: "#4f78a6", pastel: "#eef5ff" },
+  { icon: "flag", label: "Work globally", eyebrow: "12 · Abroad - jobs", variant: "global", accent: "#7b659f", pastel: "#f5f0ff" },
+  { icon: "route", label: "See the progression", eyebrow: "13 · Career progression", variant: "progression", accent: "#3b8b83", pastel: "#ecf8f5" },
+  { icon: "score", label: "Your full route", eyebrow: "14 · Complete roadmap", variant: "complete", accent: "#c05f59", pastel: "#fff0ef" },
+];
+
+const ROADMAP_IMAGE_URL = "https://onegrasp.com/wp-content/uploads/2026/09/ChatGPT-Image-Sep-28-2026-02_55_51-PM.png";
+
+function RoadmapIndex() {
+  return (
+    <div style={{ marginTop: 24, border: "1px solid #dfe4ec", borderRadius: 18, padding: 10, background: "#fff", boxShadow: "0 8px 24px rgba(36, 52, 74, .07)", overflow: "hidden" }}>
+      {/* The supplied visual already contains the complete 14-step journey,
+          including its snake layout, labels, icons and goal markers. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={ROADMAP_IMAGE_URL} alt="14-step career roadmap from school to senior roles" style={{ display: "block", width: "100%", height: "auto", borderRadius: 12 }} />
+    </div>
+  );
+}
+
+function RoadmapSectionFrame({ index, eyebrow, title, sub, color, children }: { index: number; eyebrow: string; title: string; sub?: string; color: string; children: React.ReactNode }) {
+  const meta = ROADMAP_SECTION_META[index - 1] ?? { icon: "route", label: "Your next chapter", eyebrow, variant: "default", accent: color, pastel: `${color}12` };
+  return (
+    <div data-roadmap-section={meta.variant} style={{ marginTop: 18, paddingTop: 14, borderTop: `1px solid ${meta.accent}35` }}>
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, padding: "10px 12px", borderRadius: 13, background: `linear-gradient(110deg, ${meta.pastel}, #fff)`, border: `1px solid ${meta.accent}35`, boxShadow: `0 3px 10px ${meta.accent}12` }}>
+        <div style={{ position: "relative", flex: "none" }}>
+          <span style={{ width: 42, height: 42, borderRadius: 13, display: "grid", placeItems: "center", background: meta.accent, color: "#fff", boxShadow: `0 5px 11px ${meta.accent}35` }}>
+            <Icon name={meta.icon} size={19} />
+          </span>
+          <span style={{ position: "absolute", right: -7, bottom: -7, width: 22, height: 22, borderRadius: "50%", display: "grid", placeItems: "center", background: "#fff", border: `2px solid ${meta.accent}`, color: meta.accent, fontSize: 9, fontWeight: 900 }}>{String(index).padStart(2, "0")}</span>
+        </div>
+        <div style={{ minWidth: 0, flex: 1 }}>
+          <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: ".08em", textTransform: "uppercase", color: meta.accent }}>{meta.label}</div>
+          <h2 style={{ margin: "3px 0 0", fontSize: 18.5, lineHeight: 1.2, letterSpacing: "-.02em", color: "var(--ink)" }}>{title}</h2>
+          {sub ? <p style={{ margin: "6px 0 0", fontSize: 12, lineHeight: 1.5, color: "var(--ink-2)" }}>{sub}</p> : null}
+        </div>
+        <span style={{ flex: "none", alignSelf: "flex-start", maxWidth: 220, padding: "8px 11px", borderRadius: 9, background: `${meta.accent}18`, border: `1.5px solid ${meta.accent}55`, color: meta.accent, boxShadow: `0 3px 8px ${meta.accent}18`, fontSize: 10.5, lineHeight: 1.25, fontWeight: 950, letterSpacing: ".07em", textTransform: "uppercase", textAlign: "right" }}>{eyebrow}</span>
+      </div>
+      <div style={{ marginTop: 10 }}>{children}</div>
     </div>
   );
 }
@@ -374,15 +432,26 @@ function isChainLine(line: string): boolean {
 function PairedChainList({ lines, color }: { lines: string[]; color: string }) {
   const rows: { label: string; chain: string }[] = [];
   for (let i = 0; i < lines.length; i++) {
-    if (!isChainLine(lines[i]) && isChainLine(lines[i + 1] ?? "")) {
-      rows.push({ label: lines[i], chain: lines[i + 1] });
+    const line = lines[i];
+    if (isChainLine(line)) {
+      // A rare format variant: some routes are written as one combined
+      // "Label: A → B → C" line instead of a separate label line followed
+      // by its own chain line (e.g. Screenwriter's 4th route) - split it
+      // directly rather than silently dropping it for having no preceding
+      // label line of its own.
+      const { label, rest } = splitLabel(line);
+      if (label && isChainLine(rest)) rows.push({ label, chain: rest });
+      continue;
+    }
+    if (isChainLine(lines[i + 1] ?? "")) {
+      rows.push({ label: line, chain: lines[i + 1] });
       i++;
     }
   }
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 12 }}>
       {rows.map((r, i) => (
-        <div key={i}>
+        <div key={i} style={{ minWidth: 0, padding: "12px 13px", border: `1px solid ${color}25`, borderRadius: 12, background: `${color}07` }}>
           <div style={{ fontSize: 11.5, fontWeight: 800, color, marginBottom: 6 }}>{r.label}</div>
           <InlineChain text={r.chain} color={color} />
         </div>
@@ -416,75 +485,90 @@ function DetailedCareerRoadmapView({ r, careerName, color }: { r: DetailedCareer
   // rather than showing an empty heading with nothing under it.
   const Sec = ({ eyebrow, title, sub, skip, children }: { eyebrow: string; title: string; sub?: string; skip?: boolean; children: React.ReactNode }) => {
     if (skip) return null;
-    return (
-      <div style={BREAK}>
-        <SecHead center eyebrow={eyebrow} title={title} sub={sub} />
-        <div style={{ marginTop: 14 }}>{children}</div>
-      </div>
-    );
+    const sectionNumber = Number(eyebrow.slice(0, 2));
+    const sectionMeta = ROADMAP_SECTION_META[sectionNumber - 1];
+    return <RoadmapSectionFrame index={sectionNumber} eyebrow={eyebrow} title={title} sub={sub} color={sectionMeta?.accent ?? color}>{children}</RoadmapSectionFrame>;
   };
   return (
     <>
-      <div style={BREAK}>
-        <SecHead center eyebrow={`In-depth roadmap · ${careerName}`} title="Your realistic path"
-          sub={r.tagline ?? `The full, step-by-step path into ${careerName} - school through to senior roles, built around this specific career, not a generic cluster.`} />
-      </div>
-      <Sec eyebrow="01 · School / 11-12" title="Where to start" skip={!r.school.length}>
-        <DetailList lines={r.school} color={color} />
-      </Sec>
-      <Sec eyebrow="02 · UG pathways" title="Degrees that lead here" skip={!r.ugPathways.length}>
-        <DetailList lines={r.ugPathways} color={color} />
-      </Sec>
-      <Sec eyebrow="03 · Top colleges - India" title="Where to study" skip={!r.topColleges.length}>
-        <DetailList lines={r.topColleges} color={color} />
-      </Sec>
-      <Sec eyebrow="04 · Financial support" title="Scholarships" skip={!r.scholarships.length}>
-        <DetailList lines={r.scholarships} color={color} />
-      </Sec>
-      <Sec eyebrow="05 · UG development" title="What each year should build" skip={!r.ugDevelopment.years.length && !r.ugDevelopment.notes.length}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          <YearFocusGrid years={r.ugDevelopment.years} color={color} />
-          {r.ugDevelopment.notes.length > 0 && <DetailList lines={r.ugDevelopment.notes} color={color} />}
+      <div style={{ ...BREAK, marginTop: 24, paddingTop: 20 }}>
+        <div style={{ textAlign: "center", padding: "24px 20px", borderRadius: 20, color: "#fff", background: `linear-gradient(135deg, ${color}, ${color}c7)`, boxShadow: `0 12px 24px ${color}25` }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 10, fontWeight: 900, letterSpacing: ".12em", textTransform: "uppercase", color: "rgba(255,255,255,.88)" }}>
+            <span>In-depth roadmap</span>
+            <span style={{ padding: "5px 10px", borderRadius: 999, background: "rgba(255,255,255,.2)", border: "1px solid rgba(255,255,255,.38)", color: "#fff", letterSpacing: ".08em" }}>{careerName}</span>
+          </div>
+          <h2 style={{ margin: "8px 0 6px", fontSize: 30, lineHeight: 1.1, letterSpacing: "-.03em", color: "#fff" }}>Your realistic path</h2>
+          <p style={{ maxWidth: 620, margin: "0 auto", fontSize: 13, lineHeight: 1.6, color: "rgba(255,255,255,.96)" }}>{r.tagline ?? `The full, step-by-step path into ${careerName} - school through to senior roles, built around this specific career, not a generic cluster.`}</p>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 7, marginTop: 16, padding: "6px 12px", borderRadius: 999, background: "rgba(255,255,255,.16)", border: "1px solid rgba(255,255,255,.28)", color: "#fff", fontSize: 10.5, fontWeight: 800 }}>
+            <Icon name="route" size={13} /> A step-by-step route from school to senior roles
+          </div>
         </div>
-      </Sec>
-      <Sec eyebrow="06 · Internships" title="Where to intern" skip={!r.internships.length}>
-        <DetailList lines={r.internships} color={color} />
-      </Sec>
-      <Sec eyebrow="07 · After UG" title="Career pathway options" skip={!r.afterUgPathways.length}>
-        <PairedChainList lines={r.afterUgPathways} color={color} />
-      </Sec>
-      <Sec eyebrow="08 · PG & specialization" title="Going further" skip={!r.pgSpecialization.length}>
-        <DetailList lines={r.pgSpecialization} color={color} />
-      </Sec>
-      <Sec eyebrow="09 · Job options" title="What you could actually be hired as" skip={!r.jobOptions.length}>
-        <DetailList lines={r.jobOptions} color={color} />
-      </Sec>
-      <Sec eyebrow="10 · Skills & certifications" title="What to build along the way" skip={!r.skills.length}>
-        <DetailList lines={r.skills} color={color} />
-      </Sec>
-      <Sec eyebrow="11 · Abroad - education" title="If you want to study abroad" skip={!r.abroadEducation.length}>
-        <DetailList lines={r.abroadEducation} color={color} />
-      </Sec>
-      <Sec eyebrow="12 · Abroad - jobs" title="If you want to work abroad" skip={!r.abroadJobs.length}>
-        <DetailList lines={r.abroadJobs} color={color} />
-      </Sec>
-      <Sec eyebrow="13 · Career progression" title="The long climb" skip={!r.careerProgression.length}>
-        <VerticalStepChain steps={r.careerProgression} color={color} />
-      </Sec>
-      <Sec eyebrow="14 · Complete roadmap" title="Start to finish, at a glance" skip={!r.completeRoadmap.length}>
-        <VerticalStepChain steps={r.completeRoadmap} color={color} />
-        {r.keyDistinction && (
-          <p style={{ fontSize: 12, color: "var(--ink-2)", lineHeight: 1.6, marginTop: 16, paddingTop: 14, borderTop: "1px solid var(--line-2, var(--line))" }}>
-            <b style={{ color: "var(--ink)" }}>Worth knowing: </b>{r.keyDistinction}
-          </p>
-        )}
-        {r.disclaimer && (
-          <p style={{ fontSize: 11, color: "var(--muted)", lineHeight: 1.5, marginTop: 10, display: "flex", alignItems: "flex-start", gap: 6 }}>
-            <Icon name="info" size={13} style={{ flex: "none", marginTop: 1 }} />
-            {r.disclaimer}
-          </p>
-        )}
-      </Sec>
+      </div>
+      <RoadmapIndex />
+      <div>
+          <Sec eyebrow="01 · School / 11-12" title="Where to start" skip={!r.school.length}>
+            <DetailList lines={r.school} color={ROADMAP_SECTION_META[0].accent} />
+          </Sec>
+          <Sec eyebrow="02 · UG pathways" title="Degrees that lead here" skip={!r.ugPathways.length}>
+            <DetailList lines={r.ugPathways} color={ROADMAP_SECTION_META[1].accent} />
+          </Sec>
+          <div style={{ display: "grid", gridTemplateColumns: !r.topColleges.length || !r.scholarships.length ? "1fr" : "repeat(2, minmax(0, 1fr))", gap: 18, alignItems: "start" }}>
+            <Sec eyebrow="03 · Top colleges - India" title="Where to study" skip={!r.topColleges.length}>
+              <DetailList lines={r.topColleges} color={ROADMAP_SECTION_META[2].accent} />
+            </Sec>
+            <Sec eyebrow="04 · Financial support" title="Scholarships" skip={!r.scholarships.length}>
+              <DetailList lines={r.scholarships} color={ROADMAP_SECTION_META[3].accent} />
+            </Sec>
+          </div>
+          <Sec eyebrow="05 · UG development" title="What each year should build" skip={!r.ugDevelopment.years.length && !r.ugDevelopment.notes.length}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <YearFocusGrid years={r.ugDevelopment.years} color={ROADMAP_SECTION_META[4].accent} />
+              {r.ugDevelopment.notes.length > 0 && <DetailList lines={r.ugDevelopment.notes} color={ROADMAP_SECTION_META[4].accent} />}
+            </div>
+          </Sec>
+          <div style={{ display: "grid", gridTemplateColumns: !r.internships.length || !r.afterUgPathways.length ? "1fr" : "repeat(2, minmax(0, 1fr))", gap: 18, alignItems: "start" }}>
+            <Sec eyebrow="06 · Internships" title="Where to intern" skip={!r.internships.length}>
+              <DetailList lines={r.internships} color={ROADMAP_SECTION_META[5].accent} />
+            </Sec>
+            <Sec eyebrow="07 · After UG" title="Career pathway options" skip={!r.afterUgPathways.length}>
+              <PairedChainList lines={r.afterUgPathways} color={ROADMAP_SECTION_META[6].accent} />
+            </Sec>
+          </div>
+          <Sec eyebrow="08 · PG & specialization" title="Going further" skip={!r.pgSpecialization.length}>
+            <DetailList lines={r.pgSpecialization} color={ROADMAP_SECTION_META[7].accent} />
+          </Sec>
+          <Sec eyebrow="09 · Job options" title="What you could actually be hired as" skip={!r.jobOptions.length}>
+            <DetailList lines={r.jobOptions} color={ROADMAP_SECTION_META[8].accent} />
+          </Sec>
+          <Sec eyebrow="10 · Skills & certifications" title="What to build along the way" skip={!r.skills.length}>
+            <DetailList lines={r.skills} color={ROADMAP_SECTION_META[9].accent} />
+          </Sec>
+          <div style={{ display: "grid", gridTemplateColumns: !r.abroadEducation.length || !r.abroadJobs.length ? "1fr" : "repeat(2, minmax(0, 1fr))", gap: 18, alignItems: "start" }}>
+            <Sec eyebrow="11 · Abroad - education" title="If you want to study abroad" skip={!r.abroadEducation.length}>
+              <DetailList lines={r.abroadEducation} color={ROADMAP_SECTION_META[10].accent} />
+            </Sec>
+            <Sec eyebrow="12 · Abroad - jobs" title="If you want to work abroad" skip={!r.abroadJobs.length}>
+              <DetailList lines={r.abroadJobs} color={ROADMAP_SECTION_META[11].accent} />
+            </Sec>
+          </div>
+          <Sec eyebrow="13 · Career progression" title="The long climb" skip={!r.careerProgression.length}>
+            <VerticalStepChain steps={r.careerProgression} color={ROADMAP_SECTION_META[12].accent} />
+          </Sec>
+          <Sec eyebrow="14 · Complete roadmap" title="Start to finish, at a glance" skip={!r.completeRoadmap.length}>
+            <VerticalStepChain steps={r.completeRoadmap} color={ROADMAP_SECTION_META[13].accent} />
+            {r.keyDistinction && (
+              <p style={{ fontSize: 12, color: "var(--ink-2)", lineHeight: 1.6, marginTop: 16, paddingTop: 14, borderTop: "1px solid var(--line-2, var(--line))" }}>
+                <b style={{ color: "var(--ink)" }}>Worth knowing: </b>{r.keyDistinction}
+              </p>
+            )}
+            {r.disclaimer && (
+              <p style={{ fontSize: 11, color: "var(--muted)", lineHeight: 1.5, marginTop: 10, display: "flex", alignItems: "flex-start", gap: 6 }}>
+                <Icon name="info" size={13} style={{ flex: "none", marginTop: 1 }} />
+                {r.disclaimer}
+              </p>
+            )}
+          </Sec>
+      </div>
     </>
   );
 }
