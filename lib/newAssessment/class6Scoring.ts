@@ -79,17 +79,6 @@ const RIASEC_NAMES = {
   C: "Conventional (Organizing Data, Systems)"
 };
 
-const MI_DOMAINS = [
-  "Linguistic (Words, Languages)",
-  "Logical-Mathematical (Numbers, Patterns)",
-  "Spatial (Visual, Shapes, Imagination)",
-  "Bodily-Kinesthetic (Movement, Hands-On)",
-  "Musical (Sound, Rhythm, Music)",
-  "Interpersonal (People, Communication)",
-  "Intrapersonal (Self-Understanding)",
-  "Naturalistic (Nature, Living Things)"
-];
-
 // Domain names/images/roles all come from the shared DOMAINS catalogue in
 // lib/report/knowledge.ts - this used to keep its own local copy with G and
 // H labelled "Entrepreneurship & Innovation" and "Agriculture &
