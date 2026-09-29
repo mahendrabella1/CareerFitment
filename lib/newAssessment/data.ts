@@ -20,7 +20,8 @@ export type Category =
   | "career_selector"
   | "creativity"
   | "degree_fit"
-  | "career_cluster_fit";
+  | "career_cluster_fit"
+  | "integrated_indicators";
 
 
 // "ug" (Graduates / undergraduates) is deliberately its own stage key, not
@@ -89,21 +90,23 @@ const ORDER_11_12: Category[] = [
   "career_selector",
 ];
 
-// Graduates order matches the source question doc's own 11 numbered
-// sections (1 Personality ... 8 Cognitive/MI, then 9 Degree & Academic
-// Fit, 10 Career Cluster Fit, 11 Career Selector) - the same core-then-
-// contextual shape as ORDER_11_12, with "degree_fit"/"career_cluster_fit"
-// as this stage's own contextual categories (its subject_fit/career_fit
-// analogs) rather than reusing 11-12's, since those are stream-specific.
+// Graduates order matches the FuturePath 100-question spec's own D1-D9
+// dimension sequence (Personality, RIASEC/career_interest, Motivators, EI,
+// Learning, MI, Strengths, Cognitive/aptitude, Integrated Indicators), then
+// the contextual categories - the same core-then-contextual shape as
+// ORDER_11_12, with "degree_fit"/"career_cluster_fit" as this stage's own
+// contextual categories (its subject_fit/career_fit analogs) rather than
+// reusing 11-12's, since those are stream-specific.
 const ORDER_UG: Category[] = [
   "personality",
   "career_interest",
-  "aptitude",
-  "strengths",
   "motivators",
-  "learning_styles",
   "emotional_intelligence",
+  "learning_styles",
   "multiple_intelligence",
+  "strengths",
+  "aptitude",
+  "integrated_indicators",
   "degree_fit",
   "career_cluster_fit",
   "career_selector",
@@ -131,6 +134,7 @@ export const CATEGORY_META: Record<Category, { title: string; blurb: string }> =
   career_selector: { title: "Your Career Aspiration", blurb: "What career are you thinking about? Share your thoughts." },
   degree_fit: { title: "Degree & Academic Fit", blurb: "Tell us how your current degree is going." },
   career_cluster_fit: { title: "Career Cluster Fit", blurb: "Which broad career areas are you drawn to right now?" },
+  integrated_indicators: { title: "Work Style", blurb: "How you'd handle real work situations - adaptability, learning agility and ownership. Pick the option closest to what you'd actually do." },
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

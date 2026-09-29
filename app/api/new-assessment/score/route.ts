@@ -347,9 +347,10 @@ const emptyGradContext = () => ({
 // resolvedQuestionType()/optionsForQuestion() helpers so this always agrees
 // with what the generate route actually showed the student.
 function convertAnswersToGraduateFormat(answers: Record<string, string>): GraduateResponse {
-  const dimensions: Record<string, Record<string, number | number[]>> = {
+  const dimensions: Record<string, Record<string, number>> = {
     personality: {}, career_interest: {}, aptitude: {}, strengths: {},
     motivators: {}, learning_styles: {}, emotional_intelligence: {}, multiple_intelligence: {},
+    integrated_indicators: {},
   };
   const context = emptyGradContext();
   const stage: StageKey = "ug";
@@ -365,22 +366,10 @@ function convertAnswersToGraduateFormat(answers: Record<string, string>): Gradua
 
     if (category === "personality" || category === "career_interest" || category === "aptitude" ||
         category === "motivators" || category === "learning_styles" || category === "emotional_intelligence" ||
-        category === "strengths") {
+        category === "strengths" || category === "multiple_intelligence" || category === "integrated_indicators") {
       const optionIndex = parseInt(value, 10);
       if (Number.isNaN(optionIndex)) return;
       dimensions[category][indexStr] = optionIndex;
-      return;
-    }
-    if (category === "multiple_intelligence") {
-      // Q3 is "select up to TWO" (a JSON array of indices); Q0-2 are plain
-      // single-select indices.
-      try {
-        const parsed = JSON.parse(value);
-        dimensions.multiple_intelligence[indexStr] = Array.isArray(parsed) ? parsed.map((s) => parseInt(s, 10)) : parseInt(value, 10);
-      } catch {
-        const optionIndex = parseInt(value, 10);
-        if (!Number.isNaN(optionIndex)) dimensions.multiple_intelligence[indexStr] = optionIndex;
-      }
       return;
     }
 
@@ -419,7 +408,8 @@ function convertAnswersToGraduateFormat(answers: Record<string, string>): Gradua
     motivators: dimensions.motivators as Record<string, number>,
     learning_styles: dimensions.learning_styles as Record<string, number>,
     emotional_intelligence: dimensions.emotional_intelligence as Record<string, number>,
-    multiple_intelligence: dimensions.multiple_intelligence,
+    multiple_intelligence: dimensions.multiple_intelligence as Record<string, number>,
+    integrated_indicators: dimensions.integrated_indicators as Record<string, number>,
     degree_fit: context.degree_fit,
     career_cluster_fit: context.career_cluster_fit,
     domain: "", degree: "", course: "", year: "", desiredCareer: "",

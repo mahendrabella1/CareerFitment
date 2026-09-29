@@ -81,7 +81,6 @@ export function adaptGraduateToSummary(output: GraduateScoreOutput, base: Assess
   const ap = l1.aptitude;
   const topAptitudes = [
     { skill: "Numerical", score: ap.numerical.score },
-    { skill: "Verbal", score: ap.verbal.score },
     { skill: "Logical", score: ap.logical.score },
     { skill: "Critical Thinking", score: ap.criticalThinking.score },
     { skill: "Data Interpretation", score: ap.dataInterpretation.score },

@@ -1,1156 +1,1813 @@
 {
-  "personality": {
-    "ug": {
-      "Set 1": [
-        {
-          "text": "A course project brief is intentionally open-ended. You have access to examples online, AI tools and classmates, but no single 'correct' approach. What would you naturally do first?",
-          "options": [
-            "Sketch my own approach and test it.",
-            "Look at strong examples to understand the expected standard.",
-            "Talk through possibilities with people working on it.",
-            "Start trying different approaches and see what emerges."
-          ],
-          "mapping": [
-            "I",
-            "S",
-            "E",
-            "P"
-          ]
-        },
-        {
-          "text": "You discover a new AI or digital tool that could change how work is done in your field. What attracts your attention first?",
-          "options": [
-            "How it works and the principles behind it.",
-            "Where it can be applied in real situations.",
-            "What I could experiment with using it.",
-            "What effect it could have on people, work or society."
-          ],
-          "mapping": [
-            "N",
-            "S",
-            "P",
-            "F"
-          ]
-        },
-        {
-          "text": "Your team has enough time to choose either a proven solution or an unconventional idea with more uncertainty. Which consideration would carry the most weight for you?",
-          "options": [
-            "The quality of evidence supporting the decision.",
-            "How comfortable the team is with the approach.",
-            "Whether elements of both approaches can be combined.",
-            "Whether the potential value justifies the uncertainty."
-          ],
-          "mapping": [
-            "T",
-            "F",
-            "N",
-            "P"
-          ]
-        },
-        {
-          "text": "You have an exam, project submission, internship deliverable and personal commitment in the same week. Which response feels most natural?",
-          "options": [
-            "Put everything into a detailed schedule.",
-            "Set priorities and adjust the plan as circumstances change.",
-            "Deal with whichever deadline is most immediate.",
-            "Work flexibly and increase the pace as deadlines get closer."
-          ],
-          "mapping": [
-            "J",
-            "J",
-            "P",
-            "P"
-          ]
-        },
-        {
-          "text": "After a week filled with classes, screens, meetings and project work, what usually helps you reset?",
-          "options": [
-            "Meeting or talking with people.",
-            "Having uninterrupted time by myself.",
-            "Doing a hobby or activity unrelated to work.",
-            "It depends on what has drained me that week."
-          ],
-          "mapping": [
-            "E",
-            "I",
-            "I",
-            null
-          ]
-        },
-        {
-          "text": "A project you were proud of receives feedback that is much more critical than expected. What is your first instinct?",
-          "options": [
-            "Break down the feedback to identify exactly what went wrong.",
-            "Ask for specific examples or clarification.",
-            "Reflect on it, then try a different approach next time.",
-            "Accept it quickly and put my attention on the next task."
-          ],
-          "mapping": [
-            "T",
-            "S",
-            "F",
-            "J"
-          ]
-        },
-        {
-          "text": "How comfortable are you choosing a specialisation, internship or career direction when people around you have different expectations?",
-          "type": "scale",
-          "scaleLabel_min": "Not comfortable at all",
-          "scaleLabel_max": "Very comfortable"
-        }
-      ]
+ "personality": {
+  "ug": {
+   "Set 1": [
+    {
+     "text": "In a new university project, which starting approach feels more natural to you?",
+     "options": [
+      "Discuss the project with teammates and develop ideas through interaction.",
+      "Think through your own initial approach and then bring it to the team.",
+      "Exchange ideas briefly, then continue developing the idea independently.",
+      "Prefer an extended discussion before deciding how to proceed."
+     ],
+     "mapping": [
+      "E",
+      "I",
+      "I",
+      "E"
+     ]
+    },
+    {
+     "text": "After a demanding week, what usually helps you reset?",
+     "options": [
+      "Spend time with people, conversations or activities that involve others.",
+      "Have uninterrupted time to think or work on your own.",
+      "Have a small amount of social interaction followed by quiet time.",
+      "Spend most of the available time around other people."
+     ],
+     "mapping": [
+      "E",
+      "I",
+      "I",
+      "E"
+     ]
+    },
+    {
+     "text": "When an idea is still developing, you are more likely to:",
+     "options": [
+      "Discuss the idea with others and discover or refine it while talking.",
+      "Develop it privately until you have a clearer version.",
+      "Write down your thoughts first and then discuss selected points.",
+      "Talk with several people before settling on a direction."
+     ],
+     "mapping": [
+      "E",
+      "I",
+      "I",
+      "E"
+     ]
+    },
+    {
+     "text": "During a group meeting, you tend to:",
+     "options": [
+      "Contribute thoughts as the discussion develops.",
+      "Listen, reflect and speak after you have formed your view.",
+      "Think privately for a while and then offer a concise contribution.",
+      "Use the group conversation itself to explore possible solutions."
+     ],
+     "mapping": [
+      "E",
+      "I",
+      "I",
+      "E"
+     ]
+    },
+    {
+     "text": "When learning a new technical system, you prefer to begin with:",
+     "options": [
+      "A working example showing the actual steps.",
+      "An explanation of the underlying concept and possible applications.",
+      "A detailed description of the current process and requirements.",
+      "A broad overview of how the system might evolve or connect to other ideas."
+     ],
+     "mapping": [
+      "S",
+      "N",
+      "S",
+      "N"
+     ]
+    },
+    {
+     "text": "When planning a project, you are more interested in:",
+     "options": [
+      "The resources, requirements and practical sequence.",
+      "The future possibilities and different directions the project could take.",
+      "The specific information needed to make the plan workable.",
+      "The larger concept and potential innovation behind the project."
+     ],
+     "mapping": [
+      "S",
+      "N",
+      "S",
+      "N"
+     ]
+    },
+    {
+     "text": "When someone explains a complex idea, you prefer:",
+     "options": [
+      "Specific examples showing how it works in practice.",
+      "A conceptual model that can be applied to unfamiliar cases.",
+      "Concrete facts, steps and demonstrations.",
+      "Connections between the concept and broader possibilities."
+     ],
+     "mapping": [
+      "S",
+      "N",
+      "S",
+      "N"
+     ]
+    },
+    {
+     "text": "When solving an unfamiliar problem, you are more likely to:",
+     "options": [
+      "Look at what is already known and use a proven starting point.",
+      "Search for an underlying pattern or principle.",
+      "Break the problem into observable facts and practical constraints.",
+      "Consider several new interpretations before selecting an approach."
+     ],
+     "mapping": [
+      "S",
+      "N",
+      "S",
+      "N"
+     ]
+    },
+    {
+     "text": "When choosing between two project proposals, you tend to prioritize:",
+     "options": [
+      "Consistency of reasoning and strength of evidence.",
+      "How the decision affects the people involved.",
+      "Whether the decision can be defended using clear criteria.",
+      "Whether the decision aligns with important human values."
+     ],
+     "mapping": [
+      "T",
+      "F",
+      "T",
+      "F"
+     ]
+    },
+    {
+     "text": "A teammate asks for your view on weak work. You are more likely to:",
+     "options": [
+      "Identify the specific quality gap and explain how to correct it.",
+      "Consider how to explain the issue in a way the teammate can act on constructively.",
+      "Focus on the evidence and requirements that define the standard.",
+      "Begin by understanding the person's perspective before discussing the shortcomings."
+     ],
+     "mapping": [
+      "T",
+      "F",
+      "T",
+      "F"
+     ]
+    },
+    {
+     "text": "When a team disagrees about a decision, your first instinct is to:",
+     "options": [
+      "Compare the evidence and logical consequences of each position.",
+      "Understand the priorities and effects on the people involved.",
+      "Identify which argument is most internally consistent.",
+      "Look for a solution that respects the values and concerns of those affected."
+     ],
+     "mapping": [
+      "T",
+      "F",
+      "T",
+      "F"
+     ]
+    },
+    {
+     "text": "A good decision is one that:",
+     "options": [
+      "Has the clearest objective justification.",
+      "Best preserves important relationships and values.",
+      "Can be evaluated consistently using defined criteria.",
+      "Feels most appropriate given the people and circumstances involved."
+     ],
+     "mapping": [
+      "T",
+      "F",
+      "T",
+      "F"
+     ]
+    },
+    {
+     "text": "For a major assignment, you prefer to:",
+     "options": [
+      "Set milestones and establish the main sequence before beginning.",
+      "Start with the objective and keep the detailed route open.",
+      "Decide the key structure early but leave room for adjustments.",
+      "Explore several approaches before committing to a detailed plan."
+     ],
+     "mapping": [
+      "J",
+      "P",
+      "J",
+      "P"
+     ]
+    },
+    {
+     "text": "If an event is several weeks away, you are more likely to:",
+     "options": [
+      "Organize important details well in advance.",
+      "Keep the details flexible until circumstances become clearer.",
+      "Set the essential arrangements early while leaving minor choices open.",
+      "Prefer to decide many details closer to the event."
+     ],
+     "mapping": [
+      "J",
+      "P",
+      "J",
+      "P"
+     ]
+    },
+    {
+     "text": "When requirements change late in a project, you tend to:",
+     "options": [
+      "Re-establish the plan and define the revised sequence.",
+      "Explore what the new requirement makes possible before restructuring.",
+      "Identify the exact changes needed and update the existing plan.",
+      "Keep several alternatives open while the implications become clearer."
+     ],
+     "mapping": [
+      "J",
+      "P",
+      "J",
+      "P"
+     ]
+    },
+    {
+     "text": "When you have several options, you are more comfortable when:",
+     "options": [
+      "Choose one and move forward once the key criteria are satisfied.",
+      "Keep alternatives available until more information appears.",
+      "Set a decision point and close the issue after comparing the options.",
+      "Delay commitment if additional exploration could materially improve the choice."
+     ],
+     "mapping": [
+      "J",
+      "P",
+      "J",
+      "P"
+     ]
     }
-  },
-  "career_interest": {
-    "ug": {
-      "Set 1": [
-        {
-          "text": "You get a free month and a modest budget to build something that could become useful to others. Which project would you be most drawn to?",
-          "options": [
-            "Build a physical or technical prototype.",
-            "Investigate a problem and develop evidence-based findings.",
-            "Create a visual, media or storytelling project.",
-            "Create something designed to help people learn or cope.",
-            "Turn an idea into a small venture or community initiative.",
-            "Build a structured tool, database or system that improves organisation."
-          ],
-          "mapping": [
-            "R",
-            "I",
-            "A",
-            "S",
-            "E",
-            "C"
-          ]
-        },
-        {
-          "text": "Which project outcome would give you the strongest sense of achievement?",
-          "options": [
-            "A working prototype solving a practical problem.",
-            "A finding that reveals something people did not know.",
-            "A creative work that people remember.",
-            "A project that measurably helps a group of people.",
-            "An idea that attracts users, customers or supporters.",
-            "A system that makes a process faster or more reliable."
-          ],
-          "mapping": [
-            "R",
-            "I",
-            "A",
-            "S",
-            "E",
-            "C"
-          ]
-        },
-        {
-          "text": "A university innovation programme needs volunteers. Which role would you naturally choose?",
-          "options": [
-            "Build and test the prototype.",
-            "Investigate the problem and analyse evidence.",
-            "Shape the experience, visuals or communication.",
-            "Work with participants and understand their needs.",
-            "Pitch the idea and build support for it.",
-            "Track tasks, information, resources and deadlines."
-          ],
-          "mapping": [
-            "R",
-            "I",
-            "A",
-            "S",
-            "E",
-            "C"
-          ]
-        },
-        {
-          "text": "Which moment would be most satisfying to you?",
-          "options": [
-            "Seeing something I built finally work.",
-            "Solving a problem that initially seemed difficult.",
-            "Seeing an idea take shape creatively.",
-            "Knowing that my contribution helped someone.",
-            "Getting people interested in an idea I believe in.",
-            "Seeing a complicated process become organised and complete."
-          ],
-          "mapping": [
-            "R",
-            "I",
-            "A",
-            "S",
-            "E",
-            "C"
-          ]
-        },
-        {
-          "text": "Which community would you be most likely to spend your free time with?",
-          "options": [
-            "Robotics, maker or engineering community.",
-            "Research, science or data community.",
-            "Design, film, photography or creative community.",
-            "Peer-support, education or community-service group.",
-            "Entrepreneurship, start-up or leadership community.",
-            "Finance, analytics, operations or productivity community."
-          ],
-          "mapping": [
-            "R",
-            "I",
-            "A",
-            "S",
-            "E",
-            "C"
-          ]
-        },
-        {
-          "text": "If you could spend a semester exploring one area outside your main degree, which would you choose?",
-          "options": [
-            "Engineering, robotics or technology projects.",
-            "Scientific research, analytics or experimentation.",
-            "Design, media or creative production.",
-            "Psychology, education, healthcare or social development.",
-            "Business, entrepreneurship or management.",
-            "Finance, operations, information systems or process improvement."
-          ],
-          "mapping": [
-            "R",
-            "I",
-            "A",
-            "S",
-            "E",
-            "C"
-          ]
-        },
-        {
-          "text": "In a multidisciplinary project, which responsibility would you prefer?",
-          "options": [
-            "Build the technical or physical solution.",
-            "Research the problem and interpret the evidence.",
-            "Develop the design, content or user experience.",
-            "Coordinate with people affected by the project.",
-            "Lead decisions, pitching and external relationships.",
-            "Organise information, budgets, workflows and timelines."
-          ],
-          "mapping": [
-            "R",
-            "I",
-            "A",
-            "S",
-            "E",
-            "C"
-          ]
-        },
-        {
-          "text": "Which kind of real-world experience would you most want before graduation?",
-          "options": [
-            "Building, testing or operating technical systems.",
-            "Researching questions using data or experiments.",
-            "Creating products, media or experiences.",
-            "Working directly with people or communities.",
-            "Launching, selling or leading something.",
-            "Managing resources, information or business processes."
-          ],
-          "mapping": [
-            "R",
-            "I",
-            "A",
-            "S",
-            "E",
-            "C"
-          ]
-        },
-        {
-          "text": "Which statement sounds most like the kind of work you would enjoy repeatedly?",
-          "options": [
-            "Working with tools, devices, machines or technical systems.",
-            "Understanding why something happens.",
-            "Creating and expressing ideas.",
-            "Working closely with people and improving their experience.",
-            "Influencing decisions or building something people adopt.",
-            "Organising information and making systems work smoothly."
-          ],
-          "mapping": [
-            "R",
-            "I",
-            "A",
-            "S",
-            "E",
-            "C"
-          ]
-        },
-        {
-          "text": "Which capability would you most like to become unusually good at?",
-          "options": [
-            "Technical building and implementation.",
-            "Research and analytical reasoning.",
-            "Creative direction and design.",
-            "Communication, mentoring or support.",
-            "Leadership, negotiation or business development.",
-            "Data, finance or operational organisation."
-          ],
-          "mapping": [
-            "R",
-            "I",
-            "A",
-            "S",
-            "E",
-            "C"
-          ]
-        },
-        {
-          "text": "A student-led event suddenly becomes much larger than expected. Which team would you choose?",
-          "options": [
-            "Technology and production.",
-            "Research, data and evaluation.",
-            "Creative, design and media.",
-            "Participant experience and outreach.",
-            "Sponsorship, partnerships and promotion.",
-            "Operations, logistics and registration."
-          ],
-          "mapping": [
-            "R",
-            "I",
-            "A",
-            "S",
-            "E",
-            "C"
-          ]
-        },
-        {
-          "text": "You receive four internship descriptions with similar pay and location. Which role would attract you first?",
-          "options": [
-            "Product or engineering role.",
-            "Research or analytics role.",
-            "Design or content role.",
-            "People, community or learning role.",
-            "Business development or growth role.",
-            "Operations or process role."
-          ],
-          "mapping": [
-            "R",
-            "I",
-            "A",
-            "S",
-            "E",
-            "C"
-          ]
-        }
-      ]
-    }
-  },
-  "aptitude": {
-    "ug": {
-      "Set 1": [
-        {
-          "text": "A subscription costs ₹800 per month. A student receives a 15% student discount and then pays 18% GST on the discounted price. What is the final monthly amount?",
-          "options": [
-            "₹680.00",
-            "₹802.40",
-            "₹816.00",
-            "₹944.00"
-          ],
-          "type": "choice4",
-          "correctIndex": 1,
-          "subdomain": "Numerical Reasoning"
-        },
-        {
-          "text": "A student portfolio receives 1,200 views in one month and 1,560 the next month. What is the percentage increase?",
-          "options": [
-            "20%",
-            "25%",
-            "30%",
-            "35%"
-          ],
-          "type": "choice4",
-          "correctIndex": 2,
-          "subdomain": "Numerical Reasoning"
-        },
-        {
-          "text": "A project team has designers and developers in a 3:5 ratio, totalling 32 people. How many developers are there?",
-          "options": [
-            "12",
-            "16",
-            "20",
-            "24"
-          ],
-          "type": "choice4",
-          "correctIndex": 2,
-          "subdomain": "Numerical Reasoning"
-        },
-        {
-          "text": "In the sentence 'The proposal is viable but requires careful execution,' which word is closest in meaning to 'viable'?",
-          "options": [
-            "Popular",
-            "Practical",
-            "Creative",
-            "Temporary"
-          ],
-          "type": "choice4",
-          "correctIndex": 1,
-          "subdomain": "Verbal Reasoning"
-        },
-        {
-          "text": "A career post claims: 'People who use AI tools every day are more employable.' Which information would be most useful before accepting this conclusion?",
-          "options": [
-            "How many words the post contains.",
-            "Whether the comparison controls for skills, education, experience and type of role.",
-            "How many comments the post received.",
-            "Whether the author uses AI tools personally."
-          ],
-          "type": "choice4",
-          "correctIndex": 1,
-          "subdomain": "Critical Thinking"
-        },
-        {
-          "text": "Premises: All data scientists analyse evidence. Some product managers are data scientists. No person who ignores evidence is a reliable analyst. Which conclusion must be true?",
-          "options": [
-            "Some product managers analyse evidence.",
-            "All product managers analyse evidence.",
-            "Some reliable analysts are not data scientists.",
-            "All people who analyse evidence are data scientists."
-          ],
-          "type": "choice4",
-          "correctIndex": 0,
-          "subdomain": "Logical Reasoning"
-        },
-        {
-          "text": "Four students—A, B, C and D—present in four consecutive slots. B presents immediately after C. A presents before B. D is not first. Which order is possible?",
-          "options": [
-            "A, C, B, D",
-            "C, B, D, A",
-            "D, A, C, B",
-            "A, D, B, C"
-          ],
-          "type": "choice4",
-          "correctIndex": 0,
-          "subdomain": "Logical Reasoning"
-        },
-        {
-          "text": "A creator's monthly followers increase from 20,000 to 30,000. The creator describes this as '50% growth'. What additional information would be most useful when judging the business significance of that growth?",
-          "options": [
-            "The creator's preferred platform.",
-            "The starting audience, engagement and conversion into meaningful outcomes.",
-            "The number of posts made.",
-            "The creator's posting time."
-          ],
-          "type": "choice4",
-          "correctIndex": 1,
-          "subdomain": "Critical Thinking"
-        },
-        {
-          "text": "A student chooses a career path mainly because several highly visible people online appear successful in it. Which risk in the decision is most relevant?",
-          "options": [
-            "The student may be over-weighting visible success while ignoring the broader distribution of outcomes.",
-            "The student has used too much numerical data.",
-            "The student has avoided all social influence.",
-            "The student has considered too many alternatives."
-          ],
-          "type": "choice4",
-          "correctIndex": 0,
-          "subdomain": "Decision-Making"
-        },
-        {
-          "text": "A project has 100 hours available. Research needs 20 hours, development 40, testing 25 and documentation 15. The client removes the need for 10 hours of documentation. How many hours remain available for the other activities?",
-          "options": [
-            "90",
-            "95",
-            "100",
-            "110"
-          ],
-          "type": "choice4",
-          "correctIndex": 1,
-          "subdomain": "Data Interpretation"
-        },
-        {
-          "text": "A survey of 800 students reports that 58% prefer project-based learning, with a margin of error of ±3 percentage points. Which interval best represents the reported estimate?",
-          "options": [
-            "52%–55%",
-            "55%–61%",
-            "58%–61%",
-            "61%–64%"
-          ],
-          "type": "choice4",
-          "correctIndex": 1,
-          "subdomain": "Data Interpretation"
-        },
-        {
-          "text": "A student spends 7 hours sleeping, 8 hours on classes/internship, 2 hours commuting, 3 hours skill-building and 4 hours on personal activities. If commuting is reduced by 1 hour and that hour is added to skill-building, what percentage of the day is spent on skill-building?",
-          "options": [
-            "12.5%",
-            "16.7%",
-            "20.8%",
-            "25.0%"
-          ],
-          "type": "choice4",
-          "correctIndex": 1,
-          "subdomain": "Numerical Reasoning"
-        }
-      ]
-    }
-  },
-  "strengths": {
-    "ug": {
-      "Set 1": [
-        {
-          "text": "You find a new AI feature that could remove several repetitive steps from your work. What do you do first?",
-          "options": [
-            "Understand how reliable and accurate it is.",
-            "Think of unconventional ways to use it.",
-            "Consider what it could change over the next few years.",
-            "Apply it immediately to a real task.",
-            "Show others how it could create an advantage.",
-            "Ask teammates how it could fit their workflows."
-          ],
-          "mapping": [
-            "Intellectual & Analytical",
-            "Creative & Innovative",
-            "Strategic & Futuristic",
-            "Execution & Achievement",
-            "Influence & Leadership",
-            "Relationship & Adaptability"
-          ]
-        },
-        {
-          "text": "A group wants to turn a small campus idea into something sustainable. Which part would interest you most?",
-          "options": [
-            "Researching whether the idea solves a real problem.",
-            "Creating the identity, experience or content.",
-            "Designing the long-term model and direction.",
-            "Turning the idea into a working version quickly.",
-            "Building adoption, partnerships or an audience.",
-            "Creating a healthy team and community around it."
-          ],
-          "mapping": [
-            "Intellectual & Analytical",
-            "Creative & Innovative",
-            "Strategic & Futuristic",
-            "Execution & Achievement",
-            "Influence & Leadership",
-            "Relationship & Adaptability"
-          ]
-        },
-        {
-          "text": "You keep getting stuck at the same point in a difficult course or project. What do you naturally do?",
-          "options": [
-            "Identify exactly where the failure occurs.",
-            "Try an entirely different method.",
-            "Look for patterns and redesign the plan.",
-            "Practise the difficult part repeatedly.",
-            "Ask experienced people how they approached it.",
-            "Work with someone and improve together."
-          ],
-          "mapping": [
-            "Intellectual & Analytical",
-            "Creative & Innovative",
-            "Strategic & Futuristic",
-            "Execution & Achievement",
-            "Influence & Leadership",
-            "Relationship & Adaptability"
-          ]
-        },
-        {
-          "text": "A new digital trend starts influencing your field. What is your first instinct?",
-          "options": [
-            "Find evidence for why it is gaining traction.",
-            "Create your own interpretation of it.",
-            "Think about where it may lead.",
-            "Experiment with it directly.",
-            "Find ways to turn it into an opportunity.",
-            "Observe how different people are responding to it."
-          ],
-          "mapping": [
-            "Intellectual & Analytical",
-            "Creative & Innovative",
-            "Strategic & Futuristic",
-            "Execution & Achievement",
-            "Influence & Leadership",
-            "Relationship & Adaptability"
-          ]
-        },
-        {
-          "text": "A group asks you to organise a trip, event or shared experience. What do you naturally focus on?",
-          "options": [
-            "Comparing options and trade-offs.",
-            "Finding a distinctive idea or experience.",
-            "Anticipating what could change or go wrong.",
-            "Making bookings and practical arrangements.",
-            "Taking responsibility for decisions and coordination.",
-            "Making sure different people's needs are considered."
-          ],
-          "mapping": [
-            "Intellectual & Analytical",
-            "Creative & Innovative",
-            "Strategic & Futuristic",
-            "Execution & Achievement",
-            "Influence & Leadership",
-            "Relationship & Adaptability"
-          ]
-        },
-        {
-          "text": "You receive ₹1,00,000 to create something useful for university students. What would you do first?",
-          "options": [
-            "Research the problem and validate the need.",
-            "Develop a distinctive concept.",
-            "Design a model that could grow over time.",
-            "Build a working version and test it.",
-            "Create demand and attract users or supporters.",
-            "Build something that strengthens student connection or support."
-          ],
-          "mapping": [
-            "Intellectual & Analytical",
-            "Creative & Innovative",
-            "Strategic & Futuristic",
-            "Execution & Achievement",
-            "Influence & Leadership",
-            "Relationship & Adaptability"
-          ]
-        },
-        {
-          "text": "Two capable teammates strongly disagree about a project direction. What would you be most likely to contribute?",
-          "options": [
-            "Compare the evidence behind both positions.",
-            "Combine elements into a new alternative.",
-            "Reconnect the discussion to the larger objective.",
-            "Choose a workable option and move forward.",
-            "Help the group commit to a decision.",
-            "Make sure both people feel heard before deciding."
-          ],
-          "mapping": [
-            "Intellectual & Analytical",
-            "Creative & Innovative",
-            "Strategic & Futuristic",
-            "Execution & Achievement",
-            "Influence & Leadership",
-            "Relationship & Adaptability"
-          ]
-        },
-        {
-          "text": "You unexpectedly get a free weekend. Which activity sounds most satisfying?",
-          "options": [
-            "Solve a difficult problem or explore a complex topic.",
-            "Create something from scratch.",
-            "Explore future trends or develop a long-term idea.",
-            "Finish practical tasks and organise pending work.",
-            "Attend a networking event or lead an activity.",
-            "Spend meaningful time with people or help someone."
-          ],
-          "mapping": [
-            "Intellectual & Analytical",
-            "Creative & Innovative",
-            "Strategic & Futuristic",
-            "Execution & Achievement",
-            "Influence & Leadership",
-            "Relationship & Adaptability"
-          ]
-        },
-        {
-          "text": "When evaluating a possible career direction, which factor would you naturally examine first?",
-          "options": [
-            "Intellectual challenge and evidence of fit.",
-            "Freedom to create and experiment.",
-            "Future relevance and long-term potential.",
-            "Clarity of pathway and practical stability.",
-            "Opportunity to lead and influence.",
-            "Alignment with people, values and social impact."
-          ],
-          "mapping": [
-            "Intellectual & Analytical",
-            "Creative & Innovative",
-            "Strategic & Futuristic",
-            "Execution & Achievement",
-            "Influence & Leadership",
-            "Relationship & Adaptability"
-          ]
-        },
-        {
-          "text": "During a university project or internship, which role do you naturally gravitate toward?",
-          "options": [
-            "Analyst—working with data, evidence or research.",
-            "Idea lead—developing new concepts.",
-            "Strategist—thinking several steps ahead.",
-            "Executor—turning plans into completed work.",
-            "Spokesperson—presenting, negotiating or persuading.",
-            "Connector—keeping people aligned and supported."
-          ],
-          "mapping": [
-            "Intellectual & Analytical",
-            "Creative & Innovative",
-            "Strategic & Futuristic",
-            "Execution & Achievement",
-            "Influence & Leadership",
-            "Relationship & Adaptability"
-          ]
-        }
-      ]
-    }
-  },
-  "motivators": {
-    "ug": {
-      "Set 1": [
-        {
-          "text": "You are comparing two graduate roles. One has a clear progression structure; the other gives you more freedom to shape your work. Which would you prefer?",
-          "options": [
-            "The structured path.",
-            "The higher-autonomy environment."
-          ],
-          "mapping": [
-            "Security",
-            "Autonomy"
-          ]
-        },
-        {
-          "text": "Which outcome would feel more personally rewarding?",
-          "options": [
-            "Becoming exceptionally capable and respected in a field.",
-            "Seeing your work make a meaningful difference to people."
-          ],
-          "mapping": [
-            "Mastery",
-            "Impact"
-          ]
-        },
-        {
-          "text": "Which environment would motivate you more over several months?",
-          "options": [
-            "Having freedom to decide how to achieve the objective.",
-            "Having a demanding target that pushes you to prove what you can do."
-          ],
-          "mapping": [
-            "Autonomy",
-            "Challenge"
-          ]
-        },
-        {
-          "text": "Which long-term direction would appeal to you more?",
-          "options": [
-            "Leading teams and making consequential decisions.",
-            "Becoming a deep specialist who solves difficult problems."
-          ],
-          "mapping": [
-            "Leadership",
-            "Mastery"
-          ]
-        },
-        {
-          "text": "How important is financial security when evaluating your future career?",
-          "type": "scale",
-          "scaleLabel_min": "Not important",
-          "scaleLabel_max": "Extremely important"
-        },
-        {
-          "text": "How important is doing work that you find personally meaningful or intellectually engaging?",
-          "type": "scale",
-          "scaleLabel_min": "Not important",
-          "scaleLabel_max": "Extremely important"
-        },
-        {
-          "text": "A team is behind schedule and the quality of the work is still uneven. Which approach would you value more?",
-          "options": [
-            "Protect a steady pace and avoid avoidable mistakes.",
-            "Increase the pace significantly to recover the schedule."
-          ],
-          "mapping": [
-            "Steady Pace",
-            "Urgency"
-          ]
-        },
-        {
-          "text": "Two teammates disagree about responsibilities and both feel they have a valid point. Which approach would you value more?",
-          "options": [
-            "A clear decision from the responsible lead so the work can continue.",
-            "A discussion that allows both sides to reach an accepted arrangement."
-          ],
-          "mapping": [
-            "Directive Resolution",
-            "Collaborative Resolution"
-          ]
-        },
-        {
-          "text": "How much do you enjoy being responsible for a group's outcome when the role also brings pressure and accountability?",
-          "type": "scale",
-          "scaleLabel_min": "Not at all",
-          "scaleLabel_max": "Very much"
-        }
-      ]
-    }
-  },
-  "learning_styles": {
-    "ug": {
-      "Set 1": [
-        {
-          "text": "You have two weeks to learn a tool required for an internship. Which learning route would you prefer?",
-          "options": [
-            "Short demonstrations and visual walkthroughs.",
-            "Detailed documentation and written explanations.",
-            "Guidance from a mentor or peer.",
-            "A small project that forces me to use the tool."
-          ],
-          "mapping": [
-            "Visual",
-            "Reading/Writing",
-            "Auditory",
-            "Kinesthetic"
-          ]
-        },
-        {
-          "text": "You need to prepare for a technical interview. Which preparation method would you naturally rely on most?",
-          "options": [
-            "Visual summaries and concept maps.",
-            "Structured notes and written explanations.",
-            "Explaining concepts to another person.",
-            "Timed practice, problems and mock interviews."
-          ],
-          "mapping": [
-            "Visual",
-            "Reading/Writing",
-            "Auditory",
-            "Kinesthetic"
-          ]
-        },
-        {
-          "text": "When learning a difficult concept, how strongly do you prefer understanding the underlying theory before applying it?",
-          "type": "scale",
-          "scaleLabel_min": "Not at all",
-          "scaleLabel_max": "Very strongly"
-        },
-        {
-          "text": "When learning a new professional skill, how strongly do you prefer exploring it independently before asking for guidance?",
-          "type": "scale",
-          "scaleLabel_min": "Not at all",
-          "scaleLabel_max": "Very strongly"
-        },
-        {
-          "text": "How useful do you find specific feedback that shows exactly what could be improved in your work?",
-          "type": "scale",
-          "scaleLabel_min": "Not useful",
-          "scaleLabel_max": "Extremely useful"
-        }
-      ]
-    }
-  },
-  "emotional_intelligence": {
-    "ug": {
-      "Set 1": [
-        {
-          "text": "During a group project, you notice that you are becoming unusually impatient because decisions are taking longer than expected. What is most true for you?",
-          "options": [
-            "I notice the change in my own reactions quickly.",
-            "I can usually regulate myself before it changes my behaviour.",
-            "I also notice how my reaction may be affecting others.",
-            "I am likely to address the situation with the group."
-          ],
-          "mapping": [
-            "Self-Awareness",
-            "Self-Management",
-            "Social Awareness",
-            "Relationship Management"
-          ]
-        },
-        {
-          "text": "Your performance drops in an area where you usually do well. What is your first instinct?",
-          "options": [
-            "Identify and name what I am feeling about it.",
-            "Give myself a short reset, then focus on what can be changed.",
-            "Consider how the situation may be affecting people around me.",
-            "Talk it through with someone I trust."
-          ],
-          "mapping": [
-            "Self-Awareness",
-            "Self-Management",
-            "Social Awareness",
-            "Relationship Management"
-          ]
-        },
-        {
-          "text": "A close teammate strongly disagrees with a decision you support. What are you most likely to do?",
-          "options": [
-            "Clarify my own position before responding.",
-            "Keep my response measured even if I feel strongly.",
-            "Try to understand why their perspective differs.",
-            "Look for a way both sides can leave the discussion feeling heard."
-          ],
-          "mapping": [
-            "Self-Awareness",
-            "Self-Management",
-            "Social Awareness",
-            "Relationship Management"
-          ]
-        },
-        {
-          "text": "Several deadlines arrive at once and you begin to feel overloaded. What do you usually do?",
-          "options": [
-            "Notice the stress before it becomes unmanageable.",
-            "Break the work into smaller, controllable actions.",
-            "Pay attention to whether others around me are also under pressure.",
-            "Ask for support or redistribute work when appropriate."
-          ],
-          "mapping": [
-            "Self-Awareness",
-            "Self-Management",
-            "Social Awareness",
-            "Relationship Management"
-          ]
-        },
-        {
-          "text": "A supervisor gives you critical feedback in front of other people. What is most true for you?",
-          "options": [
-            "I feel the reaction immediately but may not show it.",
-            "I pause before responding so I can process it.",
-            "I notice how the situation may have affected others too.",
-            "I ask questions so I understand exactly what needs to change."
-          ],
-          "mapping": [
-            "Self-Awareness",
-            "Self-Management",
-            "Social Awareness",
-            "Relationship Management"
-          ]
-        },
-        {
-          "text": "You and a teammate repeatedly clash over how to complete a shared task. What do you usually contribute?",
-          "options": [
-            "Recognise what specifically is frustrating me.",
-            "Keep my communication professional despite the disagreement.",
-            "Try to understand what is driving their approach.",
-            "Suggest a conversation about how we can work together more effectively."
-          ],
-          "mapping": [
-            "Self-Awareness",
-            "Self-Management",
-            "Social Awareness",
-            "Relationship Management"
-          ]
-        },
-        {
-          "text": "After a particularly demanding month of exams, projects or internship work, what most helps you recover?",
-          "options": [
-            "Recognising when I need to slow down.",
-            "Deliberately making time to rest and reset.",
-            "Checking whether people close to me have also been affected.",
-            "Talking through the experience with someone."
-          ],
-          "mapping": [
-            "Self-Awareness",
-            "Self-Management",
-            "Social Awareness",
-            "Relationship Management"
-          ]
-        }
-      ]
-    }
-  },
-  "multiple_intelligence": {
-    "ug": {
-      "Set 1": [
-        {
-          "text": "You need to explain a new process to someone joining your project. Which approach would you naturally choose?",
-          "options": [
-            "Explain it clearly using words and examples.",
-            "Walk through the logic and information step by step.",
-            "Create a visual map or diagram.",
-            "Demonstrate the process in practice."
-          ],
-          "mapping": [
-            "Linguistic",
-            "Logical-Mathematical",
-            "Spatial",
-            "Bodily-Kinesthetic"
-          ]
-        },
-        {
-          "text": "Which challenge would you most naturally choose?",
-          "options": [
-            "Solve a difficult analytical problem.",
-            "Design a visual, spatial or interactive solution.",
-            "Understand how a group of people is behaving.",
-            "Write a clear explanation of a complex issue."
-          ],
-          "mapping": [
-            "Logical-Mathematical",
-            "Spatial",
-            "Interpersonal",
-            "Linguistic"
-          ]
-        },
-        {
-          "text": "A friend says they understand a concept only partly. What would you most naturally do?",
-          "options": [
-            "Explain it with words and examples.",
-            "Draw or show a visual representation.",
-            "Demonstrate it using a practical example.",
-            "Use an analogy or story."
-          ],
-          "mapping": [
-            "Linguistic",
-            "Spatial",
-            "Bodily-Kinesthetic",
-            null
-          ]
-        },
-        {
-          "text": "Which combination best describes the areas in which you feel naturally strongest? Select up to TWO.",
-          "options": [
-            "Words, communication and expression.",
-            "Numbers, logic and structured reasoning.",
-            "Visualisation, design and spatial thinking.",
-            "People, relationships and social understanding.",
-            "Self-awareness and reflection.",
-            "Nature, observation and environmental awareness.",
-            "Music, rhythm and auditory patterns.",
-            "Practical action, movement and physical activity."
-          ],
-          "type": "multiple",
-          "instruction": "Select up to TWO.",
-          "mapping": [
-            "Linguistic",
-            "Logical-Mathematical",
-            "Spatial",
-            "Interpersonal",
-            "Intrapersonal",
-            "Naturalistic",
-            "Musical",
-            "Bodily-Kinesthetic"
-          ]
-        }
-      ]
-    }
-  },
-  "degree_fit": {
-    "ug": {
-      "Set 1": [
-        {
-          "text": "Which part of your degree currently gives you the most satisfaction?",
-          "options": [
-            "Core theory and concepts.",
-            "Labs, practicals and hands-on work.",
-            "Projects, case studies and fieldwork.",
-            "Business, management or application-oriented modules.",
-            "Creative or design-oriented modules.",
-            "Research, data and analysis-heavy modules."
-          ],
-          "type": "choice_single"
-        },
-        {
-          "text": "How satisfied are you with your current degree/course choice?",
-          "type": "scale",
-          "scaleLabel_min": "Extremely dissatisfied",
-          "scaleLabel_max": "Extremely satisfied"
-        },
-        {
-          "text": "Why did you originally choose this degree? Select up to TWO.",
-          "options": [
-            "Genuine personal interest.",
-            "Advice from family, teachers or mentors.",
-            "Influence from friends or peers.",
-            "Perceived career or earning potential.",
-            "Entrance score, eligibility or availability influenced the choice.",
-            "I was uncertain and selected from the options available.",
-            "Other"
-          ],
-          "type": "multiple",
-          "instruction": "Select up to TWO."
-        }
-      ]
-    }
-  },
-  "career_cluster_fit": {
-    "ug": {
-      "Set 1": [
-        {
-          "text": "Looking at the career clusters below, which areas are you most drawn to right now? Select up to THREE.",
-          "options": [
-            "Engineering, Technology & Computing",
-            "Science, Mathematics & Research",
-            "Healthcare & Medicine",
-            "Psychology, Humanities & Social Sciences",
-            "Sports, Fitness & Human Performance",
-            "Agriculture, Food & Life Sciences",
-            "Environment, Energy & Sustainability",
-            "Architecture, Construction & Built Environment",
-            "Business, Finance & Entrepreneurship",
-            "Law, Legal & Compliance",
-            "Government, Public Administration & Policy",
-            "Education & Learning",
-            "Media, Communication, Arts & Design",
-            "Manufacturing & Industrial Production",
-            "Supply Chain, Procurement & Logistics",
-            "Travel, Tourism, Hospitality & Transport",
-            "Defence, Security & Emergency Services",
-            "Personal Care, Beauty & Wellness"
-          ],
-          "type": "multiple",
-          "instruction": "Select up to THREE."
-        },
-        {
-          "text": "Within the career cluster you ranked highest, which type of work appeals to you most?",
-          "options": [
-            "Hands-on / technical execution.",
-            "Research, analysis and strategy.",
-            "Creative / design-led work.",
-            "People-facing / advisory work.",
-            "Leadership / management-track work.",
-            "Operations, systems and coordination work."
-          ],
-          "type": "choice_single"
-        },
-        {
-          "text": "How confident are you that your highest-ranked career cluster is a suitable long-term direction for you?",
-          "type": "scale",
-          "scaleLabel_min": "Not confident at all",
-          "scaleLabel_max": "Extremely confident"
-        },
-        {
-          "text": "Which two concerns are most relevant to you when thinking about your future career?",
-          "options": [
-            "Choosing a field that does not suit me.",
-            "Finding stability, income and growth.",
-            "Meeting admission, licensing or certification requirements.",
-            "Affording further education or a career transition.",
-            "Managing family expectations or relocation.",
-            "Feeling overwhelmed by the number of possible paths."
-          ],
-          "type": "multiple",
-          "instruction": "Choose TWO."
-        },
-        {
-          "text": "Which statement best describes your current stage of career decision-making?",
-          "options": [
-            "I have a specific role or field in mind.",
-            "I have narrowed it to a few realistic options.",
-            "I am exploring several directions.",
-            "I feel uncertain and want more information before deciding."
-          ],
-          "type": "choice_single"
-        }
-      ]
-    }
-  },
-  "career_selector": {
-    "ug": {
-      "Set 1": [
-        {
-          "text": "Which one specific career role would you most like to explore right now, if you had the opportunity?",
-          "options": [
-            "Software Engineer / AI Engineer",
-            "Data Scientist / Data Analyst",
-            "Research Scientist",
-            "Doctor / Medical Professional",
-            "Clinical Psychologist",
-            "Sports Scientist / Performance Analyst",
-            "Food Technologist / Agri-Scientist",
-            "Renewable Energy Engineer / Sustainability Consultant",
-            "Architect / Civil Engineer",
-            "Financial Analyst / Finance Professional",
-            "Lawyer / Legal & Compliance Professional",
-            "Policy Analyst / Public Administration Professional",
-            "Teacher / Curriculum Designer",
-            "UX Designer / Content & Communication Professional",
-            "Manufacturing / Production Engineer",
-            "Supply Chain / Logistics Manager",
-            "Hospitality / Travel Professional",
-            "Defence / Emergency Services Professional",
-            "Other (please specify)"
-          ],
-          "type": "choice_single"
-        }
-      ]
-    }
+   ]
   }
+ },
+ "career_interest": {
+  "ug": {
+   "Set 1": [
+    {
+     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "options": [
+      "Build or test a physical prototype",
+      "Investigate why a system behaves unexpectedly",
+      "Create a visual concept",
+      "Help a person work through a difficulty",
+      "Persuade others to support an initiative",
+      "Organize information so it can be retrieved reliably"
+     ],
+     "mapping": [
+      "R",
+      "I",
+      "A",
+      "S",
+      "E",
+      "C"
+     ]
+    },
+    {
+     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "options": [
+      "Operate equipment to produce something",
+      "Compare evidence to test a hypothesis",
+      "Develop an original design or media concept",
+      "Teach a difficult concept to a peer",
+      "Lead a project toward a measurable target",
+      "Check records for consistency and completeness"
+     ],
+     "mapping": [
+      "R",
+      "I",
+      "A",
+      "S",
+      "E",
+      "C"
+     ]
+    },
+    {
+     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "options": [
+      "Troubleshoot a practical setup",
+      "Study a complex question with no obvious answer",
+      "Write, design or create an original output",
+      "Understand what motivates people",
+      "Negotiate between competing priorities",
+      "Create a reliable process for repeated work"
+     ],
+     "mapping": [
+      "R",
+      "I",
+      "A",
+      "S",
+      "E",
+      "C"
+     ]
+    },
+    {
+     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "options": [
+      "Improve how a machine or physical setup works",
+      "Analyze data to discover a pattern",
+      "Plan the visual identity of a project",
+      "Coordinate a group learning activity",
+      "Identify an opportunity and act on it",
+      "Maintain a structured schedule"
+     ],
+     "mapping": [
+      "R",
+      "I",
+      "A",
+      "S",
+      "E",
+      "C"
+     ]
+    },
+    {
+     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "options": [
+      "Test a physical solution in real conditions",
+      "Explore a question with incomplete evidence",
+      "Turn an idea into a creative output",
+      "Support someone facing a challenge",
+      "Present a proposal to decision-makers",
+      "Classify and manage information"
+     ],
+     "mapping": [
+      "R",
+      "I",
+      "A",
+      "S",
+      "E",
+      "C"
+     ]
+    },
+    {
+     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "options": [
+      "Set up a practical system",
+      "Break a difficult problem into evidence-based steps",
+      "Experiment with storytelling or visual communication",
+      "Facilitate a discussion",
+      "Build support for a new initiative",
+      "Follow a defined procedure accurately"
+     ],
+     "mapping": [
+      "R",
+      "I",
+      "A",
+      "S",
+      "E",
+      "C"
+     ]
+    },
+    {
+     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "options": [
+      "Use tools or equipment to solve a practical problem",
+      "Interpret results from an experiment",
+      "Sketch different possibilities",
+      "Coach someone toward improvement",
+      "Coordinate people to deliver a result",
+      "Maintain an organized database"
+     ],
+     "mapping": [
+      "R",
+      "I",
+      "A",
+      "S",
+      "E",
+      "C"
+     ]
+    },
+    {
+     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "options": [
+      "Design and test a physical mechanism",
+      "Question an assumption and seek evidence",
+      "Create an original concept",
+      "Work closely with a community",
+      "Pitch a solution or opportunity",
+      "Audit information for errors"
+     ],
+     "mapping": [
+      "R",
+      "I",
+      "A",
+      "S",
+      "E",
+      "C"
+     ]
+    },
+    {
+     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "options": [
+      "Troubleshoot a real-world setup",
+      "Compare several explanations for an outcome",
+      "Produce an engaging media piece",
+      "Help a team resolve a disagreement",
+      "Mobilize people around a target",
+      "Plan and track a sequence of tasks"
+     ],
+     "mapping": [
+      "R",
+      "I",
+      "A",
+      "S",
+      "E",
+      "C"
+     ]
+    },
+    {
+     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "options": [
+      "Make something work better in practice",
+      "Study a complex system to understand it",
+      "Express an idea through design",
+      "Guide someone through learning",
+      "Spot a useful opportunity",
+      "Keep information orderly and accessible"
+     ],
+     "mapping": [
+      "R",
+      "I",
+      "A",
+      "S",
+      "E",
+      "C"
+     ]
+    },
+    {
+     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "options": [
+      "Prototype a practical solution",
+      "Run an investigation to answer a question",
+      "Create a campaign, story or visual artifact",
+      "Organize a peer-support activity",
+      "Develop a business or project proposal",
+      "Standardize a recurring workflow"
+     ],
+     "mapping": [
+      "R",
+      "I",
+      "A",
+      "S",
+      "E",
+      "C"
+     ]
+    },
+    {
+     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "options": [
+      "Work with materials to build a solution",
+      "Analyze evidence from a research problem",
+      "Develop an original communication concept",
+      "Help a group improve how it works",
+      "Take responsibility for achieving a shared target",
+      "Maintain accurate records and documentation"
+     ],
+     "mapping": [
+      "R",
+      "I",
+      "A",
+      "S",
+      "E",
+      "C"
+     ]
+    }
+   ]
+  }
+ },
+ "aptitude": {
+  "ug": {
+   "Set 1": [
+    {
+     "text": "A price is reduced by 20% and then increased by 20%. Compared with the original price, the final price is:",
+     "options": [
+      "80%",
+      "96%",
+      "100%",
+      "104%"
+     ],
+     "type": "choice4",
+     "correctIndex": 1,
+     "subdomain": "Numerical Reasoning"
+    },
+    {
+     "text": "A team completes 3/5 of a task in 6 hours at a constant rate. How many total hours would the task take?",
+     "options": [
+      "8",
+      "9",
+      "10",
+      "12"
+     ],
+     "type": "choice4",
+     "correctIndex": 2,
+     "subdomain": "Numerical Reasoning"
+    },
+    {
+     "text": "All analysts are readers. Some readers are writers. Which statement must be true?",
+     "options": [
+      "All analysts are writers",
+      "Some analysts are writers",
+      "All analysts are readers",
+      "No writers are analysts"
+     ],
+     "type": "choice4",
+     "correctIndex": 2,
+     "subdomain": "Logical Reasoning"
+    },
+    {
+     "text": "If a project is approved, funding is released. Funding was not released. What can be concluded under this rule?",
+     "options": [
+      "The project was approved",
+      "The project was not approved",
+      "The project may or may not have been approved",
+      "Funding is irrelevant"
+     ],
+     "type": "choice4",
+     "correctIndex": 1,
+     "subdomain": "Critical Thinking"
+    },
+    {
+     "text": "Four tasks J, K, L, M must be ordered. J before L; K before M. Which could be the order?",
+     "options": [
+      "L-J-K-M",
+      "K-J-M-L",
+      "J-L-M-K",
+      "M-K-J-L"
+     ],
+     "type": "choice4",
+     "correctIndex": 1,
+     "subdomain": "Logical Reasoning"
+    },
+    {
+     "text": "A report states: Students who use practice tests score higher on average. Which conclusion is most justified?",
+     "options": [
+      "Practice tests guarantee higher scores",
+      "The two variables are associated",
+      "Practice tests cause every score increase",
+      "Students never improve without tests"
+     ],
+     "type": "choice4",
+     "correctIndex": 1,
+     "subdomain": "Critical Thinking"
+    },
+    {
+     "text": "A chart shows sales: Jan 100, Feb 120, Mar 90, Apr 150. Which month had the largest increase from the previous month?",
+     "options": [
+      "February",
+      "March",
+      "April",
+      "Same increase each month"
+     ],
+     "type": "choice4",
+     "correctIndex": 2,
+     "subdomain": "Data Interpretation"
+    },
+    {
+     "text": "A process reduces average processing time but increases training time. Which statement best summarizes it?",
+     "options": [
+      "The process had only benefits",
+      "The process had only drawbacks",
+      "The process involved a trade-off",
+      "Training time was unchanged"
+     ],
+     "type": "choice4",
+     "correctIndex": 2,
+     "subdomain": "Decision-Making"
+    }
+   ]
+  }
+ },
+ "strengths": {
+  "ug": {
+   "Set 1": [
+    {
+     "text": "A project may have several possible directions over the next year. You would naturally:",
+     "options": [
+      "Focus only on today's assigned task.",
+      "Compare future scenarios and choose actions that preserve long-term options.",
+      "Wait for the final direction.",
+      "Choose the fastest immediate option."
+     ],
+     "target": "Strategic & Futuristic",
+     "weights": [
+      1,
+      5,
+      1,
+      1
+     ]
+    },
+    {
+     "text": "Before committing to a major initiative, you are likely to:",
+     "options": [
+      "Think through second-order consequences and how the situation could evolve.",
+      "Start immediately and adjust later.",
+      "Follow the most familiar approach.",
+      "Leave future implications to the project lead."
+     ],
+     "target": "Strategic & Futuristic",
+     "weights": [
+      5,
+      1,
+      1,
+      1
+     ]
+    },
+    {
+     "text": "An established process works but has clear limitations. You would:",
+     "options": [
+      "Generate alternative approaches and test a promising one.",
+      "Follow the process exactly.",
+      "Wait for formal instructions to change it.",
+      "Focus only on completing your part."
+     ],
+     "target": "Creative & Innovative",
+     "weights": [
+      5,
+      1,
+      1,
+      1
+     ]
+    },
+    {
+     "text": "A team needs ideas for a new service. You tend to:",
+     "options": [
+      "Produce several unconventional possibilities before narrowing them.",
+      "Choose the first workable idea.",
+      "Wait for others to generate ideas.",
+      "Avoid ideas that differ from current practice."
+     ],
+     "target": "Creative & Innovative",
+     "weights": [
+      5,
+      1,
+      1,
+      1
+     ]
+    },
+    {
+     "text": "A decision involves conflicting evidence. You are most likely to:",
+     "options": [
+      "Compare the evidence, assumptions and logical implications.",
+      "Choose the option with the strongest presentation.",
+      "Follow the majority.",
+      "Choose the option that requires the least analysis."
+     ],
+     "target": "Intellectual & Analytical",
+     "weights": [
+      5,
+      1,
+      1,
+      1
+     ]
+    },
+    {
+     "text": "When a problem keeps recurring, you prefer to:",
+     "options": [
+      "Identify the underlying pattern or root cause before proposing a fix.",
+      "Apply the quickest available workaround.",
+      "Ask someone else to solve it.",
+      "Accept it as part of the process."
+     ],
+     "target": "Intellectual & Analytical",
+     "weights": [
+      5,
+      1,
+      1,
+      1
+     ]
+    },
+    {
+     "text": "A large goal has a vague deadline. You would:",
+     "options": [
+      "Break it into milestones, actions and review points.",
+      "Keep the goal in mind and start wherever convenient.",
+      "Wait for more detailed instructions.",
+      "Work on it only when it becomes urgent."
+     ],
+     "target": "Execution & Achievement",
+     "weights": [
+      5,
+      1,
+      1,
+      1
+     ]
+    },
+    {
+     "text": "A task becomes difficult halfway through. You are most likely to:",
+     "options": [
+      "Adjust the method, continue working and track progress toward completion.",
+      "Switch to something easier.",
+      "Wait for someone to take over.",
+      "Pause until the problem disappears."
+     ],
+     "target": "Execution & Achievement",
+     "weights": [
+      5,
+      1,
+      1,
+      1
+     ]
+    },
+    {
+     "text": "A team has many ideas but no decision. You are likely to:",
+     "options": [
+      "Summarize the options, clarify the decision needed and help the group commit.",
+      "Wait for the formal leader.",
+      "Choose your preferred idea yourself.",
+      "Leave the discussion unresolved."
+     ],
+     "target": "Influence & Leadership",
+     "weights": [
+      5,
+      1,
+      1,
+      1
+     ]
+    },
+    {
+     "text": "A new initiative needs support from several stakeholders. You would:",
+     "options": [
+      "Understand stakeholder priorities and build support for the initiative.",
+      "Announce the plan and expect compliance.",
+      "Avoid the stakeholders until the plan is finished.",
+      "Let someone else handle the communication."
+     ],
+     "target": "Influence & Leadership",
+     "weights": [
+      5,
+      1,
+      1,
+      1
+     ]
+    },
+    {
+     "text": "You join a team with working styles very different from yours. You would:",
+     "options": [
+      "Adjust communication and coordination while maintaining your core standards.",
+      "Expect the team to adapt to your style.",
+      "Minimize interaction with the team.",
+      "Wait until everyone naturally becomes aligned."
+     ],
+     "target": "Relationship & Adaptability",
+     "weights": [
+      5,
+      1,
+      1,
+      1
+     ]
+    },
+    {
+     "text": "A project changes direction after you have invested significant effort. You would:",
+     "options": [
+      "Preserve useful work, reassess priorities and adapt the plan.",
+      "Continue the original plan regardless.",
+      "Stop until someone redesigns the work.",
+      "Focus mainly on who caused the change."
+     ],
+     "target": "Relationship & Adaptability",
+     "weights": [
+      5,
+      1,
+      1,
+      1
+     ]
+    }
+   ]
+  }
+ },
+ "motivators": {
+  "ug": {
+   "Set 1": [
+    {
+     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
+     "options": [
+      "Develop something original where my ideas shape the outcome",
+      "Work on something that produces a clear benefit for people or society",
+      "Achieve a demanding target and see measurable results",
+      "Have responsibility for directing an important outcome",
+      "Keep developing skills through challenging work",
+      "Have dependable income and financial stability"
+     ],
+     "mapping": [
+      "Creativity",
+      "Social Impact",
+      "Achievement",
+      "Leadership",
+      "Learning",
+      "Financial Security"
+     ]
+    },
+    {
+     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
+     "options": [
+      "Have freedom to create new approaches rather than repeat established ones",
+      "Know that my work addresses a meaningful human or social need",
+      "Be recognized for delivering difficult results",
+      "Coordinate people and decisions toward a common goal",
+      "Work in an environment with strong learning opportunities",
+      "Choose a role with predictable financial progression"
+     ],
+     "mapping": [
+      "Creativity",
+      "Social Impact",
+      "Achievement",
+      "Leadership",
+      "Learning",
+      "Financial Security"
+     ]
+    },
+    {
+     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
+     "options": [
+      "Turn ideas into new products, services, designs or solutions",
+      "Contribute to a problem with visible community or societal value",
+      "Compete with my own standards and improve performance",
+      "Take ownership of decisions that affect a team or project",
+      "Work on unfamiliar problems that expand my capability",
+      "Build long-term financial security"
+     ],
+     "mapping": [
+      "Creativity",
+      "Social Impact",
+      "Achievement",
+      "Leadership",
+      "Learning",
+      "Financial Security"
+     ]
+    },
+    {
+     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
+     "options": [
+      "Be judged partly on originality and innovation",
+      "See a tangible positive effect from what I do",
+      "Meet ambitious objectives with clear measures",
+      "Set direction when a team needs coordination",
+      "Have access to mentors, challenging projects and new knowledge",
+      "Know that the role provides reliable compensation"
+     ],
+     "mapping": [
+      "Creativity",
+      "Social Impact",
+      "Achievement",
+      "Leadership",
+      "Learning",
+      "Financial Security"
+     ]
+    },
+    {
+     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
+     "options": [
+      "Experiment with new concepts and approaches",
+      "Work on issues that matter beyond my individual role",
+      "Deliver outcomes that demonstrate what I can accomplish",
+      "Influence priorities and mobilize others",
+      "Keep learning even when the role becomes demanding",
+      "Reduce uncertainty around my long-term finances"
+     ],
+     "mapping": [
+      "Creativity",
+      "Social Impact",
+      "Achievement",
+      "Leadership",
+      "Learning",
+      "Financial Security"
+     ]
+    },
+    {
+     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
+     "options": [
+      "Create rather than simply execute an established formula",
+      "Support people, communities or systems in a meaningful way",
+      "Have difficult goals that reward persistence",
+      "Be trusted with leadership of an important initiative",
+      "Build expertise that remains valuable over time",
+      "Have stable earnings and a clear financial path"
+     ],
+     "mapping": [
+      "Creativity",
+      "Social Impact",
+      "Achievement",
+      "Leadership",
+      "Learning",
+      "Financial Security"
+     ]
+    },
+    {
+     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
+     "options": [
+      "See my ideas become practical outputs",
+      "Know that my work contributes to a broader positive outcome",
+      "Measure progress against demanding standards",
+      "Guide a group through a complex objective",
+      "Be exposed to new technologies, ideas or domains",
+      "Have compensation that supports predictable planning"
+     ],
+     "mapping": [
+      "Creativity",
+      "Social Impact",
+      "Achievement",
+      "Leadership",
+      "Learning",
+      "Financial Security"
+     ]
+    },
+    {
+     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
+     "options": [
+      "Work where originality is genuinely valued",
+      "Choose work connected to social or public benefit",
+      "Take on targets that stretch my performance",
+      "Make decisions and accept responsibility for results",
+      "Have continuous opportunities to acquire useful skills",
+      "Protect my financial independence over the long term"
+     ],
+     "mapping": [
+      "Creativity",
+      "Social Impact",
+      "Achievement",
+      "Leadership",
+      "Learning",
+      "Financial Security"
+     ]
+    },
+    {
+     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
+     "options": [
+      "Design solutions that are distinct from existing approaches",
+      "Improve outcomes for people affected by the work",
+      "Finish difficult projects with visible evidence of success",
+      "Coordinate people, resources and priorities",
+      "Work where learning is part of normal performance",
+      "Prefer reliable compensation even when upside is lower"
+     ],
+     "mapping": [
+      "Creativity",
+      "Social Impact",
+      "Achievement",
+      "Leadership",
+      "Learning",
+      "Financial Security"
+     ]
+    },
+    {
+     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
+     "options": [
+      "Have room to experiment with creative approaches",
+      "Work on problems where the human consequences matter",
+      "Pursue high standards and measurable achievement",
+      "Shape direction rather than only receive instructions",
+      "Solve new problems that force me to learn",
+      "Build savings, stability and financial resilience"
+     ],
+     "mapping": [
+      "Creativity",
+      "Social Impact",
+      "Achievement",
+      "Leadership",
+      "Learning",
+      "Financial Security"
+     ]
+    },
+    {
+     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
+     "options": [
+      "Create new concepts even when the first version may fail",
+      "Work on an issue whose benefits extend beyond the organization",
+      "Take on goals that test my capabilities",
+      "Lead an initiative from direction through delivery",
+      "Stay intellectually challenged over the long term",
+      "Choose a career path with dependable economic prospects"
+     ],
+     "mapping": [
+      "Creativity",
+      "Social Impact",
+      "Achievement",
+      "Leadership",
+      "Learning",
+      "Financial Security"
+     ]
+    },
+    {
+     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
+     "options": [
+      "Build original solutions and improve them through experimentation",
+      "See my work make a meaningful difference to others",
+      "Be able to point to challenging goals I have completed",
+      "Have authority to coordinate a team or major outcome",
+      "Develop expertise continuously through demanding work",
+      "Have predictable financial security while progressing professionally"
+     ],
+     "mapping": [
+      "Creativity",
+      "Social Impact",
+      "Achievement",
+      "Leadership",
+      "Learning",
+      "Financial Security"
+     ]
+    }
+   ]
+  }
+ },
+ "learning_styles": {
+  "ug": {
+   "Set 1": [
+    {
+     "text": "When learning a complex process, which resource would you choose first?",
+     "options": [
+      "A diagram or flowchart showing the process.",
+      "A spoken explanation or discussion.",
+      "A written guide with detailed steps.",
+      "A hands-on exercise using the process."
+     ],
+     "mapping": [
+      "Visual",
+      "Auditory",
+      "Reading/Writing",
+      "Kinesthetic"
+     ]
+    },
+    {
+     "text": "When preparing for an unfamiliar system, you would rather:",
+     "options": [
+      "See a visual overview of how the parts connect.",
+      "Listen to someone explain the system.",
+      "Read documentation from beginning to end.",
+      "Experiment with the system directly."
+     ],
+     "mapping": [
+      "Visual",
+      "Auditory",
+      "Reading/Writing",
+      "Kinesthetic"
+     ]
+    },
+    {
+     "text": "When a concept is difficult, which approach is most natural?",
+     "options": [
+      "Draw the relationships between the ideas.",
+      "Talk through the idea with another person.",
+      "Read several explanations and take notes.",
+      "Try the concept through an activity."
+     ],
+     "mapping": [
+      "Visual",
+      "Auditory",
+      "Reading/Writing",
+      "Kinesthetic"
+     ]
+    },
+    {
+     "text": "For revision before an exam, you are most likely to benefit from:",
+     "options": [
+      "Charts and visual summaries.",
+      "Explaining the topic aloud or discussing it.",
+      "Written notes and structured reading.",
+      "Solving or practising problems directly."
+     ],
+     "mapping": [
+      "Visual",
+      "Auditory",
+      "Reading/Writing",
+      "Kinesthetic"
+     ]
+    },
+    {
+     "text": "When learning unfamiliar terminology, you prefer:",
+     "options": [
+      "A visual glossary or concept map.",
+      "A lecture or conversation about the terms.",
+      "Written definitions, examples and notes.",
+      "Using the terms in a practical task."
+     ],
+     "mapping": [
+      "Visual",
+      "Auditory",
+      "Reading/Writing",
+      "Kinesthetic"
+     ]
+    },
+    {
+     "text": "When researching a new topic, your preferred starting point is:",
+     "options": [
+      "Infographics or visual summaries.",
+      "Interviews, lectures or discussions.",
+      "Articles, reports and written documentation.",
+      "A practical activity or demonstration."
+     ],
+     "mapping": [
+      "Visual",
+      "Auditory",
+      "Reading/Writing",
+      "Kinesthetic"
+     ]
+    },
+    {
+     "text": "When learning a new software or technical procedure, you prefer:",
+     "options": [
+      "A visual walkthrough of the interface.",
+      "A person explaining the procedure aloud.",
+      "A written manual you can follow.",
+      "Trying it yourself while learning from the results."
+     ],
+     "mapping": [
+      "Visual",
+      "Auditory",
+      "Reading/Writing",
+      "Kinesthetic"
+     ]
+    },
+    {
+     "text": "To understand how a process works, you would rather:",
+     "options": [
+      "Study a diagram of the process.",
+      "Hear someone explain each stage.",
+      "Read a detailed description.",
+      "Perform or simulate the process yourself."
+     ],
+     "mapping": [
+      "Visual",
+      "Auditory",
+      "Reading/Writing",
+      "Kinesthetic"
+     ]
+    }
+   ]
+  }
+ },
+ "emotional_intelligence": {
+  "ug": {
+   "Set 1": [
+    {
+     "text": "You receive feedback that conflicts with how you see your own performance. What do you do first?",
+     "options": [
+      "Defend your original view immediately.",
+      "Examine the feedback and compare it with your own observations.",
+      "Ignore it unless someone repeats it.",
+      "Assume the feedback is completely correct."
+     ],
+     "target": "Self-Awareness",
+     "weights": [
+      2,
+      4,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "After a difficult project, you want to understand why your performance varied. You would:",
+     "options": [
+      "Review what situations improved or reduced your effectiveness.",
+      "Focus only on the final result.",
+      "Compare yourself mainly with other students.",
+      "Wait for someone else to explain what happened."
+     ],
+     "target": "Self-Awareness",
+     "weights": [
+      4,
+      2,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "You notice that you become impatient during long discussions. Your most useful response is to:",
+     "options": [
+      "Assume the discussion is simply inefficient.",
+      "Notice the trigger and consider how your reaction affects the group.",
+      "Leave the discussion whenever possible.",
+      "Ignore the reaction because it is part of your personality."
+     ],
+     "target": "Self-Awareness",
+     "weights": [
+      2,
+      4,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "You are frustrated and need to reply to a difficult message. What do you do?",
+     "options": [
+      "Send the response immediately so the issue is over.",
+      "Pause, regulate your reaction and then respond to the issue.",
+      "Forward the message to someone else.",
+      "Avoid responding indefinitely."
+     ],
+     "target": "Self-Management",
+     "weights": [
+      2,
+      4,
+      1,
+      1
+     ]
+    },
+    {
+     "text": "Several urgent tasks arrive at once. Your first step is to:",
+     "options": [
+      "Respond to everything simultaneously.",
+      "Identify priorities and decide what requires immediate attention.",
+      "Start with whichever task feels easiest.",
+      "Wait for someone to decide the order."
+     ],
+     "target": "Self-Management",
+     "weights": [
+      2,
+      4,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "A plan fails shortly before a deadline. You are most likely to:",
+     "options": [
+      "Focus on what went wrong and lose time.",
+      "Stabilize the situation, identify the next workable action and continue.",
+      "Stop until someone provides a solution.",
+      "Blame the circumstances before acting."
+     ],
+     "target": "Self-Management",
+     "weights": [
+      2,
+      4,
+      1,
+      2
+     ]
+    },
+    {
+     "text": "A teammate becomes unusually quiet after receiving criticism. You would:",
+     "options": [
+      "Assume they are uninterested.",
+      "Check privately whether they need clarification or support.",
+      "Discuss their reaction with other teammates.",
+      "Ignore the change unless it affects your task."
+     ],
+     "target": "Social Awareness",
+     "weights": [
+      2,
+      4,
+      1,
+      2
+     ]
+    },
+    {
+     "text": "During a meeting, one participant repeatedly tries to speak but is interrupted. You are most likely to:",
+     "options": [
+      "Continue because the meeting is already moving quickly.",
+      "Create space for the person to contribute.",
+      "Assume they will speak later.",
+      "Ask them to send their point afterward."
+     ],
+     "target": "Social Awareness",
+     "weights": [
+      2,
+      4,
+      2,
+      2
+     ]
+    },
+    {
+     "text": "You disagree with a teammate but notice their concern is based on a constraint you had not considered. You would:",
+     "options": [
+      "Restate your original argument.",
+      "Acknowledge the constraint and reconsider the problem.",
+      "Ask another person to decide.",
+      "End the discussion."
+     ],
+     "target": "Social Awareness",
+     "weights": [
+      2,
+      4,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "Two teammates ask you to take sides in a conflict. You would:",
+     "options": [
+      "Choose the person you know better.",
+      "Hear both perspectives and focus on a workable resolution.",
+      "Tell each person what they want to hear.",
+      "Avoid both people afterward."
+     ],
+     "target": "Relationship Management",
+     "weights": [
+      2,
+      4,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "You realize that your comment was unnecessarily sharp. What is the most constructive response?",
+     "options": [
+      "Explain why the other person caused your reaction.",
+      "Acknowledge the impact and repair the interaction.",
+      "Pretend it did not happen.",
+      "Avoid the person from then on."
+     ],
+     "target": "Relationship Management",
+     "weights": [
+      2,
+      4,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "A team discussion is becoming unproductive because people are defending positions. You would:",
+     "options": [
+      "Push your preferred solution harder.",
+      "Summarize the shared issue and help the group identify common ground.",
+      "End the discussion immediately.",
+      "Wait for the leader to intervene."
+     ],
+     "target": "Relationship Management",
+     "weights": [
+      2,
+      4,
+      1,
+      2
+     ]
+    }
+   ]
+  }
+ },
+ "multiple_intelligence": {
+  "ug": {
+   "Set 1": [
+    {
+     "text": "You are asked to make a difficult concept understandable to a mixed audience. You would naturally:",
+     "options": [
+      "Build a clear explanation with examples and a logical narrative.",
+      "Rely mainly on diagrams.",
+      "Demonstrate it physically.",
+      "Give the audience the source material to read."
+     ],
+     "target": "Linguistic",
+     "weights": [
+      5,
+      3,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "When developing an idea, you often find that writing or explaining it helps you:",
+     "options": [
+      "Clarify relationships, meaning and sequence through language.",
+      "Clarify it mainly through visual sketches.",
+      "Understand it mainly through practical trials.",
+      "Prefer to keep the idea internal until complete."
+     ],
+     "target": "Linguistic",
+     "weights": [
+      5,
+      3,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "When faced with a complicated problem, you are naturally drawn to:",
+     "options": [
+      "Identify patterns, rules and relationships.",
+      "Focus on how the problem affects people.",
+      "Express the problem through imagery.",
+      "Try different physical arrangements."
+     ],
+     "target": "Logical-Mathematical",
+     "weights": [
+      5,
+      3,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "You are given several pieces of evidence with different implications. You prefer to:",
+     "options": [
+      "Compare evidence systematically and test possible explanations.",
+      "Choose the explanation that feels most intuitive.",
+      "Focus on presenting the information attractively.",
+      "Start experimenting without structuring the evidence."
+     ],
+     "target": "Logical-Mathematical",
+     "weights": [
+      5,
+      3,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "Before building or arranging something, you often:",
+     "options": [
+      "Mentally picture how the parts will fit together.",
+      "Prefer a verbal explanation first.",
+      "Need to physically assemble it to understand it.",
+      "Prefer numerical descriptions."
+     ],
+     "target": "Spatial",
+     "weights": [
+      5,
+      3,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "When navigating an unfamiliar layout, you are more likely to:",
+     "options": [
+      "Build a mental map of positions and relationships.",
+      "Remember spoken directions.",
+      "Follow written instructions step by step.",
+      "Learn the route mainly by repeated travel."
+     ],
+     "target": "Spatial",
+     "weights": [
+      5,
+      3,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "To understand a physical procedure, you prefer to:",
+     "options": [
+      "Perform it yourself and learn through practice.",
+      "Read about the underlying theory first.",
+      "Listen to an explanation without doing it.",
+      "Watch diagrams without interacting with the process."
+     ],
+     "target": "Bodily-Kinesthetic",
+     "weights": [
+      5,
+      3,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "When developing practical skill, you tend to improve most by:",
+     "options": [
+      "Repeating the action, adjusting technique and observing the result.",
+      "Discussing the skill conceptually.",
+      "Reading detailed descriptions.",
+      "Thinking through the procedure without practising."
+     ],
+     "target": "Bodily-Kinesthetic",
+     "weights": [
+      5,
+      3,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "You are likely to notice:",
+     "options": [
+      "Changes in rhythm, timing, pitch or tone.",
+      "Only the words being communicated.",
+      "Mainly visual patterns.",
+      "Mainly physical movement patterns."
+     ],
+     "target": "Musical",
+     "weights": [
+      5,
+      3,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "When working with audio or performance material, you naturally:",
+     "options": [
+      "Recognize recurring sound patterns and differences in timing or tone.",
+      "Focus primarily on written content.",
+      "Focus mainly on visual presentation.",
+      "Focus mainly on how the equipment is operated."
+     ],
+     "target": "Musical",
+     "weights": [
+      5,
+      3,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "In a team discussion, you often notice:",
+     "options": [
+      "Changes in tone, reactions and what different people may need.",
+      "Only the explicit content of what is said.",
+      "Mostly the logical structure of the argument.",
+      "Mostly whether the task is progressing."
+     ],
+     "target": "Interpersonal",
+     "weights": [
+      5,
+      3,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "When helping a teammate, you are inclined to:",
+     "options": [
+      "Adjust your explanation based on how the person is responding.",
+      "Give the same explanation regardless of their response.",
+      "Solve the task yourself.",
+      "Leave them to work independently."
+     ],
+     "target": "Interpersonal",
+     "weights": [
+      5,
+      3,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "After a demanding task, you are most likely to:",
+     "options": [
+      "Reflect on what conditions helped or hindered your performance.",
+      "Move immediately to the next task without reflection.",
+      "Focus mainly on how others performed.",
+      "Wait for someone else to evaluate you."
+     ],
+     "target": "Intrapersonal",
+     "weights": [
+      5,
+      3,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "When your motivation drops, you tend to:",
+     "options": [
+      "Examine the cause and adjust your approach or environment.",
+      "Assume the task is simply not worth doing.",
+      "Look first at what others are doing.",
+      "Continue without considering the change in motivation."
+     ],
+     "target": "Intrapersonal",
+     "weights": [
+      5,
+      3,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "You encounter an unfamiliar environmental system. You are naturally interested in:",
+     "options": [
+      "How living systems, resources and environmental factors interact.",
+      "Only the economic implications.",
+      "Only the visual appearance.",
+      "Only the technology used to measure it."
+     ],
+     "target": "Naturalistic",
+     "weights": [
+      5,
+      3,
+      2,
+      1
+     ]
+    },
+    {
+     "text": "When visiting a new natural environment, you are likely to:",
+     "options": [
+      "Notice patterns among species, habitats or environmental conditions.",
+      "Focus mainly on social activities.",
+      "Focus mainly on architecture or infrastructure.",
+      "Pay attention only when required for a task."
+     ],
+     "target": "Naturalistic",
+     "weights": [
+      5,
+      3,
+      2,
+      1
+     ]
+    }
+   ]
+  }
+ },
+ "degree_fit": {
+  "ug": {
+   "Set 1": [
+    {
+     "text": "Which part of your degree currently gives you the most satisfaction?",
+     "options": [
+      "Core theory and concepts.",
+      "Labs, practicals and hands-on work.",
+      "Projects, case studies and fieldwork.",
+      "Business, management or application-oriented modules.",
+      "Creative or design-oriented modules.",
+      "Research, data and analysis-heavy modules."
+     ],
+     "type": "choice_single"
+    },
+    {
+     "text": "How satisfied are you with your current degree/course choice?",
+     "type": "scale",
+     "scaleLabel_min": "Extremely dissatisfied",
+     "scaleLabel_max": "Extremely satisfied"
+    },
+    {
+     "text": "Why did you originally choose this degree? Select up to TWO.",
+     "options": [
+      "Genuine personal interest.",
+      "Advice from family, teachers or mentors.",
+      "Influence from friends or peers.",
+      "Perceived career or earning potential.",
+      "Entrance score, eligibility or availability influenced the choice.",
+      "I was uncertain and selected from the options available.",
+      "Other"
+     ],
+     "type": "multiple",
+     "instruction": "Select up to TWO."
+    }
+   ]
+  }
+ },
+ "career_cluster_fit": {
+  "ug": {
+   "Set 1": [
+    {
+     "text": "Looking at the career clusters below, which areas are you most drawn to right now? Select up to THREE.",
+     "options": [
+      "Engineering, Technology & Computing",
+      "Science, Mathematics & Research",
+      "Healthcare & Medicine",
+      "Psychology, Humanities & Social Sciences",
+      "Sports, Fitness & Human Performance",
+      "Agriculture, Food & Life Sciences",
+      "Environment, Energy & Sustainability",
+      "Architecture, Construction & Built Environment",
+      "Business, Finance & Entrepreneurship",
+      "Law, Legal & Compliance",
+      "Government, Public Administration & Policy",
+      "Education & Learning",
+      "Media, Communication, Arts & Design",
+      "Manufacturing & Industrial Production",
+      "Supply Chain, Procurement & Logistics",
+      "Travel, Tourism, Hospitality & Transport",
+      "Defence, Security & Emergency Services",
+      "Personal Care, Beauty & Wellness"
+     ],
+     "type": "multiple",
+     "instruction": "Select up to THREE."
+    },
+    {
+     "text": "Within the career cluster you ranked highest, which type of work appeals to you most?",
+     "options": [
+      "Hands-on / technical execution.",
+      "Research, analysis and strategy.",
+      "Creative / design-led work.",
+      "People-facing / advisory work.",
+      "Leadership / management-track work.",
+      "Operations, systems and coordination work."
+     ],
+     "type": "choice_single"
+    },
+    {
+     "text": "How confident are you that your highest-ranked career cluster is a suitable long-term direction for you?",
+     "type": "scale",
+     "scaleLabel_min": "Not confident at all",
+     "scaleLabel_max": "Extremely confident"
+    },
+    {
+     "text": "Which two concerns are most relevant to you when thinking about your future career?",
+     "options": [
+      "Choosing a field that does not suit me.",
+      "Finding stability, income and growth.",
+      "Meeting admission, licensing or certification requirements.",
+      "Affording further education or a career transition.",
+      "Managing family expectations or relocation.",
+      "Feeling overwhelmed by the number of possible paths."
+     ],
+     "type": "multiple",
+     "instruction": "Choose TWO."
+    },
+    {
+     "text": "Which statement best describes your current stage of career decision-making?",
+     "options": [
+      "I have a specific role or field in mind.",
+      "I have narrowed it to a few realistic options.",
+      "I am exploring several directions.",
+      "I feel uncertain and want more information before deciding."
+     ],
+     "type": "choice_single"
+    }
+   ]
+  }
+ },
+ "career_selector": {
+  "ug": {
+   "Set 1": [
+    {
+     "text": "Which one specific career role would you most like to explore right now, if you had the opportunity?",
+     "options": [
+      "Software Engineer / AI Engineer",
+      "Data Scientist / Data Analyst",
+      "Research Scientist",
+      "Doctor / Medical Professional",
+      "Clinical Psychologist",
+      "Sports Scientist / Performance Analyst",
+      "Food Technologist / Agri-Scientist",
+      "Renewable Energy Engineer / Sustainability Consultant",
+      "Architect / Civil Engineer",
+      "Financial Analyst / Finance Professional",
+      "Lawyer / Legal & Compliance Professional",
+      "Policy Analyst / Public Administration Professional",
+      "Teacher / Curriculum Designer",
+      "UX Designer / Content & Communication Professional",
+      "Manufacturing / Production Engineer",
+      "Supply Chain / Logistics Manager",
+      "Hospitality / Travel Professional",
+      "Defence / Emergency Services Professional",
+      "Other (please specify)"
+     ],
+     "type": "choice_single"
+    }
+   ]
+  }
+ },
+ "integrated_indicators": {
+  "ug": {
+   "Set 1": [
+    {
+     "text": "A project changes direction midway and some assumptions become invalid. What is your most likely response?",
+     "options": [
+      "Continue the original plan until someone formally stops it.",
+      "Reassess what remains useful and redirect effort toward the revised objective.",
+      "Pause all work until every uncertainty disappears.",
+      "Focus on explaining why the original plan was better."
+     ],
+     "target": "Adaptability",
+     "weights": [
+      2,
+      5,
+      3,
+      1
+     ]
+    },
+    {
+     "text": "You must use an unfamiliar tool for a task due next week. What is your most likely approach?",
+     "options": [
+      "Wait for formal training.",
+      "Learn the core functions through documentation/examples and test them on the task.",
+      "Avoid the tool and use only familiar methods.",
+      "Try random functions without understanding the task requirements."
+     ],
+     "target": "Learning Agility",
+     "weights": [
+      2,
+      5,
+      1,
+      2
+     ]
+    },
+    {
+     "text": "A task you own is at risk of missing its deadline because of a dependency. What do you do?",
+     "options": [
+      "Wait because the dependency is someone else's responsibility.",
+      "Identify the dependency, communicate the risk and take the next controllable action.",
+      "Work on unrelated tasks until the dependency is resolved.",
+      "Escalate immediately without first clarifying the issue."
+     ],
+     "target": "Execution & Ownership",
+     "weights": [
+      1,
+      5,
+      2,
+      3
+     ]
+    },
+    {
+     "text": "You are given an unfamiliar responsibility with an unclear starting point. What best describes your likely first move?",
+     "options": [
+      "Clarify the outcome, identify assumptions, learn what is necessary and begin a workable first step.",
+      "Wait for detailed instructions.",
+      "Start without clarifying anything and hope the direction becomes clear.",
+      "Pass the responsibility to someone with prior experience."
+     ],
+     "target": "Integrated Work Style",
+     "weights": [
+      5,
+      2,
+      3,
+      1
+     ]
+    }
+   ]
+  }
+ }
 }

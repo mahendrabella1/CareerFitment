@@ -35,6 +35,7 @@ const Q = {
   learning_styles: (QB.learning_styles?.ug?.["Set 1"] ?? []) as any[],
   emotional_intelligence: (QB.emotional_intelligence?.ug?.["Set 1"] ?? []) as any[],
   multiple_intelligence: (QB.multiple_intelligence?.ug?.["Set 1"] ?? []) as any[],
+  integrated_indicators: (QB.integrated_indicators?.ug?.["Set 1"] ?? []) as any[],
 };
 
 // ---------------------------------------------------------------- Input shape
@@ -60,8 +61,8 @@ export interface GraduateResponse {
   motivators: Record<string, number>;
   learning_styles: Record<string, number>;
   emotional_intelligence: Record<string, number>;
-  // Q0-2 are single-select (number); Q3 is "select up to TWO" (number[]).
-  multiple_intelligence: Record<string, number | number[]>;
+  multiple_intelligence: Record<string, number>;
+  integrated_indicators: Record<string, number>;
   degree_fit: GradDegreeFitContext;
   career_cluster_fit: GradCareerClusterFitContext;
   // From the pre-exam screen (NewExam.tsx "preinfo" phase, stage "ug").
@@ -74,9 +75,16 @@ export interface GraduateResponse {
 
 // ---------------------------------------------------------------- Output shape
 
+// Verbal Reasoning is deliberately absent: the FuturePath 100-question bank's
+// D8 (Cognitive & Analytical Ability, Q89-96) doesn't include a pure
+// vocabulary/verbal item - it's numerical, logical/deductive, conditional,
+// constraint-ordering, evidence-interpretation, data-comparison and
+// trade-off items only (see the RATIONALE line per question in the source
+// spec). Showing a permanently-empty "Verbal: 0%" card would look like a
+// measured weakness rather than an unmeasured dimension, so the field is
+// dropped rather than kept always-zero.
 export interface AptitudeProfileGrad {
   numerical: { score: number; correct: number; total: number };
-  verbal: { score: number; correct: number; total: number };
   logical: { score: number; correct: number; total: number };
   criticalThinking: { score: number; correct: number; total: number };
   dataInterpretation: { score: number; correct: number; total: number };
@@ -95,6 +103,11 @@ export interface PsychometricProfileGrad {
   motivators: MotivatorProfile;
   learningStyle: LearningStyleProfile;
   emotionalIntelligence: EIProfile;
+  // D9 in the source spec: supplementary behavioural evidence (Adaptability,
+  // Learning Agility, Execution & Ownership, Integrated Work Style), one
+  // question each - not weighted into cluster-affinity scoring (see
+  // computeClusterAffinities's comment), surfaced for the report narrative.
+  integratedIndicators: StrengthDomainScore[];
 }
 
 export interface ClusterAffinityGrad {
@@ -143,26 +156,32 @@ function tallyMapped(questions: any[], responses: Record<string, number>): Recor
   return tally;
 }
 
-// Generalized over tallyDomainAvailability (scoring11_12.ts): a question's
-// answer may be a single index (forced-choice) or an array of indices
-// (multi-select, e.g. multiple_intelligence:3's "select up to TWO") - both
-// count every mapped domain toward `of`, and only the actually-picked
-// index/indices toward `got`.
-function tallyDomainAvailability(
+// For the FuturePath bank's "weighted single target" question design (D4
+// EI, D6 MI, D7 Strengths, D9 Integrated Indicators): unlike tallyMapped's
+// dimensions, each question here feeds exactly ONE named construct (given by
+// `q.target`), with its own options ranked from strongest-evidence to
+// weakest via `q.weights` (index-aligned with `q.options`, read straight
+// from the bank - see data/graduates/questions-corrected.json) rather than
+// every option naming a different construct. `got` accumulates the weight
+// the student actually earned per construct; `of` accumulates the maximum
+// any respondent could have earned per construct (sum of each question's
+// own top weight) - so score = got/of stays a true 0-100 even though not
+// every question shares the same weight scale.
+function tallyWeightedTarget(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   questions: any[],
-  responses: Record<string, number | number[]>
+  responses: Record<string, number>
 ): { got: Record<string, number>; of: Record<string, number> } {
   const got: Record<string, number> = {};
   const of: Record<string, number> = {};
   questions.forEach((q, i) => {
+    const target = q.target as string | undefined;
+    const weights = q.weights as number[] | undefined;
+    if (!target || !Array.isArray(weights)) return;
+    of[target] = (of[target] || 0) + Math.max(...weights);
     const idx = responses[String(i)];
-    if (!Array.isArray(q.mapping)) return;
-    const picked = Array.isArray(idx) ? new Set(idx) : new Set(typeof idx === "number" ? [idx] : []);
-    q.mapping.forEach((domain: string, optIdx: number) => {
-      of[domain] = (of[domain] || 0) + 1;
-      if (picked.has(optIdx)) got[domain] = (got[domain] || 0) + 1;
-    });
+    const earned = typeof idx === "number" ? weights[idx] : undefined;
+    if (typeof earned === "number") got[target] = (got[target] || 0) + earned;
   });
   return { got, of };
 }
@@ -218,7 +237,6 @@ function scoreRIASEC(responses: Record<string, number>): RIASECScore[] {
 
 const APTITUDE_FIELDS: { key: keyof Omit<AptitudeProfileGrad, "overallScore" | "strength" | "weakness">; subdomain: string; label: string }[] = [
   { key: "numerical", subdomain: "Numerical Reasoning", label: "Numerical" },
-  { key: "verbal", subdomain: "Verbal Reasoning", label: "Verbal" },
   { key: "logical", subdomain: "Logical Reasoning", label: "Logical" },
   { key: "criticalThinking", subdomain: "Critical Thinking", label: "Critical Thinking" },
   { key: "dataInterpretation", subdomain: "Data Interpretation", label: "Data Interpretation" },
@@ -272,38 +290,45 @@ const STRENGTH_AREA_EXAMPLES: Record<string, string[]> = {
   "Relationship & Adaptability": ["Empathy", "Building rapport", "Adjusting to new situations"],
 };
 
+const INTEGRATED_EXAMPLES: Record<string, string[]> = {
+  "Adaptability": ["Redirecting after a plan changes", "Preserving useful work under a new objective", "Staying productive amid uncertainty"],
+  "Learning Agility": ["Picking up unfamiliar tools quickly", "Learning from documentation/examples under time pressure", "Testing new skills on real tasks"],
+  "Execution & Ownership": ["Surfacing risk early", "Taking the next controllable action", "Following through without being chased"],
+  "Integrated Work Style": ["Clarifying ambiguous responsibilities", "Identifying assumptions before starting", "Taking a workable first step"],
+};
+
 function scoreStrengthAreas(responses: Record<string, number>): StrengthDomainScore[] {
-  const { got, of } = tallyDomainAvailability(Q.strengths, responses);
+  const { got, of } = tallyWeightedTarget(Q.strengths, responses);
   return Object.keys(STRENGTH_AREA_EXAMPLES)
     .map((domain) => ({
-      domain, score: of[domain] ? Math.round(((got[domain] || 0) / of[domain]) * 5 * 10) / 10 : 0,
+      domain, score: of[domain] ? Math.round((((got[domain] || 0) / of[domain]) * 100)) : 0,
       examples: STRENGTH_AREA_EXAMPLES[domain],
     }))
     .sort((a, b) => b.score - a.score);
 }
 
-function scoreMultipleIntelligence(responses: Record<string, number | number[]>): StrengthDomainScore[] {
-  const { got, of } = tallyDomainAvailability(Q.multiple_intelligence, responses);
+function scoreMultipleIntelligence(responses: Record<string, number>): StrengthDomainScore[] {
+  const { got, of } = tallyWeightedTarget(Q.multiple_intelligence, responses);
   return Object.keys(MI_EXAMPLES)
     .map((domain) => ({
-      domain, score: of[domain] ? Math.round(((got[domain] || 0) / of[domain]) * 5 * 10) / 10 : 0,
+      domain, score: of[domain] ? Math.round((((got[domain] || 0) / of[domain]) * 100)) : 0,
       examples: MI_EXAMPLES[domain],
+    }))
+    .sort((a, b) => b.score - a.score);
+}
+
+function scoreIntegratedIndicators(responses: Record<string, number>): StrengthDomainScore[] {
+  const { got, of } = tallyWeightedTarget(Q.integrated_indicators, responses);
+  return Object.keys(INTEGRATED_EXAMPLES)
+    .map((domain) => ({
+      domain, score: of[domain] ? Math.round((((got[domain] || 0) / of[domain]) * 100)) : 0,
+      examples: INTEGRATED_EXAMPLES[domain],
     }))
     .sort((a, b) => b.score - a.score);
 }
 
 function scoreMotivators(responses: Record<string, number>): MotivatorProfile {
   const tally = tallyMapped(Q.motivators, responses);
-  // Q4/Q5/Q8 (indices 4, 5, 8) are plain 1-10 sliders, not mapped options -
-  // see build_ug_bank.py: financial security -> "Security", meaningful work
-  // -> "Mastery" (the closest existing tag to "intellectually engaging"),
-  // leadership-under-pressure -> "Leadership".
-  const financialSecurity = responses["4"];
-  if (typeof financialSecurity === "number") tally["Security"] = (tally["Security"] || 0) + financialSecurity / 10;
-  const meaningfulWork = responses["5"];
-  if (typeof meaningfulWork === "number") tally["Mastery"] = (tally["Mastery"] || 0) + meaningfulWork / 10;
-  const leadershipUnderPressure = responses["8"];
-  if (typeof leadershipUnderPressure === "number") tally["Leadership"] = (tally["Leadership"] || 0) + leadershipUnderPressure / 10;
   const total = Object.values(tally).reduce((s, v) => s + v, 0);
   const ranked = Object.entries(tally)
     .map(([tag, count]) => ({ tag, score: total ? Math.round((count / total) * 100) : 0 }))
@@ -318,12 +343,6 @@ function scoreMotivators(responses: Record<string, number>): MotivatorProfile {
 
 function scoreLearningStyle(responses: Record<string, number>): LearningStyleProfile {
   const tally = tallyMapped(Q.learning_styles, responses);
-  // Q2 (index 2, "prefer theory before applying it") is a slider - a low
-  // score (prefers applying over theory) is a fractional vote for
-  // Kinesthetic; Q4 (index 4, feedback usefulness) is left unmapped, same
-  // as 11-12's own equivalent slider.
-  const theoryPreference = responses["2"];
-  if (typeof theoryPreference === "number") tally["Kinesthetic"] = (tally["Kinesthetic"] || 0) + (10 - theoryPreference) / 10;
   const styles = ["Visual", "Auditory", "Reading/Writing", "Kinesthetic"];
   const ranked = styles.slice().sort((a, b) => (tally[b] || 0) - (tally[a] || 0));
   const total = Object.values(tally).reduce((s, v) => s + v, 0);
@@ -340,80 +359,102 @@ function scoreLearningStyle(responses: Record<string, number>): LearningStylePro
 
 const EI_QUADRANT_TAGS = ["Self-Awareness", "Self-Management", "Social Awareness", "Relationship Management"] as const;
 function scoreEI(responses: Record<string, number>): EIProfile {
-  const tally = tallyMapped(Q.emotional_intelligence, responses);
-  const total = Object.values(tally).reduce((s, v) => s + v, 0);
+  const { got, of } = tallyWeightedTarget(Q.emotional_intelligence, responses);
+  const pct = (tag: string) => (of[tag] ? Math.round(((got[tag] || 0) / of[tag]) * 100) : 0);
   const ranked = EI_QUADRANT_TAGS
-    .map((tag) => ({ tag, score: total ? Math.round(((tally[tag] || 0) / total) * 100) : 0 }))
+    .map((tag) => ({ tag, score: pct(tag) }))
     .sort((a, b) => b.score - a.score);
-  const frac = (tag: string) => (total ? (tally[tag] || 0) / total : 0.25);
+  const frac = (tag: string) => pct(tag) / 100;
   const selfAwareness = frac("Self-Awareness");
   const selfManagement = frac("Self-Management");
   const socialAwareness = frac("Social Awareness");
   const relationshipManagement = frac("Relationship Management");
   return {
     ranked, selfAwareness, selfManagement, socialAwareness, relationshipManagement,
-    emotionalRegulation: selfManagement >= 0.3 ? "You tend to steady yourself quickly under pressure." : "Strong feelings can take a while to settle for you - that's normal, not a weakness.",
-    conflictResolution: relationshipManagement >= 0.3 ? "You actively work to resolve tension with others." : "You tend to process conflict internally before addressing it.",
+    emotionalRegulation: selfManagement >= 0.6 ? "You tend to steady yourself quickly under pressure." : "Strong feelings can take a while to settle for you - that's normal, not a weakness.",
+    conflictResolution: relationshipManagement >= 0.6 ? "You actively work to resolve tension with others." : "You tend to process conflict internally before addressing it.",
     summary: ranked[0] && ranked[0].score > 0 ? `${ranked[0].tag} is your strongest tendency under pressure or feedback.` : "Your responses are fairly balanced across all four areas.",
   };
 }
 
 // ---------------------------------------------------------------- Cluster affinity
-// A hand-tagged, reasonable (not empirically validated - same rigor level
-// as CAREERS_1112's own riasec tags) signature per cluster, used to
-// translate the student's own measured profile into a cluster ranking.
+// The FuturePath 100-question spec's own "17 Career-Domain Compatibility
+// Matrix" (source doc section 5), transcribed directly - RIASEC/Strengths/
+// Motivators/MI evidence per cluster, not a re-derived or re-guessed
+// signature. Short forms in the source table are expanded to this codebase's
+// full canonical tag spelling (e.g. "Analytical" -> "Intellectual &
+// Analytical", "Logical" -> "Logical-Mathematical") so they match the exact
+// strings scoreStrengthAreas/scoreMultipleIntelligence/scoreMotivators
+// produce; the Motivator column's vocabulary (Learning, Achievement, Social
+// Impact, Financial Security, Leadership, Creativity) already matches this
+// bank's own D3 tags exactly, no translation needed there.
 //
-// Deliberately blends THREE dimensions (RIASEC + Strength Domains +
-// Multiple Intelligence), not RIASEC alone: RIASEC only has 6 letters
-// spread across 18 clusters, so a signature built from 1-2 RIASEC letters
-// alone put the same letter ("R") as the dominant signal for 7 unrelated
-// clusters (Engineering, Sports, Agriculture, Environment, Architecture,
-// Manufacturing, Defence) - any R-leaning student saw several of those
-// simultaneously inflated, with basically arbitrary tie-breaks deciding
-// which one "won" Suitability, including clusters with no real connection
-// to the student's actual degree. Layering in each cluster's own
-// distinguishing Strengths/MI signal (e.g. Sports leans Bodily-Kinesthetic,
-// Architecture leans Spatial+Creative, Defence leans Leadership) fixes that
-// even where the RIASEC letters still overlap.
+// Only 17 of the 18 real clusters are covered - the source spec's own matrix
+// stops at 17 and never mentions "Personal Care, Beauty & Wellness" (the
+// same gap already flagged for the UG roadmap content earlier this project -
+// this domain simply isn't in the source document). That one cluster keeps
+// its previous hand-tagged signature (RIASEC-only, no strengths/motivators/
+// MI evidence) rather than fabricating FuturePath-style evidence for a
+// cluster the spec doesn't cover.
 //
 // This is still a CLUSTER-level signature, not a per-role one - 11-12's
-// system computes fit per individual career (each with its own real
-// riasec/mi/aptitude tags) and only aggregates up to cluster level after.
-// Building an equivalent per-role signature for Graduates would mean
-// tagging ~3,300 Excel roles individually, which isn't done here (would
-// need either fabricating thousands of tags or a much larger research
-// pass) - flagged as a real fidelity gap versus 11-12, not hidden.
-const CLUSTER_SIGNATURE: Record<string, { riasec: string[]; strengths: string[]; mi: string[] }> = {
-  "Engineering, Technology & Computing": { riasec: ["R", "I"], strengths: ["Intellectual & Analytical", "Execution & Achievement"], mi: ["Logical-Mathematical", "Spatial"] },
-  "Science, Mathematics & Research": { riasec: ["I"], strengths: ["Intellectual & Analytical"], mi: ["Logical-Mathematical", "Intrapersonal"] },
-  "Healthcare & Medicine": { riasec: ["I", "S"], strengths: ["Relationship & Adaptability", "Intellectual & Analytical"], mi: ["Interpersonal", "Bodily-Kinesthetic"] },
-  "Psychology, Humanities & Social Sciences": { riasec: ["S", "I"], strengths: ["Relationship & Adaptability"], mi: ["Interpersonal", "Intrapersonal", "Linguistic"] },
-  "Sports, Fitness & Human Performance": { riasec: ["R", "S"], strengths: ["Execution & Achievement"], mi: ["Bodily-Kinesthetic", "Interpersonal"] },
-  "Agriculture, Food & Life Sciences": { riasec: ["R", "I"], strengths: ["Execution & Achievement", "Intellectual & Analytical"], mi: ["Naturalistic", "Logical-Mathematical"] },
-  "Environment, Energy & Sustainability": { riasec: ["I", "R"], strengths: ["Strategic & Futuristic"], mi: ["Naturalistic", "Logical-Mathematical"] },
-  "Architecture, Construction & Built Environment": { riasec: ["R", "A"], strengths: ["Creative & Innovative"], mi: ["Spatial", "Bodily-Kinesthetic"] },
-  "Business, Finance & Entrepreneurship": { riasec: ["E", "C"], strengths: ["Influence & Leadership", "Strategic & Futuristic"], mi: ["Logical-Mathematical", "Interpersonal"] },
-  "Law, Legal & Compliance": { riasec: ["E", "I"], strengths: ["Intellectual & Analytical", "Influence & Leadership"], mi: ["Linguistic", "Logical-Mathematical"] },
-  "Government, Public Administration & Policy": { riasec: ["E", "S"], strengths: ["Influence & Leadership", "Strategic & Futuristic"], mi: ["Linguistic", "Interpersonal"] },
-  "Education & Learning": { riasec: ["S", "A"], strengths: ["Relationship & Adaptability"], mi: ["Linguistic", "Interpersonal"] },
-  "Media, Communication, Arts & Design": { riasec: ["A", "E"], strengths: ["Creative & Innovative"], mi: ["Linguistic", "Spatial", "Musical"] },
-  "Manufacturing & Industrial Production": { riasec: ["R", "C"], strengths: ["Execution & Achievement"], mi: ["Spatial", "Bodily-Kinesthetic"] },
-  "Supply Chain, Procurement & Logistics": { riasec: ["C", "E"], strengths: ["Execution & Achievement", "Strategic & Futuristic"], mi: ["Logical-Mathematical"] },
-  "Travel, Tourism, Hospitality & Transport": { riasec: ["S", "E"], strengths: ["Relationship & Adaptability"], mi: ["Interpersonal", "Bodily-Kinesthetic"] },
-  "Defence, Security & Emergency Services": { riasec: ["R", "S"], strengths: ["Execution & Achievement", "Influence & Leadership"], mi: ["Bodily-Kinesthetic", "Interpersonal"] },
-  "Personal Care, Beauty & Wellness": { riasec: ["S", "A"], strengths: ["Creative & Innovative", "Relationship & Adaptability"], mi: ["Bodily-Kinesthetic", "Interpersonal"] },
+// system computes fit per individual career and only aggregates up to
+// cluster level after. Building an equivalent per-role signature for
+// Graduates would mean tagging ~3,300 Excel roles individually, which isn't
+// done here - flagged as a real fidelity gap versus 11-12, not hidden.
+const CLUSTER_SIGNATURE: Record<string, { riasec: string[]; strengths: string[]; motivators: string[]; mi: string[] }> = {
+  "Engineering, Technology & Computing": { riasec: ["I", "R", "C"], strengths: ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic"], motivators: ["Learning", "Achievement"], mi: ["Logical-Mathematical", "Spatial"] },
+  "Science, Mathematics & Research": { riasec: ["I"], strengths: ["Intellectual & Analytical", "Strategic & Futuristic"], motivators: ["Learning", "Achievement"], mi: ["Logical-Mathematical", "Intrapersonal"] },
+  "Healthcare & Medicine": { riasec: ["I", "S"], strengths: ["Intellectual & Analytical", "Relationship & Adaptability", "Execution & Achievement"], motivators: ["Social Impact", "Learning"], mi: ["Interpersonal", "Intrapersonal", "Naturalistic"] },
+  "Psychology, Humanities & Social Sciences": { riasec: ["S", "I", "A"], strengths: ["Relationship & Adaptability", "Intellectual & Analytical", "Strategic & Futuristic"], motivators: ["Social Impact", "Learning"], mi: ["Interpersonal", "Linguistic", "Intrapersonal"] },
+  "Sports, Fitness & Human Performance": { riasec: ["R", "S", "E"], strengths: ["Execution & Achievement", "Relationship & Adaptability", "Influence & Leadership"], motivators: ["Achievement", "Social Impact", "Learning"], mi: ["Bodily-Kinesthetic", "Interpersonal"] },
+  "Agriculture, Food & Life Sciences": { riasec: ["R", "I"], strengths: ["Intellectual & Analytical", "Execution & Achievement", "Strategic & Futuristic"], motivators: ["Social Impact", "Learning", "Financial Security"], mi: ["Naturalistic", "Logical-Mathematical", "Bodily-Kinesthetic"] },
+  "Environment, Energy & Sustainability": { riasec: ["I", "R", "S"], strengths: ["Strategic & Futuristic", "Intellectual & Analytical", "Relationship & Adaptability"], motivators: ["Social Impact", "Learning"], mi: ["Naturalistic", "Logical-Mathematical"] },
+  "Architecture, Construction & Built Environment": { riasec: ["R", "A", "I"], strengths: ["Creative & Innovative", "Execution & Achievement"], motivators: ["Creativity", "Achievement"], mi: ["Spatial", "Logical-Mathematical", "Bodily-Kinesthetic"] },
+  "Business, Finance & Entrepreneurship": { riasec: ["E", "C", "I"], strengths: ["Influence & Leadership", "Intellectual & Analytical", "Strategic & Futuristic", "Execution & Achievement"], motivators: ["Achievement", "Leadership", "Financial Security", "Creativity"], mi: ["Logical-Mathematical", "Linguistic", "Interpersonal"] },
+  "Law, Legal & Compliance": { riasec: ["I", "E", "C"], strengths: ["Intellectual & Analytical", "Strategic & Futuristic", "Influence & Leadership"], motivators: ["Achievement", "Financial Security", "Social Impact"], mi: ["Linguistic", "Logical-Mathematical", "Interpersonal"] },
+  "Government, Public Administration & Policy": { riasec: ["S", "E", "C", "I"], strengths: ["Strategic & Futuristic", "Relationship & Adaptability", "Execution & Achievement"], motivators: ["Social Impact", "Leadership"], mi: ["Linguistic", "Interpersonal", "Logical-Mathematical"] },
+  "Education & Learning": { riasec: ["S", "A", "I"], strengths: ["Relationship & Adaptability"], motivators: ["Social Impact", "Learning", "Achievement"], mi: ["Linguistic", "Interpersonal", "Intrapersonal"] },
+  "Media, Communication, Arts & Design": { riasec: ["A", "E", "S"], strengths: ["Creative & Innovative", "Influence & Leadership", "Relationship & Adaptability"], motivators: ["Creativity", "Achievement", "Leadership"], mi: ["Linguistic", "Spatial", "Interpersonal"] },
+  "Manufacturing & Industrial Production": { riasec: ["R", "I", "C"], strengths: ["Execution & Achievement", "Intellectual & Analytical", "Strategic & Futuristic"], motivators: ["Achievement", "Financial Security", "Learning"], mi: ["Logical-Mathematical", "Bodily-Kinesthetic", "Spatial"] },
+  "Supply Chain, Procurement & Logistics": { riasec: ["C", "R", "E"], strengths: ["Execution & Achievement", "Intellectual & Analytical", "Relationship & Adaptability"], motivators: ["Achievement", "Financial Security", "Leadership"], mi: ["Logical-Mathematical", "Interpersonal"] },
+  "Travel, Tourism, Hospitality & Transport": { riasec: ["S", "E", "R"], strengths: ["Relationship & Adaptability", "Influence & Leadership"], motivators: ["Social Impact", "Achievement", "Financial Security"], mi: ["Interpersonal", "Bodily-Kinesthetic", "Linguistic"] },
+  "Defence, Security & Emergency Services": { riasec: ["R", "I", "S"], strengths: ["Execution & Achievement", "Strategic & Futuristic", "Relationship & Adaptability"], motivators: ["Achievement", "Social Impact", "Leadership"], mi: ["Bodily-Kinesthetic", "Logical-Mathematical", "Interpersonal"] },
+  // Not covered by the FuturePath spec's matrix - kept from the prior
+  // hand-tagged signature rather than fabricated.
+  "Personal Care, Beauty & Wellness": { riasec: ["S", "A"], strengths: ["Creative & Innovative", "Relationship & Adaptability"], motivators: [], mi: ["Bodily-Kinesthetic", "Interpersonal"] },
 };
+
+// Weighted blend per the FuturePath spec's section 6 "Recommended Career-Fit
+// Formula" table - of its 9 weighted components, only RIASEC (25%),
+// Strengths (15%), Motivators (15%) and MI (10%) have a per-cluster target
+// in the spec's own compatibility matrix (section 5); MBTI/EI/Learning/
+// Cognitive/Integrated (the remaining 35%) are listed there as evidence
+// weights but the spec provides no per-cluster MBTI-type, EI-quadrant,
+// learning-style, cognitive or integrated-indicator target to score them
+// against - inventing one would be exactly the kind of fabricated signal
+// this project avoids. Those five stay as real, computed, reported
+// dimensions (surfaced in the narrative/report, same as the spec's own
+// "apply contextual modifiers" framing places degree/specialisation/
+// experience/goals outside the mechanical formula too) rather than being
+// silently folded into ranking math the source data can't actually support.
+// The four that DO drive ranking keep their relative weights from the spec
+// (25:15:15:10) and are coverage-normalised so they still sum to 1 even
+// though the spec's own weights for them only total 0.65 of the full 1.0.
+const CLUSTER_WEIGHTS = { riasec: 0.25, strengths: 0.15, motivators: 0.15, mi: 0.10 };
+const CLUSTER_WEIGHT_TOTAL = Object.values(CLUSTER_WEIGHTS).reduce((s, w) => s + w, 0);
 
 function computeClusterAffinities(
   riasec: RIASECScore[],
   strengthDomains: StrengthDomainScore[],
+  motivators: MotivatorProfile,
   multipleIntelligence: StrengthDomainScore[],
   selfReported: string[]
 ): ClusterAffinityGrad[] {
   const riasecPct = Object.fromEntries(riasec.map((r) => [r.code, r.percentile]));
-  // Strengths/MI are scored out of 5 (see scoreStrengthAreas/scoreMultipleIntelligence) - convert to 0-100 to match RIASEC's own percentile scale.
-  const strengthPct = Object.fromEntries(strengthDomains.map((s) => [s.domain, (s.score / 5) * 100]));
-  const miPct = Object.fromEntries(multipleIntelligence.map((m) => [m.domain, (m.score / 5) * 100]));
+  const strengthPct = Object.fromEntries(strengthDomains.map((s) => [s.domain, s.score]));
+  const motivatorPct = Object.fromEntries(motivators.ranked.map((m) => [m.tag, m.score]));
+  const miPct = Object.fromEntries(multipleIntelligence.map((m) => [m.domain, m.score]));
   const avg = (vals: number[]) => (vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : 0);
   const selfReportedSet = new Set(selfReported);
 
@@ -422,8 +463,18 @@ function computeClusterAffinities(
       const sig = CLUSTER_SIGNATURE[cluster];
       const riasecScore = sig ? avg(sig.riasec.map((c) => riasecPct[c] || 0)) : 0;
       const strengthScore = sig ? avg(sig.strengths.map((s) => strengthPct[s] || 0)) : 0;
+      const motivatorScore = sig && sig.motivators.length ? avg(sig.motivators.map((m) => motivatorPct[m] || 0)) : null;
       const miScore = sig ? avg(sig.mi.map((m) => miPct[m] || 0)) : 0;
-      const computedScore = Math.round(riasecScore * 0.4 + strengthScore * 0.3 + miScore * 0.3);
+      // Coverage-normalised weighted mean, same "average only what was
+      // actually measured/available" pattern used across this project's
+      // other scoring engines - "Personal Care, Beauty & Wellness" has no
+      // motivator evidence at all (see CLUSTER_SIGNATURE above), so its
+      // score is a mean over the 3 dimensions it does have, not artificially
+      // diluted by a missing 4th.
+      const parts: [number, number][] = [[riasecScore, CLUSTER_WEIGHTS.riasec], [strengthScore, CLUSTER_WEIGHTS.strengths], [miScore, CLUSTER_WEIGHTS.mi]];
+      if (motivatorScore !== null) parts.push([motivatorScore, CLUSTER_WEIGHTS.motivators]);
+      const denom = parts.reduce((s, [, w]) => s + w, 0) || CLUSTER_WEIGHT_TOTAL;
+      const computedScore = sig ? Math.round(parts.reduce((s, [v, w]) => s + v * w, 0) / denom) : 0;
       const isSelfReported = selfReportedSet.has(cluster);
       return {
         cluster, computedScore, selfReported: isSelfReported,
@@ -482,12 +533,13 @@ export function scoreGraduateAssessment(responses: GraduateResponse): GraduateSc
   const motivators = scoreMotivators(responses.motivators);
   const learningStyle = scoreLearningStyle(responses.learning_styles);
   const emotionalIntelligence = scoreEI(responses.emotional_intelligence);
+  const integratedIndicators = scoreIntegratedIndicators(responses.integrated_indicators);
 
   const layer1: PsychometricProfileGrad = {
-    personality, riasec, aptitude, strengthDomains, multipleIntelligence, motivators, learningStyle, emotionalIntelligence,
+    personality, riasec, aptitude, strengthDomains, multipleIntelligence, motivators, learningStyle, emotionalIntelligence, integratedIndicators,
   };
 
-  const clusterAffinities = computeClusterAffinities(riasec, strengthDomains, multipleIntelligence, responses.career_cluster_fit.topClusters);
+  const clusterAffinities = computeClusterAffinities(riasec, strengthDomains, motivators, multipleIntelligence, responses.career_cluster_fit.topClusters);
   const suitabilityRanked = rankSuitabilityGrad(clusterAffinities, responses.degree, responses.course);
   const topCluster = suitabilityRanked[0]?.cluster ?? "";
 
