@@ -49,7 +49,6 @@ import {
 } from "@/lib/report/careerFitEngine1112";
 import { DOMAINS_1112, STANDARD_CLUSTERS, CLUSTER_EXPLORE_LINKS, CLUSTER_COMPANIES, CLUSTER_FUNDED_PROGRAMS, CAREERS_1112, STREAM_KEY_1112, roadmapFor, type RoadmapEntry, type Career1112, type StreamKey1112, type StandardCluster, type FundedProgram } from "@/lib/report/careerfit1112";
 import { CLUSTER_ROADMAPS, type ClusterRoadmapPhase } from "@/lib/report/clusterRoadmaps1112";
-import { detailedRoadmapFor, type DetailedCareerRoadmap } from "@/lib/report/careerRoadmapDetailed1112";
 import { degreesForStream, ELIGIBILITY_SYMBOL, ELIGIBILITY_LABEL, type DegreeEligibilityRow } from "@/lib/report/degreeStreamMatrix";
 import { topDimensionsForStudent, type ScoredDimension } from "@/lib/report/dimensionCareerGuide";
 import { percentileBandFor } from "@/lib/report/jeePercentileGuide";
@@ -305,286 +304,6 @@ function ClusterRoadmapPath({ phases, color }: { phases: ClusterRoadmapPhase[]; 
         </div>
       ))}
     </div>
-  );
-}
-
-// Splits a researched line on its first ": " or " — " separator so the
-// label half (e.g. "Stream", "IIT Bombay", "Government") can render bold
-// against the muted detail that follows - same "Label: description"
-// convention the source research already writes in throughout, just made
-// visually explicit instead of relying on the reader to notice the colon.
-// Deliberately does NOT treat a plain hyphen as a separator - the data has
-// compound words like "E-commerce" and "T-Hub" that a hyphen-based split
-// would wrongly chop into a 1-letter "label", and checked against all 50
-// researched careers, every genuine label uses ":" or "—", never a bare "-".
-function splitLabel(text: string): { label: string | null; rest: string } {
-  const m = text.match(/^([^:—]{2,60}?)\s*(:|—)\s*(.+)$/s);
-  if (m && m[3].length > 1) return { label: m[1].trim(), rest: m[3].trim() };
-  return { label: null, rest: text };
-}
-function DetailLine({ text, color }: { text: string; color: string }) {
-  const { label, rest } = splitLabel(text);
-  return (
-    <div style={{ fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.6 }}>
-      {label && <b style={{ color }}>{label}: </b>}
-      {rest}
-    </div>
-  );
-}
-function DetailList({ lines, color }: { lines: string[]; color: string }) {
-  return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(175px, 1fr))", gap: 8 }}>
-      {lines.map((l, i) => (
-        <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", padding: "9px 10px", border: `1px solid ${color}22`, borderRadius: 10, background: i % 2 ? "#fff" : `${color}08`, minWidth: 0 }}>
-          <span style={{ width: 22, height: 22, borderRadius: 7, display: "grid", placeItems: "center", flex: "none", color, background: `${color}16`, fontSize: 9.5, fontWeight: 900 }}>{String(i + 1).padStart(2, "0")}</span>
-          <DetailLine text={l} color={color} />
-        </div>
-      ))}
-    </div>
-  );
-}
-
-const ROADMAP_SECTION_META: { icon: string; label: string; eyebrow: string; variant: string; accent: string; pastel: string }[] = [
-  { icon: "school", label: "Build your foundation", eyebrow: "01 · School / 11-12", variant: "foundation", accent: "#4778c8", pastel: "#eef4ff" },
-  { icon: "cap", label: "Choose your launchpad", eyebrow: "02 · UG pathways", variant: "pathway", accent: "#8065bd", pastel: "#f4efff" },
-  { icon: "school", label: "Find your learning environment", eyebrow: "03 · Top colleges - India", variant: "places", accent: "#318d91", pastel: "#ebf8f7" },
-  { icon: "card", label: "Make the investment manageable", eyebrow: "04 · Financial support", variant: "support", accent: "#b4772c", pastel: "#fff7e8" },
-  { icon: "route", label: "Grow year by year", eyebrow: "05 · UG development", variant: "timeline", accent: "#c46a52", pastel: "#fff1ed" },
-  { icon: "briefcase", label: "Get real-world exposure", eyebrow: "06 · Internships", variant: "experience", accent: "#477d9b", pastel: "#edf7fb" },
-  { icon: "signpost", label: "Keep your options open", eyebrow: "07 · After UG", variant: "routes", accent: "#9b667f", pastel: "#fff0f7" },
-  { icon: "star", label: "Go deeper", eyebrow: "08 · PG & specialization", variant: "specialise", accent: "#6a72b8", pastel: "#f0f2ff" },
-  { icon: "match", label: "Picture the role", eyebrow: "09 · Job options", variant: "roles", accent: "#4c8b65", pastel: "#eef9f0" },
-  { icon: "check", label: "Stack useful proof", eyebrow: "10 · Skills & certifications", variant: "skills", accent: "#a47737", pastel: "#fff8ea" },
-  { icon: "compass", label: "Think globally", eyebrow: "11 · Abroad - education", variant: "abroad", accent: "#4f78a6", pastel: "#eef5ff" },
-  { icon: "flag", label: "Work globally", eyebrow: "12 · Abroad - jobs", variant: "global", accent: "#7b659f", pastel: "#f5f0ff" },
-  { icon: "route", label: "See the progression", eyebrow: "13 · Career progression", variant: "progression", accent: "#3b8b83", pastel: "#ecf8f5" },
-  { icon: "score", label: "Your full route", eyebrow: "14 · Complete roadmap", variant: "complete", accent: "#c05f59", pastel: "#fff0ef" },
-];
-
-const ROADMAP_IMAGE_URL = "https://onegrasp.com/wp-content/uploads/2026/09/ChatGPT-Image-Sep-28-2026-02_55_51-PM.png";
-
-function RoadmapIndex() {
-  return (
-    <div style={{ marginTop: 24, border: "1px solid #dfe4ec", borderRadius: 18, padding: 10, background: "#fff", boxShadow: "0 8px 24px rgba(36, 52, 74, .07)", overflow: "hidden" }}>
-      {/* The supplied visual already contains the complete 14-step journey,
-          including its snake layout, labels, icons and goal markers. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={ROADMAP_IMAGE_URL} alt="14-step career roadmap from school to senior roles" style={{ display: "block", width: "100%", height: "auto", borderRadius: 12 }} />
-    </div>
-  );
-}
-
-function RoadmapSectionFrame({ index, eyebrow, title, sub, color, children }: { index: number; eyebrow: string; title: string; sub?: string; color: string; children: React.ReactNode }) {
-  const meta = ROADMAP_SECTION_META[index - 1] ?? { icon: "route", label: "Your next chapter", eyebrow, variant: "default", accent: color, pastel: `${color}12` };
-  return (
-    <div data-roadmap-section={meta.variant} style={{ marginTop: 18, paddingTop: 14, borderTop: `1px solid ${meta.accent}35` }}>
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, padding: "10px 12px", borderRadius: 13, background: `linear-gradient(110deg, ${meta.pastel}, #fff)`, border: `1px solid ${meta.accent}35`, boxShadow: `0 3px 10px ${meta.accent}12` }}>
-        <div style={{ position: "relative", flex: "none" }}>
-          <span style={{ width: 42, height: 42, borderRadius: 13, display: "grid", placeItems: "center", background: meta.accent, color: "#fff", boxShadow: `0 5px 11px ${meta.accent}35` }}>
-            <Icon name={meta.icon} size={19} />
-          </span>
-          <span style={{ position: "absolute", right: -7, bottom: -7, width: 22, height: 22, borderRadius: "50%", display: "grid", placeItems: "center", background: "#fff", border: `2px solid ${meta.accent}`, color: meta.accent, fontSize: 9, fontWeight: 900 }}>{String(index).padStart(2, "0")}</span>
-        </div>
-        <div style={{ minWidth: 0, flex: 1 }}>
-          <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: ".08em", textTransform: "uppercase", color: meta.accent }}>{meta.label}</div>
-          <h2 style={{ margin: "3px 0 0", fontSize: 18.5, lineHeight: 1.2, letterSpacing: "-.02em", color: "var(--ink)" }}>{title}</h2>
-          {sub ? <p style={{ margin: "6px 0 0", fontSize: 12, lineHeight: 1.5, color: "var(--ink-2)" }}>{sub}</p> : null}
-        </div>
-        <span style={{ flex: "none", alignSelf: "flex-start", maxWidth: 220, padding: "8px 11px", borderRadius: 9, background: `${meta.accent}18`, border: `1.5px solid ${meta.accent}55`, color: meta.accent, boxShadow: `0 3px 8px ${meta.accent}18`, fontSize: 10.5, lineHeight: 1.25, fontWeight: 950, letterSpacing: ".07em", textTransform: "uppercase", textAlign: "right" }}>{eyebrow}</span>
-      </div>
-      <div style={{ marginTop: 10 }}>{children}</div>
-    </div>
-  );
-}
-
-// careerProgression / completeRoadmap: a flat ladder of short stage names -
-// same dot-and-connecting-line visual language as ClusterRoadmapPath above,
-// just one line per step instead of a whole sub-sectioned phase card, since
-// these are a straight A→B→C→D climb, not "I AM HERE, I CAN STUDY, ..."
-// blocks with their own detail underneath.
-function VerticalStepChain({ steps, color }: { steps: string[]; color: string }) {
-  return (
-    <div style={{ marginTop: 6 }}>
-      {steps.map((s, i) => (
-        <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: "none" }}>
-            <span style={{ width: 9, height: 9, borderRadius: "50%", background: color, flex: "none", marginTop: 4 }} />
-            {i < steps.length - 1 && <div style={{ width: 2, flex: 1, background: `linear-gradient(${color}60, ${color}18)`, minHeight: 18 }} />}
-          </div>
-          <div style={{ fontSize: 12.5, fontWeight: i === steps.length - 1 ? 800 : 600, color: i === steps.length - 1 ? color : "var(--ink)", paddingBottom: i < steps.length - 1 ? 10 : 0 }}>{s}</div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// afterUgPathways alternates a short route label ("Common — Core
-// Engineering") with its own "A → B → C" chain on the next line - paired up
-// here and each chain split into wrapping chips so 4 parallel routes (Common/
-// Alternative/Specialized/Research) read as 4 distinct mini-paths, not one
-// run-on paragraph.
-function InlineChain({ text, color }: { text: string; color: string }) {
-  const steps = text.split("→").map((s) => s.trim()).filter(Boolean);
-  return (
-    <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 6 }}>
-      {steps.map((s, i) => (
-        <span key={i} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <span style={{ fontSize: 11.5, fontWeight: 700, color: "var(--ink)", background: `${color}0f`, border: `1px solid ${color}30`, borderRadius: 999, padding: "4px 10px" }}>{s}</span>
-          {i < steps.length - 1 && <span style={{ color, fontSize: 12, fontWeight: 800 }}>→</span>}
-        </span>
-      ))}
-    </div>
-  );
-}
-// A real multi-step chain always has 3+ steps (2+ arrows) - a route LABEL
-// can still contain a single arrow of its own ("Alternative — Software →
-// ML"), so testing for "contains →" at all would misclassify that label as
-// the chain line itself and desync every pair after it. Verified against
-// all 50 researched careers: this threshold pairs every one cleanly.
-function isChainLine(line: string): boolean {
-  return (line.match(/→/g)?.length ?? 0) >= 2;
-}
-function PairedChainList({ lines, color }: { lines: string[]; color: string }) {
-  const rows: { label: string; chain: string }[] = [];
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    if (isChainLine(line)) {
-      // A rare format variant: some routes are written as one combined
-      // "Label: A → B → C" line instead of a separate label line followed
-      // by its own chain line (e.g. Screenwriter's 4th route) - split it
-      // directly rather than silently dropping it for having no preceding
-      // label line of its own.
-      const { label, rest } = splitLabel(line);
-      if (label && isChainLine(rest)) rows.push({ label, chain: rest });
-      continue;
-    }
-    if (isChainLine(lines[i + 1] ?? "")) {
-      rows.push({ label: line, chain: lines[i + 1] });
-      i++;
-    }
-  }
-  return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 12 }}>
-      {rows.map((r, i) => (
-        <div key={i} style={{ minWidth: 0, padding: "12px 13px", border: `1px solid ${color}25`, borderRadius: 12, background: `${color}07` }}>
-          <div style={{ fontSize: 11.5, fontWeight: 800, color, marginBottom: 6 }}>{r.label}</div>
-          <InlineChain text={r.chain} color={color} />
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function YearFocusGrid({ years, color }: { years: { year: string; focus: string }[]; color: string }) {
-  return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10 }}>
-      {years.map((y, i) => (
-        <div key={i} style={{ border: `1px solid ${color}30`, borderRadius: 10, padding: "10px 13px", background: `${color}08` }}>
-          <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color }}>{y.year}</div>
-          <div style={{ fontSize: 12, color: "var(--ink-2)", marginTop: 4, lineHeight: 1.5 }}>{y.focus}</div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// The full, individually-researched in-depth roadmap for one career (see
-// careerRoadmapDetailed1112.ts) - shown INSTEAD of the generic 16-cluster
-// ClusterRoadmapPath whenever the student's desired career has one. Follows
-// the source research's own 14-section structure one-for-one (SecHead+BREAK
-// per section, this file's established pattern) rather than re-grouping it,
-// since that structure was already designed to read as a real journey.
-function DetailedCareerRoadmapView({ r, careerName, color }: { r: DetailedCareerRoadmap; careerName: string; color: string }) {
-  // Not every career's research fills every section (e.g. one entry's "UG
-  // Pathways" is genuinely blank in the source doc) - skip renders nothing
-  // rather than showing an empty heading with nothing under it.
-  const Sec = ({ eyebrow, title, sub, skip, children }: { eyebrow: string; title: string; sub?: string; skip?: boolean; children: React.ReactNode }) => {
-    if (skip) return null;
-    const sectionNumber = Number(eyebrow.slice(0, 2));
-    const sectionMeta = ROADMAP_SECTION_META[sectionNumber - 1];
-    return <RoadmapSectionFrame index={sectionNumber} eyebrow={eyebrow} title={title} sub={sub} color={sectionMeta?.accent ?? color}>{children}</RoadmapSectionFrame>;
-  };
-  return (
-    <>
-      <div style={{ ...BREAK, marginTop: 24, paddingTop: 20 }}>
-        <div style={{ textAlign: "center", padding: "24px 20px", borderRadius: 20, color: "#fff", background: `linear-gradient(135deg, ${color}, ${color}c7)`, boxShadow: `0 12px 24px ${color}25` }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 10, fontWeight: 900, letterSpacing: ".12em", textTransform: "uppercase", color: "rgba(255,255,255,.88)" }}>
-            <span>In-depth roadmap</span>
-            <span style={{ padding: "5px 10px", borderRadius: 999, background: "rgba(255,255,255,.2)", border: "1px solid rgba(255,255,255,.38)", color: "#fff", letterSpacing: ".08em" }}>{careerName}</span>
-          </div>
-          <h2 style={{ margin: "8px 0 6px", fontSize: 30, lineHeight: 1.1, letterSpacing: "-.03em", color: "#fff" }}>Your realistic path</h2>
-          <p style={{ maxWidth: 620, margin: "0 auto", fontSize: 13, lineHeight: 1.6, color: "rgba(255,255,255,.96)" }}>{r.tagline ?? `The full, step-by-step path into ${careerName} - school through to senior roles, built around this specific career, not a generic cluster.`}</p>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 7, marginTop: 16, padding: "6px 12px", borderRadius: 999, background: "rgba(255,255,255,.16)", border: "1px solid rgba(255,255,255,.28)", color: "#fff", fontSize: 10.5, fontWeight: 800 }}>
-            <Icon name="route" size={13} /> A step-by-step route from school to senior roles
-          </div>
-        </div>
-      </div>
-      <RoadmapIndex />
-      <div>
-          <Sec eyebrow="01 · School / 11-12" title="Where to start" skip={!r.school.length}>
-            <DetailList lines={r.school} color={ROADMAP_SECTION_META[0].accent} />
-          </Sec>
-          <Sec eyebrow="02 · UG pathways" title="Degrees that lead here" skip={!r.ugPathways.length}>
-            <DetailList lines={r.ugPathways} color={ROADMAP_SECTION_META[1].accent} />
-          </Sec>
-          <div style={{ display: "grid", gridTemplateColumns: !r.topColleges.length || !r.scholarships.length ? "1fr" : "repeat(2, minmax(0, 1fr))", gap: 18, alignItems: "start" }}>
-            <Sec eyebrow="03 · Top colleges - India" title="Where to study" skip={!r.topColleges.length}>
-              <DetailList lines={r.topColleges} color={ROADMAP_SECTION_META[2].accent} />
-            </Sec>
-            <Sec eyebrow="04 · Financial support" title="Scholarships" skip={!r.scholarships.length}>
-              <DetailList lines={r.scholarships} color={ROADMAP_SECTION_META[3].accent} />
-            </Sec>
-          </div>
-          <Sec eyebrow="05 · UG development" title="What each year should build" skip={!r.ugDevelopment.years.length && !r.ugDevelopment.notes.length}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              <YearFocusGrid years={r.ugDevelopment.years} color={ROADMAP_SECTION_META[4].accent} />
-              {r.ugDevelopment.notes.length > 0 && <DetailList lines={r.ugDevelopment.notes} color={ROADMAP_SECTION_META[4].accent} />}
-            </div>
-          </Sec>
-          <div style={{ display: "grid", gridTemplateColumns: !r.internships.length || !r.afterUgPathways.length ? "1fr" : "repeat(2, minmax(0, 1fr))", gap: 18, alignItems: "start" }}>
-            <Sec eyebrow="06 · Internships" title="Where to intern" skip={!r.internships.length}>
-              <DetailList lines={r.internships} color={ROADMAP_SECTION_META[5].accent} />
-            </Sec>
-            <Sec eyebrow="07 · After UG" title="Career pathway options" skip={!r.afterUgPathways.length}>
-              <PairedChainList lines={r.afterUgPathways} color={ROADMAP_SECTION_META[6].accent} />
-            </Sec>
-          </div>
-          <Sec eyebrow="08 · PG & specialization" title="Going further" skip={!r.pgSpecialization.length}>
-            <DetailList lines={r.pgSpecialization} color={ROADMAP_SECTION_META[7].accent} />
-          </Sec>
-          <Sec eyebrow="09 · Job options" title="What you could actually be hired as" skip={!r.jobOptions.length}>
-            <DetailList lines={r.jobOptions} color={ROADMAP_SECTION_META[8].accent} />
-          </Sec>
-          <Sec eyebrow="10 · Skills & certifications" title="What to build along the way" skip={!r.skills.length}>
-            <DetailList lines={r.skills} color={ROADMAP_SECTION_META[9].accent} />
-          </Sec>
-          <div style={{ display: "grid", gridTemplateColumns: !r.abroadEducation.length || !r.abroadJobs.length ? "1fr" : "repeat(2, minmax(0, 1fr))", gap: 18, alignItems: "start" }}>
-            <Sec eyebrow="11 · Abroad - education" title="If you want to study abroad" skip={!r.abroadEducation.length}>
-              <DetailList lines={r.abroadEducation} color={ROADMAP_SECTION_META[10].accent} />
-            </Sec>
-            <Sec eyebrow="12 · Abroad - jobs" title="If you want to work abroad" skip={!r.abroadJobs.length}>
-              <DetailList lines={r.abroadJobs} color={ROADMAP_SECTION_META[11].accent} />
-            </Sec>
-          </div>
-          <Sec eyebrow="13 · Career progression" title="The long climb" skip={!r.careerProgression.length}>
-            <VerticalStepChain steps={r.careerProgression} color={ROADMAP_SECTION_META[12].accent} />
-          </Sec>
-          <Sec eyebrow="14 · Complete roadmap" title="Start to finish, at a glance" skip={!r.completeRoadmap.length}>
-            <VerticalStepChain steps={r.completeRoadmap} color={ROADMAP_SECTION_META[13].accent} />
-            {r.keyDistinction && (
-              <p style={{ fontSize: 12, color: "var(--ink-2)", lineHeight: 1.6, marginTop: 16, paddingTop: 14, borderTop: "1px solid var(--line-2, var(--line))" }}>
-                <b style={{ color: "var(--ink)" }}>Worth knowing: </b>{r.keyDistinction}
-              </p>
-            )}
-            {r.disclaimer && (
-              <p style={{ fontSize: 11, color: "var(--muted)", lineHeight: 1.5, marginTop: 10, display: "flex", alignItems: "flex-start", gap: 6 }}>
-                <Icon name="info" size={13} style={{ flex: "none", marginTop: 1 }} />
-                {r.disclaimer}
-              </p>
-            )}
-          </Sec>
-      </div>
-    </>
   );
 }
 
@@ -904,16 +623,6 @@ function splitProgramName(name: string): { headline: string; sub: string | null 
 function urlHost(url: string): string {
   try { return new URL(url).hostname.replace(/^www\./, ""); } catch { return url; }
 }
-// Every FundedProgram.eligibility string follows "Stream: ... Percentage:
-// ... Exam: ..." (plus sometimes trailing age/notification caveats after
-// Exam) - the card only needs Stream + Percentage, so this drops
-// everything from "Exam:" onward and strips parenthetical asides, turning
-// a 3-sentence paragraph into one short line.
-function shortEligibility(text: string): string {
-  const cut = text.split(/\.\s*Exam:/)[0];
-  const stripped = cut.replace(/\s*\([^)]*\)/g, "").replace(/\s{2,}/g, " ").trim();
-  return stripped.endsWith(".") ? stripped : `${stripped}.`;
-}
 
 // Real logos, sourced from Wikimedia Commons and verified (fetched, 200 OK)
 // before use - same standard as every other fact in this file. Only the
@@ -948,7 +657,7 @@ function FundedProgramCard({ p, color }: { p: FundedProgram; color: string }) {
   // categories on every card, so giving each its own consistent colour reads
   // faster across a grid of many cards than one colour repeated three times.
   const stats = [
-    { label: "Eligibility", value: shortEligibility(p.eligibility), icon: "user", color: "#2a5aa0" },
+    { label: "Eligibility", value: p.eligibility, icon: "user", color: "#2a5aa0" },
     { label: "Stipend", value: p.stipend, icon: "card", color: "#1f7a55" },
     { label: "On completion", value: p.outcome, icon: "score", color: "#a3620b" },
   ];
@@ -976,20 +685,6 @@ function FundedProgramCard({ p, color }: { p: FundedProgram; color: string }) {
               structure used to switch tone mid-sentence, which read as a
               rendering glitch rather than a deliberate distinction. */}
           <p style={{ margin: "10px 0 0", fontSize: 14.5, color: "var(--ink-2)", lineHeight: 1.6 }}>{p.summary} {p.structure}</p>
-          {/* Some of these genuinely-funded programmes only become
-              applicable after a student is already in (or has finished) a
-              UG/PG degree - real information worth knowing at this stage,
-              but not something to act on yet. Called out here, clearly
-              separate from the Eligibility stat below, so it can't be
-              mistaken for a next step available right now. */}
-          {p.notYetReachable && (
-            <div style={{ display: "flex", gap: 10, alignItems: "flex-start", marginTop: 14, padding: "12px 16px", borderRadius: 10, background: "#fff6e8", border: "1px solid #f5d9a0" }}>
-              <Icon name="info" size={16} style={{ color: "#a3620b", flex: "none", marginTop: 1 }} />
-              <div style={{ fontSize: 13, color: "#7a4d09", lineHeight: 1.5 }}>
-                <b>Not available straight after Class 12.</b> {p.notYetReachable}
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
@@ -998,17 +693,17 @@ function FundedProgramCard({ p, color }: { p: FundedProgram; color: string }) {
           <div key={s.label} style={{ padding: "0 20px", borderLeft: i > 0 ? "1px solid var(--line-2, var(--line))" : "none", minWidth: 0 }}>
             {/* The LABEL is the highlighted thing here - bold and in the
                 stat's own colour - not the value text below it, which is
-                just information to read, not something to shout. The value
-                is capped at 2 real lines (not squeezed to 1 - that hid the
-                actual text behind an ellipsis almost immediately); the full
-                text is also on the title tooltip as a fallback. */}
+                just information to read, not something to shout. Full text,
+                no truncation or line clamp - a "half cut" stat that hides
+                its own eligibility/stipend/outcome detail behind an
+                ellipsis defeats the point of a funded-programme card. */}
             <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 6 }}>
               <span style={{ width: 30, height: 30, borderRadius: "50%", background: `${s.color}16`, display: "grid", placeItems: "center", flex: "none" }}>
                 <Icon name={s.icon} size={15} style={{ color: s.color }} />
               </span>
               <span style={{ fontSize: 13, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: s.color }}>{s.label}</span>
             </div>
-            <div title={s.value} style={{ fontSize: 13, fontWeight: 400, color: "var(--ink-2)", lineHeight: 1.4, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{s.value}</div>
+            <div style={{ fontSize: 13, fontWeight: 400, color: "var(--ink-2)", lineHeight: 1.5 }}>{s.value}</div>
           </div>
         ))}
       </div>
@@ -1362,14 +1057,6 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
   const roadmapDomain = suitabilityGroups[0]?.domain ?? null;
   const realisticRoadmap = roadmapDomain ? CLUSTER_ROADMAPS[roadmapDomain as StandardCluster] : null;
 
-  // A real, individually-researched in-depth roadmap (see
-  // careerRoadmapDetailed1112.ts) for the student's OWN typed desired
-  // career specifically - covers a growing subset of CAREERS_1112 (308 of
-  // 360 as of this pass). Separate from roadmapDomain above: only shows
-  // when they named a career we've researched, and is about that one role
-  // specifically (real named colleges/companies/exams), not the field.
-  const detailedRoadmap = detailedRoadmapFor(selector?.career?.name);
-
   const sheets: ReportSheet[] = [
     {
       id: "career-clusters-bar-1112",
@@ -1546,16 +1233,6 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                 <div style={{ textAlign: "center", fontSize: 12.5, color: "var(--ink-2)" }}>
                   <b style={{ color: "var(--ink)" }}>Entrance exam for {selector.career.name}:</b> {selector.career.typicalEntranceExam}
                 </div>
-
-                {/* A real, individually-researched in-depth roadmap for the
-                    student's own typed desired career specifically - separate
-                    from the domain-generic roadmap below, and only shown when
-                    we have one (career-roadmaps-detailed.json coverage). */}
-                {detailedRoadmap && (
-                  <div style={{ marginTop: 20 }}>
-                    <DetailedCareerRoadmapView r={detailedRoadmap} careerName={selector.career.name} color={clusterColor(selector.career.cluster)} />
-                  </div>
-                )}
 
                 <div style={{ ...BREAK, marginTop: 20 }}>
                   <SecHead center eyebrow="Where to go next" title="Explore internships"

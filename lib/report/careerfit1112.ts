@@ -317,13 +317,14 @@ export interface FundedProgram {
   verify: string;
   /** The verify citation's own official site - lets the report render it as a real clickable link instead of dead text. */
   url: string;
-  /** Set ONLY when `eligibility` requires already being enrolled in (or
-   *  having completed) a UG/PG programme - i.e. this is genuinely not
-   *  something a Class 11-12 reader can act on yet, just a real, useful
-   *  thing to know is waiting for them later. Undefined means "reachable
-   *  straight after Class 12", the default/common case for this whole list.
-   *  Rendered as its own clearly-labelled banner on the card so it can't be
-   *  mistaken for something to act on now. */
+  /** Set when `eligibility` requires already being enrolled in (or having
+   *  completed) a UG/PG programme first. Kept as data (which programmes
+   *  genuinely need a further qualification first vs. reachable straight
+   *  after Class 12) but NOT rendered on the card - an earlier "Not
+   *  available straight after Class 12" banner read as telling the student
+   *  these programmes weren't relevant to them, which isn't the intent;
+   *  every entry here is shown as a real, relevant programme for its
+   *  domain, full stop. */
   notYetReachable?: string;
 }
 // Every entry below is a genuinely real, verified funded/stipend/
@@ -332,9 +333,7 @@ export interface FundedProgram {
 // completed/in-progress UG or PG qualification first (UPSC CSE, SSC CGL,
 // DRDO/ISRO/PSU apprenticeships, CA Articleship, NID/AICTE/ICAR/IHM
 // scholarships, several NATS variants) is still included here since it's
-// real and worth knowing about early - it's flagged via `notYetReachable`
-// instead, rendered as its own clearly-labelled banner, so it can't be
-// mistaken for a next step available right now.
+// real and worth knowing about early.
 export const CLUSTER_FUNDED_PROGRAMS: Partial<Record<StandardCluster, FundedProgram[]>> = {
   "Government & Public Administration": [
     {
