@@ -10,23 +10,12 @@
  * else mirrors 11-12's Fitment/Suitability/Selector concept as closely as
  * the underlying data supports.
  *
- * Two things 11-12's cards show that this file deliberately leaves out
- * rather than fabricating: per-cluster salary bands and "top companies
- * that hire" - both are hand-verified data in careerfit1112.ts
- * (CLUSTER_SALARY/CLUSTER_COMPANIES) with no Graduates equivalent sourced
- * yet. Everything else here (job roles, PG programmes, entrance exams,
- * emerging-course tags) is real data from the two verified Excel sources.
- *
- * Specific-role resolution on the Selector page has two tiers, never
- * fabricating depth we don't have:
- *  - A match against CAREERS_1112 (many of the Career Selector's answers
- *    overlap it, e.g. "Software Engineer") reuses the existing 308-career
- *    11-12 research via detailedRoadmapFor() - real, individually
- *    researched content, just re-rendered in a lighter shape.
- *  - A match against the Excel's own ~3300 job roles with no CAREERS_1112
- *    overlap gets a plain "role snapshot" (title + which cluster/degree
- *    path it sits under) pulled live from Excel fields - no invented
- *    narrative.
+ * The Selector page's roadmap is deliberately just the cluster-wide,
+ * 7-section GradClusterRoadmap (ClusterRoadmapView) for the student's top
+ * Suitability cluster - no separate per-role deep dive layered on top of
+ * it, even when the student's typed desired career happens to match one
+ * of Class 11-12's 308 individually-researched CAREERS_1112 entries. The
+ * cluster-wide roadmap is considered sufficient on its own.
  */
 import type { ReportSheet } from "@/app/account/FullReport";
 import { RANK_COLOURS } from "@/app/account/FullReport";
@@ -35,8 +24,6 @@ import type { GraduateScoreOutput } from "@/lib/newAssessment/scoringGrad";
 import { rankSuitabilityGrad } from "@/lib/newAssessment/scoringGrad";
 import { CAREER_CLUSTERS_18, CLUSTER_ROLES, MASTER_ROWS_GRAD, clusterForDegreeCourse, rolesForDegreeCourse } from "@/lib/report/careerClustersGrad";
 import { clusterRoadmapGradFor, type GradClusterRoadmap } from "@/lib/report/clusterRoadmapsGrad";
-import { findCareer1112 } from "@/lib/report/careerFitEngine1112";
-import { detailedRoadmapFor } from "@/lib/report/careerRoadmapDetailed1112";
 
 const SITE_URL_GRAD = (process.env.NEXT_PUBLIC_SITE_URL || "https://careerfitment.onegrasp.com").replace(/\/+$/, "");
 
@@ -167,28 +154,6 @@ const CLUSTER_COMPANIES_GRAD: Record<string, { regular: string[]; govt: string[]
   "Defence, Security & Emergency Services": { regular: [], govt: ["Indian Army", "Indian Navy", "Indian Air Force", "CRPF/BSF/CISF"] },
   "Personal Care, Beauty & Wellness": { regular: ["Lakmé Salon", "Naturals", "VLCC", "Enrich Salon"], govt: [] },
 };
-
-/** Resolve a Career Selector answer against CAREERS_1112 first (splitting
- *  on "/" in case of a legacy bundle answer), then the Excel's own role
- *  list, returning which tier matched. */
-function resolveDesiredCareer(desiredCareer: string): {
-  tier: "researched" | "listed" | "none";
-  career1112Name?: string;
-  excelRow?: { degree: string; course: string; cluster: string };
-} {
-  if (!desiredCareer) return { tier: "none" };
-  const parts = desiredCareer.split("/").map((p) => p.trim()).filter(Boolean);
-  for (const part of [desiredCareer, ...parts]) {
-    const match = findCareer1112(part);
-    if (match) return { tier: "researched", career1112Name: match.name };
-  }
-  const needle = desiredCareer.toLowerCase();
-  for (const row of MASTER_ROWS_GRAD) {
-    const hit = row.roles.find((r) => r.toLowerCase() === needle || parts.some((p) => r.toLowerCase() === p.toLowerCase()));
-    if (hit) return { tier: "listed", excelRow: { degree: row.degree, course: row.course, cluster: row.cluster } };
-  }
-  return { tier: "none" };
-}
 
 // ---------------------------------------------------------------- Overview table pieces
 // Mirrors OverviewHeadCell/OverviewRow/OverviewEmpty/SummitIllustration in
@@ -668,8 +633,6 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
 
   const topCluster = suitabilityRanked[0]?.cluster ?? "";
   const genericRoadmap = clusterRoadmapGradFor(topCluster);
-  const resolved = resolveDesiredCareer(aspiration.desiredCareer);
-  const detailedRoadmap = resolved.tier === "researched" ? detailedRoadmapFor(resolved.career1112Name) : null;
 
   const roleChipsFor = (cluster: string) => (CLUSTER_ROLES[cluster] ?? []).slice(0, 3);
 
@@ -812,35 +775,6 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
                 </div>
               </div>
 
-              {detailedRoadmap && resolved.career1112Name && (
-                <div style={{ marginBottom: 20 }}>
-                  <SecHead center eyebrow="In-depth roadmap" title={resolved.career1112Name}
-                    sub="Real, individually researched detail for this specific role." />
-                  <div style={{ marginTop: 16, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
-                    {detailedRoadmap.jobOptions.length > 0 && (
-                      <div><b style={{ fontSize: 12, color: "var(--ink)" }}>Job options:</b> <span style={{ fontSize: 12, color: "var(--ink-2)" }}>{detailedRoadmap.jobOptions.slice(0, 8).join(", ")}</span></div>
-                    )}
-                    {detailedRoadmap.internships.length > 0 && (
-                      <div><b style={{ fontSize: 12, color: "var(--ink)" }}>Internships:</b> <span style={{ fontSize: 12, color: "var(--ink-2)" }}>{detailedRoadmap.internships.slice(0, 6).join(" · ")}</span></div>
-                    )}
-                    {detailedRoadmap.skills.length > 0 && (
-                      <div><b style={{ fontSize: 12, color: "var(--ink)" }}>Skills & certifications:</b> <span style={{ fontSize: 12, color: "var(--ink-2)" }}>{detailedRoadmap.skills.slice(0, 8).join(", ")}</span></div>
-                    )}
-                    {detailedRoadmap.pgSpecialization.length > 0 && (
-                      <div><b style={{ fontSize: 12, color: "var(--ink)" }}>PG & specialization:</b> <span style={{ fontSize: 12, color: "var(--ink-2)" }}>{detailedRoadmap.pgSpecialization.slice(0, 6).join(", ")}</span></div>
-                    )}
-                    {(detailedRoadmap.abroadEducation.length > 0 || detailedRoadmap.abroadJobs.length > 0) && (
-                      <div><b style={{ fontSize: 12, color: "var(--ink)" }}>Abroad:</b> <span style={{ fontSize: 12, color: "var(--ink-2)" }}>{[...detailedRoadmap.abroadEducation, ...detailedRoadmap.abroadJobs].slice(0, 6).join(", ")}</span></div>
-                    )}
-                  </div>
-                </div>
-              )}
-              {resolved.tier === "listed" && resolved.excelRow && (
-                <div style={{ marginBottom: 20, fontSize: 12.5, color: "var(--ink-2)" }}>
-                  This role appears under <b style={{ color: "var(--ink)" }}>{resolved.excelRow.degree}</b> ({resolved.excelRow.course}) in the {resolved.excelRow.cluster} cluster - we don't have in-depth researched detail for this specific role yet, so the cluster-wide roadmap below is your best guide.
-                </div>
-              )}
-
               <div style={BREAK}>
                 <SecHead center eyebrow="Where to go next" title="Explore internships"
                   sub="Live internship listings on your own OneGrasp dashboard." />
@@ -852,10 +786,10 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
           )}
 
           {/* Generic, cluster-wide roadmap for the student's top-ranked
-              Career Suitability cluster - always shown regardless of
-              whether their desired career resolved to researched data,
-              same domain-generic-always-shown pattern as 11-12's Career
-              Selector page. */}
+              Career Suitability cluster - the only roadmap shown here,
+              regardless of what desired career they typed. Considered
+              sufficient on its own, even when the desired career matches
+              one of 11-12's individually-researched CAREERS_1112 entries. */}
           {genericRoadmap && (
             <div style={{ ...BREAK, marginTop: 20 }}>
               <SecHead center eyebrow={`${topCluster} · your best-fit cluster`} title="Your realistic path"
