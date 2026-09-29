@@ -23,6 +23,31 @@ export function isCurrentGraduateShape(output: unknown): output is GraduateScore
     && Array.isArray((output as any)?.clusterAffinities);
 }
 
+/** The same 8-dimension headline scores as `radar` below, factored out so
+ *  gradExtraSheets.tsx's "strengths to leverage / growth areas" comparison
+ *  (the highest- vs lowest-scoring of the 8) uses the exact same numbers
+ *  the report itself already shows, rather than a second computation that
+ *  could quietly drift from it. */
+export function dimensionScoresGrad(output: GraduateScoreOutput): { label: string; score: number }[] {
+  const l1 = output.layer1;
+  const riasecRanked = l1.riasec.slice().sort((a, b) => b.percentile - a.percentile);
+  const intelligenceTop = l1.multipleIntelligence.slice().sort((a, b) => b.score - a.score)[0];
+  const strengthTop = l1.strengthDomains.slice().sort((a, b) => b.score - a.score)[0];
+  const ei = l1.emotionalIntelligence;
+  const eiPct = Math.round(((ei.selfAwareness + ei.selfManagement + ei.socialAwareness + ei.relationshipManagement) / 4) * 100);
+  const strengthsScore = Math.round(((strengthTop?.score ?? 0) / 5) * 100 * 0.6 + l1.aptitude.overallScore * 0.4);
+  return [
+    { label: "Personality", score: l1.personality.score },
+    { label: "Career Interest", score: Math.round(riasecRanked[0]?.percentile ?? 0) },
+    { label: "Multiple Intelligence", score: intelligenceTop ? Math.round((intelligenceTop.score / 5) * 100) : 0 },
+    { label: "Emotional Intelligence", score: eiPct },
+    { label: "Learning Preferences", score: l1.learningStyle.score },
+    { label: "Motivators", score: l1.motivators.score },
+    { label: "Strengths", score: strengthsScore },
+    { label: "Aptitude", score: Math.round(l1.aptitude.overallScore) },
+  ];
+}
+
 export function adaptGraduateToSummary(output: GraduateScoreOutput, base: AssessmentSummary): AssessmentSummary {
   const l1 = output.layer1;
 
@@ -73,18 +98,8 @@ export function adaptGraduateToSummary(output: GraduateScoreOutput, base: Assess
     { name: "Relationship Management", score: Math.round(ei.relationshipManagement * 100) },
   ];
 
-  const strengthsScore = Math.round((strengthAreasRanked[0]?.score ?? 0) * 0.6 + ap.overallScore * 0.4);
-
-  const radar = [
-    { key: "personality", label: "Personality", score: l1.personality.score },
-    { key: "career_interest", label: "Career Interest", score: Math.round(riasecRanked[0]?.percentile ?? 0) },
-    { key: "multiple_intelligence", label: "Multiple Intelligence", score: intelligenceRanked[0]?.score ?? 0 },
-    { key: "emotional_intelligence", label: "Emotional Intelligence", score: eiPct },
-    { key: "learning_styles", label: "Learning Preferences", score: l1.learningStyle.score },
-    { key: "motivators", label: "Motivators", score: l1.motivators.score },
-    { key: "strengths", label: "Strengths", score: strengthsScore },
-    { key: "aptitude", label: "Aptitude", score: Math.round(ap.overallScore) },
-  ];
+  const RADAR_KEYS = ["personality", "career_interest", "multiple_intelligence", "emotional_intelligence", "learning_styles", "motivators", "strengths", "aptitude"];
+  const radar = dimensionScoresGrad(output).map((d, i) => ({ key: RADAR_KEYS[i], label: d.label, score: d.score }));
 
   return {
     ...base,

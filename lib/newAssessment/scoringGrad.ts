@@ -360,41 +360,70 @@ function scoreEI(responses: Record<string, number>): EIProfile {
 
 // ---------------------------------------------------------------- Cluster affinity
 // A hand-tagged, reasonable (not empirically validated - same rigor level
-// as CAREERS_1112's own riasec tags) dominant RIASEC signature per cluster,
-// used to translate the student's own measured RIASEC profile into a
-// cluster ranking. Blended with their self-reported top-3 pick
-// (career_cluster_fit:0) rather than replacing it, per the End-to-End
-// spec's own principle of separating measured evidence from stated intent.
-const CLUSTER_RIASEC_SIGNATURE: Record<string, string[]> = {
-  "Engineering, Technology & Computing": ["R", "I"],
-  "Science, Mathematics & Research": ["I"],
-  "Healthcare & Medicine": ["I", "S"],
-  "Psychology, Humanities & Social Sciences": ["S", "I"],
-  "Sports, Fitness & Human Performance": ["R", "S"],
-  "Agriculture, Food & Life Sciences": ["R", "I"],
-  "Environment, Energy & Sustainability": ["I", "R"],
-  "Architecture, Construction & Built Environment": ["R", "A"],
-  "Business, Finance & Entrepreneurship": ["E", "C"],
-  "Law, Legal & Compliance": ["E", "I"],
-  "Government, Public Administration & Policy": ["E", "S"],
-  "Education & Learning": ["S", "A"],
-  "Media, Communication, Arts & Design": ["A", "E"],
-  "Manufacturing & Industrial Production": ["R", "C"],
-  "Supply Chain, Procurement & Logistics": ["C", "E"],
-  "Travel, Tourism, Hospitality & Transport": ["S", "E"],
-  "Defence, Security & Emergency Services": ["R", "S"],
-  "Personal Care, Beauty & Wellness": ["S", "A"],
+// as CAREERS_1112's own riasec tags) signature per cluster, used to
+// translate the student's own measured profile into a cluster ranking.
+//
+// Deliberately blends THREE dimensions (RIASEC + Strength Domains +
+// Multiple Intelligence), not RIASEC alone: RIASEC only has 6 letters
+// spread across 18 clusters, so a signature built from 1-2 RIASEC letters
+// alone put the same letter ("R") as the dominant signal for 7 unrelated
+// clusters (Engineering, Sports, Agriculture, Environment, Architecture,
+// Manufacturing, Defence) - any R-leaning student saw several of those
+// simultaneously inflated, with basically arbitrary tie-breaks deciding
+// which one "won" Suitability, including clusters with no real connection
+// to the student's actual degree. Layering in each cluster's own
+// distinguishing Strengths/MI signal (e.g. Sports leans Bodily-Kinesthetic,
+// Architecture leans Spatial+Creative, Defence leans Leadership) fixes that
+// even where the RIASEC letters still overlap.
+//
+// This is still a CLUSTER-level signature, not a per-role one - 11-12's
+// system computes fit per individual career (each with its own real
+// riasec/mi/aptitude tags) and only aggregates up to cluster level after.
+// Building an equivalent per-role signature for Graduates would mean
+// tagging ~3,300 Excel roles individually, which isn't done here (would
+// need either fabricating thousands of tags or a much larger research
+// pass) - flagged as a real fidelity gap versus 11-12, not hidden.
+const CLUSTER_SIGNATURE: Record<string, { riasec: string[]; strengths: string[]; mi: string[] }> = {
+  "Engineering, Technology & Computing": { riasec: ["R", "I"], strengths: ["Intellectual & Analytical", "Execution & Achievement"], mi: ["Logical-Mathematical", "Spatial"] },
+  "Science, Mathematics & Research": { riasec: ["I"], strengths: ["Intellectual & Analytical"], mi: ["Logical-Mathematical", "Intrapersonal"] },
+  "Healthcare & Medicine": { riasec: ["I", "S"], strengths: ["Relationship & Adaptability", "Intellectual & Analytical"], mi: ["Interpersonal", "Bodily-Kinesthetic"] },
+  "Psychology, Humanities & Social Sciences": { riasec: ["S", "I"], strengths: ["Relationship & Adaptability"], mi: ["Interpersonal", "Intrapersonal", "Linguistic"] },
+  "Sports, Fitness & Human Performance": { riasec: ["R", "S"], strengths: ["Execution & Achievement"], mi: ["Bodily-Kinesthetic", "Interpersonal"] },
+  "Agriculture, Food & Life Sciences": { riasec: ["R", "I"], strengths: ["Execution & Achievement", "Intellectual & Analytical"], mi: ["Naturalistic", "Logical-Mathematical"] },
+  "Environment, Energy & Sustainability": { riasec: ["I", "R"], strengths: ["Strategic & Futuristic"], mi: ["Naturalistic", "Logical-Mathematical"] },
+  "Architecture, Construction & Built Environment": { riasec: ["R", "A"], strengths: ["Creative & Innovative"], mi: ["Spatial", "Bodily-Kinesthetic"] },
+  "Business, Finance & Entrepreneurship": { riasec: ["E", "C"], strengths: ["Influence & Leadership", "Strategic & Futuristic"], mi: ["Logical-Mathematical", "Interpersonal"] },
+  "Law, Legal & Compliance": { riasec: ["E", "I"], strengths: ["Intellectual & Analytical", "Influence & Leadership"], mi: ["Linguistic", "Logical-Mathematical"] },
+  "Government, Public Administration & Policy": { riasec: ["E", "S"], strengths: ["Influence & Leadership", "Strategic & Futuristic"], mi: ["Linguistic", "Interpersonal"] },
+  "Education & Learning": { riasec: ["S", "A"], strengths: ["Relationship & Adaptability"], mi: ["Linguistic", "Interpersonal"] },
+  "Media, Communication, Arts & Design": { riasec: ["A", "E"], strengths: ["Creative & Innovative"], mi: ["Linguistic", "Spatial", "Musical"] },
+  "Manufacturing & Industrial Production": { riasec: ["R", "C"], strengths: ["Execution & Achievement"], mi: ["Spatial", "Bodily-Kinesthetic"] },
+  "Supply Chain, Procurement & Logistics": { riasec: ["C", "E"], strengths: ["Execution & Achievement", "Strategic & Futuristic"], mi: ["Logical-Mathematical"] },
+  "Travel, Tourism, Hospitality & Transport": { riasec: ["S", "E"], strengths: ["Relationship & Adaptability"], mi: ["Interpersonal", "Bodily-Kinesthetic"] },
+  "Defence, Security & Emergency Services": { riasec: ["R", "S"], strengths: ["Execution & Achievement", "Influence & Leadership"], mi: ["Bodily-Kinesthetic", "Interpersonal"] },
+  "Personal Care, Beauty & Wellness": { riasec: ["S", "A"], strengths: ["Creative & Innovative", "Relationship & Adaptability"], mi: ["Bodily-Kinesthetic", "Interpersonal"] },
 };
 
-function computeClusterAffinities(riasec: RIASECScore[], selfReported: string[]): ClusterAffinityGrad[] {
-  const percentileByCode = Object.fromEntries(riasec.map((r) => [r.code, r.percentile]));
+function computeClusterAffinities(
+  riasec: RIASECScore[],
+  strengthDomains: StrengthDomainScore[],
+  multipleIntelligence: StrengthDomainScore[],
+  selfReported: string[]
+): ClusterAffinityGrad[] {
+  const riasecPct = Object.fromEntries(riasec.map((r) => [r.code, r.percentile]));
+  // Strengths/MI are scored out of 5 (see scoreStrengthAreas/scoreMultipleIntelligence) - convert to 0-100 to match RIASEC's own percentile scale.
+  const strengthPct = Object.fromEntries(strengthDomains.map((s) => [s.domain, (s.score / 5) * 100]));
+  const miPct = Object.fromEntries(multipleIntelligence.map((m) => [m.domain, (m.score / 5) * 100]));
+  const avg = (vals: number[]) => (vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : 0);
   const selfReportedSet = new Set(selfReported);
+
   return CAREER_CLUSTERS_18
     .map((cluster) => {
-      const codes = CLUSTER_RIASEC_SIGNATURE[cluster] ?? [];
-      const computedScore = codes.length
-        ? Math.round(codes.reduce((s, c) => s + (percentileByCode[c] || 0), 0) / codes.length)
-        : 0;
+      const sig = CLUSTER_SIGNATURE[cluster];
+      const riasecScore = sig ? avg(sig.riasec.map((c) => riasecPct[c] || 0)) : 0;
+      const strengthScore = sig ? avg(sig.strengths.map((s) => strengthPct[s] || 0)) : 0;
+      const miScore = sig ? avg(sig.mi.map((m) => miPct[m] || 0)) : 0;
+      const computedScore = Math.round(riasecScore * 0.4 + strengthScore * 0.3 + miScore * 0.3);
       const isSelfReported = selfReportedSet.has(cluster);
       return {
         cluster, computedScore, selfReported: isSelfReported,
@@ -420,7 +449,7 @@ export function scoreGraduateAssessment(responses: GraduateResponse): GraduateSc
     personality, riasec, aptitude, strengthDomains, multipleIntelligence, motivators, learningStyle, emotionalIntelligence,
   };
 
-  const clusterAffinities = computeClusterAffinities(riasec, responses.career_cluster_fit.topClusters);
+  const clusterAffinities = computeClusterAffinities(riasec, strengthDomains, multipleIntelligence, responses.career_cluster_fit.topClusters);
   const topCluster = clusterAffinities[0]?.cluster ?? "";
 
   const info = degreeInfo(responses.degree);

@@ -209,6 +209,76 @@ function ClusterCard({ cluster, score, rank }: { cluster: string; score: number;
   );
 }
 
+function scoreComment(score: number): { label: string; color: string } {
+  if (score >= 70) return { label: "Top Choice", color: "#1f7a55" };
+  if (score >= 45) return { label: "Medium Choice", color: "#a3620b" };
+  return { label: "Low Choice", color: "#b3261e" };
+}
+
+// Suitability-page version of ClusterCard, with one real, honest addition:
+// 11-12's Suitability table shows a scored fit number PER ROLE, because it
+// has an individual riasec/mi/aptitude signature for each of its 360
+// careers. Graduates doesn't have that per-role data (only a cluster-level
+// signature - see scoringGrad.ts's CLUSTER_SIGNATURE comment), so rather
+// than faking per-role precision this differentiates roles on an axis it
+// DOES have real data for: whether the role comes from the student's own
+// actual degree+course (rolesForDegreeCourse - a concrete, verifiable
+// match) versus just being a general role in the cluster. The cluster's
+// own score is shown once, honestly labelled "Cluster fit", with a
+// Top/Medium/Low Choice comment band in the same style as 11-12's.
+function SuitabilityDomainBlock({ cluster, score, rank, degree, course }: { cluster: string; score: number; rank: number; degree: string; course: string }) {
+  const color = clusterColor(cluster);
+  const isOwnCluster = !!degree && !!course && clusterForDegreeCourse(degree, course) === cluster;
+  const ownRoles = isOwnCluster ? rolesForDegreeCourse(degree, course) : [];
+  const ownRolesSet = new Set(ownRoles);
+  const generalRoles = (CLUSTER_ROLES[cluster] ?? []).filter((r) => !ownRolesSet.has(r)).slice(0, 8);
+  const comment = scoreComment(score);
+  const emergingCount = clusterRoadmapGradFor(cluster)?.emergingAreas.length ?? 0;
+
+  return (
+    <div style={{ border: "1px solid var(--line)", borderLeft: `4px solid ${color}`, borderRadius: 14, overflow: "hidden", marginBottom: 20 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 18px", background: `${color}0a`, borderBottom: "1px solid var(--line)" }}>
+        <span style={{ width: 26, height: 26, borderRadius: "50%", background: color, color: "#fff", fontWeight: 800, fontSize: 12.5, display: "grid", placeItems: "center", flex: "none" }}>{rank}</span>
+        <div style={{ minWidth: 0, flex: 1 }}>
+          <div style={{ fontWeight: 800, color: "var(--ink)", fontSize: 14.5 }}>{cluster}</div>
+          {isOwnCluster && <div style={{ fontSize: 10.5, color, fontWeight: 700, marginTop: 1 }}>Matches your actual degree &amp; course</div>}
+          {!isOwnCluster && emergingCount > 0 && <div style={{ fontSize: 10.5, color, fontWeight: 700, marginTop: 1 }}>🔥 {emergingCount} emerging course{emergingCount > 1 ? "s" : ""}</div>}
+        </div>
+        <div style={{ textAlign: "right", flex: "none" }}>
+          <div style={{ fontSize: 19, fontWeight: 900, color, letterSpacing: "-.01em" }}>{score.toFixed(0)}%</div>
+          <div style={{ fontSize: 8.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)" }}>Cluster fit</div>
+        </div>
+      </div>
+      <div style={{ padding: "14px 18px" }}>
+        {ownRoles.length > 0 && (
+          <div style={{ marginBottom: 14 }}>
+            <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color, marginBottom: 8 }}>Roles your {course || "course"} leads to directly</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
+              {ownRoles.slice(0, 10).map((r) => (
+                <span key={r} style={{ fontSize: 12, fontWeight: 700, color: "#fff", background: color, borderRadius: 8, padding: "5px 10px" }}>{r}</span>
+              ))}
+            </div>
+          </div>
+        )}
+        {generalRoles.length > 0 && (
+          <div>
+            <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 8 }}>{ownRoles.length > 0 ? "Other roles in this cluster" : "Key roles"}</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
+              {generalRoles.map((r) => (
+                <span key={r} style={{ fontSize: 12, fontWeight: 700, color: "var(--ink)", background: `${color}0c`, border: `1px solid ${color}25`, borderRadius: 8, padding: "5px 10px" }}>{r}</span>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+      <div style={{ padding: "10px 18px", borderTop: "1px solid var(--line-2, var(--line))", display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+        <span style={{ fontSize: 11, fontWeight: 800, color: comment.color }}>{comment.label}</span>
+        <span style={{ fontSize: 11, color: "var(--muted)" }}>— based on your measured profile against this cluster as a whole, not any one specific role.</span>
+      </div>
+    </div>
+  );
+}
+
 function ClusterRoadmapView({ r, color }: { r: GradClusterRoadmap; color: string }) {
   const Sec = ({ title, children, skip }: { title: string; children: React.ReactNode; skip?: boolean }) => {
     if (skip) return null;
@@ -401,7 +471,12 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
         <>
           <PageHead eyebrow="What's realistic for your degree" title="Career Suitability"
             sub={`Your top clusters once ${academicContext.degree || "your current degree"} is factored in - same ranking as Career Fitment, boosted toward what your actual degree and course realistically reach.`} />
-          {degreeRoles.length > 0 && (
+          {/* Only shown when the student's own degree+course cluster didn't
+              make the top 5 below - when it does, SuitabilityDomainBlock
+              already shows these same roles attributed to that specific
+              card, so repeating them up here would just be the same list
+              twice. */}
+          {degreeRoles.length > 0 && !suitabilityRanked.slice(0, 5).some((c) => c.cluster === degreeCluster) && (
             <div style={{ marginTop: 20, marginBottom: 20, border: "1px solid var(--line)", borderRadius: 12, padding: "14px 16px", background: "var(--bg, #fafafa)" }}>
               <div className="subhd" style={{ marginBottom: 8 }}>Roles {academicContext.course || "your course"} can lead to right now</div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
@@ -412,7 +487,16 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
             </div>
           )}
           <div style={{ marginTop: 20 }}>
-            {suitabilityRanked.slice(0, 5).map((c, i) => <ClusterCard key={c.cluster} cluster={c.cluster} score={c.suitabilityScore} rank={i + 1} />)}
+            {suitabilityRanked.slice(0, 5).map((c, i) => (
+              <SuitabilityDomainBlock key={c.cluster} cluster={c.cluster} score={c.suitabilityScore} rank={i + 1} degree={academicContext.degree} course={academicContext.course} />
+            ))}
+          </div>
+          <div style={BREAK}>
+            <SecHead eyebrow="Real, verified funding - not just any paid course" title="Funded programmes in your top clusters"
+              sub="Genuinely funded or stipend-linked routes - government training, sponsorship or apprenticeship programmes - the same standard 11-12's report holds this section to." />
+            <p style={{ marginTop: 16, fontSize: 12.5, color: "var(--ink-2)" }}>
+              We haven&apos;t researched verified funded programmes for Graduates&apos; clusters yet - this section is filled in cluster by cluster as it&apos;s confirmed against official sources, not guessed to fill space.
+            </p>
           </div>
         </>
       ),

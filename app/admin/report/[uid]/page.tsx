@@ -27,6 +27,7 @@ import { buildClass11ExtraSheets } from "@/lib/report/class11ExtraSheets";
 import { buildCareerFit1112Sheets } from "@/lib/report/careerFit1112Sheets";
 import { adaptGraduateToSummary, isCurrentGraduateShape } from "@/lib/report/adaptGraduate";
 import { buildCareerFitGradSheets } from "@/lib/report/careerFitGradSheets";
+import { buildGradExtraSheets } from "@/lib/report/gradExtraSheets";
 import {
   adaptClass6ToSummary, adaptClass7ToSummary, adaptClass8ToSummary,
   isCurrentClass6Shape, isCurrentClass7Shape, isCurrentClass8Shape,
@@ -116,7 +117,7 @@ export default function AdminReportPage({ params }: { params: { uid: string } })
     ];
   } else if (graduateReady) {
     reportSummary = adaptGraduateToSummary(graduateOutput, a);
-    reportExtraSheets = buildCareerFitGradSheets(graduateOutput);
+    reportExtraSheets = [...buildCareerFitGradSheets(graduateOutput), ...buildGradExtraSheets(graduateOutput)];
   } else if (class6Ready) {
     reportSummary = adaptClass6ToSummary(class6Output, a);
   } else if (class7Ready) {

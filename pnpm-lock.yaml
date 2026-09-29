@@ -48,6 +48,9 @@ importers:
         specifier: ^0.160.0
         version: 0.160.1
     devDependencies:
+      '@swc/helpers':
+        specifier: 0.5.5
+        version: 0.5.5
       '@types/node':
         specifier: ^20.14.0
         version: 20.19.43
