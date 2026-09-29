@@ -751,41 +751,67 @@ function degreeCourseRowsFor(cluster: string): { degree: string; courses: { cour
 const gradTh: React.CSSProperties = { textAlign: "left", padding: "9px 10px", fontSize: 10.5, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: "#fff", background: "#2c3e50" };
 const gradTd: React.CSSProperties = { padding: "10px 10px", fontSize: 12, color: "var(--ink-2)", borderBottom: "1px solid var(--line-2, var(--line))", verticalAlign: "top" };
 
-// Every real degree in this domain (9-17 for most UG clusters), each with
-// every course under it and the real roles that course leads to - the
-// full breadth of the domain in one table, not the handful of job roles
-// GradClusterRoadmap's own curated jobRoles list shows.
-function DegreeCourseRolesTable({ cluster, color }: { cluster: string; color: string }) {
-  const degrees = degreeCourseRowsFor(cluster);
-  if (!degrees.length) return null;
+/** Course + roles under the student's own degree only, within this cluster -
+ *  a slice of MASTER_ROWS_GRAD, not the full degreeCourseRowsFor(cluster)
+ *  dump (every degree the cluster has, 9-17 for most UG clusters). This is
+ *  what the table shows in the common case, since topCluster is the
+ *  student's own degree's cluster whenever clusterForDegreeCourse resolves
+ *  it (rankSuitabilityGrad hard-anchors it at rank 0). */
+function courseRowsForDegree(cluster: string, degree: string): { course: string; roles: string[] }[] {
+  return MASTER_ROWS_GRAD
+    .filter((r) => r.level === "UG" && r.cluster === cluster && r.degree === degree)
+    .map((r) => ({ course: r.course, roles: r.roles }))
+    .sort((a, b) => a.course.localeCompare(b.course));
+}
+
+// Short, degree-relevant table: the student's own degree's courses and the
+// real roles each leads to. Falls back to a capped 3-degree sample of the
+// cluster's other routes only when the student's exact degree isn't in the
+// source data for this cluster at all (rare - clusterForDegreeCourse
+// couldn't resolve it), so the table is never empty but also never back to
+// the old unfiltered every-degree-in-the-cluster dump.
+function DegreeCourseRolesTable({ cluster, degree, color }: { cluster: string; degree: string; color: string }) {
+  const ownCourses = courseRowsForDegree(cluster, degree);
+  const usingOwnDegree = ownCourses.length > 0;
+  const rows = usingOwnDegree
+    ? [{ degree, courses: ownCourses }]
+    : degreeCourseRowsFor(cluster).slice(0, 3).map((d) => ({ ...d, courses: d.courses.slice(0, 3) }));
+  if (!rows.length) return null;
   return (
-    <div style={{ overflowX: "auto" }}>
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
-        <thead>
-          <tr>
-            <th style={{ ...gradTh, width: "22%" }}>Degree</th>
-            <th style={{ ...gradTh, width: "22%" }}>Course / specialisation</th>
-            <th style={gradTh}>Roles this leads to</th>
-          </tr>
-        </thead>
-        <tbody>
-          {degrees.map((d) =>
-            d.courses.map((c, i) => (
-              <tr key={`${d.degree}-${c.course}`} style={{ background: i % 2 ? "var(--line-2, #f7f7f8)" : "transparent" }}>
-                {i === 0 && <td style={{ ...gradTd, fontWeight: 800, color: "var(--ink)" }} rowSpan={d.courses.length}>{d.degree}</td>}
-                <td style={{ ...gradTd, fontWeight: 700, color: "var(--ink)" }}>{c.course}</td>
-                <td style={gradTd}>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                    {c.roles.map((role) => (
-                      <span key={role} style={{ fontSize: 11.5, fontWeight: 700, color: "var(--ink)", background: `${color}0c`, border: `1px solid ${color}25`, borderRadius: 7, padding: "4px 9px" }}>{role}</span>
-                    ))}
-                  </div>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+    <div>
+      {!usingOwnDegree && (
+        <div style={{ fontSize: 12, color: "var(--ink-2)", marginBottom: 10, fontStyle: "italic" }}>
+          {degree || "Your degree"} isn't directly mapped to this cluster in our records - here are a few common degree routes into it instead.
+        </div>
+      )}
+      <div style={{ overflowX: "auto" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead>
+            <tr>
+              <th style={{ ...gradTh, width: "22%" }}>Degree</th>
+              <th style={{ ...gradTh, width: "22%" }}>Course / specialisation</th>
+              <th style={gradTh}>Roles this leads to</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((d) =>
+              d.courses.map((c, i) => (
+                <tr key={`${d.degree}-${c.course}`} style={{ background: i % 2 ? "var(--line-2, #f7f7f8)" : "transparent" }}>
+                  {i === 0 && <td style={{ ...gradTd, fontWeight: 800, color: "var(--ink)" }} rowSpan={d.courses.length}>{d.degree}</td>}
+                  <td style={{ ...gradTd, fontWeight: 700, color: "var(--ink)" }}>{c.course}</td>
+                  <td style={gradTd}>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                      {c.roles.map((role) => (
+                        <span key={role} style={{ fontSize: 11.5, fontWeight: 700, color: "var(--ink)", background: `${color}0c`, border: `1px solid ${color}25`, borderRadius: 7, padding: "4px 9px" }}>{role}</span>
+                      ))}
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -985,10 +1011,10 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
                 )}
               </div>
               <div style={{ marginTop: 28, paddingTop: 24, borderTop: "1px solid var(--line)" }}>
-                <SecHead center eyebrow={`Every real degree route into ${topCluster}`} title="Degree by degree, what it leads to"
-                  sub="Every UG degree and course the source data ties to this cluster, and the real roles each one actually leads to - the full breadth of this domain in one table." />
+                <SecHead center eyebrow={`${academicContext.degree || "Your degree"} · ${topCluster}`} title="What your degree leads to"
+                  sub="The courses and real job roles the source data ties to your own degree within this cluster." />
                 <div style={{ marginTop: 16 }}>
-                  <DegreeCourseRolesTable cluster={topCluster} color={clusterColor(topCluster)} />
+                  <DegreeCourseRolesTable cluster={topCluster} degree={academicContext.degree} color={clusterColor(topCluster)} />
                 </div>
               </div>
             </div>
