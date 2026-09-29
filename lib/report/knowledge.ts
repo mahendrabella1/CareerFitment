@@ -697,8 +697,16 @@ export function subTraits(key: string, a: AssessmentSummary): { label: string; v
     case "personality": return clean((a.topStrengths ?? []).map((x) => ({ label: x.subTraitName, value: x.normalizedScore })));
     // Show the standard 4-quadrant EQ model (mapped from the engine's 5
     // measured dimensions - see eiQuadrants) rather than the 5 raw, thinly
-    // -measured single-question dimensions directly.
-    case "emotional_intelligence": return eiQuadrants(a).filter((x) => x.label);
+    // -measured single-question dimensions directly - but only when this
+    // journey's own EI vocabulary actually fits that model (see
+    // eiQuadrantsFullyFit). Class 7/8's vocabulary doesn't, and forcing it
+    // through eiQuadrants() anyway made every one of the 4 bars print the
+    // same overall EQ percentage - show their own real, distinctly-scored
+    // breakdown instead.
+    case "emotional_intelligence":
+      return eiQuadrantsFullyFit(a)
+        ? eiQuadrants(a).filter((x) => x.label)
+        : (a.eiBreakdown ?? []).filter((x) => x.name).map((x) => ({ label: x.name, value: x.score }));
     default: return [];
   }
 }
@@ -985,12 +993,45 @@ const eiBand = (p: number) => (p >= 75 ? "High EQ" : p >= 55 ? "Solid EQ" : p >=
 //    Self-Awareness and Social Awareness - under those exact names.
 // Each quadrant lists every name (from either scheme) that should count
 // toward it, so this works for both without knowing which journey it is.
+// "Empathy" and "Relationship-Building" are Class 6's own EI vocabulary
+// (data/class6-assessment-questions.json Q51-55) - textbook-standard
+// synonyms for Social Awareness and Relationship Management respectively
+// (empathy is Goleman's own definition of social awareness; Q55's actual
+// content - including/inviting an excluded classmate - is literally
+// relationship-management behaviour), so they're added here rather than
+// left to fall back to the overall score. Class 6's other tag,
+// "Social-Management", is NOT aliased: its own question content (Q51D
+// "do something else until I feel better", Q53A "explain my view calmly",
+// Q53C "help find a solution", Q55D "tell the teacher") blends
+// self-regulation and relationship-management in a way that doesn't map
+// confidently onto one quadrant - better to let it fall back honestly than
+// guess. See eiQuadrantsFullyFit() below for what happens when a journey's
+// vocabulary (Class 7/8's own dynamic, bank-read EI labels) has no
+// meaningful overlap with this list at all.
 const EI_QUADRANTS: { quadrant: string; sources: string[] }[] = [
   { quadrant: "Self-Awareness", sources: ["Emotional Awareness", "Self-Awareness"] },
   { quadrant: "Self-Management", sources: ["Emotional Regulation", "Adaptability & Resilience", "Self-Management"] },
-  { quadrant: "Social Awareness", sources: ["Empathy & Social Awareness", "Social Awareness"] },
-  { quadrant: "Relationship Management", sources: ["Relationship Management"] },
+  { quadrant: "Social Awareness", sources: ["Empathy & Social Awareness", "Social Awareness", "Empathy"] },
+  { quadrant: "Relationship Management", sources: ["Relationship Management", "Relationship-Building"] },
 ];
+
+/** False when fewer than half of the 4 quadrants have a genuine match in
+ *  this journey's own eiBreakdown vocabulary (as opposed to eiQuadrants()'s
+ *  same-for-every-unmatched-quadrant fallback to the overall score). True
+ *  for 9-10/11-12/Graduates (whose EI dimension names ARE this vocabulary)
+ *  and Class 6 (3 of 4, see the aliases above - Self-Management alone
+ *  falls back, which is the normal, designed "partially measured" case
+ *  eiQuadrants() already handles). False for Class 7/8, whose own dynamic,
+ *  bank-read EI vocabulary (Regulation/Avoidance/Self-Expression/
+ *  Empathic/Problem-Focused/Growth-Oriented/...) shares no name with this
+ *  list at all - for them every quadrant would otherwise silently print
+ *  the identical overall score, which reads as broken, not as a real
+ *  4-quadrant breakdown. */
+function eiQuadrantsFullyFit(a: AssessmentSummary): boolean {
+  const names = new Set((a.eiBreakdown ?? []).map((x) => x.name.toLowerCase()));
+  const matched = EI_QUADRANTS.filter((q) => q.sources.some((s) => names.has(s.toLowerCase()))).length;
+  return matched >= 2;
+}
 
 /** Emotional intelligence, re-expressed as the standard 4-quadrant EQ model.
  *  Always returns all 4 - the model reads as broken with only 2 or 3 bars.

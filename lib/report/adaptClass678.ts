@@ -101,7 +101,14 @@ function adaptClass67ToSummary(
   const topAptitudes = [{ skill: "Reasoning & Problem-Solving", score: output.aptitudeProfile.score }];
 
   const lsEntries = Object.entries(output.learningStyle.scores).sort((a, b) => b[1] - a[1]);
-  const learningStyles = lsEntries.slice(0, 2).map(([name, score]) => ({ name, score }));
+  // All 4 VARK styles are always scored (fixed Q46-50 question count per
+  // style) - a 0% is a real "measured zero pull toward this style" result,
+  // not "no evidence" to drop. This used to slice(0, 2), silently hiding 2
+  // of the 4 styles from the report's breakdown even though subTraits()
+  // (lib/report/knowledge.ts) already caps the display list itself -
+  // exactly the "I should see 4, only see 2" bug that function's own
+  // comment already flags for other journeys.
+  const learningStyles = lsEntries.map(([name, score]) => ({ name, score }));
 
   const eiPct = Math.round(output.emotionalAwareness.reduce((s, e) => s + e.score, 0) / output.emotionalAwareness.length);
   const eiBreakdown = output.emotionalAwareness.map((e) => ({ name: e.dimension, score: e.score }));
@@ -201,7 +208,10 @@ export function adaptClass8ToSummary(output: Class8ScoreOutput, base: Assessment
   ].sort((a, b) => b.score - a.score);
 
   const lsEntries = Object.entries(output.learningStyle.styleScores).sort((a, b) => b[1] - a[1]);
-  const learningStyles = lsEntries.slice(0, 2).map(([name, score]) => ({ name, score }));
+  // See the identical fix and rationale in adaptClass67ToSummary above -
+  // all 4 VARK styles are always scored, so slice(0, 2) was silently
+  // hiding 2 of the 4 from the report's breakdown.
+  const learningStyles = lsEntries.map(([name, score]) => ({ name, score }));
 
   const eiPct = Math.round(output.emotionalAwareness.reduce((s, e) => s + e.score, 0) / output.emotionalAwareness.length);
   const eiBreakdown = output.emotionalAwareness.map((e) => ({ name: e.component, score: e.score }));
