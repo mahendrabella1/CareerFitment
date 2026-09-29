@@ -49,7 +49,7 @@ import {
 } from "@/lib/report/careerFitEngine1112";
 import { DOMAINS_1112, STANDARD_CLUSTERS, CLUSTER_EXPLORE_LINKS, CLUSTER_COMPANIES, CLUSTER_FUNDED_PROGRAMS, CAREERS_1112, STREAM_KEY_1112, roadmapFor, type RoadmapEntry, type Career1112, type StreamKey1112, type StandardCluster, type FundedProgram } from "@/lib/report/careerfit1112";
 import { CLUSTER_ROADMAPS, type ClusterRoadmapPhase } from "@/lib/report/clusterRoadmaps1112";
-import type { DetailedCareerRoadmap } from "@/lib/report/careerRoadmapDetailed1112";
+import { detailedRoadmapFor, type DetailedCareerRoadmap } from "@/lib/report/careerRoadmapDetailed1112";
 import { flagshipRoadmapFor, type FlagshipDomainRoadmap, type FlagshipTrack } from "@/lib/report/flagshipRoadmaps1112";
 import { degreesForStream, ELIGIBILITY_SYMBOL, ELIGIBILITY_LABEL, type DegreeEligibilityRow } from "@/lib/report/degreeStreamMatrix";
 import { topDimensionsForStudent, type ScoredDimension } from "@/lib/report/dimensionCareerGuide";
@@ -1665,18 +1665,15 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
 
   const selector = desiredCareer ? selectCareer1112(desiredCareer, l1, streamKey) : null;
 
-  // The full 14-section roadmap (same shape/depth as a researched career's
-  // own DetailedCareerRoadmap, via domainRoadmapFor) for the student's own
-  // top-ranked Career Suitability domain - broad and domain-wide, not
-  // zoomed into any one specific role within it, and always available
-  // regardless of whether they named a desired career at all.
-  const roadmapDomain = suitabilityGroups[0]?.domain ?? null;
-  const domainRoadmap = roadmapDomain ? domainRoadmapFor(roadmapDomain as StandardCluster) : null;
-  // A genuinely deeper, independently-researched roadmap for the clusters
-  // that have one (currently just Finance - built cluster by cluster, not
-  // all 16 at once, since each needs real research, not restructuring).
-  // Takes priority over the generic domainRoadmap above when present.
-  const flagshipRoadmap = roadmapDomain ? flagshipRoadmapFor(roadmapDomain) : null;
+  // A real, individually-researched in-depth roadmap (see
+  // careerRoadmapDetailed1112.ts) for the student's OWN typed desired
+  // career specifically - covers a growing subset of CAREERS_1112 (308 of
+  // 360 as of this pass). Per instruction: the Career Selector's roadmap
+  // is anchored to this typed desired career, not the domain - the
+  // domain-wide roadmap (domainRoadmapFor/FlagshipRoadmapView, still
+  // defined below, just not called here) is set aside for now rather than
+  // shown alongside or instead of it.
+  const detailedRoadmap = detailedRoadmapFor(selector?.career?.name);
 
   const sheets: ReportSheet[] = [
     {
@@ -1820,7 +1817,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
           <PageHead eyebrow="Your favourite career path" title="Career Selector"
             sub={desiredCareer
               ? `${desiredCareer} - your starting point, and the full journey to get there. The roadmap ahead is built for the long run, not just the next exam.`
-              : "You didn't name a career - the roadmap ahead is still built for the long run, not just the next exam."} />
+              : "You didn't name a specific career on the pre-exam screen - Career Fitment and Career Suitability above are your general direction instead."} />
           {desiredCareer ? (
             selector?.career ? (
               <div style={{ marginTop: 20 }}>
@@ -1871,36 +1868,20 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                     ))}
                   </div>
                 </div>
+
+                {/* Real, individually-researched in-depth roadmap for this
+                    specific typed career - only shown when we have one
+                    (career-roadmaps-detailed.json coverage, 308 of 360
+                    careers as of this pass). */}
+                {detailedRoadmap && (
+                  <DetailedCareerRoadmapView r={detailedRoadmap} careerName={selector.career.name} color={clusterColor(selector.career.cluster)} />
+                )}
               </div>
             ) : (
               <p style={{ marginTop: 20, fontSize: 13, color: "var(--ink-2)" }}>&ldquo;{desiredCareer}&rdquo; isn&apos;t in our {totalCareers}-career reference list yet - talk to your counsellor about the specific path, using Career Fitment and Career Suitability above as your general direction.</p>
             )
           ) : (
-            <p style={{ marginTop: 20, fontSize: 13, color: "var(--ink-2)" }}>You didn&apos;t name a specific career - the roadmap below is built from your own Career Suitability results instead.</p>
-          )}
-
-          {/* The roadmap for the student's own top-ranked Career
-              Suitability domain - always shown regardless of whether they
-              named/matched a desired career above, since it's grounded in
-              their measured results, not free-text matching, and
-              deliberately stays domain-wide rather than zooming into one
-              specific job title within it. Uses the deep, independently-
-              researched FlagshipRoadmapView when this cluster has one
-              (currently Finance); every other cluster falls back to the
-              generic 14-section domainRoadmap + degree/role table. */}
-          {roadmapDomain && flagshipRoadmap ? (
-            <FlagshipRoadmapView r={flagshipRoadmap} cluster={clusterHeading(roadmapDomain)} color={clusterColor(roadmapDomain)} />
-          ) : roadmapDomain && domainRoadmap && (
-            <>
-              <DetailedCareerRoadmapView r={domainRoadmap} careerName={clusterHeading(roadmapDomain)} color={clusterColor(roadmapDomain)} />
-              <div style={BREAK}>
-                <SecHead center eyebrow={`Every real degree route into ${clusterHeading(roadmapDomain)}`} title="Degree by degree, what it leads to"
-                  sub="Every degree CAREERS_1112 ties to this domain, and the real roles each one actually leads to - so you can see the full breadth of this field in one table, not just the handful above." />
-                <div style={{ marginTop: 16 }}>
-                  <DegreeRolesTable cluster={roadmapDomain as StandardCluster} color={clusterColor(roadmapDomain)} />
-                </div>
-              </div>
-            </>
+            <p style={{ marginTop: 20, fontSize: 13, color: "var(--ink-2)" }}>You didn&apos;t name a specific career - naming one on the pre-exam screen unlocks its full in-depth roadmap here.</p>
           )}
         </>
       ),
