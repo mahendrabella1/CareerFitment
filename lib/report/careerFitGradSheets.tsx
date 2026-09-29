@@ -109,14 +109,30 @@ function OverviewHeadCell({ icon, title, subtitle, desc, color, borderLeft }: { 
     </div>
   );
 }
+// Very High / High / Medium / Low instead of a bare percentage - a number
+// like "73%" invites false precision nobody's actually entitled to from a
+// self-report + RIASEC-style assessment; the qualitative band is what's
+// genuinely defensible, and reads faster on a cluster-level card anyway.
+// Same 4 tiers/thresholds as careerFit1112Sheets.tsx's own fitLabel() (kept
+// as two separate copies, not a shared import, since these are two
+// independent class-group files per the project's scope map) - replaces
+// this file's old 3-tier scoreComment()/"Top Choice" wording.
+function fitLabel(score: number): { label: string; color: string } {
+  if (score >= 75) return { label: "Very High", color: "#1f7a55" };
+  if (score >= 55) return { label: "High", color: "#2f6bff" };
+  if (score >= 35) return { label: "Medium", color: "#a3620b" };
+  return { label: "Low", color: "#b3261e" };
+}
+
 function OverviewRow({ rank, name, pct, color, roles }: { rank: number; name: string; pct: number; color: string; roles: string[] }) {
+  const tier = fitLabel(pct);
   return (
     <div style={{ minWidth: 0, padding: "13px 16px", borderBottom: "1px solid var(--line-2, var(--line))", background: "#fff", display: "flex", alignItems: "center", gap: 10 }}>
       <span style={{ fontSize: 13, fontWeight: 800, color, background: `${color}1c`, width: 26, height: 26, borderRadius: "50%", display: "grid", placeItems: "center", flex: "none" }}>{rank}</span>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8 }}>
           <span style={{ fontSize: 13.5, fontWeight: 800, color: "var(--ink)" }}>{name}</span>
-          <span style={{ fontSize: 19, fontWeight: 900, color, letterSpacing: "-.02em", flex: "none" }}>{pct.toFixed(0)}%</span>
+          <span style={{ fontSize: 15, fontWeight: 900, color: tier.color, letterSpacing: "-.01em", flex: "none" }}>{tier.label}</span>
         </div>
         <div style={{ marginTop: 4, display: "flex", flexDirection: "column", gap: 2 }}>
           {roles.map((r) => <span key={r} style={{ fontSize: 11, color: "var(--muted)", lineHeight: 1.45 }}>{r}</span>)}
@@ -185,6 +201,7 @@ function ClusterCard({ cluster, score, rank }: { cluster: string; score: number;
   const color = clusterColor(cluster);
   const roles = (CLUSTER_ROLES[cluster] ?? []).slice(0, 6);
   const emergingCount = clusterRoadmapGradFor(cluster)?.emergingAreas.length ?? 0;
+  const tier = fitLabel(score);
   return (
     <div style={{ border: "1px solid var(--line)", borderLeft: `4px solid ${color}`, borderRadius: 14, overflow: "hidden", marginBottom: 14 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 18px", background: `${color}0a`, borderBottom: "1px solid var(--line)" }}>
@@ -194,7 +211,7 @@ function ClusterCard({ cluster, score, rank }: { cluster: string; score: number;
           {emergingCount > 0 && <div style={{ fontSize: 10.5, color, fontWeight: 700, marginTop: 1 }}>🔥 {emergingCount} emerging course{emergingCount > 1 ? "s" : ""} in this cluster</div>}
         </div>
         <div style={{ textAlign: "right", flex: "none" }}>
-          <div style={{ fontSize: 19, fontWeight: 900, color, letterSpacing: "-.01em" }}>{score.toFixed(0)}%</div>
+          <div style={{ fontSize: 15.5, fontWeight: 900, color: tier.color, letterSpacing: "-.01em" }}>{tier.label}</div>
           <div style={{ fontSize: 8.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)" }}>Fit</div>
         </div>
       </div>
@@ -210,12 +227,6 @@ function ClusterCard({ cluster, score, rank }: { cluster: string; score: number;
   );
 }
 
-function scoreComment(score: number): { label: string; color: string } {
-  if (score >= 70) return { label: "Top Choice", color: "#1f7a55" };
-  if (score >= 45) return { label: "Medium Choice", color: "#a3620b" };
-  return { label: "Low Choice", color: "#b3261e" };
-}
-
 // Suitability-page version of ClusterCard, with one real, honest addition:
 // 11-12's Suitability table shows a scored fit number PER ROLE, because it
 // has an individual riasec/mi/aptitude signature for each of its 360
@@ -225,15 +236,16 @@ function scoreComment(score: number): { label: string; color: string } {
 // DOES have real data for: whether the role comes from the student's own
 // actual degree+course (rolesForDegreeCourse - a concrete, verifiable
 // match) versus just being a general role in the cluster. The cluster's
-// own score is shown once, honestly labelled "Cluster fit", with a
-// Top/Medium/Low Choice comment band in the same style as 11-12's.
+// own fit is shown once, honestly labelled "Cluster fit", using the same
+// fitLabel() band as everywhere else in this file rather than a separate
+// "Top/Medium/Low Choice" wording.
 function SuitabilityDomainBlock({ cluster, score, rank, degree, course }: { cluster: string; score: number; rank: number; degree: string; course: string }) {
   const color = clusterColor(cluster);
   const isOwnCluster = !!degree && !!course && clusterForDegreeCourse(degree, course) === cluster;
   const ownRoles = isOwnCluster ? rolesForDegreeCourse(degree, course) : [];
   const ownRolesSet = new Set(ownRoles);
   const generalRoles = (CLUSTER_ROLES[cluster] ?? []).filter((r) => !ownRolesSet.has(r)).slice(0, 8);
-  const comment = scoreComment(score);
+  const tier = fitLabel(score);
   const emergingCount = clusterRoadmapGradFor(cluster)?.emergingAreas.length ?? 0;
 
   return (
@@ -246,7 +258,7 @@ function SuitabilityDomainBlock({ cluster, score, rank, degree, course }: { clus
           {!isOwnCluster && emergingCount > 0 && <div style={{ fontSize: 10.5, color, fontWeight: 700, marginTop: 1 }}>🔥 {emergingCount} emerging course{emergingCount > 1 ? "s" : ""}</div>}
         </div>
         <div style={{ textAlign: "right", flex: "none" }}>
-          <div style={{ fontSize: 19, fontWeight: 900, color, letterSpacing: "-.01em" }}>{score.toFixed(0)}%</div>
+          <div style={{ fontSize: 15.5, fontWeight: 900, color: tier.color, letterSpacing: "-.01em" }}>{tier.label}</div>
           <div style={{ fontSize: 8.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)" }}>Cluster fit</div>
         </div>
       </div>
@@ -273,7 +285,7 @@ function SuitabilityDomainBlock({ cluster, score, rank, degree, course }: { clus
         )}
       </div>
       <div style={{ padding: "10px 18px", borderTop: "1px solid var(--line-2, var(--line))", display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-        <span style={{ fontSize: 11, fontWeight: 800, color: comment.color }}>{comment.label}</span>
+        <span style={{ fontSize: 11, fontWeight: 800, color: tier.color }}>{tier.label} fit</span>
         <span style={{ fontSize: 11, color: "var(--muted)" }}>— based on your measured profile against this cluster as a whole, not any one specific role.</span>
       </div>
     </div>
@@ -391,7 +403,7 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
                     <div style={{ width: `${c.computedScore}%`, height: "100%", background: clusterColor(c.cluster) }} />
                   </div>
                 </div>
-                <div style={{ width: 40, textAlign: "right", fontSize: 12, fontWeight: 800, color: clusterColor(c.cluster), flex: "none" }}>{c.computedScore.toFixed(0)}%</div>
+                <div style={{ width: 64, textAlign: "right", fontSize: 12, fontWeight: 800, color: fitLabel(c.computedScore).color, flex: "none" }}>{fitLabel(c.computedScore).label}</div>
               </div>
             ))}
           </div>

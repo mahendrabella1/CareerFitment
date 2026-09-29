@@ -203,21 +203,36 @@ function OverviewHeadCell({ icon, title, subtitle, desc, color, borderLeft }: { 
     </div>
   );
 }
-// A compact, chevron-terminated row - rank badge, domain name + fit % on one
-// line, roles listed underneath as plain sub-text - so all 5 rows read at a
-// glance without needing to open a card. The full per-role percentage/degree/
-// exam breakdown still lives on the Fitment/Suitability detail pages that
-// follow; this is the "at a glance" summary, not a duplicate of that detail.
-// Plain white rows throughout (no zebra striping) - the tinted number badge
-// and the divider line already separate one row from the next.
+// Very High / High / Medium / Low instead of a bare percentage - a number
+// like "73%" invites false precision nobody's actually entitled to from a
+// self-report + RIASEC-style assessment; the qualitative band is what's
+// genuinely defensible, and reads faster on a domain/cluster-level card
+// anyway. Deliberately separate from LevelLabel() above (5 tiers, used for
+// PER-ROLE Psy. Analysis/Skill cells) - different display, different scale,
+// not meant to share thresholds or wording.
+function fitLabel(score: number): { label: string; color: string } {
+  if (score >= 75) return { label: "Very High", color: "#1f7a55" };
+  if (score >= 55) return { label: "High", color: "#2f6bff" };
+  if (score >= 35) return { label: "Medium", color: "#a3620b" };
+  return { label: "Low", color: "#b3261e" };
+}
+
+// A compact, chevron-terminated row - rank badge, domain name + fit band on
+// one line, roles listed underneath as plain sub-text - so all 5 rows read
+// at a glance without needing to open a card. The full per-role breakdown
+// still lives on the Fitment/Suitability detail pages that follow; this is
+// the "at a glance" summary, not a duplicate of that detail.
+// Plain white rows throughout (no zebra striping) - the tinted badge and
+// the divider line already separate one row from the next.
 function OverviewRow({ rank, name, pct, color, roles }: { rank: number; name: string; pct: number; color: string; roles: string[] }) {
+  const tier = fitLabel(pct);
   return (
     <div style={{ minWidth: 0, padding: "13px 16px", borderBottom: "1px solid var(--line-2, var(--line))", background: "#fff", display: "flex", alignItems: "center", gap: 10 }}>
       <span style={{ fontSize: 13, fontWeight: 800, color, background: `${color}1c`, width: 26, height: 26, borderRadius: "50%", display: "grid", placeItems: "center", flex: "none" }}>{rank}</span>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8 }}>
           <span style={{ fontSize: 13.5, fontWeight: 800, color: "var(--ink)" }}>{name}</span>
-          <span style={{ fontSize: 19, fontWeight: 900, color, letterSpacing: "-.02em", flex: "none" }}>{pct.toFixed(0)}%</span>
+          <span style={{ fontSize: 15, fontWeight: 900, color: tier.color, letterSpacing: "-.01em", flex: "none" }}>{tier.label}</span>
         </div>
         <div style={{ marginTop: 4, display: "flex", flexDirection: "column", gap: 2 }}>
           {roles.map((r) => <span key={r} style={{ fontSize: 11, color: "var(--muted)", lineHeight: 1.45 }}>{r}</span>)}
@@ -777,6 +792,7 @@ function ClusterSummaryTable({ groups, showCompanies }: { groups: DomainGroup111
         const links = CLUSTER_EXPLORE_LINKS[g.domain as keyof typeof CLUSTER_EXPLORE_LINKS] ?? [];
         const companies = CLUSTER_COMPANIES[g.domain as keyof typeof CLUSTER_COMPANIES];
         const color = clusterColor(g.domain);
+        const tier = fitLabel(g.topScore);
         return (
           <div key={g.domain} style={{ border: "1px solid var(--line)", borderLeft: `4px solid ${color}`, borderRadius: 14, overflow: "hidden" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 18px", background: `${color}0a`, borderBottom: "1px solid var(--line)" }}>
@@ -787,7 +803,7 @@ function ClusterSummaryTable({ groups, showCompanies }: { groups: DomainGroup111
                 <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 1 }}>{CLUSTER_TAGLINE[g.domain as StandardCluster] ?? ""}</div>
               </div>
               <div style={{ textAlign: "right", flex: "none" }}>
-                <div style={{ fontSize: 19, fontWeight: 900, color, letterSpacing: "-.01em" }}>{g.topScore.toFixed(0)}%</div>
+                <div style={{ fontSize: 15.5, fontWeight: 900, color: tier.color, letterSpacing: "-.01em" }}>{tier.label}</div>
                 <div style={{ fontSize: 8.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)" }}>Fit</div>
               </div>
             </div>
@@ -1265,16 +1281,17 @@ function ClusterBarChart({ groups }: { groups: DomainGroup1112[] }) {
   const maxScore = Math.max(100, ...rows.map((r) => r.topScore));
   const barW = (v: number) => ((W - padL - padR) * v) / maxScore;
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Career cluster fit, percentage by cluster" style={{ width: "100%", height: "auto", display: "block" }}>
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Career cluster fit, by cluster" style={{ width: "100%", height: "auto", display: "block" }}>
       {rows.map((r, i) => {
         const y = padT + i * rowH;
         const color = clusterColor(r.domain);
+        const tier = fitLabel(r.topScore);
         return (
           <g key={r.domain}>
             <text x={16} y={y + rowH / 2 + 4} textAnchor="start" fontSize={13} fontWeight={700} fill="var(--ink)">{r.domain}</text>
             <rect x={padL} y={y + 8} width={W - padL - padR} height={rowH - 16} rx={5} fill={color} opacity={0.14} />
             <rect x={padL} y={y + 8} width={barW(r.topScore)} height={rowH - 16} rx={5} fill={color} />
-            <text x={padL + barW(r.topScore) + 8} y={y + rowH / 2 + 4} fontSize={13} fontWeight={800} fill="var(--ink)">{r.topScore.toFixed(0)}%</text>
+            <text x={padL + barW(r.topScore) + 8} y={y + rowH / 2 + 4} fontSize={13} fontWeight={800} fill={tier.color}>{tier.label}</text>
           </g>
         );
       })}
