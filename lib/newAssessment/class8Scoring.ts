@@ -13,6 +13,21 @@
  * - Q56-Q60: Creativity & Future Readiness (4 indicators)
  */
 import { DOMAINS, DOMAIN_RIASEC, DOMAIN_MI } from "@/lib/report/knowledge";
+import { CLASS8_QUESTIONS } from "@/lib/newAssessment/class8Questions";
+
+// Reads an option's own `mapping` tag straight off the question bank
+// (lib/newAssessment/class8Questions.ts, regenerated from class8sheet.xlsx)
+// instead of a hardcoded per-question table. This file used to hand-author
+// a {questionId: {optionIndex: category}} table per section, and several of
+// those tables were written against an earlier version of the bank: once
+// the bank was regenerated, Strengths/Motivators/Learning/Emotional/
+// Creativity all drifted out of sync with it in different ways (see the
+// commit that introduced this helper for the specifics). Reading the
+// option's own tag directly makes that drift structurally impossible.
+function bankOptionMapping(id: number, optionIndex: number): string | undefined {
+  const q = CLASS8_QUESTIONS.find((q) => q.id === id);
+  return q?.options[optionIndex]?.mapping;
+}
 
 export interface Class8Response {
   studentName: string;
@@ -212,16 +227,12 @@ const MI_DOMAINS: Record<string, any> = {
   },
 };
 
-// Q31-Q38 mapping to MI domains (5 options each: A-E)
-const MI_OPTION_MAPPING: Record<number, Record<number, string>> = {
-  31: { 0: "Linguistic", 1: "Logical-Mathematical", 2: "Spatial", 3: "Bodily-Kinesthetic", 4: "Musical" },
-  32: { 0: "Linguistic", 1: "Logical-Mathematical", 2: "Spatial", 3: "Interpersonal", 4: "Intrapersonal" },
-  33: { 0: "Linguistic", 1: "Logical-Mathematical", 2: "Spatial", 3: "Musical", 4: "Naturalistic" },
-  34: { 0: "Linguistic", 1: "Bodily-Kinesthetic", 2: "Logical-Mathematical", 3: "Musical", 4: "Intrapersonal" },
-  35: { 0: "Interpersonal", 1: "Linguistic", 2: "Intrapersonal", 3: "Logical-Mathematical", 4: "Spatial" },
-  36: { 0: "Logical-Mathematical", 1: "Spatial", 2: "Bodily-Kinesthetic", 3: "Interpersonal", 4: "Musical" },
-  37: { 0: "Linguistic", 1: "Musical", 2: "Logical-Mathematical", 3: "Spatial", 4: "Bodily-Kinesthetic" },
-  38: { 0: "Intrapersonal", 1: "Interpersonal", 2: "Naturalistic", 3: "Musical", 4: "Logical-Mathematical" },
+// The bank tags MI options with a short form ("Logical-Math") that doesn't
+// match the canonical DOMAIN_MI vocabulary this scorer's domain-affinity
+// step keys on ("Logical-Mathematical") - normalise on the way in so a real
+// answer still links to the right domain.
+const MI_LABEL_ALIAS: Record<string, string> = {
+  "Logical-Math": "Logical-Mathematical",
 };
 
 // ============================================================================
@@ -235,26 +246,18 @@ export interface MotivatorScore {
   description: string;
 }
 
+// The bank's real Q39-Q45 vocabulary (Achievement/Service/Autonomy/
+// Security/Growth - see class8Questions.ts) - not the 7-name list this file
+// used to hardcode (Achievement/Curiosity/Helping/Freedom/Leadership/
+// Stability/Innovation), which shared only "Achievement" with what the
+// bank actually asks.
 const MOTIVATOR_TYPES = [
   "Achievement",
-  "Curiosity",
-  "Helping",
-  "Freedom",
-  "Leadership",
-  "Stability",
-  "Innovation",
+  "Service",
+  "Autonomy",
+  "Security",
+  "Growth",
 ];
-
-// Q39-Q45 mapping to motivators (flexible, may be 4-5 options)
-const MOTIVATOR_MAPPING: Record<number, string> = {
-  39: "Achievement",
-  40: "Curiosity",
-  41: "Helping",
-  42: "Freedom",
-  43: "Leadership",
-  44: "Stability",
-  45: "Innovation",
-};
 
 // ============================================================================
 // LEARNING STYLE
@@ -274,13 +277,13 @@ const LEARNING_STYLES = {
   Kinesthetic: "Prefers hands-on, practice, movement, experience",
 };
 
-// Q46-Q50 to learning styles (4 options each)
-const LEARNING_STYLE_MAPPING: Record<number, Record<number, string>> = {
-  46: { 0: "Visual", 1: "Reading/Writing", 2: "Auditory", 3: "Kinesthetic" },
-  47: { 0: "Kinesthetic", 1: "Auditory", 2: "Visual", 3: "Reading/Writing" },
-  48: { 0: "Auditory", 1: "Visual", 2: "Kinesthetic", 3: "Reading/Writing" },
-  49: { 0: "Reading/Writing", 1: "Kinesthetic", 2: "Auditory", 3: "Visual" },
-  50: { 0: "Visual", 1: "Auditory", 2: "Reading/Writing", 3: "Kinesthetic" },
+// The bank tags Learning Preferences options "Auditory-Social"/"Read-Write"
+// (see class8Questions.ts) rather than this file's "Auditory"/"Reading/
+// Writing" - normalise on the way in so the output uses the same 4 style
+// names as every other class's report.
+const LEARNING_LABEL_ALIAS: Record<string, string> = {
+  "Auditory-Social": "Auditory",
+  "Read-Write": "Reading/Writing",
 };
 
 // ============================================================================
@@ -288,54 +291,22 @@ const LEARNING_STYLE_MAPPING: Record<number, Record<number, string>> = {
 // ============================================================================
 
 export interface EIComponent {
-  component: string; // Self-awareness, Empathy, Social-management, Relationship-building
+  component: string; // whichever dimension names the bank's Q51-55 use
   score: number; // 0-100
   level: "Developing" | "Proficient" | "Strong" | "Advanced";
   description: string;
 }
-
-const EI_COMPONENTS = [
-  "Self-Awareness",
-  "Empathy",
-  "Social-Management",
-  "Relationship-Building",
-];
-
-// Q51-Q55 to EI components (4 options each)
-const EI_MAPPING: Record<number, Record<number, string>> = {
-  51: { 0: "Self-Awareness", 1: "Relationship-Building", 2: "Self-Awareness", 3: "Social-Management" },
-  52: { 0: "Social-Management", 1: "Empathy", 2: "Self-Awareness", 3: "Empathy" },
-  53: { 0: "Empathy", 1: "Self-Awareness", 2: "Social-Management", 3: "Social-Management" },
-  54: { 0: "Self-Awareness", 1: "Empathy", 2: "Social-Management", 3: "Relationship-Building" },
-  55: { 0: "Relationship-Building", 1: "Self-Awareness", 2: "Empathy", 3: "Social-Management" },
-};
 
 // ============================================================================
 // CREATIVITY & FUTURE READINESS
 // ============================================================================
 
 export interface CreativityIndicator {
-  indicator: string; // Problem-solving, Adaptability, Innovation, Future-orientation
+  indicator: string; // whichever indicator names the bank's Q56-60 use
   score: number; // 0-100
   level: "Emerging" | "Developing" | "Strong" | "Advanced";
   description: string;
 }
-
-const CREATIVITY_INDICATORS = [
-  "Problem-Solving",
-  "Adaptability",
-  "Innovation",
-  "Future-Orientation",
-];
-
-// Q56-Q60 to creativity indicators (4 options each)
-const CREATIVITY_MAPPING: Record<number, Record<number, string>> = {
-  56: { 0: "Adaptability", 1: "Problem-Solving", 2: "Innovation", 3: "Problem-Solving" },
-  57: { 0: "Problem-Solving", 1: "Adaptability", 2: "Innovation", 3: "Future-Orientation" },
-  58: { 0: "Innovation", 1: "Problem-Solving", 2: "Innovation", 3: "Future-Orientation" },
-  59: { 0: "Adaptability", 1: "Adaptability", 2: "Adaptability", 3: "Future-Orientation" },
-  60: { 0: "Problem-Solving", 1: "Adaptability", 2: "Innovation", 3: "Problem-Solving" },
-};
 
 // ============================================================================
 // DOMAIN AFFINITY CALCULATION
@@ -649,18 +620,21 @@ function scoreAptitude(responses: Class8Response): AptitudeProfile {
 
 function scoreStrengthDomains(responses: Class8Response): StrengthDomain[] {
   const domains: Record<string, number> = {};
+  const of: Record<string, number> = {};
 
-  // Initialize all domains
-  Object.keys(MI_DOMAINS).forEach((domain) => {
-    domains[domain] = 0;
-  });
-
-  // Q31-Q38: Score MI domains
+  // Q31-Q38: Score MI domains, reading each option's own tag directly
   for (let q = 31; q <= 38; q++) {
+    for (let opt = 0; opt < 5; opt++) {
+      const raw = bankOptionMapping(q, opt);
+      if (!raw) continue;
+      const domain = MI_LABEL_ALIAS[raw] ?? raw;
+      of[domain] = (of[domain] || 0) + 1;
+    }
     const option = responses.responses[q];
-    const domain = MI_OPTION_MAPPING[q]?.[option];
-    if (domain) {
-      domains[domain]++;
+    const rawChosen = bankOptionMapping(q, option);
+    if (rawChosen) {
+      const domain = MI_LABEL_ALIAS[rawChosen] ?? rawChosen;
+      domains[domain] = (domains[domain] || 0) + 1;
     }
   }
 
@@ -672,15 +646,19 @@ function scoreStrengthDomains(responses: Class8Response): StrengthDomain[] {
     return "Advanced";
   };
 
+  // Percentage of the times a domain was actually OFFERED, not a flat /8 -
+  // this bank's Q31-38 never offer Intrapersonal or Naturalistic at all (a
+  // real limit of this bank's content, not something to fabricate a slot
+  // for), and the other 6 domains appear unevenly too.
   return Object.entries(domains)
     .map(([domain, count]) => {
-      const score = Math.round((count / 8) * 100);
+      const score = of[domain] ? Math.round((count / of[domain]) * 100) : 0;
       return {
         domain,
-        code: MI_DOMAINS[domain].code,
+        code: MI_DOMAINS[domain]?.code ?? domain,
         score,
         level: getLevel(score),
-        careers: MI_DOMAINS[domain].careers,
+        careers: MI_DOMAINS[domain]?.careers ?? [],
       };
     })
     .sort((a, b) => b.score - a.score);
@@ -688,24 +666,27 @@ function scoreStrengthDomains(responses: Class8Response): StrengthDomain[] {
 
 function scoreMotivators(responses: Class8Response): MotivatorScore[] {
   const scores: Record<string, number> = {};
+  const of: Record<string, number> = {};
 
   // Initialize all motivators
   MOTIVATOR_TYPES.forEach((m) => {
     scores[m] = 0;
   });
 
-  // Q39-Q45: Score motivators
+  // Q39-Q45: each question offers all 5 real motivators (Achievement/
+  // Service/Autonomy/Security/Growth) as its 5 options - a self-report
+  // question, not a single-motivator Likert item - so which option the
+  // student picks is what determines which motivator gets credited.
   for (let q = 39; q <= 45; q++) {
-    const option = responses.responses[q];
-    const motivator = MOTIVATOR_MAPPING[q];
-
-    if (motivator) {
-      // Simple scoring: higher option index = stronger preference
-      scores[motivator] += option + 1;
+    for (let opt = 0; opt < 5; opt++) {
+      const name = bankOptionMapping(q, opt);
+      if (name) of[name] = (of[name] || 0) + 1;
     }
+    const option = responses.responses[q];
+    const motivator = bankOptionMapping(q, option);
+    if (motivator) scores[motivator] = (scores[motivator] || 0) + 1;
   }
 
-  // Normalize to 0-100
   const getLevel = (score: number): "Low" | "Moderate" | "High" | "Very High" => {
     if (score < 30) return "Low";
     if (score < 60) return "Moderate";
@@ -713,13 +694,19 @@ function scoreMotivators(responses: Class8Response): MotivatorScore[] {
     return "Very High";
   };
 
+  // Percentage of the times actually picked out of the times offered (all 7
+  // questions offer all 5 motivators, so this is equivalent to a flat /7,
+  // written this way to stay consistent with the other self-report sections).
   return Object.entries(scores)
-    .map(([motivator, rawScore]) => ({
-      motivator,
-      score: Math.min(100, Math.round((rawScore / 5) * 20)),
-      level: getLevel(Math.min(100, Math.round((rawScore / 5) * 20))),
-      description: `${motivator} is a key driver in career satisfaction`,
-    }))
+    .map(([motivator, count]) => {
+      const score = of[motivator] ? Math.round((count / of[motivator]) * 100) : 0;
+      return {
+        motivator,
+        score,
+        level: getLevel(score),
+        description: `${motivator} is a key driver in career satisfaction`,
+      };
+    })
     .sort((a, b) => b.score - a.score);
 }
 
@@ -731,13 +718,14 @@ function scoreLearningStyle(responses: Class8Response): LearningStyleProfile {
     Kinesthetic: 0,
   };
 
-  // Q46-Q50: Score learning styles
+  // Q46-Q50: the bank consistently offers Auditory-Social/Read-Write/
+  // Visual/Kinesthetic in that order on every question - read each
+  // question's own tag directly rather than assuming that order.
   for (let q = 46; q <= 50; q++) {
     const option = responses.responses[q];
-    const style = LEARNING_STYLE_MAPPING[q]?.[option];
-    if (style) {
-      scores[style]++;
-    }
+    const raw = bankOptionMapping(q, option);
+    const style = raw ? (LEARNING_LABEL_ALIAS[raw] ?? raw) : undefined;
+    if (style && style in scores) scores[style]++;
   }
 
   // Normalize
@@ -763,22 +751,22 @@ function scoreLearningStyle(responses: Class8Response): LearningStyleProfile {
 
 function scoreEmotionalAwareness(responses: Class8Response): EIComponent[] {
   const scores: Record<string, number> = {};
+  const of: Record<string, number> = {};
 
-  // Initialize all EI components
-  EI_COMPONENTS.forEach((component) => {
-    scores[component] = 0;
-  });
-
-  // Q51-Q55: Score EI components
+  // Q51-Q55: the bank's real vocabulary here (Empathic/Problem-Focused/
+  // Self-Regulated/Expressive/Defensive/Growth-Oriented/Analytical/Secure/
+  // Boundary-Aware) varies question to question - read each option's own
+  // tag directly rather than assuming a fixed 4-component set.
   for (let q = 51; q <= 55; q++) {
-    const option = responses.responses[q];
-    const component = EI_MAPPING[q]?.[option];
-    if (component) {
-      scores[component]++;
+    for (let opt = 0; opt < 4; opt++) {
+      const dim = bankOptionMapping(q, opt);
+      if (dim) of[dim] = (of[dim] || 0) + 1;
     }
+    const option = responses.responses[q];
+    const component = bankOptionMapping(q, option);
+    if (component) scores[component] = (scores[component] || 0) + 1;
   }
 
-  // Normalize
   const getLevel = (score: number): "Developing" | "Proficient" | "Strong" | "Advanced" => {
     if (score < 40) return "Developing";
     if (score < 65) return "Proficient";
@@ -786,34 +774,40 @@ function scoreEmotionalAwareness(responses: Class8Response): EIComponent[] {
     return "Advanced";
   };
 
+  // Percentage of the times a component was actually OFFERED, not a flat
+  // /5 - several components only appear on one of the 5 questions.
   return Object.entries(scores)
-    .map(([component, count]) => ({
-      component,
-      score: Math.round((count / 5) * 100),
-      level: getLevel(Math.round((count / 5) * 100)),
-      description: `${component} is an important aspect of your emotional intelligence`,
-    }))
+    .map(([component, count]) => {
+      const score = of[component] ? Math.round((count / of[component]) * 100) : 0;
+      return {
+        component,
+        score,
+        level: getLevel(score),
+        description: `${component} is an important aspect of your emotional intelligence`,
+      };
+    })
     .sort((a, b) => b.score - a.score);
 }
 
 function scoreCreativity(responses: Class8Response): CreativityIndicator[] {
   const scores: Record<string, number> = {};
+  const of: Record<string, number> = {};
 
-  // Initialize all creativity indicators
-  CREATIVITY_INDICATORS.forEach((indicator) => {
-    scores[indicator] = 0;
-  });
-
-  // Q56-Q60: Score creativity
+  // Q56-Q60: the bank's real vocabulary here (Divergent/Analytical/
+  // Integrative/Cautious/Structured-Creative/Experimental/Early-Adopter/
+  // Applied/Late-Adopter/Planner/Adaptive/Traditional/Innovative) varies
+  // question to question - read each option's own tag directly rather than
+  // assuming a fixed 4-indicator set.
   for (let q = 56; q <= 60; q++) {
-    const option = responses.responses[q];
-    const indicator = CREATIVITY_MAPPING[q]?.[option];
-    if (indicator) {
-      scores[indicator]++;
+    for (let opt = 0; opt < 4; opt++) {
+      const ind = bankOptionMapping(q, opt);
+      if (ind) of[ind] = (of[ind] || 0) + 1;
     }
+    const option = responses.responses[q];
+    const indicator = bankOptionMapping(q, option);
+    if (indicator) scores[indicator] = (scores[indicator] || 0) + 1;
   }
 
-  // Normalize
   const getLevel = (score: number): "Emerging" | "Developing" | "Strong" | "Advanced" => {
     if (score < 40) return "Emerging";
     if (score < 65) return "Developing";
@@ -822,12 +816,15 @@ function scoreCreativity(responses: Class8Response): CreativityIndicator[] {
   };
 
   return Object.entries(scores)
-    .map(([indicator, count]) => ({
-      indicator,
-      score: Math.round((count / 5) * 100),
-      level: getLevel(Math.round((count / 5) * 100)),
-      description: `${indicator} is a key component of your creative profile`,
-    }))
+    .map(([indicator, count]) => {
+      const score = of[indicator] ? Math.round((count / of[indicator]) * 100) : 0;
+      return {
+        indicator,
+        score,
+        level: getLevel(score),
+        description: `${indicator} is a key component of your creative profile`,
+      };
+    })
     .sort((a, b) => b.score - a.score);
 }
 
@@ -851,18 +848,19 @@ const DOMAIN_APTITUDE_C8: Record<string, ("numericReasoning" | "logicalDeduction
   M: ["spatialReasoning", "logicalDeduction"], N: ["numericReasoning", "logicalDeduction"],
   O: ["spatialReasoning", "patternRecognition"],
 };
-// Which of class8's own 7 motivator tags (MOTIVATOR_TYPES) reinforce each
-// domain - kept local for the same reason. Correctly reflects each new
-// domain's real meaning rather than the old (wrong) 8-domain framing.
+// Which of class8's own 5 motivator tags (MOTIVATOR_TYPES: Achievement/
+// Service/Autonomy/Security/Growth - the bank's real Q39-45 vocabulary,
+// see class8Questions.ts) reinforce each domain - kept local for the same
+// reason as DOMAIN_APTITUDE_C8 above.
 const DOMAIN_MOTIVATOR_C8: Record<string, string[]> = {
-  A: ["Achievement", "Leadership"], B: ["Achievement", "Stability"],
-  C: ["Achievement", "Stability"], D: ["Curiosity", "Innovation"],
-  E: ["Helping", "Stability"], F: ["Curiosity", "Helping"],
-  G: ["Curiosity", "Innovation"], H: ["Freedom", "Innovation"],
-  I: ["Freedom", "Curiosity"], J: ["Helping", "Leadership"],
-  K: ["Helping", "Curiosity"], L: ["Freedom", "Leadership"],
-  M: ["Stability", "Leadership"], N: ["Curiosity", "Helping"],
-  O: ["Achievement", "Freedom"],
+  A: ["Achievement", "Autonomy"], B: ["Achievement", "Security"],
+  C: ["Achievement", "Growth"], D: ["Growth", "Autonomy"],
+  E: ["Service", "Security"], F: ["Growth", "Service"],
+  G: ["Growth", "Autonomy"], H: ["Autonomy", "Growth"],
+  I: ["Autonomy", "Achievement"], J: ["Service", "Security"],
+  K: ["Service", "Growth"], L: ["Service", "Achievement"],
+  M: ["Security", "Achievement"], N: ["Service", "Growth"],
+  O: ["Achievement", "Autonomy"],
 };
 
 // A weighted mean over whichever evidence exists for a domain - same
