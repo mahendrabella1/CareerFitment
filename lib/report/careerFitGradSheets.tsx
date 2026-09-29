@@ -365,6 +365,69 @@ function ClusterRoadmapView({ r, color }: { r: GradClusterRoadmap; color: string
   );
 }
 
+/** Every real (degree, course, roles) row MASTER_ROWS_GRAD ties to this
+ *  cluster, grouped by degree - the source of truth for both "every
+ *  degree this domain leads through" and the Degree -> Course -> Roles
+ *  table, so the two can never disagree. Mirrors careerFit1112Sheets.tsx's
+ *  own degreeRoleRowsFor (11-12 scope, not shared - two independent class
+ *  groups per the project's scope map), extended with the course level
+ *  UG's own source data actually has (11-12's CAREERS_1112 only tags one
+ *  typicalDegree per career, no separate course granularity). */
+function degreeCourseRowsFor(cluster: string): { degree: string; courses: { course: string; roles: string[] }[] }[] {
+  const byDegree = new Map<string, { course: string; roles: string[] }[]>();
+  for (const r of MASTER_ROWS_GRAD) {
+    if (r.level !== "UG" || r.cluster !== cluster) continue;
+    const list = byDegree.get(r.degree);
+    const row = { course: r.course, roles: r.roles };
+    if (list) list.push(row); else byDegree.set(r.degree, [row]);
+  }
+  return [...byDegree.entries()]
+    .map(([degree, courses]) => ({ degree, courses: courses.sort((a, b) => a.course.localeCompare(b.course)) }))
+    .sort((a, b) => b.courses.length - a.courses.length || a.degree.localeCompare(b.degree));
+}
+
+const gradTh: React.CSSProperties = { textAlign: "left", padding: "9px 10px", fontSize: 10.5, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: "#fff", background: "#2c3e50" };
+const gradTd: React.CSSProperties = { padding: "10px 10px", fontSize: 12, color: "var(--ink-2)", borderBottom: "1px solid var(--line-2, var(--line))", verticalAlign: "top" };
+
+// Every real degree in this domain (9-17 for most UG clusters), each with
+// every course under it and the real roles that course leads to - the
+// full breadth of the domain in one table, not the handful of job roles
+// GradClusterRoadmap's own curated jobRoles list shows.
+function DegreeCourseRolesTable({ cluster, color }: { cluster: string; color: string }) {
+  const degrees = degreeCourseRowsFor(cluster);
+  if (!degrees.length) return null;
+  return (
+    <div style={{ overflowX: "auto" }}>
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <thead>
+          <tr>
+            <th style={{ ...gradTh, width: "22%" }}>Degree</th>
+            <th style={{ ...gradTh, width: "22%" }}>Course / specialisation</th>
+            <th style={gradTh}>Roles this leads to</th>
+          </tr>
+        </thead>
+        <tbody>
+          {degrees.map((d) =>
+            d.courses.map((c, i) => (
+              <tr key={`${d.degree}-${c.course}`} style={{ background: i % 2 ? "var(--line-2, #f7f7f8)" : "transparent" }}>
+                {i === 0 && <td style={{ ...gradTd, fontWeight: 800, color: "var(--ink)" }} rowSpan={d.courses.length}>{d.degree}</td>}
+                <td style={{ ...gradTd, fontWeight: 700, color: "var(--ink)" }}>{c.course}</td>
+                <td style={gradTd}>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                    {c.roles.map((role) => (
+                      <span key={role} style={{ fontSize: 11.5, fontWeight: 700, color: "var(--ink)", background: `${color}0c`, border: `1px solid ${color}25`, borderRadius: 7, padding: "4px 9px" }}>{role}</span>
+                    ))}
+                  </div>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportSheet[] {
   const { clusterAffinities, academicContext, aspiration } = output;
 
@@ -575,6 +638,13 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
                 sub="The standard path into this cluster - the same realistic route for anyone in this field, not built around one specific job title." />
               <div style={{ marginTop: 16 }}>
                 <ClusterRoadmapView r={genericRoadmap} color={clusterColor(topCluster)} />
+              </div>
+              <div style={{ marginTop: 28, paddingTop: 24, borderTop: "1px solid var(--line)" }}>
+                <SecHead center eyebrow={`Every real degree route into ${topCluster}`} title="Degree by degree, what it leads to"
+                  sub="Every UG degree and course the source data ties to this cluster, and the real roles each one actually leads to - the full breadth of this domain in one table." />
+                <div style={{ marginTop: 16 }}>
+                  <DegreeCourseRolesTable cluster={topCluster} color={clusterColor(topCluster)} />
+                </div>
               </div>
             </div>
           )}

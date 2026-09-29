@@ -601,6 +601,22 @@ function DetailedCareerRoadmapView({ r, careerName, color }: { r: DetailedCareer
 // cleanly) rather than inventing domain-wide college/abroad claims we
 // haven't actually researched - same "genuinely blank, don't fabricate"
 // standard the per-career data already holds itself to.
+/** Every real (career, typicalDegree) pair CAREERS_1112 tags to this
+ *  cluster, deduped and grouped by degree - the source of truth for both
+ *  "every degree this domain leads through" and the Degree -> Roles table,
+ *  so the two can never quietly disagree with each other. */
+function degreeRoleRowsFor(cluster: StandardCluster): { degree: string; roles: string[] }[] {
+  const byDegree = new Map<string, string[]>();
+  for (const c of CAREERS_1112) {
+    if (c.cluster !== cluster) continue;
+    const list = byDegree.get(c.typicalDegree);
+    if (list) list.push(c.name); else byDegree.set(c.typicalDegree, [c.name]);
+  }
+  return [...byDegree.entries()]
+    .map(([degree, roles]) => ({ degree, roles: roles.sort((a, b) => a.localeCompare(b)) }))
+    .sort((a, b) => b.roles.length - a.roles.length || a.degree.localeCompare(b.degree));
+}
+
 function domainRoadmapFor(cluster: StandardCluster): DetailedCareerRoadmap {
   const cr = CLUSTER_ROADMAPS[cluster];
   const sectionItems = (phase: ClusterRoadmapPhase | undefined, heading: string) =>
@@ -608,11 +624,17 @@ function domainRoadmapFor(cluster: StandardCluster): DetailedCareerRoadmap {
   const [p1, p2, p3, p4, p5] = cr.phases;
   const funded = CLUSTER_FUNDED_PROGRAMS[cluster] ?? [];
   const roles = CAREERS_1112.filter((c) => c.cluster === cluster).map((c) => c.name);
+  // Every real degree CAREERS_1112 ties to this cluster (35 for STEM, for
+  // example) - not just the curated handful CLUSTER_ROADMAPS' own phase 2
+  // names as illustrative examples. "All the degrees they can pursue"
+  // means the full set, so this is the degreeRoleRowsFor grouping's own
+  // degree list, not a hand-picked subset.
+  const allDegrees = degreeRoleRowsFor(cluster).map((r) => r.degree);
 
   return {
     tagline: `The complete path into ${cluster} - school through to senior/leadership roles. This is the standard route for anyone in this domain, not built around one specific job title.`,
     school: [...sectionItems(p1, "I should strengthen"), ...sectionItems(p1, "I should explore")],
-    ugPathways: sectionItems(p2, "Courses I can explore"),
+    ugPathways: allDegrees,
     topColleges: [],
     scholarships: funded.map((f) => `${f.name}: ${f.summary}`),
     ugDevelopment: { years: [], notes: [...sectionItems(p2, "During graduation"), ...sectionItems(p2, "Skills I acquire")] },
@@ -628,6 +650,42 @@ function domainRoadmapFor(cluster: StandardCluster): DetailedCareerRoadmap {
     keyDistinction: null,
     disclaimer: "The standard, domain-wide path - real for anyone entering this field, not built around one specific job title within it.",
   };
+}
+
+// The "every degree in this domain -> the real roles it leads to" table -
+// literally CAREERS_1112's own typicalDegree tag grouped up, so a
+// student can see the full breadth of one domain (STEM spans 35 distinct
+// degree routes, for example) without needing a separate source to know
+// which degree leads where within it.
+function DegreeRolesTable({ cluster, color }: { cluster: StandardCluster; color: string }) {
+  const rows = degreeRoleRowsFor(cluster);
+  if (!rows.length) return null;
+  return (
+    <div style={{ overflowX: "auto" }}>
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <thead>
+          <tr>
+            <th style={{ ...th, width: "34%" }}>Degree / course</th>
+            <th style={th}>Roles this leads to</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r, i) => (
+            <tr key={r.degree} style={{ background: i % 2 ? "var(--line-2, #f7f7f8)" : "transparent" }}>
+              <td style={{ ...td, fontWeight: 800, color: "var(--ink)", verticalAlign: "top" }}>{r.degree}</td>
+              <td style={td}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {r.roles.map((role) => (
+                    <span key={role} style={{ fontSize: 11.5, fontWeight: 700, color: "var(--ink)", background: `${color}0c`, border: `1px solid ${color}25`, borderRadius: 7, padding: "4px 9px" }}>{role}</span>
+                  ))}
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 const VERDICT_TONE: Record<string, { c: string; bg: string }> = {
@@ -1586,7 +1644,16 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
               component/depth as a researched career's own roadmap
               (DetailedCareerRoadmapView), just fed domain-wide data. */}
           {roadmapDomain && domainRoadmap && (
-            <DetailedCareerRoadmapView r={domainRoadmap} careerName={clusterHeading(roadmapDomain)} color={clusterColor(roadmapDomain)} />
+            <>
+              <DetailedCareerRoadmapView r={domainRoadmap} careerName={clusterHeading(roadmapDomain)} color={clusterColor(roadmapDomain)} />
+              <div style={BREAK}>
+                <SecHead center eyebrow={`Every real degree route into ${clusterHeading(roadmapDomain)}`} title="Degree by degree, what it leads to"
+                  sub="Every degree CAREERS_1112 ties to this domain, and the real roles each one actually leads to - so you can see the full breadth of this field in one table, not just the handful above." />
+                <div style={{ marginTop: 16 }}>
+                  <DegreeRolesTable cluster={roadmapDomain as StandardCluster} color={clusterColor(roadmapDomain)} />
+                </div>
+              </div>
+            </>
           )}
         </>
       ),
