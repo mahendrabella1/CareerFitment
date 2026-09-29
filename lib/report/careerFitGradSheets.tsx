@@ -24,6 +24,7 @@ import type { GraduateScoreOutput } from "@/lib/newAssessment/scoringGrad";
 import { rankSuitabilityGrad } from "@/lib/newAssessment/scoringGrad";
 import { CAREER_CLUSTERS_18, CLUSTER_ROLES, MASTER_ROWS_GRAD, clusterForDegreeCourse, rolesForDegreeCourse } from "@/lib/report/careerClustersGrad";
 import { clusterRoadmapGradFor, type GradClusterRoadmap } from "@/lib/report/clusterRoadmapsGrad";
+import { flagshipRoadmapForGrad, type FlagshipDomainRoadmapGrad } from "@/lib/report/flagshipRoadmapsGrad";
 
 const SITE_URL_GRAD = (process.env.NEXT_PUBLIC_SITE_URL || "https://careerfitment.onegrasp.com").replace(/\/+$/, "");
 
@@ -554,6 +555,105 @@ function ClusterRoadmapView({ r, color }: { r: GradClusterRoadmap; color: string
   );
 }
 
+// The genuinely deep, independently-researched treatment for a cluster
+// that has one (see flagshipRoadmapsGrad.ts, 17 of 18 clusters) - shown
+// INSTEAD of ClusterRoadmapView's generic synthesized content when
+// available. Reuses the exact same 7-step numbered/coloured container
+// (GradRoadmapSectionFrame/GRAD_ROADMAP_SECTION_META) - the difference is
+// depth of content within each step (real internship targets, named
+// certifications, a PG decision checklist, country-by-country abroad
+// guidance), not a different visual design.
+function FlagshipRoadmapViewGrad({ r, color }: { r: FlagshipDomainRoadmapGrad; color: string }) {
+  const chip: React.CSSProperties = {
+    display: "inline-block", fontSize: 11.5, fontWeight: 600, color: "var(--ink-2)",
+    background: `${color}0c`, border: `1px solid ${color}30`, borderRadius: 8, padding: "5px 10px", margin: "0 6px 6px 0",
+  };
+  const note: React.CSSProperties = { fontSize: 11.5, color: "var(--muted)", fontStyle: "italic", marginTop: 10, lineHeight: 1.5 };
+  return (
+    <div>
+      {r.careerFamilies.length > 0 && (
+        <div style={{ marginBottom: 16, padding: "12px 14px", border: `1px solid ${color}25`, borderRadius: 10, background: `${color}06` }}>
+          <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 6 }}>This cluster's career families</div>
+          <div>{r.careerFamilies.map((f) => <span key={f} style={chip}>{f}</span>)}</div>
+          <p style={{ fontSize: 11.5, color: "var(--ink-2)", marginTop: 8 }}>{r.howToUseNote}</p>
+        </div>
+      )}
+
+      <GradRoadmapSectionFrame index={1} title="What to build each year">
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {r.yearPlan.map((y) => (
+            <div key={y.stage} style={{ padding: "10px 12px", border: `1px solid ${color}25`, borderRadius: 10, background: `${color}06` }}>
+              <div style={{ fontSize: 11.5, fontWeight: 800, color, marginBottom: 5 }}>{y.stage}</div>
+              <p style={{ fontSize: 12, color: "var(--ink-2)", marginBottom: 4 }}><b>Technical:</b> {y.technical}</p>
+              <p style={{ fontSize: 12, color: "var(--ink-2)", marginBottom: 4 }}><b>Non-technical:</b> {y.nonTechnical}</p>
+              <p style={{ fontSize: 12, color: "var(--ink-2)" }}><b>Evidence to build:</b> {y.evidence}</p>
+            </div>
+          ))}
+        </div>
+      </GradRoadmapSectionFrame>
+
+      <GradRoadmapSectionFrame index={2} title="Internships & real-world exposure">
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {r.internshipTracks.map((t) => (
+            <div key={t.track} style={{ padding: "10px 12px", border: `1px solid ${color}25`, borderRadius: 10, background: `${color}06` }}>
+              <div style={{ fontSize: 11.5, fontWeight: 800, color, marginBottom: 5 }}>{t.track}</div>
+              <p style={{ fontSize: 12, color: "var(--ink-2)", marginBottom: 4 }}>{t.targets}</p>
+              <p style={{ fontSize: 11.5, color: "var(--muted)" }}><b>Before applying:</b> {t.prepare}</p>
+            </div>
+          ))}
+        </div>
+        <p style={note}>{r.internshipQualityNote}</p>
+      </GradRoadmapSectionFrame>
+
+      <GradRoadmapSectionFrame index={3} title="Certifications in demand">
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {r.certifications.map((c) => (
+            <div key={c.name} style={{ display: "flex", justifyContent: "space-between", gap: 10, padding: "8px 12px", border: `1px solid ${color}25`, borderRadius: 9, background: `${color}06` }}>
+              <span style={{ fontSize: 12.5, fontWeight: 700, color: "var(--ink)" }}>{c.name}</span>
+              <span style={{ fontSize: 11.5, color: "var(--ink-2)", flex: "none" }}>{c.bestFor}</span>
+            </div>
+          ))}
+        </div>
+        <p style={note}>{r.certificationNote}</p>
+      </GradRoadmapSectionFrame>
+
+      <GradRoadmapSectionFrame index={4} title="Careers you can be hired as">
+        <div>{r.careersHiredAs.map((role) => <span key={role} style={chip}>{role}</span>)}</div>
+        <p style={note}>{r.jobSearchNote}</p>
+      </GradRoadmapSectionFrame>
+
+      <GradRoadmapSectionFrame index={5} title="PG to consider - in India">
+        <p style={{ fontSize: 12.5, color: "var(--ink-2)", marginBottom: 10 }}>{r.pgIndia}</p>
+        <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 6 }}>Before choosing a PG route</div>
+        <ul style={{ margin: 0, paddingLeft: 18, display: "flex", flexDirection: "column", gap: 4 }}>
+          {r.pgIndiaChecklist.map((c) => <li key={c} style={{ fontSize: 12, color: "var(--ink-2)" }}>{c}</li>)}
+        </ul>
+      </GradRoadmapSectionFrame>
+
+      <GradRoadmapSectionFrame index={6} title="Study abroad - country-wise">
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 10 }}>
+          {r.abroadCountries.map((a) => (
+            <div key={a.country + a.detail} style={{ padding: "10px 12px", border: `1px solid ${color}25`, borderRadius: 10, background: `${color}06` }}>
+              {a.country && <div style={{ fontSize: 11.5, fontWeight: 800, color, marginBottom: 4 }}>{a.country}</div>}
+              <div style={{ fontSize: 12, color: "var(--ink-2)" }}>{a.detail}</div>
+            </div>
+          ))}
+        </div>
+        <p style={note}>{r.abroadApplicationNote}</p>
+      </GradRoadmapSectionFrame>
+
+      <GradRoadmapSectionFrame index={7} title="Going forward - career advancement & PhD">
+        <ul style={{ margin: 0, paddingLeft: 18, display: "flex", flexDirection: "column", gap: 6, marginBottom: 14 }}>
+          {r.careerAdvancement.map((c) => <li key={c} style={{ fontSize: 12.5, color: "var(--ink-2)" }}>{c}</li>)}
+        </ul>
+        <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 6 }}>Career evidence to keep from UG</div>
+        <div>{r.careerEvidence.map((e) => <span key={e} style={chip}>{e}</span>)}</div>
+        <p style={note}>{r.domainCaution}</p>
+      </GradRoadmapSectionFrame>
+    </div>
+  );
+}
+
 /** Every real (degree, course, roles) row MASTER_ROWS_GRAD ties to this
  *  cluster, grouped by degree - the source of truth for both "every
  *  degree this domain leads through" and the Degree -> Course -> Roles
@@ -632,6 +732,12 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
   const suitabilityRanked = rankSuitabilityGrad(clusterAffinities, academicContext.degree, academicContext.course);
 
   const topCluster = suitabilityRanked[0]?.cluster ?? "";
+  // The genuinely deep, independently-researched roadmap for the cluster
+  // (see flagshipRoadmapsGrad.ts, 17 of 18 clusters) - takes priority over
+  // the generic synthesized genericRoadmap below when present. Only
+  // "Personal Care, Beauty & Wellness" (not covered by the source
+  // document) falls back to the generic content.
+  const flagshipRoadmap = flagshipRoadmapForGrad(topCluster);
   const genericRoadmap = clusterRoadmapGradFor(topCluster);
 
   const roleChipsFor = (cluster: string) => (CLUSTER_ROLES[cluster] ?? []).slice(0, 3);
@@ -785,17 +891,25 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
             </div>
           )}
 
-          {/* Generic, cluster-wide roadmap for the student's top-ranked
-              Career Suitability cluster - the only roadmap shown here,
-              regardless of what desired career they typed. Considered
-              sufficient on its own, even when the desired career matches
-              one of 11-12's individually-researched CAREERS_1112 entries. */}
-          {genericRoadmap && (
+          {/* Cluster-wide roadmap for the student's top-ranked Career
+              Suitability cluster - the only roadmap shown here, regardless
+              of what desired career they typed. Considered sufficient on
+              its own, even when the desired career matches one of 11-12's
+              individually-researched CAREERS_1112 entries. Uses the deep,
+              independently-researched FlagshipRoadmapViewGrad when this
+              cluster has one (17 of 18); the generic ClusterRoadmapView is
+              a fallback for the one cluster that doesn't yet ("Personal
+              Care, Beauty & Wellness"). */}
+          {(flagshipRoadmap || genericRoadmap) && (
             <div style={{ ...BREAK, marginTop: 20 }}>
               <SecHead center eyebrow={`${topCluster} · your best-fit cluster`} title="Your realistic path"
                 sub="The standard path into this cluster - the same realistic route for anyone in this field, not built around one specific job title." />
               <div style={{ marginTop: 16 }}>
-                <ClusterRoadmapView r={genericRoadmap} color={clusterColor(topCluster)} />
+                {flagshipRoadmap ? (
+                  <FlagshipRoadmapViewGrad r={flagshipRoadmap} color={clusterColor(topCluster)} />
+                ) : (
+                  <ClusterRoadmapView r={genericRoadmap!} color={clusterColor(topCluster)} />
+                )}
               </div>
               <div style={{ marginTop: 28, paddingTop: 24, borderTop: "1px solid var(--line)" }}>
                 <SecHead center eyebrow={`Every real degree route into ${topCluster}`} title="Degree by degree, what it leads to"
