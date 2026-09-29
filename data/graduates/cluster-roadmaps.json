@@ -95,7 +95,91 @@
         "Device Physicist"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": [
+      {
+        "course": "CSE - Artificial Intelligence & Data Science (AI&DS)",
+        "roles": [
+          "AI Engineer",
+          "Data Scientist",
+          "ML Engineer",
+          "Data Engineer",
+          "Analytics Consultant",
+          "GenAI Application Developer"
+        ]
+      },
+      {
+        "course": "CSE - Cyber Security & IoT incl. Blockchain",
+        "roles": [
+          "Security Engineer",
+          "IoT Security Analyst",
+          "Blockchain Developer",
+          "SOC Analyst",
+          "Embedded Security Engineer"
+        ]
+      },
+      {
+        "course": "Computer Science & Design (CSD)",
+        "roles": [
+          "UI/UX Engineer",
+          "Product Designer-Developer",
+          "Frontend Engineer",
+          "Creative Technologist",
+          "Interaction Developer"
+        ]
+      },
+      {
+        "course": "Quantum Science & Engineering / Quantum Computing",
+        "roles": [
+          "Quantum Software Developer",
+          "Quantum Algorithm Researcher",
+          "Quantum Hardware Engineer",
+          "Quantum Communication Engineer",
+          "Research Associate (Quantum)"
+        ]
+      },
+      {
+        "course": "Semiconductor Technology / VLSI Design & Technology",
+        "roles": [
+          "Chip Design Engineer",
+          "Semiconductor Process Engineer",
+          "Fab Engineer",
+          "Physical Design Engineer",
+          "Design Verification Engineer",
+          "ATE/Test Engineer"
+        ]
+      },
+      {
+        "course": "Drone / Unmanned Aerial Systems Technology",
+        "roles": [
+          "Drone Design Engineer",
+          "UAV Systems Engineer",
+          "Drone Pilot/Operator (Remote Pilot)",
+          "Drone Data Analyst",
+          "Flight Control Software Engineer"
+        ]
+      },
+      {
+        "course": "Space Engineering / Space Technology",
+        "roles": [
+          "Satellite Systems Engineer",
+          "Launch Vehicle Engineer",
+          "Space Systems Test Engineer",
+          "Payload Engineer",
+          "Ground Segment Engineer"
+        ]
+      },
+      {
+        "course": "Chemical Engineering with Data Analytics",
+        "roles": [
+          "Process Data Scientist",
+          "Process Simulation Engineer",
+          "Chemical Plant Analytics Engineer",
+          "Digital Twin Engineer",
+          "R&D Engineer"
+        ]
+      }
+    ]
   },
   "Science, Mathematics & Research": {
     "yearlySkillBuilding": {
@@ -191,7 +275,18 @@
         "Data Scientist"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": [
+      {
+        "course": "Astronomy, Astrophysics & Space Sciences (Ph.D.)",
+        "roles": [
+          "Professor",
+          "Astrophysicist",
+          "Scientist (ISRO/IIA/TIFR)",
+          "Space Data Scientist"
+        ]
+      }
+    ]
   },
   "Healthcare & Medicine": {
     "yearlySkillBuilding": {
@@ -295,7 +390,47 @@
         "Food Science R&D Head"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": [
+      {
+        "course": "Pharma Data / Pharmacovigilance & Regulatory (Skill-integrated)",
+        "roles": [
+          "PV Associate",
+          "Regulatory Affairs Associate",
+          "Drug Safety Associate",
+          "Medical Writer",
+          "Clinical Data Coordinator"
+        ]
+      },
+      {
+        "course": "Tele-health / Digital Health Technology",
+        "roles": [
+          "Telehealth Coordinator",
+          "Digital Health Executive",
+          "Remote Patient Monitoring Technician",
+          "Health App Support"
+        ]
+      },
+      {
+        "course": "BS - Medical Sciences & Technology",
+        "roles": [
+          "Medical Device Engineer",
+          "Healthtech Product Associate",
+          "Clinical Data Analyst",
+          "Bioinformatics Analyst",
+          "Regulatory Associate"
+        ]
+      },
+      {
+        "course": "Health Informatics / Bioinformatics / Computational Biology (M.Sc)",
+        "roles": [
+          "Health Informatician",
+          "Bioinformatician",
+          "Computational Biologist",
+          "Clinical Data Scientist"
+        ]
+      }
+    ]
   },
   "Psychology, Humanities & Social Sciences": {
     "yearlySkillBuilding": {
@@ -391,7 +526,27 @@
         "Data Journalist Lead"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": [
+      {
+        "course": "Neuroscience & Cognitive Science (Ph.D.)",
+        "roles": [
+          "Professor",
+          "Neuroscientist",
+          "Research Scientist",
+          "Cognitive Data Scientist"
+        ]
+      },
+      {
+        "course": "Cognitive Science, HCI & Neuro-Design (Ph.D.)",
+        "roles": [
+          "Professor",
+          "HCI Researcher",
+          "UX Research Director",
+          "Neuro-design Scientist"
+        ]
+      }
+    ]
   },
   "Sports, Fitness & Human Performance": {
     "yearlySkillBuilding": {
@@ -463,7 +618,8 @@
         "Yoga Researcher"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": []
   },
   "Agriculture, Food & Life Sciences": {
     "yearlySkillBuilding": {
@@ -558,7 +714,65 @@
         "Food Scientist (CFTRI/ICAR)"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": [
+      {
+        "course": "Agricultural Engineering with Data Analytics",
+        "roles": [
+          "AgriTech Engineer",
+          "Precision Agriculture Analyst",
+          "Remote Sensing Analyst",
+          "Farm Automation Engineer",
+          "IoT Agri Solutions Engineer"
+        ]
+      },
+      {
+        "course": "Precision Agriculture / Agri-Tech",
+        "roles": [
+          "Precision Agriculture Specialist",
+          "Agri Drone Operator",
+          "Farm Data Analyst",
+          "AgriTech Field Officer",
+          "IoT Agri Consultant"
+        ]
+      },
+      {
+        "course": "Natural Farming / Vertical Farming / Hydroponics",
+        "roles": [
+          "Hydroponics Farm Manager",
+          "Vertical Farm Technician",
+          "Natural Farming Consultant",
+          "AgriPreneur"
+        ]
+      },
+      {
+        "course": "Immunology, Virology & Vaccine Sciences (Ph.D.)",
+        "roles": [
+          "Professor",
+          "Vaccine Scientist",
+          "Principal Scientist (Biopharma)",
+          "Scientist (ICMR/DBT)"
+        ]
+      },
+      {
+        "course": "Precision Agriculture, AgriTech & Remote Sensing (Ph.D.)",
+        "roles": [
+          "Professor",
+          "ICAR Scientist",
+          "AgriTech R&D Head",
+          "Remote Sensing Specialist"
+        ]
+      },
+      {
+        "course": "Bio-Design, Synthetic Biology & Bio-Manufacturing (Ph.D.)",
+        "roles": [
+          "Professor",
+          "Synthetic Biologist",
+          "Biomanufacturing R&D Head",
+          "Bio-startup Founder"
+        ]
+      }
+    ]
   },
   "Environment, Energy & Sustainability": {
     "yearlySkillBuilding": {
@@ -655,7 +869,89 @@
         "Innovation Fellow"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": [
+      {
+        "course": "Electric Vehicle Technology",
+        "roles": [
+          "EV Powertrain Engineer",
+          "Battery Management System Engineer",
+          "Charging Infrastructure Engineer",
+          "EV Design Engineer",
+          "Vehicle Software Engineer"
+        ]
+      },
+      {
+        "course": "Hydrogen & Fuel Cell Technology",
+        "roles": [
+          "Hydrogen Systems Engineer",
+          "Fuel Cell Engineer",
+          "Electrolyser Design Engineer",
+          "Energy Transition Analyst",
+          "Process Safety Engineer"
+        ]
+      },
+      {
+        "course": "Battery & Energy Storage Technology",
+        "roles": [
+          "Battery Design Engineer",
+          "Cell Chemistry Engineer",
+          "BMS Engineer",
+          "Energy Storage Systems Engineer",
+          "Battery Test Engineer"
+        ]
+      },
+      {
+        "course": "Sustainable / Green Engineering",
+        "roles": [
+          "Sustainability Engineer",
+          "Green Building Engineer",
+          "Carbon Accounting Analyst",
+          "Energy Efficiency Consultant",
+          "ESG Technical Analyst"
+        ]
+      },
+      {
+        "course": "Nuclear Engineering",
+        "roles": [
+          "Nuclear Engineer",
+          "Reactor Operations Engineer",
+          "Radiation Safety Officer",
+          "Scientific Officer (BARC/NPCIL)",
+          "Nuclear Materials Engineer"
+        ]
+      },
+      {
+        "course": "Climate Science / Climate Change Studies",
+        "roles": [
+          "Climate Data Analyst",
+          "Sustainability Associate",
+          "Carbon Analyst",
+          "Environmental Research Assistant",
+          "ESG Analyst (Junior)"
+        ]
+      },
+      {
+        "course": "Sustainability / Environmental Studies",
+        "roles": [
+          "Sustainability Executive",
+          "Environmental Consultant (Junior)",
+          "CSR Executive",
+          "Waste Management Officer",
+          "ESG Associate"
+        ]
+      },
+      {
+        "course": "Renewable Energy Science",
+        "roles": [
+          "Solar Technician",
+          "Energy Analyst",
+          "Renewable Project Assistant",
+          "Energy Auditor (Junior)",
+          "Wind Site Assessor"
+        ]
+      }
+    ]
   },
   "Architecture, Construction & Built Environment": {
     "yearlySkillBuilding": {
@@ -739,7 +1035,38 @@
         "Sustainable Design Scientist"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": [
+      {
+        "course": "Interior Architecture & Design",
+        "roles": [
+          "Interior Architect",
+          "Space Designer",
+          "Sustainable Interior Consultant",
+          "FF&E Specialist",
+          "Design Manager"
+        ]
+      },
+      {
+        "course": "Digital Architecture / Computational Design",
+        "roles": [
+          "Computational Designer",
+          "BIM Manager",
+          "Parametric Designer",
+          "Digital Fabrication Specialist",
+          "Architectural Technologist"
+        ]
+      },
+      {
+        "course": "Urban Science, Smart Cities & Mobility (Ph.D.)",
+        "roles": [
+          "Professor",
+          "Urban Systems Scientist",
+          "Mobility Policy Advisor",
+          "Smart City Consultant"
+        ]
+      }
+    ]
   },
   "Business, Finance & Entrepreneurship": {
     "yearlySkillBuilding": {
@@ -837,7 +1164,89 @@
         "Economic Consultant"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": [
+      {
+        "course": "Quantitative Finance / Financial Mathematics",
+        "roles": [
+          "Quant Analyst (Junior)",
+          "Risk Analyst",
+          "Financial Modeller",
+          "Trading Analyst",
+          "Portfolio Analyst"
+        ]
+      },
+      {
+        "course": "B.Com - Fintech / Digital Finance",
+        "roles": [
+          "Fintech Analyst",
+          "Payments Executive",
+          "Digital Banking Associate",
+          "RegTech Analyst",
+          "Product Analyst"
+        ]
+      },
+      {
+        "course": "B.Com - Business Analytics",
+        "roles": [
+          "Business Analyst",
+          "Data Analyst",
+          "Finance Analyst",
+          "MIS Executive",
+          "Reporting Analyst"
+        ]
+      },
+      {
+        "course": "BBA - Fintech",
+        "roles": [
+          "Fintech Associate",
+          "Credit Analyst",
+          "Payments Analyst",
+          "Digital Banking Executive",
+          "Product Analyst"
+        ]
+      },
+      {
+        "course": "BBA - Data Science & AI for Business",
+        "roles": [
+          "Business Analyst",
+          "Data Analyst",
+          "AI Product Associate",
+          "Analytics Executive",
+          "MIS Analyst"
+        ]
+      },
+      {
+        "course": "B.Voc - Digital Marketing / E-Commerce",
+        "roles": [
+          "Digital Marketing Executive",
+          "E-Commerce Executive",
+          "Social Media Executive",
+          "SEO Executive",
+          "Catalogue Executive"
+        ]
+      },
+      {
+        "course": "Quantitative Finance / Financial Mathematics (M.Sc)",
+        "roles": [
+          "Quant Analyst",
+          "Risk Quant",
+          "Derivatives Modeller",
+          "Trading Strategist",
+          "Financial Engineer"
+        ]
+      },
+      {
+        "course": "MBA - Fintech / Digital Banking",
+        "roles": [
+          "Fintech Product Manager",
+          "Digital Banking Manager",
+          "Payments Strategy Manager",
+          "Risk & Compliance Manager",
+          "Venture Analyst"
+        ]
+      }
+    ]
   },
   "Law, Legal & Compliance": {
     "yearlySkillBuilding": {
@@ -929,7 +1338,47 @@
         "NGT Advisor"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": [
+      {
+        "course": "Technology Law / AI Governance",
+        "roles": [
+          "Tech Lawyer",
+          "AI Policy Associate",
+          "Data Protection Associate",
+          "Compliance Analyst",
+          "Legal Tech Consultant"
+        ]
+      },
+      {
+        "course": "Data Protection & Privacy Law",
+        "roles": [
+          "Data Protection Officer (Junior)",
+          "Privacy Analyst",
+          "Compliance Associate",
+          "Contracts Analyst",
+          "Cyber Law Assistant"
+        ]
+      },
+      {
+        "course": "Technology Law / AI Governance (LLM)",
+        "roles": [
+          "Tech Counsel",
+          "AI Policy Advisor",
+          "Data Governance Lead",
+          "Legal Tech Head"
+        ]
+      },
+      {
+        "course": "Data Protection & Privacy Law (LLM)",
+        "roles": [
+          "Data Protection Officer",
+          "Privacy Counsel",
+          "Compliance Head",
+          "Privacy Consultant"
+        ]
+      }
+    ]
   },
   "Government, Public Administration & Policy": {
     "yearlySkillBuilding": {
@@ -1025,7 +1474,18 @@
         "Data Journalist Lead"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": [
+      {
+        "course": "Science, Technology & Innovation Policy (Ph.D.)",
+        "roles": [
+          "Professor",
+          "Policy Advisor (DST/NITI)",
+          "Think-tank Fellow",
+          "Innovation Strategist"
+        ]
+      }
+    ]
   },
   "Education & Learning": {
     "yearlySkillBuilding": {
@@ -1108,7 +1568,18 @@
         "Principal Scientist"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": [
+      {
+        "course": "Integrated B.Ed with Educational Technology",
+        "roles": [
+          "EdTech Teacher",
+          "Instructional Designer",
+          "Digital Content Developer",
+          "E-learning Specialist"
+        ]
+      }
+    ]
   },
   "Media, Communication, Arts & Design": {
     "yearlySkillBuilding": {
@@ -1204,7 +1675,89 @@
         "Innovation Fellow"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": [
+      {
+        "course": "Digital Marketing / Social Media Analytics",
+        "roles": [
+          "Digital Marketing Executive",
+          "SEO Analyst",
+          "Social Media Analyst",
+          "Content Strategist",
+          "Performance Marketer"
+        ]
+      },
+      {
+        "course": "BBA - Digital Business / E-Commerce / Social Media",
+        "roles": [
+          "Digital Business Executive",
+          "E-Commerce Manager (Junior)",
+          "Community Manager",
+          "Growth Executive",
+          "Marketplace Analyst"
+        ]
+      },
+      {
+        "course": "Creative Writing / Film Studies / Screenwriting",
+        "roles": [
+          "Screenwriter",
+          "Content Writer",
+          "Story Analyst",
+          "Script Editor",
+          "Film Critic"
+        ]
+      },
+      {
+        "course": "Media & Communication / Digital Media / Podcasting",
+        "roles": [
+          "Content Creator",
+          "Podcast Producer",
+          "Social Media Manager",
+          "Digital Editor",
+          "Media Planner"
+        ]
+      },
+      {
+        "course": "Game Design / Games Art",
+        "roles": [
+          "Game Designer",
+          "Game Artist",
+          "Level Designer",
+          "Narrative Designer",
+          "Technical Artist"
+        ]
+      },
+      {
+        "course": "Transportation / Automobile Design",
+        "roles": [
+          "Automobile Designer",
+          "Clay Modeller",
+          "Vehicle Interior Designer",
+          "CMF Designer",
+          "Concept Designer"
+        ]
+      },
+      {
+        "course": "Design for Social Innovation / Sustainable Design",
+        "roles": [
+          "Service Designer",
+          "Social Innovation Designer",
+          "Sustainability Designer",
+          "Design Researcher",
+          "Impact Consultant"
+        ]
+      },
+      {
+        "course": "Data Visualisation / Information Design",
+        "roles": [
+          "Data Visualisation Designer",
+          "Information Designer",
+          "Infographic Designer",
+          "Dashboard Designer",
+          "Design Analyst"
+        ]
+      }
+    ]
   },
   "Manufacturing & Industrial Production": {
     "yearlySkillBuilding": {
@@ -1301,7 +1854,58 @@
         "Device Physicist"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": [
+      {
+        "course": "Smart Manufacturing / Industry 4.0",
+        "roles": [
+          "Industry 4.0 Engineer",
+          "Smart Factory Engineer",
+          "MES/SCADA Engineer",
+          "Manufacturing Data Analyst",
+          "Automation Consultant"
+        ]
+      },
+      {
+        "course": "Additive Manufacturing (3D Printing)",
+        "roles": [
+          "Additive Manufacturing Engineer",
+          "3D Printing Technician",
+          "Rapid Prototyping Engineer",
+          "Design-for-AM Specialist",
+          "Materials Engineer"
+        ]
+      },
+      {
+        "course": "Digital Manufacturing & Design",
+        "roles": [
+          "Digital Manufacturing Engineer",
+          "Product Data Manager",
+          "CAM Engineer",
+          "Simulation Engineer",
+          "PLM Specialist"
+        ]
+      },
+      {
+        "course": "Biomanufacturing / Bioengineering",
+        "roles": [
+          "Bioprocess Engineer",
+          "Biomanufacturing Technician",
+          "Cell Therapy Process Engineer",
+          "Bio-QA Specialist",
+          "Tissue Engineer"
+        ]
+      },
+      {
+        "course": "Smart Manufacturing / Additive Manufacturing (M.Tech)",
+        "roles": [
+          "Smart Manufacturing Lead",
+          "Additive Manufacturing Engineer",
+          "Industry 4.0 Consultant",
+          "Manufacturing R&D Engineer"
+        ]
+      }
+    ]
   },
   "Supply Chain, Procurement & Logistics": {
     "yearlySkillBuilding": {
@@ -1399,7 +2003,8 @@
         "Economic Consultant"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": []
   },
   "Travel, Tourism, Hospitality & Transport": {
     "yearlySkillBuilding": {
@@ -1482,7 +2087,8 @@
         "Tourism Researcher"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": []
   },
   "Defence, Security & Emergency Services": {
     "yearlySkillBuilding": {
@@ -1558,7 +2164,8 @@
         "Principal Scientist"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": []
   },
   "Personal Care, Beauty & Wellness": {
     "yearlySkillBuilding": {
@@ -1638,6 +2245,7 @@
         "Innovation Fellow"
       ],
       "note": null
-    }
+    },
+    "emergingAreas": []
   }
 }

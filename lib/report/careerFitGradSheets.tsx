@@ -111,6 +111,17 @@ function ClusterRoadmapView({ r, color }: { r: GradClusterRoadmap; color: string
       <Sec title="Careers you can be hired as">
         <div>{r.jobRoles.map((role) => <span key={role} style={chip}>{role}</span>)}</div>
       </Sec>
+      <Sec title="Emerging areas to watch" skip={r.emergingAreas.length === 0}>
+        <p style={{ fontSize: 11.5, color: "var(--muted)", marginBottom: 10 }}>Specific courses flagged as emerging (2023-26) in current course data, with the real roles they lead to.</p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 10 }}>
+          {r.emergingAreas.map((e) => (
+            <div key={e.course} style={{ padding: "10px 12px", border: `1px solid ${color}25`, borderRadius: 10, background: `${color}06` }}>
+              <div style={{ fontSize: 11.5, fontWeight: 800, color, marginBottom: 4 }}>{e.course}</div>
+              <div style={{ fontSize: 11.5, color: "var(--ink-2)" }}>{e.roles.join(" · ")}</div>
+            </div>
+          ))}
+        </div>
+      </Sec>
       <Sec title="PG to consider - in India">
         {r.pgInIndia.note ? (
           <p style={{ fontSize: 12.5, color: "var(--ink-2)" }}>{r.pgInIndia.note}</p>
