@@ -1279,7 +1279,7 @@ export const FLAGSHIP_ROADMAPS_1112: Partial<Record<string, FlagshipDomainRoadma
     ],
     disclaimer: "College names, fee levels, entrance-exam formats and regulatory/professional-qualification requirements all change - checked against live sources in September 2026, refresh at least annually. Several roles in this domain (psychology, rehabilitation, counselling) are professionally regulated - always verify current licensing requirements before assuming a degree alone qualifies independent practice.",
   },
-  "Education & Learning": {
+  "Education & Training": {
     tagline: "Far broader than \"become a school teacher\" - School Teaching, Higher Education & Academia, Educational Psychology, Instructional Design, Corporate L&D and EdTech are genuinely different careers requiring different qualifications.",
     recommendedStream: "No single required stream - but for school teaching specifically, the Class 11-12 subject should align with the subject the student eventually wants to teach (e.g. PCM → B.Sc/B.Tech/Maths → B.Ed → Maths/Science teaching), rather than an unrelated degree followed by a late switch.",
     subjects: [
