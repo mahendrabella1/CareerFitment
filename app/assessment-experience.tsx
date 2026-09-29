@@ -245,7 +245,7 @@ const MILESTONES: { value: string; category: string; label: string; hint: string
   { value: "career_discovery", category: "class_8", label: "Class 8", hint: "Discover interests & multiple intelligences" },
   { value: "stream_selection", category: "class_9_10", label: "Class 9 – 10", hint: "Find the right stream & subjects" },
   { value: "career_planning", category: "class_11_12", label: "Class 11 – 12", hint: "Career road map & execution plan" },
-  { value: "graduate_readiness", category: "graduate", label: "Graduate", hint: "Best-fit path & readiness" },
+  { value: "graduate_readiness", category: "graduate", label: "Undergraduate", hint: "Best-fit path & readiness" },
   { value: "career_growth", category: "early_professional", label: "Early Professional", hint: "Early-career direction & growth" },
   { value: "leadership_excellence", category: "experienced_professional", label: "Experienced Professional", hint: "Leadership & pivot planning" },
 ];
@@ -490,7 +490,7 @@ function categoryHint(code: string): string {
     case "career_planning":
       return "Inter / Class 11 and 12";
     case "graduate_readiness":
-      return "Graduate students";
+      return "Undergraduate students";
     case "career_growth":
       return "Early-career professionals";
     case "leadership_excellence":
@@ -1477,7 +1477,7 @@ export default function AssessmentExperience() {
                 { icon: <BookOpen size={22} />, t: "Class 6–8", d: "Discover interests & multiple intelligences", j: "career_discovery" },
                 { icon: <Compass size={22} />, t: "Class 9–10", d: "Find the right stream & subjects", j: "stream_selection" },
                 { icon: <GraduationCap size={22} />, t: "Class 11–12", d: "Career road map & execution plan", j: "career_planning" },
-                { icon: <Rocket size={22} />, t: "Graduates", d: "Best-fit path & job readiness", j: "graduate_readiness" },
+                { icon: <Rocket size={22} />, t: "Undergraduates", d: "Best-fit path & job readiness", j: "graduate_readiness" },
                 { icon: <Briefcase size={22} />, t: "Professionals", d: "Growth, leadership & pivots", j: "leadership_excellence" },
               ].map((a) => (
                 <button

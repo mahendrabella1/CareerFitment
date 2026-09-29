@@ -62,6 +62,14 @@ export const CLUSTER_ROLES: Record<string, string[]> = Object.fromEntries(
   DATA.clusters.map((c) => [c.name, c.roles])
 );
 
+/** Every unique job role across all 18 clusters (3,302 as of this build) -
+ *  the wide, degree/stream-independent pool for the Career Selector's
+ *  desired-career field, so a student isn't limited to a short curated
+ *  bundle list. */
+export const ALL_JOB_ROLES_GRAD: string[] = Array.from(
+  new Set(DATA.clusters.flatMap((c) => c.roles))
+).sort((a, b) => a.localeCompare(b));
+
 export const MASTER_ROWS_GRAD: MasterRow[] = DATA.masterRows;
 
 /** Job roles a student in this exact degree+course could be hired into,

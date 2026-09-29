@@ -21,7 +21,7 @@ import { trackEvent } from "@/lib/metaPixel";
 const NAVY = "#2f3f9e";
 const BG = "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1600&q=70";
 
-// Classes 6, 7, 8, 9–10, 11 and 12 are available; the rest are shown but disabled ("Soon").
+// Classes 6, 7, 8, 9–10, 11, 12 and Undergraduates are available; the rest are shown but disabled ("Soon").
 const MILESTONES = [
   { value: "class_6", label: "Class 6", icon: "school", color: "#2f6bff", soft: "#e9f0ff", enabled: true },
   { value: "class_7", label: "Class 7", icon: "school", color: "#2f6bff", soft: "#e9f0ff", enabled: true },
@@ -29,7 +29,11 @@ const MILESTONES = [
   { value: "class_9_10", label: "Class 9 – 10", icon: "route", color: "#16a34a", soft: "#e6f6ec", enabled: true },
   { value: "class_11", label: "Class 11", icon: "compass", color: "#7c3aed", soft: "#f1e9fd", enabled: true },
   { value: "class_12", label: "Class 12", icon: "compass", color: "#7c3aed", soft: "#f1e9fd", enabled: true },
-  { value: "graduate", label: "Graduates", icon: "cap", color: "#e08a0a", soft: "#fdf1dd", enabled: false },
+  // Internal category value stays "graduate" (matches stageForCategory() in
+  // lib/newAssessment/data.ts and every graduateOutput/journeyCode check
+  // downstream) - only the user-facing label changed, per instruction to
+  // call this "Undergraduates" everywhere the student sees it.
+  { value: "graduate", label: "Undergraduates", icon: "cap", color: "#e08a0a", soft: "#fdf1dd", enabled: true },
   { value: "experienced_professional", label: "Professionals", icon: "briefcase", color: "#0d9488", soft: "#dff5f2", enabled: false },
 ];
 const STAGES = [
