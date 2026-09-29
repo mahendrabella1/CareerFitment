@@ -478,20 +478,94 @@ function GradRoadmapSectionFrame({ index, title, sub, children }: { index: numbe
   );
 }
 
-function ClusterRoadmapView({ r, color }: { r: GradClusterRoadmap; color: string }) {
-  const chip: React.CSSProperties = {
-    display: "inline-block", fontSize: 11.5, fontWeight: 600, color: "var(--ink-2)",
-    background: `${color}0c`, border: `1px solid ${color}30`, borderRadius: 8, padding: "5px 10px", margin: "0 6px 6px 0",
-  };
+// Every section's own accent, by 1-based index - the single source of truth
+// both the header (GradRoadmapSectionFrame, above) and every content
+// element within that section pull from, so a section's icon/badge and the
+// cards/chips underneath it are always the SAME colour, never a header in
+// one hue with mismatched content below it.
+function sectionAccent(index: number): string {
+  return GRAD_ROADMAP_SECTION_META[index - 1]?.accent ?? "#4c8b65";
+}
+
+// A compact "map" of the 7-step journey shown once, before section 1 - the
+// same "see the whole route before you start reading it" job 11-12's own
+// illustrated roadmap image does, built from the same icons/colours/labels
+// GradRoadmapSectionFrame already uses per section rather than a separate
+// static asset.
+function RoadmapJourneyStrip() {
+  return (
+    <div style={{ marginTop: 4, marginBottom: 22, padding: "18px 16px", borderRadius: 18, background: "linear-gradient(135deg, #fafbfd, #fff)", border: "1px solid #e4e8ee", boxShadow: "0 8px 22px rgba(36,52,74,.06)" }}>
+      <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: ".09em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 14, textAlign: "center" }}>Your roadmap, at a glance</div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(88px, 1fr))", gap: 8 }}>
+        {GRAD_ROADMAP_SECTION_META.map((m, i) => (
+          <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 7, padding: "8px 4px", borderRadius: 12, background: `${m.accent}08` }}>
+            <div style={{ position: "relative" }}>
+              <span style={{ width: 36, height: 36, borderRadius: 11, display: "grid", placeItems: "center", background: m.accent, color: "#fff", boxShadow: `0 4px 10px ${m.accent}40` }}>
+                <Icon name={m.icon} size={16} />
+              </span>
+              <span style={{ position: "absolute", right: -5, bottom: -5, width: 16, height: 16, borderRadius: "50%", display: "grid", placeItems: "center", background: "#fff", border: `1.5px solid ${m.accent}`, color: m.accent, fontSize: 7.5, fontWeight: 900 }}>{i + 1}</span>
+            </div>
+            <div style={{ fontSize: 9.5, fontWeight: 800, textAlign: "center", color: "var(--ink)", lineHeight: 1.25 }}>{m.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// A plain string list rendered as small numbered cards (alternating tint)
+// instead of a bare bullet list - same treatment as careerFit1112Sheets.tsx's
+// own DetailList, for checklist-style content (e.g. "before choosing a PG
+// route") that otherwise reads as a wall of bullet text.
+function GradDetailList({ lines, color }: { lines: string[]; color: string }) {
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 8 }}>
+      {lines.map((l, i) => (
+        <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", padding: "9px 10px", border: `1px solid ${color}22`, borderRadius: 10, background: i % 2 ? "#fff" : `${color}08`, minWidth: 0 }}>
+          <span style={{ width: 20, height: 20, borderRadius: 7, display: "grid", placeItems: "center", flex: "none", color, background: `${color}16`, fontSize: 9.5, fontWeight: 900 }}>{String(i + 1).padStart(2, "0")}</span>
+          <span style={{ fontSize: 12, color: "var(--ink-2)", lineHeight: 1.45, minWidth: 0 }}>{l}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// A dot-and-connecting-line ladder for progression content (e.g. "going
+// forward - career advancement") - the same visual language as
+// careerFit1112Sheets.tsx's VerticalStepChain, for a real A→B→C→D climb
+// rather than a bare bullet list burying the sense of forward motion.
+function GradStepChain({ steps, color }: { steps: string[]; color: string }) {
   return (
     <div>
+      {steps.map((s, i) => (
+        <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: "none" }}>
+            <span style={{ width: 9, height: 9, borderRadius: "50%", background: color, flex: "none", marginTop: 4 }} />
+            {i < steps.length - 1 && <div style={{ width: 2, flex: 1, background: `linear-gradient(${color}60, ${color}18)`, minHeight: 18 }} />}
+          </div>
+          <div style={{ fontSize: 12.5, fontWeight: i === steps.length - 1 ? 800 : 600, color: i === steps.length - 1 ? color : "var(--ink)", paddingBottom: i < steps.length - 1 ? 10 : 0 }}>{s}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ClusterRoadmapView({ r }: { r: GradClusterRoadmap }) {
+  const chip = (color: string): React.CSSProperties => ({
+    display: "inline-block", fontSize: 11.5, fontWeight: 600, color: "var(--ink-2)",
+    background: `${color}0c`, border: `1px solid ${color}30`, borderRadius: 8, padding: "5px 10px", margin: "0 6px 6px 0",
+  });
+  return (
+    <div>
+      <RoadmapJourneyStrip />
+
       <GradRoadmapSectionFrame index={1} title="What to build each year">
         <p style={{ fontSize: 12.5, color: "var(--ink-2)", marginBottom: 10 }}><b>Technical:</b> {r.yearlySkillBuilding.technical}</p>
         <p style={{ fontSize: 12.5, color: "var(--ink-2)", marginBottom: 10 }}><b>Non-technical:</b> {r.yearlySkillBuilding.nonTechnical}</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10 }}>
           {r.yearlySkillBuilding.years.map((y) => (
-            <div key={y.year} style={{ padding: "10px 12px", border: `1px solid ${color}25`, borderRadius: 10, background: `${color}06` }}>
-              <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 4 }}>{y.year}</div>
+            <div key={y.year} style={{ padding: "10px 12px", border: `1px solid ${sectionAccent(1)}25`, borderRadius: 10, background: `${sectionAccent(1)}06` }}>
+              <div style={{ fontSize: 11, fontWeight: 800, color: sectionAccent(1), marginBottom: 4 }}>{y.year}</div>
               <div style={{ fontSize: 12, color: "var(--ink-2)" }}>{y.focus}</div>
             </div>
           ))}
@@ -508,15 +582,15 @@ function ClusterRoadmapView({ r, color }: { r: GradClusterRoadmap; color: string
       </GradRoadmapSectionFrame>
 
       <GradRoadmapSectionFrame index={4} title="Careers you can be hired as">
-        <div>{r.jobRoles.map((role) => <span key={role} style={chip}>{role}</span>)}</div>
+        <div>{r.jobRoles.map((role) => <span key={role} style={chip(sectionAccent(4))}>{role}</span>)}</div>
         {r.emergingAreas.length > 0 && (
           <div style={{ marginTop: 16 }}>
-            <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 6 }}>Emerging areas to watch</div>
+            <div style={{ fontSize: 11, fontWeight: 800, color: sectionAccent(4), marginBottom: 6 }}>Emerging areas to watch</div>
             <p style={{ fontSize: 11.5, color: "var(--muted)", marginBottom: 10 }}>Specific courses flagged as emerging (2023-26) in current course data, with the real roles they lead to.</p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 10 }}>
               {r.emergingAreas.map((e) => (
-                <div key={e.course} style={{ padding: "10px 12px", border: `1px solid ${color}25`, borderRadius: 10, background: `${color}06` }}>
-                  <div style={{ fontSize: 11.5, fontWeight: 800, color, marginBottom: 4 }}>{e.course}</div>
+                <div key={e.course} style={{ padding: "10px 12px", border: `1px solid ${sectionAccent(4)}25`, borderRadius: 10, background: `${sectionAccent(4)}06` }}>
+                  <div style={{ fontSize: 11.5, fontWeight: 800, color: sectionAccent(4), marginBottom: 4 }}>{e.course}</div>
                   <div style={{ fontSize: 11.5, color: "var(--ink-2)" }}>{e.roles.join(" · ")}</div>
                 </div>
               ))}
@@ -530,7 +604,7 @@ function ClusterRoadmapView({ r, color }: { r: GradClusterRoadmap; color: string
           <p style={{ fontSize: 12.5, color: "var(--ink-2)" }}>{r.pgInIndia.note}</p>
         ) : (
           <>
-            <div style={{ marginBottom: 8 }}>{r.pgInIndia.programmes.map((p) => <span key={p} style={chip}>{p}</span>)}</div>
+            <div style={{ marginBottom: 8 }}>{r.pgInIndia.programmes.map((p) => <span key={p} style={chip(sectionAccent(5))}>{p}</span>)}</div>
             {r.pgInIndia.entranceExams.length > 0 && (
               <p style={{ fontSize: 12, color: "var(--ink-2)" }}><b>Entrance routes:</b> {r.pgInIndia.entranceExams.join(" · ")}</p>
             )}
@@ -545,7 +619,7 @@ function ClusterRoadmapView({ r, color }: { r: GradClusterRoadmap; color: string
       <GradRoadmapSectionFrame index={7} title="Going forward - career advancement">
         {r.careerAdvancement.note && <p style={{ fontSize: 12.5, color: "var(--ink-2)", marginBottom: 8 }}>{r.careerAdvancement.note}</p>}
         {r.careerAdvancement.phdProgrammes.length > 0 && (
-          <div style={{ marginBottom: 8 }}>{r.careerAdvancement.phdProgrammes.map((p) => <span key={p} style={chip}>{p}</span>)}</div>
+          <div style={{ marginBottom: 8 }}>{r.careerAdvancement.phdProgrammes.map((p) => <span key={p} style={chip(sectionAccent(7))}>{p}</span>)}</div>
         )}
         {r.careerAdvancement.phdRoles.length > 0 && (
           <p style={{ fontSize: 12, color: "var(--ink-2)" }}><b>Roles this can lead to:</b> {r.careerAdvancement.phdRoles.slice(0, 8).join(" · ")}</p>
@@ -563,27 +637,30 @@ function ClusterRoadmapView({ r, color }: { r: GradClusterRoadmap; color: string
 // depth of content within each step (real internship targets, named
 // certifications, a PG decision checklist, country-by-country abroad
 // guidance), not a different visual design.
-function FlagshipRoadmapViewGrad({ r, color }: { r: FlagshipDomainRoadmapGrad; color: string }) {
-  const chip: React.CSSProperties = {
+function FlagshipRoadmapViewGrad({ r }: { r: FlagshipDomainRoadmapGrad }) {
+  const chip = (color: string): React.CSSProperties => ({
     display: "inline-block", fontSize: 11.5, fontWeight: 600, color: "var(--ink-2)",
     background: `${color}0c`, border: `1px solid ${color}30`, borderRadius: 8, padding: "5px 10px", margin: "0 6px 6px 0",
-  };
+  });
   const note: React.CSSProperties = { fontSize: 11.5, color: "var(--muted)", fontStyle: "italic", marginTop: 10, lineHeight: 1.5 };
+  const intro = "#5a6b8c";
   return (
     <div>
+      <RoadmapJourneyStrip />
+
       {r.careerFamilies.length > 0 && (
-        <div style={{ marginBottom: 16, padding: "12px 14px", border: `1px solid ${color}25`, borderRadius: 10, background: `${color}06` }}>
-          <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 6 }}>This cluster's career families</div>
-          <div>{r.careerFamilies.map((f) => <span key={f} style={chip}>{f}</span>)}</div>
-          <p style={{ fontSize: 11.5, color: "var(--ink-2)", marginTop: 8 }}>{r.howToUseNote}</p>
+        <div style={{ marginBottom: 22, padding: "14px 16px", border: `1px solid ${intro}28`, borderRadius: 14, background: `linear-gradient(110deg, ${intro}0a, #fff)` }}>
+          <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: ".07em", textTransform: "uppercase", color: intro, marginBottom: 8 }}>This cluster&apos;s career families</div>
+          <div>{r.careerFamilies.map((f) => <span key={f} style={chip(intro)}>{f}</span>)}</div>
+          <p style={{ fontSize: 12, color: "var(--ink-2)", marginTop: 10, lineHeight: 1.5 }}>{r.howToUseNote}</p>
         </div>
       )}
 
       <GradRoadmapSectionFrame index={1} title="What to build each year">
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {r.yearPlan.map((y) => (
-            <div key={y.stage} style={{ padding: "10px 12px", border: `1px solid ${color}25`, borderRadius: 10, background: `${color}06` }}>
-              <div style={{ fontSize: 11.5, fontWeight: 800, color, marginBottom: 5 }}>{y.stage}</div>
+            <div key={y.stage} style={{ padding: "10px 12px", border: `1px solid ${sectionAccent(1)}25`, borderRadius: 10, background: `${sectionAccent(1)}06` }}>
+              <div style={{ fontSize: 11.5, fontWeight: 800, color: sectionAccent(1), marginBottom: 5 }}>{y.stage}</div>
               <p style={{ fontSize: 12, color: "var(--ink-2)", marginBottom: 4 }}><b>Technical:</b> {y.technical}</p>
               <p style={{ fontSize: 12, color: "var(--ink-2)", marginBottom: 4 }}><b>Non-technical:</b> {y.nonTechnical}</p>
               <p style={{ fontSize: 12, color: "var(--ink-2)" }}><b>Evidence to build:</b> {y.evidence}</p>
@@ -595,8 +672,8 @@ function FlagshipRoadmapViewGrad({ r, color }: { r: FlagshipDomainRoadmapGrad; c
       <GradRoadmapSectionFrame index={2} title="Internships & real-world exposure">
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {r.internshipTracks.map((t) => (
-            <div key={t.track} style={{ padding: "10px 12px", border: `1px solid ${color}25`, borderRadius: 10, background: `${color}06` }}>
-              <div style={{ fontSize: 11.5, fontWeight: 800, color, marginBottom: 5 }}>{t.track}</div>
+            <div key={t.track} style={{ padding: "10px 12px", border: `1px solid ${sectionAccent(2)}25`, borderRadius: 10, background: `${sectionAccent(2)}06` }}>
+              <div style={{ fontSize: 11.5, fontWeight: 800, color: sectionAccent(2), marginBottom: 5 }}>{t.track}</div>
               <p style={{ fontSize: 12, color: "var(--ink-2)", marginBottom: 4 }}>{t.targets}</p>
               <p style={{ fontSize: 11.5, color: "var(--muted)" }}><b>Before applying:</b> {t.prepare}</p>
             </div>
@@ -608,7 +685,7 @@ function FlagshipRoadmapViewGrad({ r, color }: { r: FlagshipDomainRoadmapGrad; c
       <GradRoadmapSectionFrame index={3} title="Certifications in demand">
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {r.certifications.map((c) => (
-            <div key={c.name} style={{ display: "flex", justifyContent: "space-between", gap: 10, padding: "8px 12px", border: `1px solid ${color}25`, borderRadius: 9, background: `${color}06` }}>
+            <div key={c.name} style={{ display: "flex", justifyContent: "space-between", gap: 10, padding: "8px 12px", border: `1px solid ${sectionAccent(3)}25`, borderRadius: 9, background: `${sectionAccent(3)}06` }}>
               <span style={{ fontSize: 12.5, fontWeight: 700, color: "var(--ink)" }}>{c.name}</span>
               <span style={{ fontSize: 11.5, color: "var(--ink-2)", flex: "none" }}>{c.bestFor}</span>
             </div>
@@ -618,23 +695,21 @@ function FlagshipRoadmapViewGrad({ r, color }: { r: FlagshipDomainRoadmapGrad; c
       </GradRoadmapSectionFrame>
 
       <GradRoadmapSectionFrame index={4} title="Careers you can be hired as">
-        <div>{r.careersHiredAs.map((role) => <span key={role} style={chip}>{role}</span>)}</div>
+        <div>{r.careersHiredAs.map((role) => <span key={role} style={chip(sectionAccent(4))}>{role}</span>)}</div>
         <p style={note}>{r.jobSearchNote}</p>
       </GradRoadmapSectionFrame>
 
       <GradRoadmapSectionFrame index={5} title="PG to consider - in India">
-        <p style={{ fontSize: 12.5, color: "var(--ink-2)", marginBottom: 10 }}>{r.pgIndia}</p>
-        <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 6 }}>Before choosing a PG route</div>
-        <ul style={{ margin: 0, paddingLeft: 18, display: "flex", flexDirection: "column", gap: 4 }}>
-          {r.pgIndiaChecklist.map((c) => <li key={c} style={{ fontSize: 12, color: "var(--ink-2)" }}>{c}</li>)}
-        </ul>
+        <p style={{ fontSize: 12.5, color: "var(--ink-2)", marginBottom: 12 }}>{r.pgIndia}</p>
+        <div style={{ fontSize: 11, fontWeight: 800, color: sectionAccent(5), marginBottom: 8 }}>Before choosing a PG route</div>
+        <GradDetailList lines={r.pgIndiaChecklist} color={sectionAccent(5)} />
       </GradRoadmapSectionFrame>
 
       <GradRoadmapSectionFrame index={6} title="Study abroad - country-wise">
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 10 }}>
           {r.abroadCountries.map((a) => (
-            <div key={a.country + a.detail} style={{ padding: "10px 12px", border: `1px solid ${color}25`, borderRadius: 10, background: `${color}06` }}>
-              {a.country && <div style={{ fontSize: 11.5, fontWeight: 800, color, marginBottom: 4 }}>{a.country}</div>}
+            <div key={a.country + a.detail} style={{ padding: "10px 12px", border: `1px solid ${sectionAccent(6)}25`, borderRadius: 10, background: `${sectionAccent(6)}06` }}>
+              {a.country && <div style={{ fontSize: 11.5, fontWeight: 800, color: sectionAccent(6), marginBottom: 4 }}>{a.country}</div>}
               <div style={{ fontSize: 12, color: "var(--ink-2)" }}>{a.detail}</div>
             </div>
           ))}
@@ -643,11 +718,9 @@ function FlagshipRoadmapViewGrad({ r, color }: { r: FlagshipDomainRoadmapGrad; c
       </GradRoadmapSectionFrame>
 
       <GradRoadmapSectionFrame index={7} title="Going forward - career advancement & PhD">
-        <ul style={{ margin: 0, paddingLeft: 18, display: "flex", flexDirection: "column", gap: 6, marginBottom: 14 }}>
-          {r.careerAdvancement.map((c) => <li key={c} style={{ fontSize: 12.5, color: "var(--ink-2)" }}>{c}</li>)}
-        </ul>
-        <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 6 }}>Career evidence to keep from UG</div>
-        <div>{r.careerEvidence.map((e) => <span key={e} style={chip}>{e}</span>)}</div>
+        <GradStepChain steps={r.careerAdvancement} color={sectionAccent(7)} />
+        <div style={{ fontSize: 11, fontWeight: 800, color: sectionAccent(7), margin: "16px 0 8px" }}>Career evidence to keep from UG</div>
+        <div>{r.careerEvidence.map((e) => <span key={e} style={chip(sectionAccent(7))}>{e}</span>)}</div>
         <p style={note}>{r.domainCaution}</p>
       </GradRoadmapSectionFrame>
     </div>
@@ -906,9 +979,9 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
                 sub="The standard path into this cluster - the same realistic route for anyone in this field, not built around one specific job title." />
               <div style={{ marginTop: 16 }}>
                 {flagshipRoadmap ? (
-                  <FlagshipRoadmapViewGrad r={flagshipRoadmap} color={clusterColor(topCluster)} />
+                  <FlagshipRoadmapViewGrad r={flagshipRoadmap} />
                 ) : (
-                  <ClusterRoadmapView r={genericRoadmap!} color={clusterColor(topCluster)} />
+                  <ClusterRoadmapView r={genericRoadmap!} />
                 )}
               </div>
               <div style={{ marginTop: 28, paddingTop: 24, borderTop: "1px solid var(--line)" }}>
