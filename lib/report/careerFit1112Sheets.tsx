@@ -1319,23 +1319,28 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
 
   const selector = desiredCareer ? selectCareer1112(desiredCareer, l1, streamKey) : null;
 
-  // A real, individually-researched in-depth roadmap for the student's
-  // EXACT desired career (see careerRoadmapDetailed1112.ts) - covers a
-  // growing subset of CAREERS_1112 (50 of 332 so far). When this exists it
-  // replaces the generic cluster roadmap below entirely, since it's a
-  // strict superset of what that gives (school → UG → colleges →
-  // scholarships → internships → PG → jobs → skills → abroad → progression,
-  // all specific to this one career rather than the whole cluster).
-  const detailedRoadmap = detailedRoadmapFor(selector?.career?.name);
+  // The featured role for the in-depth roadmap/internships/skills sections
+  // below: the top-ranked SPECIFIC role within the student's own top-ranked
+  // Career Suitability domain - grounded in their actual measured profile,
+  // not in whatever they may or may not have typed as a desired career.
+  // Every student who completed the assessment has a Suitability ranking,
+  // so (unlike the old selector.career-anchored version) this is available
+  // regardless of whether they named a career we've researched, or named
+  // one at all - the "you are here → destination" banner further down still
+  // covers their STATED desired career separately, when they gave one.
+  const roadmapCareer = suitabilityGroups[0]?.careers[0]?.career ?? null;
+  // A real, individually-researched in-depth roadmap (see
+  // careerRoadmapDetailed1112.ts) - covers a growing subset of CAREERS_1112
+  // (308 of 360 as of this pass). When this exists it replaces the generic
+  // cluster roadmap below entirely, since it's a strict superset of what
+  // that gives (school → UG → colleges → scholarships → internships → PG →
+  // jobs → skills → abroad → progression, all specific to this one career
+  // rather than the whole cluster).
+  const detailedRoadmap = detailedRoadmapFor(roadmapCareer?.name);
 
-  // This roadmap is the STANDARD, pre-authored path for Career Suitability's
-  // #1 domain (CLUSTER_ROADMAPS, clusterRoadmaps1112.ts) - generic to that
-  // domain, not built around the student's specific desired career or
-  // stream. The short "you are here → destination" banner above already
-  // covers the desired career directly (on track / bridge / hard gate + the
-  // exam to take); this section answers a different, always-the-same-source
-  // question - "what does a realistic path in your best-fit domain actually
-  // look like" - so it never name-drops the desired career or the stream.
+  // The STANDARD, pre-authored path for roadmapCareer's cluster
+  // (CLUSTER_ROADMAPS, clusterRoadmaps1112.ts) - the fallback shown when
+  // that specific role has no detailed roadmap yet.
   const roadmapDomain = suitabilityGroups[0]?.domain ?? null;
   const realisticRoadmap = roadmapDomain ? CLUSTER_ROADMAPS[roadmapDomain as StandardCluster] : null;
 
@@ -1512,44 +1517,53 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                   <Pill label={selector.roadmap!.fitType} tone={toneForFitType(selector.roadmap!.fitType)} />
                   <span style={{ fontSize: 12.5, color: "var(--ink-2)", fontWeight: 600 }}>{selector.roadmap!.actionSummary}</span>
                 </div>
-                <div style={{ textAlign: "center", fontSize: 12.5, color: "var(--ink-2)", marginBottom: 20 }}>
+                <div style={{ textAlign: "center", fontSize: 12.5, color: "var(--ink-2)" }}>
                   <b style={{ color: "var(--ink)" }}>Entrance exam for {selector.career.name}:</b> {selector.career.typicalEntranceExam}
-                </div>
-
-                {detailedRoadmap ? (
-                  <DetailedCareerRoadmapView r={detailedRoadmap} careerName={selector.career.name} color={clusterColor(selector.career.cluster)} />
-                ) : roadmapDomain && realisticRoadmap ? (
-                  <div style={BREAK}>
-                    <SecHead center eyebrow={`${clusterHeading(roadmapDomain)} · your best-fit domain`} title="Your realistic path"
-                      sub={`The standard path into a ${clusterHeading(roadmapDomain)} career - where you are now, through to senior/leadership roles. This is the same realistic route for anyone in this domain, not built around one specific job title.`} />
-                    <div style={{ marginTop: 16 }}>
-                      <ClusterRoadmapPath phases={realisticRoadmap.phases} color={clusterColor(roadmapDomain)} />
-                    </div>
-                  </div>
-                ) : null}
-
-                <div style={BREAK}>
-                  <SecHead center eyebrow="Where to go next" title="Explore internships"
-                    sub="Live internship listings on your own OneGrasp dashboard." />
-                  <div style={{ marginTop: 14, display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
-                    <a href={`${SITE_URL_1112}/account/internships-new`} target="_blank" rel="noreferrer" style={{ fontSize: 12.5, fontWeight: 700, color: "#fff", background: clusterColor(selector.career.cluster), padding: "9px 16px", borderRadius: 10, textDecoration: "none" }}>Browse live internships on your dashboard ↗</a>
-                  </div>
-                </div>
-
-                <div style={BREAK}>
-                  <SecHead center eyebrow="What this role draws on" title="Skills and abilities that matter here" />
-                  <div style={{ marginTop: 12, display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center" }}>
-                    {skillTagsFor1112(selector.career).map((s) => (
-                      <span key={s} style={{ fontSize: 12, fontWeight: 700, color: clusterColor(selector!.career!.cluster), background: `${clusterColor(selector!.career!.cluster)}14`, border: `1px solid ${clusterColor(selector!.career!.cluster)}38`, padding: "6px 13px", borderRadius: 999 }}>{s}</span>
-                    ))}
-                  </div>
                 </div>
               </div>
             ) : (
               <p style={{ marginTop: 20, fontSize: 13, color: "var(--ink-2)" }}>&ldquo;{desiredCareer}&rdquo; isn&apos;t in our {totalCareers}-career reference list yet - talk to your counsellor about the specific path, using Career Fitment and Career Suitability above as your general direction.</p>
             )
           ) : (
-            <p style={{ marginTop: 20, fontSize: 13, color: "var(--ink-2)" }}>You didn&apos;t name a specific career, so there&apos;s nothing to check here yet - Career Fitment and Career Suitability still stand on their own.</p>
+            <p style={{ marginTop: 20, fontSize: 13, color: "var(--ink-2)" }}>You didn&apos;t name a specific career - the roadmap below is built from your own Career Suitability results instead.</p>
+          )}
+
+          {/* Roadmap/internships/skills below are anchored to roadmapCareer
+              (the top-ranked role in the student's own top Suitability
+              domain) - shown regardless of whether they named a matching
+              desired career above, since this is grounded in their actual
+              measured results, not free-text matching. */}
+          {roadmapCareer && (
+            <div style={{ marginTop: 20 }}>
+              {detailedRoadmap ? (
+                <DetailedCareerRoadmapView r={detailedRoadmap} careerName={roadmapCareer.name} color={clusterColor(roadmapCareer.cluster)} />
+              ) : roadmapDomain && realisticRoadmap ? (
+                <div style={BREAK}>
+                  <SecHead center eyebrow={`${clusterHeading(roadmapDomain)} · your best-fit domain`} title="Your realistic path"
+                    sub={`The standard path into a ${clusterHeading(roadmapDomain)} career - where you are now, through to senior/leadership roles. This is the same realistic route for anyone in this domain, not built around one specific job title.`} />
+                  <div style={{ marginTop: 16 }}>
+                    <ClusterRoadmapPath phases={realisticRoadmap.phases} color={clusterColor(roadmapDomain)} />
+                  </div>
+                </div>
+              ) : null}
+
+              <div style={BREAK}>
+                <SecHead center eyebrow="Where to go next" title="Explore internships"
+                  sub="Live internship listings on your own OneGrasp dashboard." />
+                <div style={{ marginTop: 14, display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
+                  <a href={`${SITE_URL_1112}/account/internships-new`} target="_blank" rel="noreferrer" style={{ fontSize: 12.5, fontWeight: 700, color: "#fff", background: clusterColor(roadmapCareer.cluster), padding: "9px 16px", borderRadius: 10, textDecoration: "none" }}>Browse live internships on your dashboard ↗</a>
+                </div>
+              </div>
+
+              <div style={BREAK}>
+                <SecHead center eyebrow="What this role draws on" title="Skills and abilities that matter here" />
+                <div style={{ marginTop: 12, display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center" }}>
+                  {skillTagsFor1112(roadmapCareer).map((s) => (
+                    <span key={s} style={{ fontSize: 12, fontWeight: 700, color: clusterColor(roadmapCareer!.cluster), background: `${clusterColor(roadmapCareer!.cluster)}14`, border: `1px solid ${clusterColor(roadmapCareer!.cluster)}38`, padding: "6px 13px", borderRadius: 999 }}>{s}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
           )}
         </>
       ),
