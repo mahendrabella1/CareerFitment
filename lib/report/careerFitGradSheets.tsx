@@ -32,6 +32,7 @@ import type { ReportSheet } from "@/app/account/FullReport";
 import { RANK_COLOURS } from "@/app/account/FullReport";
 import { Icon } from "@/app/Icons";
 import type { GraduateScoreOutput } from "@/lib/newAssessment/scoringGrad";
+import { rankSuitabilityGrad } from "@/lib/newAssessment/scoringGrad";
 import { CAREER_CLUSTERS_18, CLUSTER_ROLES, MASTER_ROWS_GRAD, clusterForDegreeCourse, rolesForDegreeCourse } from "@/lib/report/careerClustersGrad";
 import { clusterRoadmapGradFor, type GradClusterRoadmap } from "@/lib/report/clusterRoadmapsGrad";
 import { findCareer1112 } from "@/lib/report/careerFitEngine1112";
@@ -360,20 +361,16 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
   // filter for what's currently reachable, same framing as 11-12's Fitment.
   const fitmentRanked = [...clusterAffinities].sort((a, b) => b.computedScore - a.computedScore);
 
-  // Suitability: the SAME clusters, boosted toward what's actually
-  // reachable from the student's real degree+course (the closest Graduates
-  // equivalent to 11-12's "stream-filtered, Native Fit only" Suitability) -
-  // on top of the existing self-report bonus already in blendedScore.
-  const degreeCluster = clusterForDegreeCourse(academicContext.degree, academicContext.course);
-  const suitabilityRanked = [...clusterAffinities]
-    .map((c) => ({ ...c, suitabilityScore: Math.min(100, c.blendedScore + (c.cluster === degreeCluster ? 20 : 0)) }))
-    .sort((a, b) => b.suitabilityScore - a.suitabilityScore);
+  // Suitability: anchored to the student's real degree+course - see
+  // rankSuitabilityGrad's own doc comment (scoringGrad.ts) for why a hard
+  // anchor replaced the old soft score boost, and why this must be the ONE
+  // shared implementation rather than re-derived per report page.
+  const suitabilityRanked = rankSuitabilityGrad(clusterAffinities, academicContext.degree, academicContext.course);
 
   const topCluster = suitabilityRanked[0]?.cluster ?? "";
   const genericRoadmap = clusterRoadmapGradFor(topCluster);
   const resolved = resolveDesiredCareer(aspiration.desiredCareer);
   const detailedRoadmap = resolved.tier === "researched" ? detailedRoadmapFor(resolved.career1112Name) : null;
-  const degreeRoles = rolesForDegreeCourse(academicContext.degree, academicContext.course);
 
   const roleChipsFor = (cluster: string) => (CLUSTER_ROLES[cluster] ?? []).slice(0, 3);
 
@@ -470,33 +467,18 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
       node: (
         <>
           <PageHead eyebrow="What's realistic for your degree" title="Career Suitability"
-            sub={`Your top clusters once ${academicContext.degree || "your current degree"} is factored in - same ranking as Career Fitment, boosted toward what your actual degree and course realistically reach.`} />
-          {/* Only shown when the student's own degree+course cluster didn't
-              make the top 5 below - when it does, SuitabilityDomainBlock
-              already shows these same roles attributed to that specific
-              card, so repeating them up here would just be the same list
-              twice. */}
-          {degreeRoles.length > 0 && !suitabilityRanked.slice(0, 5).some((c) => c.cluster === degreeCluster) && (
-            <div style={{ marginTop: 20, marginBottom: 20, border: "1px solid var(--line)", borderRadius: 12, padding: "14px 16px", background: "var(--bg, #fafafa)" }}>
-              <div className="subhd" style={{ marginBottom: 8 }}>Roles {academicContext.course || "your course"} can lead to right now</div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
-                {degreeRoles.slice(0, 12).map((r) => (
-                  <span key={r} style={{ fontSize: 12, fontWeight: 700, color: "var(--ink)", background: "#fff", border: "1px solid var(--line)", borderRadius: 8, padding: "5px 10px" }}>{r}</span>
-                ))}
-              </div>
-            </div>
-          )}
+            sub={`Led by ${academicContext.degree || "your current degree"} - what you're actually studying comes first here, unlike Career Fitment above. The clusters below it are ranked by how strongly your measured interests, aptitude and strengths point toward them.`} />
+          {/* No standalone "roles your course leads to" callout here - when
+              degreeCluster resolves, it's always rank #1 below (see
+              suitabilityRanked), and SuitabilityDomainBlock already shows
+              those exact roles attributed to that card. A callout up here
+              would only ever be reachable when degreeCluster is null, which
+              also means degreeRoles is empty (same MASTER_ROWS_GRAD lookup),
+              so there'd never be anything to show it anyway. */}
           <div style={{ marginTop: 20 }}>
             {suitabilityRanked.slice(0, 5).map((c, i) => (
               <SuitabilityDomainBlock key={c.cluster} cluster={c.cluster} score={c.suitabilityScore} rank={i + 1} degree={academicContext.degree} course={academicContext.course} />
             ))}
-          </div>
-          <div style={BREAK}>
-            <SecHead eyebrow="Real, verified funding - not just any paid course" title="Funded programmes in your top clusters"
-              sub="Genuinely funded or stipend-linked routes - government training, sponsorship or apprenticeship programmes - the same standard 11-12's report holds this section to." />
-            <p style={{ marginTop: 16, fontSize: 12.5, color: "var(--ink-2)" }}>
-              We haven&apos;t researched verified funded programmes for Graduates&apos; clusters yet - this section is filled in cluster by cluster as it&apos;s confirmed against official sources, not guessed to fill space.
-            </p>
           </div>
         </>
       ),

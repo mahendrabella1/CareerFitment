@@ -21,7 +21,7 @@ import questionBank from "@/data/graduates/questions-corrected.json";
 import type {
   PersonalityProfile, RIASECScore, StrengthDomainScore, MotivatorProfile, LearningStyleProfile, EIProfile,
 } from "@/lib/newAssessment/scoring11_12";
-import { CAREER_CLUSTERS_18 } from "@/lib/report/careerClustersGrad";
+import { CAREER_CLUSTERS_18, clusterForDegreeCourse } from "@/lib/report/careerClustersGrad";
 import { degreeInfo } from "@/lib/report/degreeTaxonomyGrad";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -433,6 +433,44 @@ function computeClusterAffinities(
     .sort((a, b) => b.blendedScore - a.blendedScore);
 }
 
+export interface SuitableClusterGrad extends ClusterAffinityGrad {
+  suitabilityScore: number;
+}
+
+/**
+ * Career Suitability - anchored to what's actually reachable from the
+ * student's real degree+course, not just whichever cluster the psychometric
+ * profile happens to score highest on (that's Fitment/clusterAffinities
+ * itself, which ignores degree entirely by design). The Graduates
+ * equivalent of 11-12's "stream-filtered, Native Fit only" Suitability.
+ *
+ * The student's own degree cluster is guaranteed the #1 slot (when
+ * resolvable) - a soft score boost isn't enough to guarantee that, since an
+ * unrelated cluster's psychometric score can still beat it, which is
+ * exactly how an engineering student could see an unrelated field ranked as
+ * their top "suitability" domain. Its score shown is still the real,
+ * unmodified blendedScore, never inflated. The remaining clusters are
+ * ranked below it by blendedScore (interest + self-report).
+ *
+ * The single source of truth for "the student's top Suitability cluster" -
+ * every place that needs it (the Suitability page's own ranking, the
+ * Career Selector's roadmap anchor, summary.topCluster, gradExtraSheets'
+ * PG-exams page) must go through this, not re-derive it independently, or
+ * different parts of the same report can disagree on which cluster is
+ * "top."
+ */
+export function rankSuitabilityGrad(clusterAffinities: ClusterAffinityGrad[], degree: string, course: string): SuitableClusterGrad[] {
+  const degreeCluster = clusterForDegreeCourse(degree, course);
+  const byBlendedScore = (a: ClusterAffinityGrad, b: ClusterAffinityGrad) => b.blendedScore - a.blendedScore;
+  if (!degreeCluster) {
+    return [...clusterAffinities].sort(byBlendedScore).map((c) => ({ ...c, suitabilityScore: c.blendedScore }));
+  }
+  return [
+    ...clusterAffinities.filter((c) => c.cluster === degreeCluster).map((c) => ({ ...c, suitabilityScore: c.blendedScore })),
+    ...clusterAffinities.filter((c) => c.cluster !== degreeCluster).sort(byBlendedScore).map((c) => ({ ...c, suitabilityScore: c.blendedScore })),
+  ];
+}
+
 // ---------------------------------------------------------------- Entry point
 
 export function scoreGraduateAssessment(responses: GraduateResponse): GraduateScoreOutput {
@@ -450,7 +488,8 @@ export function scoreGraduateAssessment(responses: GraduateResponse): GraduateSc
   };
 
   const clusterAffinities = computeClusterAffinities(riasec, strengthDomains, multipleIntelligence, responses.career_cluster_fit.topClusters);
-  const topCluster = clusterAffinities[0]?.cluster ?? "";
+  const suitabilityRanked = rankSuitabilityGrad(clusterAffinities, responses.degree, responses.course);
+  const topCluster = suitabilityRanked[0]?.cluster ?? "";
 
   const info = degreeInfo(responses.degree);
   const academicContext: AcademicContextGrad = {

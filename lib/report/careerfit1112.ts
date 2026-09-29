@@ -317,16 +317,24 @@ export interface FundedProgram {
   verify: string;
   /** The verify citation's own official site - lets the report render it as a real clickable link instead of dead text. */
   url: string;
+  /** Set ONLY when `eligibility` requires already being enrolled in (or
+   *  having completed) a UG/PG programme - i.e. this is genuinely not
+   *  something a Class 11-12 reader can act on yet, just a real, useful
+   *  thing to know is waiting for them later. Undefined means "reachable
+   *  straight after Class 12", the default/common case for this whole list.
+   *  Rendered as its own clearly-labelled banner on the card so it can't be
+   *  mistaken for something to act on now. */
+  notYetReachable?: string;
 }
-// Every entry below is something a Class 12 pass-out can DIRECTLY apply for
-// via a named exam/admission process this year - no prior ITI, diploma or
-// degree required first. Programs that need one (UPSC CSE, SSC CGL, DRDO/
-// ISRO/PSU apprenticeships, TCS iON, CA Articleship, NID/AICTE/ICAR/IHM
-// scholarships, several NATS variants) were removed rather than flagged,
-// since a Class 11-12 reader can't act on them yet and several clusters had
-// nothing genuinely reachable left once those were taken out - those
-// clusters simply have no entry here now, same as any other
-// not-yet-researched cluster.
+// Every entry below is a genuinely real, verified funded/stipend/
+// scholarship-linked programme for its cluster - not filtered down to only
+// "reachable straight after Class 12" ones. A program that requires a
+// completed/in-progress UG or PG qualification first (UPSC CSE, SSC CGL,
+// DRDO/ISRO/PSU apprenticeships, CA Articleship, NID/AICTE/ICAR/IHM
+// scholarships, several NATS variants) is still included here since it's
+// real and worth knowing about early - it's flagged via `notYetReachable`
+// instead, rendered as its own clearly-labelled banner, so it can't be
+// mistaken for a next step available right now.
 export const CLUSTER_FUNDED_PROGRAMS: Partial<Record<StandardCluster, FundedProgram[]>> = {
   "Government & Public Administration": [
     {
@@ -358,6 +366,28 @@ export const CLUSTER_FUNDED_PROGRAMS: Partial<Record<StandardCluster, FundedProg
       outcome: "A fixed-term 4-year service; roughly a quarter are retained for continued service, the rest exit with the Seva Nidhi package and certain further-study/recruitment preferences.",
       verify: "joinindianarmy.nic.in / joinindiannavy.gov.in / the Indian Air Force's current Agniveer Vayu notification - eligibility percentages, retention shares and terms are scheme-specific and can change.",
       url: "https://joinindianarmy.nic.in",
+    },
+    {
+      name: "UPSC Civil Services Examination",
+      summary: "Not a Class-12 programme - the degree-level route into IAS/IPS/IFS/IRS and allied services, worth knowing early since it shapes which degree/stream choices keep this door open.",
+      eligibility: "Any bachelor's degree in any discipline; age 21–32 for the general category (relaxations apply for other categories).",
+      structure: "Preliminary exam → Main exam → Personality Test (interview).",
+      stipend: "No stipend during preparation - pay begins only after selection and foundation training.",
+      outcome: "Officer-level government service across IAS, IPS, IFS, IRS and other central/allied services, by final rank and service preference.",
+      verify: "upsc.gov.in - Civil Services Examination notification, released annually.",
+      url: "https://upsc.gov.in",
+      notYetReachable: "Requires a completed Bachelor's degree first - not reachable straight after Class 12. Worth knowing about now since it shapes which degree/stream choices keep this door open.",
+    },
+    {
+      name: "SSC CGL (Combined Graduate Level)",
+      summary: "A much higher-volume, faster route than the UPSC civil services into central government ministries and departments, for any bachelor's degree.",
+      eligibility: "Bachelor's degree in any discipline; age limits vary by specific post (commonly 18–32).",
+      structure: "Tier I and Tier II computer-based exams; some posts add a skill or typing test.",
+      stipend: "Not a training stipend - direct recruitment into a salaried Group B/C government post.",
+      outcome: "A government post across a wide range of central ministries/departments, assigned by rank and post preference.",
+      verify: "ssc.gov.in - SSC CGL notification, released annually.",
+      url: "https://ssc.gov.in",
+      notYetReachable: "Requires a completed Bachelor's degree first - not reachable straight after Class 12. This is what to aim for once you've graduated.",
     },
   ],
   "Law, Public Safety, Corrections & Security": [
@@ -445,6 +475,68 @@ export const CLUSTER_FUNDED_PROGRAMS: Partial<Record<StandardCluster, FundedProg
       verify: "The relevant IISER's own admission and scholarship pages for that academic year.",
       url: "https://www.iiseradmission.in",
     },
+    {
+      name: "DRDO Apprenticeship (graduate / diploma / ITI)",
+      summary: "Paid, time-limited practical training at a DRDO laboratory - mainly for candidates who already hold the required qualification, not a direct Class-12 route.",
+      eligibility: "ITI, diploma or degree in the relevant discipline, per each laboratory's specific notification.",
+      structure: "A 1-year apprenticeship at a DRDO laboratory (e.g. DEAL Dehradun, INMAS Delhi).",
+      stipend: "2026 figures: graduate apprentices ₹12,300/month, diploma apprentices ₹10,900/month, ITI apprentices ₹9,600/month.",
+      outcome: "Real R&D/technical experience - DRDO's own notice explicitly states completion does not confer a right to a temporary or permanent job.",
+      verify: "drdo.gov.in/drdo/en/offerings/vacancies - current apprenticeship notices.",
+      url: "https://www.drdo.gov.in/drdo/en/offerings/vacancies",
+    },
+    {
+      name: "ISRO Apprenticeship",
+      summary: "A paid, qualification-specific apprenticeship at an ISRO centre.",
+      eligibility: "Usually requires the qualification stated in that specific notification - often diploma/ITI/degree, not plain Class 12.",
+      structure: "Structured workplace training and skill development at an ISRO centre.",
+      stipend: "2026 notice: diploma apprentice roles at ₹10,900/month, ITI trainee roles at ₹9,600/month for specified disciplines.",
+      outcome: "Real space-sector technical experience - not a promise of automatic ISRO employment.",
+      verify: "isro.gov.in - current apprenticeship/recruitment notices.",
+      url: "https://www.isro.gov.in",
+    },
+    {
+      name: "BARC / DAE route",
+      summary: "Not a direct Class-12 \"study and get a guaranteed scientist job\" institution - a longer route that runs through a science/engineering degree first.",
+      eligibility: "Scientist/engineer careers here normally require higher education (B.Sc/B.Tech/Integrated M.Sc) and a separate, competitive recruitment process.",
+      structure: "Class 12 → B.Sc/B.Tech/Integrated M.Sc → a relevant postgraduate/research qualification where needed → DAE/BARC recruitment or training route (NISER is one strong feeder programme).",
+      stipend: "Training/apprenticeship/student-project stipends vary by the specific BARC/DAE programme.",
+      outcome: "A nuclear-science/R&D career - permanent BARC employment should never be promised just from entering a DAE-linked academic programme.",
+      verify: "barc.gov.in/careers - current recruitment/results notices.",
+      url: "https://www.barc.gov.in/careers",
+    },
+    {
+      name: "Government PSU Apprenticeships (Railways, HAL, BEL, BHEL, ONGC, NTPC, IOCL, HPCL, BPCL and others)",
+      summary: "Large public-sector employers periodically recruit ITI/diploma/graduate apprentices, depending on workforce needs.",
+      eligibility: "Usually ITI, diploma or degree - plain Class 12 eligibility is less common here than in the defence/service routes above.",
+      structure: "Time-bound apprenticeship under the applicable NATS/NAPS rules or the specific institution's own scheme.",
+      stipend: "A stipend under the applicable apprenticeship rules - the exact amount varies by employer and qualification level.",
+      outcome: "Apprenticeship is training, not a permanent appointment - any subsequent recruitment is a separate, competitive process unless a specific notification states otherwise.",
+      verify: "The specific employer's current apprenticeship notification, and the Apprenticeship/NATS/NAPS portal.",
+      url: "https://nats.education.gov.in",
+    },
+  ],
+  "Information Technology": [
+    {
+      name: "TCS iON / ACE (Tata Consultancy Services)",
+      summary: "A large-scale, paid apprenticeship-to-hire track for engineering graduates, alongside NATS-backed IT apprenticeships more broadly.",
+      eligibility: "Varies by track - TCS's own graduate-apprentice programmes vs. its (unpaid, certificate-only) virtual internships; check the specific programme's eligibility before assuming stipend applies.",
+      structure: "A structured 1-year (or programme-specific) training and apprenticeship track at TCS.",
+      stipend: "TCS iON's paid graduate-apprentice track pays around ₹25,000/month; separately, general TCS internships range roughly ₹5,000–30,000/month - but TCS iON's virtual internships specifically are unpaid (certificate-only), so the exact track matters.",
+      outcome: "Real industry experience and, for the paid apprentice tracks, a stipend - not an automatic full-time offer.",
+      verify: "tcs.com/careers - current TCS iON/apprenticeship programme pages (terms vary by specific track).",
+      url: "https://www.tcs.com/careers",
+    },
+    {
+      name: "NATS - National Apprenticeship Training Scheme (IT/ITES employers)",
+      summary: "The same government-backed apprenticeship used across other clusters applies directly to IT/software roles at any registered IT employer.",
+      eligibility: "ITI/diploma/graduate qualification in an IT-relevant discipline, placed with a registered employer.",
+      structure: "A fixed-term workplace apprenticeship under the Apprentices Act, 1961.",
+      stipend: "Revised minimums from April 2026: ₹9,600/month (technician/vocational), ₹10,900/month (diploma), ₹12,300/month (graduate), with 50% government reimbursement to the employer.",
+      outcome: "Real IT workplace experience and a stipend - not a guaranteed permanent role.",
+      verify: "nats.education.gov.in - current registration and stipend details.",
+      url: "https://nats.education.gov.in",
+    },
   ],
   "Health Science": [
     {
@@ -456,6 +548,95 @@ export const CLUSTER_FUNDED_PROGRAMS: Partial<Record<StandardCluster, FundedProg
       outcome: "MBBS degree plus a Short Service/Permanent Commission pathway in the Armed Forces Medical Services, subject to service bond and conditions.",
       verify: "afmc.nic.in - current Information Brochure for MBBS admission.",
       url: "https://afmc.nic.in",
+    },
+  ],
+  "Finance": [
+    {
+      name: "CA Articleship (ICAI)",
+      summary: "Not a scholarship - a paid, compulsory 3-year practical-training component of the CA course itself, so a CA student earns while training.",
+      eligibility: "Registered CA student (via CA Foundation or direct-entry routes) placed with a practising Chartered Accountant or firm.",
+      structure: "3 years of practical training (\"articleship\") under a practising CA, alongside the CA Intermediate/Final exams.",
+      stipend: "ICAI-prescribed minimums (cities with 20 lakh+ population): ₹4,000/month in year 1, ₹5,000 in year 2, ₹6,000 in year 3; smaller towns carry lower statutory minimums (~₹2,000–3,000). Final-year Industrial Training pays a fixed minimum of ₹15,000/month (effective January 2026). Reputed firms - especially the Big 4 - commonly pay well above the minimum, typically ₹18,000–35,000/month.",
+      outcome: "Practical experience that's mandatory for qualifying as a Chartered Accountant, plus real income throughout training.",
+      verify: "icai.org - current articleship stipend regulations (rates are periodically revised).",
+      url: "https://www.icai.org",
+      notYetReachable: "Articleship itself starts only after clearing CA Foundation and CA Intermediate (typically 2+ years) - but you CAN register for CA Foundation right after Class 12 to begin this path.",
+    },
+  ],
+  "Business Management & Administration": [
+    {
+      name: "NATS - National Apprenticeship Training Scheme",
+      summary: "A government-backed, paid apprenticeship any graduate/diploma holder can use to get real workplace experience, including in business/operations-adjacent roles.",
+      eligibility: "Recent graduates or diploma holders (technician/diploma/graduate categories), placed with a registered employer.",
+      structure: "A fixed-term workplace apprenticeship under the Apprentices Act, 1961, run by the Ministry of Education since 1973.",
+      stipend: "Revised minimums from April 2026: ₹9,600/month (technician/vocational), ₹10,900/month (diploma), ₹12,300/month (graduate) - with the government reimbursing 50% of the prescribed minimum stipend to the employer via Direct Benefit Transfer.",
+      outcome: "Real workplace experience and a stipend - not a job guarantee; many apprentices are considered for full-time roles at the same employer but that's the employer's own call.",
+      verify: "nats.education.gov.in - current registration and stipend details.",
+      url: "https://nats.education.gov.in",
+    },
+  ],
+  "Arts, A/V Technology & Communications": [
+    {
+      name: "NID Merit-Cum-Means Scholarship (and JRD Tata / M.P. Charan scholarships)",
+      summary: "Need-and-merit-based tuition support at India's top design institute, not available everywhere in this field but real where it applies.",
+      eligibility: "Admitted NID student (B.Des/M.Des) who demonstrates both academic merit and financial need; the JRD Tata and M.P. Charan scholarships are specifically for M.Des students from economically weaker sections with strong academic records.",
+      structure: "Applied for after admission, through NID's own scholarship process each academic year.",
+      stipend: "Typically covers a portion or all of tuition fees (not accommodation or other costs) - exact amounts and income thresholds are set and revised by NID each year.",
+      outcome: "Reduced or waived tuition for the design degree; doesn't itself guarantee a job, but removes a major cost barrier to attending.",
+      verify: "admissions.nid.edu - current scholarship guidelines for the academic year.",
+      url: "https://admissions.nid.edu",
+      notYetReachable: "Only for students already admitted to NID's B.Des/M.Des programme - apply for this after you're in, not as a way to get in.",
+    },
+  ],
+  "Architecture & Construction": [
+    {
+      name: "AICTE Pragati / Saksham Scholarships",
+      summary: "The same real, verified AICTE scholarships already used for Engineering apply here too - B.Arch is an AICTE-recognised technical degree.",
+      eligibility: "Pragati: girl students, 1st year (or 2nd via lateral entry) of an AICTE-approved programme, family income up to ₹8 lakh/year. Saksham: students with 40%+ disability, same income cap. Both apply via the National Scholarship Portal (NSP).",
+      structure: "Applied for after admission into an AICTE-approved B.Arch or allied technical programme.",
+      stipend: "₹50,000/year, paid directly to the student's bank account (DBT).",
+      outcome: "Direct financial support toward the degree - not a job placement scheme.",
+      verify: "National Scholarship Portal (scholarships.gov.in/NSP) - current AICTE scholarship guidelines.",
+      url: "https://scholarships.gov.in",
+      notYetReachable: "Only for students already in the 1st (or 2nd, via lateral entry) year of an AICTE-approved degree programme - not reachable straight after Class 12.",
+    },
+  ],
+  "Hospitality & Tourism": [
+    {
+      name: "Post-Matric / Central Sector Scholarship access via Central IHMs",
+      summary: "Central Institutes of Hotel Management don't run their own dedicated stipend scheme, but do facilitate access to the general national Post-Matric (state) and Central Sector (central government) scholarship schemes for eligible students.",
+      eligibility: "Set by the underlying national scholarship scheme (state-domicile and income/category criteria for Post-Matric; merit/income criteria for Central Sector) - check current thresholds.",
+      structure: "Applied for through the National Scholarship Portal once admitted to a Central IHM's B.Sc Hospitality & Hotel Administration programme.",
+      stipend: "Varies by the specific underlying scheme - not a fixed IHM-specific amount.",
+      outcome: "Reduced cost of the degree; a separate NCHMCT Research Fellowship exists for those going on to a PhD in hospitality management.",
+      verify: "nchm.gov.in and scholarships.gov.in/NSP for current scheme details.",
+      url: "https://nchm.gov.in",
+      notYetReachable: "Only for students already admitted to a Central IHM's B.Sc Hospitality & Hotel Administration programme - apply for this after you're in, not as a way to get in.",
+    },
+  ],
+  "Agriculture, Food & Natural Resources": [
+    {
+      name: "ICAR National Talent Scholarship (NTS-UG)",
+      summary: "A real, verified monthly stipend for agriculture undergraduates studying outside their home state.",
+      eligibility: "Full-time UG student at an ICAR-funded Agricultural University located outside the student's own state of domicile; not employed even part-time; good conduct and regular attendance certified by the institution.",
+      structure: "Applied for through the National Scholarship Portal once admitted via ICAR AIEEA or the relevant state agricultural university entrance.",
+      stipend: "₹3,000/month.",
+      outcome: "Direct financial support throughout the UG degree - not a job placement scheme.",
+      verify: "education.icar.gov.in - current NTS-UG guidelines and deadlines (recent cycle closed 31 October).",
+      url: "https://education.icar.gov.in",
+      notYetReachable: "Only for students already enrolled full-time in an ICAR-funded agricultural UG programme, outside their home state - not reachable straight after Class 12.",
+    },
+  ],
+  "Manufacturing": [
+    {
+      name: "NATS / NAPS apprenticeship (manufacturing-sector employers)",
+      summary: "The same government-backed apprenticeship scheme used for STEM/Business roles applies directly to shop-floor and production-engineering apprenticeships too.",
+      eligibility: "ITI/diploma/graduate qualification in a manufacturing-relevant discipline, placed with a registered manufacturing employer.",
+      structure: "A fixed-term workplace apprenticeship under the Apprentices Act, 1961.",
+      stipend: "Revised minimums from April 2026: ₹9,600/month (technician/vocational), ₹10,900/month (diploma), ₹12,300/month (graduate), with 50% government reimbursement to the employer.",
+      outcome: "Real shop-floor/production experience and a stipend - not a guaranteed permanent role.",
+      verify: "nats.education.gov.in - current registration and stipend details.",
+      url: "https://nats.education.gov.in",
     },
   ],
 };

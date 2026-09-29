@@ -9,6 +9,7 @@
  */
 import type { AssessmentSummary, ReportTheme } from "@/lib/auth/AuthProvider";
 import type { GraduateScoreOutput } from "@/lib/newAssessment/scoringGrad";
+import { rankSuitabilityGrad } from "@/lib/newAssessment/scoringGrad";
 
 /** Basic structural guard - this is the first version of this shape, so
  *  there's no legacy format to reject yet, but a check still protects
@@ -101,9 +102,16 @@ export function adaptGraduateToSummary(output: GraduateScoreOutput, base: Assess
   const RADAR_KEYS = ["personality", "career_interest", "multiple_intelligence", "emotional_intelligence", "learning_styles", "motivators", "strengths", "aptitude"];
   const radar = dimensionScoresGrad(output).map((d, i) => ({ key: RADAR_KEYS[i], label: d.label, score: d.score }));
 
+  // topCareer/overallFitmentPct are rendered as a single name+percentage
+  // pair in several places (admin table, dashboard chip, report PDF) - both
+  // MUST describe the same cluster, so this goes through the same anchored
+  // ranking output.summary.topCluster already uses (rankSuitabilityGrad),
+  // never the raw, un-anchored clusterAffinities[0].
+  const suitabilityTop = rankSuitabilityGrad(output.clusterAffinities, output.academicContext.degree, output.academicContext.course)[0];
+
   return {
     ...base,
-    overallFitmentPct: output.clusterAffinities[0]?.blendedScore ?? null,
+    overallFitmentPct: suitabilityTop?.suitabilityScore ?? null,
     topCareer: output.summary.topCluster || null,
     desiredCareer: output.aspiration.desiredCareer || null,
     desiredCareerFitPct: null,

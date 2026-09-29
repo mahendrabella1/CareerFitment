@@ -41,7 +41,12 @@ function PageHead({ icon, eyebrow, title, sub }: { icon: string; eyebrow: string
 }
 
 export function buildGradExtraSheets(output: GraduateScoreOutput): ReportSheet[] {
-  const topCluster = output.clusterAffinities[0]?.cluster ?? "";
+  // Must match the Suitability page's own top cluster (rankSuitabilityGrad,
+  // anchored to the student's real degree+course) - output.summary.topCluster
+  // already goes through that same ranking (see scoreGraduateAssessment),
+  // so this page never disagrees with the Suitability/Selector pages about
+  // which cluster is "top."
+  const topCluster = output.summary.topCluster || "";
   const roadmap = clusterRoadmapGradFor(topCluster);
   const pgExams = roadmap?.pgInIndia.entranceExams ?? [];
 
@@ -50,7 +55,11 @@ export function buildGradExtraSheets(output: GraduateScoreOutput): ReportSheet[]
   const strengthToLeverage = ranked.slice(0, 3).map((d) => `${d.label} clarity (${d.score}/100)`);
   const growthAreas = ranked.slice(-3).reverse().map((d) => `${d.label} clarity (${d.score}/100)`);
   const lowest = ranked[ranked.length - 1];
-  const alternativePaths = output.clusterAffinities.slice(1, 4).map((c) => c.cluster);
+  // Purely psychometric order here (not rankSuitabilityGrad) - these are
+  // explicitly framed as OTHER paths worth a look, so excluding topCluster
+  // itself (which the degree-anchor could otherwise let slip in below rank
+  // 1) keeps this list from just repeating what's already shown above.
+  const alternativePaths = output.clusterAffinities.filter((c) => c.cluster !== topCluster).slice(0, 3).map((c) => c.cluster);
 
   return [
     {
