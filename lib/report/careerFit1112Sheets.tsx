@@ -49,7 +49,7 @@ import {
 } from "@/lib/report/careerFitEngine1112";
 import { DOMAINS_1112, STANDARD_CLUSTERS, CLUSTER_EXPLORE_LINKS, CLUSTER_COMPANIES, CLUSTER_FUNDED_PROGRAMS, CAREERS_1112, STREAM_KEY_1112, roadmapFor, type RoadmapEntry, type Career1112, type StreamKey1112, type StandardCluster, type FundedProgram } from "@/lib/report/careerfit1112";
 import { CLUSTER_ROADMAPS, type ClusterRoadmapPhase } from "@/lib/report/clusterRoadmaps1112";
-import type { DetailedCareerRoadmap } from "@/lib/report/careerRoadmapDetailed1112";
+import { detailedRoadmapFor, type DetailedCareerRoadmap } from "@/lib/report/careerRoadmapDetailed1112";
 import { flagshipRoadmapFor, type FlagshipDomainRoadmap, type FlagshipTrack } from "@/lib/report/flagshipRoadmaps1112";
 import { degreesForStream, ELIGIBILITY_SYMBOL, ELIGIBILITY_LABEL, type DegreeEligibilityRow } from "@/lib/report/degreeStreamMatrix";
 import { topDimensionsForStudent, type ScoredDimension } from "@/lib/report/dimensionCareerGuide";
@@ -204,36 +204,21 @@ function OverviewHeadCell({ icon, title, subtitle, desc, color, borderLeft }: { 
     </div>
   );
 }
-// Very High / High / Medium / Low instead of a bare percentage - a number
-// like "73%" invites false precision nobody's actually entitled to from a
-// self-report + RIASEC-style assessment; the qualitative band is what's
-// genuinely defensible, and reads faster on a domain/cluster-level card
-// anyway. Deliberately separate from LevelLabel() above (5 tiers, used for
-// PER-ROLE Psy. Analysis/Skill cells) - different display, different scale,
-// not meant to share thresholds or wording.
-function fitLabel(score: number): { label: string; color: string } {
-  if (score >= 75) return { label: "Very High", color: "#1f7a55" };
-  if (score >= 55) return { label: "High", color: "#2f6bff" };
-  if (score >= 35) return { label: "Medium", color: "#a3620b" };
-  return { label: "Low", color: "#b3261e" };
-}
-
-// A compact, chevron-terminated row - rank badge, domain name + fit band on
-// one line, roles listed underneath as plain sub-text - so all 5 rows read
-// at a glance without needing to open a card. The full per-role breakdown
-// still lives on the Fitment/Suitability detail pages that follow; this is
-// the "at a glance" summary, not a duplicate of that detail.
-// Plain white rows throughout (no zebra striping) - the tinted badge and
-// the divider line already separate one row from the next.
+// A compact, chevron-terminated row - rank badge, domain name + fit % on one
+// line, roles listed underneath as plain sub-text - so all 5 rows read at a
+// glance without needing to open a card. The full per-role percentage/degree/
+// exam breakdown still lives on the Fitment/Suitability detail pages that
+// follow; this is the "at a glance" summary, not a duplicate of that detail.
+// Plain white rows throughout (no zebra striping) - the tinted number badge
+// and the divider line already separate one row from the next.
 function OverviewRow({ rank, name, pct, color, roles }: { rank: number; name: string; pct: number; color: string; roles: string[] }) {
-  const tier = fitLabel(pct);
   return (
     <div style={{ minWidth: 0, padding: "13px 16px", borderBottom: "1px solid var(--line-2, var(--line))", background: "#fff", display: "flex", alignItems: "center", gap: 10 }}>
       <span style={{ fontSize: 13, fontWeight: 800, color, background: `${color}1c`, width: 26, height: 26, borderRadius: "50%", display: "grid", placeItems: "center", flex: "none" }}>{rank}</span>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8 }}>
           <span style={{ fontSize: 13.5, fontWeight: 800, color: "var(--ink)" }}>{name}</span>
-          <span style={{ fontSize: 15, fontWeight: 900, color: tier.color, letterSpacing: "-.01em", flex: "none" }}>{tier.label}</span>
+          <span style={{ fontSize: 19, fontWeight: 900, color, letterSpacing: "-.02em", flex: "none" }}>{pct.toFixed(0)}%</span>
         </div>
         <div style={{ marginTop: 4, display: "flex", flexDirection: "column", gap: 2 }}>
           {roles.map((r) => <span key={r} style={{ fontSize: 11, color: "var(--muted)", lineHeight: 1.45 }}>{r}</span>)}
@@ -448,19 +433,8 @@ function isChainLine(line: string): boolean {
 function PairedChainList({ lines, color }: { lines: string[]; color: string }) {
   const rows: { label: string; chain: string }[] = [];
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    if (isChainLine(line)) {
-      // A rare format variant: some routes are written as one combined
-      // "Label: A → B → C" line instead of a separate label line followed
-      // by its own chain line (e.g. Screenwriter's 4th route) - split it
-      // directly rather than silently dropping it for having no preceding
-      // label line of its own.
-      const { label, rest } = splitLabel(line);
-      if (label && isChainLine(rest)) rows.push({ label, chain: rest });
-      continue;
-    }
-    if (isChainLine(lines[i + 1] ?? "")) {
-      rows.push({ label: line, chain: lines[i + 1] });
+    if (!isChainLine(lines[i]) && isChainLine(lines[i + 1] ?? "")) {
+      rows.push({ label: lines[i], chain: lines[i + 1] });
       i++;
     }
   }
@@ -1131,7 +1105,6 @@ function ClusterSummaryTable({ groups, showCompanies }: { groups: DomainGroup111
         const links = CLUSTER_EXPLORE_LINKS[g.domain as keyof typeof CLUSTER_EXPLORE_LINKS] ?? [];
         const companies = CLUSTER_COMPANIES[g.domain as keyof typeof CLUSTER_COMPANIES];
         const color = clusterColor(g.domain);
-        const tier = fitLabel(g.topScore);
         return (
           <div key={g.domain} style={{ border: "1px solid var(--line)", borderLeft: `4px solid ${color}`, borderRadius: 14, overflow: "hidden" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 18px", background: `${color}0a`, borderBottom: "1px solid var(--line)" }}>
@@ -1142,7 +1115,7 @@ function ClusterSummaryTable({ groups, showCompanies }: { groups: DomainGroup111
                 <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 1 }}>{CLUSTER_TAGLINE[g.domain as StandardCluster] ?? ""}</div>
               </div>
               <div style={{ textAlign: "right", flex: "none" }}>
-                <div style={{ fontSize: 15.5, fontWeight: 900, color: tier.color, letterSpacing: "-.01em" }}>{tier.label}</div>
+                <div style={{ fontSize: 19, fontWeight: 900, color, letterSpacing: "-.01em" }}>{g.topScore.toFixed(0)}%</div>
                 <div style={{ fontSize: 8.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)" }}>Fit</div>
               </div>
             </div>
@@ -1243,6 +1216,16 @@ function splitProgramName(name: string): { headline: string; sub: string | null 
 function urlHost(url: string): string {
   try { return new URL(url).hostname.replace(/^www\./, ""); } catch { return url; }
 }
+// Every FundedProgram.eligibility string follows "Stream: ... Percentage:
+// ... Exam: ..." (plus sometimes trailing age/notification caveats after
+// Exam) - the card only needs Stream + Percentage, so this drops
+// everything from "Exam:" onward and strips parenthetical asides, turning
+// a 3-sentence paragraph into one short line.
+function shortEligibility(text: string): string {
+  const cut = text.split(/\.\s*Exam:/)[0];
+  const stripped = cut.replace(/\s*\([^)]*\)/g, "").replace(/\s{2,}/g, " ").trim();
+  return stripped.endsWith(".") ? stripped : `${stripped}.`;
+}
 
 // Real logos, sourced from Wikimedia Commons and verified (fetched, 200 OK)
 // before use - same standard as every other fact in this file. Only the
@@ -1277,7 +1260,7 @@ function FundedProgramCard({ p, color }: { p: FundedProgram; color: string }) {
   // categories on every card, so giving each its own consistent colour reads
   // faster across a grid of many cards than one colour repeated three times.
   const stats = [
-    { label: "Eligibility", value: p.eligibility, icon: "user", color: "#2a5aa0" },
+    { label: "Eligibility", value: shortEligibility(p.eligibility), icon: "user", color: "#2a5aa0" },
     { label: "Stipend", value: p.stipend, icon: "card", color: "#1f7a55" },
     { label: "On completion", value: p.outcome, icon: "score", color: "#a3620b" },
   ];
@@ -1313,17 +1296,17 @@ function FundedProgramCard({ p, color }: { p: FundedProgram; color: string }) {
           <div key={s.label} style={{ padding: "0 20px", borderLeft: i > 0 ? "1px solid var(--line-2, var(--line))" : "none", minWidth: 0 }}>
             {/* The LABEL is the highlighted thing here - bold and in the
                 stat's own colour - not the value text below it, which is
-                just information to read, not something to shout. Full text,
-                no truncation or line clamp - a "half cut" stat that hides
-                its own eligibility/stipend/outcome detail behind an
-                ellipsis defeats the point of a funded-programme card. */}
+                just information to read, not something to shout. The value
+                is capped at 2 real lines (not squeezed to 1 - that hid the
+                actual text behind an ellipsis almost immediately); the full
+                text is also on the title tooltip as a fallback. */}
             <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 6 }}>
               <span style={{ width: 30, height: 30, borderRadius: "50%", background: `${s.color}16`, display: "grid", placeItems: "center", flex: "none" }}>
                 <Icon name={s.icon} size={15} style={{ color: s.color }} />
               </span>
               <span style={{ fontSize: 13, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: s.color }}>{s.label}</span>
             </div>
-            <div style={{ fontSize: 13, fontWeight: 400, color: "var(--ink-2)", lineHeight: 1.5 }}>{s.value}</div>
+            <div title={s.value} style={{ fontSize: 13, fontWeight: 400, color: "var(--ink-2)", lineHeight: 1.4, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{s.value}</div>
           </div>
         ))}
       </div>
@@ -1596,17 +1579,16 @@ function ClusterBarChart({ groups }: { groups: DomainGroup1112[] }) {
   const maxScore = Math.max(100, ...rows.map((r) => r.topScore));
   const barW = (v: number) => ((W - padL - padR) * v) / maxScore;
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Career cluster fit, by cluster" style={{ width: "100%", height: "auto", display: "block" }}>
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Career cluster fit, percentage by cluster" style={{ width: "100%", height: "auto", display: "block" }}>
       {rows.map((r, i) => {
         const y = padT + i * rowH;
         const color = clusterColor(r.domain);
-        const tier = fitLabel(r.topScore);
         return (
           <g key={r.domain}>
             <text x={16} y={y + rowH / 2 + 4} textAnchor="start" fontSize={13} fontWeight={700} fill="var(--ink)">{r.domain}</text>
             <rect x={padL} y={y + 8} width={W - padL - padR} height={rowH - 16} rx={5} fill={color} opacity={0.14} />
             <rect x={padL} y={y + 8} width={barW(r.topScore)} height={rowH - 16} rx={5} fill={color} />
-            <text x={padL + barW(r.topScore) + 8} y={y + rowH / 2 + 4} fontSize={13} fontWeight={800} fill={tier.color}>{tier.label}</text>
+            <text x={padL + barW(r.topScore) + 8} y={y + rowH / 2 + 4} fontSize={13} fontWeight={800} fill="var(--ink)">{r.topScore.toFixed(0)}%</text>
           </g>
         );
       })}
@@ -1665,16 +1647,30 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
 
   const selector = desiredCareer ? selectCareer1112(desiredCareer, l1, streamKey) : null;
 
-  // The full 14-section roadmap (same shape/depth as a researched career's
-  // own DetailedCareerRoadmap, via domainRoadmapFor) for the student's own
-  // top-ranked Career Suitability domain - broad and domain-wide, not
-  // zoomed into any one specific role within it, and always available
-  // regardless of whether they named a desired career at all.
+  // A real, individually-researched in-depth roadmap for the student's
+  // EXACT desired career (see careerRoadmapDetailed1112.ts) - now covers
+  // every one of CAREERS_1112's 360 careers. When this exists it takes
+  // priority over everything below, since it's a strict superset of what
+  // the domain-level fallbacks give (school → UG → colleges → scholarships
+  // → internships → PG → jobs → skills → abroad → progression, all specific
+  // to this one career rather than the whole cluster).
+  const detailedRoadmap = detailedRoadmapFor(selector?.career?.name);
+
+  // Fallbacks for when the student's exact desired career has no dedicated
+  // research (rare now, but still possible for a career outside
+  // CAREERS_1112 entirely) - grounded in Career Suitability's #1 domain
+  // instead, so there's always something to show. flagshipRoadmap (the
+  // genuinely deep, independently-researched treatment, now covering all 16
+  // clusters - see flagshipRoadmaps1112.ts) takes priority over
+  // realisticRoadmap's plain CLUSTER_ROADMAPS phases when available for
+  // that domain. The short "you are here → destination" banner above
+  // already covers the desired career directly (on track / bridge / hard
+  // gate + the exam to take); this section answers a different,
+  // always-the-same-source question - "what does a realistic path in your
+  // best-fit domain actually look like" - so it never name-drops the
+  // desired career or the stream.
   const roadmapDomain = suitabilityGroups[0]?.domain ?? null;
-  const domainRoadmap = roadmapDomain ? domainRoadmapFor(roadmapDomain as StandardCluster) : null;
-  // The genuinely deep, independently-researched roadmap for the cluster,
-  // now covering all 16 Class 11-12 clusters (see flagshipRoadmaps1112.ts) -
-  // takes priority over the generic domainRoadmap above when present.
+  const realisticRoadmap = roadmapDomain ? CLUSTER_ROADMAPS[roadmapDomain as StandardCluster] : null;
   const flagshipRoadmap = roadmapDomain ? flagshipRoadmapFor(roadmapDomain) : null;
 
   const sheets: ReportSheet[] = [
@@ -1850,11 +1846,34 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                   <Pill label={selector.roadmap!.fitType} tone={toneForFitType(selector.roadmap!.fitType)} />
                   <span style={{ fontSize: 12.5, color: "var(--ink-2)", fontWeight: 600 }}>{selector.roadmap!.actionSummary}</span>
                 </div>
-                <div style={{ textAlign: "center", fontSize: 12.5, color: "var(--ink-2)" }}>
+                <div style={{ textAlign: "center", fontSize: 12.5, color: "var(--ink-2)", marginBottom: 20 }}>
                   <b style={{ color: "var(--ink)" }}>Entrance exam for {selector.career.name}:</b> {selector.career.typicalEntranceExam}
                 </div>
 
-                <div style={{ ...BREAK, marginTop: 20 }}>
+                {detailedRoadmap ? (
+                  <DetailedCareerRoadmapView r={detailedRoadmap} careerName={selector.career.name} color={clusterColor(selector.career.cluster)} />
+                ) : roadmapDomain && flagshipRoadmap ? (
+                  <>
+                    <FlagshipRoadmapView r={flagshipRoadmap} cluster={clusterHeading(roadmapDomain)} color={clusterColor(roadmapDomain)} />
+                    <div style={BREAK}>
+                      <SecHead center eyebrow={`Every real degree route into ${clusterHeading(roadmapDomain)}`} title="Degree by degree, what it leads to"
+                        sub="Every degree CAREERS_1112 ties to this domain, and the real roles each one actually leads to - so you can see the full breadth of this field in one table, not just the handful above." />
+                      <div style={{ marginTop: 16 }}>
+                        <DegreeRolesTable cluster={roadmapDomain as StandardCluster} color={clusterColor(roadmapDomain)} />
+                      </div>
+                    </div>
+                  </>
+                ) : roadmapDomain && realisticRoadmap ? (
+                  <div style={BREAK}>
+                    <SecHead center eyebrow={`${clusterHeading(roadmapDomain)} · your best-fit domain`} title="Your realistic path"
+                      sub={`The standard path into a ${clusterHeading(roadmapDomain)} career - where you are now, through to senior/leadership roles. This is the same realistic route for anyone in this domain, not built around one specific job title.`} />
+                    <div style={{ marginTop: 16 }}>
+                      <ClusterRoadmapPath phases={realisticRoadmap.phases} color={clusterColor(roadmapDomain)} />
+                    </div>
+                  </div>
+                ) : null}
+
+                <div style={BREAK}>
                   <SecHead center eyebrow="Where to go next" title="Explore internships"
                     sub="Live internship listings on your own OneGrasp dashboard." />
                   <div style={{ marginTop: 14, display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
@@ -1866,7 +1885,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                   <SecHead center eyebrow="What this role draws on" title="Skills and abilities that matter here" />
                   <div style={{ marginTop: 12, display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center" }}>
                     {skillTagsFor1112(selector.career).map((s) => (
-                      <span key={s} style={{ fontSize: 12, fontWeight: 700, color: clusterColor(selector.career!.cluster), background: `${clusterColor(selector.career!.cluster)}14`, border: `1px solid ${clusterColor(selector.career!.cluster)}38`, padding: "6px 13px", borderRadius: 999 }}>{s}</span>
+                      <span key={s} style={{ fontSize: 12, fontWeight: 700, color: clusterColor(selector!.career!.cluster), background: `${clusterColor(selector!.career!.cluster)}14`, border: `1px solid ${clusterColor(selector!.career!.cluster)}38`, padding: "6px 13px", borderRadius: 999 }}>{s}</span>
                     ))}
                   </div>
                 </div>
@@ -1874,23 +1893,10 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
             ) : (
               <p style={{ marginTop: 20, fontSize: 13, color: "var(--ink-2)" }}>&ldquo;{desiredCareer}&rdquo; isn&apos;t in our {totalCareers}-career reference list yet - talk to your counsellor about the specific path, using Career Fitment and Career Suitability above as your general direction.</p>
             )
-          ) : (
-            <p style={{ marginTop: 20, fontSize: 13, color: "var(--ink-2)" }}>You didn&apos;t name a specific career - the roadmap below is built from your own Career Suitability results instead.</p>
-          )}
-
-          {/* The roadmap for the student's own top-ranked Career
-              Suitability domain - always shown regardless of whether they
-              named/matched a desired career above, since it's grounded in
-              their measured results, not free-text matching, and
-              deliberately stays domain-wide rather than zooming into one
-              specific job title within it. Uses the deep, independently-
-              researched FlagshipRoadmapView, now covering all 16 clusters;
-              domainRoadmap is left as a defensive fallback only. */}
-          {roadmapDomain && flagshipRoadmap ? (
-            <FlagshipRoadmapView r={flagshipRoadmap} cluster={clusterHeading(roadmapDomain)} color={clusterColor(roadmapDomain)} />
-          ) : roadmapDomain && domainRoadmap && (
-            <>
-              <DetailedCareerRoadmapView r={domainRoadmap} careerName={clusterHeading(roadmapDomain)} color={clusterColor(roadmapDomain)} />
+          ) : roadmapDomain && flagshipRoadmap ? (
+            <div style={{ marginTop: 20 }}>
+              <p style={{ fontSize: 13, color: "var(--ink-2)", marginBottom: 8 }}>You didn&apos;t name a specific career, so the roadmap below is built from your Career Suitability results instead.</p>
+              <FlagshipRoadmapView r={flagshipRoadmap} cluster={clusterHeading(roadmapDomain)} color={clusterColor(roadmapDomain)} />
               <div style={BREAK}>
                 <SecHead center eyebrow={`Every real degree route into ${clusterHeading(roadmapDomain)}`} title="Degree by degree, what it leads to"
                   sub="Every degree CAREERS_1112 ties to this domain, and the real roles each one actually leads to - so you can see the full breadth of this field in one table, not just the handful above." />
@@ -1898,7 +1904,20 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                   <DegreeRolesTable cluster={roadmapDomain as StandardCluster} color={clusterColor(roadmapDomain)} />
                 </div>
               </div>
-            </>
+            </div>
+          ) : roadmapDomain && realisticRoadmap ? (
+            <div style={{ marginTop: 20 }}>
+              <p style={{ fontSize: 13, color: "var(--ink-2)", marginBottom: 8 }}>You didn&apos;t name a specific career, so the roadmap below is built from your Career Suitability results instead.</p>
+              <div style={BREAK}>
+                <SecHead center eyebrow={`${clusterHeading(roadmapDomain)} · your best-fit domain`} title="Your realistic path"
+                  sub={`The standard path into a ${clusterHeading(roadmapDomain)} career - where you are now, through to senior/leadership roles. This is the same realistic route for anyone in this domain, not built around one specific job title.`} />
+                <div style={{ marginTop: 16 }}>
+                  <ClusterRoadmapPath phases={realisticRoadmap.phases} color={clusterColor(roadmapDomain)} />
+                </div>
+              </div>
+            </div>
+          ) : (
+            <p style={{ marginTop: 20, fontSize: 13, color: "var(--ink-2)" }}>You didn&apos;t name a specific career, so there&apos;s nothing to check here yet - Career Fitment and Career Suitability still stand on their own.</p>
           )}
         </>
       ),
