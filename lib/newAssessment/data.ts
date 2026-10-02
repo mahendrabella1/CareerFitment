@@ -97,6 +97,17 @@ const ORDER_11_12: Category[] = [
 // ORDER_11_12, with "degree_fit"/"career_cluster_fit" as this stage's own
 // contextual categories (its subject_fit/career_fit analogs) rather than
 // reusing 11-12's, since those are stream-specific.
+//
+// "career_selector" deliberately NOT included here (unlike 11-12, which
+// keeps it for its extra in-exam questions - alternative/excluded careers):
+// the Graduates bank's career_selector has exactly ONE question, and
+// generate/route.ts's PRE_EXAM_SKIP always filters it out for stage "ug"
+// (the pre-exam preinfo:career screen replaces it - see
+// applyPreExamAnswersGrad). Keeping it in this order left an empty section
+// in the exam nav bar (permanently shown as "done" with nothing behind it,
+// since its only question never survives the pre-exam filter) - removing
+// it here is the fix, not a loss of data, since nothing in
+// convertAnswersToGraduateFormat ever read from "career_selector" either.
 const ORDER_UG: Category[] = [
   "personality",
   "career_interest",
@@ -109,7 +120,6 @@ const ORDER_UG: Category[] = [
   "integrated_indicators",
   "degree_fit",
   "career_cluster_fit",
-  "career_selector",
 ];
 
 export function categoryOrder(stage: StageKey): Category[] {

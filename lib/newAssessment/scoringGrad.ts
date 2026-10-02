@@ -188,7 +188,17 @@ function tallyWeightedTarget(
 
 function scorePersonality(responses: Record<string, number>): PersonalityProfile {
   const tally = tallyMapped(Q.personality, responses);
-  const decisionAutonomy = responses["6"] ?? 5;
+  // Unlike scoring11_12.ts (where Q7/index 6 is a dedicated, unmapped 1-10
+  // decision-autonomy slider - see the comment there), the Graduates bank
+  // has no equivalent question at all: every personality question here is
+  // a standard 4-option MBTI item with a `mapping` array (index 6 is
+  // actually an S/N question, "When someone explains a complex idea...").
+  // `responses["6"] ?? 5` (copied from scoring11_12.ts's pattern) would
+  // silently feed that S/N question's raw 0-3 option index in as a fake
+  // "decision autonomy" score - currently invisible since nothing renders
+  // this field yet, but still wrong data sitting in the output. Neutral
+  // default instead, since nothing in this bank measures the construct.
+  const decisionAutonomy = 5;
   const ei = (tally.E || 0) - (tally.I || 0);
   const sn = (tally.S || 0) - (tally.N || 0);
   const tf = (tally.T || 0) - (tally.F || 0);

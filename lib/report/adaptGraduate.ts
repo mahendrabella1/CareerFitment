@@ -36,11 +36,14 @@ export function dimensionScoresGrad(output: GraduateScoreOutput): { label: strin
   const strengthTop = l1.strengthDomains.slice().sort((a, b) => b.score - a.score)[0];
   const ei = l1.emotionalIntelligence;
   const eiPct = Math.round(((ei.selfAwareness + ei.selfManagement + ei.socialAwareness + ei.relationshipManagement) / 4) * 100);
-  const strengthsScore = Math.round(((strengthTop?.score ?? 0) / 5) * 100 * 0.6 + l1.aptitude.overallScore * 0.4);
+  // scoringGrad.ts's strengthDomains/multipleIntelligence scores are
+  // already 0-100 (unlike scoring11_12.ts's own versions, which are a 0-5
+  // scale per that file's own comment) - no /5*100 conversion needed here.
+  const strengthsScore = Math.round((strengthTop?.score ?? 0) * 0.6 + l1.aptitude.overallScore * 0.4);
   return [
     { label: "Personality", score: l1.personality.score },
     { label: "Career Interest", score: Math.round(riasecRanked[0]?.percentile ?? 0) },
-    { label: "Multiple Intelligence", score: intelligenceTop ? Math.round((intelligenceTop.score / 5) * 100) : 0 },
+    { label: "Multiple Intelligence", score: intelligenceTop ? Math.round(intelligenceTop.score) : 0 },
     { label: "Emotional Intelligence", score: eiPct },
     { label: "Learning Preferences", score: l1.learningStyle.score },
     { label: "Motivators", score: l1.motivators.score },
@@ -69,12 +72,14 @@ export function adaptGraduateToSummary(output: GraduateScoreOutput, base: Assess
   const riasecScores = l1.riasec.map((r) => ({ letter: r.code, name: r.name, score: r.percentile }));
   const riasecCode = riasecRanked.slice(0, 3).map((r) => r.code).join("");
 
+  // Already 0-100 from scoringGrad.ts - see the dimensionScoresGrad comment
+  // above for why this doesn't take 11-12's /5*100 conversion.
   const intelligenceRanked = l1.multipleIntelligence
     .slice().sort((a, b) => b.score - a.score)
-    .map((d) => ({ name: d.domain, score: Math.round((d.score / 5) * 100) }));
+    .map((d) => ({ name: d.domain, score: Math.round(d.score) }));
   const strengthAreasRanked = l1.strengthDomains
     .slice().sort((a, b) => b.score - a.score)
-    .map((d) => ({ name: d.domain, score: Math.round((d.score / 5) * 100) }));
+    .map((d) => ({ name: d.domain, score: Math.round(d.score) }));
 
   const topValues = l1.motivators.ranked.map((m) => ({ tag: m.tag, score: m.score }));
 
