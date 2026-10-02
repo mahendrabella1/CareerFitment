@@ -17,6 +17,7 @@
 import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
+import { getStorage, type FirebaseStorage } from "firebase/storage";
 
 // ---- Hardcoded web config (public - safe to commit) -----------------------
 const HARDCODED = {
@@ -53,6 +54,7 @@ console.log("Firebase client config - Ready:", firebaseReady, "Config:", { apiKe
 let app: FirebaseApp | null = null;
 let authInstance: Auth | null = null;
 let dbInstance: Firestore | null = null;
+let storageInstance: FirebaseStorage | null = null;
 
 function ensureApp(): FirebaseApp | null {
   if (!firebaseReady) return null;
@@ -79,4 +81,24 @@ export function getDb(): Firestore | null {
     }
   }
   return dbInstance;
+}
+
+/** Document-vault storage (Scholarships, Study Abroad) - the same Firebase
+ *  project already in use for Auth/Firestore, not a new paid vendor. New
+ *  infrastructure, though: Storage security rules must be set on the
+ *  Firebase console (reject-all-but-owner by default) before any document
+ *  uploaded here is truly private - this client code alone doesn't enforce
+ *  that, same as Firestore's own access control lives in its rules, not here. */
+export function getFirebaseStorage(): FirebaseStorage | null {
+  const a = ensureApp();
+  if (!a) return null;
+  if (!storageInstance) {
+    try {
+      storageInstance = getStorage(a);
+    } catch (err) {
+      console.warn("Firebase Storage initialization failed, returning null:", err);
+      return null;
+    }
+  }
+  return storageInstance;
 }
