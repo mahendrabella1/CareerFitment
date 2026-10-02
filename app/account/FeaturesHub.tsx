@@ -70,6 +70,9 @@ export default function FeaturesHub() {
     const routes: Record<string, string> = {
       'careers': '/account/career-library',
       'internships': '/account/internships',
+      'startups': '/account/startups',
+      'financial': '/account/money',
+      'research': '/account/research',
     };
 
     if (routes[featureId]) {
