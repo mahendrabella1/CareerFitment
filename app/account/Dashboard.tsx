@@ -211,14 +211,14 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
     // Feature navigation map
     const featureRoutes: Record<string, string> = {
       "careers": "/account/career-library",
-      "study-abroad": "/account/features/study-abroad",
+      "study-abroad": "/account/study-abroad",
       "exams": "/account/exams",
       "internships": "/account/internships-new",
       "financial": "/account/money",
       "legal": "/account/legal",
       "research": "/account/research",
       "startups": "/account/startups",
-      "resources": "/account/features/scholarships",
+      "resources": "/account/scholarships",
       "portfolio": "/account/portfolio",
     };
 

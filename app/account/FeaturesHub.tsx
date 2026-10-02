@@ -67,6 +67,13 @@ const FEATURES = [
     desc: "100+ startups and entrepreneurship resources",
     color: "#f97316",
   },
+  {
+    id: "resources",
+    name: "Scholarships",
+    icon: "🎓",
+    desc: "Find the scholarships you actually qualify for, and track every deadline",
+    color: "#166534",
+  },
 ];
 
 export default function FeaturesHub() {
@@ -82,6 +89,8 @@ export default function FeaturesHub() {
       'research': '/account/research',
       'legal': '/account/legal',
       'exams': '/account/exams',
+      'resources': '/account/scholarships',
+      'study-abroad': '/account/study-abroad',
     };
 
     if (routes[featureId]) {
