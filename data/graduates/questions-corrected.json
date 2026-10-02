@@ -519,30 +519,6 @@
      "subdomain": "Logical Reasoning"
     },
     {
-     "text": "If a project is approved, funding is released. Funding was not released. What can be concluded under this rule?",
-     "options": [
-      "The project was approved",
-      "The project was not approved",
-      "The project may or may not have been approved",
-      "Funding is irrelevant"
-     ],
-     "type": "choice4",
-     "correctIndex": 1,
-     "subdomain": "Critical Thinking"
-    },
-    {
-     "text": "Four tasks J, K, L, M must be ordered. J before L; K before M. Which could be the order?",
-     "options": [
-      "L-J-K-M",
-      "K-J-M-L",
-      "J-L-M-K",
-      "M-K-J-L"
-     ],
-     "type": "choice4",
-     "correctIndex": 1,
-     "subdomain": "Logical Reasoning"
-    },
-    {
      "text": "A report states: Students who use practice tests score higher on average. Which conclusion is most justified?",
      "options": [
       "Practice tests guarantee higher scores",
@@ -555,28 +531,52 @@
      "subdomain": "Critical Thinking"
     },
     {
-     "text": "A chart shows sales: Jan 100, Feb 120, Mar 90, Apr 150. Which month had the largest increase from the previous month?",
+     "text": "At a startup's founding team: A is the spouse of B. C is the sibling of B's father. D is the only child of A and B. How is C related to D?",
      "options": [
-      "February",
-      "March",
-      "April",
-      "Same increase each month"
+      "D's uncle or aunt",
+      "D's grand-uncle or grand-aunt",
+      "D's cousin",
+      "D's sibling"
      ],
      "type": "choice4",
-     "correctIndex": 2,
-     "subdomain": "Data Interpretation"
+     "correctIndex": 1,
+     "subdomain": "Blood Relations"
     },
     {
-     "text": "A process reduces average processing time but increases training time. Which statement best summarizes it?",
+     "text": "In a company's internal code, each letter is replaced by the letter 3 positions after it in the alphabet (Z wraps to C). Using this rule, 'BUDGET' is coded as 'EXGJHW'. Decode 'VWUDWHJB'.",
      "options": [
-      "The process had only benefits",
-      "The process had only drawbacks",
-      "The process involved a trade-off",
-      "Training time was unchanged"
+      "STRATEGY",
+      "STRATEGIC",
+      "STRATEGIES",
+      "STRATEGIZE"
      ],
      "type": "choice4",
-     "correctIndex": 2,
-     "subdomain": "Decision-Making"
+     "correctIndex": 0,
+     "subdomain": "Coding-Decoding"
+    },
+    {
+     "text": "A field surveyor starts at a benchmark, walks 9 km east, then 12 km north, then 3 km east. What is the straight-line distance back to the benchmark, to the nearest km?",
+     "options": [
+      "17 km",
+      "21 km",
+      "24 km",
+      "15 km"
+     ],
+     "type": "choice4",
+     "correctIndex": 0,
+     "subdomain": "Direction Sense"
+    },
+    {
+     "text": "Find the next term in the series: 3, 7, 16, 35, 74, ?",
+     "options": [
+      "153",
+      "148",
+      "150",
+      "155"
+     ],
+     "type": "choice4",
+     "correctIndex": 0,
+     "subdomain": "Number Series"
     }
    ]
   }

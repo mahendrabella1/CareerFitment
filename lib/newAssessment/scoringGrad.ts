@@ -75,20 +75,25 @@ export interface GraduateResponse {
 
 // ---------------------------------------------------------------- Output shape
 
-// Verbal Reasoning is deliberately absent: the FuturePath 100-question bank's
-// D8 (Cognitive & Analytical Ability, Q89-96) doesn't include a pure
-// vocabulary/verbal item - it's numerical, logical/deductive, conditional,
-// constraint-ordering, evidence-interpretation, data-comparison and
-// trade-off items only (see the RATIONALE line per question in the source
-// spec). Showing a permanently-empty "Verbal: 0%" card would look like a
-// measured weakness rather than an unmeasured dimension, so the field is
-// dropped rather than kept always-zero.
+// Verbal Reasoning (pure vocabulary) is still deliberately absent, matching
+// the original FuturePath 100-question bank's own D8 scope. Data
+// Interpretation and Decision-Making (the bank's two single-question
+// subdomains) were traded for 4 new single-question subdomains - Blood
+// Relations, Coding-Decoding, Direction Sense, Number Series - genuine
+// reasoning-skill types the original 8-question set didn't cover at all,
+// scaled to undergraduate difficulty (multi-hop relation chains, a real
+// Pythagorean net-displacement calc, a compound-operation series, not the
+// single-step school-level versions of these question types). Total stays
+// at 8 questions; breadth of distinct reasoning sub-skills covered goes
+// from 5 to 7.
 export interface AptitudeProfileGrad {
   numerical: { score: number; correct: number; total: number };
   logical: { score: number; correct: number; total: number };
   criticalThinking: { score: number; correct: number; total: number };
-  dataInterpretation: { score: number; correct: number; total: number };
-  decisionMaking: { score: number; correct: number; total: number };
+  bloodRelations: { score: number; correct: number; total: number };
+  codingDecoding: { score: number; correct: number; total: number };
+  directionSense: { score: number; correct: number; total: number };
+  numberSeries: { score: number; correct: number; total: number };
   overallScore: number;
   strength: string;
   weakness: string;
@@ -249,8 +254,10 @@ const APTITUDE_FIELDS: { key: keyof Omit<AptitudeProfileGrad, "overallScore" | "
   { key: "numerical", subdomain: "Numerical Reasoning", label: "Numerical" },
   { key: "logical", subdomain: "Logical Reasoning", label: "Logical" },
   { key: "criticalThinking", subdomain: "Critical Thinking", label: "Critical Thinking" },
-  { key: "dataInterpretation", subdomain: "Data Interpretation", label: "Data Interpretation" },
-  { key: "decisionMaking", subdomain: "Decision-Making", label: "Decision-Making" },
+  { key: "bloodRelations", subdomain: "Blood Relations", label: "Blood Relations" },
+  { key: "codingDecoding", subdomain: "Coding-Decoding", label: "Coding-Decoding" },
+  { key: "directionSense", subdomain: "Direction Sense", label: "Direction Sense" },
+  { key: "numberSeries", subdomain: "Number Series", label: "Number Series" },
 ];
 function scoreAptitude(responses: Record<string, number>): AptitudeProfileGrad {
   const got: Record<string, number> = {};

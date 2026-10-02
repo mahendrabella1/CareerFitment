@@ -88,8 +88,10 @@ export function adaptGraduateToSummary(output: GraduateScoreOutput, base: Assess
     { skill: "Numerical", score: ap.numerical.score },
     { skill: "Logical", score: ap.logical.score },
     { skill: "Critical Thinking", score: ap.criticalThinking.score },
-    { skill: "Data Interpretation", score: ap.dataInterpretation.score },
-    { skill: "Decision-Making", score: ap.decisionMaking.score },
+    { skill: "Blood Relations", score: ap.bloodRelations.score },
+    { skill: "Coding-Decoding", score: ap.codingDecoding.score },
+    { skill: "Direction Sense", score: ap.directionSense.score },
+    { skill: "Number Series", score: ap.numberSeries.score },
   ].sort((a, b) => b.score - a.score);
 
   const learningStyles = l1.learningStyle.ranked.map((r) => ({ name: r.style, score: r.score }));
