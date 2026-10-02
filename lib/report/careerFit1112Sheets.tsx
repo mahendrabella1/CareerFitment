@@ -1846,6 +1846,21 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                   <Pill label={selector.roadmap!.fitType} tone={toneForFitType(selector.roadmap!.fitType)} />
                   <span style={{ fontSize: 12.5, color: "var(--ink-2)", fontWeight: 600 }}>{selector.roadmap!.actionSummary}</span>
                 </div>
+                {/* The actual plan behind actionSummary's one-liner - was
+                    computed on every roadmap entry (Native Fit/Bridge/Hard
+                    Gate alike) but never rendered anywhere, so a Hard Gate
+                    student learned THAT their stream blocks this career but
+                    never HOW to realistically get there. Tinted to match the
+                    Pill's own fit-type colour so the plan reads as "here's
+                    what that badge means", not a disconnected extra note. */}
+                <div style={{
+                  maxWidth: 640, margin: "0 auto 20px", padding: "12px 16px", borderRadius: 10,
+                  fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.6, textAlign: "center",
+                  background: toneForFitType(selector.roadmap!.fitType).bg,
+                  border: `1px solid ${toneForFitType(selector.roadmap!.fitType).border}`,
+                }}>
+                  {selector.roadmap!.detailedSteps}
+                </div>
                 <div style={{ textAlign: "center", fontSize: 12.5, color: "var(--ink-2)", marginBottom: 20 }}>
                   <b style={{ color: "var(--ink)" }}>Entrance exam for {selector.career.name}:</b> {selector.career.typicalEntranceExam}
                 </div>
