@@ -1,0 +1,482 @@
+/**
+ * Phase 1 scholarship directory - real, well-known, stable national and
+ * international schemes only (no fabricated or invented scholarships),
+ * spanning the 6 types the spec defines. Eligibility RULES are the
+ * genuinely stable part (who qualifies rarely changes year to year);
+ * amounts and deadlines are shown as approximate/"check official site"
+ * where this build doesn't have a freshly-sourced current figure, same
+ * honesty discipline as data/exams/exams.ts.
+ */
+import type { Rule } from "@/lib/scholarships/eligibility";
+
+export type ScholarshipType = "merit" | "means" | "merit_means" | "category" | "group" | "abroad";
+
+export interface ScholarshipDef {
+  slug: string;
+  name: string;
+  provider: string;
+  type: ScholarshipType;
+  officialUrl: string;
+  applyVia: string;
+  amountText: string;
+  amountPerYearInr: number | null; // for ranking; null when genuinely unknown
+  years: number | null;
+  deadlineNote: string; // real if known, else "Check official site - varies by year"
+  rules: Rule[];
+  sourceUrl: string;
+  checkedAt: string;
+}
+
+export const SCHOLARSHIPS: ScholarshipDef[] = [
+  // ---- Merit ----
+  {
+    slug: "central-sector-scheme",
+    name: "Central Sector Scheme of Scholarships (CSSS)",
+    provider: "Ministry of Education, Government of India",
+    type: "merit",
+    officialUrl: "https://scholarships.gov.in/",
+    applyVia: "NSP",
+    amountText: "₹12,000-20,000 a year",
+    amountPerYearInr: 15000, years: 3,
+    deadlineNote: "Applications usually open via the National Scholarship Portal between August and October - check the current notification.",
+    rules: [
+      { type: "qualification", level: "class12", allowAppearing: false },
+      { type: "minMarks", field: "class12Pct", value: 80 },
+      { type: "incomeMax", valueInr: 800000 },
+    ],
+    sourceUrl: "https://scholarships.gov.in/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "inspire-she",
+    name: "INSPIRE-SHE (Scholarship for Higher Education)",
+    provider: "Department of Science & Technology",
+    type: "merit",
+    officialUrl: "https://online-inspire.gov.in/",
+    applyVia: "Own portal",
+    amountText: "Up to ₹80,000 a year",
+    amountPerYearInr: 80000, years: 5,
+    deadlineNote: "Check the current INSPIRE-SHE notification for this year's window.",
+    rules: [
+      { type: "qualification", level: "class12", allowAppearing: false },
+      { type: "minMarks", field: "class12Pct", value: 80 },
+      { type: "field", oneOf: ["science"] },
+      { type: "note", text: "For students pursuing BSc/Integrated MSc in natural and basic sciences." },
+    ],
+    sourceUrl: "https://online-inspire.gov.in/", checkedAt: "2026-10-02",
+  },
+  // ---- Means ----
+  {
+    slug: "nmms",
+    name: "National Means-cum-Merit Scholarship (NMMS)",
+    provider: "Ministry of Education, Government of India",
+    type: "means",
+    officialUrl: "https://scholarships.gov.in/",
+    applyVia: "State + NSP",
+    amountText: "₹12,000 a year",
+    amountPerYearInr: 12000, years: 4,
+    deadlineNote: "For class 8 students - state-level exam, typically held around October/November.",
+    rules: [
+      { type: "qualification", level: "class12", allowAppearing: true },
+      { type: "note", text: "Open only to students in class 8 at the time of the qualifying exam, continuing through class 9-12." },
+      { type: "incomeMax", valueInr: 350000 },
+      { type: "minMarks", field: "class10Pct", value: 55, relax: { SC: 50, ST: 50, PwBD: 50 } },
+    ],
+    sourceUrl: "https://scholarships.gov.in/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "hdfc-parivartan-ecss",
+    name: "HDFC Parivartan ECSS (Educational Crisis Scholarship Support)",
+    provider: "HDFC Bank Parivartan",
+    type: "means",
+    officialUrl: "https://www.hdfcbank.com/personal/about-us/corporate-social-responsibility/parivartan",
+    applyVia: "Own portal (Buddy4Study)",
+    amountText: "₹12,000-20,000 a year",
+    amountPerYearInr: 15000, years: 1,
+    deadlineNote: "Check the current cycle on the official/Buddy4Study listing.",
+    rules: [
+      { type: "incomeMax", valueInr: 250000 },
+      { type: "note", text: "For students facing a sudden financial crisis in the family (illness, job loss, death of an earning member)." },
+    ],
+    sourceUrl: "https://www.hdfcbank.com/personal/about-us/corporate-social-responsibility/parivartan", checkedAt: "2026-10-02",
+  },
+  // ---- Merit-cum-means ----
+  {
+    slug: "aicte-pragati-girls",
+    name: "AICTE Pragati Scholarship for Girls",
+    provider: "AICTE",
+    type: "merit_means",
+    officialUrl: "https://www.aicte-pragati-saksham-gov.in/",
+    applyVia: "NSP",
+    amountText: "Up to ₹50,000 a year",
+    amountPerYearInr: 50000, years: 4,
+    deadlineNote: "Applications usually open via NSP - check the current AICTE notification.",
+    rules: [
+      { type: "gender", equals: "female" },
+      { type: "institutionType", oneOf: ["government", "aided", "private"] },
+      { type: "incomeMax", valueInr: 800000 },
+      { type: "note", text: "Limited to 2 girls per family; for AICTE-approved technical diploma/degree programmes." },
+    ],
+    sourceUrl: "https://www.aicte-pragati-saksham-gov.in/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "aicte-saksham",
+    name: "AICTE Saksham Scholarship",
+    provider: "AICTE",
+    type: "merit_means",
+    officialUrl: "https://www.aicte-pragati-saksham-gov.in/",
+    applyVia: "NSP",
+    amountText: "Up to ₹50,000 a year",
+    amountPerYearInr: 50000, years: 4,
+    deadlineNote: "Applications usually open via NSP - check the current AICTE notification.",
+    rules: [
+      { type: "incomeMax", valueInr: 800000 },
+      { type: "note", text: "For specially-abled students (40% or more disability) in AICTE-approved technical diploma/degree programmes." },
+    ],
+    sourceUrl: "https://www.aicte-pragati-saksham-gov.in/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "reliance-foundation-ug",
+    name: "Reliance Foundation Undergraduate Scholarship",
+    provider: "Reliance Foundation",
+    type: "merit_means",
+    officialUrl: "https://www.reliancefoundation.org/scholarships",
+    applyVia: "Own portal (Buddy4Study)",
+    amountText: "Up to ₹2 lakh over the degree",
+    amountPerYearInr: 50000, years: 4,
+    deadlineNote: "Typically opens for first-year UG admits - check the current cycle.",
+    rules: [
+      { type: "qualification", level: "graduate", allowAppearing: true },
+      { type: "minMarks", field: "class12Pct", value: 60 },
+      { type: "incomeMax", valueInr: 1500000 },
+    ],
+    sourceUrl: "https://www.reliancefoundation.org/scholarships", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "kotak-kanya",
+    name: "Kotak Kanya Scholarship Programme",
+    provider: "Kotak Mahindra Group",
+    type: "merit_means",
+    officialUrl: "https://www.kotak.com/en/csr/kotak-kanya-scholarship.html",
+    applyVia: "Own portal (Buddy4Study)",
+    amountText: "₹50,000-1 lakh a year",
+    amountPerYearInr: 75000, years: 4,
+    deadlineNote: "Check the current cycle on the official/Buddy4Study listing.",
+    rules: [
+      { type: "gender", equals: "female" },
+      { type: "qualification", level: "graduate", allowAppearing: true },
+      { type: "minMarks", field: "class12Pct", value: 60 },
+      { type: "incomeMax", valueInr: 600000 },
+    ],
+    sourceUrl: "https://www.kotak.com/en/csr/kotak-kanya-scholarship.html", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "tata-capital-pankh",
+    name: "Tata Capital Pankh Scholarship",
+    provider: "Tata Capital",
+    type: "merit_means",
+    officialUrl: "https://www.tatacapital.com/csr/pankh-scholarship.html",
+    applyVia: "Own portal (Buddy4Study)",
+    amountText: "Varies by stage",
+    amountPerYearInr: null, years: 1,
+    deadlineNote: "Check the current cycle on the official/Buddy4Study listing.",
+    rules: [
+      { type: "incomeMax", valueInr: 400000 },
+      { type: "minMarks", field: "lastPct", value: 55 },
+    ],
+    sourceUrl: "https://www.tatacapital.com/csr/pankh-scholarship.html", checkedAt: "2026-10-02",
+  },
+  // ---- Category-based ----
+  {
+    slug: "post-matric-sc",
+    name: "Post-Matric Scholarship for SC Students",
+    provider: "Ministry of Social Justice & Empowerment",
+    type: "category",
+    officialUrl: "https://scholarships.gov.in/",
+    applyVia: "NSP",
+    amountText: "Fees plus maintenance allowance",
+    amountPerYearInr: null, years: null,
+    deadlineNote: "Applications typically open via NSP between August and October.",
+    rules: [
+      { type: "category", oneOf: ["SC"] },
+      { type: "qualification", level: "class12", allowAppearing: true },
+      { type: "incomeMax", valueInr: 250000 },
+    ],
+    sourceUrl: "https://scholarships.gov.in/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "post-matric-st",
+    name: "Post-Matric Scholarship for ST Students",
+    provider: "Ministry of Tribal Affairs",
+    type: "category",
+    officialUrl: "https://scholarships.gov.in/",
+    applyVia: "NSP",
+    amountText: "Fees plus maintenance allowance",
+    amountPerYearInr: null, years: null,
+    deadlineNote: "Applications typically open via NSP between August and October.",
+    rules: [
+      { type: "category", oneOf: ["ST"] },
+      { type: "qualification", level: "class12", allowAppearing: true },
+      { type: "incomeMax", valueInr: 250000 },
+    ],
+    sourceUrl: "https://scholarships.gov.in/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "post-matric-obc",
+    name: "Post-Matric Scholarship for OBC Students",
+    provider: "Ministry of Social Justice & Empowerment",
+    type: "category",
+    officialUrl: "https://scholarships.gov.in/",
+    applyVia: "NSP",
+    amountText: "Fees plus maintenance allowance",
+    amountPerYearInr: null, years: null,
+    deadlineNote: "Applications typically open via NSP between August and October.",
+    rules: [
+      { type: "category", oneOf: ["OBC"] },
+      { type: "qualification", level: "class12", allowAppearing: true },
+      { type: "incomeMax", valueInr: 150000 },
+    ],
+    sourceUrl: "https://scholarships.gov.in/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "pre-matric-minorities",
+    name: "Pre-Matric Scholarship for Minorities",
+    provider: "Ministry of Minority Affairs",
+    type: "category",
+    officialUrl: "https://scholarships.gov.in/",
+    applyVia: "NSP",
+    amountText: "₹1,000-10,000 a year",
+    amountPerYearInr: 5000, years: null,
+    deadlineNote: "Applications typically open via NSP between August and October.",
+    rules: [
+      { type: "category", oneOf: ["Muslim", "Christian", "Sikh", "Buddhist", "Parsi", "Jain"] },
+      { type: "incomeMax", valueInr: 100000 },
+      { type: "note", text: "For students in class 1-10 from notified minority communities." },
+    ],
+    sourceUrl: "https://scholarships.gov.in/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "pm-yasasvi",
+    name: "PM YASASVI (Young Achievers Scholarship Award Scheme for Vibrant India)",
+    provider: "Ministry of Social Justice & Empowerment",
+    type: "category",
+    officialUrl: "https://yet.nta.ac.in/",
+    applyVia: "NSP / YET exam",
+    amountText: "₹75,000-1,25,000 a year (class 9-12)",
+    amountPerYearInr: 100000, years: 4,
+    deadlineNote: "The YASASVI Entrance Test (YET) is usually held once a year - check the current notification.",
+    rules: [
+      { type: "category", oneOf: ["OBC", "EBC", "DNT"] },
+      { type: "incomeMax", valueInr: 250000 },
+    ],
+    sourceUrl: "https://yet.nta.ac.in/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "top-class-sc",
+    name: "Top Class Education Scheme for SC Students",
+    provider: "Ministry of Social Justice & Empowerment",
+    type: "category",
+    officialUrl: "https://scholarships.gov.in/",
+    applyVia: "NSP",
+    amountText: "Full tuition plus maintenance, at notified top institutions",
+    amountPerYearInr: null, years: null,
+    deadlineNote: "Applications typically open via NSP between August and October.",
+    rules: [
+      { type: "category", oneOf: ["SC"] },
+      { type: "qualification", level: "graduate", allowAppearing: true },
+      { type: "incomeMax", valueInr: 800000 },
+      { type: "note", text: "Limited to a notified list of top institutions (IITs, IIMs, NLUs and similar)." },
+    ],
+    sourceUrl: "https://scholarships.gov.in/", checkedAt: "2026-10-02",
+  },
+  // ---- Group-specific ----
+  {
+    slug: "loreal-fywis",
+    name: "L'Oréal India For Young Women in Science (FYWIS)",
+    provider: "L'Oréal India, in partnership with UNESCO and the Department of Science & Technology",
+    type: "group",
+    officialUrl: "https://www.forwomeninscience.com/",
+    applyVia: "Own portal",
+    amountText: "₹2.5 lakh (one-time)",
+    amountPerYearInr: null, years: 1,
+    deadlineNote: "Usually opens once a year - check the current cycle.",
+    rules: [
+      { type: "gender", equals: "female" },
+      { type: "qualification", level: "graduate", allowAppearing: false },
+      { type: "field", oneOf: ["science"] },
+      { type: "note", text: "For women pursuing a PhD or postdoctoral research in science." },
+    ],
+    sourceUrl: "https://www.forwomeninscience.com/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "santoor-womens-scholarship",
+    name: "Santoor Women's Scholarship Programme",
+    provider: "Wipro Consumer Care, in partnership with Buddy4Study",
+    type: "group",
+    officialUrl: "https://www.santoorscholarship.com/",
+    applyVia: "Own portal",
+    amountText: "Up to ₹50,000 a year",
+    amountPerYearInr: 50000, years: 1,
+    deadlineNote: "Check the current cycle on the official site.",
+    rules: [
+      { type: "gender", equals: "female" },
+      { type: "incomeMax", valueInr: 600000 },
+    ],
+    sourceUrl: "https://www.santoorscholarship.com/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "begum-hazrat-mahal",
+    name: "Begum Hazrat Mahal National Scholarship",
+    provider: "Maulana Azad Education Foundation",
+    type: "group",
+    officialUrl: "https://maef.nic.in/",
+    applyVia: "Own portal",
+    amountText: "₹5,000-12,000 a year",
+    amountPerYearInr: 8000, years: null,
+    deadlineNote: "Check the current cycle on the official site.",
+    rules: [
+      { type: "gender", equals: "female" },
+      { type: "category", oneOf: ["Muslim", "Christian", "Sikh", "Buddhist", "Parsi", "Jain"] },
+      { type: "minMarks", field: "lastPct", value: 50 },
+      { type: "incomeMax", valueInr: 200000 },
+    ],
+    sourceUrl: "https://maef.nic.in/", checkedAt: "2026-10-02",
+  },
+  // ---- Study abroad ----
+  {
+    slug: "fulbright-nehru-masters",
+    name: "Fulbright-Nehru Master's Fellowship",
+    provider: "United States-India Educational Foundation (USIEF)",
+    type: "abroad",
+    officialUrl: "https://www.usief.org.in/",
+    applyVia: "Own portal",
+    amountText: "Fully funded",
+    amountPerYearInr: null, years: 2,
+    deadlineNote: "Applications typically open around April-May each year - check the current cycle.",
+    rules: [
+      { type: "qualification", level: "graduate", allowAppearing: false },
+      { type: "note", text: "Needs leadership potential and relevant work experience; for a master's degree in the USA." },
+    ],
+    sourceUrl: "https://www.usief.org.in/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "chevening",
+    name: "Chevening Scholarship",
+    provider: "UK Government (Foreign, Commonwealth & Development Office)",
+    type: "abroad",
+    officialUrl: "https://www.chevening.org/",
+    applyVia: "Own portal",
+    amountText: "Fully funded",
+    amountPerYearInr: null, years: 1,
+    deadlineNote: "Applications typically open in August and close in November - check the current cycle.",
+    rules: [
+      { type: "qualification", level: "graduate", allowAppearing: false },
+      { type: "note", text: "Needs at least 2 years' work experience; for a one-year master's degree in the UK." },
+    ],
+    sourceUrl: "https://www.chevening.org/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "commonwealth-scholarship",
+    name: "Commonwealth Scholarship",
+    provider: "Commonwealth Scholarship Commission, UK",
+    type: "abroad",
+    officialUrl: "https://cscuk.fcdo.gov.uk/",
+    applyVia: "Own portal",
+    amountText: "Fully funded",
+    amountPerYearInr: null, years: null,
+    deadlineNote: "Check the current cycle on the official site.",
+    rules: [
+      { type: "qualification", level: "graduate", allowAppearing: false },
+      { type: "note", text: "For master's and PhD study in the UK; open to citizens of Commonwealth countries." },
+    ],
+    sourceUrl: "https://cscuk.fcdo.gov.uk/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "daad-scholarships",
+    name: "DAAD Scholarships",
+    provider: "German Academic Exchange Service (DAAD)",
+    type: "abroad",
+    officialUrl: "https://www.daad.in/",
+    applyVia: "Own portal",
+    amountText: "Partial to fully funded, depending on the programme",
+    amountPerYearInr: null, years: null,
+    deadlineNote: "Deadlines vary by specific DAAD programme - check the current cycle.",
+    rules: [
+      { type: "qualification", level: "graduate", allowAppearing: true },
+      { type: "note", text: "Multiple programmes exist for master's and PhD study in Germany, especially development-related and STEM fields." },
+    ],
+    sourceUrl: "https://www.daad.in/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "erasmus-mundus",
+    name: "Erasmus Mundus Joint Master's Degrees",
+    provider: "European Commission",
+    type: "abroad",
+    officialUrl: "https://www.eacea.ec.europa.eu/",
+    applyVia: "Own portal, per programme",
+    amountText: "Fully funded",
+    amountPerYearInr: null, years: 2,
+    deadlineNote: "Deadlines vary by specific joint master's programme - check the current cycle.",
+    rules: [
+      { type: "qualification", level: "graduate", allowAppearing: true },
+      { type: "note", text: "For fully-funded joint master's degrees taught across multiple European universities." },
+    ],
+    sourceUrl: "https://www.eacea.ec.europa.eu/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "jn-tata-endowment",
+    name: "JN Tata Endowment Loan Scholarship",
+    provider: "JN Tata Endowment",
+    type: "abroad",
+    officialUrl: "https://www.jntataendowment.org/",
+    applyVia: "Own portal",
+    amountText: "Interest-free loan-scholarship, typically a partial contribution",
+    amountPerYearInr: null, years: null,
+    deadlineNote: "Applications typically open around January-March - check the current cycle.",
+    rules: [
+      { type: "qualification", level: "graduate", allowAppearing: true },
+      { type: "note", text: "For higher study abroad, any field; structured as an interest-free loan, not a grant." },
+    ],
+    sourceUrl: "https://www.jntataendowment.org/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "kc-mahindra-pg-abroad",
+    name: "KC Mahindra Scholarship for Post-Graduate Studies Abroad",
+    provider: "KC Mahindra Education Trust",
+    type: "abroad",
+    officialUrl: "https://www.kcmet.org/",
+    applyVia: "Own portal",
+    amountText: "Loan-scholarship, varies by case",
+    amountPerYearInr: null, years: null,
+    deadlineNote: "Check the current cycle on the official site.",
+    rules: [
+      { type: "qualification", level: "graduate", allowAppearing: true },
+      { type: "note", text: "For postgraduate study abroad, any field, based on merit and need." },
+    ],
+    sourceUrl: "https://www.kcmet.org/", checkedAt: "2026-10-02",
+  },
+  {
+    slug: "inlaks-scholarship",
+    name: "Inlaks Scholarship",
+    provider: "Inlaks Shivdasani Foundation",
+    type: "abroad",
+    officialUrl: "https://www.inlaksfoundation.org/",
+    applyVia: "Own portal",
+    amountText: "Up to US$100,000, depending on the programme",
+    amountPerYearInr: null, years: null,
+    deadlineNote: "Applications typically open around January and close in April - check the current cycle.",
+    rules: [
+      { type: "qualification", level: "graduate", allowAppearing: false },
+      { type: "note", text: "For full-time graduate study at top universities abroad, any field except an MBA from the US." },
+    ],
+    sourceUrl: "https://www.inlaksfoundation.org/", checkedAt: "2026-10-02",
+  },
+];
+
+export function scholarshipBySlug(slug: string): ScholarshipDef | undefined {
+  return SCHOLARSHIPS.find((s) => s.slug === slug);
+}
+
+export const SCHOLARSHIP_TYPE_LABEL: Record<ScholarshipType, string> = {
+  merit: "Merit", means: "Means (need-based)", merit_means: "Merit-cum-means",
+  category: "Category-based", group: "Group-specific", abroad: "Study abroad",
+};
