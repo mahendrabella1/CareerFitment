@@ -60,8 +60,8 @@ const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://careerfitment.one
 const DASHBOARD_LINKS: { label: string; path: string; note: string }[] = [
   { label: "Live Internships", path: "/account/internships-new", note: "Real internship listings on your dashboard" },
   { label: "Career Library", path: "/account/career-library", note: "Deep-dive into hundreds of real career paths" },
-  { label: "Entrance Exams", path: "/account/features/entrance-exams", note: "Exam dates, syllabus and prep resources" },
-  { label: "Scholarships & Funding", path: "/account/features/scholarships", note: "Curated funding opportunities on your dashboard" },
+  { label: "Entrance Exams", path: "/account/exams", note: "Exam dates, syllabus and prep resources" },
+  { label: "Scholarships & Funding", path: "/account/scholarships", note: "Curated funding opportunities on your dashboard" },
 ];
 const P = "https://onegrasp.com/wp-content/uploads/2026/07/";
 const DIMS8 = P + "ChatGPT-Image-Jul-10-2026-05_34_15-PM.png";
