@@ -80,6 +80,48 @@ export function rolesForDegreeCourse(degree: string, course: string): string[] {
   return row?.roles ?? [];
 }
 
+/** role (exact name) -> every cluster it appears under. Built once at
+ *  module load, not per-call - ~3,300 roles, 269 of which (8%) genuinely
+ *  belong to more than one cluster (e.g. "Assistant Professor", "Analytics
+ *  Manager"), so this returns an array rather than silently picking one. */
+const ROLE_TO_CLUSTERS: Record<string, string[]> = (() => {
+  const map: Record<string, string[]> = {};
+  for (const c of DATA.clusters) {
+    for (const role of c.roles) {
+      (map[role] ??= []).push(c.name);
+    }
+  }
+  return map;
+})();
+
+/** Resolves the cluster for a role the student actually SELECTED in the
+ *  Career Selector - used so that page's roadmap matches what they picked,
+ *  not just their measured-profile Suitability cluster (the two can
+ *  genuinely disagree: a student whose degree/profile points to
+ *  Engineering but who typed "Doctor" should see a Healthcare roadmap).
+ *  For the 8% of roles that exist in more than one cluster, `preferOrder`
+ *  (typically the student's own Suitability ranking) breaks the tie by
+ *  picking whichever candidate cluster the student's own profile ranks
+ *  highest - falls back to the first candidate if none of preferOrder
+ *  matches. Returns null only when the role isn't in CLUSTER_ROLES at all
+ *  (e.g. it came from the Career Selector's "Other researched careers"
+ *  fallback group, which uses Class 11-12's separate DOMAINS_1112 naming -
+ *  not resolvable against CAREER_CLUSTERS_18 without a lossy cross-taxonomy
+ *  mapping, so callers should fall back to the Suitability cluster instead
+ *  of guessing here).
+ */
+export function clusterForRole(role: string, preferOrder?: string[]): string | null {
+  const candidates = ROLE_TO_CLUSTERS[role];
+  if (!candidates || candidates.length === 0) return null;
+  if (candidates.length === 1) return candidates[0];
+  if (preferOrder) {
+    for (const preferred of preferOrder) {
+      if (candidates.includes(preferred)) return preferred;
+    }
+  }
+  return candidates[0];
+}
+
 export function clusterForDegreeCourse(degree: string, course: string): string | null {
   const row = MASTER_ROWS_GRAD.find((r) => r.degree === degree && r.course === course);
   return row?.cluster ?? null;

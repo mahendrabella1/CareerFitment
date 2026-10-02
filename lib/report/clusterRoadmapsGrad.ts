@@ -28,18 +28,45 @@ import raw from "@/data/graduates/cluster-roadmaps.json";
 export interface GradYearFocus {
   year: string;
   focus: string;
+  // Added alongside the per-cluster skill-gap engine work (see
+  // skillGapGrad.ts) - splits each year's single `focus` sentence into
+  // concrete, checkable skill items a learner can mark off, the same way
+  // yearlySkillBuilding's top-level technical/nonTechnical strings already
+  // summarised the whole degree. Optional because the 18th cluster
+  // ("Personal Care, Beauty & Wellness") wasn't enriched in this pass.
+  technicalSkills?: string[];
+  nonTechnicalSkills?: string[];
 }
 export interface GradEmergingArea {
   course: string;
   roles: string[];
 }
+export interface GradCertification {
+  name: string;
+  cost: "Free" | "Paid" | "Freemium";
+}
+// Real, well-known, long-running national scholarship schemes only (per
+// explicit instruction) - no cluster-specific fabrication, and
+// `universityType` names a real, verifiable grouping/tier (e.g. "TU9
+// technical universities", "Russell Group") rather than claiming a
+// specific best-fit institution we have no authority to recommend.
+export interface GradAbroadDestination {
+  country: string;
+  universityType: string;
+  scholarship: string;
+}
 export interface GradClusterRoadmap {
   yearlySkillBuilding: { technical: string; nonTechnical: string; years: GradYearFocus[] };
   internships: { government: string; private: string };
-  certifications: string;
+  certifications: string | GradCertification[];
   jobRoles: string[];
-  pgInIndia: { programmes: string[]; entranceExams: string[]; note: string | null };
-  studyAbroad: string;
+  pgInIndia: { programmes: string[]; entranceExams: string[]; note: string | null; scholarships?: string[]; topInstitutions?: string[] };
+  studyAbroad: string | GradAbroadDestination[];
+  // Defence, Security & Emergency Services: most countries restrict defence/
+  // security-service entry to their own citizens, so studyAbroad is an
+  // empty array there - this note explains why rather than leaving a
+  // silently empty section.
+  studyAbroadNote?: string;
   careerAdvancement: { phdProgrammes: string[]; phdRoles: string[]; note: string | null };
   emergingAreas: GradEmergingArea[];
 }

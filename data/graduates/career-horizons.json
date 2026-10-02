@@ -1,0 +1,1100 @@
+{
+ "Engineering, Technology & Computing": {
+  "cluster": "Engineering, Technology & Computing",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Engineering, Technology & Computing: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Engineering, Technology & Computing checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Engineering, Technology & Computing job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Engineering, Technology & Computing work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Engineering, Technology & Computing fundamentals this field has always required: coding and system design, structured problem-solving under deadlines.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Engineering, Technology & Computing and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Engineering, Technology & Computing have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Engineering, Technology & Computing-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Engineering, Technology & Computing, built on real coding and system design-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Engineering, Technology & Computing - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Engineering, Technology & Computing work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Engineering, Technology & Computing to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Engineering, Technology & Computing itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Engineering, Technology & Computing tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Engineering, Technology & Computing even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ },
+ "Science, Mathematics & Research": {
+  "cluster": "Science, Mathematics & Research",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Science, Mathematics & Research: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Science, Mathematics & Research checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Science, Mathematics & Research job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Science, Mathematics & Research work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Science, Mathematics & Research fundamentals this field has always required: experimental design and data analysis, scientific writing and peer review.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Science, Mathematics & Research and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Science, Mathematics & Research have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Science, Mathematics & Research-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Science, Mathematics & Research, built on real experimental design and data analysis-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Science, Mathematics & Research - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Science, Mathematics & Research work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Science, Mathematics & Research to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Science, Mathematics & Research itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Science, Mathematics & Research tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Science, Mathematics & Research even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ },
+ "Healthcare & Medicine": {
+  "cluster": "Healthcare & Medicine",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Healthcare & Medicine: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Healthcare & Medicine checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Healthcare & Medicine job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Healthcare & Medicine work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Healthcare & Medicine fundamentals this field has always required: clinical/diagnostic technique, patient communication and empathy.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Healthcare & Medicine and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Healthcare & Medicine have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Healthcare & Medicine-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Healthcare & Medicine, built on real clinical/diagnostic technique-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Healthcare & Medicine - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Healthcare & Medicine work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Healthcare & Medicine to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Healthcare & Medicine itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Healthcare & Medicine tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Healthcare & Medicine even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ },
+ "Psychology, Humanities & Social Sciences": {
+  "cluster": "Psychology, Humanities & Social Sciences",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Psychology, Humanities & Social Sciences: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Psychology, Humanities & Social Sciences checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Psychology, Humanities & Social Sciences job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Psychology, Humanities & Social Sciences work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Psychology, Humanities & Social Sciences fundamentals this field has always required: research methods and assessment tools, active listening and ethical judgement.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Psychology, Humanities & Social Sciences and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Psychology, Humanities & Social Sciences have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Psychology, Humanities & Social Sciences-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Psychology, Humanities & Social Sciences, built on real research methods and assessment tools-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Psychology, Humanities & Social Sciences - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Psychology, Humanities & Social Sciences work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Psychology, Humanities & Social Sciences to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Psychology, Humanities & Social Sciences itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Psychology, Humanities & Social Sciences tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Psychology, Humanities & Social Sciences even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ },
+ "Sports, Fitness & Human Performance": {
+  "cluster": "Sports, Fitness & Human Performance",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Sports, Fitness & Human Performance: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Sports, Fitness & Human Performance checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Sports, Fitness & Human Performance job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Sports, Fitness & Human Performance work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Sports, Fitness & Human Performance fundamentals this field has always required: performance testing and training-programme design, coaching communication and motivation.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Sports, Fitness & Human Performance and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Sports, Fitness & Human Performance have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Sports, Fitness & Human Performance-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Sports, Fitness & Human Performance, built on real performance testing and training-programme design-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Sports, Fitness & Human Performance - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Sports, Fitness & Human Performance work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Sports, Fitness & Human Performance to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Sports, Fitness & Human Performance itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Sports, Fitness & Human Performance tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Sports, Fitness & Human Performance even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ },
+ "Agriculture, Food & Life Sciences": {
+  "cluster": "Agriculture, Food & Life Sciences",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Agriculture, Food & Life Sciences: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Agriculture, Food & Life Sciences checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Agriculture, Food & Life Sciences job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Agriculture, Food & Life Sciences work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Agriculture, Food & Life Sciences fundamentals this field has always required: crop/food-systems science, field-level stakeholder coordination.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Agriculture, Food & Life Sciences and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Agriculture, Food & Life Sciences have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Agriculture, Food & Life Sciences-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Agriculture, Food & Life Sciences, built on real crop/food-systems science-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Agriculture, Food & Life Sciences - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Agriculture, Food & Life Sciences work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Agriculture, Food & Life Sciences to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Agriculture, Food & Life Sciences itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Agriculture, Food & Life Sciences tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Agriculture, Food & Life Sciences even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ },
+ "Environment, Energy & Sustainability": {
+  "cluster": "Environment, Energy & Sustainability",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Environment, Energy & Sustainability: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Environment, Energy & Sustainability checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Environment, Energy & Sustainability job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Environment, Energy & Sustainability work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Environment, Energy & Sustainability fundamentals this field has always required: environmental assessment and systems modelling, policy communication and advocacy.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Environment, Energy & Sustainability and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Environment, Energy & Sustainability have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Environment, Energy & Sustainability-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Environment, Energy & Sustainability, built on real environmental assessment and systems modelling-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Environment, Energy & Sustainability - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Environment, Energy & Sustainability work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Environment, Energy & Sustainability to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Environment, Energy & Sustainability itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Environment, Energy & Sustainability tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Environment, Energy & Sustainability even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ },
+ "Architecture, Construction & Built Environment": {
+  "cluster": "Architecture, Construction & Built Environment",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Architecture, Construction & Built Environment: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Architecture, Construction & Built Environment checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Architecture, Construction & Built Environment job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Architecture, Construction & Built Environment work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Architecture, Construction & Built Environment fundamentals this field has always required: design software and structural fundamentals, client briefing and site coordination.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Architecture, Construction & Built Environment and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Architecture, Construction & Built Environment have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Architecture, Construction & Built Environment-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Architecture, Construction & Built Environment, built on real design software and structural fundamentals-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Architecture, Construction & Built Environment - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Architecture, Construction & Built Environment work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Architecture, Construction & Built Environment to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Architecture, Construction & Built Environment itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Architecture, Construction & Built Environment tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Architecture, Construction & Built Environment even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ },
+ "Business, Finance & Entrepreneurship": {
+  "cluster": "Business, Finance & Entrepreneurship",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Business, Finance & Entrepreneurship: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Business, Finance & Entrepreneurship checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Business, Finance & Entrepreneurship job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Business, Finance & Entrepreneurship work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Business, Finance & Entrepreneurship fundamentals this field has always required: financial analysis and modelling, negotiation and stakeholder management.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Business, Finance & Entrepreneurship and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Business, Finance & Entrepreneurship have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Business, Finance & Entrepreneurship-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Business, Finance & Entrepreneurship, built on real financial analysis and modelling-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Business, Finance & Entrepreneurship - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Business, Finance & Entrepreneurship work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Business, Finance & Entrepreneurship to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Business, Finance & Entrepreneurship itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Business, Finance & Entrepreneurship tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Business, Finance & Entrepreneurship even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ },
+ "Law, Legal & Compliance": {
+  "cluster": "Law, Legal & Compliance",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Law, Legal & Compliance: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Law, Legal & Compliance checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Law, Legal & Compliance job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Law, Legal & Compliance work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Law, Legal & Compliance fundamentals this field has always required: legal research and drafting, argumentation and client counselling.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Law, Legal & Compliance and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Law, Legal & Compliance have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Law, Legal & Compliance-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Law, Legal & Compliance, built on real legal research and drafting-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Law, Legal & Compliance - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Law, Legal & Compliance work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Law, Legal & Compliance to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Law, Legal & Compliance itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Law, Legal & Compliance tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Law, Legal & Compliance even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ },
+ "Government, Public Administration & Policy": {
+  "cluster": "Government, Public Administration & Policy",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Government, Public Administration & Policy: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Government, Public Administration & Policy checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Government, Public Administration & Policy job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Government, Public Administration & Policy work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Government, Public Administration & Policy fundamentals this field has always required: policy analysis and public-systems knowledge, stakeholder negotiation across interest groups.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Government, Public Administration & Policy and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Government, Public Administration & Policy have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Government, Public Administration & Policy-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Government, Public Administration & Policy, built on real policy analysis and public-systems knowledge-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Government, Public Administration & Policy - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Government, Public Administration & Policy work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Government, Public Administration & Policy to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Government, Public Administration & Policy itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Government, Public Administration & Policy tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Government, Public Administration & Policy even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ },
+ "Education & Learning": {
+  "cluster": "Education & Learning",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Education & Learning: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Education & Learning checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Education & Learning job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Education & Learning work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Education & Learning fundamentals this field has always required: curriculum design and assessment, classroom communication and mentoring.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Education & Learning and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Education & Learning have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Education & Learning-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Education & Learning, built on real curriculum design and assessment-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Education & Learning - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Education & Learning work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Education & Learning to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Education & Learning itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Education & Learning tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Education & Learning even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ },
+ "Media, Communication, Arts & Design": {
+  "cluster": "Media, Communication, Arts & Design",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Media, Communication, Arts & Design: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Media, Communication, Arts & Design checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Media, Communication, Arts & Design job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Media, Communication, Arts & Design work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Media, Communication, Arts & Design fundamentals this field has always required: production/design tools for your medium, storytelling and audience judgement.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Media, Communication, Arts & Design and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Media, Communication, Arts & Design have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Media, Communication, Arts & Design-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Media, Communication, Arts & Design, built on real production/design tools for your medium-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Media, Communication, Arts & Design - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Media, Communication, Arts & Design work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Media, Communication, Arts & Design to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Media, Communication, Arts & Design itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Media, Communication, Arts & Design tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Media, Communication, Arts & Design even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ },
+ "Manufacturing & Industrial Production": {
+  "cluster": "Manufacturing & Industrial Production",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Manufacturing & Industrial Production: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Manufacturing & Industrial Production checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Manufacturing & Industrial Production job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Manufacturing & Industrial Production work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Manufacturing & Industrial Production fundamentals this field has always required: process and quality-control systems, team coordination on the production floor.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Manufacturing & Industrial Production and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Manufacturing & Industrial Production have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Manufacturing & Industrial Production-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Manufacturing & Industrial Production, built on real process and quality-control systems-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Manufacturing & Industrial Production - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Manufacturing & Industrial Production work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Manufacturing & Industrial Production to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Manufacturing & Industrial Production itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Manufacturing & Industrial Production tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Manufacturing & Industrial Production even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ },
+ "Supply Chain, Procurement & Logistics": {
+  "cluster": "Supply Chain, Procurement & Logistics",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Supply Chain, Procurement & Logistics: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Supply Chain, Procurement & Logistics checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Supply Chain, Procurement & Logistics job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Supply Chain, Procurement & Logistics work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Supply Chain, Procurement & Logistics fundamentals this field has always required: planning and logistics-systems tools, vendor negotiation and coordination.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Supply Chain, Procurement & Logistics and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Supply Chain, Procurement & Logistics have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Supply Chain, Procurement & Logistics-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Supply Chain, Procurement & Logistics, built on real planning and logistics-systems tools-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Supply Chain, Procurement & Logistics - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Supply Chain, Procurement & Logistics work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Supply Chain, Procurement & Logistics to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Supply Chain, Procurement & Logistics itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Supply Chain, Procurement & Logistics tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Supply Chain, Procurement & Logistics even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ },
+ "Travel, Tourism, Hospitality & Transport": {
+  "cluster": "Travel, Tourism, Hospitality & Transport",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Travel, Tourism, Hospitality & Transport: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Travel, Tourism, Hospitality & Transport checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Travel, Tourism, Hospitality & Transport job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Travel, Tourism, Hospitality & Transport work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Travel, Tourism, Hospitality & Transport fundamentals this field has always required: operations and booking/service systems, guest service and cross-cultural communication.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Travel, Tourism, Hospitality & Transport and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Travel, Tourism, Hospitality & Transport have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Travel, Tourism, Hospitality & Transport-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Travel, Tourism, Hospitality & Transport, built on real operations and booking/service systems-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Travel, Tourism, Hospitality & Transport - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Travel, Tourism, Hospitality & Transport work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Travel, Tourism, Hospitality & Transport to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Travel, Tourism, Hospitality & Transport itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Travel, Tourism, Hospitality & Transport tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Travel, Tourism, Hospitality & Transport even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ },
+ "Defence, Security & Emergency Services": {
+  "cluster": "Defence, Security & Emergency Services",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Defence, Security & Emergency Services: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Defence, Security & Emergency Services checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Defence, Security & Emergency Services job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Defence, Security & Emergency Services work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Defence, Security & Emergency Services fundamentals this field has always required: operational and tactical technique, discipline and decision-making under pressure.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Defence, Security & Emergency Services and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Defence, Security & Emergency Services have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Defence, Security & Emergency Services-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Defence, Security & Emergency Services, built on real operational and tactical technique-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Defence, Security & Emergency Services - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Defence, Security & Emergency Services work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Defence, Security & Emergency Services to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Defence, Security & Emergency Services itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Defence, Security & Emergency Services tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Defence, Security & Emergency Services even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ },
+ "Personal Care, Beauty & Wellness": {
+  "cluster": "Personal Care, Beauty & Wellness",
+  "phases": [
+   {
+    "id": "2026-2030",
+    "label": "2026-2030",
+    "theme": "Entry",
+    "assessmentQuestion": "What can I enter now?",
+    "outlook": "Your first stretch in Personal Care, Beauty & Wellness: proving the fundamentals, building real evidence (projects, internships, a first job), and finding out which part of this field actually suits you.",
+    "skills": {
+     "foundationalHuman": "Communication, teamwork and reliability - the baseline every employer in Personal Care, Beauty & Wellness checks before anything technical, same as it's always been.",
+     "digital": "Comfort with standard workplace digital tools, basic data handling and remote-collaboration software - table stakes for any Personal Care, Beauty & Wellness job today.",
+     "ai": "Awareness of how AI tools are already starting to assist Personal Care, Beauty & Wellness work - using them as a tool, not yet needing to build them.",
+     "domain": "The core Personal Care, Beauty & Wellness fundamentals this field has always required: cosmetology/spa-therapy or nutrition-planning technique, client communication and hygiene standards.",
+     "strategic": "Basic prioritisation and following a structured plan - thinking beyond today's task starts here, not yet expected to lead."
+    }
+   },
+   {
+    "id": "2030-2035",
+    "label": "2030-2035",
+    "theme": "Specialisation",
+    "assessmentQuestion": "How should I specialize?",
+    "outlook": "Picking a lane within Personal Care, Beauty & Wellness and going deep enough that your specific expertise becomes the reason you get hired, not just your degree.",
+    "skills": {
+     "foundationalHuman": "Mentoring juniors, negotiating with stakeholders and handling ambiguity - human skills that scale your technical work into real influence.",
+     "digital": "Fluency with whatever the specialised digital tools of Personal Care, Beauty & Wellness have become by then - the specific platforms will have moved on, but deep tool fluency stays non-negotiable.",
+     "ai": "Using AI tools to accelerate Personal Care, Beauty & Wellness-specific work directly, not just generic productivity - this is where AI literacy starts differentiating who moves faster.",
+     "domain": "A genuine specialisation within Personal Care, Beauty & Wellness, built on real cosmetology/spa-therapy or nutrition-planning technique-level depth most peers won't have bothered to build.",
+     "strategic": "Owning outcomes, not just tasks - the shift from \"I did my part\" to \"I made sure it worked\"."
+    }
+   },
+   {
+    "id": "2035-2040",
+    "label": "2035-2040",
+    "theme": "Career Evolution",
+    "assessmentQuestion": "How should I evolve?",
+    "outlook": "Moving from doing the work to guiding how it gets done in Personal Care, Beauty & Wellness - broader scope, more ambiguity, and more of your value coming from judgement than execution.",
+    "skills": {
+     "foundationalHuman": "Leading teams through change, resolving conflict and communicating decisions people disagree with - this is where human skills become the actual job.",
+     "digital": "Judging which new digital tools are worth adopting across a team, not just using them yourself - a gatekeeping skill, not a hands-on one.",
+     "ai": "Deciding where AI genuinely helps Personal Care, Beauty & Wellness work and where it doesn't - the specific tools are unknowable this far out, but judgement about automation's limits is already a real, teachable skill today.",
+     "domain": "Enough breadth across Personal Care, Beauty & Wellness to make calls across specialisations, not just your own - the generalist layer on top of your specialist years.",
+     "strategic": "Setting direction for others, not just executing it - genuinely a different skill from the one that got you here, worth deliberately building rather than assumed to arrive automatically."
+    }
+   },
+   {
+    "id": "2040-2046",
+    "label": "2040-2046",
+    "theme": "Long-Term Adaptability",
+    "assessmentQuestion": "How can I remain relevant?",
+    "outlook": "Personal Care, Beauty & Wellness itself will look different by 2046 in ways nobody can fully predict today - the goal of this stretch isn't a fixed destination, it's staying someone who can keep adapting to it.",
+    "skills": {
+     "foundationalHuman": "The ability to keep learning and keep working well with people different from you - this doesn't expire the way any specific tool or technique eventually does.",
+     "digital": "Comfort adopting whatever the next generation of Personal Care, Beauty & Wellness tools turns out to be - unknowable in specifics this far out, but the pattern of continuous tool change is already well established.",
+     "ai": "Treating AI capability itself as a moving target to keep tracking, not a one-time skill to tick off - exactly what \"AI skills\" means by 2046 can't be predicted, but staying engaged with it can be decided now.",
+     "domain": "Whatever stays true about Personal Care, Beauty & Wellness even as its tools change - the underlying problems this field exists to solve, which shift much slower than its methods.",
+     "strategic": "Judging when to hold steady and when to change direction entirely - the highest-leverage skill for a career this long, and the hardest one to fake."
+    }
+   }
+  ]
+ }
+}
