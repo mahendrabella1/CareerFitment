@@ -330,21 +330,28 @@ function DetailList({ lines, color }: { lines: string[]; color: string }) {
   );
 }
 
+// 15 steps as of this build (was 14) - "UG development" split into "Early
+// UG"/"Later UG" (see DetailedCareerRoadmapView/FlagshipRoadmapView below):
+// both the per-career data (ugDevelopment.years) and the domain-wide data
+// (yearPlan) already store a plain year-by-year array, so the split needed
+// zero new research for any of the 360 careers - just dividing that array
+// in half at render time, not two freshly-authored sections.
 const ROADMAP_SECTION_META: { icon: string; label: string; eyebrow: string; variant: string; accent: string; pastel: string }[] = [
   { icon: "school", label: "Build your foundation", eyebrow: "01 · School / 11-12", variant: "foundation", accent: "#4778c8", pastel: "#eef4ff" },
   { icon: "cap", label: "Choose your launchpad", eyebrow: "02 · UG pathways", variant: "pathway", accent: "#8065bd", pastel: "#f4efff" },
   { icon: "school", label: "Find your learning environment", eyebrow: "03 · Top colleges - India", variant: "places", accent: "#318d91", pastel: "#ebf8f7" },
   { icon: "card", label: "Make the investment manageable", eyebrow: "04 · Financial support", variant: "support", accent: "#b4772c", pastel: "#fff7e8" },
-  { icon: "route", label: "Grow year by year", eyebrow: "05 · UG development", variant: "timeline", accent: "#c46a52", pastel: "#fff1ed" },
-  { icon: "briefcase", label: "Get real-world exposure", eyebrow: "06 · Internships", variant: "experience", accent: "#477d9b", pastel: "#edf7fb" },
-  { icon: "signpost", label: "Keep your options open", eyebrow: "07 · After UG", variant: "routes", accent: "#9b667f", pastel: "#fff0f7" },
-  { icon: "star", label: "Go deeper", eyebrow: "08 · PG & specialization", variant: "specialise", accent: "#6a72b8", pastel: "#f0f2ff" },
-  { icon: "match", label: "Picture the role", eyebrow: "09 · Job options", variant: "roles", accent: "#4c8b65", pastel: "#eef9f0" },
-  { icon: "check", label: "Stack useful proof", eyebrow: "10 · Skills & certifications", variant: "skills", accent: "#a47737", pastel: "#fff8ea" },
-  { icon: "compass", label: "Think globally", eyebrow: "11 · Abroad - education", variant: "abroad", accent: "#4f78a6", pastel: "#eef5ff" },
-  { icon: "flag", label: "Work globally", eyebrow: "12 · Abroad - jobs", variant: "global", accent: "#7b659f", pastel: "#f5f0ff" },
-  { icon: "route", label: "See the progression", eyebrow: "13 · Career progression", variant: "progression", accent: "#3b8b83", pastel: "#ecf8f5" },
-  { icon: "score", label: "Your full route", eyebrow: "14 · Complete roadmap", variant: "complete", accent: "#c05f59", pastel: "#fff0ef" },
+  { icon: "route", label: "Build your base years", eyebrow: "05 · Early UG", variant: "timeline-early", accent: "#c46a52", pastel: "#fff1ed" },
+  { icon: "route", label: "Apply what you've built", eyebrow: "06 · Later UG", variant: "timeline-later", accent: "#b8562f", pastel: "#fff0e6" },
+  { icon: "briefcase", label: "Get real-world exposure", eyebrow: "07 · Internships", variant: "experience", accent: "#477d9b", pastel: "#edf7fb" },
+  { icon: "signpost", label: "Keep your options open", eyebrow: "08 · After UG", variant: "routes", accent: "#9b667f", pastel: "#fff0f7" },
+  { icon: "star", label: "Go deeper", eyebrow: "09 · PG & specialization", variant: "specialise", accent: "#6a72b8", pastel: "#f0f2ff" },
+  { icon: "match", label: "Picture the role", eyebrow: "10 · Job options", variant: "roles", accent: "#4c8b65", pastel: "#eef9f0" },
+  { icon: "check", label: "Stack useful proof", eyebrow: "11 · Skills & certifications", variant: "skills", accent: "#a47737", pastel: "#fff8ea" },
+  { icon: "compass", label: "Think globally", eyebrow: "12 · Abroad - education", variant: "abroad", accent: "#4f78a6", pastel: "#eef5ff" },
+  { icon: "flag", label: "Work globally", eyebrow: "13 · Abroad - jobs", variant: "global", accent: "#7b659f", pastel: "#f5f0ff" },
+  { icon: "route", label: "See the progression", eyebrow: "14 · Career progression", variant: "progression", accent: "#3b8b83", pastel: "#ecf8f5" },
+  { icon: "score", label: "Your full route", eyebrow: "15 · Complete roadmap", variant: "complete", accent: "#c05f59", pastel: "#fff0ef" },
 ];
 
 const ROADMAP_IMAGE_URL = "https://onegrasp.com/wp-content/uploads/2026/09/ChatGPT-Image-Sep-28-2026-02_55_51-PM.png";
@@ -352,10 +359,10 @@ const ROADMAP_IMAGE_URL = "https://onegrasp.com/wp-content/uploads/2026/09/ChatG
 function RoadmapIndex() {
   return (
     <div style={{ marginTop: 24, border: "1px solid #dfe4ec", borderRadius: 18, padding: 10, background: "#fff", boxShadow: "0 8px 24px rgba(36, 52, 74, .07)", overflow: "hidden" }}>
-      {/* The supplied visual already contains the complete 14-step journey,
+      {/* The supplied visual already contains the complete 15-step journey,
           including its snake layout, labels, icons and goal markers. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={ROADMAP_IMAGE_URL} alt="14-step career roadmap from school to senior roles" style={{ display: "block", width: "100%", height: "auto", borderRadius: 12 }} />
+      <img src={ROADMAP_IMAGE_URL} alt="15-step career roadmap from school to senior roles" style={{ display: "block", width: "100%", height: "auto", borderRadius: 12 }} />
     </div>
   );
 }
@@ -468,7 +475,10 @@ function YearFocusGrid({ years, color }: { years: { year: string; focus: string 
 // ClusterRoadmapPath whenever the student's desired career has one. Follows
 // the source research's own 14-section structure one-for-one (SecHead+BREAK
 // per section, this file's established pattern) rather than re-grouping it,
-// since that structure was already designed to read as a real journey.
+// since that structure was already designed to read as a real journey - the
+// one exception is "UG development" (the source's single year-by-year
+// section), rendered here as two on-screen steps, Early UG + Later UG (see
+// ROADMAP_SECTION_META's comment), bringing the on-screen count to 15.
 function DetailedCareerRoadmapView({ r, careerName, color }: { r: DetailedCareerRoadmap; careerName: string; color: string }) {
   // Not every career's research fills every section (e.g. one entry's "UG
   // Pathways" is genuinely blank in the source doc) - skip renders nothing
@@ -510,42 +520,55 @@ function DetailedCareerRoadmapView({ r, careerName, color }: { r: DetailedCareer
               <DetailList lines={r.scholarships} color={ROADMAP_SECTION_META[3].accent} />
             </Sec>
           </div>
-          <Sec eyebrow="05 · UG development" title="What each year should build" skip={!r.ugDevelopment.years.length && !r.ugDevelopment.notes.length}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              <YearFocusGrid years={r.ugDevelopment.years} color={ROADMAP_SECTION_META[4].accent} />
-              {r.ugDevelopment.notes.length > 0 && <DetailList lines={r.ugDevelopment.notes} color={ROADMAP_SECTION_META[4].accent} />}
-            </div>
-          </Sec>
+          {(() => {
+            const years = r.ugDevelopment.years;
+            const splitAt = Math.ceil(years.length / 2);
+            const earlyYears = years.slice(0, splitAt);
+            const laterYears = years.slice(splitAt);
+            return (
+              <>
+                <Sec eyebrow="05 · Early UG" title="What your first years should build" skip={!earlyYears.length}>
+                  <YearFocusGrid years={earlyYears} color={ROADMAP_SECTION_META[4].accent} />
+                </Sec>
+                <Sec eyebrow="06 · Later UG" title="What your later years should build" skip={!laterYears.length && !r.ugDevelopment.notes.length}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                    {laterYears.length > 0 && <YearFocusGrid years={laterYears} color={ROADMAP_SECTION_META[5].accent} />}
+                    {r.ugDevelopment.notes.length > 0 && <DetailList lines={r.ugDevelopment.notes} color={ROADMAP_SECTION_META[5].accent} />}
+                  </div>
+                </Sec>
+              </>
+            );
+          })()}
           <div style={{ display: "grid", gridTemplateColumns: !r.internships.length || !r.afterUgPathways.length ? "1fr" : "repeat(2, minmax(0, 1fr))", gap: 18, alignItems: "start" }}>
-            <Sec eyebrow="06 · Internships" title="Where to intern" skip={!r.internships.length}>
-              <DetailList lines={r.internships} color={ROADMAP_SECTION_META[5].accent} />
+            <Sec eyebrow="07 · Internships" title="Where to intern" skip={!r.internships.length}>
+              <DetailList lines={r.internships} color={ROADMAP_SECTION_META[6].accent} />
             </Sec>
-            <Sec eyebrow="07 · After UG" title="Career pathway options" skip={!r.afterUgPathways.length}>
-              <PairedChainList lines={r.afterUgPathways} color={ROADMAP_SECTION_META[6].accent} />
+            <Sec eyebrow="08 · After UG" title="Career pathway options" skip={!r.afterUgPathways.length}>
+              <PairedChainList lines={r.afterUgPathways} color={ROADMAP_SECTION_META[7].accent} />
             </Sec>
           </div>
-          <Sec eyebrow="08 · PG & specialization" title="Going further" skip={!r.pgSpecialization.length}>
-            <DetailList lines={r.pgSpecialization} color={ROADMAP_SECTION_META[7].accent} />
+          <Sec eyebrow="09 · PG & specialization" title="Going further" skip={!r.pgSpecialization.length}>
+            <DetailList lines={r.pgSpecialization} color={ROADMAP_SECTION_META[8].accent} />
           </Sec>
-          <Sec eyebrow="09 · Job options" title="What you could actually be hired as" skip={!r.jobOptions.length}>
-            <DetailList lines={r.jobOptions} color={ROADMAP_SECTION_META[8].accent} />
+          <Sec eyebrow="10 · Job options" title="What you could actually be hired as" skip={!r.jobOptions.length}>
+            <DetailList lines={r.jobOptions} color={ROADMAP_SECTION_META[9].accent} />
           </Sec>
-          <Sec eyebrow="10 · Skills & certifications" title="What to build along the way" skip={!r.skills.length}>
-            <DetailList lines={r.skills} color={ROADMAP_SECTION_META[9].accent} />
+          <Sec eyebrow="11 · Skills & certifications" title="What to build along the way" skip={!r.skills.length}>
+            <DetailList lines={r.skills} color={ROADMAP_SECTION_META[10].accent} />
           </Sec>
           <div style={{ display: "grid", gridTemplateColumns: !r.abroadEducation.length || !r.abroadJobs.length ? "1fr" : "repeat(2, minmax(0, 1fr))", gap: 18, alignItems: "start" }}>
-            <Sec eyebrow="11 · Abroad - education" title="If you want to study abroad" skip={!r.abroadEducation.length}>
-              <DetailList lines={r.abroadEducation} color={ROADMAP_SECTION_META[10].accent} />
+            <Sec eyebrow="12 · Abroad - education" title="If you want to study abroad" skip={!r.abroadEducation.length}>
+              <DetailList lines={r.abroadEducation} color={ROADMAP_SECTION_META[11].accent} />
             </Sec>
-            <Sec eyebrow="12 · Abroad - jobs" title="If you want to work abroad" skip={!r.abroadJobs.length}>
-              <DetailList lines={r.abroadJobs} color={ROADMAP_SECTION_META[11].accent} />
+            <Sec eyebrow="13 · Abroad - jobs" title="If you want to work abroad" skip={!r.abroadJobs.length}>
+              <DetailList lines={r.abroadJobs} color={ROADMAP_SECTION_META[12].accent} />
             </Sec>
           </div>
-          <Sec eyebrow="13 · Career progression" title="The long climb" skip={!r.careerProgression.length}>
-            <VerticalStepChain steps={r.careerProgression} color={ROADMAP_SECTION_META[12].accent} />
+          <Sec eyebrow="14 · Career progression" title="The long climb" skip={!r.careerProgression.length}>
+            <VerticalStepChain steps={r.careerProgression} color={ROADMAP_SECTION_META[13].accent} />
           </Sec>
-          <Sec eyebrow="14 · Complete roadmap" title="Start to finish, at a glance" skip={!r.completeRoadmap.length}>
-            <VerticalStepChain steps={r.completeRoadmap} color={ROADMAP_SECTION_META[13].accent} />
+          <Sec eyebrow="15 · Complete roadmap" title="Start to finish, at a glance" skip={!r.completeRoadmap.length}>
+            <VerticalStepChain steps={r.completeRoadmap} color={ROADMAP_SECTION_META[14].accent} />
             {r.keyDistinction && (
               <p style={{ fontSize: 12, color: "var(--ink-2)", lineHeight: 1.6, marginTop: 16, paddingTop: 14, borderTop: "1px solid var(--line-2, var(--line))" }}>
                 <b style={{ color: "var(--ink)" }}>Worth knowing: </b>{r.keyDistinction}
@@ -563,7 +586,7 @@ function DetailedCareerRoadmapView({ r, careerName, color }: { r: DetailedCareer
   );
 }
 
-// Builds a DOMAIN-level roadmap in the same 14-section shape as a
+// Builds a DOMAIN-level roadmap in the same 15-step shape as a
 // researched career's own DetailedCareerRoadmap - same component
 // (DetailedCareerRoadmapView), same visual depth, just fed from real,
 // already-verified DOMAIN-wide data (CLUSTER_ROADMAPS' 5 phases,
@@ -664,7 +687,7 @@ function DegreeRolesTable({ cluster, color }: { cluster: StandardCluster; color:
 }
 
 // Groups a set of FlagshipTrack items under their own track-name subheading
-// within a numbered roadmap step - used for the steps (08-10, 13) that
+// within a numbered roadmap step - used for the steps (09-11, 14) that
 // branch by sub-career track rather than showing one flat list.
 function TrackGroupedChips({ tracks, field, color }: { tracks: FlagshipTrack[]; field: "careers" | "skills" | "certifications" | "pgOptions"; color: string }) {
   return (
@@ -686,14 +709,16 @@ function TrackGroupedChips({ tracks, field, color }: { tracks: FlagshipTrack[]; 
 // The genuinely deep, independently-researched treatment for a cluster
 // that has one (see flagshipRoadmaps1112.ts) - shown INSTEAD of
 // domainRoadmapFor()'s generic content when available. Reuses the exact
-// same 14-step, numbered, colour-per-section container
+// same 15-step, numbered, colour-per-section container
 // (RoadmapSectionFrame/ROADMAP_SECTION_META) DetailedCareerRoadmapView
 // already established for a researched career's own roadmap - the
 // difference here is depth of content within each step (real tables,
-// tiers and track-branching), not a different visual design. Steps 1-6
-// stay common; steps 7-13 branch by sub-career track (Investment/Banking/
-// Risk/...), matching how a student's actual path only diverges once
-// they're choosing a specialisation, not before.
+// tiers and track-branching), not a different visual design. Steps 1-7
+// stay common (step 5/6 split the single yearPlan array into Early/Later
+// UG - see ROADMAP_SECTION_META's comment); steps 8-14 branch by
+// sub-career track (Investment/Banking/Risk/...), matching how a
+// student's actual path only diverges once they're choosing a
+// specialisation, not before.
 function FlagshipRoadmapView({ r, cluster, color }: { r: FlagshipDomainRoadmap; cluster: string; color: string }) {
   const chip: React.CSSProperties = { fontSize: 11.5, fontWeight: 700, color: "var(--ink)", background: `${color}0c`, border: `1px solid ${color}25`, borderRadius: 7, padding: "4px 9px" };
   return (
@@ -770,26 +795,41 @@ function FlagshipRoadmapView({ r, cluster, color }: { r: FlagshipDomainRoadmap; 
           <p style={{ fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.6, margin: 0 }}>{r.financialSupportNote}</p>
         </RoadmapSectionFrame>
 
-        <RoadmapSectionFrame index={5} eyebrow="05 · UG development" title="What each year should build" color={color}>
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead><tr><th style={th}>Year</th><th style={th}>Academic focus</th><th style={th}>Skills</th><th style={th}>Experience</th><th style={th}>Output</th></tr></thead>
-              <tbody>
-                {r.yearPlan.map((y, i) => (
-                  <tr key={y.year} style={{ background: i % 2 ? "var(--line-2, #f7f7f8)" : "transparent" }}>
-                    <td style={{ ...td, fontWeight: 800, color: "var(--ink)" }}>{y.year}</td>
-                    <td style={td}>{y.academicFocus}</td>
-                    <td style={td}>{y.skills}</td>
-                    <td style={td}>{y.experience}</td>
-                    <td style={td}>{y.output}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </RoadmapSectionFrame>
+        {(() => {
+          const splitAt = Math.ceil(r.yearPlan.length / 2);
+          const earlyPlan = r.yearPlan.slice(0, splitAt);
+          const laterPlan = r.yearPlan.slice(splitAt);
+          const YearPlanTable = ({ rows }: { rows: typeof r.yearPlan }) => (
+            <div style={{ overflowX: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead><tr><th style={th}>Year</th><th style={th}>Academic focus</th><th style={th}>Skills</th><th style={th}>Experience</th><th style={th}>Output</th></tr></thead>
+                <tbody>
+                  {rows.map((y, i) => (
+                    <tr key={y.year} style={{ background: i % 2 ? "var(--line-2, #f7f7f8)" : "transparent" }}>
+                      <td style={{ ...td, fontWeight: 800, color: "var(--ink)" }}>{y.year}</td>
+                      <td style={td}>{y.academicFocus}</td>
+                      <td style={td}>{y.skills}</td>
+                      <td style={td}>{y.experience}</td>
+                      <td style={td}>{y.output}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          );
+          return (
+            <>
+              <RoadmapSectionFrame index={5} eyebrow="05 · Early UG" title="What your first years should build" color={color}>
+                <YearPlanTable rows={earlyPlan} />
+              </RoadmapSectionFrame>
+              <RoadmapSectionFrame index={6} eyebrow="06 · Later UG" title="What your later years should build" color={color}>
+                <YearPlanTable rows={laterPlan} />
+              </RoadmapSectionFrame>
+            </>
+          );
+        })()}
 
-        <RoadmapSectionFrame index={6} eyebrow="06 · Internships" title="Get real-world exposure" color={color}>
+        <RoadmapSectionFrame index={7} eyebrow="07 · Internships" title="Get real-world exposure" color={color}>
           <div style={{ marginBottom: 16 }}>
             <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 4 }}>{r.virtualSimulations.platform} - free, before your first real internship</div>
             <div style={{ fontSize: 11.5, color: "var(--muted)", marginBottom: 10 }}>{r.virtualSimulations.note}</div>
@@ -822,7 +862,7 @@ function FlagshipRoadmapView({ r, cluster, color }: { r: FlagshipDomainRoadmap; 
           )}
         </RoadmapSectionFrame>
 
-        <RoadmapSectionFrame index={7} eyebrow="07 · After UG" title="Choose your track"
+        <RoadmapSectionFrame index={8} eyebrow="08 · After UG" title="Choose your track"
           sub="The first few years look similar for everyone - from here, each track is genuinely different." color={color}>
           <div style={{ marginBottom: 16 }}>
             <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 10 }}>Not sure which path - decision tree</div>
@@ -846,15 +886,15 @@ function FlagshipRoadmapView({ r, cluster, color }: { r: FlagshipDomainRoadmap; 
           </div>
         </RoadmapSectionFrame>
 
-        <RoadmapSectionFrame index={8} eyebrow="08 · PG & specialization" title="Go deeper, by track" color={color}>
+        <RoadmapSectionFrame index={9} eyebrow="09 · PG & specialization" title="Go deeper, by track" color={color}>
           <TrackGroupedChips tracks={r.tracks} field="pgOptions" color={color} />
         </RoadmapSectionFrame>
 
-        <RoadmapSectionFrame index={9} eyebrow="09 · Job options" title="Picture the role, by track" color={color}>
+        <RoadmapSectionFrame index={10} eyebrow="10 · Job options" title="Picture the role, by track" color={color}>
           <TrackGroupedChips tracks={r.tracks} field="careers" color={color} />
         </RoadmapSectionFrame>
 
-        <RoadmapSectionFrame index={10} eyebrow="10 · Skills & certifications" title="Stack useful proof, by track" color={color}>
+        <RoadmapSectionFrame index={11} eyebrow="11 · Skills & certifications" title="Stack useful proof, by track" color={color}>
           <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
             {r.tracks.map((t) => (
               <div key={t.name}>
@@ -870,15 +910,15 @@ function FlagshipRoadmapView({ r, cluster, color }: { r: FlagshipDomainRoadmap; 
           </div>
         </RoadmapSectionFrame>
 
-        <RoadmapSectionFrame index={11} eyebrow="11 · Abroad - education" title="Think globally" color={color}>
+        <RoadmapSectionFrame index={12} eyebrow="12 · Abroad - education" title="Think globally" color={color}>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>{r.abroadPrograms.map((p) => <span key={p} style={chip}>{p}</span>)}</div>
         </RoadmapSectionFrame>
 
-        <RoadmapSectionFrame index={12} eyebrow="12 · Abroad - jobs" title="Work globally" sub={r.abroadJobsNote} color={color}>
+        <RoadmapSectionFrame index={13} eyebrow="13 · Abroad - jobs" title="Work globally" sub={r.abroadJobsNote} color={color}>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>{r.abroadJobs.map((j) => <span key={j} style={chip}>{j}</span>)}</div>
         </RoadmapSectionFrame>
 
-        <RoadmapSectionFrame index={13} eyebrow="13 · Career progression" title="See the progression, by track" color={color}>
+        <RoadmapSectionFrame index={14} eyebrow="14 · Career progression" title="See the progression, by track" color={color}>
           <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
             {r.tracks.map((t) => (
               <div key={t.name}>
@@ -889,7 +929,7 @@ function FlagshipRoadmapView({ r, cluster, color }: { r: FlagshipDomainRoadmap; 
           </div>
         </RoadmapSectionFrame>
 
-        <RoadmapSectionFrame index={14} eyebrow="14 · Complete roadmap" title="Your full route" color={color}>
+        <RoadmapSectionFrame index={15} eyebrow="15 · Complete roadmap" title="Your full route" color={color}>
           <VerticalStepChain steps={r.completeJourney.map((j) => `${j.age}: ${j.stage}`)} color={color} />
           <p style={{ fontSize: 11, color: "var(--muted)", marginTop: 16, display: "flex", alignItems: "flex-start", gap: 6 }}>
             <Icon name="info" size={13} style={{ flex: "none", marginTop: 1 }} />
