@@ -48,13 +48,14 @@ const STREAM_OPTIONS: { key: string; label: string }[] = [
 // deliberately wide and degree/stream-independent - every unique job role
 // across all 18 UG career clusters (~3,300 roles from the Excel source),
 // grouped by cluster, plus a final "Other researched careers" group for any
-// CAREERS_1112 name (the 308-career researched set already used by Class
-// 11-12) not already covered by those cluster role lists. A plain <select>
-// with <optgroup>s, not a free-text + <datalist> field - native <datalist>
-// is unreliable at this scale across browsers (confirmed: a real entry like
-// "Software Engineer" silently failed to surface while typing), and the
-// student shouldn't have to type at all when a dropdown already works for
-// the identically-sized 11-12 career picker just above.
+// CAREERS_1112 name (the 360-career researched set already used by Class
+// 11-12) not already covered by those cluster role lists. Rendered via
+// SearchableSelect (below), not a free-text + native <datalist> field -
+// <datalist> is unreliable at this scale across browsers (confirmed: a real
+// entry like "Software Engineer" silently failed to surface while typing).
+// SearchableSelect avoids that failure mode entirely by rendering its own
+// filtered list from local state instead of leaning on each browser's own
+// datalist/autocomplete implementation.
 const CAREER_GROUPS_GRAD: { group: string; options: string[] }[] = (() => {
   const covered = new Set<string>();
   const groups = CAREER_CLUSTERS_18.map((cluster) => {
@@ -94,6 +95,92 @@ const preS = {
   select: { width: "100%", padding: "12px 14px", fontSize: 14.5, border: "1px solid #cbd5e1", borderRadius: 10, background: "#fff", color: "#1e293b" },
   input: { width: "100%", padding: "12px 14px", fontSize: 14.5, border: "1px solid #cbd5e1", borderRadius: 10, background: "#fff", color: "#1e293b" },
 };
+
+// A searchable career picker - both the 11-12 and UG career lists have grown
+// to 300+ options across many groups, too many to scan as a plain <select>.
+// This is deliberately NOT a free-text input + native <datalist> (see
+// CAREER_GROUPS_GRAD's own comment above: that was tried and abandoned -
+// <datalist> silently failed to surface real entries like "Software
+// Engineer" while typing, unreliably, across browsers). This instead
+// renders its own filtered dropdown from local state - a controlled input
+// plus a manually-rendered, clickable list - so there's no dependence on
+// each browser's own autocomplete/datalist implementation at all.
+function SearchableSelect({ groups, value, onChange, placeholder }: {
+  groups: { group: string; options: string[] }[];
+  value: string;
+  onChange: (v: string) => void;
+  placeholder: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function onDocMouseDown(e: MouseEvent) {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onDocMouseDown);
+    return () => document.removeEventListener("mousedown", onDocMouseDown);
+  }, []);
+
+  const q = query.trim().toLowerCase();
+  const filtered = q
+    ? groups
+        .map((g) => ({ group: g.group, options: g.options.filter((o) => o.toLowerCase().includes(q)) }))
+        .filter((g) => g.options.length > 0)
+    : groups;
+  const totalMatches = filtered.reduce((n, g) => n + g.options.length, 0);
+
+  function pick(option: string) {
+    onChange(option);
+    setQuery("");
+    setOpen(false);
+  }
+
+  return (
+    <div ref={rootRef} style={{ position: "relative" }}>
+      <input
+        style={preS.input}
+        type="text"
+        value={open ? query : value}
+        placeholder={placeholder}
+        onFocus={() => setQuery("")}
+        onClick={() => setOpen(true)}
+        onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") { setOpen(false); setQuery(""); }
+          else if (e.key === "Enter" && filtered[0]?.options.length) { e.preventDefault(); pick(filtered[0].options[0]); }
+        }}
+      />
+      {open && (
+        <div style={{
+          position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, zIndex: 20,
+          maxHeight: 280, overflowY: "auto", background: "#fff", border: "1px solid #cbd5e1",
+          borderRadius: 10, boxShadow: "0 8px 24px rgba(0,0,0,.14)",
+        }}>
+          {totalMatches === 0 ? (
+            <div style={{ padding: "12px 14px", fontSize: 13.5, color: "#64748b" }}>No matches - try a different search term.</div>
+          ) : (
+            filtered.map((g) => (
+              <div key={g.group}>
+                <div style={{ padding: "7px 14px", fontSize: 11, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: "#94a3b8", background: "#f8fafc", position: "sticky", top: 0 }}>{g.group}</div>
+                {g.options.map((o) => (
+                  <div
+                    key={o}
+                    onMouseDown={(e) => { e.preventDefault(); pick(o); }}
+                    style={{ padding: "9px 14px", fontSize: 14, color: "#1e293b", cursor: "pointer", background: o === value ? "#eff6ff" : "#fff" }}
+                  >
+                    {o}
+                  </div>
+                ))}
+              </div>
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 // Short chip labels so all categories fit the bar without horizontal scroll.
 const SHORT_CAT: Record<string, string> = {
@@ -590,14 +677,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
           </select>
 
           <label style={preS.label}>Which one specific career role would you most like to explore right now?</label>
-          <select style={preS.select} value={preGradCareer} onChange={(e) => setPreGradCareer(e.target.value)}>
-            <option value="" disabled>Select a career…</option>
-            {CAREER_GROUPS_GRAD.map((g) => (
-              <optgroup key={g.group} label={g.group}>
-                {g.options.map((c) => <option key={c} value={c}>{c}</option>)}
-              </optgroup>
-            ))}
-          </select>
+          <SearchableSelect groups={CAREER_GROUPS_GRAD} value={preGradCareer} onChange={setPreGradCareer} placeholder="Search for a career…" />
 
           <button
             style={{ ...S.primary, width: "100%", marginTop: 22, ...(canContinue ? {} : S.disabled) }}
@@ -622,6 +702,10 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
     // selection here always resolves exactly in the Career Selector match -
     // see findCareer1112() in lib/report/careerFitEngine1112.ts.
     const careersByDomainMap = careersByDomain();
+    const careerGroups1112 = DOMAINS_1112.map((d) => ({
+      group: d.name,
+      options: (careersByDomainMap.get(d.name) ?? []).map((c) => c.name),
+    }));
     return (
       <div style={S.introWrap}><style dangerouslySetInnerHTML={{ __html: CSS }} />
         <div style={S.introCard} className="og-exam-introcard">
@@ -636,14 +720,7 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
           </select>
 
           <label style={preS.label}>What is your desired career - the one you're aiming for?</label>
-          <select style={preS.select} value={preCareer} onChange={(e) => setPreCareer(e.target.value)}>
-            <option value="" disabled>Select a career…</option>
-            {DOMAINS_1112.map((d) => (
-              <optgroup key={d.name} label={d.name}>
-                {(careersByDomainMap.get(d.name) ?? []).map((c) => <option key={c.id} value={c.name}>{c.name}</option>)}
-              </optgroup>
-            ))}
-          </select>
+          <SearchableSelect groups={careerGroups1112} value={preCareer} onChange={setPreCareer} placeholder="Search for a career…" />
 
           {isClass12 && (
             <>
