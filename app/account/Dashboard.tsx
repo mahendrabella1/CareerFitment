@@ -212,12 +212,12 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
     const featureRoutes: Record<string, string> = {
       "careers": "/account/career-library",
       "study-abroad": "/account/features/study-abroad",
-      "exams": "/account/features/entrance-exams",
+      "exams": "/account/exams",
       "internships": "/account/internships-new",
-      "financial": "/account/features/financial-literacy",
-      "legal": "/account/features/legal-resources",
-      "research": "/account/features/research",
-      "startups": "/account/features/startups",
+      "financial": "/account/money",
+      "legal": "/account/legal",
+      "research": "/account/research",
+      "startups": "/account/startups",
       "resources": "/account/features/scholarships",
       "portfolio": "/account/portfolio",
     };
