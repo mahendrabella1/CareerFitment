@@ -54,6 +54,13 @@ const FEATURES = [
     color: "#ec4899",
   },
   {
+    id: "exams",
+    name: "Entrance Exams & Eligibility",
+    icon: "🧭",
+    desc: "Check your eligibility, track deadlines, and see your exam roadmap",
+    color: "#2563eb",
+  },
+  {
     id: "startups",
     name: "Startup Ecosystem",
     icon: "🚀",
@@ -73,6 +80,8 @@ export default function FeaturesHub() {
       'startups': '/account/startups',
       'financial': '/account/money',
       'research': '/account/research',
+      'legal': '/account/legal',
+      'exams': '/account/exams',
     };
 
     if (routes[featureId]) {
