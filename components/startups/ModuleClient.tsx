@@ -35,7 +35,7 @@ export function ModuleClient({ track, moduleSlug }: { track: PublicTrack; module
   };
 
   return (
-    <div style={{ maxWidth: 720, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ maxWidth: 720 }}>
       <Link href="/account/startups" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Startups</Link>
       <h1 style={{ fontSize: 24, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 4px" }}>{module.order}. {module.title}</h1>
       <p style={{ color: "#888", fontSize: 13.5, margin: "0 0 24px" }}>Real-world mission: {module.missionText} · Portfolio: {module.portfolioItem}</p>

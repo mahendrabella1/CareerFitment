@@ -50,7 +50,7 @@ export function ModuleTestClient({ trackSlug, moduleSlug, moduleTitle, passMark,
   const onCooldown = !!cooldownUntil && cooldownUntil > Date.now();
 
   return (
-    <div style={{ maxWidth: 640, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ maxWidth: 720 }}>
       <Link href={`/account/startups/${trackSlug}/${moduleSlug}`} style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← {moduleTitle}</Link>
       <h1 style={{ fontSize: 20, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 20px" }}>{moduleTitle} - Module Test</h1>
 

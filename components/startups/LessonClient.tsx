@@ -52,7 +52,7 @@ export function LessonClient({ trackSlug, moduleSlug, moduleTitle, lesson, quiz,
   };
 
   return (
-    <div style={{ maxWidth: 640, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ maxWidth: 760 }}>
       <Link href={`/account/startups/${trackSlug}/${moduleSlug}`} style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← {moduleTitle}</Link>
 
       {phase === "read" && (

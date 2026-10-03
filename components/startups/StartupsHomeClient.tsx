@@ -48,7 +48,7 @@ export function StartupsHomeClient({ track }: { track: PublicTrack }) {
   const nextLesson = nextModule?.lessons.find((l) => l.slug === next?.lessonSlug);
 
   return (
-    <div style={{ maxWidth: 820, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ maxWidth: 820 }}>
       <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
         <Link href="/account" style={{ color: "#999", textDecoration: "none" }}>← Dashboard</Link>
       </div>
