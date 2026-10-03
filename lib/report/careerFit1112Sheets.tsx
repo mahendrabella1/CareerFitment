@@ -354,7 +354,7 @@ const ROADMAP_SECTION_META: { icon: string; label: string; eyebrow: string; vari
   { icon: "score", label: "Your full route", eyebrow: "15 · Complete roadmap", variant: "complete", accent: "#c05f59", pastel: "#fff0ef" },
 ];
 
-const ROADMAP_IMAGE_URL = "https://onegrasp.com/wp-content/uploads/2026/09/ChatGPT-Image-Sep-28-2026-02_55_51-PM.png";
+const ROADMAP_IMAGE_URL = "https://onegrasp.com/wp-content/uploads/2026/10/15-Steps-Roadmap.png";
 
 function RoadmapIndex() {
   return (
