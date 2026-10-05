@@ -26,7 +26,7 @@ import { Logo } from "@/app/Logo";
 import dynamic from "next/dynamic";
 import { Icon, CATEGORY_ABBR } from "@/app/Icons";
 import { categoryLabel } from "@/lib/auth/formOptions";
-import { C, Ring, SkillBar, RadarChart, type RadarDatum } from "@/app/account/viz";
+import { C, Ring, SkillBar, RadarChart, dimColor, type RadarDatum } from "@/app/account/viz";
 import { adaptClass11ToSummary, isCurrentClass11Shape } from "@/lib/report/adaptClass11";
 import { buildClass11ExtraSheets } from "@/lib/report/class11ExtraSheets";
 import { buildCareerFit1112Sheets } from "@/lib/report/careerFit1112Sheets";
@@ -245,6 +245,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
     const src = ((a.radar ?? []).length ? a.radar! : []).map((r) => ({ ...r, bench: BENCH[r.key] || 50 }));
     return CANON.map((k) => src.find((r) => r.key === k) ?? { key: k, label: CAT_LABEL[k], score: 0, bench: BENCH[k] || 50 });
   }, [a.radar, a.customDimensions]);
+  const activeCustom = customDims.get(dimKey) ?? customDims.get(radar[0]?.key);
 
   // Coherent recommendation: blend interest + abilities + intelligences + values.
   const fits = domainFit(a);
@@ -532,10 +533,20 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                 <div className="ogd-card">
                   <CardHead icon="radar" title="Your eight dimensions"
                     sub="Tap a dimension below to see its full breakdown - everything from your report, right here." />
-                  <div className="ogd-dims8">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={DIMS8} alt="The eight dimensions of your profile" loading="lazy" />
-                  </div>
+                  {/* Undergraduates: the active pillar's own picture instead of
+                      the shared eight-dimension graphic (which names the
+                      school dimensions). */}
+                  {activeCustom?.img ? (
+                    <div className="ogd-dims8 pillar" style={{ background: dimColor(activeCustom.key) + "12" }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={activeCustom.img} alt={activeCustom.label} loading="lazy" />
+                    </div>
+                  ) : (
+                    <div className="ogd-dims8">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={DIMS8} alt="The eight dimensions of your profile" loading="lazy" />
+                    </div>
+                  )}
                   <div className="ogd-dimtabs">
                     {radar.map((d) => (
                       <button key={d.key} className={`ogd-dimtab${dimKey === d.key ? " on" : ""}`} onClick={() => setDimKey(d.key)} title={CAT_LABEL[d.key] ?? d.label}>
@@ -547,8 +558,8 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                       </button>
                     ))}
                   </div>
-                  {customDims.get(dimKey) ?? customDims.get(radar[0]?.key)
-                    ? <CustomDimPanel c={(customDims.get(dimKey) ?? customDims.get(radar[0].key))!} />
+                  {activeCustom
+                    ? <CustomDimPanel c={activeCustom} />
                     : <DimPanel d={radar.find((r) => r.key === dimKey) ?? radar[0]} a={a} />}
                 </div>
               </section>
@@ -1330,6 +1341,8 @@ const CSS = `
 .ogd-dims8{margin-bottom:18px;border:1px solid ${C.line};border-radius:14px;overflow:hidden;background:${C.bg};max-height:220px}
 .ogd-dims8 img{width:100%;display:block;object-fit:cover;max-height:220px}
 @media(max-width:640px){.ogd-dims8{max-height:150px}.ogd-dims8 img{max-height:150px}}
+.ogd-dims8.pillar img{object-fit:contain;height:220px}
+@media(max-width:640px){.ogd-dims8.pillar img{height:150px}}
 .ogd-dimtabs{display:flex;overflow-x:auto;margin-bottom:20px;border:1px solid ${C.line};border-radius:14px;background:${C.bg};scrollbar-width:thin}
 .ogd-dimtab{flex:1 1 0;min-width:82px;display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 6px;
   background:none;border:none;border-right:1px solid ${C.line};cursor:pointer;font-family:inherit;transition:background .15s}

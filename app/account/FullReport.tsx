@@ -281,10 +281,29 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
               </Fragment>
             ))}
           </div>
-          <div className="dims8">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={DIMS8} alt={`The ${dimWord} dimensions of your profile`} loading="lazy" />
-          </div>
+          {/* Undergraduates are measured on their own eight pillars, so the
+              shared eight-dimension picture (which names the school
+              dimensions) is replaced by the pillars themselves. */}
+          {isUG ? (
+            <div className="ugpillars">
+              {(a.customDimensions ?? []).map((c, i) => (
+                <div className="ugp" key={c.key} style={{ ["--pc" as string]: dimColor(c.key) } as React.CSSProperties}>
+                  {c.img ? (
+                    <span className="ugp-img" style={{ background: dimColor(c.key) + "12" }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={c.img} alt="" loading="lazy" />
+                    </span>
+                  ) : null}
+                  <span className="ugp-t"><b>{String(i + 1).padStart(2, "0")}</b>{c.label}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="dims8">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={DIMS8} alt={`The ${dimWord} dimensions of your profile`} loading="lazy" />
+            </div>
+          )}
           <RF name={name} />
         </div>
       </section>
@@ -856,13 +875,19 @@ function CustomDimensionSheet({ c, dim, n, col, name, extra, hideLists }: { c: C
         </div>
         <RH n={n} kick={`Dimension ${dim} - ${c.label}`} accent />
         <div className="dimhero">
-          <div className="dimhero-meta" style={{ gridColumn: "1 / -1" }}>
+          {c.img ? (
+            <div className="dimhero-img" style={{ background: col + "12" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={c.img} alt={c.label} loading="lazy" />
+            </div>
+          ) : null}
+          <div className="dimhero-meta" style={c.img ? undefined : { gridColumn: "1 / -1" }}>
             <Ring value={c.score} size={96} stroke={10} color={col}>
               <div className="ring-num">{Math.round(c.score)}%</div><div className="ring-den">Score</div>
             </Ring>
             <div>
               <div className="resultchip"><span>Your result</span><b>{c.result}</b></div>
-              <div className="verdict">{c.scoreBasis}</div>
+              <div className="verdict sm">{c.scoreBasis}</div>
               <div className="dimtags">
                 <span className={`vpill ${bandOf(c.score).tone}`}>{bandOf(c.score).label}</span>
               </div>
@@ -1257,6 +1282,13 @@ const CSS = `
 .frx .cover-chip .v{font-size:14px;font-weight:800;color:var(--ink)}
 .frx .dims8{margin:0 0 18px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:${C.bg}}
 .frx .dims8 img{width:100%;display:block}
+.frx .ugpillars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:26px 0 18px}
+@media(max-width:720px){.frx .ugpillars{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.frx .ugp{display:flex;flex-direction:column;border:1px solid var(--line);border-top:3px solid var(--pc);border-radius:12px;overflow:hidden;background:#fff;break-inside:avoid}
+.frx .ugp-img{display:block;aspect-ratio:3/2}
+.frx .ugp-img img{width:100%;height:100%;object-fit:contain;display:block}
+.frx .ugp-t{display:flex;gap:7px;align-items:baseline;padding:9px 11px 11px;font-size:12.5px;font-weight:700;line-height:1.3;color:var(--ink)}
+.frx .ugp-t b{color:var(--pc);font-size:11px;font-weight:800;font-variant-numeric:tabular-nums}
 
 /* illustration band */
 .frx .sband{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:18px;padding:22px 44px;
@@ -1354,6 +1386,7 @@ const CSS = `
 .frx .dimhero-img img{width:100%;display:block}
 .frx .dimhero-meta{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
 .frx .verdict{font-size:17px;font-weight:800;line-height:1.25;margin-top:2px}
+.frx .verdict.sm{font-size:14px;font-weight:600;line-height:1.45;color:var(--ink-2)}
 .frx .dimtags{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
 .frx .tagpct{font-size:11px;font-weight:700;color:var(--red);background:var(--red-tint);border:1px solid var(--red-line);padding:4px 10px;border-radius:999px}
 .frx .tagdelta{font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--line-2)}

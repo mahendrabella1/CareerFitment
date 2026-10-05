@@ -23,8 +23,7 @@
  *     about CHOOSING a UG degree, moot for an already-enrolled student).
  *   Tier 2 - otherwise, the cluster-wide FlagshipRoadmapViewGrad/
  *     ClusterRoadmapView renders as before, but with the exact typed role
- *     pinned at the top of "careers you can be hired as" (PinnedRoleCallout)
- *     plus any real (degree, course) routes MASTER_ROWS_GRAD ties to it -
+ *     pinned at the top of "careers you can be hired as" (PinnedRoleCallout) -
  *     honestly labelled as the student's path through shared, field-wide
  *     infrastructure, never silently presented as role-exclusive content we
  *     don't actually have.
@@ -39,7 +38,7 @@ import { Icon } from "@/app/Icons";
 import type { GraduateScoreOutput } from "@/lib/newAssessment/scoringGrad";
 import { rankSuitabilityGrad } from "@/lib/newAssessment/scoringGrad";
 import type { RIASECScore } from "@/lib/newAssessment/scoring11_12";
-import { CAREER_CLUSTERS_18, CLUSTER_ROLES, MASTER_ROWS_GRAD, clusterForDegreeCourse, clusterForRole, rolesForDegreeCourse } from "@/lib/report/careerClustersGrad";
+import { CAREER_CLUSTERS_18, CLUSTER_ROLES, clusterForDegreeCourse, clusterForRole, rolesForDegreeCourse } from "@/lib/report/careerClustersGrad";
 import { clusterRoadmapGradFor, type GradClusterRoadmap, type GradYearFocus } from "@/lib/report/clusterRoadmapsGrad";
 import { flagshipRoadmapForGrad, type FlagshipDomainRoadmapGrad } from "@/lib/report/flagshipRoadmapsGrad";
 import { findCareer1112 } from "@/lib/report/careerFitEngine1112";
@@ -764,37 +763,23 @@ function GradYearFocusGrid({ years, color }: { years: { year: string; focus: str
 }
 
 /** Pins the student's exact typed desiredCareer at the top of a Tier-2
- *  (cluster-fallback) roadmap's "careers you can be hired as" section, with
- *  any real (degree, course) routes MASTER_ROWS_GRAD ties to it - see
- *  directRoutesForRole. Makes explicit that everything else in the section
- *  is shared, field-wide infrastructure, not written for this one title -
- *  the honest answer for the ~3,086 roles with no per-role research
- *  (see this file's header comment, Tier 2). */
-function PinnedRoleCallout({ role, directRoutes, color }: { role: string; directRoutes: { degree: string; course: string }[]; color: string }) {
+ *  (cluster-fallback) roadmap's "careers you can be hired as" section, and
+ *  says plainly that the rest of the roadmap covers the whole field - the
+ *  honest answer for the ~3,086 roles with no per-role research (see this
+ *  file's header comment, Tier 2). */
+function PinnedRoleCallout({ role, color }: { role: string; color: string }) {
   return (
     <div style={{ marginBottom: 14, padding: "12px 14px", borderRadius: 12, border: `1.5px solid ${color}45`, background: `${color}0a` }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+      <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
         <span style={{ fontSize: 9.5, fontWeight: 900, letterSpacing: ".07em", textTransform: "uppercase", color, padding: "3px 8px", borderRadius: 999, background: `${color}18`, border: `1px solid ${color}40` }}>Your selected career</span>
         <span style={{ fontSize: 14.5, fontWeight: 900, color: "var(--ink)" }}>{role}</span>
       </div>
-      {directRoutes.length > 0 ? (
-        <>
-          <div style={{ fontSize: 10.5, color: "var(--ink-2)", marginBottom: 6 }}>Typical direct routes into this role, from our records:</div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-            {directRoutes.slice(0, 8).map((d, i) => (
-              <span key={i} style={{ fontSize: 11, fontWeight: 600, color: "var(--ink-2)", background: "#fff", border: `1px solid ${color}30`, borderRadius: 7, padding: "4px 9px" }}>{d.degree} · {d.course}</span>
-            ))}
-          </div>
-        </>
-      ) : (
-        <p style={{ fontSize: 11.5, color: "var(--muted)", margin: 0 }}>No exact (degree, course) record names this role directly in our data - the field-wide path below is the closest real route.</p>
-      )}
-      <p style={{ fontSize: 10.5, color: "var(--muted)", marginTop: 8, marginBottom: 0, fontStyle: "italic" }}>Everything else in this roadmap (internships, certifications, PG options, study abroad) is shared across the whole field below - not written specifically for this one title, since no dedicated research exists yet at that level of detail.</p>
+      <p style={{ fontSize: 11.5, color: "var(--ink-2)", margin: "8px 0 0" }}>The steps on this page cover the whole field this career belongs to.</p>
     </div>
   );
 }
 
-function ClusterRoadmapView({ r, strengthDomains, selectedRole, directRoutes }: { r: GradClusterRoadmap; strengthDomains: GraduateScoreOutput["layer1"]["strengthDomains"]; selectedRole?: string; directRoutes?: { degree: string; course: string }[] }) {
+function ClusterRoadmapView({ r, strengthDomains, selectedRole }: { r: GradClusterRoadmap; strengthDomains: GraduateScoreOutput["layer1"]["strengthDomains"]; selectedRole?: string }) {
   const chip = (color: string): React.CSSProperties => ({
     display: "inline-block", fontSize: 11.5, fontWeight: 600, color: "var(--ink-2)",
     background: `${color}0c`, border: `1px solid ${color}30`, borderRadius: 8, padding: "5px 10px", margin: "0 6px 6px 0",
@@ -834,7 +819,7 @@ function ClusterRoadmapView({ r, strengthDomains, selectedRole, directRoutes }: 
       </GradRoadmapSectionFrame>
 
       <GradRoadmapSectionFrame index={4} title="Jobs you can be hired for">
-        {selectedRole && <PinnedRoleCallout role={selectedRole} directRoutes={directRoutes ?? []} color={sectionAccent(4)} />}
+        {selectedRole && <PinnedRoleCallout role={selectedRole} color={sectionAccent(4)} />}
         <div>{r.jobRoles.filter((role) => role !== selectedRole).map((role) => <span key={role} style={chip(sectionAccent(4))}>{role}</span>)}</div>
         {r.emergingAreas.length > 0 && (
           <div style={{ marginTop: 16 }}>
@@ -915,7 +900,7 @@ function ClusterRoadmapView({ r, strengthDomains, selectedRole, directRoutes }: 
 // depth of content within each step (real internship targets, named
 // certifications, a PG decision checklist, country-by-country abroad
 // guidance), not a different visual design.
-function FlagshipRoadmapViewGrad({ r, selectedRole, directRoutes }: { r: FlagshipDomainRoadmapGrad; selectedRole?: string; directRoutes?: { degree: string; course: string }[] }) {
+function FlagshipRoadmapViewGrad({ r, selectedRole }: { r: FlagshipDomainRoadmapGrad; selectedRole?: string }) {
   const chip = (color: string): React.CSSProperties => ({
     display: "inline-block", fontSize: 11.5, fontWeight: 600, color: "var(--ink-2)",
     background: `${color}0c`, border: `1px solid ${color}30`, borderRadius: 8, padding: "5px 10px", margin: "0 6px 6px 0",
@@ -973,7 +958,7 @@ function FlagshipRoadmapViewGrad({ r, selectedRole, directRoutes }: { r: Flagshi
       </GradRoadmapSectionFrame>
 
       <GradRoadmapSectionFrame index={4} title="Jobs you can be hired for">
-        {selectedRole && <PinnedRoleCallout role={selectedRole} directRoutes={directRoutes ?? []} color={sectionAccent(4)} />}
+        {selectedRole && <PinnedRoleCallout role={selectedRole} color={sectionAccent(4)} />}
         <div>{r.careersHiredAs.filter((role) => role !== selectedRole).map((role) => <span key={role} style={chip(sectionAccent(4))}>{role}</span>)}</div>
         <p style={note}>{r.jobSearchNote}</p>
       </GradRoadmapSectionFrame>
@@ -1097,111 +1082,6 @@ function DetailedCareerRoadmapViewGrad({ r, careerName, color }: { r: DetailedCa
         )}
         {r.disclaimer && <p style={{ fontSize: 11, color: "var(--muted)", fontStyle: "italic", marginTop: 14 }}>{r.disclaimer}</p>}
       </GradRoadmapSectionFrame>
-    </div>
-  );
-}
-
-/** Every real (degree, course, roles) row MASTER_ROWS_GRAD ties to this
- *  cluster, grouped by degree - the source of truth for both "every
- *  degree this domain leads through" and the Degree -> Course -> Roles
- *  table, so the two can never disagree. Mirrors careerFit1112Sheets.tsx's
- *  own degreeRoleRowsFor (11-12 scope, not shared - two independent class
- *  groups per the project's scope map), extended with the course level
- *  UG's own source data actually has (11-12's CAREERS_1112 only tags one
- *  typicalDegree per career, no separate course granularity). */
-function degreeCourseRowsFor(cluster: string): { degree: string; courses: { course: string; roles: string[] }[] }[] {
-  const byDegree = new Map<string, { course: string; roles: string[] }[]>();
-  for (const r of MASTER_ROWS_GRAD) {
-    if (r.level !== "UG" || r.cluster !== cluster) continue;
-    const list = byDegree.get(r.degree);
-    const row = { course: r.course, roles: r.roles };
-    if (list) list.push(row); else byDegree.set(r.degree, [row]);
-  }
-  return [...byDegree.entries()]
-    .map(([degree, courses]) => ({ degree, courses: courses.sort((a, b) => a.course.localeCompare(b.course)) }))
-    .sort((a, b) => b.courses.length - a.courses.length || a.degree.localeCompare(b.degree));
-}
-
-/** Every real (degree, course) pair whose roles[] names this EXACT role -
- *  the reverse lookup of rolesForDegreeCourse, and the one genuinely
- *  role-specific fact Tier 2 (the cluster-fallback roadmap) can show for a
- *  role with no dedicated research - see PinnedRoleCallout. */
-function directRoutesForRole(role: string): { degree: string; course: string }[] {
-  const out: { degree: string; course: string }[] = [];
-  for (const r of MASTER_ROWS_GRAD) {
-    if (r.level === "UG" && r.roles.includes(role)) out.push({ degree: r.degree, course: r.course });
-  }
-  return out;
-}
-
-const gradTh: React.CSSProperties = { textAlign: "left", padding: "9px 10px", fontSize: 10.5, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: "#fff", background: "#2c3e50" };
-const gradTd: React.CSSProperties = { padding: "10px 10px", fontSize: 12, color: "var(--ink-2)", borderBottom: "1px solid var(--line-2, var(--line))", verticalAlign: "top" };
-
-/** Course + roles under the student's own degree only, within this cluster -
- *  a slice of MASTER_ROWS_GRAD, not the full degreeCourseRowsFor(cluster)
- *  dump (every degree the cluster has, 9-17 for most UG clusters). This is
- *  what the table shows in the common case, since topCluster is the
- *  student's own degree's cluster whenever clusterForDegreeCourse resolves
- *  it (rankSuitabilityGrad hard-anchors it at rank 0). */
-function courseRowsForDegree(cluster: string, degree: string): { course: string; roles: string[] }[] {
-  return MASTER_ROWS_GRAD
-    .filter((r) => r.level === "UG" && r.cluster === cluster && r.degree === degree)
-    .map((r) => ({ course: r.course, roles: r.roles }))
-    .sort((a, b) => a.course.localeCompare(b.course));
-}
-
-// Short, degree-relevant table: the student's own degree's courses and the
-// real roles each leads to. Falls back to a capped 3-degree sample of the
-// cluster's other routes only when the student's exact degree isn't in the
-// source data for this cluster at all (rare - clusterForDegreeCourse
-// couldn't resolve it), so the table is never empty but also never back to
-// the old unfiltered every-degree-in-the-cluster dump.
-function DegreeCourseRolesTable({ cluster, degree, course, color }: { cluster: string; degree: string; course?: string; color: string }) {
-  // Only the student's own course when we can find it - listing every
-  // specialisation of their degree (55+ for B.Tech) buries the one that matters.
-  const allOwn = courseRowsForDegree(cluster, degree);
-  const exact = course ? allOwn.filter((c) => c.course === course) : [];
-  const ownCourses = exact.length ? exact : allOwn;
-  const usingOwnDegree = ownCourses.length > 0;
-  const rows = usingOwnDegree
-    ? [{ degree, courses: ownCourses }]
-    : degreeCourseRowsFor(cluster).slice(0, 3).map((d) => ({ ...d, courses: d.courses.slice(0, 3) }));
-  if (!rows.length) return null;
-  return (
-    <div>
-      {!usingOwnDegree && (
-        <div style={{ fontSize: 12, color: "var(--ink-2)", marginBottom: 10, fontStyle: "italic" }}>
-          {degree || "Your degree"} isn't directly mapped to this cluster in our records - here are a few common degree routes into it instead.
-        </div>
-      )}
-      <div style={{ overflowX: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr>
-              <th style={{ ...gradTh, width: "22%" }}>Degree</th>
-              <th style={{ ...gradTh, width: "22%" }}>Course / specialisation</th>
-              <th style={gradTh}>Roles this leads to</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((d) =>
-              d.courses.map((c, i) => (
-                <tr key={`${d.degree}-${c.course}`} style={{ background: i % 2 ? "var(--line-2, #f7f7f8)" : "transparent" }}>
-                  {i === 0 && <td style={{ ...gradTd, fontWeight: 800, color: "var(--ink)" }} rowSpan={d.courses.length}>{d.degree}</td>}
-                  <td style={{ ...gradTd, fontWeight: 700, color: "var(--ink)" }}>{c.course}</td>
-                  <td style={gradTd}>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                      {c.roles.map((role) => (
-                        <span key={role} style={{ fontSize: 11.5, fontWeight: 700, color: "var(--ink)", background: `${color}0c`, border: `1px solid ${color}25`, borderRadius: 7, padding: "4px 9px" }}>{role}</span>
-                      ))}
-                    </div>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
     </div>
   );
 }
@@ -1556,7 +1436,6 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
   // roadmap, so the pinned-role callout never appears redundantly above a
   // roadmap that's already built around that exact role.
   const tier2Role = !detailedRoadmap && aspiration.desiredCareer ? aspiration.desiredCareer : undefined;
-  const tier2DirectRoutes = tier2Role ? directRoutesForRole(tier2Role) : [];
 
   const careerHorizon = careerHorizonForCluster(selectorCluster);
 
@@ -1716,7 +1595,7 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
               against Class 11-12's 360-career set - wins outright. Tier 2
               (flagship/generic) is the cluster-wide roadmap for whatever
               cluster the typed career resolves to (selectorCluster), with
-              the exact role pinned at the top via tier2Role/tier2DirectRoutes
+              the exact role pinned at the top via tier2Role
               rather than silently presented as cluster-generic. Falls back
               to the Suitability cluster with no pin at all only when no
               career was typed. See this file's header comment for the full
@@ -1735,19 +1614,12 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
                 {detailedRoadmap ? (
                   <DetailedCareerRoadmapViewGrad r={detailedRoadmap} careerName={matchedCareer1112!.name} color={clusterColor(selectorCluster)} strengthDomains={output.layer1.strengthDomains} />
                 ) : flagshipRoadmap ? (
-                  <FlagshipRoadmapViewGrad r={flagshipRoadmap} selectedRole={tier2Role} directRoutes={tier2DirectRoutes} />
+                  <FlagshipRoadmapViewGrad r={flagshipRoadmap} selectedRole={tier2Role} />
                 ) : (
-                  <ClusterRoadmapView r={genericRoadmap!} strengthDomains={output.layer1.strengthDomains} selectedRole={tier2Role} directRoutes={tier2DirectRoutes} />
+                  <ClusterRoadmapView r={genericRoadmap!} strengthDomains={output.layer1.strengthDomains} selectedRole={tier2Role} />
                 )}
               </div>
               {careerHorizon && <CareerHorizonTeaser color={clusterColor(selectorCluster)} />}
-              <div style={{ marginTop: 28, paddingTop: 24, borderTop: "1px solid var(--line)" }}>
-                <SecHead center eyebrow={academicContext.course || academicContext.degree || "Your course"} title="Jobs your own course leads to"
-                  sub="Besides the career you chose above, these are the jobs your current course commonly leads to." />
-                <div style={{ marginTop: 16 }}>
-                  <DegreeCourseRolesTable cluster={topCluster} degree={academicContext.degree} course={academicContext.course} color={clusterColor(topCluster)} />
-                </div>
-              </div>
             </div>
           )}
         </>

@@ -48,6 +48,7 @@ For undergraduates currently mid-degree (registration category `"graduate"`, sta
 | Career cluster taxonomy | `lib/report/careerClustersGrad.ts` (17 clusters, from `data/graduates/career-clusters.json`; the source's 18th, Personal Care, Beauty & Wellness, was merged into the others) |
 | Cluster roadmap content | `lib/report/clusterRoadmapsGrad.ts` (from `data/graduates/cluster-roadmaps.json`) - the 7-section generic roadmap per cluster (yearly skill-building, govt/private internships, certifications, job roles, PG in India, study abroad, career advancement/PhD). Job roles/PG programmes/PhD programmes/entrance exams are pulled directly from source Excel data; yearly-skill-building/internship-sector/certification/study-abroad guidance is authored synthesis, not dedicated primary research the way Class 11-12's 308 career-specific roadmaps are - flagged for review before being treated as authoritative. |
 | Report sheets | `lib/report/careerFitGradSheets.tsx` |
+| Pillar pages text + artwork | `lib/report/pillarNarrativeGrad.ts` (feeds `customDimensions`), images in `public/report/ug/*.webp` |
 | Report adapter | `lib/report/adaptGraduate.ts` |
 | Category order | `ORDER_UG` in `lib/newAssessment/data.ts` |
 

@@ -20,6 +20,19 @@ const ICON: Record<UgPillarKey, string> = {
   ug_future_adaptability: "compass",
 };
 
+/** Pillar artwork, served from public/report/ug (WebP copies of OneGrasp's
+ *  pillar images; three had a baked-in checkerboard that was removed). */
+const IMG: Record<UgPillarKey, string> = {
+  ug_personality_behaviour: "/report/ug/personality-behaviour.webp",
+  ug_interests_motivation: "/report/ug/interests-motivation.webp",
+  ug_cognitive_capability: "/report/ug/cognitive-capability.webp",
+  ug_academic_domain_fit: "/report/ug/academic-domain-fit.webp",
+  ug_human_professional_skills: "/report/ug/human-professional-skills.webp",
+  ug_digital_future_skills: "/report/ug/digital-future-skills.webp",
+  ug_career_readiness: "/report/ug/career-readiness.webp",
+  ug_future_adaptability: "/report/ug/future-adaptability.webp",
+};
+
 const MEANING: Record<UgPillarKey, string> = {
   ug_personality_behaviour: "How you naturally work, decide and react to change. There are no right or wrong answers here - this is simply your style.",
   ug_interests_motivation: "The kind of work you enjoy, what keeps you going, and the life you want your career to give you.",
@@ -277,6 +290,7 @@ export function pillarDimensionsGrad(l1: PsychometricProfileGrad): CustomDimensi
     label: p.label,
     short: p.short,
     icon: ICON[p.key],
+    img: IMG[p.key],
     score: p.score,
     scoreBasis: SCORE_MEANING[p.key](p, l1),
     result: resultFor(p, l1),

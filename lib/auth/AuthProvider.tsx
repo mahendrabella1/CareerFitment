@@ -46,6 +46,8 @@ export interface CustomDimension {
   short: string;
   /** Icon name from app/Icons.tsx. */
   icon: string;
+  /** Optional artwork for the dimension's report page. */
+  img?: string;
   score: number;
   /** What the score means, shown under it. */
   scoreBasis: string;
