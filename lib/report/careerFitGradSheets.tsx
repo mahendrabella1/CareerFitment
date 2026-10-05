@@ -1173,14 +1173,15 @@ function realSkillGaugesForLayer(
 
 function GaugeRow({ gauge, color }: { gauge: HorizonSkillGauge; color: string }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 4 }}>
-      <span style={{ fontSize: 11, fontWeight: 700, color: "var(--ink)", minWidth: 118 }}>{gauge.label}</span>
-      <div style={{ display: "flex", gap: 3 }}>
+    <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) auto", alignItems: "center", gap: "1px 10px", marginTop: 8 }}>
+      <span style={{ fontSize: 12, fontWeight: 700, color: "var(--ink)" }}>{gauge.label}</span>
+      <span style={{ display: "flex", alignItems: "center", gap: 3 }}>
         {[1, 2, 3, 4, 5].map((n) => (
-          <span key={n} style={{ width: 16, height: 7, borderRadius: 3, background: n <= gauge.level1to5 ? color : `${color}20` }} />
+          <span key={n} style={{ width: 14, height: 7, borderRadius: 3, background: n <= gauge.level1to5 ? color : `${color}20` }} />
         ))}
-      </div>
-      <span style={{ fontSize: 10, color: "var(--muted)" }}>from {gauge.source}</span>
+        <b style={{ fontSize: 11, color: "var(--ink)", marginLeft: 6, fontVariantNumeric: "tabular-nums" }}>{gauge.level1to5}/5</b>
+      </span>
+      <span style={{ gridColumn: "1 / -1", fontSize: 10.5, color: "var(--muted)" }}>From {gauge.source}</span>
     </div>
   );
 }
@@ -1207,6 +1208,50 @@ function CareerHorizonTeaser({ color }: { color: string }) {
     </div>
   );
 }
+
+// Icons for the five skill areas of every horizon stage.
+const SKILL_LAYER_ICON: Record<keyof HorizonSkillLayers, string> = {
+  foundationalHuman: "heart",
+  digital: "cpu",
+  ai: "bulb",
+  domain: "briefcase",
+  strategic: "flag",
+};
+
+/** Each skill line is written "core point - why it matters"; shown as a bold
+ *  point with its explanation underneath, never cut short. */
+function splitHorizonSkill(text: string): { core: string; why: string } {
+  const clean = text.trim();
+  if (!clean) return { core: "", why: "" };
+  const at = clean.indexOf(" - ");
+  if (at < 0) return { core: clean, why: "" };
+  const core = clean.slice(0, at).replace(/[.;:,]\s*$/, "");
+  const rest = clean.slice(at + 3).trim();
+  const why = rest ? rest.charAt(0).toUpperCase() + rest.slice(1) : "";
+  return { core: `${core}.`, why: why && !/[.!?"”]$/.test(why) ? `${why}.` : why };
+}
+
+const HORIZON_CSS = `
+.hz-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:18px}
+.hz-step{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:12px;border:1px solid var(--hz-line);background:#fff;position:relative}
+.hz-step-n{position:absolute;top:10px;right:12px;width:20px;height:20px;border-radius:999px;background:var(--hz);color:#fff;font-size:11px;font-weight:900;display:grid;place-items:center}
+.hz-step-y{font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--hz)}
+.hz-step b{font-size:13px;color:var(--ink);line-height:1.3;padding-right:24px}
+.hz-card{border:1px solid var(--hz-line);border-radius:16px;overflow:hidden;background:#fff;break-inside:avoid}
+.hz-head{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:linear-gradient(110deg,var(--hz-tint),#fff)}
+.hz-ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--hz);color:#fff;flex:none}
+.hz-when{font-size:10px;font-weight:900;letter-spacing:.07em;text-transform:uppercase;color:var(--hz)}
+.hz-q{font-size:15px;font-weight:800;color:var(--ink);margin-top:3px}
+.hz-outlook{font-size:12.5px;color:var(--ink-2);margin:4px 0 0;line-height:1.55}
+.hz-sub{padding:12px 16px 0;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hz-skills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:10px 16px 16px}
+.hz-skill{border:1px solid var(--line,#e5e7eb);border-left:3px solid var(--hz);border-radius:10px;padding:10px 12px;background:#fff}
+.hz-skill:last-child:nth-child(odd){grid-column:1/-1}
+.hz-k{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--hz)}
+.hz-core{font-size:13px;font-weight:800;color:var(--ink);line-height:1.4;margin-top:6px}
+.hz-why{font-size:12px;color:var(--ink-2);line-height:1.5;margin-top:3px}
+@media (max-width:640px){.hz-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.hz-skills{grid-template-columns:minmax(0,1fr)}.hz-skill:last-child:nth-child(odd){grid-column:auto}}
+`;
 
 /** The "2026-2046 Career Horizon" - additional, appended after the 7-section
  *  roadmap, never replacing it (see this file's header comment and
@@ -1253,34 +1298,45 @@ function CareerHorizonSectionGrad({ horizon, cluster, roleContext, strengthDomai
         <p style={{ fontSize: 10, color: "var(--muted)", marginTop: 12, marginBottom: 0 }}>Each level comes from your answers in this test.</p>
       </div>
 
-      <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 18 }}>
+      <style dangerouslySetInnerHTML={{ __html: HORIZON_CSS }} />
+      {/* The four stages at a glance, then each stage in full. */}
+      <div className="hz-steps" style={{ ["--hz" as string]: color, ["--hz-line" as string]: `${color}30` } as React.CSSProperties}>
+        {horizon.phases.map((phase, i) => (
+          <div key={phase.id} className="hz-step">
+            <span className="hz-step-n">{i + 1}</span>
+            <span className="hz-step-y">{phase.label}</span>
+            <b>{phase.theme}</b>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 18 }}>
         {horizon.phases.map((phase, i) => {
           const meta = HORIZON_PHASE_META[i];
           return (
-            <div key={phase.id} style={{ border: `1px solid ${color}30`, borderRadius: 16, overflow: "hidden" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px", background: `linear-gradient(110deg, ${color}14, #fff)` }}>
-                <span style={{ width: 38, height: 38, borderRadius: 12, display: "grid", placeItems: "center", background: color, color: "#fff", flex: "none" }}>
-                  <Icon name={meta?.icon ?? "route"} size={17} />
-                </span>
-                <div>
-                  <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: ".07em", textTransform: "uppercase", color }}>{phase.label} · {phase.theme}</div>
-                  <div style={{ fontSize: 14.5, fontWeight: 800, color: "var(--ink)", marginTop: 3 }}>{phase.assessmentQuestion}</div>
-                  <p style={{ fontSize: 12.5, color: "var(--ink-2)", margin: "4px 0 0", lineHeight: 1.55, maxWidth: 680 }}>{phase.outlook}</p>
+            <div key={phase.id} className="hz-card" style={{ ["--hz" as string]: color, ["--hz-line" as string]: `${color}30`, ["--hz-tint" as string]: `${color}14` } as React.CSSProperties}>
+              <div className="hz-head">
+                <span className="hz-ic"><Icon name={meta?.icon ?? "route"} size={17} /></span>
+                <div style={{ minWidth: 0 }}>
+                  <div className="hz-when">Stage {i + 1} · {phase.label} · {phase.theme}</div>
+                  <div className="hz-q">{phase.assessmentQuestion}</div>
+                  <p className="hz-outlook">{phase.outlook}</p>
                 </div>
               </div>
-              {/* One short line per skill area - just the core point, not the
-                  full paragraph, so four stages stay readable. */}
-              <ul style={{ margin: 0, padding: "12px 16px 14px 34px", display: "grid", gap: 6 }}>
+              <div className="hz-sub">Skills that matter in this stage</div>
+              <div className="hz-skills">
                 {SKILL_LAYER_META.map((layer) => {
-                  const text = phase.skills[layer.key] ?? "";
-                  const core = text.split(" - ")[0].replace(/[.;]\s*$/, "");
+                  const { core, why } = splitHorizonSkill(phase.skills[layer.key] ?? "");
+                  if (!core) return null;
                   return (
-                    <li key={layer.key} style={{ fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.5 }}>
-                      <b style={{ color }}>{layer.label}:</b> {core}.
-                    </li>
+                    <div key={layer.key} className="hz-skill">
+                      <div className="hz-k"><Icon name={SKILL_LAYER_ICON[layer.key]} size={13} />{layer.label}</div>
+                      <div className="hz-core">{core}</div>
+                      {why && <div className="hz-why">{why}</div>}
+                    </div>
                   );
                 })}
-              </ul>
+              </div>
             </div>
           );
         })}

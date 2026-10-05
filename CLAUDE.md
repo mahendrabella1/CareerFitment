@@ -50,7 +50,7 @@ For undergraduates currently mid-degree (registration category `"graduate"`, sta
 | Report sheets | `lib/report/careerFitGradSheets.tsx` |
 | Pillar pages text + artwork | `lib/report/pillarNarrativeGrad.ts` (feeds `customDimensions`), images in `public/report/ug/*.webp` |
 | Report adapter | `lib/report/adaptGraduate.ts` |
-| Category order | `ORDER_UG` in `lib/newAssessment/data.ts` |
+| Category order | `ORDER_UG` in `lib/newAssessment/data.ts` - the 8 pillar sections only (= the source document's 100 questions). The bank's older `degree_fit`/`career_cluster_fit` sets are kept in the JSON but no longer asked; the scorer treats them as unanswered. |
 
 Graduates' Career Selector reuses Class 11-12's `CAREERS_1112`/`career-roadmaps-detailed.json` (via `findCareer1112()`/`detailedRoadmapFor()`, read-only) when a student's typed desired career resolves to one of those 308 researched careers - deliberately NOT a separate data file, to avoid re-authoring what already exists. This is the one place Graduates code imports FROM `careerfit1112.ts`/`careerRoadmapDetailed1112.ts` - read-only, never the reverse.
 

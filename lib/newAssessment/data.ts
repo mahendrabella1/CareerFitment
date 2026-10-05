@@ -99,13 +99,7 @@ const ORDER_11_12: Category[] = [
   "career_selector",
 ];
 
-// Graduates order matches the FuturePath 100-question spec's own D1-D9
-// dimension sequence (Personality, RIASEC/career_interest, Motivators, EI,
-// Learning, MI, Strengths, Cognitive/aptitude, Integrated Indicators), then
-// the contextual categories - the same core-then-contextual shape as
-// ORDER_11_12, with "degree_fit"/"career_cluster_fit" as this stage's own
-// contextual categories (its subject_fit/career_fit analogs) rather than
-// reusing 11-12's, since those are stream-specific.
+// Graduates (stage "ug"): only the 8 pillar sections of the UG document.
 //
 // "career_selector" deliberately NOT included here (unlike 11-12, which
 // keeps it for its extra in-exam questions - alternative/excluded careers):
@@ -117,8 +111,12 @@ const ORDER_11_12: Category[] = [
 // since its only question never survives the pre-exam filter) - removing
 // it here is the fix, not a loss of data, since nothing in
 // convertAnswersToGraduateFormat ever read from "career_selector" either.
-// The 8 pillars of the UG assessment, in document order, then the two
-// context sets (degree satisfaction, career-cluster interest).
+// The 8 pillars of the UG assessment, in document order - exactly the
+// document's 100 questions. The older context sets ("degree_fit" 3,
+// "career_cluster_fit" 5) are no longer asked: they made the exam 108
+// questions, and the scorer treats their absence as "no answer" (no
+// self-picked cluster bonus, no concerns box) - see
+// convertAnswersToGraduateFormat's emptyGradContext().
 const ORDER_UG: Category[] = [
   "ug_personality_behaviour",
   "ug_interests_motivation",
@@ -128,8 +126,6 @@ const ORDER_UG: Category[] = [
   "ug_digital_future_skills",
   "ug_career_readiness",
   "ug_future_adaptability",
-  "degree_fit",
-  "career_cluster_fit",
 ];
 
 export function categoryOrder(stage: StageKey): Category[] {
