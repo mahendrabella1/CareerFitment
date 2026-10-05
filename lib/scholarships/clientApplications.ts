@@ -18,18 +18,26 @@ export interface ScholarshipChecklist {
   essayFinal: boolean;
   instituteVerificationRequested: boolean;
   submitted: boolean;
+  /** Interview or test preparation, for schemes that have one. */
+  interviewPrep?: boolean;
 }
 
 export interface ScholarshipApplication {
   scholarshipSlug: string;
   status: ApplicationStatus;
   checklist: ScholarshipChecklist;
+  /** Amount awarded per year, entered by the learner once selected. */
   amountWonInr?: number;
+  /** When the learner expects the next payment (YYYY-MM-DD). */
+  expectedPaymentOn?: string;
+  /** Total actually received so far, entered by the learner. */
+  receivedInr?: number;
+  receivedOn?: string;
   updatedAt?: unknown;
 }
 
 const EMPTY_CHECKLIST: ScholarshipChecklist = {
-  eligibilityConfirmed: false, documentsAttached: false, essayFinal: false, instituteVerificationRequested: false, submitted: false,
+  eligibilityConfirmed: false, documentsAttached: false, essayFinal: false, instituteVerificationRequested: false, submitted: false, interviewPrep: false,
 };
 
 export async function fetchApplications(uid: string): Promise<Record<string, ScholarshipApplication>> {
@@ -55,6 +63,9 @@ export async function saveApplication(uid: string, scholarshipSlug: string, patc
     status: patch.status ?? current.status,
     checklist: { ...current.checklist, ...(patch.checklist ?? {}) },
     amountWonInr: patch.amountWonInr ?? current.amountWonInr ?? null,
+    expectedPaymentOn: patch.expectedPaymentOn ?? current.expectedPaymentOn ?? null,
+    receivedInr: patch.receivedInr ?? current.receivedInr ?? null,
+    receivedOn: patch.receivedOn ?? current.receivedOn ?? null,
     updatedAt: serverTimestamp(),
   }, { merge: true });
 }

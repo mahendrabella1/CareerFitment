@@ -3,6 +3,8 @@
 import { useRef, useState } from "react";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { recordScamRound } from "@/lib/money/clientProgress";
+import { addScamRound } from "@/lib/money/localProgress";
+import { IfScammed } from "@/components/money/ScamModes";
 import type { ClientScamItem, SwipeAnswer, SwipeGradeResult } from "@/lib/money/scoring";
 
 const CHANNEL_ICON: Record<string, string> = { SMS: "💬", WhatsApp: "📱", Call: "📞", Email: "✉️", App: "🔔" };
@@ -27,6 +29,7 @@ export function SwipeGame({ mode, items }: { mode: "swipe" | "family"; items: Cl
     const data = await res.json();
     if (data.success) {
       setResult(data.result);
+      addScamRound(mode, data.result.correct, data.result.total);
       if (user?.uid) await recordScamRound(user.uid, mode, data.result);
     }
   };
@@ -50,6 +53,7 @@ export function SwipeGame({ mode, items }: { mode: "swipe" | "family"; items: Cl
           style={{ marginTop: 20, width: "100%", padding: "12px 0", borderRadius: 10, border: "none", background: "#1a1a1a", color: "#fff", fontWeight: 700, cursor: "pointer" }}>
           Play again
         </button>
+        <IfScammed />
       </div>
     );
   }

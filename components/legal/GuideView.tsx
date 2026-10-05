@@ -28,6 +28,17 @@ export function GuideView({ guide }: { guide: LegalGuide }) {
     fetchBookmarkedSlugs(user.uid).then((slugs) => setBookmarked(slugs.includes(guide.slug)));
   }, [user?.uid, guide.slug]);
 
+  // Sensitive guides (abuse, violence, image misuse) show a neutral browser-tab
+  // title, so a shared device's tab bar and history don't reveal the topic.
+  useEffect(() => {
+    if (!guide.sensitive) return;
+    const previous = document.title;
+    document.title = "Learning resources";
+    return () => {
+      document.title = previous;
+    };
+  }, [guide.sensitive]);
+
   return (
     <div style={{ maxWidth: 760, margin: "0 auto", padding: "28px 20px 60px" }}>
       <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
@@ -122,6 +133,18 @@ export function GuideView({ guide }: { guide: LegalGuide }) {
             <ul style={{ margin: 0, paddingLeft: 16, display: "flex", flexDirection: "column", gap: 4 }}>
               {guide.legalDetail.points.map((p, i) => <li key={i}>{p}</li>)}
             </ul>
+            {guide.sources && guide.sources.length > 0 && (
+              <div style={{ marginTop: 10 }}>
+                <div style={{ fontWeight: 700, color: "#0f172a", marginBottom: 4 }}>Sources checked</div>
+                <ul style={{ margin: 0, paddingLeft: 16, display: "flex", flexDirection: "column", gap: 3 }}>
+                  {guide.sources.map((s) => (
+                    <li key={s.url}>
+                      <a href={s.url} target="_blank" rel="noreferrer" style={{ color: ACCENT, fontWeight: 600, textDecoration: "none", overflowWrap: "anywhere" }}>{s.label} ↗</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <div style={{ marginTop: 8, fontStyle: "italic", color: "#94a3b8" }}>Drafted {new Date(guide.draftedOn).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })} - not yet reviewed by a qualified advocate.</div>
           </div>
         )}

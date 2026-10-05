@@ -6,7 +6,9 @@ import type { SwipeGradeResult } from "@/lib/money/scoring";
 
 const SCAM_ROUNDS = "moneyScamRounds";
 
-export async function recordScamRound(uid: string, mode: "swipe" | "family", result: SwipeGradeResult): Promise<void> {
+export type ScamMode = "swipe" | "family" | "spot-fake" | "the-call" | "too-good";
+
+export async function recordScamRound(uid: string, mode: ScamMode, result: Pick<SwipeGradeResult, "correct" | "total" | "accuracyPercent">): Promise<void> {
   const db = getDb();
   if (!db) return;
   await addDoc(collection(db, SCAM_ROUNDS), {

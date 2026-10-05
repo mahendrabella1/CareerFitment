@@ -1,6 +1,9 @@
 /**
  * Startups section content - Phase 1 (per "Startups Section - Complete Build
- * Plan.pdf"): Builder track (class 9-12), Modules 1-4 only. Static content,
+ * Plan.pdf"): Builder track (class 9-12), all 11 modules. Lessons for
+ * Modules 2-11 beyond the original seed live in data/startups/lessonsMore.ts,
+ * which holds quiz answers too, so it must only ever be imported from here
+ * and other server code. Static content,
  * not DB-driven - matches this project's existing pattern (every other
  * question bank in this app is a static data file, e.g.
  * data/graduates/questions-corrected.json), rather than building the PDF's
@@ -13,6 +16,8 @@
  * same "never trust the client" discipline new-assessment/score/route.ts
  * already follows.
  */
+
+import * as M from "@/data/startups/lessonsMore";
 
 export type QuestionType = "SINGLE" | "MULTI" | "TRUE_FALSE";
 
@@ -543,7 +548,7 @@ const m4l1: Lesson = {
   title: "From Problem to Solution",
   order: 1,
   durationMin: 10,
-  youtubeId: "oWZbWzAyHAE",
+  youtubeId: null,
   hook: "You've confirmed a real problem through interviews. Now comes the part everyone was impatient to reach - but jumping straight to \"the one perfect solution\" skips a step that saves months of wasted building.",
   contentMd: [
     "Brainstorm multiple possible solutions before committing to one - the first idea you think of is rarely the best one, just the most obvious one.",
@@ -613,13 +618,21 @@ const m4l1: Lesson = {
   ],
 };
 
+/** Numbers lessons by their position, and builds a module test bank from every lesson quiz in the module. */
+function mod(m: Omit<Module, "lessons" | "moduleTestBank" | "moduleTestDrawCount"> & { lessons: Lesson[]; drawCount?: number }): Module {
+  const lessons = m.lessons.map((l, i) => ({ ...l, order: i + 1 }));
+  const bank = lessons.flatMap((l) => l.quiz.map((q) => bankQ(l.slug, q)));
+  const { drawCount, ...rest } = m;
+  return { ...rest, lessons, moduleTestBank: bank, moduleTestDrawCount: drawCount ?? Math.min(15, Math.round(bank.length * 0.6)) };
+}
+
 export const BUILDER_TRACK: Track = {
   slug: "builder",
   title: "Builder",
   level: "BUILDER",
   minClass: 9,
   maxClass: 12,
-  description: "Simple frameworks and real Indian examples - for class 9-12 learners exploring their first startup idea.",
+  description: "Simple frameworks and real Indian examples - for class 9-12 learners exploring their first startup idea. Legal is an overview only, and fundraising focuses on school competitions and grants.",
   modules: [
     {
       slug: "founder-mindset",
@@ -636,42 +649,66 @@ export const BUILDER_TRACK: Track = {
         bankQ("problems-beat-ideas", m1l3.quiz[0]), bankQ("problems-beat-ideas", m1l3.quiz[2]), bankQ("problems-beat-ideas", m1l3.quiz[3]),
       ],
     },
-    {
-      slug: "finding-the-right-problem",
-      title: "Finding the Right Problem",
-      order: 2,
+    mod({
+      slug: "finding-the-right-problem", title: "Finding the Right Problem", order: 2, passMark: 70,
       missionText: "Pick your top problem and write it in one sentence",
       portfolioItem: "Problem statement",
-      passMark: 70,
-      lessons: [m2l1, m2l2],
-      moduleTestDrawCount: 5,
-      moduleTestBank: [
-        bankQ("spotting-real-pain-points", m2l1.quiz[0]), bankQ("spotting-real-pain-points", m2l1.quiz[1]), bankQ("spotting-real-pain-points", m2l1.quiz[2]), bankQ("spotting-real-pain-points", m2l1.quiz[4]),
-        bankQ("writing-your-problem-statement", m2l2.quiz[0]), bankQ("writing-your-problem-statement", m2l2.quiz[2]), bankQ("writing-your-problem-statement", m2l2.quiz[3]), bankQ("writing-your-problem-statement", m2l2.quiz[4]),
-      ],
-    },
-    {
-      slug: "customer-discovery",
-      title: "Customer Discovery",
-      order: 3,
+      lessons: [m2l1, M.M2_WHO_HAS_IT, M.M2_HOW_BIG, m2l2],
+    }),
+    mod({
+      slug: "customer-discovery", title: "Customer Discovery", order: 3, passMark: 70,
       missionText: "Interview 5 real people about the problem",
       portfolioItem: "Interview notes + customer persona",
-      passMark: 70,
-      lessons: [m3l1],
-      moduleTestDrawCount: 4,
-      moduleTestBank: [m3l1.quiz[0], m3l1.quiz[1], m3l1.quiz[2], m3l1.quiz[3], m3l1.quiz[4]].map((q) => bankQ("the-mom-test", q)),
-    },
-    {
-      slug: "solution-and-idea-validation",
-      title: "Solution and Idea Validation",
-      order: 4,
+      lessons: [M.M3_WHY_TALK, m3l1, M.M3_RUNNING, M.M3_PATTERNS, M.M3_PERSONA],
+    }),
+    mod({
+      slug: "solution-and-idea-validation", title: "Solution and Idea Validation", order: 4, passMark: 70,
       missionText: "Get 10 people to say \"I'd pay for this\" or sign up",
       portfolioItem: "Value proposition + competitor table",
-      passMark: 70,
-      lessons: [m4l1],
-      moduleTestDrawCount: 4,
-      moduleTestBank: [m4l1.quiz[0], m4l1.quiz[1], m4l1.quiz[2], m4l1.quiz[3], m4l1.quiz[4]].map((q) => bankQ("from-problem-to-solution", q)),
-    },
+      lessons: [m4l1, M.M4_VALUE_PROP, M.M4_COMPETITORS, M.M4_CHEAP_TESTS, M.M4_PRESELL],
+    }),
+    mod({
+      slug: "building-the-mvp", title: "Building the MVP", order: 5, passMark: 70,
+      missionText: "Launch a landing page, form or prototype",
+      portfolioItem: "Live MVP link",
+      lessons: [M.M5_WHAT_MVP, M.M5_NO_CODE, M.M5_LANDING, M.M5_PROTOTYPES, M.M5_FEEDBACK],
+    }),
+    mod({
+      slug: "business-model", title: "Business Model", order: 6, passMark: 70,
+      missionText: "Fill in your Lean Canvas and set a price",
+      portfolioItem: "Lean Canvas",
+      lessons: [M.M6_LEAN_CANVAS, M.M6_HOW_MONEY, M.M6_PRICING, M.M6_COSTS, M.M6_UNIT_ECONOMICS],
+    }),
+    mod({
+      slug: "marketing-and-first-customers", title: "Marketing and First Customers", order: 7, passMark: 70,
+      missionText: "Make your first sale or get 20 users",
+      portfolioItem: "First-customer report",
+      lessons: [M.M7_WHO_FIRST, M.M7_SOCIAL, M.M7_WORD_OF_MOUTH, M.M7_SALES_TALK, M.M7_MEASURE],
+    }),
+    mod({
+      slug: "money-and-finance", title: "Money and Finance", order: 8, passMark: 70,
+      missionText: "Build a 12-month budget",
+      portfolioItem: "Budget sheet",
+      lessons: [M.M8_REVENUE_PROFIT_CASH, M.M8_BUDGET, M.M8_BREAK_EVEN, M.M8_BOOTSTRAP, M.M8_FOUNDER_MONEY],
+    }),
+    mod({
+      slug: "team-and-leadership", title: "Team and Leadership", order: 9, passMark: 70,
+      missionText: "Write roles for your dream team of 3",
+      portfolioItem: "Team plan",
+      lessons: [M.M9_COFOUNDERS, M.M9_ROLES, M.M9_COMMUNICATION, M.M9_DECISIONS, M.M9_CONFLICT],
+    }),
+    mod({
+      slug: "legal-and-registration", title: "Legal and Registration (India)", order: 10, passMark: 70,
+      missionText: "Check your startup name for trademark conflicts",
+      portfolioItem: "Legal checklist",
+      lessons: [M.M10_BUSINESS_TYPES, M.M10_STARTUP_INDIA, M.M10_GST_UDYAM, M.M10_TRADEMARKS, M.M10_CONTRACTS],
+    }),
+    mod({
+      slug: "pitching-and-fundraising", title: "Pitching and Fundraising", order: 11, passMark: 70,
+      missionText: "Record a 2-minute pitch video",
+      portfolioItem: "Pitch deck + pitch video",
+      lessons: [M.M11_STORY, M.M11_DECK, M.M11_INVESTORS_GRANTS, M.M11_PRACTICE, M.M11_DEMO_DAY],
+    }),
   ],
 };
 

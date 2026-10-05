@@ -12,9 +12,11 @@ import { dueAlerts, upcomingEvents } from "@/lib/exams/alertLogic";
 const ACCENT = "#2563eb";
 
 const LEVEL_OPTIONS = [
+  { value: "class5", label: "Class 5" }, { value: "class6", label: "Class 6" }, { value: "class7", label: "Class 7" }, { value: "class8", label: "Class 8" },
   { value: "class9", label: "Class 9" }, { value: "class10", label: "Class 10" },
   { value: "class11", label: "Class 11" }, { value: "class12", label: "Class 12 (appearing)" },
-  { value: "ugFinal", label: "Final-year undergraduate" }, { value: "graduate", label: "Graduate" }, { value: "working", label: "Working" },
+  { value: "ug", label: "Undergraduate, years 1 to 3" },
+  { value: "ugFinal", label: "Final-year undergraduate" }, { value: "graduate", label: "Graduate or postgraduate" }, { value: "working", label: "Working" },
 ];
 const STREAM_SUBJECTS: Record<string, string[]> = {
   PCM: ["Physics", "Chemistry", "Mathematics"],
@@ -156,8 +158,11 @@ export function ExamsHomeClient() {
       <p style={{ color: "#666", margin: "0 0 20px", fontSize: 14 }}>
         Tell us your profile once - we'll show only the exams you're eligible for, now or soon, and track your deadlines.
       </p>
-      <div style={{ marginBottom: 24 }}>
+      <div style={{ marginBottom: 24, display: "flex", gap: 14, flexWrap: "wrap" }}>
         <Link href="/account/exams/roadmap" style={{ fontSize: 13, fontWeight: 700, color: ACCENT, textDecoration: "none" }}>What should I be doing this year? →</Link>
+        <Link href="/account/exams/planner" style={{ fontSize: 13, fontWeight: 700, color: ACCENT, textDecoration: "none" }}>Study planner →</Link>
+        <Link href="/account/exams/mocks" style={{ fontSize: 13, fontWeight: 700, color: ACCENT, textDecoration: "none" }}>Practice mocks →</Link>
+        <Link href="/account/exams/wellbeing" style={{ fontSize: 13, fontWeight: 700, color: ACCENT, textDecoration: "none" }}>Wellbeing and backup paths →</Link>
       </div>
 
       {(!profile || editingProfile) && (

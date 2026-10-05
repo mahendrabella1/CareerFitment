@@ -54,7 +54,9 @@ export function upcomingEvents(followedExams: ExamDef[], now: Date = new Date())
   for (const exam of followedExams) {
     for (const event of exam.events) {
       const daysAway = daysUntil(event.date, now);
-      if (daysAway >= 0) out.push({ exam, event, daysAway });
+      // A multi-day window (e.g. an exam spread over two weeks) stays on the radar until it ends.
+      const daysToEnd = event.endDate ? daysUntil(event.endDate, now) : daysAway;
+      if (daysToEnd >= 0) out.push({ exam, event, daysAway: Math.max(0, daysAway) });
     }
   }
   return out.sort((a, b) => a.daysAway - b.daysAway);

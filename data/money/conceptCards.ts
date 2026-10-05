@@ -1,6 +1,6 @@
 /**
  * Concept card library - Phase 1 (PDF section 12: "30 concept cards (text)"
- * as the Phase 1 target). This is a smaller, real seed set (14 cards)
+ * as the Phase 1 target). This is a smaller, real seed set (18 cards)
  * spanning the topic map's core areas, browsable as a library since the
  * full simulation (which would trigger cards by life event) isn't built in
  * this phase - each card still ends with a "Try it in a Lab" link where one
@@ -8,6 +8,8 @@
  * a concept card and its check question are meant to be read openly, so
  * this file is safe to import from client components directly.
  */
+
+import type { LabSlug } from "@/data/money/labs";
 
 export interface ConceptCard {
   id: string;
@@ -17,7 +19,7 @@ export interface ConceptCard {
   bodyMd: string;
   indianExample: string;
   checkQ: { prompt: string; options: string[]; correctIndex: number; explanation: string };
-  labSlug: "compounding" | "emi" | "goal-planner" | null;
+  labSlug: LabSlug | null;
 }
 
 export const CONCEPT_CARDS: ConceptCard[] = [
@@ -83,7 +85,7 @@ export const CONCEPT_CARDS: ConceptCard[] = [
     bodyMd: "A savings account barely grows your money, but it also basically can't lose it. Markets can grow money much faster - but can also fall. There's no option that's both high-return and risk-free; if something claims to be, that's a warning sign, not good luck.\nSpreading money across different types of investments (diversification) is one of the few ways to manage risk without giving up all potential growth.",
     indianExample: "A Fixed Deposit returns a modest, near-guaranteed amount. A mutual fund SIP has historically grown faster over long periods, but its value can genuinely go down some years too.",
     checkQ: { prompt: "What does it mean when an investment promises high returns with \"zero risk\"?", options: ["It's a great, rare opportunity", "It's a major red flag - no real investment is both high-return and risk-free", "Only banks can offer this", "It's normal for government schemes"], correctIndex: 1, explanation: "This exact combination is one of the clearest scam signals in investing - genuine high returns always carry real risk." },
-    labSlug: "compounding",
+    labSlug: "save-vs-grow",
   },
   {
     id: "why-prices-rise", topic: "Inflation", title: "Why Prices Rise (Inflation)",
@@ -91,7 +93,7 @@ export const CONCEPT_CARDS: ConceptCard[] = [
     bodyMd: "Inflation means prices generally rise over time, so a fixed amount of money buys less in the future than it does today. This is why money that just sits in a wallet (earning nothing) is quietly losing real value every year, even though the number on the note never changes.\nGrowth-focused saving (like an SIP) aims to beat inflation; money sitting completely idle rarely does.",
     indianExample: "A samosa that cost ₹5 some years ago costs considerably more today - the samosa didn't change, the value of a rupee did.",
     checkQ: { prompt: "What happens to idle cash (not saved or invested) over many years, because of inflation?", options: ["It keeps the same real buying power forever", "Its real buying power tends to shrink over time", "It automatically grows with prices", "Inflation only affects investments, not cash"], correctIndex: 1, explanation: "Prices rising while the cash amount stays fixed means that fixed amount buys less and less over time." },
-    labSlug: "compounding",
+    labSlug: "inflation",
   },
   {
     id: "salary-slip-basics", topic: "Earning", title: "Why Your In-Hand Pay Is Less Than Your Offer",
@@ -99,7 +101,7 @@ export const CONCEPT_CARDS: ConceptCard[] = [
     bodyMd: "A job offer's CTC (cost to company) bundles your base pay with other components - provident fund contributions, professional tax, and other deductions - several of which never land directly in your bank account as cash.\nUnderstanding this before your first salary avoids a confusing (and sometimes stressful) surprise on payday.",
     indianExample: "A ₹6,00,000 CTC offer commonly works out to meaningfully less than ₹50,000 a month in-hand, once PF and tax deductions are accounted for.",
     checkQ: { prompt: "Why is in-hand salary usually less than CTC divided by 12?", options: ["Companies often underpay on purpose", "CTC includes components like PF and tax that don't arrive as monthly cash", "In-hand pay is always a mistake to expect", "CTC and in-hand salary are always identical"], correctIndex: 1, explanation: "CTC is a bundled number - several of its components never show up as cash in your account each month." },
-    labSlug: null,
+    labSlug: "salary-slip",
   },
   {
     id: "banking-basics", topic: "Banking", title: "Savings Accounts, FDs and RDs",
@@ -107,7 +109,7 @@ export const CONCEPT_CARDS: ConceptCard[] = [
     bodyMd: "A savings account keeps money accessible any time, with modest growth. A Fixed Deposit (FD) locks a lump sum away for a set period for a better rate. A Recurring Deposit (RD) lets you lock in a fixed amount every month instead of one lump sum.\nNone of these beat genuine investing for long-term growth, but all three are useful for money you need to keep safe and relatively accessible.",
     indianExample: "A student saving for a ₹20,000 laptop over 10 months might use an RD - depositing a fixed amount monthly, with a bit of extra growth versus a simple savings account.",
     checkQ: { prompt: "What's the key difference between an FD and an RD?", options: ["An FD locks in one lump sum; an RD locks in a fixed monthly amount", "They are exactly the same product", "An RD is only for businesses", "An FD can never be opened for less than ₹1,00,000"], correctIndex: 0, explanation: "FD = one-time lump sum locked away. RD = a fixed amount committed every month instead." },
-    labSlug: "goal-planner",
+    labSlug: "save-vs-grow",
   },
   {
     id: "sharing-and-giving", topic: "Spending", title: "Budgeting for Giving and Festivals",
@@ -121,7 +123,7 @@ export const CONCEPT_CARDS: ConceptCard[] = [
     id: "reporting-fraud", topic: "Protect", title: "What To Do If You're Scammed",
     oneLineIdea: "Acting fast and telling someone matters more than feeling embarrassed.",
     bodyMd: "If money is sent or details are shared with a scammer: call the national cyber fraud helpline 1930 immediately - acting fast genuinely improves the chance of freezing the transaction. Then report it at cybercrime.gov.in, and inform your bank to block the card or UPI.\nTelling a parent or trusted adult matters too - being scammed is nothing to be ashamed of, and staying quiet only helps the scammer.",
-    indianExample: "A friend accidentally approves a fake \"collect request\" for ₹2,000 - calling 1930 within the first hour has a real chance of stopping the transfer before it fully clears.",
+    indianExample: "A friend enters their UPI PIN on a fake \"refund\" screen and ₹2,000 leaves the account - calling 1930 within the first hour has a real chance of stopping the transfer before it fully clears.",
     checkQ: { prompt: "What's the first thing to do immediately after realising you've been scammed?", options: ["Stay quiet and hope it resolves itself", "Call the national cyber fraud helpline 1930 right away", "Wait a week to see if the money comes back", "Delete the message and move on"], correctIndex: 1, explanation: "Speed matters - calling 1930 immediately gives the best chance of freezing a fraudulent transfer." },
     labSlug: null,
   },
@@ -132,5 +134,37 @@ export const CONCEPT_CARDS: ConceptCard[] = [
     indianExample: "A ₹45,000 laptop goal in 18 months needs ₹2,500 saved every month - a concrete, checkable number instead of a vague hope.",
     checkQ: { prompt: "Why does turning a goal into a monthly number help?", options: ["It makes the goal feel further away", "It turns a vague wish into a concrete, checkable monthly action", "It's only useful for large goals", "It guarantees the goal will be reached"], correctIndex: 1, explanation: "A monthly number is something you can actually check against reality every single month, unlike a vague total." },
     labSlug: "goal-planner",
+  },
+  {
+    id: "credit-card-minimum-due", topic: "Borrowing", title: "The Minimum-Due Trap",
+    oneLineIdea: "Paying only the minimum due keeps a card debt alive for years.",
+    bodyMd: "If you don't pay a credit card bill in full, the unpaid part is charged interest, often around 3.5% to 3.75% a month (42% to 45% a year), plus 18% GST on that interest. The minimum due is usually about 5% of the bill, so most of each minimum payment goes on interest.\nRBI's rules say the minimum due must at least cover the interest and taxes, so the debt doesn't grow while you pay it, but it can still take decades to clear.",
+    indianExample: "On a ₹50,000 balance at 3.75% a month, paying only a 5% minimum (at least ₹200) takes about 30 years. Paying ₹5,000 a month clears it in 14 months.",
+    checkQ: { prompt: "What's the cheapest way to use a credit card?", options: ["Pay the minimum due every month", "Pay the full statement balance by the due date", "Pay whenever you remember", "Pay half the bill"], correctIndex: 1, explanation: "Paying the full balance by the due date means no interest at all on purchases." },
+    labSlug: "credit-card",
+  },
+  {
+    id: "term-vs-endowment", topic: "Investing", title: "Term Insurance vs Endowment Plans",
+    oneLineIdea: "Insurance protects; investing grows. Mixing the two usually does both jobs less well.",
+    bodyMd: "Term insurance pays your family a large amount if you die during the policy, and nothing if you survive it. Because it is pure protection, the premium is small for the cover. An endowment plan adds a savings part that pays back at maturity, so for the same premium the cover is much smaller, and the savings part usually grows slowly.\nAsk two questions of any policy: how much would my family get, and what return am I really earning? Compare categories, not sales pitches.",
+    indianExample: "In the Money Life game, ₹15,000 a year buys ₹1 crore of term cover, while ₹1,00,000 a year buys a ₹10 lakh endowment plan. These are game numbers, not quotes.",
+    checkQ: { prompt: "What is term insurance mainly for?", options: ["Growing your savings", "Protecting your family's income if you die", "Getting a guaranteed return", "Saving tax only"], correctIndex: 1, explanation: "Term insurance is pure protection: a large cover for a small premium, with no maturity payout." },
+    labSlug: null,
+  },
+  {
+    id: "health-insurance", topic: "Saving", title: "Why Health Insurance Matters",
+    oneLineIdea: "One hospital bill can undo years of saving. Health insurance spreads that risk.",
+    bodyMd: "A health policy pays most hospital costs in return for a yearly premium. Premiums rise with age, and policies have waiting periods for existing illnesses, so buying early matters, especially for parents.\nRead what isn't covered: co-payments, room-rent limits and waiting periods decide how much you still pay yourself.",
+    indianExample: "A ₹5 lakh surgery bill with no cover comes straight out of savings or a loan. With cover, the family may pay only the co-pay and items the policy excludes.",
+    checkQ: { prompt: "Why buy health cover for parents sooner rather than later?", options: ["Premiums fall as people age", "Premiums rise with age and waiting periods start from when you buy", "Insurance is only useful for young people", "It replaces an emergency fund completely"], correctIndex: 1, explanation: "Buying earlier means lower premiums and waiting periods that finish sooner." },
+    labSlug: null,
+  },
+  {
+    id: "rent-vs-buy", topic: "Borrowing", title: "Rent or Buy a Home?",
+    oneLineIdea: "The right answer depends on the numbers, not on what relatives say.",
+    bodyMd: "Buying builds ownership but locks a large down payment into one asset and adds EMIs, stamp duty and upkeep. Renting keeps money free to invest and lets you move, but rent rises and you don't own the home.\nCompare them fairly: assume both households spend the same each month, and invest whatever one saves compared with the other.",
+    indianExample: "Banks can lend up to 80% of a ₹70 lakh flat under RBI rules, so you need at least ₹14 lakh down, plus stamp duty and registration (often 5% to 8%, depending on the state).",
+    checkQ: { prompt: "What decides whether renting or buying leaves you better off?", options: ["Always buying", "Always renting", "The actual numbers: price, rent, loan rate, growth and how long you stay", "What neighbours did"], correctIndex: 2, explanation: "Different prices, rents, rates and time horizons flip the answer." },
+    labSlug: "rent-vs-buy",
   },
 ];

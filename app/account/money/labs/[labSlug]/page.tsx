@@ -4,28 +4,39 @@ import Link from "next/link";
 import { CompoundingLab } from "@/components/money/CompoundingLab";
 import { EmiLab } from "@/components/money/EmiLab";
 import { GoalPlannerLab } from "@/components/money/GoalPlannerLab";
-
-const TITLES: Record<string, string> = { compounding: "Compounding Playground", emi: "EMI Truth Teller", "goal-planner": "Goal Planner" };
+import { InflationLab } from "@/components/money/InflationLab";
+import { CreditCardLab } from "@/components/money/CreditCardLab";
+import { SaveVsGrowLab } from "@/components/money/SaveVsGrowLab";
+import { SalarySlipLab } from "@/components/money/SalarySlipLab";
+import { RentVsBuyLab } from "@/components/money/RentVsBuyLab";
+import { labBySlug } from "@/data/money/labs";
 
 export default function LabPage({ params }: { params: { labSlug: string } }) {
   const slug = params.labSlug;
+  const lab = labBySlug(slug);
 
-  if (!TITLES[slug]) {
+  if (!lab) {
     return (
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "32px 20px" }}>
         <Link href="/account/money/labs" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Money Labs</Link>
-        <p style={{ marginTop: 20, color: "#888" }}>That Lab doesn't exist.</p>
+        <p style={{ marginTop: 20, color: "#888" }}>That Lab doesn&apos;t exist.</p>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: 480, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ maxWidth: 680, margin: "0 auto", padding: "32px 20px" }}>
       <Link href="/account/money/labs" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Money Labs</Link>
-      <h1 style={{ fontSize: 20, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 20px" }}>{TITLES[slug]}</h1>
+      <h1 style={{ fontSize: 20, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 4px" }}>{lab.icon} {lab.title}</h1>
+      <p style={{ fontSize: 13.5, color: "#64748b", margin: "0 0 20px" }}>{lab.desc}</p>
       {slug === "compounding" && <CompoundingLab />}
+      {slug === "inflation" && <InflationLab />}
       {slug === "emi" && <EmiLab />}
+      {slug === "credit-card" && <CreditCardLab />}
+      {slug === "save-vs-grow" && <SaveVsGrowLab />}
+      {slug === "salary-slip" && <SalarySlipLab />}
       {slug === "goal-planner" && <GoalPlannerLab />}
+      {slug === "rent-vs-buy" && <RentVsBuyLab />}
     </div>
   );
 }

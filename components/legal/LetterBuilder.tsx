@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import type { LetterTemplate } from "@/lib/legal/templates";
 import { fillTemplate } from "@/lib/legal/templates";
+import { legalGuideBySlug } from "@/data/legal/guides";
 import { containsDistressLanguage } from "@/lib/legal/distressCheck";
 import { LEGAL_ACCENT as ACCENT } from "@/components/legal/LegalShell";
 
@@ -12,6 +13,10 @@ export function LetterBuilder({ template }: { template: LetterTemplate }) {
   const [showDistressNote, setShowDistressNote] = useState(false);
 
   const filled = fillTemplate(template.template, values);
+  const relatedGuides = template.guideSlugs
+    .map((slug) => legalGuideBySlug(slug))
+    .filter((g): g is NonNullable<ReturnType<typeof legalGuideBySlug>> => Boolean(g))
+    .slice(0, 3);
 
   function onChange(key: string, value: string) {
     setValues((v) => ({ ...v, [key]: value }));
@@ -24,7 +29,18 @@ export function LetterBuilder({ template }: { template: LetterTemplate }) {
         <Link href="/account/legal" style={{ color: "#999", textDecoration: "none" }}>← Legal Resources</Link>
       </div>
       <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a1a1a", margin: "0 0 6px" }}>{template.name}</h1>
-      <p style={{ fontSize: 13, color: "#666", margin: "0 0 20px" }}>Fill this in and copy or print it. Nothing you type here is saved or sent anywhere - it only exists in this browser tab.</p>
+      {template.purpose && <p style={{ fontSize: 14, color: "#334155", margin: "0 0 6px", lineHeight: 1.6 }}>{template.purpose}</p>}
+      <p style={{ fontSize: 13, color: "#666", margin: "0 0 12px" }}>Fill this in and copy or print it. Nothing you type here is saved or sent anywhere - it only exists in this browser tab.</p>
+      {relatedGuides.length > 0 && (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, margin: "0 0 20px" }}>
+          <span style={{ fontSize: 12, color: "#64748b", fontWeight: 700 }}>Read first:</span>
+          {relatedGuides.map((g) => (
+            <Link key={g.slug} href={`/account/legal/guides/${g.slug}`} style={{ fontSize: 12, fontWeight: 700, color: ACCENT, textDecoration: "none" }}>
+              {g.number}. {g.title} →
+            </Link>
+          ))}
+        </div>
+      )}
 
       {showDistressNote && (
         <div style={{ border: "1px solid #c7d2fe", background: "#eef2ff", borderRadius: 12, padding: "14px 16px", marginBottom: 18 }}>
@@ -69,6 +85,17 @@ export function LetterBuilder({ template }: { template: LetterTemplate }) {
         </div>
         <pre style={{ whiteSpace: "pre-wrap", fontFamily: "Georgia, serif", fontSize: 13, lineHeight: 1.7, color: "#1e293b", margin: 0 }}>{filled}</pre>
       </div>
+
+      {template.nextStep && (
+        <div style={{ marginTop: 16, border: `1px solid ${ACCENT}30`, background: `${ACCENT}08`, borderRadius: 12, padding: "12px 16px" }}>
+          <div style={{ fontSize: 12, fontWeight: 800, color: ACCENT, textTransform: "uppercase", letterSpacing: ".04em" }}>After you send it</div>
+          <p style={{ fontSize: 13, color: "#334155", margin: "4px 0 0", lineHeight: 1.6 }}>{template.nextStep}</p>
+        </div>
+      )}
+
+      <p style={{ marginTop: 16, fontSize: 12, color: "#64748b", lineHeight: 1.6 }}>
+        Keep it factual and polite. A complaint you know to be false can have legal consequences for the person who makes it. This draft is general information, not legal advice; for advice, call NALSA on 15100.
+      </p>
     </div>
   );
 }

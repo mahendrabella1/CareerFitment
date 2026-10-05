@@ -1,26 +1,20 @@
-import Link from "next/link";
-import { LegalShell, LEGAL_ACCENT as ACCENT } from "@/components/legal/LegalShell";
+import { LegalShell } from "@/components/legal/LegalShell";
 import { Navigator } from "@/components/legal/Navigator";
+import { CourseLanding } from "@/components/course/CourseLanding";
+import { LEGAL_COURSE } from "@/data/courses/legal";
 
 export default function LegalHomePage() {
   return (
     <LegalShell>
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "28px 20px 60px" }}>
-        <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
-          <Link href="/account" style={{ color: "#999", textDecoration: "none" }}>← Dashboard</Link>
-        </div>
-        <h1 style={{ fontSize: 28, fontWeight: 800, color: "#1a1a1a", margin: "0 0 6px" }}>⚖️ Legal Resources & Rights</h1>
-        <p style={{ color: "#666", margin: "0 0 24px", fontSize: 14 }}>
-          Answer a couple of quick questions and we'll point you to the right guide, steps and helpline - in about three taps.
-        </p>
-
-        <Navigator />
-
-        <div style={{ marginTop: 32, display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <Link href="/account/legal/guides" style={{ fontSize: 13, fontWeight: 700, color: ACCENT, textDecoration: "none" }}>Browse all guides →</Link>
-          <Link href="/account/legal/help" style={{ fontSize: 13, fontWeight: 700, color: ACCENT, textDecoration: "none" }}>Emergency & help directory →</Link>
-        </div>
-      </div>
+      <CourseLanding
+        content={LEGAL_COURSE}
+        topSlot={
+          <section style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, padding: "18px 18px 14px" }}>
+            <div style={{ fontSize: 12, fontWeight: 800, color: "#6366f1", textTransform: "uppercase", letterSpacing: ".05em", marginBottom: 10 }}>Start with your situation</div>
+            <Navigator />
+          </section>
+        }
+      />
     </LegalShell>
   );
 }

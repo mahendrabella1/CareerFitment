@@ -19,11 +19,18 @@ export interface Profile {
 export type Rule =
   | { type: "minAge"; years: number; onDate: string }
   | { type: "ageRange"; min: number; max: number; onDate: string; relaxYears?: Record<string, number> }
+  /** Date of birth must fall between these dates (inclusive), e.g. Navodaya class 6 entry. */
+  | { type: "bornBetween"; from: string; to: string }
   | { type: "qualification"; level: "class12" | "graduate"; allowAppearing?: boolean }
+  /** The current class/levels allowed to sit the exam, using the profile's level codes. */
+  | { type: "level"; oneOf: string[]; label: string }
   | { type: "subjects"; allOf: string[] }
   | { type: "minMarks"; field: "class12Pct" | "gradPct"; value: number; relax?: Record<string, number> }
   | { type: "maxAttempts"; exam: string; value: number; relax?: Record<string, number> }
   | { type: "note"; text: string };
+
+/** Profile levels in order, from primary school to working professional. */
+export const EXAM_LEVEL_ORDER = ["class5", "class6", "class7", "class8", "class9", "class10", "class11", "class12", "ug", "ugFinal", "graduate", "working"] as const;
 
 export type Verdict = "ELIGIBLE" | "SOON" | "NOT_ELIGIBLE" | "CHECK";
 export interface Check { verdict: Verdict; reason: string }
@@ -35,7 +42,7 @@ function ageOn(dob: string, onDate: string): number {
   return a;
 }
 
-const SCHOOL = ["class6", "class7", "class8", "class9", "class10", "class11", "class12"];
+const SCHOOL = ["class5", "class6", "class7", "class8", "class9", "class10", "class11", "class12"];
 const hasGraduated = (l: string) => ["graduate", "working"].includes(l);
 
 /** Category-relaxed threshold, falling back to the base value - a small
@@ -49,17 +56,33 @@ function relaxed(base: number, category: string | undefined, relax: Record<strin
 function check(rule: Rule, p: Profile): Check {
   switch (rule.type) {
     case "minAge": {
+      if (!p.dob) return { verdict: "CHECK", reason: "Add your date of birth to check this" };
       const a = ageOn(p.dob, rule.onDate);
       return a >= rule.years
         ? { verdict: "ELIGIBLE", reason: `Age ${a} meets the minimum of ${rule.years}` }
         : { verdict: "SOON", reason: `You need to be ${rule.years} by ${rule.onDate}` };
     }
     case "ageRange": {
+      if (!p.dob) return { verdict: "CHECK", reason: "Add your date of birth to check this" };
       const a = ageOn(p.dob, rule.onDate);
       const max = rule.max + (relaxed(0, p.category, rule.relaxYears));
       if (a < rule.min) return { verdict: "SOON", reason: `Minimum age is ${rule.min}` };
       if (a > max) return { verdict: "NOT_ELIGIBLE", reason: `Upper age limit is ${max} for your category` };
       return { verdict: "ELIGIBLE", reason: `Age ${a} is within ${rule.min}-${max}` };
+    }
+    case "bornBetween": {
+      if (!p.dob) return { verdict: "CHECK", reason: "Add your date of birth to check this" };
+      const fmt = (iso: string) => new Date(iso).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+      if (p.dob >= rule.from && p.dob <= rule.to) return { verdict: "ELIGIBLE", reason: `Born between ${fmt(rule.from)} and ${fmt(rule.to)}` };
+      return { verdict: "NOT_ELIGIBLE", reason: `Only for students born between ${fmt(rule.from)} and ${fmt(rule.to)}` };
+    }
+    case "level": {
+      if (rule.oneOf.includes(p.level)) return { verdict: "ELIGIBLE", reason: `Open to ${rule.label}` };
+      const order = EXAM_LEVEL_ORDER as readonly string[];
+      const mine = order.indexOf(p.level);
+      const earliest = Math.min(...rule.oneOf.map((l) => order.indexOf(l)).filter((i) => i >= 0));
+      if (mine >= 0 && Number.isFinite(earliest) && mine < earliest) return { verdict: "SOON", reason: `Opens when you reach this stage: ${rule.label}` };
+      return { verdict: "NOT_ELIGIBLE", reason: `Only for ${rule.label}` };
     }
     case "qualification": {
       if (rule.level === "class12") {

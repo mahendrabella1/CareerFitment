@@ -118,6 +118,9 @@ export function StartupsHomeClient({ track }: { track: PublicTrack }) {
       <div style={{ marginTop: 10 }}>
         <Link href="/account/startups/portfolio" style={{ fontSize: 13, color: ACCENT, fontWeight: 600 }}>View your Startup Portfolio →</Link>
       </div>
+      <div style={{ marginTop: 10 }}>
+        <Link href="/account/startups/videos" style={{ fontSize: 13, color: ACCENT, fontWeight: 600 }}>Watch the video library →</Link>
+      </div>
     </div>
   );
 }

@@ -27,7 +27,6 @@ export function StudyAbroadHomeClient() {
       <p style={{ color: "#666", margin: "0 0 24px", fontSize: 14 }}>
         Decide honestly before anyone sells you a university - check the money first, then compare countries, then browse programmes.
       </p>
-
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12, marginBottom: 28 }}>
         <Card href="/account/study-abroad/roi" title="ROI calculator" desc="Full cost, loan EMI and realistic payback time - check this before applying anywhere." color={ACCENT} />
         <Card href="/account/study-abroad/countries" title="Compare countries" desc={`${STUDY_ABROAD_COUNTRIES.length} real country profiles with a "what changed" feed for each.`} color={ACCENT} />
@@ -37,7 +36,6 @@ export function StudyAbroadHomeClient() {
         <Card href="/account/study-abroad/safety" title="Safety & MBBS/NMC checklist" desc="Avoid fraud, and the real rules for an MBBS abroad to count in India." color="#dc2626" />
         <Card href="/account/scholarships" title="Scholarships for abroad" desc="Chevening, Fulbright-Nehru, DAAD, Erasmus Mundus and more - in the Scholarships section." color="#166534" />
       </div>
-
       <p style={{ fontSize: 11, color: "#94a3b8" }}>Free to use, always. We never take commissions from universities, and any partnership is disclosed clearly.</p>
     </div>
   );

@@ -1,5 +1,6 @@
-import { ExamsHomeClient } from "@/components/exams/ExamsHomeClient";
+import { CourseLanding } from "@/components/course/CourseLanding";
+import { EXAMS_COURSE } from "@/data/courses/exams";
 
 export default function ExamsPage() {
-  return <ExamsHomeClient />;
+  return <CourseLanding content={EXAMS_COURSE} />;
 }
