@@ -200,6 +200,9 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
     : themes.filter((t) => "RIASEC".includes(t.letter));
   const dateStr = (() => { try { return new Date(a.completedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }); } catch { return ""; } })();
   const first = (name || "").trim().split(/\s+/)[0] || "you";
+  // Undergraduates get college-appropriate wording on the shared pages below
+  // (cover, resources, parents, closing note); every other class is unchanged.
+  const isUG = (a.customDimensions ?? []).length > 0;
   // Hoisted out of the per-dimension-page map below (where it's still used
   // for the MBTI compass) so the scorecard, earlier in the page, can also
   // show a real 4-letter type instead of a bare score for Personality.
@@ -227,21 +230,21 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
           <span className="cover-badge">{dimWord} dimensions · scientifically structured</span>
           <h1 className="cover-title">Career Fitment Report</h1>
           <p className="cover-lede">
-            A complete, evidence-based map of your strengths, interests and natural wiring -
-            built from your own responses, scored across eight established frameworks and
-            benchmarked against students at your stage.
+            {isUG
+              ? "A clear picture of your personality, interests, skills and career readiness - built from your own answers across eight areas, with the careers and next steps that fit you."
+              : "A complete, evidence-based map of your strengths, interests and natural wiring - built from your own responses, scored across eight established frameworks and benchmarked against students at your stage."}
           </p>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="cover-art" src={COVER_ART} alt="The eight dimensions this report measures" loading="lazy" />
           <div className="cover-student">
             <span className="cover-student-lbl">Prepared for</span>
             <div className="cover-student-name">{name || "You"}</div>
-            <span className={`cover-student-school${institution ? "" : " ph"}`}>{institution || "School name"}</span>
+            {institution || !isUG ? <span className={`cover-student-school${institution ? "" : " ph"}`}>{institution || "School name"}</span> : null}
           </div>
           <div className="cover-chips">
             {studentClass ? <span className="cover-chip cc1"><span className="k">Class</span><span className="v">{studentClass}</span></span> : null}
             {dateStr ? <span className="cover-chip cc3"><span className="k">Exam date</span><span className="v">{dateStr}</span></span> : null}
-            {!studentClass && !institution && a.journeyName ? <span className="cover-chip cc1"><span className="k">Stage</span><span className="v">{a.journeyName}</span></span> : null}
+            {!studentClass && !institution && a.journeyName ? <span className="cover-chip cc1"><span className="k">Stage</span><span className="v">{isUG ? "Undergraduate" : a.journeyName}</span></span> : null}
           </div>
         </div>
       </section>
@@ -651,7 +654,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
         <SceneBand kind="resources" eyebrow={`Resources & funding · ${N()}`} title="Take the next step" />
         <div className="pad">
           <SecHead eyebrow="Everything you need to move" title="Learn, find work & get funded"
-            sub={`Hand-picked starting points relevant to ${topDomain.name} and your stage.`} />
+            sub={isUG ? `Places to learn, find internships and get funding${a.topCareer ? ` - useful for ${a.topCareer}` : ""}.` : `Hand-picked starting points relevant to ${topDomain.name} and your stage.`} />
           <div className="res">
             <div className="rgrp">
               <div className="rgh"><Icon name="cap" size={16} /> Learn these skills - free & paid</div>
@@ -687,7 +690,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
           <div className="parents">
             <div className="ph"><span className="pic"><Icon name="heart" size={16} /></span> Supporting {first}</div>
             <p className="pintro">The best way to support {first} is to guide, not decide. A few things that help:</p>
-            <ul className="plist2">{PARENT_TIPS.map((t, i) => <li key={i}>{t}</li>)}</ul>
+            <ul className="plist2">{(isUG ? PARENT_TIPS_UG : PARENT_TIPS).map((t, i) => <li key={i}>{t}</li>)}</ul>
           </div>
           <div className="closing">
             <h3>This is a map, not a verdict.</h3>
@@ -703,8 +706,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
             answered - not a measure of your ability or a ceiling on it. You have complete
             freedom to explore other domains too; these are just recommendations based on
             what you told us, not a fixed verdict. Interests and strengths genuinely change
-            through school, so treat this as a starting point for conversations with
-            teachers, parents and counsellors, and revisit it as you grow.
+            {isUG ? " through college and your first jobs, so treat this as a starting point for conversations with faculty, mentors, family and career counsellors, and revisit it as you grow." : " through school, so treat this as a starting point for conversations with teachers, parents and counsellors, and revisit it as you grow."}
           </p>
           <div className="dl-cta">
             <div className="dl-cta-label">Keep a copy</div>
@@ -835,6 +837,13 @@ function SceneBand({ kind, eyebrow, title }: { kind: SceneKind; eyebrow: string;
  *  AssessmentSummary.customDimensions). Same page layout and classes as the
  *  fixed dimension pages, with every number and sentence coming from `c`. */
 /** `hideLists`: the extra block (e.g. the MBTI compass) already has its own strengths / growth / next-steps boxes. */
+const PARENT_TIPS_UG: string[] = [
+  "Ask what they enjoy in their course and what they'd like to try next, instead of pushing one career.",
+  "Encourage internships, projects and competitions - real work teaches more than advice.",
+  "Fit and genuine interest predict long-term success better than a “safe” label.",
+  "Revisit this report together every 6–12 months - interests and skills keep developing through college.",
+];
+
 function CustomDimensionSheet({ c, dim, n, col, name, extra, hideLists }: { c: CustomDimension; dim: string; n: string; col: string; name?: string; extra?: ReactNode; hideLists?: boolean }) {
   return (
     <section className="sheet param rv" style={{ borderTopColor: col, ["--dc" as string]: col, ["--dc-tint" as string]: col + "14", ["--dc-line" as string]: col + "40" } as React.CSSProperties}>
@@ -864,7 +873,7 @@ function CustomDimensionSheet({ c, dim, n, col, name, extra, hideLists }: { c: C
         {extra}
         <div className="cols">
           {c.subs.length > 0 ? (
-            <div>
+            <div style={c.preferences.length > 0 ? undefined : { gridColumn: "1 / -1" }}>
               <div className="subhd">Your breakdown</div>
               <div className="bars">
                 {c.subs.map((s) => (
@@ -877,19 +886,14 @@ function CustomDimensionSheet({ c, dim, n, col, name, extra, hideLists }: { c: C
               </div>
             </div>
           ) : null}
-          <div className="prose" style={c.subs.length > 0 ? undefined : { gridColumn: "1 / -1" }}>
-            {c.preferences.length > 0 ? (
-              <>
-                <div className="subhd">Your preferences</div>
-                {c.preferences.map((p) => <p key={p.label} style={{ margin: "0 0 6px" }}><b>{p.label}:</b> {p.value}</p>)}
-              </>
-            ) : (
-              <>
-                <div className="subhd">What this means for you</div>
-                <p className="lead">{c.strengths[0]}</p>
-              </>
-            )}
-          </div>
+          {/* Preferences only - when there are none, the bars take the full
+              width rather than repeating the first strength listed below. */}
+          {c.preferences.length > 0 ? (
+            <div className="prose" style={c.subs.length > 0 ? undefined : { gridColumn: "1 / -1" }}>
+              <div className="subhd">Your preferences</div>
+              {c.preferences.map((p) => <p key={p.label} style={{ margin: "0 0 6px" }}><b>{p.label}:</b> {p.value}</p>)}
+            </div>
+          ) : null}
         </div>
         {!hideLists && <div className="twocard">
           <div className="lc good">

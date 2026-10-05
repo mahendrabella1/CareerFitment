@@ -215,16 +215,18 @@ function fitLabel(score: number): { label: string; color: string } {
   return { label: "Low", color: "#b3261e" };
 }
 
-function OverviewRow({ rank, name, pct, color, roles }: { rank: number; name: string; pct: number; color: string; roles: string[] }) {
-  const tier = fitLabel(pct);
+// Shows the same % as the Fitment/Suitability cards, so the overview never
+// disagrees with the pages it summarises.
+function OverviewRow({ rank, name, pct, color, roles, note }: { rank: number; name: string; pct: number; color: string; roles: string[]; note?: string }) {
   return (
     <div style={{ minWidth: 0, padding: "13px 16px", borderBottom: "1px solid var(--line-2, var(--line))", background: "#fff", display: "flex", alignItems: "center", gap: 10 }}>
       <span style={{ fontSize: 13, fontWeight: 800, color, background: `${color}1c`, width: 26, height: 26, borderRadius: "50%", display: "grid", placeItems: "center", flex: "none" }}>{rank}</span>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8 }}>
           <span style={{ fontSize: 13.5, fontWeight: 800, color: "var(--ink)" }}>{name}</span>
-          <span style={{ fontSize: 15, fontWeight: 900, color: tier.color, letterSpacing: "-.01em", flex: "none" }}>{tier.label}</span>
+          <span style={{ fontSize: 15, fontWeight: 900, color, letterSpacing: "-.01em", flex: "none" }}>{Math.round(pct)}%</span>
         </div>
+        {note && <div style={{ fontSize: 10.5, fontWeight: 700, color, marginTop: 2 }}>{note}</div>}
         <div style={{ marginTop: 4, display: "flex", flexDirection: "column", gap: 2 }}>
           {roles.map((r) => <span key={r} style={{ fontSize: 11, color: "var(--muted)", lineHeight: 1.45 }}>{r}</span>)}
         </div>
@@ -363,7 +365,7 @@ function ClusterCard({ cluster, score, rank, riasec }: { cluster: string; score:
         <div style={{ minWidth: 0, flex: 1 }}>
           <div style={{ fontWeight: 800, color: "var(--ink)", fontSize: 14.5 }}>{cluster}</div>
           <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 1 }}>{CLUSTER_TAGLINE_GRAD[cluster] ?? ""}</div>
-          {emergingCount > 0 && <div style={{ fontSize: 10.5, color, fontWeight: 700, marginTop: 3 }}>🔥 {emergingCount} emerging course{emergingCount > 1 ? "s" : ""} in this cluster</div>}
+          {emergingCount > 0 && <div style={{ fontSize: 10.5, color, fontWeight: 700, marginTop: 3 }}>🔥 {emergingCount} new, fast-growing course{emergingCount > 1 ? "s" : ""} in this area</div>}
         </div>
         <div style={{ textAlign: "right", flex: "none" }}>
           <div style={{ fontSize: 19, fontWeight: 900, color, letterSpacing: "-.01em" }}>{Math.round(score)}%</div>
@@ -478,7 +480,7 @@ function SuitabilityDomainBlock({ cluster, score, rank, degree, course, riasec }
           <div style={{ fontWeight: 800, color: "var(--ink)", fontSize: 14.5 }}>{cluster}</div>
           <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 1 }}>{CLUSTER_TAGLINE_GRAD[cluster] ?? ""}</div>
           {isOwnCluster && <div style={{ fontSize: 10.5, color, fontWeight: 700, marginTop: 3 }}>Matches your actual degree &amp; course</div>}
-          {!isOwnCluster && emergingCount > 0 && <div style={{ fontSize: 10.5, color, fontWeight: 700, marginTop: 3 }}>🔥 {emergingCount} emerging course{emergingCount > 1 ? "s" : ""}</div>}
+          {!isOwnCluster && emergingCount > 0 && <div style={{ fontSize: 10.5, color, fontWeight: 700, marginTop: 3 }}>🔥 {emergingCount} new, fast-growing course{emergingCount > 1 ? "s" : ""}</div>}
         </div>
         <div style={{ textAlign: "right", flex: "none" }}>
           <div style={{ fontSize: 19, fontWeight: 900, color, letterSpacing: "-.01em" }}>{Math.round(score)}%</div>
@@ -550,13 +552,13 @@ function SuitabilityDomainBlock({ cluster, score, rank, degree, course, riasec }
 // stays exactly the 7 real sections GradClusterRoadmap already has - only
 // the visual design changes here, not what's shown.
 const GRAD_ROADMAP_SECTION_META: { icon: string; label: string; eyebrow: string; accent: string; pastel: string }[] = [
-  { icon: "route", label: "Grow year by year", eyebrow: "01 · What each year should build", accent: "#c46a52", pastel: "#fff1ed" },
-  { icon: "briefcase", label: "Get real-world exposure", eyebrow: "02 · Internships", accent: "#477d9b", pastel: "#edf7fb" },
-  { icon: "check", label: "Stack useful proof", eyebrow: "03 · Certifications in demand", accent: "#a47737", pastel: "#fff8ea" },
-  { icon: "match", label: "Picture the role", eyebrow: "04 · Careers you can be hired as", accent: "#4c8b65", pastel: "#eef9f0" },
-  { icon: "star", label: "Go deeper", eyebrow: "05 · PG to consider - in India", accent: "#6a72b8", pastel: "#f0f2ff" },
-  { icon: "compass", label: "Think globally", eyebrow: "06 · Study abroad", accent: "#4f78a6", pastel: "#eef5ff" },
-  { icon: "score", label: "Your next chapter", eyebrow: "07 · Going forward - career advancement", accent: "#c05f59", pastel: "#fff0ef" },
+  { icon: "route", label: "Each year of your degree", eyebrow: "01 · What each year should build", accent: "#c46a52", pastel: "#fff1ed" },
+  { icon: "briefcase", label: "Real-world experience", eyebrow: "02 · Internships", accent: "#477d9b", pastel: "#edf7fb" },
+  { icon: "check", label: "Skills & certificates", eyebrow: "03 · Certifications in demand", accent: "#a47737", pastel: "#fff8ea" },
+  { icon: "match", label: "Jobs you can get", eyebrow: "04 · Careers you can be hired as", accent: "#4c8b65", pastel: "#eef9f0" },
+  { icon: "star", label: "Master's in India", eyebrow: "05 · PG to consider - in India", accent: "#6a72b8", pastel: "#f0f2ff" },
+  { icon: "compass", label: "Studying abroad", eyebrow: "06 · Study abroad", accent: "#4f78a6", pastel: "#eef5ff" },
+  { icon: "score", label: "Long-term growth", eyebrow: "07 · Going forward - career advancement", accent: "#c05f59", pastel: "#fff0ef" },
 ];
 function GradRoadmapSectionFrame({ index, title, sub, children }: { index: number; title: string; sub?: string; children: React.ReactNode }) {
   const meta = GRAD_ROADMAP_SECTION_META[index - 1];
@@ -574,7 +576,6 @@ function GradRoadmapSectionFrame({ index, title, sub, children }: { index: numbe
           <h2 style={{ margin: "3px 0 0", fontSize: 18.5, lineHeight: 1.2, letterSpacing: "-.02em", color: "var(--ink)" }}>{title}</h2>
           {sub ? <p style={{ margin: "6px 0 0", fontSize: 12, lineHeight: 1.5, color: "var(--ink-2)" }}>{sub}</p> : null}
         </div>
-        <span style={{ flex: "none", alignSelf: "flex-start", maxWidth: 220, padding: "8px 11px", borderRadius: 9, background: `${meta.accent}18`, border: `1.5px solid ${meta.accent}55`, color: meta.accent, boxShadow: `0 3px 8px ${meta.accent}18`, fontSize: 10.5, lineHeight: 1.25, fontWeight: 950, letterSpacing: ".07em", textTransform: "uppercase", textAlign: "right" }}>{meta.eyebrow}</span>
       </div>
       <div style={{ marginTop: 10 }}>{children}</div>
     </div>
@@ -620,13 +621,92 @@ function RoadmapJourneyStrip() {
 // instead of a bare bullet list - same treatment as careerFit1112Sheets.tsx's
 // own DetailList, for checklist-style content (e.g. "before choosing a PG
 // route") that otherwise reads as a wall of bullet text.
-function GradDetailList({ lines, color }: { lines: string[]; color: string }) {
+// Lines in the researched roadmaps mix sub-headings ("Project ideas",
+// "Relevant universities", "Typical pathway:") with the items under them.
+// Numbering every line made headings read as items ("01 Project ideas,
+// 02 Customer churn..."), so headings are shown as headings and items get
+// plain bullets.
+const ROADMAP_HEADINGS = new Set([
+  "common requirements", "project ideas", "tools / technologies", "tools", "technical skills", "technical",
+  "relevant pg programs", "relevant pg", "relevant universities", "universities", "relevant indian institutions",
+  "government / research", "government / public", "private", "typical pathway", "useful certifications",
+  "useful certifications / training", "useful training", "roles", "job titles", "specializations", "specialisations",
+  "ideal areas", "research route", "countries", "top countries", "pathways after ug", "common", "alternative", "specialized",
+]);
+function isRoadmapHeading(line: string): boolean {
+  const s = line.trim().replace(/:$/, "").toLowerCase();
+  return ROADMAP_HEADINGS.has(s) || (/:$/.test(line.trim()) && s.split(/\s+/).length <= 4);
+}
+function RoadmapLine({ text }: { text: string }) {
+  // "Government / Research: ISRO, DRDO..." -> bold the short label before the colon.
+  const m = text.match(/^([^:]{2,40}):\s+(.+)$/);
+  if (m && m[1].split(/\s+/).length <= 5) return <><b style={{ color: "var(--ink)" }}>{m[1]}:</b> {m[2]}</>;
+  return <>{text}</>;
+}
+/** Chips grouped under their own headings ("Technical skills", "Tools",
+ *  "Industries: a • b • c"), with long sentences shown as a note instead of
+ *  being squeezed into a chip - so one long run-on list reads as sections. */
+function ChipGroups({ items, color }: { items: string[]; color: string }) {
+  const groups: { title: string | null; chips: string[]; notes: string[] }[] = [{ title: null, chips: [], notes: [] }];
+  const current = () => groups[groups.length - 1];
+  for (const raw of items) {
+    const line = raw.trim();
+    if (!line) continue;
+    const labelled = line.match(/^([^:]{2,40}):\s+(.+)$/);
+    if (isRoadmapHeading(line) || /^\d+ relevant /i.test(line)) {
+      groups.push({ title: line.replace(/:$/, ""), chips: [], notes: [] });
+    } else if (labelled && labelled[1].split(/\s+/).length <= 5 && labelled[2].includes("•")) {
+      groups.push({ title: labelled[1], chips: labelled[2].split(/\s*•\s*/).map((s) => s.replace(/\.$/, "")).filter(Boolean), notes: [] });
+      groups.push({ title: null, chips: [], notes: [] });
+    } else if (line.includes("•")) {
+      // "Machine Learning • Deep Learning • NLP ..." - a list, not a sentence.
+      current().chips.push(...line.split(/\s*•\s*/).map((s) => s.replace(/\.$/, "")).filter(Boolean));
+    } else if (line.split(/\s+/).length > 12) {
+      current().notes.push(line);
+    } else {
+      current().chips.push(line);
+    }
+  }
+  const chip: React.CSSProperties = {
+    display: "inline-block", fontSize: 11.5, fontWeight: 600, color: "var(--ink-2)",
+    background: `${color}0c`, border: `1px solid ${color}30`, borderRadius: 8, padding: "5px 10px", margin: "0 6px 6px 0",
+  };
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 8 }}>
-      {lines.map((l, i) => (
-        <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", padding: "9px 10px", border: `1px solid ${color}22`, borderRadius: 10, background: i % 2 ? "#fff" : `${color}08`, minWidth: 0 }}>
-          <span style={{ width: 20, height: 20, borderRadius: 7, display: "grid", placeItems: "center", flex: "none", color, background: `${color}16`, fontSize: 9.5, fontWeight: 900 }}>{String(i + 1).padStart(2, "0")}</span>
-          <span style={{ fontSize: 12, color: "var(--ink-2)", lineHeight: 1.45, minWidth: 0 }}>{l}</span>
+    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      {groups.filter((g) => g.chips.length || g.notes.length).map((g, i) => (
+        <div key={i}>
+          {g.title && <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 6, textTransform: "uppercase", letterSpacing: ".04em" }}>{g.title}</div>}
+          {g.chips.length > 0 && <div>{g.chips.map((c, j) => <span key={j} style={chip}>{c}</span>)}</div>}
+          {g.notes.map((n, j) => <p key={j} style={{ fontSize: 12, color: "var(--ink-2)", lineHeight: 1.55, margin: "4px 0 0" }}>{n}</p>)}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function GradDetailList({ lines, color, defaultTitle }: { lines: string[]; color: string; defaultTitle?: string }) {
+  const groups: { title: string | null; items: string[] }[] = [];
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!line) continue;
+    if (isRoadmapHeading(line)) groups.push({ title: line.replace(/:$/, ""), items: [] });
+    else {
+      if (!groups.length) groups.push({ title: defaultTitle ?? null, items: [] });
+      groups[groups.length - 1].items.push(line);
+    }
+  }
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      {groups.filter((g) => g.items.length || g.title).map((g, gi) => (
+        <div key={gi}>
+          {g.title && <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 6, textTransform: "uppercase", letterSpacing: ".04em" }}>{g.title}</div>}
+          {g.items.length > 0 && (
+            <ul style={{ margin: 0, paddingLeft: 18, display: "grid", gap: 5 }}>
+              {g.items.map((l, i) => (
+                <li key={i} style={{ fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.5 }}><RoadmapLine text={l} /></li>
+              ))}
+            </ul>
+          )}
         </div>
       ))}
     </div>
@@ -727,7 +807,6 @@ function ClusterRoadmapView({ r, strengthDomains, selectedRole, directRoutes }: 
         <p style={{ fontSize: 12.5, color: "var(--ink-2)", marginBottom: 10 }}><b>Technical:</b> {r.yearlySkillBuilding.technical}</p>
         <p style={{ fontSize: 12.5, color: "var(--ink-2)", marginBottom: 10 }}><b>Non-technical:</b> {r.yearlySkillBuilding.nonTechnical}</p>
         <GradYearFocusGrid years={r.yearlySkillBuilding.years} color={sectionAccent(1)} />
-        <SkillGapPanel yearsData={r.yearlySkillBuilding.years} strengthDomains={strengthDomains} color={sectionAccent(1)} />
       </GradRoadmapSectionFrame>
 
       <GradRoadmapSectionFrame index={2} title="Internships">
@@ -754,7 +833,7 @@ function ClusterRoadmapView({ r, strengthDomains, selectedRole, directRoutes }: 
         )}
       </GradRoadmapSectionFrame>
 
-      <GradRoadmapSectionFrame index={4} title="Careers you can be hired as">
+      <GradRoadmapSectionFrame index={4} title="Jobs you can be hired for">
         {selectedRole && <PinnedRoleCallout role={selectedRole} directRoutes={directRoutes ?? []} color={sectionAccent(4)} />}
         <div>{r.jobRoles.filter((role) => role !== selectedRole).map((role) => <span key={role} style={chip(sectionAccent(4))}>{role}</span>)}</div>
         {r.emergingAreas.length > 0 && (
@@ -773,7 +852,7 @@ function ClusterRoadmapView({ r, strengthDomains, selectedRole, directRoutes }: 
         )}
       </GradRoadmapSectionFrame>
 
-      <GradRoadmapSectionFrame index={5} title="PG to consider - in India">
+      <GradRoadmapSectionFrame index={5} title="Master's (PG) options in India">
         {r.pgInIndia.note ? (
           <p style={{ fontSize: 12.5, color: "var(--ink-2)" }}>{r.pgInIndia.note}</p>
         ) : (
@@ -815,7 +894,7 @@ function ClusterRoadmapView({ r, strengthDomains, selectedRole, directRoutes }: 
         )}
       </GradRoadmapSectionFrame>
 
-      <GradRoadmapSectionFrame index={7} title="Going forward - career advancement">
+      <GradRoadmapSectionFrame index={7} title="How your career can grow">
         {r.careerAdvancement.note && <p style={{ fontSize: 12.5, color: "var(--ink-2)", marginBottom: 8 }}>{r.careerAdvancement.note}</p>}
         {r.careerAdvancement.phdProgrammes.length > 0 && (
           <div style={{ marginBottom: 8 }}>{r.careerAdvancement.phdProgrammes.map((p) => <span key={p} style={chip(sectionAccent(7))}>{p}</span>)}</div>
@@ -824,95 +903,6 @@ function ClusterRoadmapView({ r, strengthDomains, selectedRole, directRoutes }: 
           <p style={{ fontSize: 12, color: "var(--ink-2)" }}><b>Roles this can lead to:</b> {r.careerAdvancement.phdRoles.slice(0, 8).join(" · ")}</p>
         )}
       </GradRoadmapSectionFrame>
-    </div>
-  );
-}
-
-// Keyword match between a strength domain's name and a non-technical skill's
-// text - the same lightweight heuristic technique as
-// rankRolesByRiasec/matchedRiasecCodes above, not a claim that the
-// assessment literally measured "teamwork" or "leadership" as a skill (it
-// measures broad strength domains; skills like Git or a specific
-// certification aren't something any psychometric test can verify a
-// student already has). Honest best-effort connection, not a fabricated
-// precise match.
-const DOMAIN_SKILL_KEYWORDS: Record<string, string[]> = {
-  "Relationship & Adaptability": ["team", "communicat", "client", "stakeholder", "collaborat", "patient", "cross-cultural", "guest"],
-  "Influence & Leadership": ["leadership", "negotiat", "present", "public speaking", "pitch", "advocacy"],
-  "Intellectual & Analytical": ["problem-solving", "analy", "research", "critical"],
-  "Strategic & Futuristic": ["planning", "time management", "structured"],
-  "Execution & Achievement": ["deadline", "delivery", "execution", "discipline"],
-  "Creative & Innovative": ["creative", "design", "storytelling", "innovat"],
-};
-function skillGapInsight(strengthDomains: GraduateScoreOutput["layer1"]["strengthDomains"], nonTechPool: string[]): { label: string; domain: string; matched: string | null }[] {
-  if (strengthDomains.length === 0) return [];
-  const ranked = [...strengthDomains].sort((a, b) => b.score - a.score);
-  const top = ranked[0];
-  const bottom = ranked[ranked.length - 1];
-  const findMatch = (domain: string) => {
-    const kws = DOMAIN_SKILL_KEYWORDS[domain] ?? [];
-    return nonTechPool.find((skill) => kws.some((kw) => skill.toLowerCase().includes(kw))) ?? null;
-  };
-  return [
-    { label: "Your strongest measured area", domain: top.domain, matched: findMatch(top.domain) },
-    { label: "Your growth area - worth deliberate practice", domain: bottom.domain, matched: findMatch(bottom.domain) },
-  ];
-}
-
-/** The "skill-gap engine": a consolidated view of every technical/
- *  non-technical skill this cluster's roadmap lists across all 4 years
- *  (deduped, so a repeated skill like "teamwork" shows once), plus an
- *  honest connection to the student's own measured strengths where one
- *  exists. No interactive checkbox state - this file renders in a
- *  server/report context with no client-side state (confirmed: no
- *  useState/"use client" anywhere in it), so "track what you've already
- *  built" stays a real, separate feature for a client component to add
- *  later rather than something faked here. */
-function SkillGapPanel({ yearsData, strengthDomains, color }: { yearsData: GradYearFocus[]; strengthDomains: GraduateScoreOutput["layer1"]["strengthDomains"]; color: string }) {
-  const technical = Array.from(new Set(yearsData.flatMap((y) => y.technicalSkills ?? [])));
-  const nonTechnical = Array.from(new Set(yearsData.flatMap((y) => y.nonTechnicalSkills ?? [])));
-  if (technical.length === 0 && nonTechnical.length === 0) return null;
-  const insights = skillGapInsight(strengthDomains, nonTechnical);
-
-  return (
-    <div style={{ marginTop: 16, borderTop: `1px solid ${color}25`, paddingTop: 14 }}>
-      <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 8, textTransform: "uppercase", letterSpacing: ".03em" }}>
-        Skill-gap snapshot - {technical.length} technical + {nonTechnical.length} non-technical skills across your degree
-      </div>
-      {insights.filter((i) => i.matched).map((i) => (
-        <p key={i.label} style={{ fontSize: 11.5, color: "var(--ink-2)", lineHeight: 1.6, margin: "0 0 6px" }}>
-          <b style={{ color: "var(--ink)" }}>{i.label} ({i.domain}):</b> likely connects to "{i.matched}" in the list above.
-        </p>
-      ))}
-      <p style={{ fontSize: 10.5, color: "var(--muted)", marginTop: 6 }}>
-        Your assessment measures broad strength domains, not specific skills (like a certification or a tool) - this is a rough connection to help you prioritise, not a claim you already have or lack any specific skill.
-      </p>
-    </div>
-  );
-}
-
-/** Tier 1's skill-gap panel - same honest keyword-connection technique as
- *  SkillGapPanel, but for a flat, unstructured skills pool (DetailedCareerRoadmap.skills
- *  mixes technical skills, tools and certifications in one real-researched
- *  list with no clean technical/non-technical split - see this file's
- *  header comment on why that split isn't attempted here). */
-function SkillGapPanelForCareer({ skillsPool, strengthDomains, color }: { skillsPool: string[]; strengthDomains: GraduateScoreOutput["layer1"]["strengthDomains"]; color: string }) {
-  const pool = Array.from(new Set(skillsPool));
-  if (pool.length === 0) return null;
-  const insights = skillGapInsight(strengthDomains, pool);
-  return (
-    <div style={{ marginTop: 16, borderTop: `1px solid ${color}25`, paddingTop: 14 }}>
-      <div style={{ fontSize: 11, fontWeight: 800, color, marginBottom: 8, textTransform: "uppercase", letterSpacing: ".03em" }}>
-        Skill-gap snapshot - {pool.length} skills & certifications listed for this exact career
-      </div>
-      {insights.filter((i) => i.matched).map((i) => (
-        <p key={i.label} style={{ fontSize: 11.5, color: "var(--ink-2)", lineHeight: 1.6, margin: "0 0 6px" }}>
-          <b style={{ color: "var(--ink)" }}>{i.label} ({i.domain}):</b> likely connects to "{i.matched}" in the list above.
-        </p>
-      ))}
-      <p style={{ fontSize: 10.5, color: "var(--muted)", marginTop: 6 }}>
-        Your assessment measures broad strength domains, not specific skills (like a certification or a tool) - this is a rough connection to help you prioritise, not a claim you already have or lack any specific skill.
-      </p>
     </div>
   );
 }
@@ -982,13 +972,13 @@ function FlagshipRoadmapViewGrad({ r, selectedRole, directRoutes }: { r: Flagshi
         <p style={note}>{r.certificationNote}</p>
       </GradRoadmapSectionFrame>
 
-      <GradRoadmapSectionFrame index={4} title="Careers you can be hired as">
+      <GradRoadmapSectionFrame index={4} title="Jobs you can be hired for">
         {selectedRole && <PinnedRoleCallout role={selectedRole} directRoutes={directRoutes ?? []} color={sectionAccent(4)} />}
         <div>{r.careersHiredAs.filter((role) => role !== selectedRole).map((role) => <span key={role} style={chip(sectionAccent(4))}>{role}</span>)}</div>
         <p style={note}>{r.jobSearchNote}</p>
       </GradRoadmapSectionFrame>
 
-      <GradRoadmapSectionFrame index={5} title="PG to consider - in India">
+      <GradRoadmapSectionFrame index={5} title="Master's (PG) options in India">
         <p style={{ fontSize: 12.5, color: "var(--ink-2)", marginBottom: 12 }}>{r.pgIndia}</p>
         <div style={{ fontSize: 11, fontWeight: 800, color: sectionAccent(5), marginBottom: 8 }}>Before choosing a PG route</div>
         <GradDetailList lines={r.pgIndiaChecklist} color={sectionAccent(5)} />
@@ -1006,7 +996,7 @@ function FlagshipRoadmapViewGrad({ r, selectedRole, directRoutes }: { r: Flagshi
         <p style={note}>{r.abroadApplicationNote}</p>
       </GradRoadmapSectionFrame>
 
-      <GradRoadmapSectionFrame index={7} title="Going forward - career advancement & PhD">
+      <GradRoadmapSectionFrame index={7} title="How your career can grow (including PhD)">
         <GradStepChain steps={r.careerAdvancement} color={sectionAccent(7)} />
         <div style={{ fontSize: 11, fontWeight: 800, color: sectionAccent(7), margin: "16px 0 8px" }}>Career evidence to keep from UG</div>
         <div>{r.careerEvidence.map((e) => <span key={e} style={chip(sectionAccent(7))}>{e}</span>)}</div>
@@ -1029,11 +1019,7 @@ function FlagshipRoadmapViewGrad({ r, selectedRole, directRoutes }: { r: Flagshi
  *  heuristic split misclassifies real skill names at similar frequency to
  *  actual section headers) - shown in full as one combined block rather
  *  than faking a split the source data doesn't reliably support. */
-function DetailedCareerRoadmapViewGrad({ r, careerName, color, strengthDomains }: { r: DetailedCareerRoadmap; careerName: string; color: string; strengthDomains: GraduateScoreOutput["layer1"]["strengthDomains"] }) {
-  const chip = (c: string): React.CSSProperties => ({
-    display: "inline-block", fontSize: 11.5, fontWeight: 600, color: "var(--ink-2)",
-    background: `${c}0c`, border: `1px solid ${c}30`, borderRadius: 8, padding: "5px 10px", margin: "0 6px 6px 0",
-  });
+function DetailedCareerRoadmapViewGrad({ r, careerName, color }: { r: DetailedCareerRoadmap; careerName: string; color: string; strengthDomains?: GraduateScoreOutput["layer1"]["strengthDomains"] }) {
   return (
     <div>
       <RoadmapJourneyStrip />
@@ -1047,27 +1033,25 @@ function DetailedCareerRoadmapViewGrad({ r, careerName, color, strengthDomains }
       <GradRoadmapSectionFrame index={1} title="What to build each year">
         <GradYearFocusGrid years={r.ugDevelopment.years} color={sectionAccent(1)} />
         {r.ugDevelopment.notes.length > 0 && (
-          <div style={{ marginTop: 10 }}>
-            <div style={{ fontSize: 11, fontWeight: 800, color: sectionAccent(1), marginBottom: 6 }}>Project ideas</div>
-            <GradDetailList lines={r.ugDevelopment.notes} color={sectionAccent(1)} />
+          <div style={{ marginTop: 12 }}>
+            <GradDetailList lines={r.ugDevelopment.notes} color={sectionAccent(1)} defaultTitle="Project ideas" />
           </div>
         )}
-        <SkillGapPanelForCareer skillsPool={r.skills} strengthDomains={strengthDomains} color={sectionAccent(1)} />
       </GradRoadmapSectionFrame>
 
       <GradRoadmapSectionFrame index={2} title="Internships">
         <GradDetailList lines={r.internships} color={sectionAccent(2)} />
       </GradRoadmapSectionFrame>
 
-      <GradRoadmapSectionFrame index={3} title="Certifications in demand" sub="This career's research lists certifications together with technical skills and tools, not as a separate list - shown here in full.">
-        <div>{r.skills.map((s, i) => <span key={`${s}-${i}`} style={chip(sectionAccent(3))}>{s}</span>)}</div>
+      <GradRoadmapSectionFrame index={3} title="Skills, tools & certifications" sub="What employers look for in this career.">
+        <ChipGroups items={r.skills} color={sectionAccent(3)} />
       </GradRoadmapSectionFrame>
 
-      <GradRoadmapSectionFrame index={4} title="Careers you can be hired as">
-        <div>{r.jobOptions.map((role, i) => <span key={`${role}-${i}`} style={chip(sectionAccent(4))}>{role}</span>)}</div>
+      <GradRoadmapSectionFrame index={4} title="Jobs you can be hired for">
+        <ChipGroups items={r.jobOptions} color={sectionAccent(4)} />
       </GradRoadmapSectionFrame>
 
-      <GradRoadmapSectionFrame index={5} title="PG to consider - in India">
+      <GradRoadmapSectionFrame index={5} title="Master's (PG) options in India">
         {r.afterUgPathways.length > 0 && (
           <div style={{ marginBottom: 12 }}>
             <div style={{ fontSize: 11, fontWeight: 800, color: sectionAccent(5), marginBottom: 6 }}>Pathways after UG</div>
@@ -1076,8 +1060,8 @@ function DetailedCareerRoadmapViewGrad({ r, careerName, color, strengthDomains }
         )}
         {r.pgSpecialization.length > 0 && (
           <div style={{ marginBottom: 12 }}>
-            <div style={{ fontSize: 11, fontWeight: 800, color: sectionAccent(5), marginBottom: 6 }}>PG programmes & institutions</div>
-            <div>{r.pgSpecialization.map((p, i) => <span key={`${p}-${i}`} style={chip(sectionAccent(5))}>{p}</span>)}</div>
+            <div style={{ fontSize: 11, fontWeight: 800, color: sectionAccent(5), marginBottom: 6 }}>Master&apos;s programmes &amp; where to study</div>
+            <ChipGroups items={r.pgSpecialization} color={sectionAccent(5)} />
           </div>
         )}
         {r.scholarships.length > 0 && (
@@ -1103,7 +1087,7 @@ function DetailedCareerRoadmapViewGrad({ r, careerName, color, strengthDomains }
         )}
       </GradRoadmapSectionFrame>
 
-      <GradRoadmapSectionFrame index={7} title="Going forward - career advancement">
+      <GradRoadmapSectionFrame index={7} title="How your career can grow">
         <GradStepChain steps={r.careerProgression} color={sectionAccent(7)} />
         {r.completeRoadmap.length > 0 && (
           <div style={{ marginTop: 16 }}>
@@ -1172,8 +1156,12 @@ function courseRowsForDegree(cluster: string, degree: string): { course: string;
 // source data for this cluster at all (rare - clusterForDegreeCourse
 // couldn't resolve it), so the table is never empty but also never back to
 // the old unfiltered every-degree-in-the-cluster dump.
-function DegreeCourseRolesTable({ cluster, degree, color }: { cluster: string; degree: string; color: string }) {
-  const ownCourses = courseRowsForDegree(cluster, degree);
+function DegreeCourseRolesTable({ cluster, degree, course, color }: { cluster: string; degree: string; course?: string; color: string }) {
+  // Only the student's own course when we can find it - listing every
+  // specialisation of their degree (55+ for B.Tech) buries the one that matters.
+  const allOwn = courseRowsForDegree(cluster, degree);
+  const exact = course ? allOwn.filter((c) => c.course === course) : [];
+  const ownCourses = exact.length ? exact : allOwn;
   const usingOwnDegree = ownCourses.length > 0;
   const rows = usingOwnDegree
     ? [{ degree, courses: ownCourses }]
@@ -1232,6 +1220,25 @@ function toFive(value: number, max: number): number {
   return Math.max(1, Math.min(5, Math.round((value / max) * 5)));
 }
 
+/** Where each measured skill level comes from, in plain words - shown
+ *  instead of the stored internal source names ("Communication scenarios",
+ *  "Strategic & Futuristic"), so older saved reports read the same way. */
+const SKILL_SOURCE_PLAIN: Record<string, string> = {
+  leadership: "your answers about taking the lead",
+  strategic: "your answers about planning ahead",
+  analytical: "your reasoning-question results",
+  communication: "your answers about explaining ideas",
+  relationships: "your answers about teamwork",
+  emotional: "your answers about feedback and disagreements",
+  creativity: "your answers about new ideas",
+  execution: "your answers about finishing work",
+  learning: "your answers about learning new things",
+  ownership: "your answers about setbacks",
+  digital: "your answers about digital tools",
+  ai: "your answers about using AI",
+  data: "your answers about data",
+};
+
 /** Career Horizon's skill-gap engine, Option 2 (per explicit instruction):
  *  real 1-5 gauges ONLY for named skills backed by an actual measured score.
  *  Since the 8-pillar UG bank, Communication, Digital literacy, AI readiness
@@ -1248,33 +1255,33 @@ function realSkillGaugesForLayer(
 ): HorizonSkillGauge[] {
   const fromEvidence = (key: keyof SkillEvidenceGrad, label: string): HorizonSkillGauge[] => {
     const e = evidence?.[key];
-    return e ? [{ label, level1to5: e.level, source: e.basis }] : [];
+    return e ? [{ label, level1to5: e.level, source: SKILL_SOURCE_PLAIN[key] ?? e.basis }] : [];
   };
   const findDomain = (list: GraduateScoreOutput["layer1"]["strengthDomains"], name: string) => list.find((d) => d.domain === name);
   switch (layerKey) {
     case "foundationalHuman": {
       const out: HorizonSkillGauge[] = [];
       const linguistic = findDomain(mi, "Linguistic");
-      if (linguistic) out.push({ label: "Communication", level1to5: toFive(linguistic.score, 100), source: "Linguistic (Multiple Intelligence)" });
+      if (linguistic) out.push({ label: "Communication", level1to5: toFive(linguistic.score, 100), source: "your answers about explaining ideas" });
       else out.push(...fromEvidence("communication", "Communication"));
       const analytical = findDomain(strengthDomains, "Intellectual & Analytical");
-      if (analytical) out.push({ label: "Critical Thinking", level1to5: toFive(analytical.score, 100), source: "Intellectual & Analytical (Strength Domain)" });
+      if (analytical) out.push({ label: "Critical Thinking", level1to5: toFive(analytical.score, 100), source: "your answers about analysing problems" });
       if (ei) {
         const avg = (ei.selfAwareness + ei.selfManagement + ei.socialAwareness + ei.relationshipManagement) / 4;
-        out.push({ label: "Emotional Intelligence", level1to5: toFive(avg, 1), source: "Your Emotional Intelligence profile" });
+        out.push({ label: "Emotional Intelligence", level1to5: toFive(avg, 1), source: "your answers about feedback and disagreements" });
       }
       return out;
     }
     case "strategic": {
       const out: HorizonSkillGauge[] = [];
       const leadership = findDomain(strengthDomains, "Influence & Leadership");
-      if (leadership) out.push({ label: "Leadership", level1to5: toFive(leadership.score, 100), source: "Influence & Leadership (Strength Domain)" });
+      if (leadership) out.push({ label: "Leadership", level1to5: toFive(leadership.score, 100), source: "your answers about leading others" });
       const strategic = findDomain(strengthDomains, "Strategic & Futuristic");
-      if (strategic) out.push({ label: "Strategic Thinking", level1to5: toFive(strategic.score, 100), source: "Strategic & Futuristic (Strength Domain)" });
+      if (strategic) out.push({ label: "Strategic Thinking", level1to5: toFive(strategic.score, 100), source: "your answers about planning ahead" });
       return out;
     }
     case "domain":
-      return domainFitScore == null ? [] : [{ label: "Domain Fit", level1to5: toFive(domainFitScore, 100), source: "Your Career Suitability score for this field" }];
+      return domainFitScore == null ? [] : [{ label: "Domain Fit", level1to5: toFive(domainFitScore, 100), source: "how well this field matches your answers" }];
     case "digital":
       return [...fromEvidence("digital", "Digital Literacy"), ...fromEvidence("data", "Data Literacy")];
     case "ai":
@@ -1344,12 +1351,10 @@ function CareerHorizonSectionGrad({ horizon, cluster, roleContext, strengthDomai
   return (
     <>
       <PageHead eyebrow="A longer view" title="Your 2026-2046 Career Horizon"
-        sub={roleContext
-          ? `How ${cluster} - the field behind ${roleContext} - tends to evolve across a full career, and the skill layers worth building at each stage.`
-          : `How ${cluster} tends to evolve across a full career, and the skill layers worth building at each stage.`} />
+        sub={`How careers in ${cluster.toLowerCase()} usually change over the next 20 years, and which skills matter at each stage.`} />
 
       <div style={{ marginTop: 20, padding: "14px 16px", borderRadius: 14, border: `1px solid ${color}30`, background: `${color}06` }}>
-        <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: ".07em", textTransform: "uppercase", color, marginBottom: 10 }}>What you already have - from your real assessment results</div>
+        <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: ".07em", textTransform: "uppercase", color, marginBottom: 10 }}>Your current level, from this test (1-5)</div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
           {SKILL_LAYER_META.map((layer) => {
             const gauges = realSkillGaugesForLayer(layer.key, strengthDomains, multipleIntelligence, emotionalIntelligence, domainFitScore, skillEvidence);
@@ -1359,13 +1364,13 @@ function CareerHorizonSectionGrad({ horizon, cluster, roleContext, strengthDomai
                 {gauges.length > 0 ? (
                   gauges.map((g) => <GaugeRow key={g.label} gauge={g} color={color} />)
                 ) : (
-                  <p style={{ fontSize: 10.5, color: "var(--muted)", fontStyle: "italic", margin: 0 }}>Not assessed by this test - no reliable current-level signal to show here.</p>
+                  <p style={{ fontSize: 10.5, color: "var(--muted)", fontStyle: "italic", margin: 0 }}>Not measured by this test.</p>
                 )}
               </div>
             );
           })}
         </div>
-        <p style={{ fontSize: 10, color: "var(--muted)", marginTop: 12, marginBottom: 0 }}>Every bar above comes from an actual score in your assessment (noted next to it) - never a guess, and never shown where nothing was measured.</p>
+        <p style={{ fontSize: 10, color: "var(--muted)", marginTop: 12, marginBottom: 0 }}>Each level comes from your answers in this test.</p>
       </div>
 
       <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 18 }}>
@@ -1383,24 +1388,19 @@ function CareerHorizonSectionGrad({ horizon, cluster, roleContext, strengthDomai
                   <p style={{ fontSize: 12.5, color: "var(--ink-2)", margin: "4px 0 0", lineHeight: 1.55, maxWidth: 680 }}>{phase.outlook}</p>
                 </div>
               </div>
-              <div style={{ padding: "12px 16px 16px", display: "grid", gap: 8 }}>
+              {/* One short line per skill area - just the core point, not the
+                  full paragraph, so four stages stay readable. */}
+              <ul style={{ margin: 0, padding: "12px 16px 14px 34px", display: "grid", gap: 6 }}>
                 {SKILL_LAYER_META.map((layer) => {
-                  const text = phase.skills[layer.key];
+                  const text = phase.skills[layer.key] ?? "";
+                  const core = text.split(" - ")[0].replace(/[.;]\s*$/, "");
                   return (
-                    <div key={layer.key} style={{ padding: "9px 11px", border: `1px solid ${color}20`, borderRadius: 10, background: `${color}05` }}>
-                      <div style={{ marginBottom: 3 }}>
-                        <span style={{ fontSize: 10.5, fontWeight: 800, color }}>{layer.label}</span>
-                      </div>
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: 5, margin: "2px 0 6px" }}>
-                        {layer.examples.map((ex) => (
-                          <span key={ex} style={{ fontSize: 10, fontWeight: 600, color: "var(--muted)", background: "#fff", border: `1px solid ${color}25`, borderRadius: 6, padding: "2px 7px" }}>{ex}</span>
-                        ))}
-                      </div>
-                      <p style={{ fontSize: 12, color: "var(--ink-2)", margin: 0, lineHeight: 1.55 }}>{text}</p>
-                    </div>
+                    <li key={layer.key} style={{ fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.5 }}>
+                      <b style={{ color }}>{layer.label}:</b> {core}.
+                    </li>
                   );
                 })}
-              </div>
+              </ul>
             </div>
           );
         })}
@@ -1412,9 +1412,9 @@ function CareerHorizonSectionGrad({ horizon, cluster, roleContext, strengthDomai
 
 const PERSONAL_CARE_CLUSTER = "Personal Care, Beauty & Wellness";
 const GAP_STATUS_STYLE: Record<GapStatus, { label: string; color: string; bg: string }> = {
-  strength: { label: "Strong", color: "#0d7a55", bg: "#e4f5ec" },
-  build: { label: "Build on", color: "#9a5b00", bg: "#fdf0d2" },
-  develop: { label: "Develop", color: "#b42318", bg: "#fde7e5" },
+  strength: { label: "Ready", color: "#0d7a55", bg: "#e4f5ec" },
+  build: { label: "Almost there", color: "#9a5b00", bg: "#fdf0d2" },
+  develop: { label: "Needs work", color: "#b42318", bg: "#fde7e5" },
 };
 
 function SkillGapNotice({ text }: { text: string }) {
@@ -1447,9 +1447,9 @@ function SkillGapSectionGrad({ evidence, cluster, color }: { evidence: SkillEvid
   const measured = result.rows.filter((r): r is MeasuredGapRow => r.kind === "measured");
   const unmeasured = result.rows.filter((r): r is UnmeasuredGapRow => r.kind === "unmeasured");
   const tiles: { label: string; value: number; status: GapStatus | "notAssessed" }[] = [
-    { label: "Strong", value: result.counts.strength, status: "strength" },
-    { label: "Build on", value: result.counts.build, status: "build" },
-    { label: "Develop", value: result.counts.develop, status: "develop" },
+    { label: "Ready", value: result.counts.strength, status: "strength" },
+    { label: "Almost there", value: result.counts.build, status: "build" },
+    { label: "Needs work", value: result.counts.develop, status: "develop" },
     { label: "Not assessed", value: result.counts.notAssessed, status: "notAssessed" },
   ];
   return (
@@ -1476,11 +1476,11 @@ function SkillGapSectionGrad({ evidence, cluster, color }: { evidence: SkillEvid
             <div key={r.key} style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12, padding: "12px 16px", borderTop: "1px solid var(--line)" }}>
               <div style={{ flex: "1 1 180px", minWidth: 0 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>{r.label}</div>
-                <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2, lineHeight: 1.45 }}>From: {r.basis}</div>
+                <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2, lineHeight: 1.45 }}>Based on {SKILL_SOURCE_PLAIN[r.key] ?? r.basis}</div>
               </div>
               <LevelBars level={r.level} color={color} />
               <div style={{ fontSize: 12, fontWeight: 700, color: "var(--ink)", flex: "0 0 auto" }}>
-                Target {r.target} <span style={{ fontSize: 10, fontWeight: 500, color: "var(--muted)" }}>(estimate)</span>
+                Usually needed: {r.target}
               </div>
               <span style={{ fontSize: 11, fontWeight: 800, color: s.color, background: s.bg, padding: "3px 10px", borderRadius: 999, flex: "0 0 auto" }}>{s.label}</span>
             </div>
@@ -1490,7 +1490,7 @@ function SkillGapSectionGrad({ evidence, cluster, color }: { evidence: SkillEvid
 
       <div style={{ marginTop: 16, border: "1px dashed var(--line)", borderRadius: 13, padding: "14px 16px" }}>
         <div style={{ fontSize: 12, fontWeight: 800, color: "var(--ink)" }}>Not measured by this test</div>
-        <p style={{ fontSize: 12, color: "var(--muted)", margin: "4px 0 10px", lineHeight: 1.5 }}>No level is shown for these. Build evidence for them through the projects in your roadmap.</p>
+        <p style={{ fontSize: 12, color: "var(--muted)", margin: "4px 0 10px", lineHeight: 1.5 }}>The test can't measure these, so no level is shown. Build them through the projects and courses in your roadmap.</p>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
           {unmeasured.map((r) => (
             <span key={r.label} style={{ fontSize: 12, padding: "5px 11px", borderRadius: 999, border: "1px solid var(--line)", color: "var(--muted)" }}>{r.label} · Not assessed</span>
@@ -1499,7 +1499,7 @@ function SkillGapSectionGrad({ evidence, cluster, color }: { evidence: SkillEvid
       </div>
 
       <p style={{ fontSize: 11, color: "var(--muted)", marginTop: 14, lineHeight: 1.6 }}>
-        Levels come only from this test, on a 1 to 5 scale. Targets are estimates for this cluster, not norms.
+        Your levels come from this test (1 to 5). "Usually needed" is our estimate for jobs in this area, not an official standard.
       </p>
     </div>
   );
@@ -1561,6 +1561,7 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
   const careerHorizon = careerHorizonForCluster(selectorCluster);
 
   const roleChipsFor = (cluster: string) => featuredRoles(cluster, output.layer1.riasec, 3);
+  const degreeCluster = clusterForDegreeCourse(academicContext.degree, academicContext.course);
 
   const sheets: ReportSheet[] = [
     {
@@ -1569,7 +1570,7 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
       node: (
         <>
           <PageHead eyebrow="Across the standard career clusters" title="Your Career Cluster Fit"
-            sub="How strongly your measured interests, aptitude and strengths line up with each of the 17 career clusters - the same industry-standard groupings used across career guidance, not a scheme unique to this report." />
+            sub="Jobs are grouped into 17 broad career areas (called clusters). This shows how closely your answers match each one - a higher % means a closer match." />
           <div style={{ marginTop: 24, border: "1px solid var(--line)", borderRadius: 13, padding: "28px 24px" }}>
             <ClusterBarChartGrad rows={fitmentRanked.map((c) => ({ cluster: c.cluster, score: c.computedScore }))} />
           </div>
@@ -1581,13 +1582,13 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
       kicker: "Overview",
       node: (
         <>
-          <PageHead eyebrow="Fitment · Suitability · Selector, side by side" title="Your Career Path at a Glance"
-            sub="Compare what fits you, what fits your actual degree, and explore your ideal career - all in one view." />
+          <PageHead eyebrow="Three views of your options" title="Your Career Path at a Glance"
+            sub="Left: career areas that match your answers. Middle: areas that match your degree. Right: the career you chose. Each is explained on the next pages." />
           <div className="full-bleed" style={{ marginTop: 22, border: "1px solid var(--line)", borderRadius: 16, overflow: "hidden", boxShadow: "0 1px 3px rgba(0,0,0,.05), 0 10px 26px rgba(0,0,0,.05)" }}>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
               <OverviewHeadCell icon="score" title="Career Fitment" subtitle="What fits you" desc="Clusters that align with your interests and strengths." color="#2f6bff" />
               <OverviewHeadCell icon="cap" title="Career Suitability" subtitle="What fits your degree" desc="Clusters that match your actual degree and course." color="#12996b" borderLeft />
-              <OverviewHeadCell icon="match" title="Career Selector" subtitle="Your desired career" desc="Your most suitable career based on your profile." color="#e08a1e" borderLeft />
+              <OverviewHeadCell icon="match" title="Career Selector" subtitle="Your desired career" desc="The career you chose before the test, and the path to it." color="#e08a1e" borderLeft />
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
               <div style={{ minWidth: 0 }}>
@@ -1596,9 +1597,15 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
                 )) : <OverviewEmpty text="No matches yet." />}
               </div>
               <div style={{ minWidth: 0, borderLeft: "1px solid var(--line)" }}>
-                {suitabilityRanked.slice(0, 5).map((c, i) => (
-                  <OverviewRow key={c.cluster} rank={i + 1} name={c.cluster} pct={c.suitabilityScore} color="#12996b" roles={roleChipsFor(c.cluster)} />
-                ))}
+                {suitabilityRanked.slice(0, 5).map((c, i) => {
+                  const isDegreeField = c.cluster === degreeCluster;
+                  const ownRoles = isDegreeField ? rankRolesByRiasec(rolesForDegreeCourse(academicContext.degree, academicContext.course), output.layer1.riasec).slice(0, 3) : [];
+                  return (
+                    <OverviewRow key={c.cluster} rank={i + 1} name={c.cluster} pct={c.suitabilityScore} color="#12996b"
+                      note={isDegreeField ? "Your degree's field - listed first" : undefined}
+                      roles={ownRoles.length ? ownRoles : roleChipsFor(c.cluster)} />
+                  );
+                })}
               </div>
               <div style={{ minWidth: 0, borderLeft: "1px solid var(--line)", background: "#fef9f2", display: "flex", flexDirection: "column" }}>
                 {aspiration.desiredCareer ? (
@@ -1628,9 +1635,12 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
       node: (
         <>
           <PageHead eyebrow="What fits YOU" title="Career Fitment"
-            sub="Your top 5 clusters, ranked purely by your assessment - ignores your degree entirely. This is what your interests, aptitude and strengths point toward, with no filter for what's currently reachable. Career Suitability, next, applies the real-world degree filter." />
+            sub="The 5 career areas that match your answers best, whatever your degree. The next page looks at what fits your degree." />
           <div style={{ marginTop: 20 }}>
             <ConcernPointers concerns={aspiration.concerns} />
+            <p style={{ fontSize: 11.5, color: "var(--muted)", margin: "0 0 12px" }}>
+              <b>LPA</b> = lakh rupees per year (₹4 LPA ≈ ₹33,000 a month). <b>PG entrance exams</b> are the tests used for admission to master&apos;s programmes in that area.
+            </p>
             {fitmentRanked.slice(0, 5).map((c, i) => <ClusterCard key={c.cluster} cluster={c.cluster} score={c.computedScore} rank={i + 1} riasec={output.layer1.riasec} />)}
           </div>
           <p className="disclaimer" style={{ marginTop: 16 }}>
@@ -1645,7 +1655,7 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
       node: (
         <>
           <PageHead eyebrow="What's realistic for your degree" title="Career Suitability"
-            sub={`Led by ${academicContext.degree || "your current degree"} - what you're actually studying comes first here, unlike Career Fitment above. The clusters below it are ranked by how strongly your measured interests, aptitude and strengths point toward them.`} />
+            sub="The career area your degree belongs to comes first - even if its % is lower - because it's the most direct route from what you study. The others follow in order of how well they match your answers." />
           {/* No standalone "roles your course leads to" callout here - when
               degreeCluster resolves, it's always rank #1 below (see
               suitabilityRanked), and SuitabilityDomainBlock already shows
@@ -1732,12 +1742,10 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
               </div>
               {careerHorizon && <CareerHorizonTeaser color={clusterColor(selectorCluster)} />}
               <div style={{ marginTop: 28, paddingTop: 24, borderTop: "1px solid var(--line)" }}>
-                <SecHead center eyebrow={`${academicContext.degree || "Your degree"} · ${topCluster}`} title="What your degree leads to"
-                  sub={selectorCluster !== topCluster
-                    ? "A separate view: the courses and real job roles your OWN degree ties to (not the career you selected above)."
-                    : "The courses and real job roles the source data ties to your own degree within this cluster."} />
+                <SecHead center eyebrow={academicContext.course || academicContext.degree || "Your course"} title="Jobs your own course leads to"
+                  sub="Besides the career you chose above, these are the jobs your current course commonly leads to." />
                 <div style={{ marginTop: 16 }}>
-                  <DegreeCourseRolesTable cluster={topCluster} degree={academicContext.degree} color={clusterColor(topCluster)} />
+                  <DegreeCourseRolesTable cluster={topCluster} degree={academicContext.degree} course={academicContext.course} color={clusterColor(topCluster)} />
                 </div>
               </div>
             </div>
@@ -1751,7 +1759,7 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
       node: (
         <>
           <PageHead eyebrow={`${selectorCluster} · measured from your answers`} title="Your Skill Gap"
-            sub="How the skills this test measures compare with what your cluster asks for. Only measured skills get a level." />
+            sub="Your level for each skill (1 = just starting, 5 = very strong), compared with the level jobs in this area usually need. Skills this test can't measure are listed at the end." />
           <SkillGapSectionGrad evidence={output.skillEvidence} cluster={selectorCluster} color={clusterColor(selectorCluster)} />
         </>
       ),
