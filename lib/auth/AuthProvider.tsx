@@ -38,6 +38,29 @@ export interface ReportTheme {
   meaning: string;
 }
 
+/** One report dimension supplied by the scorer itself (see AssessmentSummary.customDimensions). */
+export interface CustomDimension {
+  key: string;
+  label: string;
+  /** Short label for tabs and the radar chart. */
+  short: string;
+  /** Icon name from app/Icons.tsx. */
+  icon: string;
+  score: number;
+  /** What the score means, shown under it. */
+  scoreBasis: string;
+  /** The headline result, e.g. "ENTJ" or "Strongest: Teamwork". */
+  result: string;
+  meaning: string;
+  /** Scored sub-dimensions, shown as bars. */
+  subs: { label: string; value: number }[];
+  /** Preference sub-dimensions, shown as label/value pairs. */
+  preferences: { label: string; value: string }[];
+  strengths: string[];
+  grow: string[];
+  recommend: string[];
+}
+
 /** Report data saved under the user so the dashboard can render it. */
 export interface AssessmentSummary {
   journeyCode: string;
@@ -83,6 +106,12 @@ export interface AssessmentSummary {
   // ninth "creativity" dimension to draw prose from. Read by
   // categoryDeepDive("creativity", a) in lib/report/knowledge.ts.
   creativityDetail?: { problemSolving: string; innovationApproach: string; recommendations: string[] };
+
+  // Graduates (UG) only: the report's dimensions are the 8 pillars of the UG
+  // assessment, not the fixed 8 categories above. When present, the report
+  // and dashboards render these pages (in this order) instead of the fixed
+  // set; `radar` then carries the same keys. Absent for every other class.
+  customDimensions?: CustomDimension[];
 
   // Class-specific output data (stored as JSON blobs for class-specific report rendering)
   // These contain the full scoring output from each class's assessment

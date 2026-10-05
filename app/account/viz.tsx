@@ -45,6 +45,18 @@ export const DIM_COLORS: Record<string, string> = {
   strengths: "#4a3aa7",
   aptitude: "#e34948",
 };
+// Graduates (UG) report pillars - see AssessmentSummary.customDimensions.
+Object.assign(DIM_COLORS, {
+  ug_personality_behaviour: "#2a78d6",
+  ug_interests_motivation: "#008300",
+  ug_cognitive_capability: "#e34948",
+  ug_academic_domain_fit: "#4a3aa7",
+  ug_human_professional_skills: "#eb6834",
+  ug_digital_future_skills: "#1baf7a",
+  ug_career_readiness: "#e87ba4",
+  ug_future_adaptability: "#eda100",
+});
+
 export const dimColor = (key: string) => DIM_COLORS[key] ?? C.red;
 
 /* ------------------------------- Ring ---------------------------------- */

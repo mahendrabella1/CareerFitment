@@ -1,1599 +1,2844 @@
 {
- "personality": {
+ "ug_personality_behaviour": {
   "ug": {
    "Set 1": [
     {
-     "text": "In a new university project, which starting approach feels more natural to you?",
+     "docNo": 1,
+     "sub": "Personality",
+     "scoring": "nominal",
+     "text": "When you are given a completely unfamiliar task, your first natural response is to:",
      "options": [
-      "Discuss the project with teammates and develop ideas through interaction.",
-      "Think through your own initial approach and then bring it to the team.",
-      "Exchange ideas briefly, then continue developing the idea independently.",
-      "Prefer an extended discussion before deciding how to proceed."
+      "Explore it independently and figure out how it works",
+      "Ask someone experienced to explain where to begin",
+      "Break it into smaller steps and create a plan",
+      "Start experimenting and adjust as you learn"
      ],
-     "mapping": [
-      "E",
-      "I",
-      "I",
-      "E"
+     "style": [
+      "Independent explorer",
+      "Guided starter",
+      "Planner",
+      "Experimenter"
+     ],
+     "tags": [
+      [
+       "mbti:I",
+       "str:Intellectual & Analytical"
+      ],
+      [
+       "mbti:E"
+      ],
+      [
+       "mbti:J",
+       "str:Execution & Achievement"
+      ],
+      [
+       "mbti:P",
+       "str:Relationship & Adaptability"
+      ]
      ]
     },
     {
-     "text": "After a demanding week, what usually helps you reset?",
+     "docNo": 2,
+     "sub": "Personality",
+     "scoring": "nominal",
+     "text": "When working on something important, you generally prefer to:",
      "options": [
-      "Spend time with people, conversations or activities that involve others.",
-      "Have uninterrupted time to think or work on your own.",
-      "Have a small amount of social interaction followed by quiet time.",
-      "Spend most of the available time around other people."
+      "Follow a clear structure and defined process",
+      "Keep flexibility to change direction when needed",
+      "Work independently with control over your approach",
+      "Discuss your approach with others before proceeding"
      ],
-     "mapping": [
-      "E",
-      "I",
-      "I",
-      "E"
+     "style": [
+      "Structured",
+      "Flexible",
+      "Independent",
+      "Collaborative"
+     ],
+     "tags": [
+      [
+       "mbti:J"
+      ],
+      [
+       "mbti:P"
+      ],
+      [
+       "mbti:I",
+       "mot:Independence"
+      ],
+      [
+       "mbti:E"
+      ]
      ]
     },
     {
-     "text": "When an idea is still developing, you are more likely to:",
+     "docNo": 3,
+     "sub": "Personality",
+     "scoring": "nominal",
+     "text": "Which situation feels most natural to you?",
      "options": [
-      "Discuss the idea with others and discover or refine it while talking.",
-      "Develop it privately until you have a clearer version.",
-      "Write down your thoughts first and then discuss selected points.",
-      "Talk with several people before settling on a direction."
+      "Solving a complex problem that requires concentration",
+      "Interacting with different people and exchanging ideas",
+      "Creating something original from your own ideas",
+      "Organising people, information or activities toward an outcome"
      ],
-     "mapping": [
-      "E",
-      "I",
-      "I",
-      "E"
+     "style": [
+      "Deep problem-solver",
+      "Connector",
+      "Creator",
+      "Organiser"
+     ],
+     "tags": [
+      [
+       "mbti:I",
+       "riasec:I",
+       "str:Intellectual & Analytical"
+      ],
+      [
+       "mbti:E",
+       "riasec:S"
+      ],
+      [
+       "mbti:N",
+       "riasec:A",
+       "str:Creative & Innovative"
+      ],
+      [
+       "mbti:J",
+       "riasec:E",
+       "str:Execution & Achievement"
+      ]
      ]
     },
     {
-     "text": "During a group meeting, you tend to:",
+     "docNo": 4,
+     "sub": "Personality",
+     "scoring": "nominal",
+     "text": "When your plans suddenly change, you usually:",
      "options": [
-      "Contribute thoughts as the discussion develops.",
-      "Listen, reflect and speak after you have formed your view.",
-      "Think privately for a while and then offer a concise contribution.",
-      "Use the group conversation itself to explore possible solutions."
+      "Quickly adjust and continue",
+      "First understand why the change happened",
+      "Feel uncomfortable until a new structure is established",
+      "Look for a new opportunity created by the change"
      ],
-     "mapping": [
-      "E",
-      "I",
-      "I",
-      "E"
+     "style": [
+      "Quick adjuster",
+      "Reason-seeker",
+      "Structure-seeker",
+      "Opportunity-spotter"
+     ],
+     "tags": [
+      [
+       "mbti:P",
+       "str:Relationship & Adaptability"
+      ],
+      [
+       "mbti:T"
+      ],
+      [
+       "mbti:J"
+      ],
+      [
+       "mbti:N",
+       "str:Strategic & Futuristic"
+      ]
      ]
     },
     {
-     "text": "When learning a new technical system, you prefer to begin with:",
+     "docNo": 5,
+     "sub": "Work Behaviour",
+     "scoring": "nominal",
+     "text": "When you have several tasks with the same deadline, you usually:",
      "options": [
-      "A working example showing the actual steps.",
-      "An explanation of the underlying concept and possible applications.",
-      "A detailed description of the current process and requirements.",
-      "A broad overview of how the system might evolve or connect to other ideas."
+      "Prioritise them and work systematically",
+      "Start with the task you find most interesting",
+      "Complete the easiest tasks first to build momentum",
+      "Discuss priorities with others before deciding"
      ],
-     "mapping": [
-      "S",
-      "N",
-      "S",
-      "N"
+     "style": [
+      "Systematic prioritiser",
+      "Interest-led",
+      "Momentum builder",
+      "Consultative"
+     ],
+     "tags": [
+      [
+       "mbti:J",
+       "str:Execution & Achievement"
+      ],
+      [
+       "mbti:P"
+      ],
+      [
+       "mbti:S"
+      ],
+      [
+       "mbti:E"
+      ]
      ]
     },
     {
-     "text": "When planning a project, you are more interested in:",
+     "docNo": 6,
+     "sub": "Work Behaviour",
+     "scoring": "nominal",
+     "text": "When working independently, your productivity is usually highest when:",
      "options": [
-      "The resources, requirements and practical sequence.",
-      "The future possibilities and different directions the project could take.",
-      "The specific information needed to make the plan workable.",
-      "The larger concept and potential innovation behind the project."
+      "You have clear goals but freedom in how to achieve them",
+      "Someone regularly checks your progress",
+      "You have a detailed step-by-step plan",
+      "You can change your approach as you learn"
      ],
-     "mapping": [
-      "S",
-      "N",
-      "S",
-      "N"
+     "style": [
+      "Goal-led autonomy",
+      "External check-ins",
+      "Detailed plan",
+      "Adaptive approach"
+     ],
+     "tags": [
+      [
+       "mbti:N",
+       "mot:Independence"
+      ],
+      [
+       "mbti:S"
+      ],
+      [
+       "mbti:J"
+      ],
+      [
+       "mbti:P"
+      ]
      ]
     },
     {
-     "text": "When someone explains a complex idea, you prefer:",
+     "docNo": 7,
+     "sub": "Work Behaviour",
+     "scoring": "nominal",
+     "text": "If you discover an error in work you submitted, you are most likely to:",
      "options": [
-      "Specific examples showing how it works in practice.",
-      "A conceptual model that can be applied to unfamiliar cases.",
-      "Concrete facts, steps and demonstrations.",
-      "Connections between the concept and broader possibilities."
+      "Correct it immediately and understand what caused it",
+      "Inform the relevant person and ask how to fix it",
+      "Move on unless the error has significant consequences",
+      "Review the entire work to check for similar errors"
      ],
-     "mapping": [
-      "S",
-      "N",
-      "S",
-      "N"
+     "style": [
+      "Fix and find the cause",
+      "Escalate and ask",
+      "Proportionate",
+      "Full review"
+     ],
+     "tags": [
+      [
+       "mbti:T",
+       "str:Execution & Achievement"
+      ],
+      [
+       "mbti:F"
+      ],
+      [
+       "mbti:P"
+      ],
+      [
+       "mbti:J",
+       "str:Intellectual & Analytical"
+      ]
      ]
     },
     {
-     "text": "When solving an unfamiliar problem, you are more likely to:",
+     "docNo": 8,
+     "sub": "Work Behaviour",
+     "scoring": "nominal",
+     "text": "In a group assignment, you naturally tend to:",
      "options": [
-      "Look at what is already known and use a proven starting point.",
-      "Search for an underlying pattern or principle.",
-      "Break the problem into observable facts and practical constraints.",
-      "Consider several new interpretations before selecting an approach."
+      "Organise the work and track progress",
+      "Generate ideas and alternative approaches",
+      "Make sure everyone contributes",
+      "Focus on completing the technical or analytical work"
      ],
-     "mapping": [
-      "S",
-      "N",
-      "S",
-      "N"
+     "style": [
+      "Organiser",
+      "Ideas generator",
+      "Includer",
+      "Technical specialist"
+     ],
+     "tags": [
+      [
+       "mbti:J",
+       "riasec:C",
+       "str:Execution & Achievement"
+      ],
+      [
+       "mbti:N",
+       "riasec:A",
+       "str:Creative & Innovative"
+      ],
+      [
+       "mbti:F",
+       "riasec:S",
+       "str:Relationship & Adaptability"
+      ],
+      [
+       "mbti:T",
+       "riasec:I",
+       "str:Intellectual & Analytical"
+      ]
      ]
     },
     {
-     "text": "When choosing between two project proposals, you tend to prioritize:",
+     "docNo": 9,
+     "sub": "Decision Style",
+     "scoring": "nominal",
+     "text": "When making an important decision, you usually rely most on:",
      "options": [
-      "Consistency of reasoning and strength of evidence.",
-      "How the decision affects the people involved.",
-      "Whether the decision can be defended using clear criteria.",
-      "Whether the decision aligns with important human values."
+      "Facts and available evidence",
+      "Your experience and intuition",
+      "Advice and perspectives from others",
+      "A comparison of possible outcomes"
      ],
-     "mapping": [
-      "T",
-      "F",
-      "T",
-      "F"
+     "style": [
+      "Evidence-led",
+      "Intuitive",
+      "Consultative",
+      "Outcome-comparing"
+     ],
+     "tags": [
+      [
+       "mbti:S",
+       "str:Intellectual & Analytical"
+      ],
+      [
+       "mbti:N"
+      ],
+      [
+       "mbti:F"
+      ],
+      [
+       "mbti:T",
+       "str:Strategic & Futuristic"
+      ]
      ]
     },
     {
-     "text": "A teammate asks for your view on weak work. You are more likely to:",
+     "docNo": 10,
+     "sub": "Decision Style",
+     "scoring": "nominal",
+     "text": "When there is no obvious correct answer, you prefer to:",
      "options": [
-      "Identify the specific quality gap and explain how to correct it.",
-      "Consider how to explain the issue in a way the teammate can act on constructively.",
-      "Focus on the evidence and requirements that define the standard.",
-      "Begin by understanding the person's perspective before discussing the shortcomings."
+      "Gather more information before deciding",
+      "Choose an option and learn from the outcome",
+      "Discuss the possibilities with people you trust",
+      "Compare the risks and benefits systematically"
      ],
-     "mapping": [
-      "T",
-      "F",
-      "T",
-      "F"
+     "style": [
+      "Evidence-led",
+      "Experimental",
+      "Consultative",
+      "Risk-weighing"
+     ],
+     "tags": [
+      [
+       "mbti:S"
+      ],
+      [
+       "mbti:P"
+      ],
+      [
+       "mbti:F"
+      ],
+      [
+       "mbti:T",
+       "str:Strategic & Futuristic"
+      ]
      ]
     },
     {
-     "text": "When a team disagrees about a decision, your first instinct is to:",
+     "docNo": 11,
+     "sub": "Decision Style",
+     "scoring": "nominal",
+     "text": "If two opportunities appear equally attractive, you are most likely to choose the one that:",
      "options": [
-      "Compare the evidence and logical consequences of each position.",
-      "Understand the priorities and effects on the people involved.",
-      "Identify which argument is most internally consistent.",
-      "Look for a solution that respects the values and concerns of those affected."
+      "Provides greater long-term growth",
+      "Gives you more freedom and flexibility",
+      "Has clearer financial or practical benefits",
+      "Feels more meaningful or personally interesting"
      ],
-     "mapping": [
-      "T",
-      "F",
-      "T",
-      "F"
+     "style": [
+      "Growth-led",
+      "Freedom-led",
+      "Practical",
+      "Meaning-led"
+     ],
+     "tags": [
+      [
+       "mbti:N",
+       "mot:Achievement",
+       "str:Strategic & Futuristic"
+      ],
+      [
+       "mbti:P",
+       "mot:Independence"
+      ],
+      [
+       "mbti:S",
+       "mot:Financial Security"
+      ],
+      [
+       "mbti:F",
+       "mot:Purpose"
+      ]
      ]
     },
     {
-     "text": "A good decision is one that:",
+     "docNo": 12,
+     "sub": "Work Environment Preference",
+     "scoring": "nominal",
+     "text": "Which working environment would you naturally prefer?",
      "options": [
-      "Has the clearest objective justification.",
-      "Best preserves important relationships and values.",
-      "Can be evaluated consistently using defined criteria.",
-      "Feels most appropriate given the people and circumstances involved."
+      "Structured, predictable and clearly organised",
+      "Fast-moving, challenging and constantly changing",
+      "Collaborative, social and people-oriented",
+      "Independent, flexible and self-directed"
      ],
-     "mapping": [
-      "T",
-      "F",
-      "T",
-      "F"
+     "style": [
+      "Structured",
+      "Fast-paced",
+      "Collaborative",
+      "Self-directed"
+     ],
+     "tags": [
+      [
+       "mbti:J",
+       "riasec:C",
+       "mot:Stability"
+      ],
+      [
+       "mbti:P",
+       "riasec:E",
+       "mot:Variety"
+      ],
+      [
+       "mbti:E",
+       "riasec:S"
+      ],
+      [
+       "mbti:I",
+       "mot:Independence"
+      ]
      ]
     },
     {
-     "text": "For a major assignment, you prefer to:",
+     "docNo": 13,
+     "sub": "Work Environment Preference",
+     "scoring": "nominal",
+     "text": "You are most comfortable when your work involves:",
      "options": [
-      "Set milestones and establish the main sequence before beginning.",
-      "Start with the objective and keep the detailed route open.",
-      "Decide the key structure early but leave room for adjustments.",
-      "Explore several approaches before committing to a detailed plan."
+      "Clear responsibilities and measurable outcomes",
+      "Continuous learning and new challenges",
+      "Interaction with different people",
+      "Freedom to decide how the work gets done"
      ],
-     "mapping": [
-      "J",
-      "P",
-      "J",
-      "P"
+     "style": [
+      "Clear outcomes",
+      "Continuous learning",
+      "People interaction",
+      "Autonomy"
+     ],
+     "tags": [
+      [
+       "mbti:J",
+       "mot:Achievement"
+      ],
+      [
+       "mbti:N",
+       "mot:Learning"
+      ],
+      [
+       "mbti:E"
+      ],
+      [
+       "mbti:P",
+       "mot:Independence"
+      ]
      ]
     },
     {
-     "text": "If an event is several weeks away, you are more likely to:",
+     "docNo": 14,
+     "sub": "Work Environment Preference",
+     "scoring": "nominal",
+     "text": "If you could choose between these work settings, which would you prefer?",
      "options": [
-      "Organize important details well in advance.",
-      "Keep the details flexible until circumstances become clearer.",
-      "Set the essential arrangements early while leaving minor choices open.",
-      "Prefer to decide many details closer to the event."
+      "A specialised environment requiring deep expertise",
+      "A dynamic environment where you handle different situations",
+      "A team environment with frequent collaboration",
+      "An environment where you can create and experiment"
      ],
-     "mapping": [
-      "J",
-      "P",
-      "J",
-      "P"
-     ]
-    },
-    {
-     "text": "When requirements change late in a project, you tend to:",
-     "options": [
-      "Re-establish the plan and define the revised sequence.",
-      "Explore what the new requirement makes possible before restructuring.",
-      "Identify the exact changes needed and update the existing plan.",
-      "Keep several alternatives open while the implications become clearer."
+     "style": [
+      "Specialist",
+      "Dynamic generalist",
+      "Team-based",
+      "Creative lab"
      ],
-     "mapping": [
-      "J",
-      "P",
-      "J",
-      "P"
-     ]
-    },
-    {
-     "text": "When you have several options, you are more comfortable when:",
-     "options": [
-      "Choose one and move forward once the key criteria are satisfied.",
-      "Keep alternatives available until more information appears.",
-      "Set a decision point and close the issue after comparing the options.",
-      "Delay commitment if additional exploration could materially improve the choice."
-     ],
-     "mapping": [
-      "J",
-      "P",
-      "J",
-      "P"
+     "tags": [
+      [
+       "mbti:I",
+       "riasec:I"
+      ],
+      [
+       "mbti:P",
+       "mot:Variety"
+      ],
+      [
+       "mbti:E",
+       "riasec:S"
+      ],
+      [
+       "mbti:N",
+       "riasec:A",
+       "mot:Creativity"
+      ]
      ]
     }
    ]
   }
  },
- "career_interest": {
+ "ug_interests_motivation": {
   "ug": {
    "Set 1": [
     {
-     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "docNo": 15,
+     "sub": "RIASEC Interests",
+     "scoring": "nominal",
+     "text": "Which activity would you most willingly spend several hours doing?",
      "options": [
-      "Build or test a physical prototype",
-      "Investigate why a system behaves unexpectedly",
-      "Create a visual concept",
-      "Help a person work through a difficulty",
-      "Persuade others to support an initiative",
-      "Organize information so it can be retrieved reliably"
+      "Building, repairing or operating something",
+      "Investigating how something works",
+      "Designing or creating something original",
+      "Helping or teaching someone",
+      "Persuading, leading or negotiating with people",
+      "Organising information, records or processes"
      ],
-     "mapping": [
-      "R",
-      "I",
-      "A",
-      "S",
-      "E",
-      "C"
+     "style": [
+      "Realistic",
+      "Investigative",
+      "Artistic",
+      "Social",
+      "Enterprising",
+      "Conventional"
+     ],
+     "tags": [
+      [
+       "riasec:R"
+      ],
+      [
+       "riasec:I"
+      ],
+      [
+       "riasec:A"
+      ],
+      [
+       "riasec:S"
+      ],
+      [
+       "riasec:E"
+      ],
+      [
+       "riasec:C"
+      ]
      ]
     },
     {
-     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "docNo": 16,
+     "sub": "RIASEC Interests",
+     "scoring": "nominal",
+     "text": "Which type of challenge attracts you most?",
      "options": [
-      "Operate equipment to produce something",
-      "Compare evidence to test a hypothesis",
-      "Develop an original design or media concept",
-      "Teach a difficult concept to a peer",
-      "Lead a project toward a measurable target",
-      "Check records for consistency and completeness"
+      "A practical problem requiring hands-on action",
+      "A complex problem requiring investigation and analysis",
+      "An open-ended challenge requiring creativity",
+      "A problem involving people's needs or development",
+      "A challenge involving influence, leadership or competition",
+      "A challenge involving accuracy, organisation and structure"
      ],
-     "mapping": [
-      "R",
-      "I",
-      "A",
-      "S",
-      "E",
-      "C"
+     "style": [
+      "Realistic",
+      "Investigative",
+      "Artistic",
+      "Social",
+      "Enterprising",
+      "Conventional"
+     ],
+     "tags": [
+      [
+       "riasec:R"
+      ],
+      [
+       "riasec:I"
+      ],
+      [
+       "riasec:A"
+      ],
+      [
+       "riasec:S"
+      ],
+      [
+       "riasec:E"
+      ],
+      [
+       "riasec:C"
+      ]
      ]
     },
     {
-     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "docNo": 17,
+     "sub": "RIASEC Interests",
+     "scoring": "nominal",
+     "text": "If you had to choose a university project, which would interest you most?",
      "options": [
-      "Troubleshoot a practical setup",
-      "Study a complex question with no obvious answer",
-      "Write, design or create an original output",
-      "Understand what motivates people",
-      "Negotiate between competing priorities",
-      "Create a reliable process for repeated work"
+      "Build or test a physical system",
+      "Conduct research and analyse findings",
+      "Create a new design, concept or media product",
+      "Develop a programme that helps people",
+      "Develop a business or persuade people to adopt an idea",
+      "Create a system for managing information efficiently"
      ],
-     "mapping": [
-      "R",
-      "I",
-      "A",
-      "S",
-      "E",
-      "C"
+     "style": [
+      "Realistic",
+      "Investigative",
+      "Artistic",
+      "Social",
+      "Enterprising",
+      "Conventional"
+     ],
+     "tags": [
+      [
+       "riasec:R"
+      ],
+      [
+       "riasec:I"
+      ],
+      [
+       "riasec:A"
+      ],
+      [
+       "riasec:S"
+      ],
+      [
+       "riasec:E"
+      ],
+      [
+       "riasec:C"
+      ]
      ]
     },
     {
-     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "docNo": 18,
+     "sub": "RIASEC Interests",
+     "scoring": "nominal",
+     "text": "Which outcome would give you the greatest satisfaction?",
      "options": [
-      "Improve how a machine or physical setup works",
-      "Analyze data to discover a pattern",
-      "Plan the visual identity of a project",
-      "Coordinate a group learning activity",
-      "Identify an opportunity and act on it",
-      "Maintain a structured schedule"
+      "Seeing something tangible that you built or improved",
+      "Discovering an explanation for something previously unclear",
+      "Producing something unique and expressive",
+      "Seeing another person improve because of your contribution",
+      "Turning an idea into an initiative that attracts people or resources",
+      "Creating an organised system that works accurately and efficiently"
      ],
-     "mapping": [
-      "R",
-      "I",
-      "A",
-      "S",
-      "E",
-      "C"
+     "style": [
+      "Realistic",
+      "Investigative",
+      "Artistic",
+      "Social",
+      "Enterprising",
+      "Conventional"
+     ],
+     "tags": [
+      [
+       "riasec:R"
+      ],
+      [
+       "riasec:I"
+      ],
+      [
+       "riasec:A"
+      ],
+      [
+       "riasec:S"
+      ],
+      [
+       "riasec:E"
+      ],
+      [
+       "riasec:C"
+      ]
      ]
     },
     {
-     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "docNo": 19,
+     "sub": "RIASEC Interests",
+     "scoring": "nominal",
+     "text": "Which activity sounds least like a chore to you?",
      "options": [
-      "Test a physical solution in real conditions",
-      "Explore a question with incomplete evidence",
-      "Turn an idea into a creative output",
-      "Support someone facing a challenge",
-      "Present a proposal to decision-makers",
-      "Classify and manage information"
+      "Working with tools, equipment or physical systems",
+      "Reading, analysing and investigating information",
+      "Writing, designing, creating or experimenting",
+      "Coaching, mentoring or supporting others",
+      "Presenting, negotiating, selling or leading",
+      "Planning, documenting, organising or managing information"
      ],
-     "mapping": [
-      "R",
-      "I",
-      "A",
-      "S",
-      "E",
-      "C"
+     "style": [
+      "Realistic",
+      "Investigative",
+      "Artistic",
+      "Social",
+      "Enterprising",
+      "Conventional"
+     ],
+     "tags": [
+      [
+       "riasec:R"
+      ],
+      [
+       "riasec:I"
+      ],
+      [
+       "riasec:A"
+      ],
+      [
+       "riasec:S"
+      ],
+      [
+       "riasec:E"
+      ],
+      [
+       "riasec:C"
+      ]
      ]
     },
     {
-     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "docNo": 20,
+     "sub": "Motivators",
+     "scoring": "nominal",
+     "text": "Which factor most strongly motivates you to perform at your best?",
      "options": [
-      "Set up a practical system",
-      "Break a difficult problem into evidence-based steps",
-      "Experiment with storytelling or visual communication",
-      "Facilitate a discussion",
-      "Build support for a new initiative",
-      "Follow a defined procedure accurately"
+      "Mastering something difficult",
+      "Receiving recognition for your contribution",
+      "Having freedom and independence",
+      "Making a meaningful impact"
      ],
-     "mapping": [
-      "R",
-      "I",
-      "A",
-      "S",
-      "E",
-      "C"
+     "style": [
+      "Mastery",
+      "Recognition",
+      "Independence",
+      "Impact"
+     ],
+     "tags": [
+      [
+       "mot:Learning"
+      ],
+      [
+       "mot:Recognition"
+      ],
+      [
+       "mot:Independence"
+      ],
+      [
+       "mot:Social Impact"
+      ]
      ]
     },
     {
-     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "docNo": 21,
+     "sub": "Motivators",
+     "scoring": "nominal",
+     "text": "When choosing between two opportunities, which reward matters most to you?",
      "options": [
-      "Use tools or equipment to solve a practical problem",
-      "Interpret results from an experiment",
-      "Sketch different possibilities",
-      "Coach someone toward improvement",
-      "Coordinate people to deliver a result",
-      "Maintain an organized database"
+      "Learning and intellectual growth",
+      "Financial growth and security",
+      "Status, recognition or influence",
+      "Flexibility and quality of life"
      ],
-     "mapping": [
-      "R",
-      "I",
-      "A",
-      "S",
-      "E",
-      "C"
+     "style": [
+      "Learning",
+      "Financial security",
+      "Influence",
+      "Quality of life"
+     ],
+     "tags": [
+      [
+       "mot:Learning"
+      ],
+      [
+       "mot:Financial Security"
+      ],
+      [
+       "mot:Leadership"
+      ],
+      [
+       "mot:Work-Life Balance"
+      ]
      ]
     },
     {
-     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "docNo": 22,
+     "sub": "Motivators",
+     "scoring": "nominal",
+     "text": "You are most likely to stay committed to a difficult goal when:",
      "options": [
-      "Design and test a physical mechanism",
-      "Question an assumption and seek evidence",
-      "Create an original concept",
-      "Work closely with a community",
-      "Pitch a solution or opportunity",
-      "Audit information for errors"
+      "You can see yourself becoming highly skilled",
+      "The goal has meaningful personal importance",
+      "You can see measurable progress",
+      "Other people depend on your contribution"
      ],
-     "mapping": [
-      "R",
-      "I",
-      "A",
-      "S",
-      "E",
-      "C"
+     "style": [
+      "Becoming skilled",
+      "Personal meaning",
+      "Visible progress",
+      "Responsibility to others"
+     ],
+     "tags": [
+      [
+       "mot:Learning"
+      ],
+      [
+       "mot:Purpose"
+      ],
+      [
+       "mot:Achievement"
+      ],
+      [
+       "mot:Social Impact"
+      ]
      ]
     },
     {
-     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "docNo": 23,
+     "sub": "Values",
+     "scoring": "nominal",
+     "text": "Which principle would you be least willing to compromise in your professional life?",
      "options": [
-      "Troubleshoot a real-world setup",
-      "Compare several explanations for an outcome",
-      "Produce an engaging media piece",
-      "Help a team resolve a disagreement",
-      "Mobilize people around a target",
-      "Plan and track a sequence of tasks"
+      "Honesty and integrity",
+      "Independence and personal freedom",
+      "Excellence and high standards",
+      "Helping people and creating positive impact"
      ],
-     "mapping": [
-      "R",
-      "I",
-      "A",
-      "S",
-      "E",
-      "C"
+     "style": [
+      "Integrity",
+      "Independence",
+      "Excellence",
+      "Positive impact"
+     ],
+     "tags": [
+      [],
+      [
+       "mot:Independence"
+      ],
+      [
+       "mot:Achievement"
+      ],
+      [
+       "mot:Social Impact"
+      ]
      ]
     },
     {
-     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "docNo": 24,
+     "sub": "Values",
+     "scoring": "nominal",
+     "text": "Which statement best reflects what you want your future work to provide?",
      "options": [
-      "Make something work better in practice",
-      "Study a complex system to understand it",
-      "Express an idea through design",
-      "Guide someone through learning",
-      "Spot a useful opportunity",
-      "Keep information orderly and accessible"
+      "Stability and security",
+      "Continuous challenge and growth",
+      "Freedom to pursue my own ideas",
+      "Purpose and meaningful contribution"
      ],
-     "mapping": [
-      "R",
-      "I",
-      "A",
-      "S",
-      "E",
-      "C"
+     "style": [
+      "Stability",
+      "Challenge and growth",
+      "Own ideas",
+      "Purpose"
+     ],
+     "tags": [
+      [
+       "mot:Financial Security"
+      ],
+      [
+       "mot:Achievement"
+      ],
+      [
+       "mot:Creativity"
+      ],
+      [
+       "mot:Social Impact"
+      ]
      ]
     },
     {
-     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "docNo": 25,
+     "sub": "Values",
+     "scoring": "nominal",
+     "text": "If a high-paying opportunity conflicted with an important personal value, you would most likely:",
      "options": [
-      "Prototype a practical solution",
-      "Run an investigation to answer a question",
-      "Create a campaign, story or visual artifact",
-      "Organize a peer-support activity",
-      "Develop a business or project proposal",
-      "Standardize a recurring workflow"
+      "Choose the opportunity if the conflict can be managed",
+      "Reject it if the conflict is significant",
+      "Investigate whether another option exists",
+      "Discuss the situation with people whose judgment I trust"
      ],
-     "mapping": [
-      "R",
-      "I",
-      "A",
-      "S",
-      "E",
-      "C"
+     "style": [
+      "Pragmatic",
+      "Principled",
+      "Option-seeking",
+      "Consultative"
+     ],
+     "tags": [
+      [
+       "mbti:T",
+       "mot:Financial Security"
+      ],
+      [
+       "mbti:F"
+      ],
+      [],
+      [
+       "mbti:E"
+      ]
      ]
     },
     {
-     "text": "Which activity would you be most likely to choose for a meaningful university or early-career project?",
+     "docNo": 26,
+     "sub": "Lifestyle Preferences",
+     "scoring": "nominal",
+     "text": "Which future lifestyle appeals most to you?",
      "options": [
-      "Work with materials to build a solution",
-      "Analyze evidence from a research problem",
-      "Develop an original communication concept",
-      "Help a group improve how it works",
-      "Take responsibility for achieving a shared target",
-      "Maintain accurate records and documentation"
+      "Stable routine with predictable working hours",
+      "Dynamic work with frequent new experiences",
+      "Flexible work allowing control over my schedule",
+      "Work that allows travel and exposure to different places"
      ],
-     "mapping": [
-      "R",
-      "I",
-      "A",
-      "S",
-      "E",
-      "C"
+     "style": [
+      "Stable routine",
+      "Dynamic",
+      "Flexible schedule",
+      "Travel and exposure"
+     ],
+     "tags": [
+      [
+       "mot:Stability"
+      ],
+      [
+       "mot:Variety"
+      ],
+      [
+       "mot:Work-Life Balance"
+      ],
+      [
+       "mot:Variety"
+      ]
+     ]
+    },
+    {
+     "docNo": 27,
+     "sub": "Lifestyle Preferences",
+     "scoring": "nominal",
+     "text": "Which trade-off would you be most comfortable making?",
+     "options": [
+      "Higher responsibility for greater career growth",
+      "Lower income for greater flexibility",
+      "Longer working hours for faster advancement",
+      "Less predictability for more variety and experience"
+     ],
+     "style": [
+      "Responsibility for growth",
+      "Flexibility over income",
+      "Hours for advancement",
+      "Variety over predictability"
+     ],
+     "tags": [
+      [
+       "mot:Leadership"
+      ],
+      [
+       "mot:Work-Life Balance"
+      ],
+      [
+       "mot:Achievement"
+      ],
+      [
+       "mot:Variety"
+      ]
+     ]
+    },
+    {
+     "docNo": 28,
+     "sub": "Lifestyle Preferences",
+     "scoring": "nominal",
+     "text": "Ideally, your future career should allow you to:",
+     "options": [
+      "Build deep expertise in one area",
+      "Explore different areas throughout your career",
+      "Balance professional and personal priorities",
+      "Take on increasingly challenging responsibilities"
+     ],
+     "style": [
+      "Deep expertise",
+      "Exploration",
+      "Balance",
+      "Growing responsibility"
+     ],
+     "tags": [
+      [
+       "mot:Learning"
+      ],
+      [
+       "mot:Variety"
+      ],
+      [
+       "mot:Work-Life Balance"
+      ],
+      [
+       "mot:Leadership"
+      ]
      ]
     }
    ]
   }
  },
- "aptitude": {
+ "ug_cognitive_capability": {
   "ug": {
    "Set 1": [
     {
-     "text": "A price is reduced by 20% and then increased by 20%. Compared with the original price, the final price is:",
-     "options": [
-      "80%",
-      "96%",
-      "100%",
-      "104%"
-     ],
+     "docNo": 29,
+     "sub": "Aptitude",
+     "scoring": "objective",
      "type": "choice4",
-     "correctIndex": 1,
-     "subdomain": "Numerical Reasoning"
-    },
-    {
-     "text": "A team completes 3/5 of a task in 6 hours at a constant rate. How many total hours would the task take?",
+     "text": "Two inlet pipes can fill a tank in 12 hours and 15 hours respectively, while an outlet pipe can empty the full tank in 20 hours. If all three are opened together on an empty tank, how long will it take to fill?",
      "options": [
-      "8",
-      "9",
-      "10",
-      "12"
+      "8 hours",
+      "9 hours",
+      "10 hours",
+      "12 hours"
      ],
-     "type": "choice4",
      "correctIndex": 2,
-     "subdomain": "Numerical Reasoning"
+     "working": "1/12 + 1/15 - 1/20 = (5 + 4 - 3)/60 = 6/60 = 1/10 of the tank per hour, so 10 hours."
     },
     {
-     "text": "All analysts are readers. Some readers are writers. Which statement must be true?",
-     "options": [
-      "All analysts are writers",
-      "Some analysts are writers",
-      "All analysts are readers",
-      "No writers are analysts"
-     ],
+     "docNo": 30,
+     "sub": "Aptitude",
+     "scoring": "objective",
      "type": "choice4",
+     "text": "The figure below is rotated 90° clockwise. Which option shows the result?",
+     "options": [
+      "<svg viewBox=\"0 0 100 100\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"98\" height=\"98\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"35,20 70,20 70,32 47,32 47,44 62,44 62,55 47,55 47,80 35,80\" fill=\"#1F3864\" transform=\"translate(100,0) scale(-1,1)\"/></svg>",
+      "<svg viewBox=\"0 0 100 100\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"98\" height=\"98\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"35,20 70,20 70,32 47,32 47,44 62,44 62,55 47,55 47,80 35,80\" fill=\"#1F3864\" transform=\"rotate(-90 50 50)\"/></svg>",
+      "<svg viewBox=\"0 0 100 100\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"98\" height=\"98\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"35,20 70,20 70,32 47,32 47,44 62,44 62,55 47,55 47,80 35,80\" fill=\"#1F3864\" transform=\"rotate(90 50 50)\"/></svg>",
+      "<svg viewBox=\"0 0 100 100\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"98\" height=\"98\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"35,20 70,20 70,32 47,32 47,44 62,44 62,55 47,55 47,80 35,80\" fill=\"#1F3864\" transform=\"rotate(180 50 50)\"/></svg>"
+     ],
      "correctIndex": 2,
-     "subdomain": "Logical Reasoning"
+     "working": "Rotating the F a quarter-turn clockwise lays its spine along the top with the arms pointing down. Option 1 is a mirror image, option 2 is anticlockwise and option 4 is a half-turn.",
+     "media": {
+      "type": "figure",
+      "svg": "<svg viewBox=\"0 0 100 100\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"98\" height=\"98\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"35,20 70,20 70,32 47,32 47,44 62,44 62,55 47,55 47,80 35,80\" fill=\"#1F3864\"/></svg>"
+     },
+     "svgOptions": true
     },
     {
-     "text": "A report states: Students who use practice tests score higher on average. Which conclusion is most justified?",
-     "options": [
-      "Practice tests guarantee higher scores",
-      "The two variables are associated",
-      "Practice tests cause every score increase",
-      "Students never improve without tests"
-     ],
+     "docNo": 31,
+     "sub": "Numerical Reasoning",
+     "scoring": "objective",
      "type": "choice4",
+     "text": "A shop marks a laptop 25% above its cost price and then offers a 12% discount on the marked price. What is the shop's profit percentage?",
+     "options": [
+      "8%",
+      "10%",
+      "12%",
+      "13%"
+     ],
      "correctIndex": 1,
-     "subdomain": "Critical Thinking"
+     "working": "1.25 × 0.88 = 1.10, so the selling price is 110% of cost: a 10% profit."
     },
     {
-     "text": "At a startup's founding team: A is the spouse of B. C is the sibling of B's father. D is the only child of A and B. How is C related to D?",
-     "options": [
-      "D's uncle or aunt",
-      "D's grand-uncle or grand-aunt",
-      "D's cousin",
-      "D's sibling"
-     ],
+     "docNo": 32,
+     "sub": "Numerical Reasoning",
+     "scoring": "objective",
      "type": "choice4",
+     "text": "Section A has 30 students with an average score of 72. Section B has 45 students with an average score of 82. What is the combined average of both sections?",
+     "options": [
+      "76",
+      "77",
+      "78",
+      "79"
+     ],
+     "correctIndex": 2,
+     "working": "(30 × 72 + 45 × 82) ÷ 75 = (2,160 + 3,690) ÷ 75 = 5,850 ÷ 75 = 78."
+    },
+    {
+     "docNo": 33,
+     "sub": "Numerical Reasoning",
+     "scoring": "objective",
+     "type": "choice4",
+     "text": "A town's population rises 10% in the first year, falls 10% in the second year and rises 20% in the third year. What is the overall change over the three years?",
+     "options": [
+      "18% increase",
+      "18.8% increase",
+      "20% increase",
+      "21% increase"
+     ],
      "correctIndex": 1,
-     "subdomain": "Blood Relations"
+     "working": "1.10 × 0.90 × 1.20 = 1.188, an 18.8% increase."
     },
     {
-     "text": "In a company's internal code, each letter is replaced by the letter 3 positions after it in the alphabet (Z wraps to C). Using this rule, 'BUDGET' is coded as 'EXGJHW'. Decode 'VWUDWHJB'.",
-     "options": [
-      "STRATEGY",
-      "STRATEGIC",
-      "STRATEGIES",
-      "STRATEGIZE"
-     ],
+     "docNo": 34,
+     "sub": "Verbal Reasoning",
+     "scoring": "objective",
      "type": "choice4",
-     "correctIndex": 0,
-     "subdomain": "Coding-Decoding"
+     "text": "Choose the statement that logically follows: All researchers analyse information. Some students are researchers.",
+     "options": [
+      "All students analyse information.",
+      "Some students analyse information.",
+      "No students analyse information.",
+      "All people who analyse information are researchers."
+     ],
+     "correctIndex": 1,
+     "working": "The students who are researchers must analyse information, so at least some students do. Nothing is known about the rest."
     },
     {
-     "text": "A field surveyor starts at a benchmark, walks 9 km east, then 12 km north, then 3 km east. What is the straight-line distance back to the benchmark, to the nearest km?",
-     "options": [
-      "17 km",
-      "21 km",
-      "24 km",
-      "15 km"
-     ],
+     "docNo": 35,
+     "sub": "Verbal Reasoning",
+     "scoring": "objective",
      "type": "choice4",
+     "text": "A college says: \"Students who joined our internship programme had higher placement rates than other students, so the programme improves employability.\" Which statement, if true, most weakens this conclusion?",
+     "options": [
+      "Students with higher grades were more likely to be selected for the programme.",
+      "The programme runs for eight weeks.",
+      "Placement rates rose at most colleges this year.",
+      "A few students did not finish the programme."
+     ],
      "correctIndex": 0,
-     "subdomain": "Direction Sense"
+     "working": "If stronger students were chosen for the programme, they might have been placed anyway, so the programme may not be the cause. A general rise affects both groups equally."
     },
     {
-     "text": "Find the next term in the series: 3, 7, 16, 35, 74, ?",
-     "options": [
-      "153",
-      "148",
-      "150",
-      "155"
-     ],
+     "docNo": 36,
+     "sub": "Logical Reasoning",
+     "scoring": "objective",
      "type": "choice4",
+     "text": "Five students - P, Q, R, S and T - are ranked 1st to 5th with no ties. P ranks higher than Q. R ranks lower than S but higher than T. Q ranks higher than T. Which student must be ranked 5th?",
+     "options": [
+      "Q",
+      "R",
+      "S",
+      "T"
+     ],
+     "correctIndex": 3,
+     "working": "T is below R (and so below S) and below Q (and so below P). T is below all four others, so T must be 5th."
+    },
+    {
+     "docNo": 37,
+     "sub": "Logical Reasoning",
+     "scoring": "objective",
+     "type": "choice4",
+     "text": "Every student selected for Research is also selected for Entrepreneurship. Every student selected for Entrepreneurship is also selected for Leadership. A student is NOT selected for Leadership. Which statement must be true?",
+     "options": [
+      "The student may still be selected for Entrepreneurship.",
+      "The student is selected for Research.",
+      "The student is selected for neither Research nor Entrepreneurship.",
+      "The student must be selected for some other activity."
+     ],
+     "correctIndex": 2,
+     "working": "Research ⊂ Entrepreneurship ⊂ Leadership. Outside Leadership means outside both smaller groups too."
+    },
+    {
+     "docNo": 38,
+     "sub": "Logical Reasoning",
+     "scoring": "objective",
+     "type": "choice4",
+     "text": "Four presentations - W, X, Y and Z - are scheduled Monday to Thursday, one per day. W is before X. Y is the day immediately after Z. Z is on Monday or Tuesday. X is not on Wednesday. Which presentation must be on Thursday?",
+     "options": [
+      "W",
+      "X",
+      "Y",
+      "Z"
+     ],
+     "correctIndex": 1,
+     "working": "If Z is Monday, Y is Tuesday and W, X take Wednesday and Thursday with W first, so X is Thursday. If Z is Tuesday, Y is Wednesday and W, X take Monday and Thursday, so X is again Thursday."
+    },
+    {
+     "docNo": 39,
+     "sub": "Abstract Reasoning",
+     "scoring": "objective",
+     "type": "choice4",
+     "text": "Identify the next term: 2A, 5C, 10F, 17J, 26O, ___",
+     "options": [
+      "35T",
+      "37U",
+      "37V",
+      "38U"
+     ],
+     "correctIndex": 1,
+     "working": "Numbers are n² + 1 (2, 5, 10, 17, 26, 37). Letters move +2, +3, +4, +5, +6: A, C, F, J, O, U."
+    },
+    {
+     "docNo": 40,
+     "sub": "Abstract Reasoning",
+     "scoring": "objective",
+     "type": "choice4",
+     "text": "Each row and column of the grid follows the same two rules. Which figure completes the grid?",
+     "options": [
+      "<svg viewBox=\"0 0 100 100\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"98\" height=\"98\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><rect x=\"17\" y=\"17\" width=\"66\" height=\"66\" fill=\"none\" stroke=\"#1F3864\" stroke-width=\"3\"/><circle cx=\"40\" cy=\"46\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"60\" cy=\"46\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"40\" cy=\"64\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"60\" cy=\"64\" r=\"4.5\" fill=\"#C0392B\"/></svg>",
+      "<svg viewBox=\"0 0 100 100\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"98\" height=\"98\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"50,12 88,84 12,84\" fill=\"none\" stroke=\"#1F3864\" stroke-width=\"3\"/><circle cx=\"36\" cy=\"60\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"50\" cy=\"60\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"64\" cy=\"60\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"43\" cy=\"78\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"57\" cy=\"78\" r=\"4.5\" fill=\"#C0392B\"/></svg>",
+      "<svg viewBox=\"0 0 100 100\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"98\" height=\"98\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><rect x=\"17\" y=\"17\" width=\"66\" height=\"66\" fill=\"none\" stroke=\"#1F3864\" stroke-width=\"3\"/><circle cx=\"36\" cy=\"46\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"50\" cy=\"46\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"64\" cy=\"46\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"43\" cy=\"64\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"57\" cy=\"64\" r=\"4.5\" fill=\"#C0392B\"/></svg>",
+      "<svg viewBox=\"0 0 100 100\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"98\" height=\"98\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><circle cx=\"50\" cy=\"50\" r=\"34\" fill=\"none\" stroke=\"#1F3864\" stroke-width=\"3\"/><circle cx=\"36\" cy=\"46\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"50\" cy=\"46\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"64\" cy=\"46\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"43\" cy=\"64\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"57\" cy=\"64\" r=\"4.5\" fill=\"#C0392B\"/></svg>"
+     ],
+     "correctIndex": 2,
+     "working": "Each row and column contains one circle, one square and one triangle, so the missing shape is a square. The dots equal row number + column number - 1, so the last cell has 3 + 3 - 1 = 5 dots.",
+     "media": {
+      "type": "grid",
+      "cols": 3,
+      "cells": [
+       "<svg viewBox=\"0 0 100 100\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"98\" height=\"98\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><circle cx=\"50\" cy=\"50\" r=\"34\" fill=\"none\" stroke=\"#1F3864\" stroke-width=\"3\"/><circle cx=\"50\" cy=\"55\" r=\"4.5\" fill=\"#C0392B\"/></svg>",
+       "<svg viewBox=\"0 0 100 100\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"98\" height=\"98\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><rect x=\"17\" y=\"17\" width=\"66\" height=\"66\" fill=\"none\" stroke=\"#1F3864\" stroke-width=\"3\"/><circle cx=\"40\" cy=\"55\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"60\" cy=\"55\" r=\"4.5\" fill=\"#C0392B\"/></svg>",
+       "<svg viewBox=\"0 0 100 100\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"98\" height=\"98\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"50,12 88,84 12,84\" fill=\"none\" stroke=\"#1F3864\" stroke-width=\"3\"/><circle cx=\"35\" cy=\"69\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"50\" cy=\"69\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"65\" cy=\"69\" r=\"4.5\" fill=\"#C0392B\"/></svg>",
+       "<svg viewBox=\"0 0 100 100\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"98\" height=\"98\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><rect x=\"17\" y=\"17\" width=\"66\" height=\"66\" fill=\"none\" stroke=\"#1F3864\" stroke-width=\"3\"/><circle cx=\"40\" cy=\"55\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"60\" cy=\"55\" r=\"4.5\" fill=\"#C0392B\"/></svg>",
+       "<svg viewBox=\"0 0 100 100\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"98\" height=\"98\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"50,12 88,84 12,84\" fill=\"none\" stroke=\"#1F3864\" stroke-width=\"3\"/><circle cx=\"35\" cy=\"69\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"50\" cy=\"69\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"65\" cy=\"69\" r=\"4.5\" fill=\"#C0392B\"/></svg>",
+       "<svg viewBox=\"0 0 100 100\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"98\" height=\"98\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><circle cx=\"50\" cy=\"50\" r=\"34\" fill=\"none\" stroke=\"#1F3864\" stroke-width=\"3\"/><circle cx=\"40\" cy=\"46\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"60\" cy=\"46\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"40\" cy=\"64\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"60\" cy=\"64\" r=\"4.5\" fill=\"#C0392B\"/></svg>",
+       "<svg viewBox=\"0 0 100 100\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"98\" height=\"98\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><polygon points=\"50,12 88,84 12,84\" fill=\"none\" stroke=\"#1F3864\" stroke-width=\"3\"/><circle cx=\"35\" cy=\"69\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"50\" cy=\"69\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"65\" cy=\"69\" r=\"4.5\" fill=\"#C0392B\"/></svg>",
+       "<svg viewBox=\"0 0 100 100\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"98\" height=\"98\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><circle cx=\"50\" cy=\"50\" r=\"34\" fill=\"none\" stroke=\"#1F3864\" stroke-width=\"3\"/><circle cx=\"40\" cy=\"46\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"60\" cy=\"46\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"40\" cy=\"64\" r=\"4.5\" fill=\"#C0392B\"/><circle cx=\"60\" cy=\"64\" r=\"4.5\" fill=\"#C0392B\"/></svg>",
+       "?"
+      ]
+     },
+     "svgOptions": true
+    },
+    {
+     "docNo": 41,
+     "sub": "Analytical Reasoning",
+     "scoring": "objective",
+     "type": "choice4",
+     "text": "A university grouped students by the number of practical sessions they attended and compared their average project scores (chart below). Which statement is best supported by the chart?",
+     "options": [
+      "Scores rise with sessions up to about 9-11 sessions, then level off.",
+      "Attending practical sessions causes higher project scores.",
+      "Students who attended 12+ sessions scored the lowest.",
+      "Each additional session adds the same number of marks."
+     ],
      "correctIndex": 0,
-     "subdomain": "Number Series"
+     "working": "Averages climb from 58 to 73 and then stay about the same (72). The chart shows an association, not proof of cause, and the gains are not equal per session.",
+     "media": {
+      "type": "figure",
+      "svg": "<svg viewBox=\"0 0 340 220\" width=\"340\" height=\"220\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"1\" width=\"338\" height=\"218\" fill=\"white\" stroke=\"#D9D9D9\" stroke-width=\"1\"/><line x1=\"46\" y1=\"180\" x2=\"328\" y2=\"180\" stroke=\"#555\" stroke-width=\"1.5\"/><line x1=\"46\" y1=\"180\" x2=\"46\" y2=\"34\" stroke=\"#555\" stroke-width=\"1.5\"/><line x1=\"46\" y1=\"180.0\" x2=\"328\" y2=\"180.0\" stroke=\"#E5E7EB\" stroke-width=\"1\"/><text x=\"40\" y=\"184.0\" font-size=\"11\" text-anchor=\"end\" fill=\"#444\">50</text><line x1=\"46\" y1=\"133.3\" x2=\"328\" y2=\"133.3\" stroke=\"#E5E7EB\" stroke-width=\"1\"/><text x=\"40\" y=\"137.3\" font-size=\"11\" text-anchor=\"end\" fill=\"#444\">60</text><line x1=\"46\" y1=\"86.7\" x2=\"328\" y2=\"86.7\" stroke=\"#E5E7EB\" stroke-width=\"1\"/><text x=\"40\" y=\"90.7\" font-size=\"11\" text-anchor=\"end\" fill=\"#444\">70</text><line x1=\"46\" y1=\"40.0\" x2=\"328\" y2=\"40.0\" stroke=\"#E5E7EB\" stroke-width=\"1\"/><text x=\"40\" y=\"44.0\" font-size=\"11\" text-anchor=\"end\" fill=\"#444\">80</text><rect x=\"64\" y=\"142.7\" width=\"38\" height=\"37.3\" fill=\"#2E75B6\"/><text x=\"83.0\" y=\"137.7\" font-size=\"11\" text-anchor=\"middle\" fill=\"#111\" font-weight=\"bold\">58</text><text x=\"83.0\" y=\"195\" font-size=\"11\" text-anchor=\"middle\" fill=\"#444\">0-2</text><rect x=\"118\" y=\"114.7\" width=\"38\" height=\"65.3\" fill=\"#2E75B6\"/><text x=\"137.0\" y=\"109.7\" font-size=\"11\" text-anchor=\"middle\" fill=\"#111\" font-weight=\"bold\">64</text><text x=\"137.0\" y=\"195\" font-size=\"11\" text-anchor=\"middle\" fill=\"#444\">3-5</text><rect x=\"172\" y=\"82.0\" width=\"38\" height=\"98.0\" fill=\"#2E75B6\"/><text x=\"191.0\" y=\"77.0\" font-size=\"11\" text-anchor=\"middle\" fill=\"#111\" font-weight=\"bold\">71</text><text x=\"191.0\" y=\"195\" font-size=\"11\" text-anchor=\"middle\" fill=\"#444\">6-8</text><rect x=\"226\" y=\"72.7\" width=\"38\" height=\"107.3\" fill=\"#2E75B6\"/><text x=\"245.0\" y=\"67.7\" font-size=\"11\" text-anchor=\"middle\" fill=\"#111\" font-weight=\"bold\">73</text><text x=\"245.0\" y=\"195\" font-size=\"11\" text-anchor=\"middle\" fill=\"#444\">9-11</text><rect x=\"280\" y=\"77.3\" width=\"38\" height=\"102.7\" fill=\"#2E75B6\"/><text x=\"299.0\" y=\"72.3\" font-size=\"11\" text-anchor=\"middle\" fill=\"#111\" font-weight=\"bold\">72</text><text x=\"299.0\" y=\"195\" font-size=\"11\" text-anchor=\"middle\" fill=\"#444\">12+</text><text x=\"193.0\" y=\"214\" font-size=\"11\" text-anchor=\"middle\" fill=\"#444\">Practical sessions attended</text><text x=\"12\" y=\"110.0\" font-size=\"11\" text-anchor=\"middle\" fill=\"#444\" transform=\"rotate(-90 12 110.0)\">Avg project score</text></svg>"
+     }
+    },
+    {
+     "docNo": 42,
+     "sub": "Analytical Reasoning",
+     "scoring": "objective",
+     "type": "choice4",
+     "text": "Three teams' deadline records for the term are shown in the table. Which statement is supported by the data?",
+     "options": [
+      "Team C has both the most late tasks and the lowest on-time rate.",
+      "Team A has the highest on-time rate.",
+      "Team B finished the most tasks on time.",
+      "Every team finished more than 80% of tasks on time."
+     ],
+     "correctIndex": 0,
+     "working": "On-time rates: A 80%, B 84%, C 75%. Late tasks: A 8, B 4, C 15. Only the first statement is true.",
+     "media": {
+      "type": "html",
+      "html": "<table style=\"border-collapse:collapse;font-size:14px;margin:4px 0\"><tr><th style=\"border:1px solid #ccc;padding:6px 10px;text-align:left\">Team</th><th style=\"border:1px solid #ccc;padding:6px 10px\">Tasks due</th><th style=\"border:1px solid #ccc;padding:6px 10px\">Finished on time</th></tr><tr><td style=\"border:1px solid #ccc;padding:6px 10px\">Team A</td><td style=\"border:1px solid #ccc;padding:6px 10px;text-align:center\">40</td><td style=\"border:1px solid #ccc;padding:6px 10px;text-align:center\">32</td></tr><tr><td style=\"border:1px solid #ccc;padding:6px 10px\">Team B</td><td style=\"border:1px solid #ccc;padding:6px 10px;text-align:center\">25</td><td style=\"border:1px solid #ccc;padding:6px 10px;text-align:center\">21</td></tr><tr><td style=\"border:1px solid #ccc;padding:6px 10px\">Team C</td><td style=\"border:1px solid #ccc;padding:6px 10px;text-align:center\">60</td><td style=\"border:1px solid #ccc;padding:6px 10px;text-align:center\">45</td></tr></table>"
+     }
+    },
+    {
+     "docNo": 43,
+     "sub": "Problem Solving",
+     "scoring": "objective",
+     "type": "choice4",
+     "text": "A project has three tasks. Task X takes 3 hours, Task Y takes 2 hours and Task Z takes 4 hours. Z can start only after X is finished; Y has no dependency. With two people working in parallel, what is the minimum time to finish all three tasks?",
+     "options": [
+      "5 hours",
+      "6 hours",
+      "7 hours",
+      "9 hours"
+     ],
+     "correctIndex": 2,
+     "working": "X then Z must run one after the other (3 + 4 = 7 hours), while the second person does Y alongside. The chain X→Z sets the minimum: 7 hours."
+    },
+    {
+     "docNo": 44,
+     "sub": "Problem Solving",
+     "scoring": "objective",
+     "type": "choice4",
+     "text": "You must order equipment with a total budget of ₹50,000 (including delivery), and it must arrive within 10 days. Which supplier meets both conditions?",
+     "options": [
+      "Supplier P: ₹44,000 + ₹4,000 delivery, arrives in 12 days",
+      "Supplier Q: ₹46,500 + ₹2,500 delivery, arrives in 9 days",
+      "Supplier R: ₹47,000 + ₹3,500 delivery, arrives in 6 days",
+      "Supplier S: ₹49,000 with free delivery, arrives in 11 days"
+     ],
+     "correctIndex": 1,
+     "working": "P and S are too late. R costs ₹50,500, over budget. Q costs ₹49,000 and arrives in 9 days."
     }
    ]
   }
  },
- "strengths": {
+ "ug_academic_domain_fit": {
   "ug": {
    "Set 1": [
     {
-     "text": "A project may have several possible directions over the next year. You would naturally:",
+     "docNo": 45,
+     "sub": "Subject Strength",
+     "scoring": "nominal",
+     "text": "Which statement best describes your strongest academic ability?",
      "options": [
-      "Focus only on today's assigned task.",
-      "Compare future scenarios and choose actions that preserve long-term options.",
-      "Wait for the final direction.",
-      "Choose the fastest immediate option."
+      "Understanding theories and concepts",
+      "Applying concepts to practical situations",
+      "Analysing information and identifying patterns",
+      "Explaining concepts clearly to others"
      ],
-     "target": "Strategic & Futuristic",
+     "style": [
+      "Conceptual understanding",
+      "Practical application",
+      "Analysis and patterns",
+      "Explaining to others"
+     ],
+     "tags": [
+      [
+       "mbti:N",
+       "str:Intellectual & Analytical"
+      ],
+      [
+       "mbti:S",
+       "str:Execution & Achievement"
+      ],
+      [
+       "str:Intellectual & Analytical"
+      ],
+      [
+       "mbti:E",
+       "str:Influence & Leadership"
+      ]
+     ]
+    },
+    {
+     "docNo": 46,
+     "sub": "Subject Strength",
+     "scoring": "nominal",
+     "text": "When studying a difficult subject, you are most likely to succeed when you:",
+     "options": [
+      "Understand the underlying concept",
+      "Practise several examples",
+      "Discuss the topic with others",
+      "Connect it to real-world applications"
+     ],
+     "style": [
+      "Concept first",
+      "Practice",
+      "Discussion",
+      "Real-world links"
+     ],
+     "tags": [
+      [
+       "mbti:N"
+      ],
+      [
+       "mbti:S"
+      ],
+      [
+       "mbti:E"
+      ],
+      [
+       "mbti:S"
+      ]
+     ]
+    },
+    {
+     "docNo": 47,
+     "sub": "Subject Strength",
+     "scoring": "nominal",
+     "text": "When your academic performance in a subject is weaker than expected, you usually:",
+     "options": [
+      "Increase practice until your understanding improves",
+      "Try a different learning method",
+      "Seek help from someone knowledgeable",
+      "Examine whether the subject genuinely interests you"
+     ],
+     "style": [
+      "More practice",
+      "New method",
+      "Seek help",
+      "Re-check interest"
+     ],
+     "tags": [
+      [
+       "str:Execution & Achievement"
+      ],
+      [
+       "str:Relationship & Adaptability"
+      ],
+      [],
+      [
+       "mbti:F"
+      ]
+     ]
+    },
+    {
+     "docNo": 48,
+     "sub": "Domain Knowledge",
+     "scoring": "weighted",
+     "text": "How confidently can you explain the major concepts of your current field of study to someone from another discipline?",
+     "options": [
+      "Very confidently",
+      "Fairly confidently",
+      "Only the basic concepts",
+      "I would struggle to explain them"
+     ],
      "weights": [
+      3,
+      2,
       1,
-      5,
-      1,
-      1
+      0
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
      ]
     },
     {
-     "text": "Before committing to a major initiative, you are likely to:",
+     "docNo": 49,
+     "sub": "Domain Knowledge",
+     "scoring": "weighted",
+     "text": "How well do you understand how your academic discipline is applied outside the classroom?",
      "options": [
-      "Think through second-order consequences and how the situation could evolve.",
-      "Start immediately and adjust later.",
-      "Follow the most familiar approach.",
-      "Leave future implications to the project lead."
+      "I understand several real-world applications",
+      "I understand a few common applications",
+      "I know the general idea but not the details",
+      "I have not explored this much"
      ],
-     "target": "Strategic & Futuristic",
      "weights": [
-      5,
+      3,
+      2,
       1,
-      1,
-      1
+      0
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
      ]
     },
     {
-     "text": "An established process works but has clear limitations. You would:",
+     "docNo": 50,
+     "sub": "Domain Knowledge",
+     "scoring": "weighted",
+     "text": "When you encounter a new development in your academic field, you generally:",
      "options": [
-      "Generate alternative approaches and test a promising one.",
-      "Follow the process exactly.",
-      "Wait for formal instructions to change it.",
-      "Focus only on completing your part."
+      "Explore it because I want to understand where the field is heading",
+      "Learn about it when it becomes relevant to my coursework",
+      "Discuss it with teachers or peers",
+      "Usually wait until it becomes part of my curriculum"
      ],
-     "target": "Creative & Innovative",
      "weights": [
-      5,
+      3,
       1,
-      1,
-      1
+      2,
+      0
+     ],
+     "tags": [
+      [
+       "str:Strategic & Futuristic",
+       "mot:Learning"
+      ],
+      [],
+      [],
+      []
      ]
     },
     {
-     "text": "A team needs ideas for a new service. You tend to:",
+     "docNo": 51,
+     "sub": "Degree Knowledge",
+     "scoring": "weighted",
+     "text": "How clearly do you understand the different career directions available after your current degree?",
      "options": [
-      "Produce several unconventional possibilities before narrowing them.",
-      "Choose the first workable idea.",
-      "Wait for others to generate ideas.",
-      "Avoid ideas that differ from current practice."
+      "I know several possible directions",
+      "I know a few common options",
+      "I mainly know the most obvious career path",
+      "I am still exploring them"
      ],
-     "target": "Creative & Innovative",
      "weights": [
-      5,
+      3,
+      2,
       1,
-      1,
-      1
+      0
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
      ]
     },
     {
-     "text": "A decision involves conflicting evidence. You are most likely to:",
+     "docNo": 52,
+     "sub": "Degree Knowledge",
+     "scoring": "weighted",
+     "text": "How well do you understand which skills employers or professional organisations expect from graduates of your degree?",
      "options": [
-      "Compare the evidence, assumptions and logical implications.",
-      "Choose the option with the strongest presentation.",
-      "Follow the majority.",
-      "Choose the option that requires the least analysis."
+      "Very clearly",
+      "Reasonably clearly",
+      "Only at a basic level",
+      "I have not researched this yet"
      ],
-     "target": "Intellectual & Analytical",
      "weights": [
-      5,
+      3,
+      2,
       1,
-      1,
-      1
+      0
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
      ]
     },
     {
-     "text": "When a problem keeps recurring, you prefer to:",
+     "docNo": 53,
+     "sub": "Degree Knowledge",
+     "scoring": "weighted",
+     "text": "If you were asked to explain why your degree is valuable in the professional world, you would:",
      "options": [
-      "Identify the underlying pattern or root cause before proposing a fix.",
-      "Apply the quickest available workaround.",
-      "Ask someone else to solve it.",
-      "Accept it as part of the process."
+      "Clearly connect its knowledge and skills to several applications",
+      "Explain a few common applications",
+      "Mainly describe the subjects covered",
+      "Find it difficult to explain its professional relevance"
      ],
-     "target": "Intellectual & Analytical",
      "weights": [
-      5,
+      3,
+      2,
       1,
-      1,
-      1
+      0
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
      ]
     },
     {
-     "text": "A large goal has a vague deadline. You would:",
+     "docNo": 54,
+     "sub": "Specialisation Fit",
+     "scoring": "weighted",
+     "text": "How strongly does your current specialisation match the subjects you naturally enjoy working with?",
      "options": [
-      "Break it into milestones, actions and review points.",
-      "Keep the goal in mind and start wherever convenient.",
-      "Wait for more detailed instructions.",
-      "Work on it only when it becomes urgent."
+      "Very strongly",
+      "Moderately",
+      "Slightly",
+      "Not at all"
      ],
-     "target": "Execution & Achievement",
      "weights": [
-      5,
+      3,
+      2,
       1,
-      1,
-      1
+      0
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
      ]
     },
     {
-     "text": "A task becomes difficult halfway through. You are most likely to:",
+     "docNo": 55,
+     "sub": "Specialisation Fit",
+     "scoring": "weighted",
+     "text": "When working on projects related to your specialisation, you generally feel:",
      "options": [
-      "Adjust the method, continue working and track progress toward completion.",
-      "Switch to something easier.",
-      "Wait for someone to take over.",
-      "Pause until the problem disappears."
+      "Highly engaged and curious",
+      "Interested when the topic is practical",
+      "Neutral but capable of completing the work",
+      "Disconnected from the subject"
      ],
-     "target": "Execution & Achievement",
      "weights": [
-      5,
+      3,
+      2,
       1,
-      1,
-      1
+      0
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
      ]
     },
     {
-     "text": "A team has many ideas but no decision. You are likely to:",
+     "docNo": 56,
+     "sub": "Specialisation Fit",
+     "scoring": "nominal",
+     "text": "If you could deepen your knowledge in one part of your current discipline, you would most likely choose an area that:",
      "options": [
-      "Summarize the options, clarify the decision needed and help the group commit.",
-      "Wait for the formal leader.",
-      "Choose your preferred idea yourself.",
-      "Leave the discussion unresolved."
+      "Matches what I already enjoy",
+      "Has strong future applications",
+      "Challenges me intellectually",
+      "Opens opportunities beyond my current specialisation"
      ],
-     "target": "Influence & Leadership",
-     "weights": [
-      5,
-      1,
-      1,
-      1
-     ]
-    },
-    {
-     "text": "A new initiative needs support from several stakeholders. You would:",
-     "options": [
-      "Understand stakeholder priorities and build support for the initiative.",
-      "Announce the plan and expect compliance.",
-      "Avoid the stakeholders until the plan is finished.",
-      "Let someone else handle the communication."
+     "style": [
+      "Enjoyment-led",
+      "Future-led",
+      "Challenge-led",
+      "Breadth-led"
      ],
-     "target": "Influence & Leadership",
-     "weights": [
-      5,
-      1,
-      1,
-      1
-     ]
-    },
-    {
-     "text": "You join a team with working styles very different from yours. You would:",
-     "options": [
-      "Adjust communication and coordination while maintaining your core standards.",
-      "Expect the team to adapt to your style.",
-      "Minimize interaction with the team.",
-      "Wait until everyone naturally becomes aligned."
-     ],
-     "target": "Relationship & Adaptability",
-     "weights": [
-      5,
-      1,
-      1,
-      1
-     ]
-    },
-    {
-     "text": "A project changes direction after you have invested significant effort. You would:",
-     "options": [
-      "Preserve useful work, reassess priorities and adapt the plan.",
-      "Continue the original plan regardless.",
-      "Stop until someone redesigns the work.",
-      "Focus mainly on who caused the change."
-     ],
-     "target": "Relationship & Adaptability",
-     "weights": [
-      5,
-      1,
-      1,
-      1
-     ]
-    }
-   ]
-  }
- },
- "motivators": {
-  "ug": {
-   "Set 1": [
-    {
-     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
-     "options": [
-      "Develop something original where my ideas shape the outcome",
-      "Work on something that produces a clear benefit for people or society",
-      "Achieve a demanding target and see measurable results",
-      "Have responsibility for directing an important outcome",
-      "Keep developing skills through challenging work",
-      "Have dependable income and financial stability"
-     ],
-     "mapping": [
-      "Creativity",
-      "Social Impact",
-      "Achievement",
-      "Leadership",
-      "Learning",
-      "Financial Security"
-     ]
-    },
-    {
-     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
-     "options": [
-      "Have freedom to create new approaches rather than repeat established ones",
-      "Know that my work addresses a meaningful human or social need",
-      "Be recognized for delivering difficult results",
-      "Coordinate people and decisions toward a common goal",
-      "Work in an environment with strong learning opportunities",
-      "Choose a role with predictable financial progression"
-     ],
-     "mapping": [
-      "Creativity",
-      "Social Impact",
-      "Achievement",
-      "Leadership",
-      "Learning",
-      "Financial Security"
-     ]
-    },
-    {
-     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
-     "options": [
-      "Turn ideas into new products, services, designs or solutions",
-      "Contribute to a problem with visible community or societal value",
-      "Compete with my own standards and improve performance",
-      "Take ownership of decisions that affect a team or project",
-      "Work on unfamiliar problems that expand my capability",
-      "Build long-term financial security"
-     ],
-     "mapping": [
-      "Creativity",
-      "Social Impact",
-      "Achievement",
-      "Leadership",
-      "Learning",
-      "Financial Security"
-     ]
-    },
-    {
-     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
-     "options": [
-      "Be judged partly on originality and innovation",
-      "See a tangible positive effect from what I do",
-      "Meet ambitious objectives with clear measures",
-      "Set direction when a team needs coordination",
-      "Have access to mentors, challenging projects and new knowledge",
-      "Know that the role provides reliable compensation"
-     ],
-     "mapping": [
-      "Creativity",
-      "Social Impact",
-      "Achievement",
-      "Leadership",
-      "Learning",
-      "Financial Security"
-     ]
-    },
-    {
-     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
-     "options": [
-      "Experiment with new concepts and approaches",
-      "Work on issues that matter beyond my individual role",
-      "Deliver outcomes that demonstrate what I can accomplish",
-      "Influence priorities and mobilize others",
-      "Keep learning even when the role becomes demanding",
-      "Reduce uncertainty around my long-term finances"
-     ],
-     "mapping": [
-      "Creativity",
-      "Social Impact",
-      "Achievement",
-      "Leadership",
-      "Learning",
-      "Financial Security"
-     ]
-    },
-    {
-     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
-     "options": [
-      "Create rather than simply execute an established formula",
-      "Support people, communities or systems in a meaningful way",
-      "Have difficult goals that reward persistence",
-      "Be trusted with leadership of an important initiative",
-      "Build expertise that remains valuable over time",
-      "Have stable earnings and a clear financial path"
-     ],
-     "mapping": [
-      "Creativity",
-      "Social Impact",
-      "Achievement",
-      "Leadership",
-      "Learning",
-      "Financial Security"
-     ]
-    },
-    {
-     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
-     "options": [
-      "See my ideas become practical outputs",
-      "Know that my work contributes to a broader positive outcome",
-      "Measure progress against demanding standards",
-      "Guide a group through a complex objective",
-      "Be exposed to new technologies, ideas or domains",
-      "Have compensation that supports predictable planning"
-     ],
-     "mapping": [
-      "Creativity",
-      "Social Impact",
-      "Achievement",
-      "Leadership",
-      "Learning",
-      "Financial Security"
-     ]
-    },
-    {
-     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
-     "options": [
-      "Work where originality is genuinely valued",
-      "Choose work connected to social or public benefit",
-      "Take on targets that stretch my performance",
-      "Make decisions and accept responsibility for results",
-      "Have continuous opportunities to acquire useful skills",
-      "Protect my financial independence over the long term"
-     ],
-     "mapping": [
-      "Creativity",
-      "Social Impact",
-      "Achievement",
-      "Leadership",
-      "Learning",
-      "Financial Security"
-     ]
-    },
-    {
-     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
-     "options": [
-      "Design solutions that are distinct from existing approaches",
-      "Improve outcomes for people affected by the work",
-      "Finish difficult projects with visible evidence of success",
-      "Coordinate people, resources and priorities",
-      "Work where learning is part of normal performance",
-      "Prefer reliable compensation even when upside is lower"
-     ],
-     "mapping": [
-      "Creativity",
-      "Social Impact",
-      "Achievement",
-      "Leadership",
-      "Learning",
-      "Financial Security"
-     ]
-    },
-    {
-     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
-     "options": [
-      "Have room to experiment with creative approaches",
-      "Work on problems where the human consequences matter",
-      "Pursue high standards and measurable achievement",
-      "Shape direction rather than only receive instructions",
-      "Solve new problems that force me to learn",
-      "Build savings, stability and financial resilience"
-     ],
-     "mapping": [
-      "Creativity",
-      "Social Impact",
-      "Achievement",
-      "Leadership",
-      "Learning",
-      "Financial Security"
-     ]
-    },
-    {
-     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
-     "options": [
-      "Create new concepts even when the first version may fail",
-      "Work on an issue whose benefits extend beyond the organization",
-      "Take on goals that test my capabilities",
-      "Lead an initiative from direction through delivery",
-      "Stay intellectually challenged over the long term",
-      "Choose a career path with dependable economic prospects"
-     ],
-     "mapping": [
-      "Creativity",
-      "Social Impact",
-      "Achievement",
-      "Leadership",
-      "Learning",
-      "Financial Security"
-     ]
-    },
-    {
-     "text": "Which factor would matter most to you when comparing otherwise suitable career opportunities?",
-     "options": [
-      "Build original solutions and improve them through experimentation",
-      "See my work make a meaningful difference to others",
-      "Be able to point to challenging goals I have completed",
-      "Have authority to coordinate a team or major outcome",
-      "Develop expertise continuously through demanding work",
-      "Have predictable financial security while progressing professionally"
-     ],
-     "mapping": [
-      "Creativity",
-      "Social Impact",
-      "Achievement",
-      "Leadership",
-      "Learning",
-      "Financial Security"
+     "tags": [
+      [],
+      [
+       "str:Strategic & Futuristic"
+      ],
+      [
+       "mot:Learning",
+       "str:Intellectual & Analytical"
+      ],
+      [
+       "mot:Variety"
+      ]
      ]
     }
    ]
   }
  },
- "learning_styles": {
+ "ug_human_professional_skills": {
   "ug": {
    "Set 1": [
     {
-     "text": "When learning a complex process, which resource would you choose first?",
+     "docNo": 57,
+     "sub": "Communication",
+     "scoring": "weighted",
+     "text": "When explaining a complex idea to someone unfamiliar with the subject, you usually:",
      "options": [
-      "A diagram or flowchart showing the process.",
-      "A spoken explanation or discussion.",
-      "A written guide with detailed steps.",
-      "A hands-on exercise using the process."
+      "Simplify the idea and use examples",
+      "Explain the technical details first",
+      "Ask questions to understand what they already know",
+      "Provide written information for them to review"
      ],
-     "mapping": [
-      "Visual",
-      "Auditory",
-      "Reading/Writing",
-      "Kinesthetic"
-     ]
-    },
-    {
-     "text": "When preparing for an unfamiliar system, you would rather:",
-     "options": [
-      "See a visual overview of how the parts connect.",
-      "Listen to someone explain the system.",
-      "Read documentation from beginning to end.",
-      "Experiment with the system directly."
-     ],
-     "mapping": [
-      "Visual",
-      "Auditory",
-      "Reading/Writing",
-      "Kinesthetic"
-     ]
-    },
-    {
-     "text": "When a concept is difficult, which approach is most natural?",
-     "options": [
-      "Draw the relationships between the ideas.",
-      "Talk through the idea with another person.",
-      "Read several explanations and take notes.",
-      "Try the concept through an activity."
-     ],
-     "mapping": [
-      "Visual",
-      "Auditory",
-      "Reading/Writing",
-      "Kinesthetic"
-     ]
-    },
-    {
-     "text": "For revision before an exam, you are most likely to benefit from:",
-     "options": [
-      "Charts and visual summaries.",
-      "Explaining the topic aloud or discussing it.",
-      "Written notes and structured reading.",
-      "Solving or practising problems directly."
-     ],
-     "mapping": [
-      "Visual",
-      "Auditory",
-      "Reading/Writing",
-      "Kinesthetic"
-     ]
-    },
-    {
-     "text": "When learning unfamiliar terminology, you prefer:",
-     "options": [
-      "A visual glossary or concept map.",
-      "A lecture or conversation about the terms.",
-      "Written definitions, examples and notes.",
-      "Using the terms in a practical task."
-     ],
-     "mapping": [
-      "Visual",
-      "Auditory",
-      "Reading/Writing",
-      "Kinesthetic"
-     ]
-    },
-    {
-     "text": "When researching a new topic, your preferred starting point is:",
-     "options": [
-      "Infographics or visual summaries.",
-      "Interviews, lectures or discussions.",
-      "Articles, reports and written documentation.",
-      "A practical activity or demonstration."
-     ],
-     "mapping": [
-      "Visual",
-      "Auditory",
-      "Reading/Writing",
-      "Kinesthetic"
-     ]
-    },
-    {
-     "text": "When learning a new software or technical procedure, you prefer:",
-     "options": [
-      "A visual walkthrough of the interface.",
-      "A person explaining the procedure aloud.",
-      "A written manual you can follow.",
-      "Trying it yourself while learning from the results."
-     ],
-     "mapping": [
-      "Visual",
-      "Auditory",
-      "Reading/Writing",
-      "Kinesthetic"
-     ]
-    },
-    {
-     "text": "To understand how a process works, you would rather:",
-     "options": [
-      "Study a diagram of the process.",
-      "Hear someone explain each stage.",
-      "Read a detailed description.",
-      "Perform or simulate the process yourself."
-     ],
-     "mapping": [
-      "Visual",
-      "Auditory",
-      "Reading/Writing",
-      "Kinesthetic"
-     ]
-    }
-   ]
-  }
- },
- "emotional_intelligence": {
-  "ug": {
-   "Set 1": [
-    {
-     "text": "You receive feedback that conflicts with how you see your own performance. What do you do first?",
-     "options": [
-      "Defend your original view immediately.",
-      "Examine the feedback and compare it with your own observations.",
-      "Ignore it unless someone repeats it.",
-      "Assume the feedback is completely correct."
-     ],
-     "target": "Self-Awareness",
      "weights": [
-      2,
-      4,
-      2,
-      1
-     ]
-    },
-    {
-     "text": "After a difficult project, you want to understand why your performance varied. You would:",
-     "options": [
-      "Review what situations improved or reduced your effectiveness.",
-      "Focus only on the final result.",
-      "Compare yourself mainly with other students.",
-      "Wait for someone else to explain what happened."
-     ],
-     "target": "Self-Awareness",
-     "weights": [
-      4,
-      2,
-      2,
-      1
-     ]
-    },
-    {
-     "text": "You notice that you become impatient during long discussions. Your most useful response is to:",
-     "options": [
-      "Assume the discussion is simply inefficient.",
-      "Notice the trigger and consider how your reaction affects the group.",
-      "Leave the discussion whenever possible.",
-      "Ignore the reaction because it is part of your personality."
-     ],
-     "target": "Self-Awareness",
-     "weights": [
-      2,
-      4,
-      2,
-      1
-     ]
-    },
-    {
-     "text": "You are frustrated and need to reply to a difficult message. What do you do?",
-     "options": [
-      "Send the response immediately so the issue is over.",
-      "Pause, regulate your reaction and then respond to the issue.",
-      "Forward the message to someone else.",
-      "Avoid responding indefinitely."
-     ],
-     "target": "Self-Management",
-     "weights": [
-      2,
-      4,
+      3,
       1,
+      3,
       1
+     ],
+     "tags": [
+      [
+       "str:Influence & Leadership"
+      ],
+      [],
+      [
+       "str:Relationship & Adaptability"
+      ],
+      []
      ]
     },
     {
-     "text": "Several urgent tasks arrive at once. Your first step is to:",
+     "docNo": 58,
+     "sub": "Communication",
+     "scoring": "nominal",
+     "text": "When presenting an idea to a group, your biggest strength is usually:",
      "options": [
-      "Respond to everything simultaneously.",
-      "Identify priorities and decide what requires immediate attention.",
-      "Start with whichever task feels easiest.",
-      "Wait for someone to decide the order."
+      "Structuring the message clearly",
+      "Speaking confidently",
+      "Using examples or stories",
+      "Responding to questions"
      ],
-     "target": "Self-Management",
+     "style": [
+      "Clear structure",
+      "Confident delivery",
+      "Storytelling",
+      "Handling questions"
+     ],
+     "tags": [
+      [
+       "mbti:J"
+      ],
+      [
+       "mbti:E",
+       "str:Influence & Leadership"
+      ],
+      [
+       "mbti:N",
+       "str:Creative & Innovative"
+      ],
+      [
+       "str:Relationship & Adaptability"
+      ]
+     ]
+    },
+    {
+     "docNo": 59,
+     "sub": "Communication",
+     "scoring": "weighted",
+     "text": "If someone misunderstands something you explained, you usually:",
+     "options": [
+      "Rephrase it in a simpler way",
+      "Ask them which part was unclear",
+      "Provide more evidence or examples",
+      "Repeat the explanation more slowly"
+     ],
      "weights": [
       2,
-      4,
+      3,
       2,
       1
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
      ]
     },
     {
-     "text": "A plan fails shortly before a deadline. You are most likely to:",
+     "docNo": 60,
+     "sub": "Emotional Intelligence",
+     "scoring": "weighted",
+     "text": "During a disagreement with a teammate, your first priority is to:",
      "options": [
-      "Focus on what went wrong and lose time.",
-      "Stabilize the situation, identify the next workable action and continue.",
-      "Stop until someone provides a solution.",
-      "Blame the circumstances before acting."
+      "Understand their perspective",
+      "Defend your position with evidence",
+      "Find a compromise",
+      "Take time to calm down before continuing"
      ],
-     "target": "Self-Management",
      "weights": [
-      2,
-      4,
+      3,
       1,
-      2
-     ]
-    },
-    {
-     "text": "A teammate becomes unusually quiet after receiving criticism. You would:",
-     "options": [
-      "Assume they are uninterested.",
-      "Check privately whether they need clarification or support.",
-      "Discuss their reaction with other teammates.",
-      "Ignore the change unless it affects your task."
-     ],
-     "target": "Social Awareness",
-     "weights": [
-      2,
-      4,
-      1,
-      2
-     ]
-    },
-    {
-     "text": "During a meeting, one participant repeatedly tries to speak but is interrupted. You are most likely to:",
-     "options": [
-      "Continue because the meeting is already moving quickly.",
-      "Create space for the person to contribute.",
-      "Assume they will speak later.",
-      "Ask them to send their point afterward."
-     ],
-     "target": "Social Awareness",
-     "weights": [
-      2,
-      4,
       2,
       2
-     ]
+     ],
+     "tags": [
+      [
+       "str:Relationship & Adaptability"
+      ],
+      [],
+      [],
+      []
+     ],
+     "ei": "Relationship Management"
     },
     {
-     "text": "You disagree with a teammate but notice their concern is based on a constraint you had not considered. You would:",
+     "docNo": 61,
+     "sub": "Emotional Intelligence",
+     "scoring": "weighted",
+     "text": "You receive unexpected criticism about your work. Your most likely response is to:",
      "options": [
-      "Restate your original argument.",
-      "Acknowledge the constraint and reconsider the problem.",
-      "Ask another person to decide.",
-      "End the discussion."
+      "Consider whether the criticism is valid",
+      "Immediately explain why your approach was reasonable",
+      "Ask for specific examples",
+      "Feel discouraged but continue working"
      ],
-     "target": "Social Awareness",
      "weights": [
-      2,
-      4,
-      2,
+      3,
+      1,
+      3,
       1
-     ]
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
+     ],
+     "ei": "Self-Awareness"
     },
     {
-     "text": "Two teammates ask you to take sides in a conflict. You would:",
+     "docNo": 62,
+     "sub": "Emotional Intelligence",
+     "scoring": "weighted",
+     "text": "When you notice that someone on your team is struggling, you usually:",
      "options": [
-      "Choose the person you know better.",
-      "Hear both perspectives and focus on a workable resolution.",
-      "Tell each person what they want to hear.",
-      "Avoid both people afterward."
+      "Offer help directly",
+      "Ask whether they need support",
+      "Give them space unless they ask",
+      "Try to understand what is causing the difficulty first"
      ],
-     "target": "Relationship Management",
      "weights": [
       2,
-      4,
+      3,
+      1,
+      3
+     ],
+     "tags": [
+      [
+       "mot:Social Impact"
+      ],
+      [
+       "str:Relationship & Adaptability"
+      ],
+      [],
+      []
+     ],
+     "ei": "Social Awareness"
+    },
+    {
+     "docNo": 63,
+     "sub": "Teamwork",
+     "scoring": "weighted",
+     "text": "A strong team, in your view, is one where:",
+     "options": [
+      "Everyone has clearly defined responsibilities",
+      "People freely exchange ideas and support one another",
+      "The most capable person makes the major decisions",
+      "Everyone works independently and combines the results"
+     ],
+     "weights": [
       2,
+      3,
+      0,
       1
+     ],
+     "tags": [
+      [
+       "str:Execution & Achievement"
+      ],
+      [
+       "str:Relationship & Adaptability"
+      ],
+      [],
+      []
      ]
     },
     {
-     "text": "You realize that your comment was unnecessarily sharp. What is the most constructive response?",
+     "docNo": 64,
+     "sub": "Teamwork",
+     "scoring": "weighted",
+     "text": "If a teammate is not completing their responsibilities, you would most likely:",
      "options": [
-      "Explain why the other person caused your reaction.",
-      "Acknowledge the impact and repair the interaction.",
-      "Pretend it did not happen.",
-      "Avoid the person from then on."
+      "Talk to them directly",
+      "Offer help to understand the problem",
+      "Complete their part yourself if the deadline is close",
+      "Escalate the issue to the team leader"
      ],
-     "target": "Relationship Management",
      "weights": [
-      2,
-      4,
-      2,
+      3,
+      3,
+      1,
       1
+     ],
+     "tags": [
+      [
+       "str:Influence & Leadership"
+      ],
+      [
+       "str:Relationship & Adaptability"
+      ],
+      [],
+      []
+     ],
+     "ei": "Relationship Management"
+    },
+    {
+     "docNo": 65,
+     "sub": "Leadership",
+     "scoring": "weighted",
+     "text": "When a group has no clear direction, you naturally tend to:",
+     "options": [
+      "Step forward and organise the next steps",
+      "Ask the group to decide together",
+      "Wait for someone with more authority to lead",
+      "Focus on completing your own responsibility"
+     ],
+     "weights": [
+      3,
+      2,
+      0,
+      1
+     ],
+     "tags": [
+      [
+       "str:Influence & Leadership",
+       "mot:Leadership"
+      ],
+      [
+       "str:Relationship & Adaptability"
+      ],
+      [],
+      []
      ]
     },
     {
-     "text": "A team discussion is becoming unproductive because people are defending positions. You would:",
+     "docNo": 66,
+     "sub": "Leadership",
+     "scoring": "nominal",
+     "text": "A good leader, in your opinion, should primarily:",
      "options": [
-      "Push your preferred solution harder.",
-      "Summarize the shared issue and help the group identify common ground.",
-      "End the discussion immediately.",
-      "Wait for the leader to intervene."
+      "Make clear decisions",
+      "Develop and support people",
+      "Ensure goals are achieved",
+      "Create direction while allowing others autonomy"
      ],
-     "target": "Relationship Management",
+     "style": [
+      "Decisive",
+      "People-developing",
+      "Results-focused",
+      "Empowering"
+     ],
+     "tags": [
+      [
+       "mbti:T"
+      ],
+      [
+       "mbti:F",
+       "str:Relationship & Adaptability"
+      ],
+      [
+       "str:Execution & Achievement"
+      ],
+      [
+       "str:Influence & Leadership",
+       "str:Strategic & Futuristic"
+      ]
+     ]
+    },
+    {
+     "docNo": 67,
+     "sub": "Execution",
+     "scoring": "weighted",
+     "text": "When you have an idea you strongly believe in, your next natural step is to:",
+     "options": [
+      "Create an action plan",
+      "Research whether the idea is practical",
+      "Discuss it with people who can help",
+      "Start experimenting with a small version"
+     ],
      "weights": [
+      3,
       2,
-      4,
+      2,
+      3
+     ],
+     "tags": [
+      [
+       "str:Execution & Achievement"
+      ],
+      [
+       "str:Intellectual & Analytical"
+      ],
+      [
+       "str:Influence & Leadership"
+      ],
+      [
+       "str:Creative & Innovative"
+      ]
+     ]
+    },
+    {
+     "docNo": 68,
+     "sub": "Execution",
+     "scoring": "weighted",
+     "text": "Which statement best describes your approach to completing long-term tasks?",
+     "options": [
+      "I consistently work toward milestones",
+      "I work intensely when deadlines approach",
+      "I need external accountability to stay consistent",
+      "I adjust my plan as circumstances change"
+     ],
+     "weights": [
+      3,
+      1,
       1,
       2
+     ],
+     "tags": [
+      [
+       "str:Execution & Achievement"
+      ],
+      [],
+      [],
+      [
+       "str:Relationship & Adaptability"
+      ]
+     ]
+    },
+    {
+     "docNo": 69,
+     "sub": "Resilience",
+     "scoring": "weighted",
+     "text": "After experiencing a significant setback, you generally:",
+     "options": [
+      "Analyse what went wrong and try again",
+      "Take some time before deciding what to do next",
+      "Seek advice from someone experienced",
+      "Move toward another approach or goal"
+     ],
+     "weights": [
+      3,
+      2,
+      2,
+      2
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
+     ],
+     "ei": "Self-Management"
+    },
+    {
+     "docNo": 70,
+     "sub": "Resilience",
+     "scoring": "weighted",
+     "text": "When repeated attempts at something do not work, you are most likely to:",
+     "options": [
+      "Keep trying with the same approach",
+      "Change the strategy",
+      "Take a break and return later",
+      "Decide whether the goal is still worth pursuing"
+     ],
+     "weights": [
+      0,
+      3,
+      2,
+      2
+     ],
+     "tags": [
+      [],
+      [
+       "str:Relationship & Adaptability"
+      ],
+      [],
+      [
+       "str:Strategic & Futuristic"
+      ]
+     ],
+     "ei": "Self-Management"
+    }
+   ]
+  }
+ },
+ "ug_digital_future_skills": {
+  "ug": {
+   "Set 1": [
+    {
+     "docNo": 71,
+     "sub": "Digital Literacy",
+     "scoring": "weighted",
+     "text": "When you need to learn how to use an unfamiliar digital tool, you usually:",
+     "options": [
+      "Explore it independently",
+      "Watch tutorials first",
+      "Ask someone to demonstrate it",
+      "Learn only the features immediately required"
+     ],
+     "weights": [
+      3,
+      3,
+      1,
+      1
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
+     ]
+    },
+    {
+     "docNo": 72,
+     "sub": "Digital Literacy",
+     "scoring": "weighted",
+     "text": "When working with digital information, you are most careful about:",
+     "options": [
+      "Accuracy and reliability",
+      "Speed of completing the task",
+      "Organisation and accessibility",
+      "Presentation and usability"
+     ],
+     "weights": [
+      3,
+      1,
+      2,
+      2
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
+     ]
+    },
+    {
+     "docNo": 73,
+     "sub": "AI Readiness",
+     "scoring": "weighted",
+     "text": "If an AI tool can complete part of a task you normally do manually, you would most likely:",
+     "options": [
+      "Explore how it works and test its output",
+      "Use it immediately if it saves time",
+      "Wait until you understand its limitations",
+      "Prefer doing the task yourself unless AI is necessary"
+     ],
+     "weights": [
+      3,
+      1,
+      2,
+      0
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
+     ]
+    },
+    {
+     "docNo": 74,
+     "sub": "AI Readiness",
+     "scoring": "weighted",
+     "text": "When using AI to help with important work, what matters most to you?",
+     "options": [
+      "Checking whether the output is accurate",
+      "Saving time",
+      "Understanding how the output was produced",
+      "Using your own judgment alongside the AI output"
+     ],
+     "weights": [
+      3,
+      0,
+      2,
+      3
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
+     ]
+    },
+    {
+     "docNo": 75,
+     "sub": "AI Readiness",
+     "scoring": "weighted",
+     "text": "If AI significantly changes the skills required in your field, you would most likely:",
+     "options": [
+      "Learn the new tools and adapt",
+      "Wait until the changes become unavoidable",
+      "Develop skills that complement AI",
+      "Consider whether another area of the field suits you better"
+     ],
+     "weights": [
+      3,
+      0,
+      3,
+      1
+     ],
+     "tags": [
+      [
+       "str:Relationship & Adaptability"
+      ],
+      [],
+      [
+       "str:Strategic & Futuristic"
+      ],
+      []
+     ]
+    },
+    {
+     "docNo": 76,
+     "sub": "Data Literacy",
+     "scoring": "weighted",
+     "text": "When presented with a graph or dataset, your first instinct is to:",
+     "options": [
+      "Look for the main pattern or trend",
+      "Check the source and reliability of the data",
+      "Look for unusual values or inconsistencies",
+      "Think about what decision the data can support"
+     ],
+     "weights": [
+      2,
+      3,
+      3,
+      2
+     ],
+     "tags": [
+      [
+       "str:Intellectual & Analytical"
+      ],
+      [
+       "str:Intellectual & Analytical"
+      ],
+      [
+       "str:Intellectual & Analytical"
+      ],
+      [
+       "str:Strategic & Futuristic"
+      ]
+     ]
+    },
+    {
+     "docNo": 77,
+     "sub": "Data Literacy",
+     "scoring": "weighted",
+     "text": "Two reports present different conclusions using similar data. What would you do first?",
+     "options": [
+      "Check how the data was collected",
+      "Choose the report from the more credible source",
+      "Examine how the data was analysed",
+      "Look for additional evidence"
+     ],
+     "weights": [
+      3,
+      1,
+      3,
+      2
+     ],
+     "tags": [
+      [
+       "str:Intellectual & Analytical"
+      ],
+      [],
+      [
+       "str:Intellectual & Analytical"
+      ],
+      []
+     ]
+    },
+    {
+     "docNo": 78,
+     "sub": "Technology Adoption",
+     "scoring": "weighted",
+     "text": "Your organisation introduces a new technology that changes how you work. Your initial response is most likely to be:",
+     "options": [
+      "Explore its benefits and learn it",
+      "Compare it with the existing method",
+      "Wait until someone trains you",
+      "Continue with the old method until required to change"
+     ],
+     "weights": [
+      3,
+      2,
+      1,
+      0
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
+     ]
+    },
+    {
+     "docNo": 79,
+     "sub": "Technology Adoption",
+     "scoring": "nominal",
+     "text": "You are most likely to adopt a new technology when:",
+     "options": [
+      "It clearly improves results",
+      "It makes your work faster",
+      "It provides opportunities to learn",
+      "It becomes widely accepted in your field"
+     ],
+     "style": [
+      "Results-driven",
+      "Efficiency-driven",
+      "Learning-driven",
+      "Follows the field"
+     ],
+     "tags": [
+      [
+       "str:Execution & Achievement"
+      ],
+      [],
+      [
+       "mot:Learning"
+      ],
+      []
+     ]
+    },
+    {
+     "docNo": 80,
+     "sub": "Future Skills",
+     "scoring": "nominal",
+     "text": "Which ability do you think will become increasingly important across many careers?",
+     "options": [
+      "Continuous learning",
+      "Working effectively with technology",
+      "Solving unfamiliar problems",
+      "Communicating and collaborating effectively"
+     ],
+     "style": [
+      "Continuous learning",
+      "Technology fluency",
+      "Novel problem-solving",
+      "Collaboration"
+     ],
+     "tags": [
+      [
+       "mot:Learning"
+      ],
+      [],
+      [
+       "str:Intellectual & Analytical"
+      ],
+      [
+       "str:Relationship & Adaptability"
+      ]
+     ]
+    },
+    {
+     "docNo": 81,
+     "sub": "Future Skills",
+     "scoring": "weighted",
+     "text": "If your current field changes substantially over the next five years, you would prefer to:",
+     "options": [
+      "Develop new skills within the same field",
+      "Combine your existing expertise with a new field",
+      "Move toward an emerging area",
+      "Wait until the direction of the industry becomes clearer"
+     ],
+     "weights": [
+      3,
+      3,
+      2,
+      0
+     ],
+     "tags": [
+      [],
+      [
+       "str:Strategic & Futuristic"
+      ],
+      [
+       "mot:Variety"
+      ],
+      []
+     ]
+    },
+    {
+     "docNo": 82,
+     "sub": "Future Skills",
+     "scoring": "weighted",
+     "text": "When learning a new skill that may not be immediately useful, you are most likely to:",
+     "options": [
+      "Learn it if it could create future opportunities",
+      "Learn it only when there is a clear application",
+      "Explore it out of curiosity",
+      "Prioritise skills directly relevant to my current path"
+     ],
+     "weights": [
+      3,
+      1,
+      3,
+      1
+     ],
+     "tags": [
+      [
+       "str:Strategic & Futuristic"
+      ],
+      [],
+      [
+       "mot:Learning"
+      ],
+      []
      ]
     }
    ]
   }
  },
- "multiple_intelligence": {
+ "ug_career_readiness": {
   "ug": {
    "Set 1": [
     {
-     "text": "You are asked to make a difficult concept understandable to a mixed audience. You would naturally:",
+     "docNo": 83,
+     "sub": "Career Readiness",
+     "scoring": "weighted",
+     "text": "How clearly can you describe the type of professional role you want to pursue after graduation?",
      "options": [
-      "Build a clear explanation with examples and a logical narrative.",
-      "Rely mainly on diagrams.",
-      "Demonstrate it physically.",
-      "Give the audience the source material to read."
+      "Very clearly",
+      "I have a few possible directions",
+      "I have a general idea but not a specific direction",
+      "I am still exploring"
      ],
-     "target": "Linguistic",
      "weights": [
-      5,
       3,
       2,
-      1
+      1,
+      0
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
      ]
     },
     {
-     "text": "When developing an idea, you often find that writing or explaining it helps you:",
+     "docNo": 84,
+     "sub": "Career Readiness",
+     "scoring": "weighted",
+     "text": "How well do you understand the qualifications, skills and experience required for your intended career direction?",
      "options": [
-      "Clarify relationships, meaning and sequence through language.",
-      "Clarify it mainly through visual sketches.",
-      "Understand it mainly through practical trials.",
-      "Prefer to keep the idea internal until complete."
+      "Very well",
+      "Reasonably well",
+      "I know some requirements",
+      "I have not investigated them deeply"
      ],
-     "target": "Linguistic",
      "weights": [
-      5,
       3,
       2,
-      1
+      1,
+      0
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
      ]
     },
     {
-     "text": "When faced with a complicated problem, you are naturally drawn to:",
+     "docNo": 85,
+     "sub": "Experience",
+     "scoring": "weighted",
+     "text": "Which best describes your exposure to real-world professional environments?",
      "options": [
-      "Identify patterns, rules and relationships.",
-      "Focus on how the problem affects people.",
-      "Express the problem through imagery.",
-      "Try different physical arrangements."
+      "Internship/work experience in my field",
+      "Projects, competitions, volunteering or similar experiences",
+      "Short-term exposure through workshops or events",
+      "Mostly academic exposure so far"
      ],
-     "target": "Logical-Mathematical",
      "weights": [
-      5,
       3,
       2,
-      1
+      1,
+      0
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
      ]
     },
     {
-     "text": "You are given several pieces of evidence with different implications. You prefer to:",
+     "docNo": 86,
+     "sub": "Experience",
+     "scoring": "nominal",
+     "text": "When participating in a project outside regular coursework, your main objective is usually to:",
      "options": [
-      "Compare evidence systematically and test possible explanations.",
-      "Choose the explanation that feels most intuitive.",
-      "Focus on presenting the information attractively.",
-      "Start experimenting without structuring the evidence."
+      "Gain practical experience",
+      "Build something I can demonstrate professionally",
+      "Learn something new",
+      "Strengthen my academic profile"
      ],
-     "target": "Logical-Mathematical",
-     "weights": [
-      5,
-      3,
-      2,
-      1
+     "style": [
+      "Practical experience",
+      "Portfolio building",
+      "Learning",
+      "Academic profile"
+     ],
+     "tags": [
+      [
+       "str:Execution & Achievement"
+      ],
+      [
+       "mot:Achievement"
+      ],
+      [
+       "mot:Learning"
+      ],
+      []
      ]
     },
     {
-     "text": "Before building or arranging something, you often:",
+     "docNo": 87,
+     "sub": "Skill Portfolio",
+     "scoring": "weighted",
+     "text": "If an employer asked you to demonstrate your strongest skills, you could currently show them through:",
      "options": [
-      "Mentally picture how the parts will fit together.",
-      "Prefer a verbal explanation first.",
-      "Need to physically assemble it to understand it.",
-      "Prefer numerical descriptions."
+      "Projects or work samples",
+      "Certifications or formal qualifications",
+      "Internships or practical experience",
+      "I would mainly describe my abilities verbally"
      ],
-     "target": "Spatial",
      "weights": [
-      5,
       3,
       2,
-      1
+      3,
+      0
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
      ]
     },
     {
-     "text": "When navigating an unfamiliar layout, you are more likely to:",
+     "docNo": 88,
+     "sub": "Skill Portfolio",
+     "scoring": "weighted",
+     "text": "How intentionally are you building skills beyond your university curriculum?",
      "options": [
-      "Build a mental map of positions and relationships.",
-      "Remember spoken directions.",
-      "Follow written instructions step by step.",
-      "Learn the route mainly by repeated travel."
+      "Very intentionally with a clear plan",
+      "Regularly, but based on opportunities",
+      "Occasionally when something interests me",
+      "Not yet in a structured way"
      ],
-     "target": "Spatial",
      "weights": [
-      5,
       3,
       2,
-      1
+      1,
+      0
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
      ]
     },
     {
-     "text": "To understand a physical procedure, you prefer to:",
+     "docNo": 89,
+     "sub": "Skill Gaps",
+     "scoring": "weighted",
+     "text": "When you compare your current abilities with those required for your desired professional direction, you:",
      "options": [
-      "Perform it yourself and learn through practice.",
-      "Read about the underlying theory first.",
-      "Listen to an explanation without doing it.",
-      "Watch diagrams without interacting with the process."
+      "Know exactly which skills I need to strengthen",
+      "Know some of the gaps",
+      "Have a general sense but not a clear picture",
+      "Have not yet compared them"
      ],
-     "target": "Bodily-Kinesthetic",
      "weights": [
-      5,
       3,
       2,
-      1
+      1,
+      0
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
      ]
     },
     {
-     "text": "When developing practical skill, you tend to improve most by:",
+     "docNo": 90,
+     "sub": "Professional Identity",
+     "scoring": "weighted",
+     "text": "If someone asked, \"What professional value can you bring to an organisation?\", you would:",
      "options": [
-      "Repeating the action, adjusting technique and observing the result.",
-      "Discussing the skill conceptually.",
-      "Reading detailed descriptions.",
-      "Thinking through the procedure without practising."
+      "Clearly describe my strengths and evidence",
+      "Explain my academic knowledge and interests",
+      "Describe the skills I am currently developing",
+      "Find it difficult to answer"
      ],
-     "target": "Bodily-Kinesthetic",
      "weights": [
-      5,
       3,
+      1,
       2,
-      1
+      0
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
      ]
     },
     {
-     "text": "You are likely to notice:",
+     "docNo": 91,
+     "sub": "Professional Identity",
+     "scoring": "weighted",
+     "text": "How intentionally are you building your professional identity through projects, networking, portfolios, online presence or other activities?",
      "options": [
-      "Changes in rhythm, timing, pitch or tone.",
-      "Only the words being communicated.",
-      "Mainly visual patterns.",
-      "Mainly physical movement patterns."
+      "Very intentionally",
+      "To some extent",
+      "Occasionally",
+      "Not yet"
      ],
-     "target": "Musical",
      "weights": [
-      5,
+      3,
+      2,
+      1,
+      0
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
+     ]
+    }
+   ]
+  }
+ },
+ "ug_future_adaptability": {
+  "ug": {
+   "Set 1": [
+    {
+     "docNo": 92,
+     "sub": "Learning Agility",
+     "scoring": "weighted",
+     "text": "When you encounter something you do not know, your usual response is to:",
+     "options": [
+      "Learn enough to solve the immediate problem",
+      "Explore the topic deeply",
+      "Find someone who can teach you",
+      "Look for an alternative way around the problem"
+     ],
+     "weights": [
+      2,
       3,
       2,
       1
+     ],
+     "tags": [
+      [],
+      [
+       "mot:Learning"
+      ],
+      [],
+      []
      ]
     },
     {
-     "text": "When working with audio or performance material, you naturally:",
+     "docNo": 93,
+     "sub": "Learning Agility",
+     "scoring": "nominal",
+     "text": "Which learning situation is most comfortable for you?",
      "options": [
-      "Recognize recurring sound patterns and differences in timing or tone.",
-      "Focus primarily on written content.",
-      "Focus mainly on visual presentation.",
-      "Focus mainly on how the equipment is operated."
+      "Learning by doing",
+      "Learning through structured courses",
+      "Learning independently through exploration",
+      "Learning through discussion and collaboration"
      ],
-     "target": "Musical",
-     "weights": [
-      5,
-      3,
-      2,
-      1
+     "style": [
+      "Hands-on",
+      "Structured courses",
+      "Self-directed",
+      "Collaborative"
+     ],
+     "tags": [
+      [
+       "mbti:S"
+      ],
+      [
+       "mbti:J"
+      ],
+      [
+       "mbti:I"
+      ],
+      [
+       "mbti:E"
+      ]
      ]
     },
     {
-     "text": "In a team discussion, you often notice:",
+     "docNo": 94,
+     "sub": "Adaptability",
+     "scoring": "weighted",
+     "text": "If your planned career path became significantly less attractive because of industry changes, you would most likely:",
      "options": [
-      "Changes in tone, reactions and what different people may need.",
-      "Only the explicit content of what is said.",
-      "Mostly the logical structure of the argument.",
-      "Mostly whether the task is progressing."
+      "Identify adjacent career options using your existing skills",
+      "Retrain for a different direction",
+      "Wait to see whether the situation improves",
+      "Explore several completely different possibilities"
      ],
-     "target": "Interpersonal",
      "weights": [
-      5,
       3,
       2,
-      1
+      0,
+      2
+     ],
+     "tags": [
+      [
+       "str:Strategic & Futuristic"
+      ],
+      [],
+      [],
+      [
+       "mot:Variety"
+      ]
      ]
     },
     {
-     "text": "When helping a teammate, you are inclined to:",
+     "docNo": 95,
+     "sub": "Adaptability",
+     "scoring": "weighted",
+     "text": "When entering an unfamiliar environment, you usually:",
      "options": [
-      "Adjust your explanation based on how the person is responding.",
-      "Give the same explanation regardless of their response.",
-      "Solve the task yourself.",
-      "Leave them to work independently."
+      "Observe first and then adjust",
+      "Quickly interact and learn from people",
+      "Establish a routine as soon as possible",
+      "Experiment until you find what works"
      ],
-     "target": "Interpersonal",
      "weights": [
-      5,
+      3,
       3,
       2,
-      1
+      2
+     ],
+     "tags": [
+      [
+       "mbti:I"
+      ],
+      [
+       "mbti:E",
+       "str:Relationship & Adaptability"
+      ],
+      [
+       "mbti:J"
+      ],
+      [
+       "mbti:P"
+      ]
      ]
     },
     {
-     "text": "After a demanding task, you are most likely to:",
+     "docNo": 96,
+     "sub": "Sector Fit",
+     "scoring": "nominal",
+     "text": "Which type of sector environment would you most naturally prefer?",
      "options": [
-      "Reflect on what conditions helped or hindered your performance.",
-      "Move immediately to the next task without reflection.",
-      "Focus mainly on how others performed.",
-      "Wait for someone else to evaluate you."
+      "A highly specialised technical or professional sector",
+      "A research and knowledge-intensive sector",
+      "A people-focused service or social sector",
+      "A commercial, entrepreneurial or competitive sector"
      ],
-     "target": "Intrapersonal",
-     "weights": [
-      5,
-      3,
-      2,
-      1
+     "style": [
+      "Technical / professional",
+      "Research & knowledge",
+      "People & social",
+      "Commercial & entrepreneurial"
+     ],
+     "tags": [
+      [
+       "riasec:R"
+      ],
+      [
+       "riasec:I"
+      ],
+      [
+       "riasec:S"
+      ],
+      [
+       "riasec:E"
+      ]
      ]
     },
     {
-     "text": "When your motivation drops, you tend to:",
+     "docNo": 97,
+     "sub": "Sector Fit",
+     "scoring": "nominal",
+     "text": "If you discovered that your skills could be applied across several industries, you would prefer to:",
      "options": [
-      "Examine the cause and adjust your approach or environment.",
-      "Assume the task is simply not worth doing.",
-      "Look first at what others are doing.",
-      "Continue without considering the change in motivation."
+      "Build deep expertise in one industry",
+      "Explore multiple industries before specialising",
+      "Choose the industry with the strongest growth opportunities",
+      "Choose the industry that best matches your interests and values"
      ],
-     "target": "Intrapersonal",
-     "weights": [
-      5,
-      3,
-      2,
-      1
+     "style": [
+      "Industry specialist",
+      "Explore first",
+      "Growth-led",
+      "Values-led"
+     ],
+     "tags": [
+      [],
+      [
+       "mot:Variety"
+      ],
+      [
+       "mot:Achievement"
+      ],
+      [
+       "mot:Purpose"
+      ]
      ]
     },
     {
-     "text": "You encounter an unfamiliar environmental system. You are naturally interested in:",
+     "docNo": 98,
+     "sub": "Geographic Mobility",
+     "scoring": "nominal",
+     "text": "If your preferred career opportunity required you to relocate to another city or country, you would most likely:",
      "options": [
-      "How living systems, resources and environmental factors interact.",
-      "Only the economic implications.",
-      "Only the visual appearance.",
-      "Only the technology used to measure it."
+      "Relocate if the opportunity significantly supports my career",
+      "Consider it depending on personal circumstances",
+      "Prefer to remain in my current location",
+      "Actively seek opportunities that provide international exposure"
      ],
-     "target": "Naturalistic",
-     "weights": [
-      5,
-      3,
-      2,
-      1
+     "style": [
+      "Mobile for the right role",
+      "Open, depending on circumstances",
+      "Prefers current location",
+      "Seeks international exposure"
+     ],
+     "tags": [
+      [],
+      [],
+      [],
+      []
      ]
     },
     {
-     "text": "When visiting a new natural environment, you are likely to:",
+     "docNo": 99,
+     "sub": "Long-Term Adaptability",
+     "scoring": "nominal",
+     "text": "When you imagine your career 10 years from now, which statement best describes your preference?",
      "options": [
-      "Notice patterns among species, habitats or environmental conditions.",
-      "Focus mainly on social activities.",
-      "Focus mainly on architecture or infrastructure.",
-      "Pay attention only when required for a task."
+      "I want to become a recognised expert in one area",
+      "I want to grow into leadership and greater responsibility",
+      "I want to build a career that allows multiple transitions",
+      "I want to develop a combination of expertise across different areas"
      ],
-     "target": "Naturalistic",
-     "weights": [
-      5,
-      3,
-      2,
-      1
+     "style": [
+      "Recognised expert",
+      "Leader",
+      "Multiple transitions",
+      "Combined expertise"
+     ],
+     "tags": [
+      [
+       "mot:Learning"
+      ],
+      [
+       "mot:Leadership",
+       "str:Influence & Leadership"
+      ],
+      [
+       "mot:Variety"
+      ],
+      [
+       "str:Strategic & Futuristic"
+      ]
+     ]
+    },
+    {
+     "docNo": 100,
+     "sub": "Long-Term Adaptability",
+     "scoring": "nominal",
+     "text": "Which statement best describes your approach to your long-term career?",
+     "options": [
+      "I prefer to define a clear destination and work systematically toward it",
+      "I prefer a direction but want flexibility to change along the way",
+      "I prefer to explore opportunities and let experience shape my direction",
+      "I want to continuously reinvent my career as my interests and the world change"
+     ],
+     "style": [
+      "Destination planner",
+      "Flexible direction",
+      "Explorer",
+      "Reinventor"
+     ],
+     "tags": [
+      [
+       "mbti:J"
+      ],
+      [
+       "mbti:P"
+      ],
+      [
+       "mbti:P"
+      ],
+      [
+       "mbti:N"
+      ]
      ]
     }
    ]
@@ -1736,76 +2981,6 @@
       "Other (please specify)"
      ],
      "type": "choice_single"
-    }
-   ]
-  }
- },
- "integrated_indicators": {
-  "ug": {
-   "Set 1": [
-    {
-     "text": "A project changes direction midway and some assumptions become invalid. What is your most likely response?",
-     "options": [
-      "Continue the original plan until someone formally stops it.",
-      "Reassess what remains useful and redirect effort toward the revised objective.",
-      "Pause all work until every uncertainty disappears.",
-      "Focus on explaining why the original plan was better."
-     ],
-     "target": "Adaptability",
-     "weights": [
-      2,
-      5,
-      3,
-      1
-     ]
-    },
-    {
-     "text": "You must use an unfamiliar tool for a task due next week. What is your most likely approach?",
-     "options": [
-      "Wait for formal training.",
-      "Learn the core functions through documentation/examples and test them on the task.",
-      "Avoid the tool and use only familiar methods.",
-      "Try random functions without understanding the task requirements."
-     ],
-     "target": "Learning Agility",
-     "weights": [
-      2,
-      5,
-      1,
-      2
-     ]
-    },
-    {
-     "text": "A task you own is at risk of missing its deadline because of a dependency. What do you do?",
-     "options": [
-      "Wait because the dependency is someone else's responsibility.",
-      "Identify the dependency, communicate the risk and take the next controllable action.",
-      "Work on unrelated tasks until the dependency is resolved.",
-      "Escalate immediately without first clarifying the issue."
-     ],
-     "target": "Execution & Ownership",
-     "weights": [
-      1,
-      5,
-      2,
-      3
-     ]
-    },
-    {
-     "text": "You are given an unfamiliar responsibility with an unclear starting point. What best describes your likely first move?",
-     "options": [
-      "Clarify the outcome, identify assumptions, learn what is necessary and begin a workable first step.",
-      "Wait for detailed instructions.",
-      "Start without clarifying anything and hope the direction becomes clear.",
-      "Pass the responsibility to someone with prior experience."
-     ],
-     "target": "Integrated Work Style",
-     "weights": [
-      5,
-      2,
-      3,
-      1
-     ]
     }
    ]
   }

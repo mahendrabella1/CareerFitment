@@ -22,7 +22,7 @@
  */
 
 import { Fragment, useEffect, useMemo, useRef, type ReactNode } from "react";
-import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
+import type { AssessmentSummary, CustomDimension } from "@/lib/auth/AuthProvider";
 import { Icon, CATEGORY_ABBR } from "@/app/Icons";
 import { C, Ring, RadarChart, SkillBar, dimColor, type RadarDatum } from "@/app/account/viz";
 import { Scene } from "@/app/account/illustrations";
@@ -162,7 +162,19 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
     revs.forEach((e) => e.classList.add("in"));
   }, []);
 
+  // Graduates (UG) supply their own 8 pillar dimensions; every other class
+  // uses the fixed categories below, unchanged.
+  const customDims = useMemo(() => new Map((a.customDimensions ?? []).map((d) => [d.key, d])), [a.customDimensions]);
+  const metaOf = (key: string): Meta => {
+    if (CAT[key]) return CAT[key];
+    const idx = (a.customDimensions ?? []).findIndex((d) => d.key === key);
+    const c = customDims.get(key);
+    return { label: c?.label ?? key, dim: String(idx + 1).padStart(2, "0"), icon: c?.icon ?? "radar" };
+  };
   const radar: RadarDatum[] = useMemo(() => {
+    if ((a.customDimensions ?? []).length) {
+      return a.customDimensions!.map((d) => ({ key: d.key, label: d.label, score: d.score, bench: 50 }));
+    }
     const src = ((a.radar ?? []).length ? a.radar! : []).map((r) => ({ ...r, bench: BENCH[r.key] || 50 }));
     // Creativity isn't one of the fixed eight - only add it as a ninth
     // dimension (radar chart included) when this journey's own data actually
@@ -170,7 +182,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
     // eight, unchanged.
     const keys = src.some((r) => r.key === "creativity") ? [...CANON, "creativity"] : CANON;
     return keys.map((k) => src.find((r) => r.key === k) ?? { key: k, label: CAT[k].label, score: 0, bench: BENCH[k] || 50 });
-  }, [a.radar]);
+  }, [a.radar, a.customDimensions]);
   const dimWord = radar.length === 9 ? "nine" : "eight";
   // Coherent recommendations: blend interest + abilities + intelligences + values.
   const fits = domainFit(a);
@@ -300,14 +312,14 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
               return radar.map((d) => {
                 const col = dimColor(d.key);
                 const isPersonality = d.key === "personality" && hasMBTIData;
-                const topResult = topResultFor(d.key, a, riasec);
+                const topResult = customDims.get(d.key)?.result ?? topResultFor(d.key, a, riasec);
                 const bigValue = isPersonality ? getMBTIType(a) : (topResult || `${Math.round(d.score)}%`);
                 const valSize = bigValue.length > 20 ? 15 : bigValue.length > 13 ? 17 : bigValue.length > 8 ? 19 : 22;
                 return (
                   <div className="scoreCard" key={d.key} style={{ ["--sc" as string]: col, ["--sc-tint" as string]: col + "17" } as React.CSSProperties}>
                     {d.key === strongestKey ? <span className="scoreCard-top">Strongest</span> : null}
-                    <span className="scoreCard-ic"><Icon name={CAT[d.key].icon} size={15} /></span>
-                    <span className="scoreCard-lbl">{CAT[d.key].label}</span>
+                    <span className="scoreCard-ic"><Icon name={metaOf(d.key).icon} size={15} /></span>
+                    <span className="scoreCard-lbl">{metaOf(d.key).label}</span>
                     <span className="scoreCard-val" style={{ fontSize: valSize }}>{bigValue}</span>
                   </div>
                 );
@@ -320,8 +332,15 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
 
       {/* ===== THE 8 DIMENSIONS ===== */}
       {radar.map((d) => {
-        const m = CAT[d.key];
+        const m = metaOf(d.key);
         const col = dimColor(d.key);
+        const custom = customDims.get(d.key);
+        if (custom) {
+          const extra = custom.key === "ug_personality_behaviour" && hasMBTIData ? <PersonalityMBTI a={a} />
+            : custom.key === "ug_interests_motivation" && riasec.length > 0 ? <div className="riasec-row"><RiasecHex themes={riasec} /></div>
+            : null;
+          return <CustomDimensionSheet key={d.key} c={custom} dim={m.dim} n={N()} col={col} name={name} extra={extra} />;
+        }
         // Show the real MBTI compass whenever the assessment actually
         // computed per-axis scores - not just for class 9-10. Class 6/7/8
         // and 11-12 now compute the same axisScores, and gating this to one
@@ -809,6 +828,87 @@ function SceneBand({ kind, eyebrow, title }: { kind: SceneKind; eyebrow: string;
       <div className="sband-text"><span className="sband-eye">{eyebrow}</span><h2 className="sband-title">{title}</h2></div>
       <div className="sband-art"><Scene kind={kind} /></div>
     </div>
+  );
+}
+
+/** A dimension page supplied by the scorer itself (Graduates' 8 pillars - see
+ *  AssessmentSummary.customDimensions). Same page layout and classes as the
+ *  fixed dimension pages, with every number and sentence coming from `c`. */
+function CustomDimensionSheet({ c, dim, n, col, name, extra }: { c: CustomDimension; dim: string; n: string; col: string; name?: string; extra?: ReactNode }) {
+  return (
+    <section className="sheet param rv" style={{ borderTopColor: col, ["--dc" as string]: col, ["--dc-tint" as string]: col + "14", ["--dc-line" as string]: col + "40" } as React.CSSProperties}>
+      <div className="pad">
+        <div style={{ marginBottom: '32px' }}>
+          <div style={{ fontSize: '12px', fontWeight: '600', color: col, textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.5px' }}>
+            Dimension {dim}
+          </div>
+          <h2 style={{ fontSize: '32px', fontWeight: '700', color: '#1f2937', margin: '0 0 8px 0', lineHeight: '1.2' }}>{c.label}</h2>
+        </div>
+        <RH n={n} kick={`Dimension ${dim} - ${c.label}`} accent />
+        <div className="dimhero">
+          <div className="dimhero-meta" style={{ gridColumn: "1 / -1" }}>
+            <Ring value={c.score} size={96} stroke={10} color={col}>
+              <div className="ring-num">{Math.round(c.score)}%</div><div className="ring-den">Score</div>
+            </Ring>
+            <div>
+              <div className="resultchip"><span>Your result</span><b>{c.result}</b></div>
+              <div className="verdict">{c.scoreBasis}</div>
+              <div className="dimtags">
+                <span className={`vpill ${bandOf(c.score).tone}`}>{bandOf(c.score).label}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p className="dimlede">{c.meaning}</p>
+        {extra}
+        <div className="cols">
+          {c.subs.length > 0 ? (
+            <div>
+              <div className="subhd">Your breakdown</div>
+              <div className="bars">
+                {c.subs.map((s) => (
+                  <div className="brow" key={s.label}>
+                    <span className="lb">{s.label}</span>
+                    <span className="bk"><SkillBar value={s.value} color={col} height={9} /></span>
+                    <span className="vv text-xs">{Math.round(s.value)}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
+          <div className="prose" style={c.subs.length > 0 ? undefined : { gridColumn: "1 / -1" }}>
+            {c.preferences.length > 0 ? (
+              <>
+                <div className="subhd">Your preferences</div>
+                {c.preferences.map((p) => <p key={p.label} style={{ margin: "0 0 6px" }}><b>{p.label}:</b> {p.value}</p>)}
+              </>
+            ) : (
+              <>
+                <div className="subhd">What this means for you</div>
+                <p className="lead">{c.strengths[0]}</p>
+              </>
+            )}
+          </div>
+        </div>
+        <div className="twocard">
+          <div className="lc good">
+            <h4>Where you’re strong</h4>
+            <ul>{c.strengths.slice(0, 4).map((x, i) => <li key={i}>{x}</li>)}</ul>
+          </div>
+          <div className="lc grow">
+            <h4>Where you can grow</h4>
+            <ul>{c.grow.slice(0, 4).map((x, i) => <li key={i}>{x}</li>)}</ul>
+          </div>
+        </div>
+        {c.recommend.length ? (
+          <div className="recos">
+            <div className="subhd">Recommended next steps</div>
+            <ol>{c.recommend.map((x, i) => <li key={i}>{x}</li>)}</ol>
+          </div>
+        ) : null}
+        <RF name={name} />
+      </div>
+    </section>
   );
 }
 

@@ -4,7 +4,7 @@ import { scoreClass6Assessment, type Class6Response } from "@/lib/newAssessment/
 import { scoreClass7Assessment, type Class7Response } from "@/lib/newAssessment/class7Scoring";
 import { scoreClass8Assessment, type Class8Response } from "@/lib/newAssessment/class8Scoring";
 import { scoreClass11Assessment, type Class11Response } from "@/lib/newAssessment/scoring11_12";
-import { scoreGraduateAssessment, type GraduateResponse } from "@/lib/newAssessment/scoringGrad";
+import { scoreGraduateAssessment, UG_PILLARS, type GraduateResponse } from "@/lib/newAssessment/scoringGrad";
 import { convertClass678Answers } from "@/lib/newAssessment/class678Ids";
 import { getSet, optionsForQuestion, resolvedQuestionType, type Category, type StageKey } from "@/lib/newAssessment/data";
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
@@ -347,11 +347,8 @@ const emptyGradContext = () => ({
 // resolvedQuestionType()/optionsForQuestion() helpers so this always agrees
 // with what the generate route actually showed the student.
 function convertAnswersToGraduateFormat(answers: Record<string, string>): GraduateResponse {
-  const dimensions: Record<string, Record<string, number>> = {
-    personality: {}, career_interest: {}, aptitude: {}, strengths: {},
-    motivators: {}, learning_styles: {}, emotional_intelligence: {}, multiple_intelligence: {},
-    integrated_indicators: {},
-  };
+  // One answer map per UG pillar section ("ug_*" categories).
+  const pillars: Record<string, Record<string, number>> = Object.fromEntries(UG_PILLARS.map((p) => [p.key, {}]));
   const context = emptyGradContext();
   const stage: StageKey = "ug";
   const rawByCategory: Partial<Record<"degree_fit" | "career_cluster_fit", ReturnType<typeof getSet>>> = {
@@ -364,12 +361,10 @@ function convertAnswersToGraduateFormat(answers: Record<string, string>): Gradua
     const [category, indexStr] = key.split(":");
     const index = parseInt(indexStr, 10);
 
-    if (category === "personality" || category === "career_interest" || category === "aptitude" ||
-        category === "motivators" || category === "learning_styles" || category === "emotional_intelligence" ||
-        category === "strengths" || category === "multiple_intelligence" || category === "integrated_indicators") {
+    if (category in pillars) {
       const optionIndex = parseInt(value, 10);
       if (Number.isNaN(optionIndex)) return;
-      dimensions[category][indexStr] = optionIndex;
+      pillars[category][indexStr] = optionIndex;
       return;
     }
 
@@ -401,15 +396,7 @@ function convertAnswersToGraduateFormat(answers: Record<string, string>): Gradua
   });
 
   return {
-    personality: dimensions.personality as Record<string, number>,
-    career_interest: dimensions.career_interest as Record<string, number>,
-    aptitude: dimensions.aptitude as Record<string, number>,
-    strengths: dimensions.strengths as Record<string, number>,
-    motivators: dimensions.motivators as Record<string, number>,
-    learning_styles: dimensions.learning_styles as Record<string, number>,
-    emotional_intelligence: dimensions.emotional_intelligence as Record<string, number>,
-    multiple_intelligence: dimensions.multiple_intelligence as Record<string, number>,
-    integrated_indicators: dimensions.integrated_indicators as Record<string, number>,
+    pillars: pillars as GraduateResponse["pillars"],
     degree_fit: context.degree_fit,
     career_cluster_fit: context.career_cluster_fit,
     domain: "", degree: "", course: "", year: "", desiredCareer: "",

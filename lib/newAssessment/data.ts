@@ -21,7 +21,16 @@ export type Category =
   | "creativity"
   | "degree_fit"
   | "career_cluster_fit"
-  | "integrated_indicators";
+  | "integrated_indicators"
+  // Graduates (UG) only: the 8 pillars of the 100-question UG assessment.
+  | "ug_personality_behaviour"
+  | "ug_interests_motivation"
+  | "ug_cognitive_capability"
+  | "ug_academic_domain_fit"
+  | "ug_human_professional_skills"
+  | "ug_digital_future_skills"
+  | "ug_career_readiness"
+  | "ug_future_adaptability";
 
 
 // "ug" (Graduates / undergraduates) is deliberately its own stage key, not
@@ -108,16 +117,17 @@ const ORDER_11_12: Category[] = [
 // since its only question never survives the pre-exam filter) - removing
 // it here is the fix, not a loss of data, since nothing in
 // convertAnswersToGraduateFormat ever read from "career_selector" either.
+// The 8 pillars of the UG assessment, in document order, then the two
+// context sets (degree satisfaction, career-cluster interest).
 const ORDER_UG: Category[] = [
-  "personality",
-  "career_interest",
-  "motivators",
-  "emotional_intelligence",
-  "learning_styles",
-  "multiple_intelligence",
-  "strengths",
-  "aptitude",
-  "integrated_indicators",
+  "ug_personality_behaviour",
+  "ug_interests_motivation",
+  "ug_cognitive_capability",
+  "ug_academic_domain_fit",
+  "ug_human_professional_skills",
+  "ug_digital_future_skills",
+  "ug_career_readiness",
+  "ug_future_adaptability",
   "degree_fit",
   "career_cluster_fit",
 ];
@@ -145,6 +155,14 @@ export const CATEGORY_META: Record<Category, { title: string; blurb: string }> =
   degree_fit: { title: "Degree & Academic Fit", blurb: "Tell us how your current degree is going." },
   career_cluster_fit: { title: "Career Cluster Fit", blurb: "Which broad career areas are you drawn to right now?" },
   integrated_indicators: { title: "Work Style", blurb: "How you'd handle real work situations - adaptability, learning agility and ownership. Pick the option closest to what you'd actually do." },
+  ug_personality_behaviour: { title: "Personality & Behaviour", blurb: "How you naturally think, work and decide. There are no right or wrong answers - pick what is most like you." },
+  ug_interests_motivation: { title: "Interests & Motivation", blurb: "What you enjoy, what drives you and the life you want. Pick the option that appeals to you most." },
+  ug_cognitive_capability: { title: "Cognitive Capability", blurb: "Reasoning with numbers, words, logic, patterns and figures. Each question has one best answer - take your time." },
+  ug_academic_domain_fit: { title: "Academic & Domain Fit", blurb: "How well you know and connect with your degree and field. Answer honestly about where you are today." },
+  ug_human_professional_skills: { title: "Human & Professional Skills", blurb: "Communication, teamwork, leadership and resilience at work. Choose what you would actually do." },
+  ug_digital_future_skills: { title: "Digital & Future Skills", blurb: "How you work with digital tools, AI and data. Choose what you would actually do." },
+  ug_career_readiness: { title: "Career & Employability Readiness", blurb: "How prepared you are for your next professional step. Answer honestly about where you are today." },
+  ug_future_adaptability: { title: "Future Career Adaptability & Fit", blurb: "How you learn, adapt and picture your long-term career. Pick the option most like you." },
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

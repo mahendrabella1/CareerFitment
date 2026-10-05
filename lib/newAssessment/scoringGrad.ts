@@ -1,42 +1,70 @@
 /**
- * Graduates (UG) Scoring Engine.
+ * Graduates (UG) Scoring Engine - the 8-pillar version.
  *
- * Mirrors scoring11_12.ts's technique for the 8 core psychometric
- * dimensions (mapping-tagged forced-choice tallying via tallyMapped/
- * tallyDomainAvailability) against the dedicated Graduates bank
- * (data/graduates/questions-corrected.json, stage "ug"), then replaces
- * 11-12's stream-gated layer2/3/4 (which assumes the student hasn't
- * chosen a degree yet) with three Graduates-appropriate outputs: a
- * cluster-affinity ranking across the 18 real career clusters, the
- * student's actual academic context (already known - they typed their
- * exact degree/course/year pre-exam, no stream-eligibility guessing
- * needed), and their stated aspiration. Career-role resolution (matching
- * the student's typed desired career against CAREERS_1112/Excel roles for
- * the report's roadmap) deliberately stays out of this file, the same way
- * scoring11_12.ts itself never resolves findCareer1112() - that's the
- * report layer's job (careerFitGradSheets.tsx, Phase C), consistent with
- * how selectCareer1112() lives in careerFitEngine1112.ts, not here.
+ * Scores the "OneGrasp Undergraduate Career Discovery & Goal-Fit Assessment"
+ * (100 questions, 8 pillars; data/graduates/questions-corrected.json, stage
+ * "ug"). Each question names its pillar (the bank category), its
+ * sub-dimension (`sub`) and how it is scored:
+ *   - "objective": aptitude items with one correct option (Pillar 3).
+ *   - "weighted":  situational-judgement and readiness items; each option
+ *                  carries a 0-3 weight for how strongly it shows the skill.
+ *   - "nominal":   preferences with no better or worse answer; each option
+ *                  names a `style`, reported as the sub-dimension's result.
+ *
+ * Options also carry evidence `tags` (mbti:, riasec:, mot:, str:) and some
+ * weighted items name an EI quadrant (`ei`). These feed the derived profiles
+ * the rest of the report already uses: MBTI type, RIASEC code, motivators,
+ * strength areas and the four EI quadrants. Tags are not spread evenly across
+ * the bank (e.g. Extraversion is offered more often than Introversion), so
+ * every tag is scored as "times chosen / times offered", never as a raw count.
+ *
+ * Multiple Intelligence and Learning Style are not measured by this bank and
+ * are deliberately not produced (no invented scores). Career-cluster matching
+ * therefore uses RIASEC, strengths and motivators only.
+ *
+ * Career-role resolution stays in the report layer (careerFitGradSheets.tsx).
  */
 import questionBank from "@/data/graduates/questions-corrected.json";
 import type {
-  PersonalityProfile, RIASECScore, StrengthDomainScore, MotivatorProfile, LearningStyleProfile, EIProfile,
+  PersonalityProfile, RIASECScore, StrengthDomainScore, MotivatorProfile, EIProfile,
 } from "@/lib/newAssessment/scoring11_12";
 import { CAREER_CLUSTERS_18, clusterForDegreeCourse } from "@/lib/report/careerClustersGrad";
 import { degreeInfo } from "@/lib/report/degreeTaxonomyGrad";
+import { deriveSkillEvidence, type SkillEvidenceGrad } from "@/lib/newAssessment/skillEvidenceGrad";
+import { CLUSTER_SIGNATURE } from "@/lib/report/clusterSignatureGrad";
+
+// ---------------------------------------------------------------- Pillars
+
+export const UG_PILLARS = [
+  { key: "ug_personality_behaviour", label: "Personality & Behaviour", short: "Personality" },
+  { key: "ug_interests_motivation", label: "Interests & Motivation", short: "Interests" },
+  { key: "ug_cognitive_capability", label: "Cognitive Capability", short: "Cognitive" },
+  { key: "ug_academic_domain_fit", label: "Academic & Domain Fit", short: "Academic" },
+  { key: "ug_human_professional_skills", label: "Human & Professional Skills", short: "Human Skills" },
+  { key: "ug_digital_future_skills", label: "Digital & Future Skills", short: "Digital" },
+  { key: "ug_career_readiness", label: "Career & Employability Readiness", short: "Readiness" },
+  { key: "ug_future_adaptability", label: "Future Career Adaptability & Fit", short: "Adaptability" },
+] as const;
+export type UgPillarKey = (typeof UG_PILLARS)[number]["key"];
+
+interface BankQuestion {
+  docNo: number;
+  sub: string;
+  scoring: "objective" | "weighted" | "nominal";
+  text: string;
+  options: string[];
+  correctIndex?: number;
+  weights?: number[];
+  style?: string[];
+  tags?: string[][];
+  ei?: string;
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const QB = questionBank as any;
-const Q = {
-  personality: (QB.personality?.ug?.["Set 1"] ?? []) as any[],
-  career_interest: (QB.career_interest?.ug?.["Set 1"] ?? []) as any[],
-  aptitude: (QB.aptitude?.ug?.["Set 1"] ?? []) as any[],
-  strengths: (QB.strengths?.ug?.["Set 1"] ?? []) as any[],
-  motivators: (QB.motivators?.ug?.["Set 1"] ?? []) as any[],
-  learning_styles: (QB.learning_styles?.ug?.["Set 1"] ?? []) as any[],
-  emotional_intelligence: (QB.emotional_intelligence?.ug?.["Set 1"] ?? []) as any[],
-  multiple_intelligence: (QB.multiple_intelligence?.ug?.["Set 1"] ?? []) as any[],
-  integrated_indicators: (QB.integrated_indicators?.ug?.["Set 1"] ?? []) as any[],
-};
+const BANK: Record<UgPillarKey, BankQuestion[]> = Object.fromEntries(
+  UG_PILLARS.map((p) => [p.key, (QB[p.key]?.ug?.["Set 1"] ?? []) as BankQuestion[]])
+) as Record<UgPillarKey, BankQuestion[]>;
 
 // ---------------------------------------------------------------- Input shape
 
@@ -54,15 +82,8 @@ export interface GradCareerClusterFitContext {
 }
 
 export interface GraduateResponse {
-  personality: Record<string, number>;
-  career_interest: Record<string, number>;
-  aptitude: Record<string, number>;
-  strengths: Record<string, number>;
-  motivators: Record<string, number>;
-  learning_styles: Record<string, number>;
-  emotional_intelligence: Record<string, number>;
-  multiple_intelligence: Record<string, number>;
-  integrated_indicators: Record<string, number>;
+  /** Pillar key -> question index (as a string) -> chosen option index. */
+  pillars: Partial<Record<UgPillarKey, Record<string, number>>>;
   degree_fit: GradDegreeFitContext;
   career_cluster_fit: GradCareerClusterFitContext;
   // From the pre-exam screen (NewExam.tsx "preinfo" phase, stage "ug").
@@ -75,49 +96,60 @@ export interface GraduateResponse {
 
 // ---------------------------------------------------------------- Output shape
 
-// Verbal Reasoning (pure vocabulary) is still deliberately absent, matching
-// the original FuturePath 100-question bank's own D8 scope. Data
-// Interpretation and Decision-Making (the bank's two single-question
-// subdomains) were traded for 4 new single-question subdomains - Blood
-// Relations, Coding-Decoding, Direction Sense, Number Series - genuine
-// reasoning-skill types the original 8-question set didn't cover at all,
-// scaled to undergraduate difficulty (multi-hop relation chains, a real
-// Pythagorean net-displacement calc, a compound-operation series, not the
-// single-step school-level versions of these question types). Total stays
-// at 8 questions; breadth of distinct reasoning sub-skills covered goes
-// from 5 to 7.
+export interface SubDimensionGrad {
+  name: string;
+  /** 0-100 for scored sub-dimensions; null when the sub-dimension is a pure preference. */
+  score: number | null;
+  /** The preference the student showed (nominal items), e.g. "Planner". */
+  result: string | null;
+  answered: number;
+  total: number;
+}
+
+export interface PillarScoreGrad {
+  key: UgPillarKey;
+  label: string;
+  short: string;
+  /** 0-100 headline score. */
+  score: number;
+  /** What the headline score means for this pillar (e.g. "Profile clarity"). */
+  scoreBasis: string;
+  /** The specific result shown on the scorecard, e.g. "ENTJ" or "IAS". */
+  result: string;
+  subDimensions: SubDimensionGrad[];
+}
+
+export interface AptitudeSubdomainGrad {
+  name: string;
+  score: number;
+  correct: number;
+  total: number;
+}
+
 export interface AptitudeProfileGrad {
-  numerical: { score: number; correct: number; total: number };
-  logical: { score: number; correct: number; total: number };
-  criticalThinking: { score: number; correct: number; total: number };
-  bloodRelations: { score: number; correct: number; total: number };
-  codingDecoding: { score: number; correct: number; total: number };
-  directionSense: { score: number; correct: number; total: number };
-  numberSeries: { score: number; correct: number; total: number };
+  subdomains: AptitudeSubdomainGrad[];
   overallScore: number;
+  correct: number;
+  total: number;
   strength: string;
   weakness: string;
 }
 
 export interface PsychometricProfileGrad {
+  pillars: PillarScoreGrad[];
   personality: PersonalityProfile;
   riasec: RIASECScore[];
   aptitude: AptitudeProfileGrad;
   strengthDomains: StrengthDomainScore[];
-  multipleIntelligence: StrengthDomainScore[];
   motivators: MotivatorProfile;
-  learningStyle: LearningStyleProfile;
   emotionalIntelligence: EIProfile;
-  // D9 in the source spec: supplementary behavioural evidence (Adaptability,
-  // Learning Agility, Execution & Ownership, Integrated Work Style), one
-  // question each - not weighted into cluster-affinity scoring (see
-  // computeClusterAffinities's comment), surfaced for the report narrative.
-  integratedIndicators: StrengthDomainScore[];
+  /** Not measured by the 8-pillar bank; always empty. Kept so report pages that look items up by name simply find nothing. */
+  multipleIntelligence: StrengthDomainScore[];
 }
 
 export interface ClusterAffinityGrad {
   cluster: string;
-  computedScore: number; // 0-100, from the student's RIASEC profile
+  computedScore: number; // 0-100, from RIASEC, strengths and motivators
   selfReported: boolean; // in the student's own top-3 pick (career_cluster_fit:0)
   blendedScore: number; // computedScore + a self-report bonus, used for ranking
 }
@@ -142,213 +174,132 @@ export interface AspirationGrad {
 }
 
 export interface GraduateScoreOutput {
+  /** 2 = the 8-pillar assessment. Older records have no version and need a retake. */
+  version: 2;
   layer1: PsychometricProfileGrad;
   clusterAffinities: ClusterAffinityGrad[];
   academicContext: AcademicContextGrad;
   aspiration: AspirationGrad;
+  skillEvidence: SkillEvidenceGrad;
   summary: { topCluster: string; strengthsSummary: string; growthAreas: string[] };
 }
 
-// ---------------------------------------------------------------- Dimension scoring
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function tallyMapped(questions: any[], responses: Record<string, number>): Record<string, number> {
-  const tally: Record<string, number> = {};
-  questions.forEach((q, i) => {
-    const idx = responses[String(i)];
-    const tag = Array.isArray(q.mapping) ? q.mapping[idx] : undefined;
-    if (tag) tally[tag] = (tally[tag] || 0) + 1;
-  });
-  return tally;
+// ---------------------------------------------------------------- Helpers
+
+type Answers = Record<string, number>;
+const pct = (got: number, of: number) => (of > 0 ? Math.round((got / of) * 100) : 0);
+const chosenIndex = (answers: Answers | undefined, i: number): number | undefined => {
+  const v = answers?.[String(i)];
+  return typeof v === "number" && Number.isInteger(v) && v >= 0 ? v : undefined;
+};
+
+/** Every tag's "chosen" and "offered" counts across the answered questions. */
+function collectTags(responses: GraduateResponse) {
+  const rates: { chosen: Record<string, number>; offered: Record<string, number> } = { chosen: {}, offered: {} };
+  for (const p of UG_PILLARS) {
+    const answers = responses.pillars[p.key];
+    BANK[p.key].forEach((q, i) => {
+      const idx = chosenIndex(answers, i);
+      if (idx === undefined || !q.tags) return;
+      // Count a tag as offered once per question, even if two options share it.
+      const offeredHere = new Set(q.tags.flat());
+      offeredHere.forEach((t) => { rates.offered[t] = (rates.offered[t] || 0) + 1; });
+      (q.tags[idx] ?? []).forEach((t) => { rates.chosen[t] = (rates.chosen[t] || 0) + 1; });
+    });
+  }
+  return rates;
+}
+const rateOf = (rates: ReturnType<typeof collectTags>, tag: string) =>
+  rates.offered[tag] ? (rates.chosen[tag] || 0) / rates.offered[tag] : 0;
+
+/** Most frequent style label(s) among a set of answered nominal items. */
+function topStyle(labels: string[]): string | null {
+  if (!labels.length) return null;
+  const counts: Record<string, number> = {};
+  labels.forEach((l) => { counts[l] = (counts[l] || 0) + 1; });
+  const max = Math.max(...Object.values(counts));
+  const tops = Object.keys(counts).filter((l) => counts[l] === max);
+  return tops.length <= 2 ? tops.join(" & ") : "Balanced / no single preference";
 }
 
-// For the FuturePath bank's "weighted single target" question design (D4
-// EI, D6 MI, D7 Strengths, D9 Integrated Indicators): unlike tallyMapped's
-// dimensions, each question here feeds exactly ONE named construct (given by
-// `q.target`), with its own options ranked from strongest-evidence to
-// weakest via `q.weights` (index-aligned with `q.options`, read straight
-// from the bank - see data/graduates/questions-corrected.json) rather than
-// every option naming a different construct. `got` accumulates the weight
-// the student actually earned per construct; `of` accumulates the maximum
-// any respondent could have earned per construct (sum of each question's
-// own top weight) - so score = got/of stays a true 0-100 even though not
-// every question shares the same weight scale.
-function tallyWeightedTarget(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  questions: any[],
-  responses: Record<string, number>
-): { got: Record<string, number>; of: Record<string, number> } {
-  const got: Record<string, number> = {};
-  const of: Record<string, number> = {};
-  questions.forEach((q, i) => {
-    const target = q.target as string | undefined;
-    const weights = q.weights as number[] | undefined;
-    if (!target || !Array.isArray(weights)) return;
-    of[target] = (of[target] || 0) + Math.max(...weights);
-    const idx = responses[String(i)];
-    const earned = typeof idx === "number" ? weights[idx] : undefined;
-    if (typeof earned === "number") got[target] = (got[target] || 0) + earned;
+// ---------------------------------------------------------------- Pillar scoring
+
+interface SubTally { got: number; of: number; correct: number; objTotal: number; styles: string[]; answered: number; total: number }
+
+function scorePillarSubs(key: UgPillarKey, answers: Answers | undefined): { subs: SubDimensionGrad[]; tallies: Record<string, SubTally> } {
+  const order: string[] = [];
+  const tallies: Record<string, SubTally> = {};
+  BANK[key].forEach((q, i) => {
+    if (!tallies[q.sub]) {
+      tallies[q.sub] = { got: 0, of: 0, correct: 0, objTotal: 0, styles: [], answered: 0, total: 0 };
+      order.push(q.sub);
+    }
+    const t = tallies[q.sub];
+    t.total += 1;
+    const idx = chosenIndex(answers, i);
+    if (q.scoring === "objective") {
+      t.objTotal += 1;
+      if (idx !== undefined) t.answered += 1;
+      if (idx !== undefined && idx === q.correctIndex) t.correct += 1;
+      return;
+    }
+    if (idx === undefined || idx >= q.options.length) return;
+    t.answered += 1;
+    if (q.scoring === "weighted" && q.weights) {
+      t.of += Math.max(...q.weights);
+      t.got += q.weights[idx] ?? 0;
+    } else if (q.scoring === "nominal" && q.style) {
+      t.styles.push(q.style[idx]);
+    }
   });
-  return { got, of };
+  const subs = order.map((name) => {
+    const t = tallies[name];
+    const score = t.objTotal ? pct(t.correct, t.objTotal) : t.of ? pct(t.got, t.of) : null;
+    return { name, score, result: topStyle(t.styles), answered: t.answered, total: t.total };
+  });
+  return { subs, tallies };
 }
 
-function scorePersonality(responses: Record<string, number>): PersonalityProfile {
-  const tally = tallyMapped(Q.personality, responses);
-  // Unlike scoring11_12.ts (where Q7/index 6 is a dedicated, unmapped 1-10
-  // decision-autonomy slider - see the comment there), the Graduates bank
-  // has no equivalent question at all: every personality question here is
-  // a standard 4-option MBTI item with a `mapping` array (index 6 is
-  // actually an S/N question, "When someone explains a complex idea...").
-  // `responses["6"] ?? 5` (copied from scoring11_12.ts's pattern) would
-  // silently feed that S/N question's raw 0-3 option index in as a fake
-  // "decision autonomy" score - currently invisible since nothing renders
-  // this field yet, but still wrong data sitting in the output. Neutral
-  // default instead, since nothing in this bank measures the construct.
-  const decisionAutonomy = 5;
-  const ei = (tally.E || 0) - (tally.I || 0);
-  const sn = (tally.S || 0) - (tally.N || 0);
-  const tf = (tally.T || 0) - (tally.F || 0);
-  const jp = (tally.J || 0) - (tally.P || 0);
-  const traits = {
-    ei: ei >= 0 ? "E" : "I", sn: sn >= 0 ? "S" : "N", tf: tf >= 0 ? "T" : "F", jp: jp >= 0 ? "J" : "P",
-    type: (ei >= 0 ? "E" : "I") + (sn >= 0 ? "S" : "N") + (tf >= 0 ? "T" : "F") + (jp >= 0 ? "J" : "P"),
+function scorePersonality(rates: ReturnType<typeof collectTags>): PersonalityProfile {
+  const axis = (a: string, b: string) => {
+    const ra = rateOf(rates, `mbti:${a}`);
+    const rb = rateOf(rates, `mbti:${b}`);
+    const sum = ra + rb;
+    // Share of the first letter, 0-1; 0.5 when neither side was chosen.
+    const share = sum > 0 ? ra / sum : 0.5;
+    return { winner: share >= 0.5 ? a : b, share, clarity: Math.abs(share - 0.5) * 2 };
   };
-  const maxOf = (a: string, b: string) => Math.max(1, (tally[a] || 0) + (tally[b] || 0));
-  const clarity = (
-    Math.abs(ei) / maxOf("E", "I") + Math.abs(sn) / maxOf("S", "N") +
-    Math.abs(tf) / maxOf("T", "F") + Math.abs(jp) / maxOf("J", "P")
-  ) / 4;
-  const toAxis10 = (tallyVal: number, maxMag: number) => {
-    const winCount = (maxMag + tallyVal) / 2;
-    const prior = 1;
-    const share = (winCount + prior / 2) / (maxMag + prior);
-    const winnerScore = 5 + share * 5;
-    return tallyVal >= 0 ? Math.round(winnerScore * 10) / 10 : Math.round((10 - winnerScore) * 10) / 10;
-  };
+  const ei = axis("E", "I"), sn = axis("S", "N"), tf = axis("T", "F"), jp = axis("J", "P");
+  const type = ei.winner + sn.winner + tf.winner + jp.winner;
+  const clarity = (ei.clarity + sn.clarity + tf.clarity + jp.clarity) / 4;
+  const toAxis10 = (share: number) => Math.round(share * 100) / 10;
   return {
-    ...traits,
-    summary: `You lean ${traits.type} - a mix of ${traits.ei === "E" ? "outward" : "inward"}-focused energy, ${traits.sn === "S" ? "practical, concrete" : "big-picture, conceptual"} thinking, ${traits.tf === "T" ? "logical" : "values-based"} decisions and a ${traits.jp === "J" ? "structured" : "flexible"} approach to plans.`,
+    ei: ei.winner, sn: sn.winner, tf: tf.winner, jp: jp.winner, type,
+    summary: `You lean ${type} - a mix of ${ei.winner === "E" ? "outward" : "inward"}-focused energy, ${sn.winner === "S" ? "practical, concrete" : "big-picture, conceptual"} thinking, ${tf.winner === "T" ? "logical" : "values-based"} decisions and a ${jp.winner === "J" ? "structured" : "flexible"} approach to plans.`,
     score: Math.round(clarity * 100),
-    axisScores: {
-      ei: toAxis10(ei, maxOf("E", "I")), sn: toAxis10(sn, maxOf("S", "N")),
-      tf: toAxis10(tf, maxOf("T", "F")), jp: toAxis10(jp, maxOf("J", "P")),
-    },
-    decisionAutonomy,
+    axisScores: { ei: toAxis10(ei.share), sn: toAxis10(sn.share), tf: toAxis10(tf.share), jp: toAxis10(jp.share) },
+    // No question in this bank measures decision autonomy; neutral default.
+    decisionAutonomy: 5,
   };
 }
 
 const RIASEC_NAMES: Record<string, string> = {
   R: "Realistic", I: "Investigative", A: "Artistic", S: "Social", E: "Enterprising", C: "Conventional",
 };
-function scoreRIASEC(responses: Record<string, number>): RIASECScore[] {
-  const tally = tallyMapped(Q.career_interest, responses);
-  const total = Object.values(tally).reduce((s, v) => s + v, 0);
-  return Object.keys(RIASEC_NAMES)
-    .map((code) => ({
-      code, name: RIASEC_NAMES[code], score: tally[code] || 0,
-      percentile: total ? Math.round(((tally[code] || 0) / total) * 100) : 0,
-    }))
-    .sort((a, b) => b.score - a.score);
+function scoreRIASEC(rates: ReturnType<typeof collectTags>): RIASECScore[] {
+  const r = Object.keys(RIASEC_NAMES).map((code) => ({ code, rate: rateOf(rates, `riasec:${code}`), chosen: rates.chosen[`riasec:${code}`] || 0 }));
+  const total = r.reduce((s, x) => s + x.rate, 0);
+  return r
+    .map((x) => ({ code: x.code, name: RIASEC_NAMES[x.code], score: x.chosen, percentile: total ? Math.round((x.rate / total) * 100) : 0 }))
+    .sort((a, b) => b.percentile - a.percentile);
 }
 
-const APTITUDE_FIELDS: { key: keyof Omit<AptitudeProfileGrad, "overallScore" | "strength" | "weakness">; subdomain: string; label: string }[] = [
-  { key: "numerical", subdomain: "Numerical Reasoning", label: "Numerical" },
-  { key: "logical", subdomain: "Logical Reasoning", label: "Logical" },
-  { key: "criticalThinking", subdomain: "Critical Thinking", label: "Critical Thinking" },
-  { key: "bloodRelations", subdomain: "Blood Relations", label: "Blood Relations" },
-  { key: "codingDecoding", subdomain: "Coding-Decoding", label: "Coding-Decoding" },
-  { key: "directionSense", subdomain: "Direction Sense", label: "Direction Sense" },
-  { key: "numberSeries", subdomain: "Number Series", label: "Number Series" },
-];
-function scoreAptitude(responses: Record<string, number>): AptitudeProfileGrad {
-  const got: Record<string, number> = {};
-  const of: Record<string, number> = {};
-  Q.aptitude.forEach((q, i) => {
-    const sub = String(q.subdomain || "");
-    if (!sub) return;
-    of[sub] = (of[sub] || 0) + 1;
-    if (responses[String(i)] === q.correctIndex) got[sub] = (got[sub] || 0) + 1;
-  });
-  const fields = Object.fromEntries(
-    APTITUDE_FIELDS.map(({ key, subdomain }) => {
-      const total = of[subdomain] || 0;
-      const correct = got[subdomain] || 0;
-      const score = total ? Math.round((correct / total) * 100) : 0;
-      return [key, { score, correct, total }];
-    })
-  ) as Record<string, { score: number; correct: number; total: number }>;
-  const totalCorrect = Object.values(got).reduce((s, v) => s + v, 0);
-  const totalQs = Q.aptitude.length;
-  const overallScore = totalQs ? Math.round((totalCorrect / totalQs) * 100) : 0;
-  const ranked = APTITUDE_FIELDS.map(({ key, label }) => ({ label, score: fields[key].score })).sort((a, b) => b.score - a.score);
-  return {
-    ...(fields as unknown as Omit<AptitudeProfileGrad, "overallScore" | "strength" | "weakness">),
-    overallScore,
-    strength: ranked[0]?.label ?? "Numerical",
-    weakness: ranked[ranked.length - 1]?.label ?? "Numerical",
-  };
-}
-
-const MI_EXAMPLES: Record<string, string[]> = {
-  "Linguistic": ["Writing", "Communication", "Language"],
-  "Logical-Mathematical": ["Problem-solving", "Analysis", "Patterns"],
-  "Spatial": ["Visualization", "Design", "Navigation"],
-  "Bodily-Kinesthetic": ["Physical activity", "Coordination", "Crafts"],
-  "Musical": ["Rhythm", "Music", "Melody"],
-  "Interpersonal": ["Teamwork", "Leadership", "Communication"],
-  "Intrapersonal": ["Self-reflection", "Meditation", "Analysis"],
-  "Naturalistic": ["Nature", "Observation", "Patterns"],
-};
-const STRENGTH_AREA_EXAMPLES: Record<string, string[]> = {
-  "Intellectual & Analytical": ["Root-cause analysis", "Logical troubleshooting", "Breaking down complexity"],
-  "Creative & Innovative": ["Original ideas", "Unconventional angles", "Reframing problems"],
-  "Strategic & Futuristic": ["Long-term planning", "Big-picture view", "Anticipating trends"],
-  "Execution & Achievement": ["Turning ideas into results", "Consistent follow-through", "Getting things done"],
-  "Influence & Leadership": ["Persuasion", "Taking ownership", "Motivating others"],
-  "Relationship & Adaptability": ["Empathy", "Building rapport", "Adjusting to new situations"],
-};
-
-const INTEGRATED_EXAMPLES: Record<string, string[]> = {
-  "Adaptability": ["Redirecting after a plan changes", "Preserving useful work under a new objective", "Staying productive amid uncertainty"],
-  "Learning Agility": ["Picking up unfamiliar tools quickly", "Learning from documentation/examples under time pressure", "Testing new skills on real tasks"],
-  "Execution & Ownership": ["Surfacing risk early", "Taking the next controllable action", "Following through without being chased"],
-  "Integrated Work Style": ["Clarifying ambiguous responsibilities", "Identifying assumptions before starting", "Taking a workable first step"],
-};
-
-function scoreStrengthAreas(responses: Record<string, number>): StrengthDomainScore[] {
-  const { got, of } = tallyWeightedTarget(Q.strengths, responses);
-  return Object.keys(STRENGTH_AREA_EXAMPLES)
-    .map((domain) => ({
-      domain, score: of[domain] ? Math.round((((got[domain] || 0) / of[domain]) * 100)) : 0,
-      examples: STRENGTH_AREA_EXAMPLES[domain],
-    }))
-    .sort((a, b) => b.score - a.score);
-}
-
-function scoreMultipleIntelligence(responses: Record<string, number>): StrengthDomainScore[] {
-  const { got, of } = tallyWeightedTarget(Q.multiple_intelligence, responses);
-  return Object.keys(MI_EXAMPLES)
-    .map((domain) => ({
-      domain, score: of[domain] ? Math.round((((got[domain] || 0) / of[domain]) * 100)) : 0,
-      examples: MI_EXAMPLES[domain],
-    }))
-    .sort((a, b) => b.score - a.score);
-}
-
-function scoreIntegratedIndicators(responses: Record<string, number>): StrengthDomainScore[] {
-  const { got, of } = tallyWeightedTarget(Q.integrated_indicators, responses);
-  return Object.keys(INTEGRATED_EXAMPLES)
-    .map((domain) => ({
-      domain, score: of[domain] ? Math.round((((got[domain] || 0) / of[domain]) * 100)) : 0,
-      examples: INTEGRATED_EXAMPLES[domain],
-    }))
-    .sort((a, b) => b.score - a.score);
-}
-
-function scoreMotivators(responses: Record<string, number>): MotivatorProfile {
-  const tally = tallyMapped(Q.motivators, responses);
-  const total = Object.values(tally).reduce((s, v) => s + v, 0);
-  const ranked = Object.entries(tally)
-    .map(([tag, count]) => ({ tag, score: total ? Math.round((count / total) * 100) : 0 }))
+function scoreMotivators(rates: ReturnType<typeof collectTags>): MotivatorProfile {
+  const tags = Object.keys(rates.offered).filter((t) => t.startsWith("mot:"));
+  const withRate = tags.map((t) => ({ tag: t.slice(4), rate: rateOf(rates, t) })).filter((x) => x.rate > 0);
+  const total = withRate.reduce((s, x) => s + x.rate, 0);
+  const ranked = withRate
+    .map((x) => ({ tag: x.tag, score: total ? Math.round((x.rate / total) * 100) : 0 }))
     .sort((a, b) => b.score - a.score);
   const top = ranked[0];
   return {
@@ -358,145 +309,148 @@ function scoreMotivators(responses: Record<string, number>): MotivatorProfile {
   };
 }
 
-function scoreLearningStyle(responses: Record<string, number>): LearningStyleProfile {
-  const tally = tallyMapped(Q.learning_styles, responses);
-  const styles = ["Visual", "Auditory", "Reading/Writing", "Kinesthetic"];
-  const ranked = styles.slice().sort((a, b) => (tally[b] || 0) - (tally[a] || 0));
-  const total = Object.values(tally).reduce((s, v) => s + v, 0);
-  const pctOf = (style: string) => (total > 0 ? Math.round(((tally[style] || 0) / total) * 100) : 25);
+const STRENGTH_AREA_EXAMPLES: Record<string, string[]> = {
+  "Intellectual & Analytical": ["Root-cause analysis", "Logical troubleshooting", "Breaking down complexity"],
+  "Creative & Innovative": ["Original ideas", "Unconventional angles", "Reframing problems"],
+  "Strategic & Futuristic": ["Long-term planning", "Big-picture view", "Anticipating trends"],
+  "Execution & Achievement": ["Turning ideas into results", "Consistent follow-through", "Getting things done"],
+  "Influence & Leadership": ["Persuasion", "Taking ownership", "Motivating others"],
+  "Relationship & Adaptability": ["Empathy", "Building rapport", "Adjusting to new situations"],
+};
+function scoreStrengthAreas(rates: ReturnType<typeof collectTags>): StrengthDomainScore[] {
+  return Object.keys(STRENGTH_AREA_EXAMPLES)
+    .map((domain) => ({ domain, score: Math.round(rateOf(rates, `str:${domain}`) * 100), examples: STRENGTH_AREA_EXAMPLES[domain] }))
+    .sort((a, b) => b.score - a.score);
+}
+
+const EI_QUADRANTS = ["Self-Awareness", "Self-Management", "Social Awareness", "Relationship Management"] as const;
+function scoreEI(responses: GraduateResponse): EIProfile {
+  const got: Record<string, number> = {};
+  const of: Record<string, number> = {};
+  for (const p of UG_PILLARS) {
+    const answers = responses.pillars[p.key];
+    BANK[p.key].forEach((q, i) => {
+      if (!q.ei || !q.weights) return;
+      const idx = chosenIndex(answers, i);
+      if (idx === undefined) return;
+      of[q.ei] = (of[q.ei] || 0) + Math.max(...q.weights);
+      got[q.ei] = (got[q.ei] || 0) + (q.weights[idx] ?? 0);
+    });
+  }
+  const frac = (tag: string) => (of[tag] ? (got[tag] || 0) / of[tag] : 0);
+  const ranked = EI_QUADRANTS.map((tag) => ({ tag, score: Math.round(frac(tag) * 100) })).sort((a, b) => b.score - a.score);
+  const selfManagement = frac("Self-Management");
+  const relationshipManagement = frac("Relationship Management");
   return {
-    primaryStyle: ranked[0],
-    secondaryStyle: ranked[1],
-    examPreparationTechnique: `Lean on ${ranked[0].toLowerCase()} techniques - they consistently came through as your preference.`,
-    recommendations: [`Practice with ${ranked[0].toLowerCase()}-first materials`, `Use ${ranked[1].toLowerCase()} techniques as a backup`],
-    score: total > 0 ? Math.round(((tally[ranked[0]] || 0) / total) * 100) : 50,
-    ranked: ranked.map((style) => ({ style, score: pctOf(style) })),
+    ranked,
+    selfAwareness: frac("Self-Awareness"),
+    selfManagement,
+    socialAwareness: frac("Social Awareness"),
+    relationshipManagement,
+    emotionalRegulation: selfManagement >= 0.6 ? "You tend to steady yourself and adjust after setbacks." : "Setbacks can take a while to process - that's normal, and a skill you can build.",
+    conflictResolution: relationshipManagement >= 0.6 ? "You actively work to understand and resolve tension with others." : "You tend to defend your position or step back before resolving tension.",
+    summary: ranked[0] && ranked[0].score > 0 ? `${ranked[0].tag} is your strongest emotional-intelligence area.` : "Your responses are fairly balanced across all four areas.",
   };
 }
 
-const EI_QUADRANT_TAGS = ["Self-Awareness", "Self-Management", "Social Awareness", "Relationship Management"] as const;
-function scoreEI(responses: Record<string, number>): EIProfile {
-  const { got, of } = tallyWeightedTarget(Q.emotional_intelligence, responses);
-  const pct = (tag: string) => (of[tag] ? Math.round(((got[tag] || 0) / of[tag]) * 100) : 0);
-  const ranked = EI_QUADRANT_TAGS
-    .map((tag) => ({ tag, score: pct(tag) }))
-    .sort((a, b) => b.score - a.score);
-  const frac = (tag: string) => pct(tag) / 100;
-  const selfAwareness = frac("Self-Awareness");
-  const selfManagement = frac("Self-Management");
-  const socialAwareness = frac("Social Awareness");
-  const relationshipManagement = frac("Relationship Management");
+function scoreAptitude(responses: GraduateResponse): AptitudeProfileGrad {
+  const { subs, tallies } = scorePillarSubs("ug_cognitive_capability", responses.pillars.ug_cognitive_capability);
+  const subdomains = subs.map((s) => ({ name: s.name, score: s.score ?? 0, correct: tallies[s.name].correct, total: tallies[s.name].objTotal }));
+  const correct = subdomains.reduce((s, d) => s + d.correct, 0);
+  const total = subdomains.reduce((s, d) => s + d.total, 0);
+  const ranked = subdomains.slice().sort((a, b) => b.score - a.score);
   return {
-    ranked, selfAwareness, selfManagement, socialAwareness, relationshipManagement,
-    emotionalRegulation: selfManagement >= 0.6 ? "You tend to steady yourself quickly under pressure." : "Strong feelings can take a while to settle for you - that's normal, not a weakness.",
-    conflictResolution: relationshipManagement >= 0.6 ? "You actively work to resolve tension with others." : "You tend to process conflict internally before addressing it.",
-    summary: ranked[0] && ranked[0].score > 0 ? `${ranked[0].tag} is your strongest tendency under pressure or feedback.` : "Your responses are fairly balanced across all four areas.",
+    subdomains, correct, total,
+    overallScore: pct(correct, total),
+    strength: ranked[0]?.name ?? "",
+    weakness: ranked[ranked.length - 1]?.name ?? "",
   };
+}
+
+/** Average of a pillar's scored sub-dimensions (weighted by their own max points, via the tallies). */
+function weightedPillarScore(tallies: Record<string, SubTally>): number {
+  const got = Object.values(tallies).reduce((s, t) => s + t.got, 0);
+  const of = Object.values(tallies).reduce((s, t) => s + t.of, 0);
+  return pct(got, of);
+}
+
+/** "Strongest: X" only when one area genuinely stands above the others. */
+function bestScoredSub(subs: { name: string; score: number | null }[]): string {
+  const scored = subs.filter((s) => s.score !== null).sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+  if (!scored.length) return "";
+  const top = scored[0].score ?? 0;
+  const lowest = scored[scored.length - 1].score ?? 0;
+  if (top === 0 || top === lowest) return "";
+  const tied = scored.filter((s) => s.score === top).map((s) => s.name);
+  return tied.length === 1 ? `Strongest: ${tied[0]}` : tied.length === 2 ? `Strongest: ${tied.join(" & ")}` : "";
+}
+
+function buildPillars(responses: GraduateResponse, personality: PersonalityProfile, riasec: RIASECScore[], motivators: MotivatorProfile, aptitude: AptitudeProfileGrad, rates: ReturnType<typeof collectTags>): PillarScoreGrad[] {
+  return UG_PILLARS.map((p) => {
+    const { subs, tallies } = scorePillarSubs(p.key, responses.pillars[p.key]);
+    let score: number;
+    let scoreBasis: string;
+    let result: string;
+    switch (p.key) {
+      case "ug_personality_behaviour":
+        score = personality.score;
+        scoreBasis = "Profile clarity: how consistently your answers point one way";
+        result = personality.type;
+        break;
+      case "ug_interests_motivation": {
+        const topRiasec = riasec[0] ? rateOf(rates, `riasec:${riasec[0].code}`) : 0;
+        const topMot = motivators.ranked[0] ? rateOf(rates, `mot:${motivators.ranked[0].tag}`) : 0;
+        score = Math.round(((topRiasec + topMot) / 2) * 100);
+        scoreBasis = "Interest clarity: how consistently you chose your top interest and motivator";
+        result = riasec.slice(0, 3).map((r) => r.code).join("") + (motivators.ranked[0] ? ` · ${motivators.ranked[0].tag}` : "");
+        break;
+      }
+      case "ug_cognitive_capability":
+        score = aptitude.overallScore;
+        scoreBasis = `${aptitude.correct} of ${aptitude.total} reasoning questions correct`;
+        result = bestScoredSub(aptitude.subdomains.filter((s) => s.total).map((s) => ({ name: s.name, score: s.score }))) || `${aptitude.correct} of ${aptitude.total} correct`;
+        break;
+      default:
+        score = weightedPillarScore(tallies);
+        scoreBasis = "Share of the strongest-practice points available in this pillar";
+        result = bestScoredSub(subs) || `${score}%`;
+    }
+    return { key: p.key, label: p.label, short: p.short, score, scoreBasis, result, subDimensions: subs };
+  });
 }
 
 // ---------------------------------------------------------------- Cluster affinity
-// The FuturePath 100-question spec's own "17 Career-Domain Compatibility
-// Matrix" (source doc section 5), transcribed directly - RIASEC/Strengths/
-// Motivators/MI evidence per cluster, not a re-derived or re-guessed
-// signature. Short forms in the source table are expanded to this codebase's
-// full canonical tag spelling (e.g. "Analytical" -> "Intellectual &
-// Analytical", "Logical" -> "Logical-Mathematical") so they match the exact
-// strings scoreStrengthAreas/scoreMultipleIntelligence/scoreMotivators
-// produce; the Motivator column's vocabulary (Learning, Achievement, Social
-// Impact, Financial Security, Leadership, Creativity) already matches this
-// bank's own D3 tags exactly, no translation needed there.
-//
-// Only 17 of the 18 real clusters are covered - the source spec's own matrix
-// stops at 17 and never mentions "Personal Care, Beauty & Wellness" (the
-// same gap already flagged for the UG roadmap content earlier this project -
-// this domain simply isn't in the source document). That one cluster keeps
-// its previous hand-tagged signature (RIASEC-only, no strengths/motivators/
-// MI evidence) rather than fabricating FuturePath-style evidence for a
-// cluster the spec doesn't cover.
-//
-// This is still a CLUSTER-level signature, not a per-role one - 11-12's
-// system computes fit per individual career and only aggregates up to
-// cluster level after. Building an equivalent per-role signature for
-// Graduates would mean tagging ~3,300 Excel roles individually, which isn't
-// done here - flagged as a real fidelity gap versus 11-12, not hidden.
-const CLUSTER_SIGNATURE: Record<string, { riasec: string[]; strengths: string[]; motivators: string[]; mi: string[] }> = {
-  "Engineering, Technology & Computing": { riasec: ["I", "R", "C"], strengths: ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic"], motivators: ["Learning", "Achievement"], mi: ["Logical-Mathematical", "Spatial"] },
-  "Science, Mathematics & Research": { riasec: ["I"], strengths: ["Intellectual & Analytical", "Strategic & Futuristic"], motivators: ["Learning", "Achievement"], mi: ["Logical-Mathematical", "Intrapersonal"] },
-  "Healthcare & Medicine": { riasec: ["I", "S"], strengths: ["Intellectual & Analytical", "Relationship & Adaptability", "Execution & Achievement"], motivators: ["Social Impact", "Learning"], mi: ["Interpersonal", "Intrapersonal", "Naturalistic"] },
-  "Psychology, Humanities & Social Sciences": { riasec: ["S", "I", "A"], strengths: ["Relationship & Adaptability", "Intellectual & Analytical", "Strategic & Futuristic"], motivators: ["Social Impact", "Learning"], mi: ["Interpersonal", "Linguistic", "Intrapersonal"] },
-  "Sports, Fitness & Human Performance": { riasec: ["R", "S", "E"], strengths: ["Execution & Achievement", "Relationship & Adaptability", "Influence & Leadership"], motivators: ["Achievement", "Social Impact", "Learning"], mi: ["Bodily-Kinesthetic", "Interpersonal"] },
-  "Agriculture, Food & Life Sciences": { riasec: ["R", "I"], strengths: ["Intellectual & Analytical", "Execution & Achievement", "Strategic & Futuristic"], motivators: ["Social Impact", "Learning", "Financial Security"], mi: ["Naturalistic", "Logical-Mathematical", "Bodily-Kinesthetic"] },
-  "Environment, Energy & Sustainability": { riasec: ["I", "R", "S"], strengths: ["Strategic & Futuristic", "Intellectual & Analytical", "Relationship & Adaptability"], motivators: ["Social Impact", "Learning"], mi: ["Naturalistic", "Logical-Mathematical"] },
-  "Architecture, Construction & Built Environment": { riasec: ["R", "A", "I"], strengths: ["Creative & Innovative", "Execution & Achievement"], motivators: ["Creativity", "Achievement"], mi: ["Spatial", "Logical-Mathematical", "Bodily-Kinesthetic"] },
-  "Business, Finance & Entrepreneurship": { riasec: ["E", "C", "I"], strengths: ["Influence & Leadership", "Intellectual & Analytical", "Strategic & Futuristic", "Execution & Achievement"], motivators: ["Achievement", "Leadership", "Financial Security", "Creativity"], mi: ["Logical-Mathematical", "Linguistic", "Interpersonal"] },
-  "Law, Legal & Compliance": { riasec: ["I", "E", "C"], strengths: ["Intellectual & Analytical", "Strategic & Futuristic", "Influence & Leadership"], motivators: ["Achievement", "Financial Security", "Social Impact"], mi: ["Linguistic", "Logical-Mathematical", "Interpersonal"] },
-  "Government, Public Administration & Policy": { riasec: ["S", "E", "C", "I"], strengths: ["Strategic & Futuristic", "Relationship & Adaptability", "Execution & Achievement"], motivators: ["Social Impact", "Leadership"], mi: ["Linguistic", "Interpersonal", "Logical-Mathematical"] },
-  "Education & Learning": { riasec: ["S", "A", "I"], strengths: ["Relationship & Adaptability"], motivators: ["Social Impact", "Learning", "Achievement"], mi: ["Linguistic", "Interpersonal", "Intrapersonal"] },
-  "Media, Communication, Arts & Design": { riasec: ["A", "E", "S"], strengths: ["Creative & Innovative", "Influence & Leadership", "Relationship & Adaptability"], motivators: ["Creativity", "Achievement", "Leadership"], mi: ["Linguistic", "Spatial", "Interpersonal"] },
-  "Manufacturing & Industrial Production": { riasec: ["R", "I", "C"], strengths: ["Execution & Achievement", "Intellectual & Analytical", "Strategic & Futuristic"], motivators: ["Achievement", "Financial Security", "Learning"], mi: ["Logical-Mathematical", "Bodily-Kinesthetic", "Spatial"] },
-  "Supply Chain, Procurement & Logistics": { riasec: ["C", "R", "E"], strengths: ["Execution & Achievement", "Intellectual & Analytical", "Relationship & Adaptability"], motivators: ["Achievement", "Financial Security", "Leadership"], mi: ["Logical-Mathematical", "Interpersonal"] },
-  "Travel, Tourism, Hospitality & Transport": { riasec: ["S", "E", "R"], strengths: ["Relationship & Adaptability", "Influence & Leadership"], motivators: ["Social Impact", "Achievement", "Financial Security"], mi: ["Interpersonal", "Bodily-Kinesthetic", "Linguistic"] },
-  "Defence, Security & Emergency Services": { riasec: ["R", "I", "S"], strengths: ["Execution & Achievement", "Strategic & Futuristic", "Relationship & Adaptability"], motivators: ["Achievement", "Social Impact", "Leadership"], mi: ["Bodily-Kinesthetic", "Logical-Mathematical", "Interpersonal"] },
-  // Not covered by the FuturePath spec's matrix - kept from the prior
-  // hand-tagged signature rather than fabricated.
-  "Personal Care, Beauty & Wellness": { riasec: ["S", "A"], strengths: ["Creative & Innovative", "Relationship & Adaptability"], motivators: [], mi: ["Bodily-Kinesthetic", "Interpersonal"] },
-};
-
-// Weighted blend per the FuturePath spec's section 6 "Recommended Career-Fit
-// Formula" table - of its 9 weighted components, only RIASEC (25%),
-// Strengths (15%), Motivators (15%) and MI (10%) have a per-cluster target
-// in the spec's own compatibility matrix (section 5); MBTI/EI/Learning/
-// Cognitive/Integrated (the remaining 35%) are listed there as evidence
-// weights but the spec provides no per-cluster MBTI-type, EI-quadrant,
-// learning-style, cognitive or integrated-indicator target to score them
-// against - inventing one would be exactly the kind of fabricated signal
-// this project avoids. Those five stay as real, computed, reported
-// dimensions (surfaced in the narrative/report, same as the spec's own
-// "apply contextual modifiers" framing places degree/specialisation/
-// experience/goals outside the mechanical formula too) rather than being
-// silently folded into ranking math the source data can't actually support.
-// The four that DO drive ranking keep their relative weights from the spec
-// (25:15:15:10) and are coverage-normalised so they still sum to 1 even
-// though the spec's own weights for them only total 0.65 of the full 1.0.
-const CLUSTER_WEIGHTS = { riasec: 0.25, strengths: 0.15, motivators: 0.15, mi: 0.10 };
-const CLUSTER_WEIGHT_TOTAL = Object.values(CLUSTER_WEIGHTS).reduce((s, w) => s + w, 0);
+// RIASEC (25%), Strengths (15%) and Motivators (15%) against each cluster's
+// signature (lib/report/clusterSignatureGrad.ts), coverage-normalised so the
+// weights sum to 1. Multiple Intelligence (10% in the original formula) is not
+// measured by the 8-pillar bank and is left out rather than guessed.
+const CLUSTER_WEIGHTS = { riasec: 0.25, strengths: 0.15, motivators: 0.15 };
 
 function computeClusterAffinities(
   riasec: RIASECScore[],
   strengthDomains: StrengthDomainScore[],
   motivators: MotivatorProfile,
-  multipleIntelligence: StrengthDomainScore[],
   selfReported: string[]
 ): ClusterAffinityGrad[] {
   const riasecPct = Object.fromEntries(riasec.map((r) => [r.code, r.percentile]));
   const strengthPct = Object.fromEntries(strengthDomains.map((s) => [s.domain, s.score]));
   const motivatorPct = Object.fromEntries(motivators.ranked.map((m) => [m.tag, m.score]));
-  const miPct = Object.fromEntries(multipleIntelligence.map((m) => [m.domain, m.score]));
   const avg = (vals: number[]) => (vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : 0);
   const selfReportedSet = new Set(selfReported);
 
   return CAREER_CLUSTERS_18
     .map((cluster) => {
       const sig = CLUSTER_SIGNATURE[cluster];
-      const riasecScore = sig ? avg(sig.riasec.map((c) => riasecPct[c] || 0)) : 0;
-      const strengthScore = sig ? avg(sig.strengths.map((s) => strengthPct[s] || 0)) : 0;
-      const motivatorScore = sig && sig.motivators.length ? avg(sig.motivators.map((m) => motivatorPct[m] || 0)) : null;
-      const miScore = sig ? avg(sig.mi.map((m) => miPct[m] || 0)) : 0;
-      // Coverage-normalised weighted mean, same "average only what was
-      // actually measured/available" pattern used across this project's
-      // other scoring engines - "Personal Care, Beauty & Wellness" has no
-      // motivator evidence at all (see CLUSTER_SIGNATURE above), so its
-      // score is a mean over the 3 dimensions it does have, not artificially
-      // diluted by a missing 4th.
-      const parts: [number, number][] = [[riasecScore, CLUSTER_WEIGHTS.riasec], [strengthScore, CLUSTER_WEIGHTS.strengths], [miScore, CLUSTER_WEIGHTS.mi]];
-      if (motivatorScore !== null) parts.push([motivatorScore, CLUSTER_WEIGHTS.motivators]);
-      const denom = parts.reduce((s, [, w]) => s + w, 0) || CLUSTER_WEIGHT_TOTAL;
-      const computedScore = sig ? Math.round(parts.reduce((s, [v, w]) => s + v * w, 0) / denom) : 0;
+      const parts: [number, number][] = [];
+      if (sig) {
+        parts.push([avg(sig.riasec.map((c) => riasecPct[c] || 0)), CLUSTER_WEIGHTS.riasec]);
+        if (sig.strengths.length) parts.push([avg(sig.strengths.map((s) => strengthPct[s] || 0)), CLUSTER_WEIGHTS.strengths]);
+        if (sig.motivators.length) parts.push([avg(sig.motivators.map((m) => motivatorPct[m] || 0)), CLUSTER_WEIGHTS.motivators]);
+      }
+      const denom = parts.reduce((s, [, w]) => s + w, 0);
+      const computedScore = denom ? Math.round(parts.reduce((s, [v, w]) => s + v * w, 0) / denom) : 0;
       const isSelfReported = selfReportedSet.has(cluster);
-      return {
-        cluster, computedScore, selfReported: isSelfReported,
-        blendedScore: Math.min(100, computedScore + (isSelfReported ? 15 : 0)),
-      };
+      return { cluster, computedScore, selfReported: isSelfReported, blendedScore: Math.min(100, computedScore + (isSelfReported ? 15 : 0)) };
     })
     .sort((a, b) => b.blendedScore - a.blendedScore);
 }
@@ -509,23 +463,12 @@ export interface SuitableClusterGrad extends ClusterAffinityGrad {
  * Career Suitability - anchored to what's actually reachable from the
  * student's real degree+course, not just whichever cluster the psychometric
  * profile happens to score highest on (that's Fitment/clusterAffinities
- * itself, which ignores degree entirely by design). The Graduates
- * equivalent of 11-12's "stream-filtered, Native Fit only" Suitability.
+ * itself, which ignores degree entirely by design).
  *
  * The student's own degree cluster is guaranteed the #1 slot (when
- * resolvable) - a soft score boost isn't enough to guarantee that, since an
- * unrelated cluster's psychometric score can still beat it, which is
- * exactly how an engineering student could see an unrelated field ranked as
- * their top "suitability" domain. Its score shown is still the real,
- * unmodified blendedScore, never inflated. The remaining clusters are
- * ranked below it by blendedScore (interest + self-report).
- *
- * The single source of truth for "the student's top Suitability cluster" -
- * every place that needs it (the Suitability page's own ranking, the
- * Career Selector's roadmap anchor, summary.topCluster, gradExtraSheets'
- * PG-exams page) must go through this, not re-derive it independently, or
- * different parts of the same report can disagree on which cluster is
- * "top."
+ * resolvable); its score shown is still the real, unmodified blendedScore.
+ * The remaining clusters are ranked below it by blendedScore. This is the
+ * single source of truth for "the student's top Suitability cluster".
  */
 export function rankSuitabilityGrad(clusterAffinities: ClusterAffinityGrad[], degree: string, course: string): SuitableClusterGrad[] {
   const degreeCluster = clusterForDegreeCourse(degree, course);
@@ -542,21 +485,20 @@ export function rankSuitabilityGrad(clusterAffinities: ClusterAffinityGrad[], de
 // ---------------------------------------------------------------- Entry point
 
 export function scoreGraduateAssessment(responses: GraduateResponse): GraduateScoreOutput {
-  const personality = scorePersonality(responses.personality);
-  const riasec = scoreRIASEC(responses.career_interest);
-  const aptitude = scoreAptitude(responses.aptitude);
-  const strengthDomains = scoreStrengthAreas(responses.strengths);
-  const multipleIntelligence = scoreMultipleIntelligence(responses.multiple_intelligence);
-  const motivators = scoreMotivators(responses.motivators);
-  const learningStyle = scoreLearningStyle(responses.learning_styles);
-  const emotionalIntelligence = scoreEI(responses.emotional_intelligence);
-  const integratedIndicators = scoreIntegratedIndicators(responses.integrated_indicators);
+  const rates = collectTags(responses);
+  const personality = scorePersonality(rates);
+  const riasec = scoreRIASEC(rates);
+  const motivators = scoreMotivators(rates);
+  const strengthDomains = scoreStrengthAreas(rates);
+  const emotionalIntelligence = scoreEI(responses);
+  const aptitude = scoreAptitude(responses);
+  const pillars = buildPillars(responses, personality, riasec, motivators, aptitude, rates);
 
   const layer1: PsychometricProfileGrad = {
-    personality, riasec, aptitude, strengthDomains, multipleIntelligence, motivators, learningStyle, emotionalIntelligence, integratedIndicators,
+    pillars, personality, riasec, aptitude, strengthDomains, motivators, emotionalIntelligence, multipleIntelligence: [],
   };
 
-  const clusterAffinities = computeClusterAffinities(riasec, strengthDomains, motivators, multipleIntelligence, responses.career_cluster_fit.topClusters);
+  const clusterAffinities = computeClusterAffinities(riasec, strengthDomains, motivators, responses.career_cluster_fit.topClusters);
   const suitabilityRanked = rankSuitabilityGrad(clusterAffinities, responses.degree, responses.course);
   const topCluster = suitabilityRanked[0]?.cluster ?? "";
 
@@ -577,17 +519,21 @@ export function scoreGraduateAssessment(responses: GraduateResponse): GraduateSc
     decisionStage: responses.career_cluster_fit.decisionStage,
   };
 
+  // Growth areas: the two lowest-scoring skill pillars (3-8). Pillars 1-2 are
+  // preference profiles, where a lower "clarity" isn't a weakness.
+  const growthAreas = pillars.slice(2).slice().sort((a, b) => a.score - b.score).slice(0, 2).map((p) => p.label);
   const topStrength = strengthDomains[0];
-  const growthAreas = [...strengthDomains].sort((a, b) => a.score - b.score).slice(0, 2).map((s) => s.domain);
 
   return {
+    version: 2,
     layer1,
     clusterAffinities,
     academicContext,
     aspiration,
+    skillEvidence: deriveSkillEvidence(layer1),
     summary: {
       topCluster,
-      strengthsSummary: topStrength ? `${topStrength.domain} stood out most across your answers.` : "Your strengths are fairly evenly spread.",
+      strengthsSummary: topStrength && topStrength.score > 0 ? `${topStrength.domain} stood out most across your answers.` : "Your strengths are fairly evenly spread.",
       growthAreas,
     },
   };

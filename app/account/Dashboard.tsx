@@ -21,7 +21,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { AssessmentSummary, UserProfile } from "@/lib/auth/AuthProvider";
+import type { AssessmentSummary, CustomDimension, UserProfile } from "@/lib/auth/AuthProvider";
 import { Logo } from "@/app/Logo";
 import dynamic from "next/dynamic";
 import { Icon, CATEGORY_ABBR } from "@/app/Icons";
@@ -230,10 +230,14 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
     }
   };
 
+  // Graduates (UG) supply their own 8 pillar dimensions (customDimensions);
+  // every other class keeps the fixed categories.
+  const customDims = useMemo(() => new Map((a.customDimensions ?? []).map((d) => [d.key, d])), [a.customDimensions]);
   const radar: RadarDatum[] = useMemo(() => {
+    if ((a.customDimensions ?? []).length) return a.customDimensions!.map((d) => ({ key: d.key, label: d.label, score: d.score, bench: 50 }));
     const src = ((a.radar ?? []).length ? a.radar! : []).map((r) => ({ ...r, bench: BENCH[r.key] || 50 }));
     return CANON.map((k) => src.find((r) => r.key === k) ?? { key: k, label: CAT_LABEL[k], score: 0, bench: BENCH[k] || 50 });
-  }, [a.radar]);
+  }, [a.radar, a.customDimensions]);
 
   // Coherent recommendation: blend interest + abilities + intelligences + values.
   const fits = domainFit(a);
@@ -257,11 +261,17 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
   const strongest = radar.slice().sort((x, y) => y.score - x.score)[0];
   const plan = actionPlan(a, topDomainName);
   const scoreOf = (k: string) => radar.find((r) => r.key === k)?.score ?? 0;
-  const pbars = [
-    { label: "Personality", score: scoreOf("personality"), c: KPI[0].c },
-    { label: "Work Style", score: scoreOf("strengths"), c: KPI[1].c },
-    { label: "Values", score: scoreOf("motivators"), c: KPI[2].c },
-  ];
+  const pbars = customDims.size
+    ? [
+        { label: "Human & Professional Skills", score: scoreOf("ug_human_professional_skills"), c: KPI[0].c },
+        { label: "Digital & Future Skills", score: scoreOf("ug_digital_future_skills"), c: KPI[1].c },
+        { label: "Career Readiness", score: scoreOf("ug_career_readiness"), c: KPI[2].c },
+      ]
+    : [
+        { label: "Personality", score: scoreOf("personality"), c: KPI[0].c },
+        { label: "Work Style", score: scoreOf("strengths"), c: KPI[1].c },
+        { label: "Values", score: scoreOf("motivators"), c: KPI[2].c },
+      ];
 
   const dateStr = (() => {
     try { return new Date(a.completedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }); }
@@ -521,16 +531,18 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                   </div>
                   <div className="ogd-dimtabs">
                     {radar.map((d) => (
-                      <button key={d.key} className={`ogd-dimtab${dimKey === d.key ? " on" : ""}`} onClick={() => setDimKey(d.key)} title={CAT_LABEL[d.key]}>
-                        <span className="ogd-dimtab-ic"><Icon name={d.key} size={20} /></span>
+                      <button key={d.key} className={`ogd-dimtab${dimKey === d.key ? " on" : ""}`} onClick={() => setDimKey(d.key)} title={CAT_LABEL[d.key] ?? d.label}>
+                        <span className="ogd-dimtab-ic"><Icon name={customDims.get(d.key)?.icon ?? d.key} size={20} /></span>
                         <span className="ogd-dimtab-lab">
                           {d.score > 0 ? <span className="ogd-dimtab-check"><Icon name="check" size={10} stroke={2.4} /></span> : null}
-                          {DIM_TAB_LABEL[d.key]}
+                          {DIM_TAB_LABEL[d.key] ?? customDims.get(d.key)?.short ?? d.label}
                         </span>
                       </button>
                     ))}
                   </div>
-                  <DimPanel d={radar.find((r) => r.key === dimKey) ?? radar[0]} a={a} />
+                  {customDims.get(dimKey) ?? customDims.get(radar[0]?.key)
+                    ? <CustomDimPanel c={(customDims.get(dimKey) ?? customDims.get(radar[0].key))!} />
+                    : <DimPanel d={radar.find((r) => r.key === dimKey) ?? radar[0]} a={a} />}
                 </div>
               </section>
 
@@ -577,7 +589,7 @@ export default function Dashboard({ a, profile, email, onSignOut, extraSections 
                     sub={topTheme ? `${topInterestScore}% of your interest answers` : ""} subAccent />
                   <KpiTile icon="career_interest" c={KPI[1]} label="Interest code" value={code || "-"} sub="Based on your career interests" />
                   <KpiTile icon="motivators" c={KPI[2]} label="Strongest area"
-                    value={strongest ? String(Math.round(strongest.score)) : "-"} sub={strongest ? CAT_LABEL[strongest.key] : ""} />
+                    value={strongest ? String(Math.round(strongest.score)) : "-"} sub={strongest ? (CAT_LABEL[strongest.key] ?? strongest.label) : ""} />
                   <KpiTile icon="heart" c={KPI[3]} label="Emotional Intelligence"
                     value={a.ei != null ? String(Math.round(a.ei)) : "-"} sub={resultOf("emotional_intelligence", a)?.value || "Solid EQ"} />
                 </div>
@@ -812,6 +824,64 @@ function Toolkit({ tab, setTab }: { tab: string; setTab: (id: string) => void })
 /** The full breakdown for whichever dimension is active in the horizontal
  *  tab row above - score, benchmark, sub-traits, and the complete deep-dive
  *  (meaning, strengths, growth areas, recommended actions, next step). */
+/** Dimension panel for a scorer-supplied dimension (Graduates' pillars). */
+function CustomDimPanel({ c }: { c: CustomDimension }) {
+  return (
+    <div className="ogd-dimpanel">
+      <div className="ogd-dimpanel-top">
+        <div className="ogd-dimpanel-head">
+          <span className="ogd-dim-ic lg"><Icon name={c.icon} size={20} /></span>
+          <div>
+            <div className="ogd-dimpanel-name">{c.label}</div>
+            <span className="ogd-dim-result">Your result: <b>{c.result}</b></span>
+          </div>
+        </div>
+        <div className="ogd-dimpanel-score">
+          <div className="ogd-dimpanel-num">{Math.round(c.score)}</div>
+        </div>
+      </div>
+      <SkillBar value={c.score} color={IN} />
+      <span className="ogd-dim-pct">{c.scoreBasis}</span>
+
+      <p className="ogd-dim-text">{c.meaning}</p>
+
+      {c.subs.length > 0 && (
+        <div className="ogd-dim-subs">
+          {c.subs.slice(0, 8).map((s) => (
+            <div className="ogd-dim-subrow" key={s.label}>
+              <span className="ogd-dim-sublab">{s.label}</span>
+              <SkillBar value={s.value} color={C.faint} height={6} />
+              <span className="ogd-dim-subval">{Math.round(s.value)}</span>
+            </div>
+          ))}
+        </div>
+      )}
+      {c.preferences.length > 0 && (
+        <div className="ogd-dim-text">
+          {c.preferences.map((p) => <div key={p.label}><b>{p.label}:</b> {p.value}</div>)}
+        </div>
+      )}
+
+      <div className="ogd-dim-lists">
+        <div className="ogd-dim-list">
+          <div className="ogd-dim-list-h good">Strengths</div>
+          {c.strengths.slice(0, 3).map((s, i) => <div className="ogd-dim-li" key={i}>{s}</div>)}
+        </div>
+        <div className="ogd-dim-list">
+          <div className="ogd-dim-list-h">Areas to grow</div>
+          {c.grow.slice(0, 3).map((s, i) => <div className="ogd-dim-li" key={i}>{s}</div>)}
+        </div>
+        {c.recommend.length > 0 && (
+          <div className="ogd-dim-list">
+            <div className="ogd-dim-list-h">Recommended actions</div>
+            {c.recommend.map((s, i) => <div className="ogd-dim-li" key={i}>{s}</div>)}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function DimPanel({ d, a }: { d: RadarDatum; a: AssessmentSummary }) {
   const dd = categoryDeepDive(d.key, a);
   const res = resultOf(d.key, a);

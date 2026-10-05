@@ -140,9 +140,11 @@ export default function DashboardMobile({
   };
 
   const radar: RadarDatum[] = useMemo(() => {
+    // Graduates (UG) supply their own 8 pillar dimensions (customDimensions).
+    if ((a.customDimensions ?? []).length) return a.customDimensions!.map((d) => ({ key: d.key, label: d.label, score: d.score, bench: 50 }));
     const src = ((a.radar ?? []).length ? a.radar! : []).map((r) => ({ ...r, bench: BENCH[r.key] || 50 }));
     return CANON.map((k) => src.find((r) => r.key === k) ?? { key: k, label: CAT_LABEL[k], score: 0, bench: BENCH[k] || 50 });
-  }, [a.radar]);
+  }, [a.radar, a.customDimensions]);
 
   const fits = domainFit(a);
   const topField = fits[0];
@@ -520,7 +522,7 @@ export default function DashboardMobile({
             {[
               { icon: "star", label: "Strongest interest", value: topInterestName, sub: `${topInterestScore}% of answers` },
               { icon: "career_interest", label: "Interest code", value: code || "-", sub: "Based on your career interests" },
-              { icon: "motivators", label: "Strongest area", value: strongest ? String(Math.round(strongest.score)) : "-", sub: strongest ? CAT_LABEL[strongest.key] : "" },
+              { icon: "motivators", label: "Strongest area", value: strongest ? String(Math.round(strongest.score)) : "-", sub: strongest ? (CAT_LABEL[strongest.key] ?? strongest.label) : "" },
               { icon: "heart", label: "Emotional Intelligence", value: a.ei != null ? String(Math.round(a.ei)) : "-", sub: "Strong EQ" },
             ].map((kpi, i) => (
               <div key={i} style={{ background: KPI[i].t, border: `1px solid ${IN_LINE}`, borderRadius: "8px", padding: "16px" }}>

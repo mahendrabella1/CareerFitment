@@ -45,6 +45,8 @@ import { flagshipRoadmapForGrad, type FlagshipDomainRoadmapGrad } from "@/lib/re
 import { findCareer1112 } from "@/lib/report/careerFitEngine1112";
 import { detailedRoadmapFor, type DetailedCareerRoadmap } from "@/lib/report/careerRoadmapDetailed1112";
 import { careerHorizonForCluster, HORIZON_PHASE_META, SKILL_LAYER_META, CAREER_HORIZON_GUIDANCE_NOTE, type ClusterCareerHorizon, type HorizonSkillLayers } from "@/lib/report/careerHorizonsGrad";
+import { computeSkillGap, type GapStatus, type MeasuredGapRow, type UnmeasuredGapRow } from "@/lib/report/skillGapGrad";
+import type { SkillEvidenceGrad } from "@/lib/newAssessment/skillEvidenceGrad";
 
 const SITE_URL_GRAD = (process.env.NEXT_PUBLIC_SITE_URL || "https://careerfitment.onegrasp.com").replace(/\/+$/, "");
 
@@ -1194,29 +1196,30 @@ function toFive(value: number, max: number): number {
 }
 
 /** Career Horizon's skill-gap engine, Option 2 (per explicit instruction):
- *  real 1-5 gauges ONLY for the handful of named skills we can honestly
- *  back with an actual measured score - Communication/Critical Thinking/
- *  Emotional Intelligence (Foundational Human), Domain Fit (Domain), and
- *  Leadership/Strategic Thinking (Strategic). Digital Skills and AI Skills
- *  get none - nothing in this assessment measures digital tooling, data
- *  tools or AI literacy, and showing a number there would be invented, not
- *  derived (see this file's conversation history: the original mockup's
- *  "Python: 2/5"-style table is exactly what this function refuses to
- *  produce). CareerHorizonSectionGrad shows an explicit "not assessed" note
- *  for those two layers instead of silently omitting them. */
+ *  real 1-5 gauges ONLY for named skills backed by an actual measured score.
+ *  Since the 8-pillar UG bank, Communication, Digital literacy, AI readiness
+ *  and Data literacy come from the student's stored skill evidence (Pillars 5
+ *  and 6). A layer with nothing measured still shows the explicit
+ *  "not assessed" note instead of a number. */
 function realSkillGaugesForLayer(
   layerKey: keyof HorizonSkillLayers,
   strengthDomains: GraduateScoreOutput["layer1"]["strengthDomains"],
   mi: GraduateScoreOutput["layer1"]["multipleIntelligence"],
   ei: GraduateScoreOutput["layer1"]["emotionalIntelligence"],
-  domainFitScore: number | null
+  domainFitScore: number | null,
+  evidence?: SkillEvidenceGrad
 ): HorizonSkillGauge[] {
+  const fromEvidence = (key: keyof SkillEvidenceGrad, label: string): HorizonSkillGauge[] => {
+    const e = evidence?.[key];
+    return e ? [{ label, level1to5: e.level, source: e.basis }] : [];
+  };
   const findDomain = (list: GraduateScoreOutput["layer1"]["strengthDomains"], name: string) => list.find((d) => d.domain === name);
   switch (layerKey) {
     case "foundationalHuman": {
       const out: HorizonSkillGauge[] = [];
       const linguistic = findDomain(mi, "Linguistic");
       if (linguistic) out.push({ label: "Communication", level1to5: toFive(linguistic.score, 100), source: "Linguistic (Multiple Intelligence)" });
+      else out.push(...fromEvidence("communication", "Communication"));
       const analytical = findDomain(strengthDomains, "Intellectual & Analytical");
       if (analytical) out.push({ label: "Critical Thinking", level1to5: toFive(analytical.score, 100), source: "Intellectual & Analytical (Strength Domain)" });
       if (ei) {
@@ -1236,7 +1239,9 @@ function realSkillGaugesForLayer(
     case "domain":
       return domainFitScore == null ? [] : [{ label: "Domain Fit", level1to5: toFive(domainFitScore, 100), source: "Your Career Suitability score for this field" }];
     case "digital":
+      return [...fromEvidence("digital", "Digital Literacy"), ...fromEvidence("data", "Data Literacy")];
     case "ai":
+      return fromEvidence("ai", "AI Readiness");
     default:
       return [];
   }
@@ -1288,7 +1293,7 @@ function CareerHorizonTeaser({ color }: { color: string }) {
  *  honestly-sourced 1-5 gauges (realSkillGaugesForLayer) - Digital/AI
  *  Skills get an explicit "not assessed" note rather than a fabricated
  *  number, since nothing in this test measures them. */
-function CareerHorizonSectionGrad({ horizon, cluster, roleContext, strengthDomains, multipleIntelligence, emotionalIntelligence, domainFitScore }: {
+function CareerHorizonSectionGrad({ horizon, cluster, roleContext, strengthDomains, multipleIntelligence, emotionalIntelligence, domainFitScore, skillEvidence }: {
   horizon: ClusterCareerHorizon;
   cluster: string;
   roleContext?: string;
@@ -1296,6 +1301,7 @@ function CareerHorizonSectionGrad({ horizon, cluster, roleContext, strengthDomai
   multipleIntelligence: GraduateScoreOutput["layer1"]["multipleIntelligence"];
   emotionalIntelligence: GraduateScoreOutput["layer1"]["emotionalIntelligence"];
   domainFitScore: number | null;
+  skillEvidence?: SkillEvidenceGrad;
 }) {
   const color = clusterColor(cluster);
   return (
@@ -1309,7 +1315,7 @@ function CareerHorizonSectionGrad({ horizon, cluster, roleContext, strengthDomai
         <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: ".07em", textTransform: "uppercase", color, marginBottom: 10 }}>What you already have - from your real assessment results</div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 14 }}>
           {SKILL_LAYER_META.map((layer) => {
-            const gauges = realSkillGaugesForLayer(layer.key, strengthDomains, multipleIntelligence, emotionalIntelligence, domainFitScore);
+            const gauges = realSkillGaugesForLayer(layer.key, strengthDomains, multipleIntelligence, emotionalIntelligence, domainFitScore, skillEvidence);
             return (
               <div key={layer.key}>
                 <div style={{ fontSize: 11, fontWeight: 800, color: "var(--ink)", marginBottom: 4 }}>{layer.label}</div>
@@ -1364,6 +1370,101 @@ function CareerHorizonSectionGrad({ horizon, cluster, roleContext, strengthDomai
       </div>
       <p className="disclaimer" style={{ marginTop: 18 }}>{CAREER_HORIZON_GUIDANCE_NOTE}</p>
     </>
+  );
+}
+
+const PERSONAL_CARE_CLUSTER = "Personal Care, Beauty & Wellness";
+const GAP_STATUS_STYLE: Record<GapStatus, { label: string; color: string; bg: string }> = {
+  strength: { label: "Strong", color: "#0d7a55", bg: "#e4f5ec" },
+  build: { label: "Build on", color: "#9a5b00", bg: "#fdf0d2" },
+  develop: { label: "Develop", color: "#b42318", bg: "#fde7e5" },
+};
+
+function SkillGapNotice({ text }: { text: string }) {
+  return (
+    <p style={{ marginTop: 20, padding: "16px 18px", borderRadius: 13, border: "1px solid var(--line)", fontSize: 13, color: "var(--muted)", lineHeight: 1.6 }}>{text}</p>
+  );
+}
+
+function LevelBars({ level, color }: { level: number; color: string }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 8, flex: "0 0 auto" }}>
+      <div style={{ display: "flex", gap: 3 }}>
+        {[1, 2, 3, 4, 5].map((n) => (
+          <span key={n} style={{ width: 16, height: 7, borderRadius: 3, background: n <= level ? color : `${color}20` }} />
+        ))}
+      </div>
+      <span style={{ fontSize: 11, fontWeight: 800, color: "var(--ink)" }}>{level}/5</span>
+    </div>
+  );
+}
+
+function SkillGapSectionGrad({ evidence, cluster, color }: { evidence: SkillEvidenceGrad | undefined; cluster: string; color: string }) {
+  if (cluster === PERSONAL_CARE_CLUSTER) {
+    return <SkillGapNotice text="The skill gap is not available for this cluster yet. It covers the 17 clusters in the career-fit matrix." />;
+  }
+  const result = computeSkillGap(evidence, cluster);
+  if (!result) {
+    return <SkillGapNotice text="Your report was created before skill evidence was recorded. Retake the assessment to see your skill gap for this cluster." />;
+  }
+  const measured = result.rows.filter((r): r is MeasuredGapRow => r.kind === "measured");
+  const unmeasured = result.rows.filter((r): r is UnmeasuredGapRow => r.kind === "unmeasured");
+  const tiles: { label: string; value: number; status: GapStatus | "notAssessed" }[] = [
+    { label: "Strong", value: result.counts.strength, status: "strength" },
+    { label: "Build on", value: result.counts.build, status: "build" },
+    { label: "Develop", value: result.counts.develop, status: "develop" },
+    { label: "Not assessed", value: result.counts.notAssessed, status: "notAssessed" },
+  ];
+  return (
+    <div style={{ marginTop: 22 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 10 }}>
+        {tiles.map((t) => {
+          const s = t.status === "notAssessed" ? { color: "var(--muted)", bg: "var(--line)" } : GAP_STATUS_STYLE[t.status];
+          return (
+            <div key={t.label} style={{ border: "1px solid var(--line)", borderRadius: 12, padding: "12px 14px", minWidth: 0 }}>
+              <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: s.color }}>{t.label}</div>
+              <div style={{ fontSize: 24, fontWeight: 900, color: "var(--ink)", marginTop: 2 }}>{t.value}</div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div style={{ marginTop: 20, border: "1px solid var(--line)", borderRadius: 13, overflow: "hidden" }}>
+        <div style={{ padding: "10px 16px", fontSize: 10.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)", background: "var(--paper, #f8f7f3)" }}>
+          Measured skills
+        </div>
+        {measured.map((r) => {
+          const s = GAP_STATUS_STYLE[r.status];
+          return (
+            <div key={r.key} style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12, padding: "12px 16px", borderTop: "1px solid var(--line)" }}>
+              <div style={{ flex: "1 1 180px", minWidth: 0 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>{r.label}</div>
+                <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 2, lineHeight: 1.45 }}>From: {r.basis}</div>
+              </div>
+              <LevelBars level={r.level} color={color} />
+              <div style={{ fontSize: 12, fontWeight: 700, color: "var(--ink)", flex: "0 0 auto" }}>
+                Target {r.target} <span style={{ fontSize: 10, fontWeight: 500, color: "var(--muted)" }}>(estimate)</span>
+              </div>
+              <span style={{ fontSize: 11, fontWeight: 800, color: s.color, background: s.bg, padding: "3px 10px", borderRadius: 999, flex: "0 0 auto" }}>{s.label}</span>
+            </div>
+          );
+        })}
+      </div>
+
+      <div style={{ marginTop: 16, border: "1px dashed var(--line)", borderRadius: 13, padding: "14px 16px" }}>
+        <div style={{ fontSize: 12, fontWeight: 800, color: "var(--ink)" }}>Not measured by this test</div>
+        <p style={{ fontSize: 12, color: "var(--muted)", margin: "4px 0 10px", lineHeight: 1.5 }}>No level is shown for these. Build evidence for them through the projects in your roadmap.</p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+          {unmeasured.map((r) => (
+            <span key={r.label} style={{ fontSize: 12, padding: "5px 11px", borderRadius: 999, border: "1px solid var(--line)", color: "var(--muted)" }}>{r.label} · Not assessed</span>
+          ))}
+        </div>
+      </div>
+
+      <p style={{ fontSize: 11, color: "var(--muted)", marginTop: 14, lineHeight: 1.6 }}>
+        Levels come only from this test, on a 1 to 5 scale. Targets are estimates for this cluster, not norms.
+      </p>
+    </div>
   );
 }
 
@@ -1617,6 +1718,17 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
         </>
       ),
     },
+    {
+      id: "skill-gap-grad",
+      kicker: "Skill gap",
+      node: (
+        <>
+          <PageHead eyebrow={`${selectorCluster} · measured from your answers`} title="Your Skill Gap"
+            sub="How the skills this test measures compare with what your cluster asks for. Only measured skills get a level." />
+          <SkillGapSectionGrad evidence={output.skillEvidence} cluster={selectorCluster} color={clusterColor(selectorCluster)} />
+        </>
+      ),
+    },
     ...(careerHorizon
       ? [{
           id: "career-horizon-grad",
@@ -1630,6 +1742,7 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
               multipleIntelligence={output.layer1.multipleIntelligence}
               emotionalIntelligence={output.layer1.emotionalIntelligence}
               domainFitScore={suitabilityRanked.find((c) => c.cluster === selectorCluster)?.suitabilityScore ?? null}
+              skillEvidence={output.skillEvidence}
             />
           ),
         }]

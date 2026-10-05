@@ -50,10 +50,12 @@ export function buildGradExtraSheets(output: GraduateScoreOutput): ReportSheet[]
   const roadmap = clusterRoadmapGradFor(topCluster);
   const pgExams = roadmap?.pgInIndia.entranceExams ?? [];
 
-  const scores = dimensionScoresGrad(output);
+  // Pillars 1-2 (personality, interests) are preference profiles whose score
+  // is consistency, not ability, so only the six skill pillars are compared.
+  const scores = dimensionScoresGrad(output).slice(2);
   const ranked = [...scores].sort((a, b) => b.score - a.score);
-  const strengthToLeverage = ranked.slice(0, 3).map((d) => `${d.label} clarity (${d.score}/100)`);
-  const growthAreas = ranked.slice(-3).reverse().map((d) => `${d.label} clarity (${d.score}/100)`);
+  const strengthToLeverage = ranked.slice(0, 3).map((d) => `${d.label} (${d.score}/100)`);
+  const growthAreas = ranked.slice(-3).reverse().map((d) => `${d.label} (${d.score}/100)`);
   const lowest = ranked[ranked.length - 1];
   // Purely psychometric order here (not rankSuitabilityGrad) - these are
   // explicitly framed as OTHER paths worth a look, so excluding topCluster
@@ -99,7 +101,7 @@ export function buildGradExtraSheets(output: GraduateScoreOutput): ReportSheet[]
             {lowest && (
               <div className="recos" style={{ marginBottom: 16 }}>
                 <div className="subhd">Worth keeping an eye on</div>
-                <ol><li>{lowest.label} clarity is your least developed area right now ({lowest.score}/100) — worth deliberate practice rather than avoidance.</li></ol>
+                <ol><li>{lowest.label} is your least developed area right now ({lowest.score}/100) — worth deliberate practice rather than avoidance.</li></ol>
               </div>
             )}
             {alternativePaths.length > 0 && (
