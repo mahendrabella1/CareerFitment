@@ -151,7 +151,14 @@ export interface ExtraSection {
   reportNode?: ReactNode;
 }
 
-export default function Dashboard({ a, profile, email, onSignOut, extraSections = [] }: { a: AssessmentSummary; profile?: UserProfile | null; email?: string | null; onSignOut?: () => void; extraSections?: ExtraSection[] }) {
+export default function Dashboard({ a: savedSummary, profile, email, onSignOut, extraSections = [] }: { a: AssessmentSummary; profile?: UserProfile | null; email?: string | null; onSignOut?: () => void; extraSections?: ExtraSection[] }) {
+  // Undergraduate results are stored as the scorer's raw output; the dashboard
+  // needs the adapted summary (8 pillars, interest code, EI...) everywhere, not
+  // only inside the full report. Every other class passes through unchanged.
+  const a = useMemo(() => {
+    const g = (savedSummary as any)?.graduateOutput;
+    return savedSummary?.journeyCode === "grad" && isCurrentGraduateShape(g) ? adaptGraduateToSummary(g, savedSummary) : savedSummary;
+  }, [savedSummary]);
   const router = useRouter();
   const [view, setView] = useState<"dashboard" | "report" | "feature">("dashboard");
   const [navOpen, setNavOpen] = useState(false);

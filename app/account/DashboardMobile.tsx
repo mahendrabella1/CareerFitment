@@ -99,10 +99,15 @@ const BENCH: Record<string, number> = {
 };
 
 export default function DashboardMobile({
-  a, name, email, profile, onSignOut,
+  a: savedSummary, name, email, profile, onSignOut,
 }: {
   a: AssessmentSummary, name?: string, email?: string, profile?: UserProfile, onSignOut?: () => void,
 }) {
+  // Undergraduate results are stored raw; adapt them once for the whole dashboard.
+  const a = useMemo(() => {
+    const g = (savedSummary as any)?.graduateOutput;
+    return savedSummary?.journeyCode === "grad" && isCurrentGraduateShape(g) ? adaptGraduateToSummary(g, savedSummary) : savedSummary;
+  }, [savedSummary]);
   const [navOpen, setNavOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [view, setView] = useState<"dashboard" | "report" | "feature">("dashboard");
