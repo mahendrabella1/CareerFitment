@@ -43,6 +43,7 @@ import { CAREER_CLUSTERS_18, CLUSTER_ROLES, MASTER_ROWS_GRAD, clusterForDegreeCo
 import { clusterRoadmapGradFor, type GradClusterRoadmap, type GradYearFocus } from "@/lib/report/clusterRoadmapsGrad";
 import { flagshipRoadmapForGrad, type FlagshipDomainRoadmapGrad } from "@/lib/report/flagshipRoadmapsGrad";
 import { findCareer1112 } from "@/lib/report/careerFitEngine1112";
+import { CAREERS_1112 } from "@/lib/report/careerfit1112";
 import { detailedRoadmapFor, type DetailedCareerRoadmap } from "@/lib/report/careerRoadmapDetailed1112";
 import { careerHorizonForCluster, HORIZON_PHASE_META, SKILL_LAYER_META, CAREER_HORIZON_GUIDANCE_NOTE, type ClusterCareerHorizon, type HorizonSkillLayers } from "@/lib/report/careerHorizonsGrad";
 import { computeSkillGap, type GapStatus, type MeasuredGapRow, type UnmeasuredGapRow } from "@/lib/report/skillGapGrad";
@@ -263,7 +264,7 @@ const GRAD_CONCERN_POINTERS: Record<string, string> = {
   "Meeting admission, licensing or certification requirements.": "The Career Selector page ahead lists the exact eligibility, duration and entrance routes for your specific degree.",
   "Affording further education or a career transition.": "Every cluster's roadmap covers government internships and PG entrance routes alongside private options, not just paid ones.",
   "Managing family expectations or relocation.": "The PG-in-India and Study Abroad sections give you real options on both fronts, so you can make the case for whichever direction fits your situation.",
-  "Feeling overwhelmed by the number of possible paths.": "Your top-ranked cluster below is where to start - you don't need to evaluate all 18 at once.",
+  "Feeling overwhelmed by the number of possible paths.": "Your top-ranked cluster below is where to start - you don't need to evaluate all 17 at once.",
 };
 function ConcernPointers({ concerns }: { concerns: string[] }) {
   const known = concerns.filter((c) => GRAD_CONCERN_POINTERS[c]);
@@ -307,9 +308,49 @@ function SecLabelGrad({ children }: { children: React.ReactNode }) {
 // plus a description line and PG entrance-exam links pulled from the same
 // real clusterRoadmapsGrad.ts data gradExtraSheets.tsx already uses -
 // closing the design gap against 11-12's card, not just visually matching it.
-function ClusterCard({ cluster, score, rank }: { cluster: string; score: number; rank: number }) {
+/** Same SVG bar chart as Class 11-12's ClusterBarChart (careerFit1112Sheets.tsx):
+ *  one bold coloured bar per cluster on a tinted track, with the % at its end. */
+function ClusterBarChartGrad({ rows }: { rows: { cluster: string; score: number }[] }) {
+  const shown = rows.filter((r) => r.score > 0);
+  if (!shown.length) return null;
+  const W = 760, rowH = 45, padL = 350, padR = 56, padT = 6, padB = 6;
+  const H = padT + padB + shown.length * rowH;
+  const maxScore = Math.max(100, ...shown.map((r) => r.score));
+  const barW = (v: number) => ((W - padL - padR) * v) / maxScore;
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Career cluster fit, percentage by cluster" style={{ width: "100%", height: "auto", display: "block" }}>
+      {shown.map((r, i) => {
+        const y = padT + i * rowH;
+        const color = clusterColor(r.cluster);
+        return (
+          <g key={r.cluster}>
+            <text x={16} y={y + rowH / 2 + 4} textAnchor="start" fontSize={13} fontWeight={700} fill="var(--ink)">{r.cluster}</text>
+            <rect x={padL} y={y + 8} width={W - padL - padR} height={rowH - 16} rx={5} fill={color} opacity={0.14} />
+            <rect x={padL} y={y + 8} width={barW(r.score)} height={rowH - 16} rx={5} fill={color} />
+            <text x={padL + barW(r.score) + 8} y={y + rowH / 2 + 4} fontSize={13} fontWeight={800} fill="var(--ink)">{Math.round(r.score)}%</text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+const RESEARCHED_CAREERS = new Set(CAREERS_1112.map((c) => c.name));
+
+/** The roles to name on a cluster card: well-known, researched careers first
+ *  (they also have a full roadmap), then the rest, each group ordered by how
+ *  well the role matches the student's interest code - instead of the first
+ *  few roles alphabetically. */
+function featuredRoles(cluster: string, riasec: RIASECScore[], n: number, exclude?: Set<string>): string[] {
+  const roles = (CLUSTER_ROLES[cluster] ?? []).filter((r) => !exclude?.has(r));
+  const researched = roles.filter((r) => RESEARCHED_CAREERS.has(r));
+  const rest = roles.filter((r) => !RESEARCHED_CAREERS.has(r));
+  return [...rankRolesByRiasec(researched, riasec), ...rankRolesByRiasec(rest, riasec)].slice(0, n);
+}
+
+function ClusterCard({ cluster, score, rank, riasec }: { cluster: string; score: number; rank: number; riasec: RIASECScore[] }) {
   const color = clusterColor(cluster);
-  const roles = (CLUSTER_ROLES[cluster] ?? []).slice(0, 4);
+  const roles = featuredRoles(cluster, riasec, 4);
   const roadmap = clusterRoadmapGradFor(cluster);
   const emergingCount = roadmap?.emergingAreas.length ?? 0;
   const tier = fitLabel(score);
@@ -325,7 +366,7 @@ function ClusterCard({ cluster, score, rank }: { cluster: string; score: number;
           {emergingCount > 0 && <div style={{ fontSize: 10.5, color, fontWeight: 700, marginTop: 3 }}>🔥 {emergingCount} emerging course{emergingCount > 1 ? "s" : ""} in this cluster</div>}
         </div>
         <div style={{ textAlign: "right", flex: "none" }}>
-          <div style={{ fontSize: 15.5, fontWeight: 900, color: tier.color, letterSpacing: "-.01em" }}>{tier.label}</div>
+          <div style={{ fontSize: 19, fontWeight: 900, color, letterSpacing: "-.01em" }}>{Math.round(score)}%</div>
           <div style={{ fontSize: 8.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)" }}>Fit</div>
         </div>
       </div>
@@ -421,7 +462,7 @@ function SuitabilityDomainBlock({ cluster, score, rank, degree, course, riasec }
   // roles are eligible to appear.
   const ownRoles = isOwnCluster ? rankRolesByRiasec(rolesForDegreeCourse(degree, course), riasec) : [];
   const ownRolesSet = new Set(ownRoles);
-  const generalRoles = rankRolesByRiasec((CLUSTER_ROLES[cluster] ?? []).filter((r) => !ownRolesSet.has(r)), riasec).slice(0, 8);
+  const generalRoles = featuredRoles(cluster, riasec, 8, ownRolesSet);
   const tier = fitLabel(score);
   const roadmap = clusterRoadmapGradFor(cluster);
   const emergingCount = roadmap?.emergingAreas.length ?? 0;
@@ -440,19 +481,15 @@ function SuitabilityDomainBlock({ cluster, score, rank, degree, course, riasec }
           {!isOwnCluster && emergingCount > 0 && <div style={{ fontSize: 10.5, color, fontWeight: 700, marginTop: 3 }}>🔥 {emergingCount} emerging course{emergingCount > 1 ? "s" : ""}</div>}
         </div>
         <div style={{ textAlign: "right", flex: "none" }}>
-          <div style={{ fontSize: 15.5, fontWeight: 900, color: tier.color, letterSpacing: "-.01em" }}>{tier.label}</div>
-          <div style={{ fontSize: 8.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)" }}>Cluster fit</div>
+          <div style={{ fontSize: 19, fontWeight: 900, color, letterSpacing: "-.01em" }}>{Math.round(score)}%</div>
+          <div style={{ fontSize: 8.5, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: "var(--muted)" }}>Fit</div>
         </div>
       </div>
 
-      <div style={{ padding: "12px 18px 0" }}>
-        <p style={{ margin: 0, fontSize: 12, color: "var(--ink-2)", lineHeight: 1.55 }}>
-          <b style={{ color: "var(--ink)" }}>Why this cluster ranks here: </b>
-          your measured RIASEC interest, strengths and multiple-intelligence profile line up with what {cluster.toLowerCase()} actually draws on{isOwnCluster ? ", and it's also the field your own degree and course lead into directly." : "."} This is a cluster-wide fit, not a per-role score - Graduates doesn't yet have an individual signature for each of the ~3,300 real roles in the data the way the 360 Class 11-12 careers each do, so the roles below are differentiated by whether they come from your own degree+course instead.
-        </p>
-      </div>
+      {/* Same layout as Class 11-12's Suitability card: header, then the
+          3-column grid - no extra explanatory paragraph. */}
 
-      <div className="domcard-grid" style={{ marginTop: 8 }}>
+      <div className="domcard-grid">
         <div className="domcard-sec">
           {ownRoles.length > 0 && (
             <div style={{ marginBottom: 14 }}>
@@ -1523,7 +1560,7 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
 
   const careerHorizon = careerHorizonForCluster(selectorCluster);
 
-  const roleChipsFor = (cluster: string) => (CLUSTER_ROLES[cluster] ?? []).slice(0, 3);
+  const roleChipsFor = (cluster: string) => featuredRoles(cluster, output.layer1.riasec, 3);
 
   const sheets: ReportSheet[] = [
     {
@@ -1532,19 +1569,9 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
       node: (
         <>
           <PageHead eyebrow="Across the standard career clusters" title="Your Career Cluster Fit"
-            sub="How strongly your measured interests, aptitude and strengths line up with each of the 18 career clusters - the same industry-standard groupings used across career guidance, not a scheme unique to this report." />
-          <div style={{ marginTop: 24, border: "1px solid var(--line)", borderRadius: 13, padding: "28px 24px", display: "flex", flexDirection: "column", gap: 10 }}>
-            {fitmentRanked.filter((c) => c.computedScore > 0).map((c) => (
-              <div key={c.cluster} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <div style={{ width: 200, fontSize: 12, fontWeight: 700, color: "var(--ink)", flex: "none" }}>{c.cluster}</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ height: 10, borderRadius: 999, background: "var(--line)", overflow: "hidden" }}>
-                    <div style={{ width: `${c.computedScore}%`, height: "100%", background: clusterColor(c.cluster) }} />
-                  </div>
-                </div>
-                <div style={{ width: 64, textAlign: "right", fontSize: 12, fontWeight: 800, color: fitLabel(c.computedScore).color, flex: "none" }}>{fitLabel(c.computedScore).label}</div>
-              </div>
-            ))}
+            sub="How strongly your measured interests, aptitude and strengths line up with each of the 17 career clusters - the same industry-standard groupings used across career guidance, not a scheme unique to this report." />
+          <div style={{ marginTop: 24, border: "1px solid var(--line)", borderRadius: 13, padding: "28px 24px" }}>
+            <ClusterBarChartGrad rows={fitmentRanked.map((c) => ({ cluster: c.cluster, score: c.computedScore }))} />
           </div>
         </>
       ),
@@ -1604,7 +1631,7 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
             sub="Your top 5 clusters, ranked purely by your assessment - ignores your degree entirely. This is what your interests, aptitude and strengths point toward, with no filter for what's currently reachable. Career Suitability, next, applies the real-world degree filter." />
           <div style={{ marginTop: 20 }}>
             <ConcernPointers concerns={aspiration.concerns} />
-            {fitmentRanked.slice(0, 5).map((c, i) => <ClusterCard key={c.cluster} cluster={c.cluster} score={c.computedScore} rank={i + 1} />)}
+            {fitmentRanked.slice(0, 5).map((c, i) => <ClusterCard key={c.cluster} cluster={c.cluster} score={c.computedScore} rank={i + 1} riasec={output.layer1.riasec} />)}
           </div>
           <p className="disclaimer" style={{ marginTop: 16 }}>
             You're free to explore any career, in any cluster - this is a starting point, not a fixed path.

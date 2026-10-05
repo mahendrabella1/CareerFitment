@@ -422,19 +422,20 @@ function buildPillars(responses: GraduateResponse, personality: PersonalityProfi
 // ---------------------------------------------------------------- Cluster affinity
 // RIASEC (25%), Strengths (15%) and Motivators (15%) against each cluster's
 // signature (lib/report/clusterSignatureGrad.ts), coverage-normalised so the
-// weights sum to 1. Multiple Intelligence (10% in the original formula) is not
+// weights sum to 1. Every input is a 0-100 "chosen when offered" rate, so a
+// cluster's score reads on the same scale as Class 11-12's fit percentages
+// (shares of 100 split six ways would make every cluster look weak). Multiple Intelligence (10% in the original formula) is not
 // measured by the 8-pillar bank and is left out rather than guessed.
 const CLUSTER_WEIGHTS = { riasec: 0.25, strengths: 0.15, motivators: 0.15 };
 
 function computeClusterAffinities(
-  riasec: RIASECScore[],
-  strengthDomains: StrengthDomainScore[],
-  motivators: MotivatorProfile,
+  rates: ReturnType<typeof collectTags>,
   selfReported: string[]
 ): ClusterAffinityGrad[] {
-  const riasecPct = Object.fromEntries(riasec.map((r) => [r.code, r.percentile]));
-  const strengthPct = Object.fromEntries(strengthDomains.map((s) => [s.domain, s.score]));
-  const motivatorPct = Object.fromEntries(motivators.ranked.map((m) => [m.tag, m.score]));
+  const pctOf = (tag: string) => Math.round(rateOf(rates, tag) * 100);
+  const riasecPct = (code: string) => pctOf(`riasec:${code}`);
+  const strengthPct = (s: string) => pctOf(`str:${s}`);
+  const motivatorPct = (m: string) => pctOf(`mot:${m}`);
   const avg = (vals: number[]) => (vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : 0);
   const selfReportedSet = new Set(selfReported);
 
@@ -443,9 +444,9 @@ function computeClusterAffinities(
       const sig = CLUSTER_SIGNATURE[cluster];
       const parts: [number, number][] = [];
       if (sig) {
-        parts.push([avg(sig.riasec.map((c) => riasecPct[c] || 0)), CLUSTER_WEIGHTS.riasec]);
-        if (sig.strengths.length) parts.push([avg(sig.strengths.map((s) => strengthPct[s] || 0)), CLUSTER_WEIGHTS.strengths]);
-        if (sig.motivators.length) parts.push([avg(sig.motivators.map((m) => motivatorPct[m] || 0)), CLUSTER_WEIGHTS.motivators]);
+        parts.push([avg(sig.riasec.map(riasecPct)), CLUSTER_WEIGHTS.riasec]);
+        if (sig.strengths.length) parts.push([avg(sig.strengths.map(strengthPct)), CLUSTER_WEIGHTS.strengths]);
+        if (sig.motivators.length) parts.push([avg(sig.motivators.map(motivatorPct)), CLUSTER_WEIGHTS.motivators]);
       }
       const denom = parts.reduce((s, [, w]) => s + w, 0);
       const computedScore = denom ? Math.round(parts.reduce((s, [v, w]) => s + v * w, 0) / denom) : 0;
@@ -498,7 +499,7 @@ export function scoreGraduateAssessment(responses: GraduateResponse): GraduateSc
     pillars, personality, riasec, aptitude, strengthDomains, motivators, emotionalIntelligence, multipleIntelligence: [],
   };
 
-  const clusterAffinities = computeClusterAffinities(riasec, strengthDomains, motivators, responses.career_cluster_fit.topClusters);
+  const clusterAffinities = computeClusterAffinities(rates, responses.career_cluster_fit.topClusters);
   const suitabilityRanked = rankSuitabilityGrad(clusterAffinities, responses.degree, responses.course);
   const topCluster = suitabilityRanked[0]?.cluster ?? "";
 

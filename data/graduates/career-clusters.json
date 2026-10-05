@@ -1352,7 +1352,12 @@
         "Wellness/Spa Consultant",
         "Women's Health Physio",
         "X-Ray Technician",
-        "Yoga Therapist"
+        "Yoga Therapist",
+        "Ayush Research Officer",
+        "Naturopathy Assistant",
+        "Naturopathy Consultant",
+        "Cosmetic Formulator",
+        "Wellness Director"
       ]
     },
     {
@@ -1600,7 +1605,12 @@
         "Talent Scout",
         "Team Operations Executive",
         "Wearable Tech Engineer",
-        "Wellness Coach"
+        "Wellness Coach",
+        "Yoga Instructor",
+        "Yoga Teacher",
+        "Yoga Trainer (Corporate)",
+        "Yoga Researcher",
+        "Lifestyle Coach"
       ]
     },
     {
@@ -2594,7 +2604,14 @@
         "Wealth Advisor",
         "Wealth Associate",
         "Wealth Manager",
-        "Web Analyst"
+        "Web Analyst",
+        "Beauty Brand Executive",
+        "Beauty Consultant",
+        "Salon Owner",
+        "Salon Manager",
+        "Retail Fashion Executive",
+        "Lifestyle Consultant",
+        "Wellness Consultant"
       ]
     },
     {
@@ -3284,7 +3301,12 @@
         "Visual Designer",
         "Visual Merchandiser",
         "Weave Designer",
-        "XR Researcher"
+        "XR Researcher",
+        "Beautician",
+        "Makeup Artist",
+        "Hair Stylist",
+        "Salon Technician",
+        "Fashion Assistant"
       ]
     },
     {
@@ -3444,7 +3466,9 @@
         "Turner",
         "Validation Engineer",
         "Weaver",
-        "Welder (TIG/MIG/ARC)"
+        "Welder (TIG/MIG/ARC)",
+        "Product Developer",
+        "Quality Analyst"
       ]
     },
     {
@@ -3633,7 +3657,10 @@
         "Travel Executive",
         "UAS Operations Manager",
         "Urban Transport Planner",
-        "Wedding Planner"
+        "Wedding Planner",
+        "Spa Therapist",
+        "Spa/Wellness Manager",
+        "Retreat Manager"
       ]
     },
     {
@@ -3726,48 +3753,6 @@
         "Technical Officer (Army/Navy/IAF)",
         "Technician (Defence)",
         "Toxicologist"
-      ]
-    },
-    {
-      "name": "Personal Care, Beauty & Wellness",
-      "roles": [
-        "Ayush Research Officer",
-        "Beautician",
-        "Beauty Brand Executive",
-        "Beauty Consultant",
-        "Cosmetic Formulator",
-        "Cosmetologist",
-        "Fashion Assistant",
-        "Hair Stylist",
-        "Lecturer",
-        "Lifestyle Coach",
-        "Lifestyle Consultant",
-        "Makeup Artist",
-        "Naturopathy Assistant",
-        "Naturopathy Consultant",
-        "Product Developer",
-        "Professor",
-        "Public Health Nutritionist",
-        "Quality Analyst",
-        "Retail Fashion Executive",
-        "Retreat Manager",
-        "Salon Manager",
-        "Salon Owner",
-        "Salon Technician",
-        "Spa Therapist",
-        "Spa/Wellness Manager",
-        "Sports Nutritionist",
-        "Sports Policy Advisor",
-        "Sports Scientist",
-        "Wellness Centre Manager",
-        "Wellness Coach",
-        "Wellness Consultant",
-        "Wellness Director",
-        "Yoga Instructor",
-        "Yoga Researcher",
-        "Yoga Teacher",
-        "Yoga Therapist",
-        "Yoga Trainer (Corporate)"
       ]
     }
   ],
@@ -6256,7 +6241,7 @@
       ]
     },
     {
-      "cluster": "Personal Care, Beauty & Wellness",
+      "cluster": "Healthcare & Medicine",
       "level": "UG",
       "degree": "B.Sc (Bachelor of Science - General / Honours)",
       "course": "Yoga / Naturopathy / Health & Wellness",
@@ -8868,7 +8853,7 @@
       ]
     },
     {
-      "cluster": "Personal Care, Beauty & Wellness",
+      "cluster": "Healthcare & Medicine",
       "level": "UG",
       "degree": "B.Pharm (Bachelor of Pharmacy)",
       "course": "Cosmetic Science / Cosmetology",
@@ -9921,7 +9906,7 @@
       ]
     },
     {
-      "cluster": "Personal Care, Beauty & Wellness",
+      "cluster": "Media, Communication, Arts & Design",
       "level": "UG",
       "degree": "B.Voc (Bachelor of Vocation) & Skill Degrees",
       "course": "B.Voc - Beauty & Wellness / Fashion",
@@ -10097,7 +10082,7 @@
       ]
     },
     {
-      "cluster": "Personal Care, Beauty & Wellness",
+      "cluster": "Media, Communication, Arts & Design",
       "level": "UG",
       "degree": "B.Voc (Bachelor of Vocation) & Skill Degrees",
       "course": "B.Voc - Beauty, Cosmetology & Wellness",
@@ -10659,7 +10644,7 @@
       ]
     },
     {
-      "cluster": "Personal Care, Beauty & Wellness",
+      "cluster": "Sports, Fitness & Human Performance",
       "level": "UG",
       "degree": "Yoga, Wellness & Alternative Health (B.Sc/BA Yoga, Naturopathy, Sowa-Rigpa, Wellness)",
       "course": "B.Sc / BA Yoga & Yogic Science",
@@ -10672,7 +10657,7 @@
       ]
     },
     {
-      "cluster": "Personal Care, Beauty & Wellness",
+      "cluster": "Healthcare & Medicine",
       "level": "UG",
       "degree": "Yoga, Wellness & Alternative Health (B.Sc/BA Yoga, Naturopathy, Sowa-Rigpa, Wellness)",
       "course": "Naturopathy / Spa Therapy / Ayurveda Wellness",
@@ -10997,7 +10982,7 @@
       ]
     },
     {
-      "cluster": "Personal Care, Beauty & Wellness",
+      "cluster": "Media, Communication, Arts & Design",
       "level": "UG",
       "degree": "Diploma (Polytechnic - 10th / 12th entry)",
       "course": "Diploma - Yoga / Beauty & Wellness / Cosmetology",
@@ -11123,7 +11108,7 @@
       ]
     },
     {
-      "cluster": "Personal Care, Beauty & Wellness",
+      "cluster": "Media, Communication, Arts & Design",
       "level": "UG",
       "degree": "ITI Trades (NCVT / SCVT - 10th / 12th entry)",
       "course": "Hair & Skin Care / Cosmetology / Beauty",
@@ -12847,7 +12832,7 @@
       ]
     },
     {
-      "cluster": "Personal Care, Beauty & Wellness",
+      "cluster": "Healthcare & Medicine",
       "level": "PG",
       "degree": "M.Sc (Master of Science)",
       "course": "Yoga / Naturopathy / Sports Nutrition / Public Health Nutrition (M.Sc)",
@@ -16847,7 +16832,7 @@
       ]
     },
     {
-      "cluster": "Personal Care, Beauty & Wellness",
+      "cluster": "Sports, Fitness & Human Performance",
       "level": "PhD",
       "degree": "Ph.D. - Humanities, Social Sciences, Law, Education & Arts",
       "course": "Yoga, Sports & Physical Education (Ph.D.)",
@@ -17281,7 +17266,7 @@
       ]
     },
     {
-      "cluster": "Personal Care, Beauty & Wellness",
+      "cluster": "Healthcare & Medicine",
       "level": "PhD",
       "degree": "Ph.D. - Physical Education, Sports Science & Yoga",
       "course": "Yoga, Naturopathy & Wellness Sciences (Ph.D.)",

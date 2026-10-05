@@ -339,7 +339,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
           const extra = custom.key === "ug_personality_behaviour" && hasMBTIData ? <PersonalityMBTI a={a} />
             : custom.key === "ug_interests_motivation" && riasec.length > 0 ? <div className="riasec-row"><RiasecHex themes={riasec} /></div>
             : null;
-          return <CustomDimensionSheet key={d.key} c={custom} dim={m.dim} n={N()} col={col} name={name} extra={extra} />;
+          return <CustomDimensionSheet key={d.key} c={custom} dim={m.dim} n={N()} col={col} name={name} extra={extra} hideLists={custom.key === "ug_personality_behaviour" && hasMBTIData} />;
         }
         // Show the real MBTI compass whenever the assessment actually
         // computed per-axis scores - not just for class 9-10. Class 6/7/8
@@ -834,7 +834,8 @@ function SceneBand({ kind, eyebrow, title }: { kind: SceneKind; eyebrow: string;
 /** A dimension page supplied by the scorer itself (Graduates' 8 pillars - see
  *  AssessmentSummary.customDimensions). Same page layout and classes as the
  *  fixed dimension pages, with every number and sentence coming from `c`. */
-function CustomDimensionSheet({ c, dim, n, col, name, extra }: { c: CustomDimension; dim: string; n: string; col: string; name?: string; extra?: ReactNode }) {
+/** `hideLists`: the extra block (e.g. the MBTI compass) already has its own strengths / growth / next-steps boxes. */
+function CustomDimensionSheet({ c, dim, n, col, name, extra, hideLists }: { c: CustomDimension; dim: string; n: string; col: string; name?: string; extra?: ReactNode; hideLists?: boolean }) {
   return (
     <section className="sheet param rv" style={{ borderTopColor: col, ["--dc" as string]: col, ["--dc-tint" as string]: col + "14", ["--dc-line" as string]: col + "40" } as React.CSSProperties}>
       <div className="pad">
@@ -890,7 +891,7 @@ function CustomDimensionSheet({ c, dim, n, col, name, extra }: { c: CustomDimens
             )}
           </div>
         </div>
-        <div className="twocard">
+        {!hideLists && <div className="twocard">
           <div className="lc good">
             <h4>Where you’re strong</h4>
             <ul>{c.strengths.slice(0, 4).map((x, i) => <li key={i}>{x}</li>)}</ul>
@@ -899,8 +900,8 @@ function CustomDimensionSheet({ c, dim, n, col, name, extra }: { c: CustomDimens
             <h4>Where you can grow</h4>
             <ul>{c.grow.slice(0, 4).map((x, i) => <li key={i}>{x}</li>)}</ul>
           </div>
-        </div>
-        {c.recommend.length ? (
+        </div>}
+        {!hideLists && c.recommend.length ? (
           <div className="recos">
             <div className="subhd">Recommended next steps</div>
             <ol>{c.recommend.map((x, i) => <li key={i}>{x}</li>)}</ol>

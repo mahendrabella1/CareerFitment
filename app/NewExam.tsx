@@ -46,7 +46,7 @@ const STREAM_OPTIONS: { key: string; label: string }[] = [
 
 // Graduates (UG) pre-exam picker options. The desired-career field is
 // deliberately wide and degree/stream-independent - every unique job role
-// across all 18 UG career clusters (~3,300 roles from the Excel source),
+// across all 17 UG career clusters (~3,300 roles from the Excel source),
 // grouped by cluster, plus a final "Other researched careers" group for any
 // CAREERS_1112 name (the 360-career researched set already used by Class
 // 11-12) not already covered by those cluster role lists. Rendered via

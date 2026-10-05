@@ -7,9 +7,8 @@
  *
  * Short forms in the source table are expanded to this codebase's full
  * canonical tag spelling so they match the exact strings the scorer produces.
- * "Personal Care, Beauty & Wellness" is not in the spec's matrix; its
- * hand-tagged signature is kept rather than fabricated, and it carries no
- * motivator evidence.
+ * The source's 17 clusters match the app's 17 ("Personal Care, Beauty &
+ * Wellness" was merged into the other clusters).
  */
 export const CLUSTER_SIGNATURE: Record<string, { riasec: string[]; strengths: string[]; motivators: string[]; mi: string[] }> = {
   "Engineering, Technology & Computing": { riasec: ["I", "R", "C"], strengths: ["Intellectual & Analytical", "Creative & Innovative", "Strategic & Futuristic"], motivators: ["Learning", "Achievement"], mi: ["Logical-Mathematical", "Spatial"] },
@@ -29,5 +28,4 @@ export const CLUSTER_SIGNATURE: Record<string, { riasec: string[]; strengths: st
   "Supply Chain, Procurement & Logistics": { riasec: ["C", "R", "E"], strengths: ["Execution & Achievement", "Intellectual & Analytical", "Relationship & Adaptability"], motivators: ["Achievement", "Financial Security", "Leadership"], mi: ["Logical-Mathematical", "Interpersonal"] },
   "Travel, Tourism, Hospitality & Transport": { riasec: ["S", "E", "R"], strengths: ["Relationship & Adaptability", "Influence & Leadership"], motivators: ["Social Impact", "Achievement", "Financial Security"], mi: ["Interpersonal", "Bodily-Kinesthetic", "Linguistic"] },
   "Defence, Security & Emergency Services": { riasec: ["R", "I", "S"], strengths: ["Execution & Achievement", "Strategic & Futuristic", "Relationship & Adaptability"], motivators: ["Achievement", "Social Impact", "Leadership"], mi: ["Bodily-Kinesthetic", "Logical-Mathematical", "Interpersonal"] },
-  "Personal Care, Beauty & Wellness": { riasec: ["S", "A"], strengths: ["Creative & Innovative", "Relationship & Adaptability"], motivators: [], mi: ["Bodily-Kinesthetic", "Interpersonal"] },
 };

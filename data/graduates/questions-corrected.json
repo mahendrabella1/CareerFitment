@@ -2904,8 +2904,7 @@
       "Manufacturing & Industrial Production",
       "Supply Chain, Procurement & Logistics",
       "Travel, Tourism, Hospitality & Transport",
-      "Defence, Security & Emergency Services",
-      "Personal Care, Beauty & Wellness"
+      "Defence, Security & Emergency Services"
      ],
      "type": "multiple",
      "instruction": "Select up to THREE."

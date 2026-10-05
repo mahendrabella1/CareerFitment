@@ -1,5 +1,5 @@
 /**
- * The 18 real career clusters for Graduates - extracted from
+ * The 17 career clusters for Graduates (18 in the source; Personal Care was merged) - extracted from
  * "India_Career_Clusters_Database.xlsx"'s `Job_Roles_by_Cluster` sheet
  * (cluster -> unique role list) and `Master_Classified` sheet (cluster x
  * level x degree x course -> role list, spanning UG/PG/PhD).
@@ -35,7 +35,9 @@ export const CAREER_CLUSTERS_18: string[] = [
   "Supply Chain, Procurement & Logistics",
   "Travel, Tourism, Hospitality & Transport",
   "Defence, Security & Emergency Services",
-  "Personal Care, Beauty & Wellness",
+  // "Personal Care, Beauty & Wellness" was merged into the clusters above
+  // (roles and degree rows moved to their natural homes, e.g. yoga -> Sports,
+  // naturopathy -> Healthcare, makeup/hair -> Media, Arts & Design).
 ];
 
 export interface ClusterRoles {
@@ -62,7 +64,7 @@ export const CLUSTER_ROLES: Record<string, string[]> = Object.fromEntries(
   DATA.clusters.map((c) => [c.name, c.roles])
 );
 
-/** Every unique job role across all 18 clusters (3,302 as of this build) -
+/** Every unique job role across all 17 clusters (3,302 as of this build) -
  *  the wide, degree/stream-independent pool for the Career Selector's
  *  desired-career field, so a student isn't limited to a short curated
  *  bundle list. */
