@@ -14,7 +14,7 @@ const SCAMS = [
 export default function ScholarshipSafetyPage() {
   const cyberFraud = HELP_CONTACTS.find((c) => c.slug === "cyber-fraud");
   return (
-    <div style={{ maxWidth: 760, margin: "0 auto", padding: "28px 20px 60px" }}>
+    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
         <Link href="/account/scholarships" style={{ color: "#999", textDecoration: "none" }}>← Scholarships</Link>
       </div>

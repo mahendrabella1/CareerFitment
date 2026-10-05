@@ -7,7 +7,7 @@ export default function CourseDetailPage({ params }: { params: { slug: string } 
   const course = courseBySlug(params.slug);
   if (!course) notFound();
   return (
-    <div style={{ maxWidth: 760, margin: "0 auto", padding: "28px 20px 60px" }}>
+    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
         <Link href="/account/study-abroad/courses" style={{ color: "#999", textDecoration: "none" }}>← Courses</Link>
       </div>

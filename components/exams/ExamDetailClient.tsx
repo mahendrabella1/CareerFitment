@@ -52,7 +52,7 @@ export function ExamDetailClient({ exam }: { exam: ExamDef }) {
   };
 
   return (
-    <div style={{ maxWidth: 820, margin: "0 auto", padding: "8px 4px 40px" }}>
+    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <div style={{ marginBottom: 8, fontSize: 13 }}>
         <Link href="/account/exams/dashboard" style={{ color: "#64748b", textDecoration: "none" }}>← My exams and deadlines</Link>
       </div>

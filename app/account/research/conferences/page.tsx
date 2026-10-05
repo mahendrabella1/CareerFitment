@@ -15,7 +15,7 @@ export default function ConferenceFinderPage() {
   const list = filter === "all" ? RESEARCH_OPPORTUNITIES : RESEARCH_OPPORTUNITIES.filter((o) => o.audience.includes(filter as AudienceLevel));
 
   return (
-    <div style={{ maxWidth: 680, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ padding: "0 0 8px" }}>
       <Link href="/account/research" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Research & Conferences</Link>
       <h1 style={{ fontSize: 24, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 6px" }}>🗓️ Conference Finder</h1>
       <p style={{ color: "#888", fontSize: 13.5, margin: "0 0 10px" }}>Real, independently-known research opportunities in India and worldwide.</p>
@@ -33,9 +33,9 @@ export default function ConferenceFinderPage() {
         ))}
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 12 }}>
         {list.map((o) => (
-          <div key={o.id} style={{ border: "1px solid #eee", borderRadius: 14, padding: "16px 20px" }}>
+          <div key={o.id} style={{ border: "1px solid #e2e8f0", borderRadius: 14, padding: "16px 20px", background: "#fff" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
               <div style={{ fontWeight: 700, fontSize: 15, color: "#1a1a1a" }}>{o.name}</div>
               {o.verified && <span style={{ fontSize: 10, fontWeight: 800, color: "#166534", background: "#dcfce7", borderRadius: 999, padding: "3px 9px", whiteSpace: "nowrap" }}>✓ Verified</span>}

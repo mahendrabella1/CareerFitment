@@ -68,9 +68,9 @@ export function AbroadScholarshipFinder() {
 
       <section style={panel}>
         <h2 style={h2}>{matches.length} scholarship{matches.length === 1 ? "" : "s"} you can aim for</h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 10 }}>
           {matches.map((s) => (
-            <article key={s.slug} style={{ borderTop: "1px solid #f1f5f9", paddingTop: 10 }}>
+            <article key={s.slug} style={{ border: "1px solid #e2e8f0", borderRadius: 12, padding: "12px 14px", display: "flex", flexDirection: "column", gap: 2 }}>
               <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", alignItems: "flex-start" }}>
                 <Link href={`/account/scholarships/${s.slug}`} style={{ fontSize: 14.5, fontWeight: 800, color: "#0f172a", textDecoration: "none", flex: "1 1 240px", minWidth: 0 }}>{s.name}</Link>
                 <StatusChip scholarship={s} />
@@ -78,7 +78,7 @@ export function AbroadScholarshipFinder() {
               <div style={{ fontSize: 12.5, color: "#64748b", marginTop: 2 }}>{META[s.slug].dest.map((d) => DEST_LABEL[d]).join(", ")} · {s.amountText}</div>
               <div style={{ fontSize: 13, color: "#334155", marginTop: 4, lineHeight: 1.55 }}><b>Gate to check:</b> {META[s.slug].gate}</div>
               <div style={{ fontSize: 12.5, color: "#475569", marginTop: 4 }}>{s.deadlineNote}</div>
-              <a href={s.officialUrl} target="_blank" rel="noreferrer" style={{ fontSize: 12.5, fontWeight: 800, color: ACCENT }}>Official site ↗</a>
+              <a href={s.officialUrl} target="_blank" rel="noreferrer" style={{ fontSize: 12.5, fontWeight: 800, color: ACCENT, marginTop: "auto", paddingTop: 6 }}>Official site ↗</a>
             </article>
           ))}
           {matches.length === 0 && <p style={pText}>No match with these filters. Try "Not decided" or check the scholarships that need more work experience below.</p>}

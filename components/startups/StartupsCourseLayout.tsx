@@ -8,7 +8,7 @@ import { fetchProgress } from "@/lib/startups/clientProgress";
 import { lessonStatus, moduleStatus, moduleTestUnlocked, nextUnfinishedLesson, type ProgressMap } from "@/lib/startups/unlock";
 import { CoursePlayerShell } from "@/components/course/CoursePlayerShell";
 import { CourseSidebar, type SidebarGroup, type ItemStatus } from "@/components/course/CourseSidebar";
-import { CourseAsideCard } from "@/components/course/CourseAside";
+import { CourseNextBar } from "@/components/course/CourseAside";
 
 const ACCENT = "#f97316";
 
@@ -50,39 +50,40 @@ export function StartupsCourseLayout({ track, children }: { track: PublicTrack; 
   const nextModule = next ? track.modules.find((m) => m.slug === next.moduleSlug) : null;
   const nextLesson = nextModule?.lessons.find((l) => l.slug === next?.lessonSlug);
 
+  // Previous/next follow the menu order; "Up next" on the home page is the
+  // first lesson not finished yet.
+  const flat = groups.flatMap((g) => g.items.filter((i) => i.status !== "locked").map((i) => ({ ...i, group: g.title })));
+  const here = flat.findIndex((i) => i.status === "current");
+  const prevItem = here > 0 ? flat[here - 1] : undefined;
+  const nextItem = here >= 0 ? flat[here + 1] : undefined;
+  const continueHref = next ? `/account/startups/${track.slug}/${next.moduleSlug}/${next.lessonSlug}` : undefined;
+
   const aside = (
-    <>
-      <CourseAsideCard title="Up next" accent={ACCENT}>
-        {next && nextLesson ? (
-          <>
-            <div style={{ fontWeight: 700, color: "#0f172a" }}>{nextLesson.title}</div>
-            <div style={{ color: "#64748b", fontSize: 12, marginTop: 2 }}>{nextModule?.title}</div>
-          </>
-        ) : (
-          <div style={{ fontWeight: 700, color: "#166534" }}>You&apos;ve finished every lesson in this track 🎉</div>
-        )}
-      </CourseAsideCard>
-      {next && nextLesson && (
-        <CourseAsideCard title="Continue" accent={ACCENT} href={`/account/startups/${track.slug}/${next.moduleSlug}/${next.lessonSlug}`} hrefLabel="Open this lesson">
-          Pick up where you left off.
-        </CourseAsideCard>
-      )}
-      <CourseAsideCard title="Your progress" accent={ACCENT}>
-        {doneLessons} of {totalLessons} lessons completed across this track.
-      </CourseAsideCard>
-    </>
+    <CourseNextBar
+      accent={ACCENT}
+      prev={prevItem && { href: prevItem.href, label: prevItem.label, note: prevItem.group }}
+      next={nextItem
+        ? { href: nextItem.href, label: nextItem.label, note: nextItem.group }
+        : here < 0 && continueHref && nextLesson
+        ? { href: continueHref, label: nextLesson.title, note: nextModule ? `Continue · ${nextModule.title}` : "Continue" }
+        : undefined}
+      doneText={next ? undefined : "You've finished every lesson in this track."}
+    />
   );
 
   return (
     <CoursePlayerShell
       accent={ACCENT}
+      menuLabel="Startups menu"
       sidebar={
         <CourseSidebar
           accent={ACCENT}
           backHref="/account"
           backLabel="Dashboard"
+          title="Startups"
           groups={groups}
           progressLabel={{ done: doneLessons, total: totalLessons }}
+          openOnlyCurrent
         />
       }
       aside={aside}

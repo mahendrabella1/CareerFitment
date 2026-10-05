@@ -43,7 +43,7 @@ export function ApplicationsClient() {
   }
 
   return (
-    <div style={{ maxWidth: 820, margin: "0 auto", padding: "8px 4px 48px" }}>
+    <div style={{ padding: "0 0 8px" }}>
       <h1 style={{ fontSize: 24, fontWeight: 900, color: "#0f172a", margin: "0 0 6px" }}>My applications</h1>
       <p style={{ color: "#475569", margin: "0 0 18px", fontSize: 14, lineHeight: 1.6 }}>
         Track every scholarship you are applying to. Set the status as you go; once you are <b>Selected</b>, record the payment in <Link href="/account/scholarships/won" style={{ color: ACCENT, fontWeight: 800 }}>Money won</Link>.

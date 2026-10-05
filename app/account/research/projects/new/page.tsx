@@ -59,10 +59,11 @@ export default function NewProjectPage() {
   };
 
   return (
-    <div style={{ maxWidth: 560, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <Link href="/account/research" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Research & Conferences</Link>
       <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 20px" }}>Start a research project</h1>
 
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", columnGap: 16 }}>
       <Field label="Conference name">
         <input value={conferenceTitle} onChange={(e) => setConferenceTitle(e.target.value)} placeholder="e.g. IRIS National Fair 2027" style={inputStyle} />
       </Field>
@@ -75,9 +76,10 @@ export default function NewProjectPage() {
       <Field label="Conference / presentation date">
         <input type="date" value={startsAt} onChange={(e) => setStartsAt(e.target.value)} style={inputStyle} />
       </Field>
+      </div>
 
       <Field label="Participation level">
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 8 }}>
           {LEVELS.map((l) => (
             <button key={l.value} onClick={() => setLevel(l.value)}
               style={{ textAlign: "left", padding: "10px 14px", borderRadius: 9, cursor: "pointer", border: `1.5px solid ${level === l.value ? ACCENT : "#e2e2e2"}`, background: level === l.value ? `${ACCENT}10` : "#fff" }}>

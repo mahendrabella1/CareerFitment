@@ -6,11 +6,11 @@ import type { ConceptCard } from "@/data/money/conceptCards";
 
 const ACCENT = "#0ea05f";
 
-export function ConceptCardView({ card }: { card: ConceptCard }) {
+export function ConceptCardView({ card, bare }: { card: ConceptCard; /** No frame - when shown inside a dialog. */ bare?: boolean }) {
   const [picked, setPicked] = useState<number | null>(null);
 
   return (
-    <div style={{ border: "1px solid #eee", borderRadius: 14, padding: "18px 20px" }}>
+    <div style={bare ? { padding: "24px 26px 20px" } : { border: "1px solid #eee", borderRadius: 14, padding: "18px 20px" }}>
       <span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: ACCENT }}>{card.topic}</span>
       <h3 style={{ fontSize: 17, fontWeight: 800, color: "#1a1a1a", margin: "4px 0 10px" }}>{card.title}</h3>
       <p style={{ fontSize: 13.5, fontWeight: 600, color: "#333", margin: "0 0 10px", lineHeight: 1.5 }}>{card.oneLineIdea}</p>

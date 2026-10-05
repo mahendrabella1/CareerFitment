@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { CoursePlayerShell } from "@/components/course/CoursePlayerShell";
 import { CourseSidebar, type SidebarGroup, type SidebarItem } from "@/components/course/CourseSidebar";
-import { CourseAsideCard } from "@/components/course/CourseAside";
+import { CourseNextBar } from "@/components/course/CourseAside";
 import type { CourseNavItem, FeatureCourse } from "@/lib/course/featureCourses";
 
 export function FeatureCourseLayout({ course, children }: { course: FeatureCourse; children: ReactNode }) {
@@ -25,46 +25,34 @@ export function FeatureCourseLayout({ course, children }: { course: FeatureCours
 
   const flat = course.groups.flatMap((g) => g.items.filter((i) => !i.planned).map((i) => ({ item: i, group: g.title })));
   const currentIndex = flat.findIndex((entry) => matches(entry.item));
-  const next = currentIndex >= 0 ? flat[currentIndex + 1] : flat[0];
-
-  const aside = (
-    <>
-      <CourseAsideCard title="About this section" accent={course.accent}>
-        {course.intro}
-      </CourseAsideCard>
-      <CourseAsideCard
-        title="Up next"
-        accent={course.accent}
-        href={next?.item.href}
-        hrefLabel={next ? "Open" : undefined}
-      >
-        {next ? (
-          <>
-            <div style={{ fontWeight: 700, color: "#0f172a" }}>{next.item.label}</div>
-            <div style={{ color: "#64748b", fontSize: 12, marginTop: 2 }}>{next.group}</div>
-          </>
-        ) : (
-          "You have seen every item in this section."
-        )}
-      </CourseAsideCard>
-      {course.safety && (
-        <CourseAsideCard title="Stay safe" accent={course.accent}>
-          {course.safety}
-        </CourseAsideCard>
-      )}
-    </>
-  );
+  // Previous/next only for pages in the menu - a page outside it (e.g. a
+  // list reached from a lesson) has no place in the order to step from.
+  const prev = currentIndex > 0 ? flat[currentIndex - 1] : undefined;
+  const next = currentIndex >= 0 ? flat[currentIndex + 1] : undefined;
 
   return (
     <CoursePlayerShell
       accent={course.accent}
+      menuLabel={`${course.title} menu`}
       sidebar={
-        <>
-          <div style={{ fontSize: 14, fontWeight: 800, color: "#0f172a", padding: "0 8px 8px" }}>{course.title}</div>
-          <CourseSidebar accent={course.accent} backHref="/account" backLabel="Dashboard" groups={groups} />
-        </>
+        <CourseSidebar
+          accent={course.accent}
+          backHref="/account"
+          backLabel="Dashboard"
+          title={course.title}
+          intro={course.intro}
+          groups={groups}
+          footer={course.safety ? { title: "Stay safe", text: course.safety } : undefined}
+        />
       }
-      aside={aside}
+      aside={
+        <CourseNextBar
+          accent={course.accent}
+          prev={prev && { href: prev.item.href, label: prev.item.label, note: prev.group }}
+          next={next && { href: next.item.href, label: next.item.label, note: next.group }}
+          doneText={currentIndex >= 0 ? "You have seen every item in this section." : undefined}
+        />
+      }
     >
       {children}
     </CoursePlayerShell>

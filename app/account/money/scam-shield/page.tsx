@@ -14,17 +14,17 @@ const MODES = [
 
 export default function ScamShieldPage() {
   return (
-    <div style={{ maxWidth: 600, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ padding: "0 0 8px" }}>
       <Link href="/account/money" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Financial Literacy</Link>
       <h1 style={{ fontSize: 24, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 6px" }}>🛡️ Scam Shield</h1>
       <p style={{ color: "#888", fontSize: 13.5, margin: "0 0 18px" }}>Short games on realistic fake messages, screens and calls. No real money, and never type a real OTP or PIN.</p>
 
       <ScamOfTheWeekCard compact />
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 12, marginTop: 16 }}>
         {MODES.map((m) => (
           <Link key={m.slug} href={`/account/money/scam-shield/${m.slug}`} style={{ textDecoration: "none" }}>
-            <div style={{ border: "1px solid #eee", borderRadius: 14, padding: "16px 20px" }}>
+            <div style={{ border: "1px solid #e2e8f0", borderRadius: 14, padding: "16px 20px", background: "#fff", height: "100%", boxSizing: "border-box" }}>
               <div style={{ fontWeight: 700, fontSize: 15, color: "#1a1a1a" }}>{m.title}</div>
               <div style={{ fontSize: 12.5, color: "#888", marginTop: 4 }}>{m.desc}</div>
               <div style={{ fontSize: 11.5, color: "#0ea05f", fontWeight: 700, marginTop: 4 }}>{m.who}</div>

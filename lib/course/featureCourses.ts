@@ -177,8 +177,11 @@ export const SCHOLARSHIPS_COURSE: FeatureCourse = {
       items: [
         { href: "/account/scholarships", label: "Course overview", exact: true },
         { href: "/account/scholarships/dashboard", label: "Money you can apply for", exact: true },
-        ...SCHOLARSHIPS.map((s) => ({ href: `/account/scholarships/${s.slug}`, label: s.name })),
       ],
+    },
+    {
+      title: "All scholarships",
+      items: SCHOLARSHIPS.map((s) => ({ href: `/account/scholarships/${s.slug}`, label: s.name })),
     },
     {
       title: "Track and prepare",

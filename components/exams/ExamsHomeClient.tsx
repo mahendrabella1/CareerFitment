@@ -111,6 +111,8 @@ function ProfileForm({ initial, onSave }: { initial: ExamProfile | null; onSave:
 export function ExamsHomeClient() {
   const { user } = useAuth();
   const [profile, setProfile] = useState<ExamProfile | null | undefined>(undefined); // undefined = loading
+  // Each eligibility group shows its first few exams; the rest are one tap away.
+  const [openGroups, setOpenGroups] = useState<Set<string>>(() => new Set());
   const [followed, setFollowed] = useState<Set<string>>(new Set());
   const [editingProfile, setEditingProfile] = useState(false);
 
@@ -150,7 +152,7 @@ export function ExamsHomeClient() {
   const radar = upcomingEvents(followedExams);
 
   return (
-    <div style={{ maxWidth: 820, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ padding: "0 0 8px" }}>
       <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
         <Link href="/account" style={{ color: "#999", textDecoration: "none" }}>← Dashboard</Link>
       </div>
@@ -194,13 +196,14 @@ export function ExamsHomeClient() {
             const group = byVerdict[v];
             if (!group.length) return null;
             const meta = VERDICT_META[v];
+            const shown = openGroups.has(v) ? group : group.slice(0, 8);
             return (
               <div key={v} style={{ marginBottom: 22 }}>
                 <div style={{ display: "inline-block", fontSize: 11, fontWeight: 800, padding: "3px 10px", borderRadius: 999, background: meta.bg, color: meta.fg, marginBottom: 10 }}>{meta.label} ({group.length})</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  {group.map(({ exam, result }) => (
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 10 }}>
+                  {shown.map(({ exam, result }) => (
                     <Link key={exam.slug} href={`/account/exams/${exam.slug}`} style={{ textDecoration: "none" }}>
-                      <div style={{ border: "1px solid #e2e8f0", borderRadius: 12, padding: "13px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
+                      <div style={{ border: "1px solid #e2e8f0", borderRadius: 12, padding: "13px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, background: "#fff", height: "100%", boxSizing: "border-box" }}>
                         <div>
                           <div style={{ fontSize: 14.5, fontWeight: 700, color: "#0f172a" }}>{exam.name}</div>
                           <div style={{ fontSize: 12, color: "#64748b", marginTop: 2 }}>{result.reasons[0]?.reason ?? ""}</div>
@@ -220,6 +223,14 @@ export function ExamsHomeClient() {
                     </Link>
                   ))}
                 </div>
+                {group.length > shown.length && (
+                  <button
+                    onClick={() => setOpenGroups((s) => new Set(s).add(v))}
+                    style={{ marginTop: 10, fontSize: 12.5, fontWeight: 800, color: ACCENT, background: "#fff", border: `1px solid ${ACCENT}55`, borderRadius: 9, padding: "7px 13px", cursor: "pointer" }}
+                  >
+                    Show all {group.length}
+                  </button>
+                )}
               </div>
             );
           })}

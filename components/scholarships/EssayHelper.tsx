@@ -148,6 +148,11 @@ export function EssayHelper() {
         ))}
       </div>
 
+      {/* The prompt and the checklist beside the draft, so writing never
+          means scrolling away from what the selectors asked. */}
+      <style dangerouslySetInnerHTML={{ __html: ".eh-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:16px;align-items:start}.eh-col{display:flex;flex-direction:column;gap:16px;min-width:0}@media (max-width:1180px){.eh-cols{grid-template-columns:minmax(0,1fr)}}" }} />
+      <div className="eh-cols">
+      <div className="eh-col">
       <section style={panel}>
         <h2 style={h2}>{prompt.title}</h2>
         <p style={pText}>{prompt.intro}</p>
@@ -160,6 +165,21 @@ export function EssayHelper() {
         </ol>
       </section>
 
+      <section style={panel}>
+        <h2 style={h2}>Before you submit</h2>
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          {CHECKS.map((c) => (
+            <label key={c} style={{ display: "flex", gap: 8, alignItems: "flex-start", fontSize: 13.5, color: "#1e293b", lineHeight: 1.5 }}>
+              <input type="checkbox" checked={ticks.includes(c)} onChange={() => setTicks((t) => (t.includes(c) ? t.filter((x) => x !== c) : [...t, c]))} style={{ marginTop: 3, accentColor: ACCENT }} />
+              {c}
+            </label>
+          ))}
+        </div>
+        {ticks.length === CHECKS.length && <p style={{ fontSize: 13, color: "#166534", fontWeight: 800, margin: "10px 0 0" }}>Ready. Ask a teacher to read it once before you submit.</p>}
+      </section>
+      </div>
+
+      <div className="eh-col">
       <section style={panel}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 8 }}>
           <h2 style={{ ...h2, margin: 0 }}>Your draft</h2>
@@ -209,19 +229,8 @@ export function EssayHelper() {
           </div>
         </section>
       )}
-
-      <section style={panel}>
-        <h2 style={h2}>Before you submit</h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-          {CHECKS.map((c) => (
-            <label key={c} style={{ display: "flex", gap: 8, alignItems: "flex-start", fontSize: 13.5, color: "#1e293b", lineHeight: 1.5 }}>
-              <input type="checkbox" checked={ticks.includes(c)} onChange={() => setTicks((t) => (t.includes(c) ? t.filter((x) => x !== c) : [...t, c]))} style={{ marginTop: 3, accentColor: ACCENT }} />
-              {c}
-            </label>
-          ))}
-        </div>
-        {ticks.length === CHECKS.length && <p style={{ fontSize: 13, color: "#166534", fontWeight: 800, margin: "10px 0 0" }}>Ready. Ask a teacher to read it once before you submit.</p>}
-      </section>
+      </div>
+      </div>
     </div>
   );
 }

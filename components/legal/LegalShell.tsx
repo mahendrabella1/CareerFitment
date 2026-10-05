@@ -43,7 +43,7 @@ export function LegalShell({ children }: { children: React.ReactNode }) {
     <div style={{ minHeight: "100vh" }}>
       <SosBar />
       <QuickExit />
-      {children}
+      <div style={{ paddingTop: 18 }}>{children}</div>
     </div>
   );
 }

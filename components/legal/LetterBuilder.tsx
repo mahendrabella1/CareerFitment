@@ -8,6 +8,12 @@ import { legalGuideBySlug } from "@/data/legal/guides";
 import { containsDistressLanguage } from "@/lib/legal/distressCheck";
 import { LEGAL_ACCENT as ACCENT } from "@/components/legal/LegalShell";
 
+const LB_CSS = `
+.lb-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px;align-items:start}
+.lb-draft{position:sticky;top:56px;border:1px solid #e2e8f0;border-radius:12px;padding:16px 18px;background:#fff;max-height:calc(100vh - 80px);overflow:auto}
+@media (max-width:1180px){.lb-cols{grid-template-columns:minmax(0,1fr)}.lb-draft{position:static;max-height:none}}
+`;
+
 export function LetterBuilder({ template }: { template: LetterTemplate }) {
   const [values, setValues] = useState<Record<string, string>>({});
   const [showDistressNote, setShowDistressNote] = useState(false);
@@ -24,7 +30,8 @@ export function LetterBuilder({ template }: { template: LetterTemplate }) {
   }
 
   return (
-    <div style={{ maxWidth: 760, margin: "0 auto", padding: "28px 20px 60px" }}>
+    <div style={{ padding: "0 0 8px" }}>
+      <style dangerouslySetInnerHTML={{ __html: LB_CSS }} />
       <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
         <Link href="/account/legal" style={{ color: "#999", textDecoration: "none" }}>← Legal Resources</Link>
       </div>
@@ -50,7 +57,9 @@ export function LetterBuilder({ template }: { template: LetterTemplate }) {
         </div>
       )}
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 20 }}>
+      {/* Form on the left, the letter building itself live on the right. */}
+      <div className="lb-cols">
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
         {template.fields.map((f) => (
           <div key={f.key}>
             <label style={{ fontSize: 12.5, fontWeight: 700, color: "#475569", display: "block", marginBottom: 5 }}>{f.label}</label>
@@ -75,7 +84,7 @@ export function LetterBuilder({ template }: { template: LetterTemplate }) {
         ))}
       </div>
 
-      <div style={{ border: "1px solid #e2e8f0", borderRadius: 12, padding: "16px 18px" }}>
+      <div className="lb-draft">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
           <span style={{ fontSize: 11, fontWeight: 800, color: "#92400e", background: "#fef3c7", padding: "3px 9px", borderRadius: 999 }}>Draft - review before sending</span>
           <div style={{ display: "flex", gap: 8 }}>
@@ -84,6 +93,7 @@ export function LetterBuilder({ template }: { template: LetterTemplate }) {
           </div>
         </div>
         <pre style={{ whiteSpace: "pre-wrap", fontFamily: "Georgia, serif", fontSize: 13, lineHeight: 1.7, color: "#1e293b", margin: 0 }}>{filled}</pre>
+      </div>
       </div>
 
       {template.nextStep && (

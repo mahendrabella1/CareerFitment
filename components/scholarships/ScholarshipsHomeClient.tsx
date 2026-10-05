@@ -203,6 +203,8 @@ export function ScholarshipsHomeClient() {
   const { user } = useAuth();
   const [profile, setProfile] = useState<StoredScholarshipProfile | null | undefined>(undefined);
   const [editingProfile, setEditingProfile] = useState(false);
+  // Each match group shows its first few; the rest are one tap away.
+  const [openGroups, setOpenGroups] = useState<Set<string>>(() => new Set());
 
   useEffect(() => {
     if (!user?.uid) { setProfile(null); return; }
@@ -272,7 +274,7 @@ export function ScholarshipsHomeClient() {
   }
 
   return (
-    <div style={{ maxWidth: 860, margin: "0 auto", padding: "8px 4px 40px" }}>
+    <div style={{ padding: "0 0 8px" }}>
       <h1 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", margin: "0 0 6px" }}>Money you can apply for</h1>
       <p style={{ color: "#475569", margin: "0 0 16px", fontSize: 14, lineHeight: 1.6 }}>
         Fill in your profile once. We show only the scholarships you qualify for, with real amounts, this year&apos;s dates and how to apply.
@@ -350,13 +352,14 @@ export function ScholarshipsHomeClient() {
             const group = byVerdict[v];
             if (!group.length) return null;
             const meta = VERDICT_META[v];
+            const shown = openGroups.has(v) ? group : group.slice(0, GROUP_SHOWN);
             return (
               <div key={v} style={{ marginBottom: 22 }}>
                 <div style={{ display: "inline-block", fontSize: 11, fontWeight: 800, padding: "3px 10px", borderRadius: 999, background: meta.bg, color: meta.fg, marginBottom: 10 }}>{meta.label} ({group.length})</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  {group.map(({ scholarship, result }) => (
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 10 }}>
+                  {shown.map(({ scholarship, result }) => (
                     <Link key={scholarship.slug} href={`/account/scholarships/${scholarship.slug}`} style={{ textDecoration: "none" }}>
-                      <div style={{ border: "1px solid #e2e8f0", borderRadius: 12, padding: "13px 16px", background: "#fff" }}>
+                      <div style={{ border: "1px solid #e2e8f0", borderRadius: 12, padding: "13px 16px", background: "#fff", height: "100%", boxSizing: "border-box" }}>
                         <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "flex-start", flexWrap: "wrap" }}>
                           <div style={{ fontSize: 14.5, fontWeight: 700, color: "#0f172a", flex: "1 1 260px", minWidth: 0 }}>{scholarship.name}</div>
                           <StatusChip scholarship={scholarship} now={now} />
@@ -369,6 +372,14 @@ export function ScholarshipsHomeClient() {
                     </Link>
                   ))}
                 </div>
+                {group.length > shown.length && (
+                  <button
+                    onClick={() => setOpenGroups((s) => new Set(s).add(v))}
+                    style={{ marginTop: 10, fontSize: 12.5, fontWeight: 800, color: ACCENT, background: "#fff", border: `1px solid ${ACCENT}55`, borderRadius: 9, padding: "7px 13px", cursor: "pointer" }}
+                  >
+                    Show all {group.length}
+                  </button>
+                )}
               </div>
             );
           })}
@@ -376,7 +387,7 @@ export function ScholarshipsHomeClient() {
           {byVerdict.NOT_ELIGIBLE.length > 0 && (
             <details style={{ marginTop: 10 }}>
               <summary style={{ fontSize: 12.5, fontWeight: 700, color: "#64748b", cursor: "pointer" }}>Show {byVerdict.NOT_ELIGIBLE.length} scholarship{byVerdict.NOT_ELIGIBLE.length === 1 ? "" : "s"} you don&apos;t qualify for, with reasons</summary>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 10 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 8, marginTop: 10 }}>
                 {byVerdict.NOT_ELIGIBLE.map(({ scholarship, result }) => (
                   <div key={scholarship.slug} style={{ border: "1px solid #fee2e2", borderRadius: 10, padding: "10px 14px", background: "#fff" }}>
                     <div style={{ fontSize: 13, fontWeight: 700, color: "#0f172a" }}>{scholarship.name}</div>
@@ -392,6 +403,7 @@ export function ScholarshipsHomeClient() {
   );
 }
 
+const GROUP_SHOWN = 6;
 const inputStyle: CSSProperties = { width: "100%", padding: "10px 12px", fontSize: 14, border: "1px solid #cbd5e1", borderRadius: 9, background: "#fff", color: "#1e293b", boxSizing: "border-box" };
 const labelStyle: CSSProperties = { fontSize: 12.5, fontWeight: 700, color: "#475569", marginBottom: 5, marginTop: 14, display: "block" };
 const quickLink: CSSProperties = { fontSize: 13, fontWeight: 700, color: ACCENT, textDecoration: "none" };

@@ -45,7 +45,7 @@ export default function AbstractPage({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div style={{ maxWidth: 600, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <Link href={`/account/research/projects/${project.id}`} style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← {project.conferenceTitle}</Link>
       <h1 style={{ fontSize: 20, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 6px" }}>Abstract editor</h1>
       <p style={{ fontSize: 12.5, color: "#888", margin: "0 0 18px" }}>Aim for about 250 words, using the 5-part structure.</p>

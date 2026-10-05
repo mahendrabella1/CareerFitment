@@ -18,7 +18,7 @@ export default function ProjectTrackerPage({ params }: { params: { id: string } 
   if (project === null) return <div style={{ padding: 40, textAlign: "center", color: "#888" }}>Project not found.</div>;
 
   return (
-    <div style={{ maxWidth: 600, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <Link href="/account/research" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Research & Conferences</Link>
       <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 2px" }}>{project.conferenceTitle}</h1>
       <p style={{ fontSize: 13, color: "#888", margin: "0 0 4px" }}>{project.conferenceOrganiser}</p>

@@ -19,7 +19,7 @@ export default function ScamModePage({ params }: { params: { mode: string } }) {
   if (!TITLES[mode]) notFound();
 
   return (
-    <div style={{ maxWidth: 680, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <Link href="/account/money/scam-shield" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Scam Shield</Link>
       <h1 style={{ fontSize: 20, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 20px" }}>{TITLES[mode]}</h1>
       {(mode === "swipe" || mode === "family") && <SwipeGame mode={mode} items={stripScamSecrets(mode === "family" ? FAMILY_GUARD_ITEMS : SCAM_ITEMS)} />}

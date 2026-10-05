@@ -1,22 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
+// Two columns: a sticky menu and the page. The old third column (three small
+// cards) left most of the screen empty as soon as you scrolled, so its
+// content now sits at the foot of the page instead (see `aside`).
 const SHELL_CSS = `
-.course-shell{display:grid;grid-template-columns:260px minmax(0,1fr) 300px;gap:24px;max-width:1280px;margin:0 auto;padding:24px 20px 60px;align-items:start}
-.course-shell__sidebar{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow-y:auto}
-.course-shell__aside{position:sticky;top:16px}
-.course-shell__toggle{display:none}
-@media (max-width:1099px){
-  .course-shell{grid-template-columns:minmax(0,1fr)}
-  .course-shell__sidebar{position:static;max-height:none}
-  .course-shell__sidebar--collapsed{display:none}
-  .course-shell__toggle{display:inline-block}
-  .course-shell__aside{position:static}
+.course-shell{display:grid;grid-template-columns:272px minmax(0,1fr);gap:28px;max-width:1360px;margin:0 auto;padding:24px 24px 64px;align-items:start}
+.course-shell__mobilebar{display:none}
+.course-shell__sidebar{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.course-shell__main{min-width:0}
+.course-shell__foot{margin-top:32px;display:grid;gap:14px}
+@media (max-width:1023px){
+  .course-shell{grid-template-columns:minmax(0,1fr);gap:14px;padding:0 16px 48px}
+  .course-shell__mobilebar{display:block;position:sticky;top:0;z-index:30;margin:0 -16px;padding:10px 16px;background:rgba(246,247,251,.94);backdrop-filter:blur(6px);border-bottom:1px solid #e2e8f0}
+  .course-shell__sidebar{position:static;max-height:none;display:none}
+  .course-shell__sidebar.is-open{display:block}
 }
-@media (max-width:719px){
-  .course-shell{padding:16px 14px 48px}
-}
+.course-shell__toggle{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:13px;font-weight:800;padding:8px 14px;border-radius:10px;border:1px solid var(--accent);background:#fff;color:var(--accent);cursor:pointer}
 `;
 
 export function CoursePlayerShell({
@@ -24,36 +26,43 @@ export function CoursePlayerShell({
   sidebar,
   aside,
   headerRight,
+  menuLabel,
   children,
 }: {
   accent: string;
   sidebar: React.ReactNode;
+  /** Shown under the page content (next/previous, notes). */
   aside?: React.ReactNode;
   headerRight?: React.ReactNode;
+  /** Label for the phone/tablet menu button. */
+  menuLabel?: string;
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const pathname = usePathname();
+  // Close the phone menu once a link in it has been followed.
+  useEffect(() => setSidebarOpen(false), [pathname]);
+
   return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
+    <div style={{ minHeight: "100vh", background: "#f6f7fb", ["--accent" as string]: accent }}>
       <style dangerouslySetInnerHTML={{ __html: SHELL_CSS }} />
       {headerRight && (
-        <div style={{ display: "flex", justifyContent: "flex-end", padding: "10px 20px 0", maxWidth: 1280, margin: "0 auto" }}>
+        <div style={{ display: "flex", justifyContent: "flex-end", padding: "10px 24px 0", maxWidth: 1360, margin: "0 auto" }}>
           {headerRight}
         </div>
       )}
-      <div className="course-shell" style={{ ["--accent" as string]: accent }}>
-        <div className={`course-shell__sidebar${sidebarOpen ? "" : " course-shell__sidebar--collapsed"}`}>
-          <button
-            className="course-shell__toggle"
-            onClick={() => setSidebarOpen((v) => !v)}
-            style={{ marginBottom: 10, fontSize: 12.5, fontWeight: 700, padding: "8px 12px", borderRadius: 9, border: `1px solid ${accent}`, background: "#fff", color: accent, cursor: "pointer" }}
-          >
-            {sidebarOpen ? "Hide menu" : "Show menu"}
+      <div className="course-shell">
+        <div className="course-shell__mobilebar">
+          <button className="course-shell__toggle" onClick={() => setSidebarOpen((v) => !v)} aria-expanded={sidebarOpen}>
+            <span aria-hidden="true">{sidebarOpen ? "✕" : "☰"}</span>
+            {sidebarOpen ? "Close menu" : menuLabel ?? "Menu"}
           </button>
-          {sidebar}
         </div>
-        <main style={{ minWidth: 0 }}>{children}</main>
-        {aside && <aside className="course-shell__aside" style={{ display: "flex", flexDirection: "column", gap: 14 }}>{aside}</aside>}
+        <div className={`course-shell__sidebar${sidebarOpen ? " is-open" : ""}`}>{sidebar}</div>
+        <main className="course-shell__main">
+          {children}
+          {aside && <div className="course-shell__foot">{aside}</div>}
+        </main>
       </div>
     </div>
   );

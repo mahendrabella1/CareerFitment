@@ -3,7 +3,7 @@ import { CountryComparison } from "@/components/studyAbroad/CountryComparison";
 
 export default function CountriesComparePage() {
   return (
-    <div style={{ maxWidth: 820, margin: "0 auto", padding: "28px 20px 60px" }}>
+    <div style={{ padding: "0 0 8px" }}>
       <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
         <Link href="/account/study-abroad" style={{ color: "#999", textDecoration: "none" }}>← Study Abroad</Link>
       </div>

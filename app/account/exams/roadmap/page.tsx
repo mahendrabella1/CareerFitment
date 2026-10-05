@@ -14,7 +14,7 @@ const STAGES: { stage: string; focus: string; doThis: string; exams: string }[] 
 
 export default function ExamsRoadmapPage() {
   return (
-    <div style={{ maxWidth: 820, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ padding: "0 0 8px" }}>
       <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
         <Link href="/account/exams" style={{ color: "#999", textDecoration: "none" }}>← Entrance Exams</Link>
       </div>
@@ -23,9 +23,10 @@ export default function ExamsRoadmapPage() {
         A stage-by-stage view - younger students get exploration and foundations, not pressure; older students get exact exam plans.
       </p>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-        {STAGES.map((s) => (
-          <div key={s.stage} style={{ border: "1px solid #e2e8f0", borderLeft: `4px solid ${ACCENT}`, borderRadius: 12, padding: "16px 18px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 14 }}>
+        {STAGES.map((s, i) => (
+          <div key={s.stage} style={{ border: "1px solid #e2e8f0", borderTop: `4px solid ${ACCENT}`, borderRadius: 12, padding: "14px 18px 16px", background: "#fff" }}>
+            <div style={{ fontSize: 10.5, fontWeight: 800, color: "#94a3b8", letterSpacing: ".06em", textTransform: "uppercase" }}>Stage {i + 1}</div>
             <div style={{ fontSize: 15, fontWeight: 800, color: "#0f172a" }}>{s.stage}</div>
             <div style={{ fontSize: 12, fontWeight: 700, color: ACCENT, marginTop: 2 }}>{s.focus}</div>
             <p style={{ fontSize: 13, color: "#334155", lineHeight: 1.6, margin: "8px 0" }}>{s.doThis}</p>

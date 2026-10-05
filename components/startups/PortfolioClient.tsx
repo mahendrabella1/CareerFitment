@@ -18,7 +18,7 @@ export function PortfolioClient({ moduleTitles }: { moduleTitles: Record<string,
   }, [user?.uid]);
 
   return (
-    <div style={{ maxWidth: 680, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <Link href="/account/startups" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Startups</Link>
       <h1 style={{ fontSize: 24, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 4px" }}>Your Startup Portfolio</h1>
       <p style={{ color: "#888", fontSize: 13.5, margin: "0 0 24px" }}>Everything you've built, from your own idea - real proof of work.</p>

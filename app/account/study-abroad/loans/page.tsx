@@ -15,26 +15,27 @@ const COMPARE = [
 
 export default function AbroadLoansPage() {
   return (
-    <div style={{ maxWidth: 860 }}>
+    <div>
       <div style={{ fontSize: 11, fontWeight: 800, color: ACCENT, textTransform: "uppercase", letterSpacing: ".08em" }}>Money</div>
       <h1 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", margin: "6px 0 8px" }}>Education loans for study abroad</h1>
       <p style={{ fontSize: 14, color: "#475569", lineHeight: 1.6, margin: "0 0 16px", maxWidth: 700 }}>
         A loan should follow the money check, not lead it. Work out the full cost and payback time in the <Link href="/account/study-abroad/roi" style={{ color: ACCENT, fontWeight: 800 }}>ROI calculator</Link> first, then compare at least three lenders on the same points.
       </p>
 
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))", gap: 14 }}>
       <section style={box}>
         <h2 style={h2}>Secured or unsecured</h2>
         <p style={p}>Public sector banks, private banks and NBFCs all lend for study abroad. A <b>secured</b> loan is backed by collateral such as property or a fixed deposit, and usually costs less. An <b>unsecured</b> loan needs no collateral but usually charges more and leans on the co-applicant&apos;s income and the course and university you chose.</p>
         <p style={p}>Loans up to ₹7.5 lakh can be covered by the government&apos;s Credit Guarantee Fund Scheme for Education Loans (CGFSEL) without collateral or a third-party guarantee. Most study-abroad budgets are larger, so expect to need collateral, a co-applicant, or both.</p>
       </section>
 
-      <section style={{ ...box, marginTop: 14 }}>
+      <section style={box}>
         <h2 style={h2}>How repayment works</h2>
         <p style={p}>Under the Indian Banks&apos; Association model scheme, repayment starts after a moratorium of the course period plus one year. Interest usually builds up during that time, so the amount you owe at the first EMI is larger than the amount you borrowed. Ask every lender for a full repayment schedule.</p>
         <p style={p}>Many visa applications accept a loan sanction letter as part of your proof of funds. Check what your destination accepts on its official immigration site before you rely on it.</p>
       </section>
 
-      <section style={{ ...box, marginTop: 14 }}>
+      <section style={box}>
         <h2 style={h2}>Tax rules worth knowing</h2>
         <ul style={{ margin: 0, paddingLeft: 18, fontSize: 14, color: "#334155", lineHeight: 1.75 }}>
           <li><b>Section 80E:</b> interest on an education loan from a financial institution or an approved charitable institution can be deducted from taxable income for up to 8 years, with no upper limit. It is available only under the old tax regime.</li>
@@ -43,11 +44,12 @@ export default function AbroadLoansPage() {
         </ul>
       </section>
 
-      <section style={{ ...box, marginTop: 14 }}>
+      <section style={box}>
         <h2 style={h2}>Apply to several banks at once</h2>
         <p style={p}>The government-backed Vidya Lakshmi portal lets you fill one common education loan application form and apply to several banks, including for study abroad. Apply only on the official site, and never pay anyone to &quot;guarantee&quot; a loan.</p>
         <a href="https://www.vidyalakshmi.co.in/" target="_blank" rel="noreferrer" style={{ fontSize: 13.5, fontWeight: 800, color: ACCENT }}>Vidya Lakshmi portal ↗</a>
       </section>
+      </div>
 
       <section style={{ ...box, marginTop: 14 }}>
         <h2 style={h2}>Compare at least three lenders on these points</h2>

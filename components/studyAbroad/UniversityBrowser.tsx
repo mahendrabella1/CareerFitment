@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { UNIVERSITIES, RANKING_PUBLISHERS, type UniversityDef } from "@/data/studyAbroad/universities";
 import { STUDY_ABROAD_COUNTRIES } from "@/data/studyAbroad/countries";
 import { loadPlan, newItem, savePlan } from "@/lib/studyAbroad/shortlist";
+import { Pager, usePaged } from "@/components/ui/Pager";
 
 const ACCENT = "#7c3aed";
 
@@ -34,6 +35,8 @@ export function UniversityBrowser() {
   const [country, setCountry] = useState<string>("all");
   const list = UNIVERSITIES.filter((u) => country === "all" || u.countryCode === country);
   const countries = Array.from(new Set(UNIVERSITIES.map((u) => u.countryCode)));
+  const paged = usePaged(list, 12, country);
+  const top = useRef<HTMLDivElement | null>(null);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -49,8 +52,8 @@ export function UniversityBrowser() {
         })}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 12 }}>
-        {list.map((u) => {
+      <div ref={top} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 12, scrollMarginTop: 80 }}>
+        {paged.items.map((u) => {
           const meta = STUDY_ABROAD_COUNTRIES.find((x) => x.code === u.countryCode);
           return (
             <article key={u.slug} style={{ border: "1px solid #e2e8f0", borderRadius: 14, padding: "14px 16px", background: "#fff", display: "flex", flexDirection: "column", gap: 6 }}>
@@ -64,6 +67,9 @@ export function UniversityBrowser() {
             </article>
           );
         })}
+      </div>
+      <div style={{ marginTop: -16 }}>
+        <Pager paged={paged} accent={ACCENT} noun="universities" scrollTo={top} />
       </div>
 
       <p style={{ fontSize: 12.5, color: "#64748b", lineHeight: 1.6, margin: 0 }}>

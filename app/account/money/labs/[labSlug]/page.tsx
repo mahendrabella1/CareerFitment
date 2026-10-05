@@ -17,7 +17,7 @@ export default function LabPage({ params }: { params: { labSlug: string } }) {
 
   if (!lab) {
     return (
-      <div style={{ maxWidth: 480, margin: "0 auto", padding: "32px 20px" }}>
+      <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
         <Link href="/account/money/labs" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Money Labs</Link>
         <p style={{ marginTop: 20, color: "#888" }}>That Lab doesn&apos;t exist.</p>
       </div>
@@ -25,7 +25,7 @@ export default function LabPage({ params }: { params: { labSlug: string } }) {
   }
 
   return (
-    <div style={{ maxWidth: 680, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <Link href="/account/money/labs" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Money Labs</Link>
       <h1 style={{ fontSize: 20, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 4px" }}>{lab.icon} {lab.title}</h1>
       <p style={{ fontSize: 13.5, color: "#64748b", margin: "0 0 20px" }}>{lab.desc}</p>

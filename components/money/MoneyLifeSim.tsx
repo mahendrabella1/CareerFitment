@@ -138,26 +138,28 @@ export function MoneyLifeSim() {
         <p style={{ fontSize: 14, color: "#475569", lineHeight: 1.6, margin: 0 }}>
           Choose a world. Each month you split your money into four jars, face one life event, and see the result. Mistakes are free: a high-interest loan in the game costs you nothing real.
         </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 14 }}>
         {WORLDS.map((w) => (
-          <div key={w.id} style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, padding: "16px 18px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
-            <div style={{ minWidth: 0, flex: "1 1 260px" }}>
+          <div key={w.id} style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, padding: "16px 18px", display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ minWidth: 0, flex: 1 }}>
               <div style={{ fontSize: 11, fontWeight: 800, color: ACCENT, textTransform: "uppercase", letterSpacing: ".05em" }}>{w.ages}</div>
               <div style={{ fontSize: 17, fontWeight: 900, color: "#0f172a", marginTop: 2 }}>{w.title}</div>
               <div style={{ fontSize: 13, color: "#475569", marginTop: 4, lineHeight: 1.5 }}>{w.summary}</div>
               <div style={{ fontSize: 12, color: "#64748b", marginTop: 6 }}>Monthly income {inr(w.start.monthlyIncome)} · Starting cash {inr(w.start.cash)}</div>
             </div>
-            <button onClick={() => startWorld(w.id)} style={{ fontSize: 13, fontWeight: 800, color: "#fff", background: ACCENT, border: "none", borderRadius: 10, padding: "10px 16px", cursor: "pointer" }}>
+            <button onClick={() => startWorld(w.id)} style={{ alignSelf: "flex-start", fontSize: 13, fontWeight: 800, color: "#fff", background: ACCENT, border: "none", borderRadius: 10, padding: "10px 16px", cursor: "pointer" }}>
               Start this world
             </button>
           </div>
         ))}
-        <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, padding: "16px 18px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
-          <div style={{ minWidth: 0, flex: "1 1 260px" }}>
+        <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, padding: "16px 18px", display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ minWidth: 0, flex: 1 }}>
             <div style={{ fontSize: 11, fontWeight: 800, color: ACCENT, textTransform: "uppercase", letterSpacing: ".05em" }}>Working professionals</div>
             <div style={{ fontSize: 17, fontWeight: 900, color: "#0f172a", marginTop: 2 }}>Real Life</div>
             <div style={{ fontSize: 13, color: "#475569", marginTop: 4, lineHeight: 1.5 }}>Fast-forward 10 years, one round a year: insurance, rent or buy, home loan tenure, a child&apos;s education fund and parents&apos; health costs.</div>
           </div>
-          <Link href="/account/money/real-life" style={{ fontSize: 13, fontWeight: 800, color: "#fff", background: ACCENT, borderRadius: 10, padding: "10px 16px", textDecoration: "none" }}>Open Real Life</Link>
+          <Link href="/account/money/real-life" style={{ alignSelf: "flex-start", fontSize: 13, fontWeight: 800, color: "#fff", background: ACCENT, borderRadius: 10, padding: "10px 16px", textDecoration: "none" }}>Open Real Life</Link>
+        </div>
         </div>
         <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>Growth in this game uses assumed rates (savings about 3.5% a year, invested money about 10% a year, with market moves). These are illustrations, not product returns.</p>
       </div>

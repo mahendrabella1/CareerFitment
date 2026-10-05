@@ -34,7 +34,7 @@ export default function MentorQueuePage() {
   }
 
   return (
-    <div style={{ maxWidth: 600, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a1a1a", margin: "0 0 6px" }}>Mentor Review Queue</h1>
       <p style={{ fontSize: 13, color: "#888", margin: "0 0 22px" }}>{queue?.length ?? 0} abstract{queue?.length === 1 ? "" : "s"} awaiting review.</p>
 

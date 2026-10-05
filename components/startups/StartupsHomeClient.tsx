@@ -48,7 +48,7 @@ export function StartupsHomeClient({ track }: { track: PublicTrack }) {
   const nextLesson = nextModule?.lessons.find((l) => l.slug === next?.lessonSlug);
 
   return (
-    <div style={{ maxWidth: 820 }}>
+    <div>
       <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
         <Link href="/account" style={{ color: "#999", textDecoration: "none" }}>← Dashboard</Link>
       </div>
@@ -94,32 +94,36 @@ export function StartupsHomeClient({ track }: { track: PublicTrack }) {
       )}
 
       <h2 style={{ fontSize: 15, fontWeight: 700, color: "#1a1a1a", margin: "0 0 14px" }}>{track.title} track</h2>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 12 }}>
         {track.modules.map((m) => {
           const status = moduleStatus(m, progress);
           const style = STATUS_STYLE[status];
           return (
             <Link key={m.slug} href={`/account/startups/${track.slug}/${m.slug}`} style={{ textDecoration: "none" }}>
-              <div style={{ border: "1px solid #eee", borderRadius: 12, padding: "14px 18px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-                <div>
-                  <div style={{ fontWeight: 700, color: "#1a1a1a", fontSize: 15 }}>{m.order}. {m.title}</div>
-                  <div style={{ fontSize: 12.5, color: "#888", marginTop: 2 }}>{m.lessons.length} lessons · mission: {m.missionText}</div>
+              <div style={{ border: "1px solid #e2e8f0", borderRadius: 14, padding: "14px 16px", display: "flex", flexDirection: "column", gap: 6, background: "#fff", height: "100%", boxSizing: "border-box" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+                  <span style={{ fontSize: 10.5, fontWeight: 800, color: ACCENT, textTransform: "uppercase", letterSpacing: ".06em" }}>Module {m.order}</span>
+                  <span style={{ padding: "3px 9px", borderRadius: 999, fontSize: 11, fontWeight: 700, background: style.bg, color: style.fg, whiteSpace: "nowrap" }}>{style.label}</span>
                 </div>
-                <span style={{ padding: "4px 10px", borderRadius: 999, fontSize: 11.5, fontWeight: 700, background: style.bg, color: style.fg, whiteSpace: "nowrap" }}>{style.label}</span>
+                <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 15, lineHeight: 1.3 }}>{m.title}</div>
+                <div style={{ fontSize: 12.5, color: "#64748b", lineHeight: 1.5 }}>{m.lessons.length} lessons · mission: {m.missionText}</div>
               </div>
             </Link>
           );
         })}
       </div>
 
-      <div style={{ marginTop: 28, display: "flex", gap: 10 }}>
-        <Link href="/account/startups/placement" style={{ fontSize: 13, color: "#888" }}>Not sure which track fits? Take the 2-minute placement quiz</Link>
-      </div>
-      <div style={{ marginTop: 10 }}>
-        <Link href="/account/startups/portfolio" style={{ fontSize: 13, color: ACCENT, fontWeight: 600 }}>View your Startup Portfolio →</Link>
-      </div>
-      <div style={{ marginTop: 10 }}>
-        <Link href="/account/startups/videos" style={{ fontSize: 13, color: ACCENT, fontWeight: 600 }}>Watch the video library →</Link>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12, marginTop: 24 }}>
+        {[
+          { href: "/account/startups/placement", title: "Placement quiz", note: "Not sure which track fits? 2 minutes." },
+          { href: "/account/startups/portfolio", title: "Your Startup Portfolio", note: "Everything you have written on your idea." },
+          { href: "/account/startups/videos", title: "Video library", note: "Expert talks for each module." },
+        ].map((x) => (
+          <Link key={x.href} href={x.href} style={{ textDecoration: "none", border: `1px solid ${ACCENT}33`, background: `${ACCENT}08`, borderRadius: 14, padding: "14px 16px", display: "flex", flexDirection: "column", gap: 3 }}>
+            <span style={{ fontSize: 14, fontWeight: 800, color: "#0f172a" }}>{x.title} →</span>
+            <span style={{ fontSize: 12.5, color: "#64748b" }}>{x.note}</span>
+          </Link>
+        ))}
       </div>
     </div>
   );

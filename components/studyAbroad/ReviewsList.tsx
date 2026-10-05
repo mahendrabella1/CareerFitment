@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
+import { Pager, usePaged } from "@/components/ui/Pager";
 import { REVIEW_AREAS, fetchPublishedReviews, type PublishedReview } from "@/lib/studyAbroad/clientReviews";
 
 const ACCENT = "#7c3aed";
@@ -15,6 +16,8 @@ export function ReviewsList() {
   }, []);
 
   const shown = (reviews ?? []).filter((r) => !filter || `${r.universityName} ${r.programme}`.toLowerCase().includes(filter.toLowerCase()));
+  const paged = usePaged(shown, 6, filter);
+  const top = useRef<HTMLDivElement | null>(null);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -40,7 +43,8 @@ export function ReviewsList() {
       {reviews && reviews.length > 0 && (
         <>
           <input value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Filter by university or programme" style={{ padding: "9px 11px", fontSize: 13.5, border: "1px solid #cbd5e1", borderRadius: 9, maxWidth: 420, background: "#fff", color: "#0f172a" }} />
-          {shown.map((r) => {
+          <div ref={top} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(380px, 1fr))", gap: 14, scrollMarginTop: 80 }}>
+          {paged.items.map((r) => {
             const avg = REVIEW_AREAS.reduce((s, a) => s + (r.ratings[a.key] ?? 0), 0) / REVIEW_AREAS.length;
             return (
               <article key={r.id} style={panel}>
@@ -62,6 +66,8 @@ export function ReviewsList() {
               </article>
             );
           })}
+          </div>
+          <Pager paged={paged} accent={ACCENT} noun="reviews" scrollTo={top} />
         </>
       )}
     </div>

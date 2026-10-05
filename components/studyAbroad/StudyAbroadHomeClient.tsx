@@ -19,7 +19,7 @@ function Card({ href, title, desc, color }: { href: string; title: string; desc:
 
 export function StudyAbroadHomeClient() {
   return (
-    <div style={{ maxWidth: 820, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ padding: "0 0 8px" }}>
       <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
         <Link href="/account" style={{ color: "#999", textDecoration: "none" }}>← Dashboard</Link>
       </div>

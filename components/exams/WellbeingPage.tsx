@@ -63,7 +63,8 @@ export function WellbeingPage() {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+    // Independent panels, so they sit in two balanced columns on wide screens.
+    <div style={{ columnWidth: 400, columnGap: 18 }}>
       <section style={panel}>
         <h2 style={h2}>One exam does not decide a life</h2>
         <p style={p}>
@@ -136,7 +137,7 @@ export function WellbeingPage() {
   );
 }
 
-const panel: CSSProperties = { background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, padding: "18px 20px" };
+const panel: CSSProperties = { background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, padding: "18px 20px", breakInside: "avoid", marginBottom: 18, display: "flow-root" };
 const h2: CSSProperties = { fontSize: 17, fontWeight: 900, color: "#0f172a", margin: "0 0 8px" };
 const p: CSSProperties = { fontSize: 14, color: "#475569", lineHeight: 1.7, margin: "0 0 10px" };
 const link: CSSProperties = { fontSize: 13.5, fontWeight: 800, color: ACCENT, textDecoration: "none" };

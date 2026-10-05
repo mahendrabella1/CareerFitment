@@ -8,7 +8,7 @@ export default function LegalClassroomPage({ params }: { params: { id: string } 
   const scenario = LEGAL_SCENARIOS[index];
   const nextId = LEGAL_SCENARIOS[(index + 1) % LEGAL_SCENARIOS.length].id;
   return (
-    <div style={{ maxWidth: 1000, margin: "0 auto", padding: "8px 4px 40px" }}>
+    <div style={{ padding: "0 0 8px" }}>
       <ClassroomScenario scenario={scenario} nextId={nextId} />
     </div>
   );

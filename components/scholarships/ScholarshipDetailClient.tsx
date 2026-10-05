@@ -44,7 +44,7 @@ export function ScholarshipDetailClient({ scholarship }: { scholarship: Scholars
   };
 
   return (
-    <div style={{ maxWidth: 780, margin: "0 auto", padding: "8px 4px 48px" }}>
+    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <div style={{ marginBottom: 8, fontSize: 13 }}>
         <Link href="/account/scholarships/dashboard" style={{ color: "#64748b", textDecoration: "none" }}>← Money you can apply for</Link>
       </div>

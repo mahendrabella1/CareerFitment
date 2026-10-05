@@ -74,9 +74,14 @@ export function LegalToolkit() {
       <div style={{ background: "#eef2ff", border: "1px solid #c7d2fe", borderRadius: 12, padding: "12px 14px", fontSize: 13.5, color: "#312e81", lineHeight: 1.6 }}>
         Everything you type here stays in this browser tab and is cleared when you close it. Download or copy it if you want to keep it. On a shared device, use a private window.
       </div>
-      <EvidenceBuilder />
-      <TimelineMaker />
-      <DeadlineReminders />
+      {/* Checklist on the left, the two date tools beside it on wide screens. */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(380px, 1fr))", gap: 18, alignItems: "start" }}>
+        <EvidenceBuilder />
+        <div style={{ display: "flex", flexDirection: "column", gap: 18, minWidth: 0 }}>
+          <TimelineMaker />
+          <DeadlineReminders />
+        </div>
+      </div>
     </div>
   );
 }

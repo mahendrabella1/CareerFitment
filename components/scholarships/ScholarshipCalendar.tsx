@@ -63,7 +63,7 @@ export function ScholarshipCalendar() {
   const [profile, setProfile] = useState<StoredScholarshipProfile | null>(null);
   const [apps, setApps] = useState<Record<string, ScholarshipApplication>>({});
   const [onlyMine, setOnlyMine] = useState(false);
-  const [showPast, setShowPast] = useState(false);
+  const [tab, setTab] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user?.uid) return;
@@ -99,6 +99,22 @@ export function ScholarshipCalendar() {
     return acc;
   }, {});
   const undated = list.filter((s) => !s.cycle?.closesAt && liveStatus(s) !== "closed");
+
+  // One tab per period instead of every month stacked on one long page.
+  type Tab = { key: string; label: string; count: number } & (
+    | { kind: "events"; events: CalEvent[]; empty?: string }
+    | { kind: "undated" }
+    | { kind: "past" }
+  );
+  const tabs: Tab[] = [
+    { key: "week", label: "This week", count: thisWeek.length, kind: "events", events: thisWeek, empty: "Nothing closes in the next 7 days." },
+    { key: "month", label: "This month", count: thisMonth.length, kind: "events", events: thisMonth, empty: "Nothing else falls in the next month." },
+    ...Object.entries(laterByMonth).map(([m, evs]): Tab => ({ key: m, label: m, count: evs.length, kind: "events", events: evs })),
+    ...(undated.length ? [{ key: "undated", label: "No fixed date", count: undated.length, kind: "undated" } as Tab] : []),
+    ...(past.length ? [{ key: "past", label: "Past", count: past.length, kind: "past" } as Tab] : []),
+  ];
+  const active = tab && tabs.some((x) => x.key === tab) ? tab : (tabs.find((x) => x.count > 0)?.key ?? "week");
+  const activeTab = tabs.find((x) => x.key === active);
 
   const exportAll = () => {
     const ics: IcsEvent[] = upcoming
@@ -138,53 +154,47 @@ export function ScholarshipCalendar() {
         Official dates come from each portal. Dates marked <b>reported</b> come from news coverage of the launch, so confirm them on the official site. The calendar file adds reminders 14, 7 and 2 days before each last date.
       </p>
 
-      <Section title="This week" events={thisWeek} apps={apps} today={today} empty="Nothing closes in the next 7 days." />
-      <Section title="This month" events={thisMonth} apps={apps} today={today} empty="Nothing else falls in the next month." />
-      {Object.entries(laterByMonth).map(([m, evs]) => (
-        <Section key={m} title={m} events={evs} apps={apps} today={today} />
-      ))}
+      <div role="tablist" aria-label="When" style={{ display: "flex", gap: 6, flexWrap: "wrap", borderBottom: "1px solid #e2e8f0", paddingBottom: 10 }}>
+        {tabs.map((tb) => (
+          <button
+            key={tb.key}
+            role="tab"
+            aria-selected={tb.key === active}
+            onClick={() => setTab(tb.key)}
+            style={tabStyle(tb.key === active)}
+          >
+            {tb.label} <span style={{ opacity: 0.75, fontVariantNumeric: "tabular-nums" }}>{tb.count}</span>
+          </button>
+        ))}
+      </div>
 
-      {undated.length > 0 && (
-        <section style={panel}>
-          <h2 style={h2}>Dates to watch (no fixed date yet)</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      <section role="tabpanel" style={panel}>
+        {activeTab?.kind === "events" && (
+          activeTab.events.length
+            ? <EventRows events={activeTab.events} apps={apps} today={today} />
+            : <p style={{ fontSize: 13, color: "#64748b", margin: 0 }}>{activeTab.empty}</p>
+        )}
+        {activeTab?.kind === "undated" && (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 10 }}>
             {undated.map((s) => (
-              <Link key={s.slug} href={`/account/scholarships/${s.slug}`} style={{ textDecoration: "none", borderTop: "1px solid #f1f5f9", paddingTop: 8 }}>
+              <Link key={s.slug} href={`/account/scholarships/${s.slug}`} style={{ textDecoration: "none", border: "1px solid #f1f5f9", borderRadius: 10, padding: "10px 12px" }}>
                 <div style={{ fontSize: 13.5, fontWeight: 700, color: "#0f172a" }}>{s.name}</div>
-                <div style={{ fontSize: 12.5, color: "#64748b", lineHeight: 1.5 }}>{s.deadlineNote}</div>
+                <div style={{ fontSize: 12.5, color: "#64748b", lineHeight: 1.5, marginTop: 2 }}>{s.deadlineNote}</div>
               </Link>
             ))}
           </div>
-        </section>
-      )}
-
-      {past.length > 0 && (
-        <section style={panel}>
-          <button onClick={() => setShowPast((v) => !v)} style={{ fontSize: 13, fontWeight: 800, color: "#64748b", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-            {showPast ? "Hide" : "Show"} {past.length} past date{past.length === 1 ? "" : "s"} from this cycle
-          </button>
-          {showPast && (
-            <div style={{ marginTop: 10 }}>
-              <EventRows events={[...past].reverse()} apps={apps} today={today} />
-            </div>
-          )}
-        </section>
-      )}
+        )}
+        {activeTab?.kind === "past" && <EventRows events={[...past].reverse()} apps={apps} today={today} />}
+      </section>
     </div>
   );
 }
 
-function Section({ title, events, apps, today, empty }: { title: string; events: CalEvent[]; apps: Record<string, ScholarshipApplication>; today: Date; empty?: string }) {
-  if (!events.length && !empty) return null;
-  return (
-    <section style={panel}>
-      <h2 style={h2}>{title}</h2>
-      {events.length ? <EventRows events={events} apps={apps} today={today} /> : <p style={{ fontSize: 13, color: "#64748b", margin: 0 }}>{empty}</p>}
-    </section>
-  );
-}
+// A closing day with many NSP schemes shows this many before "Show all".
+const PER_DAY = 6;
 
 function EventRows({ events, apps, today }: { events: CalEvent[]; apps: Record<string, ScholarshipApplication>; today: Date }) {
+  const [expanded, setExpanded] = useState<Set<string>>(() => new Set());
   // Group by date so one closing day with many NSP schemes reads as one block.
   const byDate = events.reduce<{ date: Date; items: CalEvent[] }[]>((acc, e) => {
     const last = acc[acc.length - 1];
@@ -196,8 +206,10 @@ function EventRows({ events, apps, today }: { events: CalEvent[]; apps: Record<s
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
       {byDate.map(({ date, items }) => {
         const days = Math.round((date.getTime() - today.getTime()) / DAY);
+        const dayKey = date.toISOString();
+        const shown = expanded.has(dayKey) ? items : items.slice(0, PER_DAY);
         return (
-          <div key={date.toISOString()}>
+          <div key={dayKey}>
             <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "baseline", flexWrap: "wrap", marginBottom: 6 }}>
               <span style={{ fontSize: 14, fontWeight: 900, color: "#0f172a" }}>{fmtDay(date)}</span>
               <span style={{ fontSize: 12, fontWeight: 800, color: days < 0 ? "#94a3b8" : days <= 7 ? "#b45309" : "#64748b" }}>
@@ -205,7 +217,7 @@ function EventRows({ events, apps, today }: { events: CalEvent[]; apps: Record<s
               </span>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              {items.map((e) => {
+              {shown.map((e) => {
                 const app = apps[e.scholarship.slug];
                 const st = app ? STATUS_META[app.status] : null;
                 return (
@@ -217,6 +229,14 @@ function EventRows({ events, apps, today }: { events: CalEvent[]; apps: Record<s
                   </Link>
                 );
               })}
+              {items.length > shown.length && (
+                <button
+                  onClick={() => setExpanded((s) => new Set(s).add(dayKey))}
+                  style={{ alignSelf: "flex-start", fontSize: 12.5, fontWeight: 800, color: ACCENT, background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 9, padding: "6px 12px", cursor: "pointer" }}
+                >
+                  Show all {items.length} on this date
+                </button>
+              )}
             </div>
           </div>
         );
@@ -226,7 +246,16 @@ function EventRows({ events, apps, today }: { events: CalEvent[]; apps: Record<s
 }
 
 const panel: CSSProperties = { background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, padding: "16px 18px" };
-const h2: CSSProperties = { fontSize: 16, fontWeight: 900, color: "#0f172a", margin: "0 0 10px" };
+const tabStyle = (on: boolean): CSSProperties => ({
+  fontSize: 13,
+  fontWeight: 800,
+  color: on ? "#fff" : "#334155",
+  background: on ? ACCENT : "#fff",
+  border: `1px solid ${on ? ACCENT : "#e2e8f0"}`,
+  borderRadius: 10,
+  padding: "8px 13px",
+  cursor: "pointer",
+});
 const chip = (active: boolean): CSSProperties => ({
   fontSize: 12.5,
   fontWeight: 800,
