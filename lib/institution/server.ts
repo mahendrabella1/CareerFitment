@@ -15,7 +15,9 @@ import type { Firestore } from "firebase-admin/firestore";
 import { adminProjectId, getFirestore, isFirestoreConfigured } from "@/lib/firebase/admin";
 import { AuthAdminError, verifySignIn } from "@/lib/firebase/adminAuth";
 import { isAdmin } from "@/lib/auth/admins";
-import type { Institution, InstitutionAccount } from "@/lib/institution/types";
+import { randomBytes } from "crypto";
+import { toStudentRow } from "@/lib/institution/analytics";
+import type { Institution, InstitutionAccount, StudentRow } from "@/lib/institution/types";
 
 export class ApiError extends Error {
   constructor(public status: number, message: string) {
@@ -109,6 +111,7 @@ export const STUDENT_LIST_FIELDS = [
   "progress", "activity", "examSession.status",
   "latestAssessment.completedAt", "latestAssessment.customFields", "latestAssessment.matches",
   "latestAssessment.topCareer", "latestAssessment.overallFitmentPct", "latestAssessment.desiredCareer",
+  "latestAssessment.topStrengths", "latestAssessment.topIntelligences", "latestAssessment.strengthsBreakdown", "latestAssessment.quality",
 ];
 
 /** How a school name is compared: spacing and capitals don't matter
@@ -140,6 +143,28 @@ export async function studentsOf(db: Firestore, inst: Institution, fields: strin
     snaps.forEach((s) => { if (s.exists) out.set(s.id, s.data() as Record<string, unknown>); });
   }
   return out;
+}
+
+/** The institution's students as list rows. */
+export async function rowsOf(db: Firestore, inst: Institution): Promise<StudentRow[]> {
+  const now = Date.now();
+  return [...(await studentsOf(db, inst)).entries()].map(([uid, d]) => toStudentRow(uid, d, now));
+}
+
+/** The institution a student's `institution` names, if it has a portal login. */
+export async function institutionForStudent(db: Firestore, institution: unknown): Promise<Institution | null> {
+  if (!normName(institution)) return null;
+  const snap = await db.collection("institutions").get();
+  for (const d of snap.docs) {
+    const inst = { ...(d.data() as Institution), id: d.id };
+    if (belongsTo(inst, institution)) return inst;
+  }
+  return null;
+}
+
+/** Random URL-safe id for public links (parent surveys, passports). */
+export function randomToken(bytes = 18): string {
+  return randomBytes(bytes).toString("base64url");
 }
 
 /** The student's full document, only if they belong to this institution. */

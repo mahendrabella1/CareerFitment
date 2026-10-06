@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { LEGAL_SCENARIOS, type LegalScenario, type ScenarioAge } from "@/data/legal/scenarios";
 import { HELP_CONTACTS } from "@/data/legal/helpContacts";
 import { LEGAL_GUIDES } from "@/data/legal/guides";
 import { scopedKey } from "@/lib/progress/userStorage";
+import { useAuth } from "@/lib/auth/AuthProvider";
+import { recordLegalScenario } from "@/lib/progress/progressStore";
 
 const ACCENT = "#6366f1";
 const KEY = "onegrasp.legal.scenarios.v1";
@@ -48,6 +50,7 @@ export function ScenarioCards() {
   const [openId, setOpenId] = useState<string | null>(null);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [done, setDone] = useState<string[]>([]);
+  const legalRef = useRef(useAuth().profile?.progress?.legal);
 
   useEffect(() => {
     setDone(loadDone());
@@ -63,6 +66,9 @@ export function ScenarioCards() {
       const next = [...done, scenario.id];
       setDone(next);
       saveDone(next);
+      // Counts only (finished, and whether the safest choice was picked) -
+      // never which choice - for the student's school's life-skills view.
+      legalRef.current = recordLegalScenario(scenarioArea(scenario) ?? "General", !!scenario.choices[index]?.best, legalRef.current);
     }
   };
 
@@ -81,7 +87,7 @@ export function ScenarioCards() {
       </div>
 
       <div style={{ fontSize: 13, color: "#64748b" }}>
-        {completedInView} of {visible.length} scenarios completed in this view. Only which cards you finished is kept on this device, never your choices.
+        {completedInView} of {visible.length} scenarios completed in this view. Your account keeps only how many cards you finished and how many safest choices you made (your school can see these counts) - never which choice you picked.
       </div>
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>

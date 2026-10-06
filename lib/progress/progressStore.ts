@@ -12,7 +12,7 @@
 import { doc, updateDoc } from "firebase/firestore";
 import { getDb } from "@/lib/firebase/client";
 import { scopedKey, storageScope } from "@/lib/progress/userStorage";
-import type { CourseProgress, GoalProgress } from "@/lib/progress/types";
+import type { CourseProgress, GoalProgress, LegalPractice } from "@/lib/progress/types";
 
 interface Stamped<T> { value: T; updatedAt: number }
 
@@ -68,6 +68,22 @@ export function saveCourseDone(key: string, done: string[], total: number): void
   const updatedAt = Date.now();
   writeLocal(courseKey(key), done, updatedAt);
   writeAccount(`progress.courses.${key}`, { done, total, updatedAt } satisfies CourseProgress);
+}
+
+// ---------------------------------------------------------------- legal scenarios
+
+/** Adds one finished scenario to the student's counts (never which choice). */
+export function recordLegalScenario(area: string, safest: boolean, current?: LegalPractice): LegalPractice {
+  const base: LegalPractice = current ?? { done: 0, safest: 0, byArea: {}, updatedAt: 0 };
+  const a = base.byArea[area] ?? { done: 0, safest: 0 };
+  const next: LegalPractice = {
+    done: base.done + 1,
+    safest: base.safest + (safest ? 1 : 0),
+    byArea: { ...base.byArea, [area]: { done: a.done + 1, safest: a.safest + (safest ? 1 : 0) } },
+    updatedAt: Date.now(),
+  };
+  writeAccount("progress.legal", next);
+  return next;
 }
 
 // ---------------------------------------------------------------- goals

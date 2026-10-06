@@ -12,7 +12,8 @@
  * choose-one (text or SVG options), 1–10 slider, most/least, and open response.
  */
 
-import { Component, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { Component, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { assessmentQuality } from "@/lib/assessmentQuality";
 import { useRouter } from "next/navigation";
 import { useAuth, type ExamSession } from "@/lib/auth/AuthProvider";
 import { getFirebaseAuth } from "@/lib/firebase/client";
@@ -398,6 +399,17 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
 
   const total = flat.length;
   const q = flat[cur];
+
+  // Seconds spent on each question - only to judge, at submit, whether the
+  // paper was rushed (lib/assessmentQuality.ts). Never affects scoring.
+  const qTimes = useRef<Record<string, number>>({});
+  const qOpen = useRef<{ id: string | null; at: number }>({ id: null, at: 0 });
+  const tickQuestionTime = useCallback(() => {
+    const open = qOpen.current;
+    if (open.id) qTimes.current[open.id] = (qTimes.current[open.id] ?? 0) + (Date.now() - open.at) / 1000;
+    qOpen.current = { id: phase === "exam" ? flat[cur]?.id ?? null : null, at: Date.now() };
+  }, [phase, flat, cur]);
+  useEffect(() => { tickQuestionTime(); }, [tickQuestionTime]);
   const requiredTotal = useMemo(() => flat.filter((x) => !x.optional).length, [flat]);
 
   const isAnswered = (qq: { id: string; type: string; optional?: boolean }) => {
@@ -534,7 +546,12 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
       });
       const j = await res.json();
       if (!j.success) throw new Error(j.message || "Scoring failed");
-      const summary = scoring ? scoring.pickSummary(j.data) : j.data;
+      tickQuestionTime();
+      const quality = assessmentQuality({
+        orderedIds: flat.map((x) => x.id), answers, secondsPerQuestion: qTimes.current, durationSec: TOTAL_SEC - remainingSec,
+      });
+      // Saved with the result so the student's institution can see how far to trust it.
+      const summary = { ...(scoring ? scoring.pickSummary(j.data) : j.data), quality };
       const extras = scoring?.pickExtras ? scoring.pickExtras(j.data) : undefined;
       try {
         if (scoring?.persist === "demo") await saveDemoAssessment(summary, extras);

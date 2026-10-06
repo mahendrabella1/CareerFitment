@@ -70,6 +70,12 @@ export function toStudentRow(uid: string, d: any, now: number = Date.now()): Stu
       topFits: fits,
       fitPct: typeof a?.overallFitmentPct === "number" ? Math.round(a.overallFitmentPct) : null,
       desiredCareer: str(a?.desiredCareer) || str(d?.desiredCareer) || null,
+      strengths: [
+        ...((a?.topStrengths ?? []) as { parameterName?: string; subTraitName?: string }[]).map((s) => s.subTraitName || s.parameterName || ""),
+        ...((a?.topIntelligences ?? []) as { name?: string }[]).map((s) => s.name || ""),
+        ...((a?.strengthsBreakdown ?? []) as { name?: string }[]).slice(0, 3).map((s) => s.name || ""),
+      ].filter(Boolean).slice(0, 8),
+      quality: a?.quality ?? null,
     },
     activity: {
       totalSec: num(d?.activity?.totalSec),
@@ -80,6 +86,7 @@ export function toStudentRow(uid: string, d: any, now: number = Date.now()): Stu
     },
     courses,
     goals: g ? { done: Math.min(goalsDone, num(g.total) || goalsDone), total: num(g.total) } : null,
+    legal: d?.progress?.legal ? { done: num(d.progress.legal.done), safest: num(d.progress.legal.safest), byArea: d.progress.legal.byArea ?? {} } : null,
   };
 }
 

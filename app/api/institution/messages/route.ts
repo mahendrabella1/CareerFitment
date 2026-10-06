@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { ApiError, fail, requireInstitution, studentsOf } from "@/lib/institution/server";
 import { categoryLabel } from "@/lib/auth/formOptions";
 import { sendMessageEmails } from "@/lib/institution/messageEmail";
+import { areaForPath } from "@/lib/progress/activity";
 import type { InstitutionMessage, MessageAudience, MessageKind } from "@/lib/institution/types";
 
 export const dynamic = "force-dynamic";
@@ -23,16 +24,45 @@ const EMAIL_CAP = 500;
 export async function GET(req: Request) {
   try {
     const { institution, db } = await requireInstitution(req);
-    const snap = await db.collection("institutionMessages").where("institutionId", "==", institution.id).get();
+    const [snap, students, opps] = await Promise.all([
+      db.collection("institutionMessages").where("institutionId", "==", institution.id).get(),
+      studentsOf(db, institution, ["activity.lastByFeature", "activity.lastActiveAt", "latestAssessment.completedAt"]),
+      db.collection("opportunities").where("institutionId", "==", institution.id).get(),
+    ]);
+    const applied = new Map(opps.docs.map((d) => [d.id, (d.get("applied") ?? {}) as Record<string, number>]));
     const messages = snap.docs
       .map((d) => ({ ...(d.data() as InstitutionMessage), id: d.id }))
       .sort((a, b) => b.createdAt - a.createdAt)
       .slice(0, 200)
-      .map(({ recipients, readBy, ...m }) => ({ ...m, recipientCount: recipients.length, readCount: Object.keys(readBy ?? {}).length }));
+      .map(({ recipients, readBy, clickedBy, ...m }) => ({
+        ...m,
+        recipientCount: recipients.length,
+        readCount: Object.keys(readBy ?? {}).length,
+        clickCount: Object.keys(clickedBy ?? {}).length,
+        actedCount: recipients.filter((uid) => acted(m, uid, students.get(uid), applied)).length,
+      }));
     return NextResponse.json({ messages });
   } catch (e) {
     return fail(e);
   }
+}
+
+/**
+ * Did the student do what the message asked, after it was sent? An
+ * assessment reminder: they completed it. A link into an area: they used
+ * that area. An opportunity: they said they applied. No link: they came back.
+ */
+function acted(m: Pick<InstitutionMessage, "createdAt" | "link" | "opportunityId">, uid: string, d: Record<string, unknown> | undefined, applied: Map<string, Record<string, number>>): boolean {
+  if (m.opportunityId) return !!applied.get(m.opportunityId)?.[uid];
+  if (!d) return false;
+  const activity = (d.activity ?? {}) as { lastByFeature?: Record<string, number>; lastActiveAt?: number };
+  const path = (m.link || "").split("?")[0];
+  if (path === "/") {
+    const done = Date.parse(String((d.latestAssessment as { completedAt?: string } | undefined)?.completedAt ?? ""));
+    return done > m.createdAt;
+  }
+  if (path) return (activity.lastByFeature?.[areaForPath(path)] ?? 0) > m.createdAt;
+  return (activity.lastActiveAt ?? 0) > m.createdAt;
 }
 
 export async function POST(req: Request) {

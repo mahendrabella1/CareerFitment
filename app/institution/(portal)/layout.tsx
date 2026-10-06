@@ -13,10 +13,18 @@ import { Icon } from "@/app/Icons";
 import { usePortal } from "@/components/institution/portalStore";
 import { formatAgoInline } from "@/lib/institution/analytics";
 
-const NAV = [
+const NAV: { href: string; label: string; icon: string; group?: string }[] = [
   { href: "/institution", label: "Overview", icon: "radar" },
-  { href: "/institution/students", label: "Students", icon: "users" },
-  { href: "/institution/messages", label: "Messages", icon: "bell" },
+  { href: "/institution/students", label: "Students", icon: "users", group: "People" },
+  { href: "/institution/parents", label: "Parents", icon: "heart" },
+  { href: "/institution/observations", label: "Teacher check", icon: "check" },
+  { href: "/institution/passport", label: "Career Passport", icon: "award" },
+  { href: "/institution/messages", label: "Messages", icon: "bell", group: "Engage" },
+  { href: "/institution/decisions", label: "Decision briefs", icon: "signpost" },
+  { href: "/institution/opportunities", label: "Opportunities", icon: "target" },
+  { href: "/institution/mentors", label: "Peer mentors", icon: "route" },
+  { href: "/institution/life-skills", label: "Life skills", icon: "shield", group: "Insights" },
+  { href: "/institution/future", label: "Future skills", icon: "sparkle" },
 ];
 
 export default function PortalShell({ children }: { children: React.ReactNode }) {
@@ -45,10 +53,13 @@ export default function PortalShell({ children }: { children: React.ReactNode })
           {NAV.map((n) => {
             const on = n.href === "/institution" ? pathname === n.href : pathname.startsWith(n.href);
             return (
-              <Link key={n.href} href={n.href} className={on ? "on" : ""}>
-                <Icon name={n.icon} size={17} stroke={1.9} /> {n.label}
-                {n.href === "/institution/students" && students && <span className="ip-badge" style={{ background: "var(--line)", color: "var(--ink2)" }}>{students.filter((s) => !s.archived).length}</span>}
-              </Link>
+              <div key={n.href} style={{ display: "contents" }}>
+                {n.group && <div className="ip-nav-group">{n.group}</div>}
+                <Link href={n.href} className={on ? "on" : ""}>
+                  <Icon name={n.icon} size={17} stroke={1.9} /> {n.label}
+                  {n.href === "/institution/students" && students && <span className="ip-badge" style={{ background: "var(--line)", color: "var(--ink2)" }}>{students.filter((s) => !s.archived).length}</span>}
+                </Link>
+              </div>
             );
           })}
         </nav>

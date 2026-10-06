@@ -11,12 +11,21 @@
  *   institutionAccounts/{uid}   a login for one institution (Firebase Auth
  *                                user created by an admin)
  *   institutionMessages/{id}    a message, reminder or alert sent to students
+ *   parentLinks/{token}         a parent's survey link for one student
+ *   parentSurveys/{uid}         what the parents want for their child
+ *   milestones/{id}             a Career Passport milestone and its review
+ *   passports/{id}              a student's public Career Passport link
+ *   opportunities/{id}          an opportunity targeted at matching students
+ *   mentorPairs/{id}            a senior matched to mentor a junior
+ *   observations/{inst}_{uid}   teachers' ratings of a student's traits
+ *   voiceCalls/{id}             automated calls to parents
  *
  * A student belongs to an institution when their profile's `institution`
  * (set by the school's registration link, typed at sign-up, or assigned by an
- * admin on the Users page) equals the institution's name or one of its
- * aliases.
+ * admin on the Users page) matches the institution's name or one of its
+ * aliases, ignoring spacing and capitals.
  */
+import type { AssessmentQuality } from "@/lib/assessmentQuality";
 
 export interface Institution {
   id: string;
@@ -64,6 +73,12 @@ export interface InstitutionMessage {
   recipients: string[];
   /** uid -> when they opened it (epoch ms). */
   readBy: Record<string, number>;
+  /** uid -> when they followed its button (epoch ms). */
+  clickedBy?: Record<string, number>;
+  /** An outside link (opportunities: the olympiad's or hackathon's page). */
+  externalUrl?: string;
+  /** Set when the message announces an opportunity (opportunities/{id}). */
+  opportunityId?: string;
   sentBy: string;
   sentByName: string;
   createdAt: number;
@@ -81,6 +96,31 @@ export interface StudentInboxMessage {
   from: string;
   createdAt: number;
   read: boolean;
+  externalUrl?: string;
+  opportunityId?: string;
+  /** For an opportunity: whether the student said they applied. */
+  applied?: boolean;
+}
+
+export type OpportunityType = "olympiad" | "hackathon" | "competition" | "workshop" | "internship" | "scholarship" | "event";
+
+export interface Opportunity {
+  id: string;
+  institutionId: string;
+  title: string;
+  type: OpportunityType;
+  description: string;
+  url: string;
+  deadline: string;
+  classes: string[];
+  areas: string[];
+  recipients: string[];
+  applied: Record<string, number>;
+  /** uid -> what happened ("participated", "shortlisted", "won"). */
+  outcomes: Record<string, string>;
+  messageId: string;
+  createdAt: number;
+  createdBy: string;
 }
 
 /** One student as the institution sees them in lists (no answers, no report body). */
@@ -101,6 +141,10 @@ export interface StudentRow {
     topFits: string[];
     fitPct: number | null;
     desiredCareer: string | null;
+    /** Names of the test's top strengths / intelligences (for the teacher check). */
+    strengths: string[];
+    /** How much the result can be trusted (lib/assessmentQuality.ts); null for older reports. */
+    quality: AssessmentQuality | null;
   };
   activity: {
     totalSec: number;
@@ -112,4 +156,6 @@ export interface StudentRow {
   };
   courses: Record<string, { done: number; total: number }>;
   goals: { done: number; total: number } | null;
+  /** Legal "What would you do?" practice: counts only. */
+  legal: { done: number; safest: number; byArea: Record<string, { done: number; safest: number }> } | null;
 }

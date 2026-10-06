@@ -575,6 +575,14 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
               <section id="overview" className="ash-sec">
                 {/* Messages from the student's school, if it uses the institution portal (renders nothing otherwise). */}
                 <SchoolInbox />
+                <Link href="/account/passport" style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, padding: "12px 16px", borderRadius: 14, border: "1px solid #ececef", background: "#fff", textDecoration: "none", color: "inherit" }}>
+                  <span style={{ width: 34, height: 34, borderRadius: 10, background: "#FDECED", color: "#E23B41", display: "grid", placeItems: "center", flex: "none" }}><Icon name="award" size={18} /></span>
+                  <span style={{ flex: 1, minWidth: 0 }}>
+                    <b style={{ display: "block", fontSize: 14 }}>Career Passport</b>
+                    <span style={{ fontSize: 12.5, color: "#63636f" }}>Add projects, certificates and wins with proof - your school verifies them and you share one QR-checkable record.</span>
+                  </span>
+                  <span style={{ fontWeight: 800, color: "#E23B41", fontSize: 13 }}>Open →</span>
+                </Link>
                 <div className="ash-banner">
                   <span className="ash-banner-ic"><Icon name="check" size={18} /></span>
                   <div className="ash-banner-t">

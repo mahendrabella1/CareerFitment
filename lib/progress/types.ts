@@ -24,6 +24,7 @@ export interface GoalProgress {
 export interface StudentProgress {
   courses?: Record<string, CourseProgress>;
   goals?: GoalProgress;
+  legal?: LegalPractice;
 }
 
 /**
@@ -38,4 +39,14 @@ export interface StudentActivity {
   byDay?: Record<string, number>;
   lastActiveAt?: number;
   lastFeature?: string;
+  /** Area -> when it was last used (epoch ms). */
+  lastByFeature?: Record<string, number>;
+}
+
+/** Legal "What would you do?" scenarios: counts only, never which choice. */
+export interface LegalPractice {
+  done: number;
+  safest: number;
+  byArea: Record<string, { done: number; safest: number }>;
+  updatedAt: number;
 }

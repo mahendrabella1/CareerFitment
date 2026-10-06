@@ -75,6 +75,20 @@ As of this build, the `graduate` registration category is still gated `enabled: 
 - **Browser storage is per student.** Every feature tool's localStorage key goes through `scopedKey()` (`lib/progress/userStorage.ts`) - never a bare fixed key, or students on a shared computer see each other's data. Data saved before this was adopted once per device by the first account to sign in.
 - **Progress synced to the account:** feature-course lessons and the dashboard's 30/90-day goals (`lib/progress/progressStore.ts`) on `users/{uid}.progress`; active time by area and day (`components/ActivityTracker.tsx`, areas in `lib/progress/activity.ts`) on `users/{uid}.activity`.
 - **Institution portal** (`/institution`, `app/institution/**`, `components/institution/**`, `lib/institution/**`): a school's login (created at `/admin/institutions`) sees only students whose profile `institution` equals the institution's name or an alias. All data goes through server routes (`app/api/institution/**`, `app/api/admin/institutions`, `app/api/student/messages`) that verify the Firebase ID token with the Admin SDK - they need `FIREBASE_PROJECT_ID`/`FIREBASE_CLIENT_EMAIL`/`FIREBASE_PRIVATE_KEY` (503 without). Collections `institutions`, `institutionAccounts`, `institutionMessages` are server-only. Students see messages in `components/SchoolInbox.tsx` (dashboard + the no-assessment screen). Analytics/recommendations are pure functions in `lib/institution/analytics.ts`.
+- **Portal features** (pure logic in `lib/institution/features.ts`; server-only collections listed in `lib/institution/types.ts`):
+  - parent alignment: public survey `/parent/[token]`;
+  - Career Passport: student `/account/passport`, public `/passport/[id]`, verified by the institution;
+  - life-skills radar: Scam Shield rounds plus legal-scenario counts (`progress.legal`, counts only);
+  - future-skills outlook;
+  - decision briefs;
+  - assessment trust score: `latestAssessment.quality`, computed in `app/NewExam.tsx` at submit by `lib/assessmentQuality.ts`;
+  - message funnel: opened, clicked, acted, using `activity.lastByFeature`;
+  - teacher observations;
+  - targeted opportunities;
+  - peer mentors;
+  - voice calls to parents: `lib/institution/voice.ts`, Twilio, needs `TWILIO_ACCOUNT_SID`/`TWILIO_AUTH_TOKEN`/`TWILIO_FROM_NUMBER`.
+- **Career areas and "change by 2035" levels** in `features.ts` are OneGrasp planning estimates, labelled as such in the UI.
+- **Voice-call translations** (Hindi/Telugu) should be reviewed by a native speaker.
 
 ## Known pre-existing quirks (not yet fixed, flagged here so they aren't mistaken for new bugs)
 

@@ -20,10 +20,15 @@ export async function GET(req: Request, { params }: { params: { uid: string } })
     if (!data) throw new ApiError(404, "No student with this ID belongs to your institution.");
     const now = Date.now();
 
-    const [msgSnap, lessonSnap, testSnap] = await Promise.all([
+    const [msgSnap, lessonSnap, testSnap, surveySnap, milestoneSnap, obsSnap, mentorA, mentorB] = await Promise.all([
       db.collection("institutionMessages").where("recipients", "array-contains", params.uid).get(),
       db.collection("startupsLessonProgress").where("uid", "==", params.uid).get().catch(() => null),
       db.collection("startupsModuleTestProgress").where("uid", "==", params.uid).get().catch(() => null),
+      db.collection("parentSurveys").doc(params.uid).get(),
+      db.collection("milestones").where("uid", "==", params.uid).get(),
+      db.collection("observations").doc(`${institution.id}_${params.uid}`).get(),
+      db.collection("mentorPairs").where("mentorUid", "==", params.uid).get(),
+      db.collection("mentorPairs").where("menteeUid", "==", params.uid).get(),
     ]);
     const messages = msgSnap.docs
       .map((d) => ({ ...(d.data() as InstitutionMessage), id: d.id }))
@@ -46,7 +51,12 @@ export async function GET(req: Request, { params }: { params: { uid: string } })
       latestAssessment: data.latestAssessment ?? null,
     };
 
-    return NextResponse.json({ student: toStudentRow(params.uid, data, now), profile, messages, startups });
+    const survey = surveySnap.exists && surveySnap.get("institutionId") === institution.id ? surveySnap.data() : null;
+    const milestones = milestoneSnap.docs.map((d) => ({ ...d.data(), id: d.id })).sort((a, b) => Number((b as { createdAt?: number }).createdAt) - Number((a as { createdAt?: number }).createdAt));
+    const observation = obsSnap.exists ? obsSnap.data() : null;
+    const mentors = [...mentorA.docs, ...mentorB.docs].filter((d) => d.get("institutionId") === institution.id).map((d) => ({ ...d.data(), id: d.id }));
+
+    return NextResponse.json({ student: toStudentRow(params.uid, data, now), profile, messages, startups, survey, milestones, observation, mentors });
   } catch (e) {
     return fail(e);
   }

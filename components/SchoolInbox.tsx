@@ -34,7 +34,8 @@ const CSS = `
 .si-t{font-weight:700;font-size:14px;color:#141417;line-height:1.35}
 .si-meta{font-size:11.5px;color:#9a9aa6;margin-top:2px}
 .si-body{margin:8px 0 0 18px;font-size:13.5px;color:#3d3d45;line-height:1.6;white-space:pre-line}
-.si-go{display:inline-block;margin:10px 0 0 18px;background:#E23B41;color:#fff;font-weight:700;font-size:13px;border-radius:9px;padding:8px 14px;text-decoration:none}
+.si-go{display:inline-block;margin:10px 0 0 18px;background:#E23B41;color:#fff;font-family:inherit;font-weight:700;font-size:13px;border-radius:9px;padding:8px 14px;text-decoration:none}
+.si-go + .si-go{margin-left:8px}
 .si-more{background:none;border:none;color:#E23B41;font:inherit;font-weight:700;font-size:13px;cursor:pointer;padding:6px 0 0}
 `;
 
@@ -66,6 +67,16 @@ export function SchoolInbox() {
     if (!unread.length) return;
     setMsgs((ms) => (ms ?? []).map((m) => (unread.includes(m.id) ? { ...m, read: true } : m)));
     apiFetch("/api/student/messages", { method: "POST", body: JSON.stringify({ ids: unread }) }).catch(() => undefined);
+  }
+
+  // Following a message's button tells the school it was acted on.
+  function clicked(id: string) {
+    markRead([id]);
+    apiFetch("/api/student/messages", { method: "POST", body: JSON.stringify({ clicked: id }) }).catch(() => undefined);
+  }
+  function applied(id: string) {
+    setMsgs((ms) => (ms ?? []).map((m) => (m.id === id ? { ...m, applied: true } : m)));
+    apiFetch("/api/student/messages", { method: "POST", body: JSON.stringify({ applied: id }) }).catch(() => undefined);
   }
 
   // The message open on arrival counts as read once it has been on screen a moment.
@@ -105,7 +116,14 @@ export function SchoolInbox() {
             {isOpen && (
               <>
                 <div className="si-body">{m.body}</div>
-                {m.link && <Link className="si-go" href={m.link} onClick={() => markRead([m.id])}>Open →</Link>}
+                {m.externalUrl
+                  ? <a className="si-go" href={m.externalUrl} target="_blank" rel="noreferrer" onClick={() => clicked(m.id)}>Open ↗</a>
+                  : m.link && <Link className="si-go" href={m.link} onClick={() => clicked(m.id)}>Open →</Link>}
+                {m.opportunityId && (
+                  m.applied
+                    ? <span className="si-go" style={{ background: "#eaf6f0", color: "#1f7a55" }}>Applied ✓</span>
+                    : <button type="button" className="si-go" style={{ border: "none", cursor: "pointer", background: "#141417" }} onClick={() => applied(m.id)}>I applied</button>
+                )}
               </>
             )}
           </div>

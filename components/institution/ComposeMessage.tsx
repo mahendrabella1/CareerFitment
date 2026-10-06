@@ -164,7 +164,7 @@ export function ComposeMessage({ preset, onClose, onSent }: { preset: ComposePre
               <div>
                 <label className="ip-label" htmlFor="cm-link">Button takes them to</label>
                 <select id="cm-link" className="ip-select" style={{ width: "100%" }} value={link} onChange={(e) => setLink(e.target.value)}>
-                  {LINKS.map((l) => <option key={l.href} value={l.href}>{l.label}</option>)}
+                  {(link && !LINKS.some((l) => l.href === link) ? [{ href: link, label: `Suggested page (${link})` }, ...LINKS] : LINKS).map((l) => <option key={l.href} value={l.href}>{l.label}</option>)}
                 </select>
               </div>
               <label style={{ display: "inline-flex", alignItems: "center", gap: 7, fontWeight: 600, color: "var(--ink2)", paddingBottom: 9 }}>

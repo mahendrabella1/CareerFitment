@@ -14,12 +14,18 @@ import {
 } from "@/lib/institution/analytics";
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 import type { MessageKind, StudentRow } from "@/lib/institution/types";
+import { AREA_BY_KEY, TRAITS, decisionBriefText, parentAlignment, traitCheck, type ParentSurvey } from "@/lib/institution/features";
+import { KIND_LABEL as MILESTONE_KIND, type Milestone } from "@/lib/institution/passport";
 
 interface Detail {
   student: StudentRow;
   profile: { uid: string; name: string; email: string; phone: string; category: string; city: string; age: string; desiredCareer: string; clarity: string; latestAssessment: AssessmentSummary | null };
   messages: { id: string; kind: MessageKind; title: string; createdAt: number; sentByName: string; readAt: number | null }[];
   startups: { lessonsCompleted: number; lessonsStarted: number; moduleTests: { module: string; bestPercent: number }[] };
+  survey: ParentSurvey | null;
+  milestones: Milestone[];
+  observation: { ratings: Record<string, number>; by: string; updatedAt: number } | null;
+  mentors: { id: string; mentorUid: string; menteeUid: string; mentorName: string; menteeName: string; area: string }[];
 }
 
 const KIND_LABEL: Record<MessageKind, string> = { message: "Message", reminder: "Reminder", alert: "Alert", recommendation: "Recommendation" };
@@ -87,6 +93,8 @@ export default function StudentPage({ params }: { params: { uid: string } }) {
         ))}
       </Section>
 
+      <BeyondReport d={d} onBrief={() => { const b = decisionBriefText(s, now); setCompose({ audience: only, kind: "recommendation", title: b.title, body: b.body, link: "/account" }); }} />
+
       <div className="ip-grid2">
         <Section title="Daily time" icon="pulse" aside="minutes, last 30 days">
           <DailyChart data={lastDays(30, new Date(now)).map((day) => ({ day, value: Math.round((s.activity.byDay[day] ?? 0) / 60) }))} unit="minutes" />
@@ -152,4 +160,58 @@ export default function StudentPage({ params }: { params: { uid: string } }) {
 
 function BackLink() {
   return <Link href="/institution/students" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "var(--ink3)", fontWeight: 700, fontSize: 13, textDecoration: "none", marginBottom: 12 }}><Icon name="chevronLeft" size={15} /> All students</Link>;
+}
+
+/** Trust in the report, the parents' view, teachers' check, Career Passport and mentor - one glance each. */
+function BeyondReport({ d, onBrief }: { d: Detail; onBrief: () => void }) {
+  const s = d.student;
+  const q = s.assessment.quality;
+  const al = d.survey ? parentAlignment(d.survey, s) : null;
+  const gaps = traitCheck(d.observation?.ratings ?? {}, s.assessment.strengths);
+  const tone = (t: string) => ({ conflict: "bad", partial: "warn", aligned: "good", open: "good", no_report: "muted" } as Record<string, string>)[t];
+  return (
+    <div className="ip-grid2e">
+      <Section title="Report trust and next decision" icon="shield">
+        {q ? (
+          <div style={{ marginBottom: 10 }}>
+            <span className={`ip-pill ${q.trust === "high" ? "good" : q.trust === "medium" ? "warn" : "bad"}`}>{q.trust === "high" ? "Answered carefully" : q.trust === "medium" ? "Check this report" : "Low trust - consider a retake"}</span>
+            <div className="ip-muted" style={{ marginTop: 6 }}>{Math.round(q.durationSec / 60)} min for {q.answered} of {q.total} questions · {q.avgSecPerQuestion}s a question{q.reasons.length ? ` · ${q.reasons.join("; ")}` : ""}</div>
+          </div>
+        ) : <div className="ip-muted" style={{ marginBottom: 10 }}>Trust is measured for assessments taken from now on.</div>}
+        <button className="ip-btn ghost sm" onClick={onBrief}>Send their decision brief</button>
+      </Section>
+      <Section title="Parents' view" icon="heart">
+        {!d.survey ? <div className="ip-muted">Parents haven&apos;t answered the survey - create a link on the <Link href="/institution/parents">Parents</Link> page.</div> : (
+          <>
+            <span className={`ip-pill ${tone(al!.status)}`}>{al!.status === "conflict" ? "Conflict" : al!.status === "partial" ? "Partly aligned" : al!.status === "no_report" ? "Awaiting assessment" : "Aligned"}</span>
+            <div style={{ marginTop: 6 }}>{al!.summary}</div>
+            <div className="ip-muted" style={{ marginTop: 4 }}>
+              {d.survey.parentName || "Parent"}{d.survey.relation ? ` (${d.survey.relation})` : ""} hopes for {d.survey.areas.includes("open") ? "whatever the child chooses" : d.survey.areas.map((x) => AREA_BY_KEY[x]?.label ?? x).join(", ")}{d.survey.priorities.length ? ` · values ${d.survey.priorities.join(", ")}` : ""}
+            </div>
+            {al!.status === "conflict" && <ol style={{ margin: "8px 0 0", paddingLeft: 18, lineHeight: 1.6 }}>{al!.guide.map((g) => <li key={g}>{g}</li>)}</ol>}
+          </>
+        )}
+      </Section>
+      <Section title="Teacher check" icon="check">
+        {!d.observation ? <div className="ip-muted">No ratings yet - teachers rate on the <Link href="/institution/observations">Teacher check</Link> page.</div> : (
+          <>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>{TRAITS.map((t) => <span key={t.key} className="ip-pill muted plain">{t.label}: {d.observation!.ratings[t.key] ?? "-"}/5</span>)}</div>
+            {gaps.length ? gaps.map((g) => <div key={g.trait} className="ip-muted" style={{ marginTop: 6 }}>• {g.text}</div>) : <div className="ip-muted" style={{ marginTop: 6 }}>Teachers and the test broadly agree.</div>}
+          </>
+        )}
+      </Section>
+      <Section title="Career Passport and mentor" icon="award">
+        {d.milestones.length === 0 ? <div className="ip-muted">No milestones added yet.</div> : d.milestones.slice(0, 5).map((m) => (
+          <div key={m.id} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 4 }}>
+            <span className={`ip-pill ${m.status === "verified" ? "good" : m.status === "pending" ? "warn" : "muted"}`}>{m.status === "verified" ? "Verified" : m.status === "pending" ? "To review" : "Not accepted"}</span>
+            <span style={{ fontSize: 13 }}>{m.title} <span className="ip-muted">· {MILESTONE_KIND[m.kind]}</span></span>
+          </div>
+        ))}
+        {d.milestones.some((m) => m.status === "pending") && <Link href="/institution/passport" className="ip-btn ghost sm" style={{ textDecoration: "none", marginTop: 6 }}>Review milestones</Link>}
+        <div className="ip-muted" style={{ marginTop: 10 }}>
+          {d.mentors.length === 0 ? "No peer mentor yet." : d.mentors.map((p) => (p.mentorUid === s.uid ? `Mentors ${p.menteeName} (${p.area})` : `Mentored by ${p.mentorName} (${p.area})`)).join(" · ")}
+        </div>
+      </Section>
+    </div>
+  );
 }

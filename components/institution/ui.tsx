@@ -47,6 +47,7 @@ export const PORTAL_CSS = `
 .ip-nav a.on{background:#fff;color:var(--brand);font-weight:800;box-shadow:0 1px 2px rgba(15,23,42,.06)}
 .ip-nav a.on svg{color:var(--brand)}
 .ip-nav svg{color:var(--muted)}
+.ip-nav-group{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:14px 12px 4px}
 .ip-nav .ip-badge{margin-left:auto}
 .ip-main{min-width:0;padding:22px 22px 60px}
 .ip-h1{font-size:24px;font-weight:800;margin:0;letter-spacing:-.015em}
@@ -122,6 +123,7 @@ export const PORTAL_CSS = `
   .ip-shell{grid-template-columns:minmax(0,1fr)}
   .ip-nav{position:static;flex-direction:row;overflow-x:auto;padding:10px 16px 0;gap:6px}
   .ip-nav a{white-space:nowrap;padding:8px 12px}
+  .ip-nav-group{display:none}
   .ip-main{padding:16px 16px 48px}
   .ip-top-in{padding:10px 16px}
 }

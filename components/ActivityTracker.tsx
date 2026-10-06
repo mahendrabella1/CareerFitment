@@ -65,7 +65,12 @@ export function ActivityTracker() {
         "activity.lastActiveAt": Date.now(),
         "activity.lastFeature": lastArea,
       };
-      for (const [area, n] of entries) patch[`activity.byFeature.${area}`] = increment(n);
+      for (const [area, n] of entries) {
+        patch[`activity.byFeature.${area}`] = increment(n);
+        // When each area was last used - lets a school see whether a message
+        // pointing to it was acted on.
+        patch[`activity.lastByFeature.${area}`] = Date.now();
+      }
       updateDoc(doc(db, "users", uid), patch).catch(() => {
         // Offline or blocked: this minute is lost rather than double-counted later.
       });

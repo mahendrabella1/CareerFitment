@@ -132,7 +132,8 @@ export default function StudentsPage() {
                       <td style={{ whiteSpace: "nowrap" }}>{s.category ? categoryLabel(s.category) : "-"}</td>
                       <td style={{ minWidth: 150 }}>
                         {s.assessment.status === "completed"
-                          ? <><b style={{ fontWeight: 700 }}>{s.assessment.topFit ?? "Completed"}</b><small style={{ display: "block", color: "var(--muted)", fontSize: 11.5 }}>completed {formatAgoInline(s.assessment.completedAt, now)}</small></>
+                          ? <><b style={{ fontWeight: 700 }}>{s.assessment.topFit ?? "Completed"}</b><small style={{ display: "block", color: "var(--muted)", fontSize: 11.5 }}>completed {formatAgoInline(s.assessment.completedAt, now)}</small>
+                            {s.assessment.quality && s.assessment.quality.trust !== "high" && <span className={`ip-pill ${s.assessment.quality.trust === "low" ? "bad" : "warn"}`} style={{ marginTop: 3 }} title={s.assessment.quality.reasons.join("; ")}>{s.assessment.quality.trust === "low" ? "Low trust - retake?" : "Check report"}</span>}</>
                           : <span style={{ color: "var(--muted)" }}>{s.assessment.status === "in_progress" ? "Unfinished" : "Not started"}</span>}
                       </td>
                       <td><StatusPill status={studentStatus(s, now)} /></td>

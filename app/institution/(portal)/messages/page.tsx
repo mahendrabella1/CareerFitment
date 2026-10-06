@@ -10,7 +10,7 @@ import { ComposeMessage, type ComposePreset } from "@/components/institution/Com
 import { formatAgo } from "@/lib/institution/analytics";
 import type { InstitutionMessage, MessageKind } from "@/lib/institution/types";
 
-type SentRow = Omit<InstitutionMessage, "recipients" | "readBy"> & { recipientCount: number; readCount: number };
+type SentRow = Omit<InstitutionMessage, "recipients" | "readBy" | "clickedBy"> & { recipientCount: number; readCount: number; clickCount: number; actedCount: number };
 
 const KIND_LABEL: Record<MessageKind, string> = { message: "Message", reminder: "Reminder", alert: "Alert", recommendation: "Recommendation" };
 const KIND_TONE: Record<MessageKind, string> = { message: "muted", reminder: "warn", alert: "bad", recommendation: "good" };
@@ -59,7 +59,7 @@ export default function MessagesPage() {
       <div className="ip-head">
         <div>
           <h1 className="ip-h1">Messages</h1>
-          <p className="ip-sub">Messages appear in &quot;Messages from your school&quot; on each student&apos;s dashboard, and can also go to their email.</p>
+          <p className="ip-sub">Messages appear in &quot;Messages from your school&quot; on each student&apos;s dashboard, and can also go to their email. <b>Acted on it</b> shows who did what the message asked afterwards - finished the assessment, opened the page it linked to, or applied.</p>
         </div>
         <button className="ip-btn" onClick={() => setCompose({ audience: { type: "all" } })}><Icon name="bell" size={16} stroke={2} /> New message</button>
       </div>
@@ -83,7 +83,7 @@ export default function MessagesPage() {
         ) : (
           <div className="ip-table-wrap">
             <table className="ip-table">
-              <thead><tr><th>Message</th><th>Type</th><th>To</th><th>Sent</th><th className="num">Opened</th></tr></thead>
+              <thead><tr><th>Message</th><th>Type</th><th>To</th><th>Sent</th><th className="num">Opened</th><th className="num">Clicked</th><th className="num" title="Did what the message asked, after it was sent">Acted on it</th></tr></thead>
               <tbody>
                 {rows.map((m) => {
                   const pct = m.recipientCount ? Math.round((m.readCount / m.recipientCount) * 100) : 0;
@@ -99,6 +99,11 @@ export default function MessagesPage() {
                       <td className="num" style={{ minWidth: 120 }}>
                         {m.readCount}/{m.recipientCount}
                         <div className="ip-bar" style={{ marginTop: 5 }}><div style={{ width: `${Math.max(2, pct)}%`, background: "var(--good)" }} /></div>
+                      </td>
+                      <td className="num">{m.clickCount}</td>
+                      <td className="num" style={{ minWidth: 110 }}>
+                        <b>{m.actedCount}</b>/{m.recipientCount}
+                        <div className="ip-bar" style={{ marginTop: 5 }}><div style={{ width: `${Math.max(2, m.recipientCount ? (m.actedCount / m.recipientCount) * 100 : 0)}%`, background: "var(--accent)" }} /></div>
                       </td>
                     </tr>
                   );
