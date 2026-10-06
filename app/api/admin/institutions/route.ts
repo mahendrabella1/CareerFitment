@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAuthUser, deleteAuthUser, updateAuthUser } from "@/lib/firebase/adminAuth";
-import { ApiError, fail, institutionNames, requireAdmin, usernameEmail, USERNAME_RE } from "@/lib/institution/server";
+import { ApiError, fail, institutionNames, normName, requireAdmin, usernameEmail, USERNAME_RE } from "@/lib/institution/server";
 import type { Institution, InstitutionAccount } from "@/lib/institution/types";
 
 export const dynamic = "force-dynamic";
@@ -28,25 +28,36 @@ export async function GET(req: Request) {
       db.collection("institutional_links").get(),
       db.collection("users").select("institution").get(),
     ]);
-    const perName = new Map<string, number>();
-    usersSnap.forEach((d) => {
-      const n = String(d.get("institution") || "").trim();
-      if (n) perName.set(n, (perName.get(n) ?? 0) + 1);
-    });
+    // Students per school name, compared the way the portal compares them
+    // (normName: spacing and capitals ignored), so this count is always what
+    // the institution will see. Each group is shown in its most common spelling.
+    const groups = new Map<string, { students: number; spellings: Map<string, number> }>();
+    const addName = (raw: unknown, count: number) => {
+      const key = normName(raw);
+      if (!key) return;
+      const g = groups.get(key) ?? { students: 0, spellings: new Map() };
+      const spelling = String(raw).trim().replace(/\s+/g, " ");
+      g.students += count;
+      g.spellings.set(spelling, (g.spellings.get(spelling) ?? 0) + Math.max(count, 0.5));
+      groups.set(key, g);
+    };
+    usersSnap.forEach((d) => addName(d.get("institution"), 1));
+    schoolsSnap.forEach((d) => addName(d.get("name"), 0));
+    linksSnap.forEach((d) => addName(d.get("schoolName"), 0));
+
     const accounts = accSnap.docs.map((d) => ({ ...(d.data() as InstitutionAccount), uid: d.id }));
     const institutions = instSnap.docs.map((d) => {
       const inst = { ...(d.data() as Institution), id: d.id };
       return {
         ...inst,
-        students: institutionNames(inst).reduce((s, n) => s + (perName.get(n) ?? 0), 0),
+        students: [...new Set(institutionNames(inst).map(normName))].reduce((s, k) => s + (groups.get(k)?.students ?? 0), 0),
         accounts: accounts.filter((a) => a.institutionId === inst.id).sort((a, b) => a.createdAt - b.createdAt),
       };
     }).sort((a, b) => a.name.localeCompare(b.name));
 
-    const known = new Map<string, number>(perName);
-    schoolsSnap.forEach((d) => { const n = String(d.get("name") || "").trim(); if (n && !known.has(n)) known.set(n, 0); });
-    linksSnap.forEach((d) => { const n = String(d.get("schoolName") || "").trim(); if (n && !known.has(n)) known.set(n, 0); });
-    const knownSchools = [...known.entries()].map(([name, students]) => ({ name, students })).sort((a, b) => b.students - a.students || a.name.localeCompare(b.name));
+    const knownSchools = [...groups.values()]
+      .map((g) => ({ name: [...g.spellings.entries()].sort((a, b) => b[1] - a[1])[0][0], students: g.students }))
+      .sort((a, b) => b.students - a.students || a.name.localeCompare(b.name));
 
     return NextResponse.json({ institutions, knownSchools });
   } catch (e) {

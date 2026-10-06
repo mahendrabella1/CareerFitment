@@ -111,13 +111,33 @@ export const STUDENT_LIST_FIELDS = [
   "latestAssessment.topCareer", "latestAssessment.overallFitmentPct", "latestAssessment.desiredCareer",
 ];
 
-/** uid -> student document for everyone linked to this institution. */
+/** How a school name is compared: spacing and capitals don't matter
+ *  ("EXCELLENCIA ", "Excellencia" and "EXCELLENCIA" are one school). */
+export function normName(s: unknown): string {
+  return String(s ?? "").trim().replace(/\s+/g, " ").toLowerCase();
+}
+
+/** True when a student's `institution` names this institution (or an alias). */
+export function belongsTo(inst: Pick<Institution, "name" | "aliases">, institution: unknown): boolean {
+  const n = normName(institution);
+  return !!n && institutionNames(inst).some((x) => normName(x) === n);
+}
+
+/**
+ * uid -> student document for everyone linked to this institution.
+ *
+ * Firestore can only match a field exactly, and stored names vary in
+ * spacing and capitals, so every user's `institution` is read (that field
+ * alone) and compared with normName(); the matching students' documents are
+ * then fetched with just the fields asked for.
+ */
 export async function studentsOf(db: Firestore, inst: Institution, fields: string[] = STUDENT_LIST_FIELDS) {
-  const names = institutionNames(inst);
+  const index = await db.collection("users").select("institution").get();
+  const refs = index.docs.filter((d) => belongsTo(inst, d.get("institution"))).map((d) => d.ref);
   const out = new Map<string, Record<string, unknown>>();
-  for (let i = 0; i < names.length; i += 30) {
-    const snap = await db.collection("users").where("institution", "in", names.slice(i, i + 30)).select(...fields).get();
-    snap.forEach((d) => out.set(d.id, d.data()));
+  for (let i = 0; i < refs.length; i += 100) {
+    const snaps = await db.getAll(...refs.slice(i, i + 100), { fieldMask: fields });
+    snaps.forEach((s) => { if (s.exists) out.set(s.id, s.data() as Record<string, unknown>); });
   }
   return out;
 }
@@ -127,7 +147,7 @@ export async function studentOf(db: Firestore, inst: Institution, uid: string) {
   if (!/^[A-Za-z0-9_-]{6,128}$/.test(uid)) return null;
   const snap = await db.collection("users").doc(uid).get();
   const data = snap.data();
-  if (!data || !institutionNames(inst).includes(String(data.institution || "").trim())) return null;
+  if (!data || !belongsTo(inst, data.institution)) return null;
   return data;
 }
 

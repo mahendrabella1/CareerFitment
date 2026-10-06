@@ -38,6 +38,9 @@ function suggestUsername(name: string): string {
   return (base || "school").slice(0, 24);
 }
 
+/** Same comparison as lib/institution/server.ts normName(): spacing and capitals ignored. */
+const norm = (s: string) => s.trim().replace(/\s+/g, " ").toLowerCase();
+
 const fmtDate = (t?: number) => (t ? new Date(t).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "-");
 
 export default function AdminInstitutionsPage() {
@@ -151,12 +154,12 @@ function CreateForm({ data, institutionId, institutionName, onCancel, onCreated,
   onCancel: () => void; onCreated: (c: Created) => void; onError: (m: string) => void;
 }) {
   const existing = !!institutionId;
-  const taken = useMemo(() => new Set(data.institutions.flatMap((i) => [i.name, ...(i.aliases ?? [])])), [data]);
+  const taken = useMemo(() => new Set(data.institutions.flatMap((i) => [i.name, ...(i.aliases ?? [])]).map(norm)), [data]);
   const [f, setF] = useState({ name: "", aliases: "", contactName: "", contactEmail: "", contactPhone: "", displayName: "", username: institutionName ? `${suggestUsername(institutionName)}.2` : "", password: makePassword() });
   const [saving, setSaving] = useState(false);
   const set = (k: keyof typeof f, v: string) => setF((p) => ({ ...p, [k]: v }));
-  const nameStudents = data.knownSchools.find((s) => s.name === f.name.trim())?.students ?? 0;
-  const aliasOptions = data.knownSchools.filter((s) => s.name !== f.name.trim() && !taken.has(s.name));
+  const nameStudents = data.knownSchools.find((s) => norm(s.name) === norm(f.name))?.students ?? 0;
+  const aliasOptions = data.knownSchools.filter((s) => norm(s.name) !== norm(f.name) && !taken.has(norm(s.name)));
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -189,9 +192,9 @@ function CreateForm({ data, institutionId, institutionName, onCancel, onCreated,
                 onChange={(e) => { set("name", e.target.value); if (!f.username || f.username === suggestUsername(f.name)) set("username", suggestUsername(e.target.value)); }}
                 placeholder="Start typing - schools already in use are suggested" />
               <datalist id="og-known-schools">
-                {data.knownSchools.filter((s) => !taken.has(s.name)).map((s) => <option key={s.name} value={s.name}>{s.students} students</option>)}
+                {data.knownSchools.filter((s) => !taken.has(norm(s.name))).map((s) => <option key={s.name} value={s.name}>{s.students} students</option>)}
               </datalist>
-              <div style={S.hint}>{f.name.trim() ? `${nameStudents} registered student${nameStudents === 1 ? "" : "s"} have exactly this name on their profile.` : "Students are linked by this name - pick it from the list so it matches."}</div>
+              <div style={S.hint}>{f.name.trim() ? `${nameStudents} registered student${nameStudents === 1 ? " has" : "s have"} this name on their profile (spacing and capitals don't matter).` : "Students are linked by this name - pick it from the list so it matches."}</div>
             </div>
             <div style={{ gridColumn: "1 / -1" }}>
               <label style={S.label}>Other spellings students used (optional, one per line)</label>
@@ -252,7 +255,7 @@ function InstitutionCard({ inst, knownSchools, onAddLogin, onPatch, onPassword }
 }) {
   const [editing, setEditing] = useState(false);
   const [e, setE] = useState({ name: inst.name, aliases: (inst.aliases ?? []).join("\n"), contactName: inst.contactName ?? "", contactEmail: inst.contactEmail ?? "", contactPhone: inst.contactPhone ?? "" });
-  const counts = new Map(knownSchools.map((s) => [s.name, s.students]));
+  const counts = new Map(knownSchools.map((s) => [norm(s.name), s.students]));
   return (
     <section style={{ ...S.card, padding: 0, overflow: "hidden" }}>
       <div style={{ padding: "16px 18px", display: "flex", alignItems: "flex-start", gap: 12, flexWrap: "wrap" }}>
@@ -265,7 +268,7 @@ function InstitutionCard({ inst, knownSchools, onAddLogin, onPatch, onPassword }
           </div>
           {(inst.aliases ?? []).length > 0 && (
             <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
-              {inst.aliases.map((a) => <span key={a} style={S.aliasChip}>{a} <span style={{ color: C.muted }}>({counts.get(a) ?? 0})</span></span>)}
+              {inst.aliases.map((a) => <span key={a} style={S.aliasChip}>{a} <span style={{ color: C.muted }}>({counts.get(norm(a)) ?? 0})</span></span>)}
             </div>
           )}
         </div>
