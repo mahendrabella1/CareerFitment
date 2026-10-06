@@ -5,6 +5,7 @@ import Link from "next/link";
 import { LEGAL_SCENARIOS, type LegalScenario, type ScenarioAge } from "@/data/legal/scenarios";
 import { HELP_CONTACTS } from "@/data/legal/helpContacts";
 import { LEGAL_GUIDES } from "@/data/legal/guides";
+import { scopedKey } from "@/lib/progress/userStorage";
 
 const ACCENT = "#6366f1";
 const KEY = "onegrasp.legal.scenarios.v1";
@@ -26,7 +27,7 @@ function scenarioArea(s: LegalScenario): string | undefined {
 
 function loadDone(): string[] {
   try {
-    const raw = window.localStorage.getItem(KEY);
+    const raw = window.localStorage.getItem(scopedKey(KEY));
     const v: unknown = raw ? JSON.parse(raw) : [];
     return Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : [];
   } catch {
@@ -36,7 +37,7 @@ function loadDone(): string[] {
 
 function saveDone(ids: string[]) {
   try {
-    window.localStorage.setItem(KEY, JSON.stringify(ids));
+    window.localStorage.setItem(scopedKey(KEY), JSON.stringify(ids));
   } catch {
     // Storage blocked: progress lasts for this visit only.
   }

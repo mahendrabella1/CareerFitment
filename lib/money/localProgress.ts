@@ -1,4 +1,5 @@
 "use client";
+import { scopedKey } from "@/lib/progress/userStorage";
 
 /** Per-device Scam Shield tally, used by the Money Health Score's Protect pillar. */
 const SCAM_KEY = "onegrasp.money.scam.v1";
@@ -11,7 +12,7 @@ export interface LocalScamTally {
 
 export function loadScamTally(): LocalScamTally {
   try {
-    const raw = window.localStorage.getItem(SCAM_KEY);
+    const raw = window.localStorage.getItem(scopedKey(SCAM_KEY));
     if (raw) return JSON.parse(raw) as LocalScamTally;
   } catch {
     // Storage blocked: start from zero.
@@ -27,7 +28,7 @@ export function addScamRound(mode: string, correct: number, total: number) {
     rounds: [...t.rounds, { mode, correct, total, at: new Date().toISOString() }].slice(-50),
   };
   try {
-    window.localStorage.setItem(SCAM_KEY, JSON.stringify(next));
+    window.localStorage.setItem(scopedKey(SCAM_KEY), JSON.stringify(next));
   } catch {
     // Storage blocked: the tally isn't kept.
   }

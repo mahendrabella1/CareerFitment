@@ -50,6 +50,12 @@ service cloud.firestore {
     match /institutional_links/{code} {
       allow read, write: if isAdmin();
     }
+    // Institution portal - institutions, institutionAccounts and
+    // institutionMessages are read and written ONLY by the server routes in
+    // app/api/institution, app/api/admin/institutions and
+    // app/api/student/messages (Admin SDK, which bypasses these rules), so the
+    // default deny below is exactly right for them. A student's own progress
+    // and active time live on their users/{uid} doc (covered above).
     // Everything else denied by default.
     match /{document=**} {
       allow read, write: if false;

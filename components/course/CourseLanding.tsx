@@ -3,26 +3,8 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import type { CourseContent, LessonContent } from "@/lib/course/types";
-
-const storageKey = (key: string) => `onegrasp.course.${key}.v1`;
-
-function readDone(key: string): string[] {
-  try {
-    const raw = window.localStorage.getItem(storageKey(key));
-    const value: unknown = raw ? JSON.parse(raw) : [];
-    return Array.isArray(value) ? value.filter((v): v is string => typeof v === "string") : [];
-  } catch {
-    return [];
-  }
-}
-
-function writeDone(key: string, ids: string[]) {
-  try {
-    window.localStorage.setItem(storageKey(key), JSON.stringify(ids));
-  } catch {
-    // Storage can be blocked (private window, cleared site data); progress then lasts for this visit only.
-  }
-}
+import { useAuth } from "@/lib/auth/AuthProvider";
+import { readCourseDone, saveCourseDone } from "@/lib/progress/progressStore";
 
 // A module shows this many lessons before "Show all" - the exam directory
 // and the scholarship listing are 29 and 40 lessons long.
@@ -88,19 +70,22 @@ function Chevron() {
 }
 
 export function CourseLanding({ content, topSlot }: { content: CourseContent; topSlot?: ReactNode }) {
+  const { profile } = useAuth();
+  const accountProgress = profile?.progress?.courses?.[content.key];
   const [done, setDone] = useState<string[]>([]);
   const [open, setOpen] = useState<string | null>(null);
   // Only the module you are up to starts open; the rest are one tap away.
   const [openModules, setOpenModules] = useState<Set<string>>(() => new Set(content.modules[0] ? [content.modules[0].id] : []));
   const [showAll, setShowAll] = useState<Set<string>>(() => new Set());
 
+  // Progress is the signed-in student's own (lib/progress/progressStore.ts).
   useEffect(() => {
-    const saved = readDone(content.key);
+    const saved = readCourseDone(content.key, accountProgress);
     setDone(saved);
     const savedSet = new Set(saved);
     const upTo = content.modules.find((m) => m.lessons.some((l) => !savedSet.has(l.id)));
     if (upTo) setOpenModules(new Set([upTo.id]));
-  }, [content]);
+  }, [content, accountProgress]);
 
   const accent = content.accent;
   const lessons = useMemo(
@@ -118,7 +103,7 @@ export function CourseLanding({ content, topSlot }: { content: CourseContent; to
   const toggleDone = (id: string) => {
     const nextDone = doneSet.has(id) ? done.filter((x) => x !== id) : [...done, id];
     setDone(nextDone);
-    writeDone(content.key, nextDone);
+    saveCourseDone(content.key, nextDone, total);
   };
 
   const toggleModule = (id: string) => setOpenModules((s) => {

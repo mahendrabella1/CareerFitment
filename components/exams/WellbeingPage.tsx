@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type CSSProperties } from "react";
 import Link from "next/link";
+import { scopedKey } from "@/lib/progress/userStorage";
 
 const ACCENT = "#2563eb";
 const KEY = "onegrasp.exams.wellbeing.v1";
@@ -30,7 +31,7 @@ interface Saved {
 
 function load(): Saved {
   try {
-    const raw = window.localStorage.getItem(KEY);
+    const raw = window.localStorage.getItem(scopedKey(KEY));
     const v = raw ? (JSON.parse(raw) as Partial<Saved>) : {};
     return { dropYear: Array.isArray(v.dropYear) ? v.dropYear : [], coaching: Array.isArray(v.coaching) ? v.coaching : [] };
   } catch {
@@ -40,7 +41,7 @@ function load(): Saved {
 
 function save(s: Saved) {
   try {
-    window.localStorage.setItem(KEY, JSON.stringify(s));
+    window.localStorage.setItem(scopedKey(KEY), JSON.stringify(s));
   } catch {
     // Storage blocked: the checklists last for this visit only.
   }

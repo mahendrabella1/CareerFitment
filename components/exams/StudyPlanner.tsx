@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { ExamDef } from "@/data/exams/exams";
 import type { ExamSyllabus } from "@/data/exams/syllabus";
 import { buildIcsCalendar, downloadFile } from "@/lib/calendar/ics";
+import { scopedKey } from "@/lib/progress/userStorage";
 
 const ACCENT = "#2563eb";
 const DAY = 86_400_000;
@@ -30,7 +31,7 @@ const keyFor = (slug: string) => `onegrasp.exams.plan.v1.${slug}`;
 
 function load(slug: string): Saved | null {
   try {
-    const raw = window.localStorage.getItem(keyFor(slug));
+    const raw = window.localStorage.getItem(scopedKey(keyFor(slug)));
     return raw ? (JSON.parse(raw) as Saved) : null;
   } catch {
     return null;
@@ -39,7 +40,7 @@ function load(slug: string): Saved | null {
 
 function persist(slug: string, s: Saved) {
   try {
-    window.localStorage.setItem(keyFor(slug), JSON.stringify(s));
+    window.localStorage.setItem(scopedKey(keyFor(slug)), JSON.stringify(s));
   } catch {
     // Storage blocked: the plan works for this visit only.
   }

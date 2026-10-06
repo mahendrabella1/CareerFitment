@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AuthProvider } from "@/lib/auth/AuthProvider";
+import { ActivityTracker } from "@/components/ActivityTracker";
 import MetaPixel from "@/app/MetaPixel";
 import "./globals.css";
 import "./landing-premium.css";
@@ -41,7 +42,10 @@ export default function RootLayout({
       </head>
       <body>
         <MetaPixel />
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          {children}
+          <ActivityTracker />
+        </AuthProvider>
         <Analytics />
         <SpeedInsights />
       </body>

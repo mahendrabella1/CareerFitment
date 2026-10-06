@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { UNIVERSITIES } from "@/data/studyAbroad/universities";
 import { REVIEW_AREAS, submitReview, type ReviewDraft } from "@/lib/studyAbroad/clientReviews";
+import { scopedKey } from "@/lib/progress/userStorage";
 
 const ACCENT = "#7c3aed";
 const DRAFT_KEY = "onegrasp.abroad.reviewDraft.v1";
@@ -32,7 +33,7 @@ export function ReviewForm() {
 
   useEffect(() => {
     try {
-      const raw = window.localStorage.getItem(DRAFT_KEY);
+      const raw = window.localStorage.getItem(scopedKey(DRAFT_KEY));
       if (raw) setDraft({ ...EMPTY, ...(JSON.parse(raw) as ReviewDraft) });
     } catch {
       // No saved draft.
@@ -43,7 +44,7 @@ export function ReviewForm() {
     setDraft((d) => {
       const next = { ...d, ...patch };
       try {
-        window.localStorage.setItem(DRAFT_KEY, JSON.stringify(next));
+        window.localStorage.setItem(scopedKey(DRAFT_KEY), JSON.stringify(next));
       } catch {
         // Storage blocked: the draft lives only in this tab.
       }
@@ -77,7 +78,7 @@ export function ReviewForm() {
     if (ok) {
       setState("sent");
       try {
-        window.localStorage.removeItem(DRAFT_KEY);
+        window.localStorage.removeItem(scopedKey(DRAFT_KEY));
       } catch {
         // Nothing to clear.
       }

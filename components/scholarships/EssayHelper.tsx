@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { scopedKey } from "@/lib/progress/userStorage";
 
 const ACCENT = "#166534";
 const KEY = "onegrasp.scholarships.essays.v1";
@@ -69,7 +70,7 @@ const CHECKS = ["Specific: names real facts, numbers or examples", "Honest: noth
 
 function load(): Record<string, string> {
   try {
-    const raw = window.localStorage.getItem(KEY);
+    const raw = window.localStorage.getItem(scopedKey(KEY));
     const v = raw ? (JSON.parse(raw) as unknown) : {};
     return v && typeof v === "object" ? (v as Record<string, string>) : {};
   } catch {
@@ -79,7 +80,7 @@ function load(): Record<string, string> {
 
 function save(v: Record<string, string>) {
   try {
-    window.localStorage.setItem(KEY, JSON.stringify(v));
+    window.localStorage.setItem(scopedKey(KEY), JSON.stringify(v));
   } catch {
     // Storage blocked: the draft lasts for this visit only.
   }

@@ -21,7 +21,9 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { AssessmentSummary, CustomDimension, UserProfile } from "@/lib/auth/AuthProvider";
+import { useAuth, type AssessmentSummary, type CustomDimension, type UserProfile } from "@/lib/auth/AuthProvider";
+import { readGoals, saveGoals } from "@/lib/progress/progressStore";
+import { SchoolInbox } from "@/components/SchoolInbox";
 import { Logo } from "@/app/Logo";
 import dynamic from "next/dynamic";
 import { Icon, CATEGORY_ABBR } from "@/app/Icons";
@@ -571,6 +573,8 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
 
               {/* ===== OVERVIEW ===== */}
               <section id="overview" className="ash-sec">
+                {/* Messages from the student's school, if it uses the institution portal (renders nothing otherwise). */}
+                <SchoolInbox />
                 <div className="ash-banner">
                   <span className="ash-banner-ic"><Icon name="check" size={18} /></span>
                   <div className="ash-banner-t">
@@ -682,7 +686,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
 
               {/* ===== PLAN ===== */}
               <section id="plan" className="ash-sec">
-                <GoalTracker plan={plan} storageKey={`og-goals-${a.completedAt}`} domain={topDomainName} />
+                <GoalTracker plan={plan} goalKey={String(a.completedAt)} domain={topDomainName} />
               </section>
 
               {/* ===== CAREER TOOLKIT (in-dashboard listings) - temporarily disabled ===== */}
@@ -986,19 +990,21 @@ function MiniList({ title, items, icon }: { title: string; items: { label: strin
   );
 }
 
-/** 30/90-day checklist with live progress persisted to localStorage. */
-function GoalTracker({ plan, storageKey, domain }: { plan: { days30: string[]; days90: string[] }; storageKey: string; domain: string }) {
+/** 30/90-day checklist. Ticks are the signed-in student's own, saved to their
+ *  account (lib/progress/progressStore.ts) for this assessment result. */
+function GoalTracker({ plan, goalKey, domain }: { plan: { days30: string[]; days90: string[] }; goalKey: string; domain: string }) {
   const all = [...plan.days30, ...plan.days90];
+  const accountGoals = useAuth().profile?.progress?.goals;
   // Start empty for a stable first render, then load saved progress after mount
   // (localStorage is client-only - reading it during render risks a mismatch).
-  const [done, setDone] = useState<Record<number, boolean>>({});
+  const [done, setDone] = useState<Record<string, boolean>>({});
   useEffect(() => {
-    try { setDone(JSON.parse(window.localStorage.getItem(storageKey) || "{}")); } catch { /* ignore */ }
-  }, [storageKey]);
+    setDone(readGoals(goalKey, accountGoals));
+  }, [goalKey, accountGoals]);
   const toggle = (i: number) => {
     setDone((prev) => {
       const next = { ...prev, [i]: !prev[i] };
-      try { window.localStorage.setItem(storageKey, JSON.stringify(next)); } catch { /* ignore */ }
+      saveGoals(goalKey, next, all.length);
       return next;
     });
   };

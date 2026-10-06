@@ -23,6 +23,8 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { firebaseReady, getFirebaseAuth, getDb } from "@/lib/firebase/client";
+import { setStorageScope } from "@/lib/progress/userStorage";
+import type { StudentActivity, StudentProgress } from "@/lib/progress/types";
 
 export interface CareerMatch {
   title: string;
@@ -178,6 +180,10 @@ export interface UserProfile {
   // any of their data. Restoring just flips this back to false.
   archived?: boolean;
   archivedAt?: string;
+  /** Course lessons and dashboard goals completed (lib/progress/types.ts). */
+  progress?: StudentProgress;
+  /** Active time in the app, written by components/ActivityTracker.tsx. */
+  activity?: StudentActivity;
 }
 
 export type RegisterInput = {
@@ -261,6 +267,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
     const unsub = onAuthStateChanged(auth, async (u) => {
+      // Browser-stored tool data is kept per student (lib/progress/userStorage.ts).
+      setStorageScope(u ? u.uid : null);
       setUser(u);
       if (u) {
         const db = getDb();

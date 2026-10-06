@@ -13,6 +13,7 @@ import Link from "next/link";
 import { Logo } from "@/app/Logo";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import Dashboard from "@/app/account/Dashboard";
+import { SchoolInbox } from "@/components/SchoolInbox";
 import { StudentHero } from "@/app/account/illustrations";
 import { C } from "@/app/account/viz";
 
@@ -92,6 +93,8 @@ export default function AccountPage() {
         <button style={S.logout} onClick={signOut}>Sign out</button>
       </header>
       <div style={S.emptyWrap}>
+        {/* A school's "take your assessment" reminder belongs right here. */}
+        <div style={{ maxWidth: 560, margin: "0 auto" }}><SchoolInbox /></div>
         <section style={S.emptyCard}>
           <div style={{ maxWidth: 260, height: 200, margin: "0 auto 8px" }}><StudentHero /></div>
           <h3 style={S.emptyTitle}>You haven’t taken the assessment yet</h3>

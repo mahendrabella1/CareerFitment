@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import type { MockQuestion, MockTest } from "@/data/exams/mocks";
+import { scopedKey } from "@/lib/progress/userStorage";
 
 const ACCENT = "#2563eb";
 const KEY = "onegrasp.exams.mocks.v1";
@@ -32,7 +33,7 @@ export interface MockAttempt {
 
 export function loadAttempts(): MockAttempt[] {
   try {
-    const raw = window.localStorage.getItem(KEY);
+    const raw = window.localStorage.getItem(scopedKey(KEY));
     const v = raw ? (JSON.parse(raw) as unknown) : [];
     return Array.isArray(v) ? (v as MockAttempt[]) : [];
   } catch {
@@ -42,7 +43,7 @@ export function loadAttempts(): MockAttempt[] {
 
 function saveAttempts(list: MockAttempt[]) {
   try {
-    window.localStorage.setItem(KEY, JSON.stringify(list.slice(-60)));
+    window.localStorage.setItem(scopedKey(KEY), JSON.stringify(list.slice(-60)));
   } catch {
     // Storage blocked: this attempt's analysis still shows, but is not kept.
   }

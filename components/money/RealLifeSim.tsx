@@ -4,6 +4,7 @@ import { useEffect, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { RL_ASSUMPTIONS, RL_DECISIONS, RL_START, netWorthRL, runYear, type RLState, type YearLog } from "@/lib/money/realLife";
 import { LabChart, lakh } from "@/components/money/LabChart";
+import { scopedKey } from "@/lib/progress/userStorage";
 
 const KEY = "onegrasp.money.reallife.v1";
 const ACCENT = "#0ea05f";
@@ -15,7 +16,7 @@ interface Saved {
 
 function load(): Saved | null {
   try {
-    const raw = window.localStorage.getItem(KEY);
+    const raw = window.localStorage.getItem(scopedKey(KEY));
     return raw ? (JSON.parse(raw) as Saved) : null;
   } catch {
     return null;
@@ -23,8 +24,8 @@ function load(): Saved | null {
 }
 function save(v: Saved | null) {
   try {
-    if (v) window.localStorage.setItem(KEY, JSON.stringify(v));
-    else window.localStorage.removeItem(KEY);
+    if (v) window.localStorage.setItem(scopedKey(KEY), JSON.stringify(v));
+    else window.localStorage.removeItem(scopedKey(KEY));
   } catch {
     // Storage blocked: progress lasts for this visit only.
   }

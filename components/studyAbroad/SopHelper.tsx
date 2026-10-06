@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { scopedKey } from "@/lib/progress/userStorage";
 
 const ACCENT = "#7c3aed";
 const KEY = "onegrasp.abroad.sop.v1";
@@ -24,7 +25,7 @@ interface Saved {
 
 function load(): Saved {
   try {
-    const raw = window.localStorage.getItem(KEY);
+    const raw = window.localStorage.getItem(scopedKey(KEY));
     return raw ? { text: "", university: "", limit: 1000, ...(JSON.parse(raw) as Partial<Saved>) } : { text: "", university: "", limit: 1000 };
   } catch {
     return { text: "", university: "", limit: 1000 };
@@ -44,7 +45,7 @@ export function SopHelper() {
     setSaved((s) => {
       const next = { ...s, ...patch };
       try {
-        window.localStorage.setItem(KEY, JSON.stringify(next));
+        window.localStorage.setItem(scopedKey(KEY), JSON.stringify(next));
       } catch {
         // Storage blocked: the draft lasts for this visit only.
       }

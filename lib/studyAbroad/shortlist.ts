@@ -1,3 +1,4 @@
+import { scopedKey } from "@/lib/progress/userStorage";
 /**
  * Shortlist and application tracker data, stored on the learner's device
  * (localStorage) like the other planning tools. Nothing here is sent to a
@@ -61,7 +62,7 @@ const KEY = "onegrasp.abroad.shortlist.v1";
 
 export function loadPlan(): AbroadPlan {
   try {
-    const raw = window.localStorage.getItem(KEY);
+    const raw = window.localStorage.getItem(scopedKey(KEY));
     const v = raw ? (JSON.parse(raw) as Partial<AbroadPlan>) : {};
     return { me: v.me ?? {}, items: Array.isArray(v.items) ? v.items : [] };
   } catch {
@@ -71,7 +72,7 @@ export function loadPlan(): AbroadPlan {
 
 export function savePlan(plan: AbroadPlan) {
   try {
-    window.localStorage.setItem(KEY, JSON.stringify(plan));
+    window.localStorage.setItem(scopedKey(KEY), JSON.stringify(plan));
   } catch {
     // Storage blocked: the shortlist works for this visit only.
   }

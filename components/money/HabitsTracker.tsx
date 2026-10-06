@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { scopedKey } from "@/lib/progress/userStorage";
 
 const ACCENT = "#0ea05f";
 const KEY = "onegrasp.money.habits.v1";
@@ -57,7 +58,7 @@ const uid = () => Math.random().toString(36).slice(2, 10);
 
 function load(): HabitsState {
   try {
-    const raw = window.localStorage.getItem(KEY);
+    const raw = window.localStorage.getItem(scopedKey(KEY));
     if (!raw) return emptyState;
     const parsed = JSON.parse(raw) as HabitsState;
     return {
@@ -75,7 +76,7 @@ function load(): HabitsState {
 
 function save(state: HabitsState) {
   try {
-    window.localStorage.setItem(KEY, JSON.stringify(state));
+    window.localStorage.setItem(scopedKey(KEY), JSON.stringify(state));
   } catch {
     // Storage blocked: the tracker works for this visit only.
   }

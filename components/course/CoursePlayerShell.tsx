@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon } from "@/app/Icons";
 import { FX_CSS } from "@/components/course/fx";
+import { useAuth } from "@/lib/auth/AuthProvider";
 
 // A branded banner for the section, then two columns: a sticky menu and the
 // page. Previous/next and other notes sit at the foot of the page (`aside`).
@@ -74,6 +75,9 @@ export function CoursePlayerShell({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
+  // Tools read the signed-in student's own saved data on their first render
+  // (lib/progress/userStorage.ts), so they wait until sign-in has resolved.
+  const { loading } = useAuth();
   // Close the phone menu once a link in it has been followed.
   useEffect(() => setSidebarOpen(false), [pathname]);
 
@@ -110,8 +114,14 @@ export function CoursePlayerShell({
         </div>
         <div className={`course-shell__sidebar${sidebarOpen ? " is-open" : ""}`}>{sidebar}</div>
         <main className="course-shell__main">
-          {children}
-          {aside && <div className="course-shell__foot">{aside}</div>}
+          {loading ? (
+            <div role="status" style={{ padding: "48px 16px", textAlign: "center", fontSize: 13.5, color: "#64748b" }}>Loading your progress…</div>
+          ) : (
+            <>
+              {children}
+              {aside && <div className="course-shell__foot">{aside}</div>}
+            </>
+          )}
         </main>
       </div>
     </div>
