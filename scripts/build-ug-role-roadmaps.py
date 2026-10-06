@@ -59,6 +59,10 @@ def clean_text(t):
     t = re.sub(r"[ \t ]+", " ", t)
     t = re.sub(r"\s*\n\s*", "\n", t).strip()
     t = re.sub(r"(?i)^for this (specific )?taxonomy entry,\s*(\w)", lambda m: m.group(2).upper(), t)
+    # "The key point for this row is ..." / "For this row, X should ..." - the
+    # author's spreadsheet row, not something a student knows about.
+    t = re.sub(r"(?i)^for this row,\s*(\w)", lambda m: m.group(1).upper(), t)
+    t = re.sub(r"(?i)\s+for this row\b", "", t)
     # Notes the author left for the database, not for students.
     if AUTHOR_NOTE.search(t):
         t = " ".join(s for s in re.split(r"(?<=[.;])\s+", t) if not AUTHOR_NOTE.search(s))
@@ -146,7 +150,7 @@ KNOWN_SUBHEADS = {
 }
 FACT_KEYS = ("Starts", "Current degree", "Course", "Timeline assumption")
 # Facts that are bookkeeping or placeholders, not guidance for the student.
-DROP_FACT = re.compile(r"(?i)^(desired career|career cluster|largest gap|footer|verification note|(level|category|typical duration|degree|specialisation|specialization|branch)$)")
+DROP_FACT = re.compile(r"(?i)^(desired career|career cluster|largest gap|footer|verification note|(level|category|typical duration|degree|specialisation|specialization|branch|career id|stream|relevant course)$)")
 # Some files give the facts as a "Career Path" table (Level, Degree,
 # Specialization, Target Career, ...) - read into the same fact names.
 TABLE_FACT = {"degree": "Current degree", "specialization": "Course", "specialisation": "Course", "branch": "Course",
@@ -172,9 +176,13 @@ def section_kind(heading):
 
 
 def strip_heading(h):
+    h = re.sub(r"^\d+\.\s*", "", h)  # "2. Step 1 — What to build" -> "What to build"
     h = re.sub(r"^(Step\s*\d+\s*[:—\-–.]?\s*)", "", h, flags=re.I)
-    h = re.sub(r"^\d+\.\s*", "", h)
     return h.strip() or "Details"
+
+
+YEAR_BLOCK = re.compile(r"(?i)^(year|semester|sem)\s*\d")
+STANDARD_KINDS = {"build", "internships", "certifications", "careers", "pg_india", "abroad", "growth"}
 
 
 def role_from_title(title):
@@ -333,8 +341,10 @@ def parse_doc(d, path, bullets):
     def start_roadmap(title, role):
         nonlocal cur, section, last_num, uses_steps, sub_num, skipping, pending, preamble
         flush_plain()
-        if cur is not None and cur["_n"] == 0:
-            return  # "Career roadmap · X" then "X Roadmap": one roadmap, two title lines
+        if cur is not None and (cur["_n"] == 0 or (not cur["sections"] and not cur["summary"] and norm(role) == norm(cur["role"]))):
+            # "Career roadmap · X" then "X Roadmap" (sometimes with its facts
+            # table in between): one roadmap, two title lines.
+            return
         cur = {"title": title, "role": role, "summary": "", "facts": dict(pending or {}), "horizons": [], "sections": [],
                "source": os.path.basename(path), "bullets": bullets[len(roadmaps)] if bullets is not None else True,
                "meta_career": (pending or {}).get("Desired career", ""), "_li": False, "_n": 0}
@@ -379,6 +389,17 @@ def parse_doc(d, path, bullets):
         end_run(1 if cur["bullets"] else 2)
         plain = []
 
+    def open_section(heading, size):
+        """A Step/numbered heading: a new section - except "Year 2 — ..." blocks
+        an author numbered at the top level, which stay inside "What to build"."""
+        if section is not None and section["kind"] == "build" and YEAR_BLOCK.match(strip_heading(heading)):
+            flush_plain()
+            section["blocks"].append({"type": "h", "text": strip_heading(heading)})
+            return
+        # The main headings' size: the largest Step/numbered heading so far.
+        cur["_head_size"] = max(cur.get("_head_size", 0), size if size >= 16 else 0)
+        new_section(heading)
+
     def new_section(heading, kind=None):
         nonlocal section, skipping
         flush_plain()
@@ -401,14 +422,29 @@ def parse_doc(d, path, bullets):
                 continue
             names_more = re.search(r"(?i)\b(course|career):", text)
             in_facts = section is None or section["kind"] == "facts"
+            fresh = cur is not None and cur["_n"] == 0 and not preamble  # just after a title
             if DEGREE_LINE.match(text) and (names_more or (cur is not None and not in_facts)):
-                # "Degree: ... · Course: ... · Career: ..." before the next title
-                # (a bare "Degree: B.Tech" inside a Facts block is just a fact).
+                meta = degree_meta(p.text)
+                if fresh:
+                    # Title first, then "Degree: ... · Course: ... · Career: ...":
+                    # this roadmap's own facts.
+                    for k, v in meta.items():
+                        cur["facts"].setdefault(k, v)
+                    cur["meta_career"] = cur["meta_career"] or meta.get("Desired career", "")
+                    continue
+                # Before the next title (a bare "Degree: B.Tech" inside a Facts
+                # block is just a fact).
                 flush_plain()
-                pending, preamble = degree_meta(p.text), True
+                pending, preamble = meta, True
                 continue
-            if preamble and re.match(r"(?i)^(course|career):", text):
-                pending.update(degree_meta(p.text))  # the same line, split over two paragraphs
+            if re.match(r"(?i)^(course|career):", text) and (preamble or (fresh and cur["facts"].get("Current degree"))):
+                meta = degree_meta(p.text)  # the same line, split over two paragraphs
+                if preamble:
+                    pending.update(meta)
+                else:
+                    for k, v in meta.items():
+                        cur["facts"].setdefault(k, v)
+                    cur["meta_career"] = cur["meta_career"] or meta.get("Desired career", "")
                 continue
             if PREAMBLE_LINE.match(text):
                 continue
@@ -429,26 +465,42 @@ def parse_doc(d, path, bullets):
             li = is_list_item(el)
             if li:
                 cur["_li"] = True
-            if (font_size(p) or 0) >= 16:
+            size_p = font_size(p) or 0
+            if size_p >= 16:
                 bold = True  # a large line that is not a title is a heading
             step = re.match(r"(?i)^step\s*(\d+)\b", text)
             if not bold and len(text) < 90 and (re.match(r"(?i)^step\s*\d+\s*[:—–-]", text) or (not li and text.lower() in KNOWN_SUBHEADS)):
                 bold = True  # files without bold formatting
             num = re.match(r"^(\d+)\.\s+\S", text)
-            if bold and step and len(text) < 90:
+            # Once a roadmap's main headings have a size, a much smaller "Step N"
+            # or "N." line is a sub-heading (a project's "Step 1 — Map activities").
+            minor = bool(cur.get("_head_size")) and size_p < cur["_head_size"] - 2
+            if bold and step and len(text) < 90 and not minor:
                 uses_steps, sub_num = True, 0
-                new_section(text)
+                open_section(text, size_p)
                 continue
-            if bold and num and not li and len(text) < 90:
+            if bold and num and not li and len(text) < 90 and not minor:
                 n = int(num.group(1))
-                if sub_num and n == sub_num + 1:
+                # Same size as the roadmap's main headings: a main heading even
+                # when the author's numbering skips ("11." then "13.").
+                main_size = bool(cur.get("_head_size")) and size_p >= cur["_head_size"] - 2
+                if sub_num and n == sub_num + 1 and not main_size:
                     sub_num = n          # still inside a numbered list within this section
-                elif n == last_num + 1 and not sub_num:
-                    last_num = n
-                    new_section(text)
+                elif n == last_num + 1 or (main_size and n > last_num):
+                    last_num, sub_num = n, 0
+                    open_section(text, size_p)
                     continue
                 else:
                     sub_num = n          # numbering restarted: these are sub-headings
+            if (bold and not li and not step and not num and len(text) <= 90 and cur.get("_head_size")
+                    and size_p >= cur["_head_size"] - 2):
+                # An unnumbered heading at the main headings' size that names a
+                # standard section ("Internship Strategy", "PG Options After
+                # BCA", "Study Abroad") starts it; others stay sub-headings.
+                k = section_kind(text)
+                if k in STANDARD_KINDS and (section is None or section["kind"] != k) and not DROP_SECTION.search(text):
+                    open_section(text, size_p)
+                    continue
             
             if section is None and not cur["summary"] and not bold:
                 cur["summary"] = text
@@ -547,9 +599,14 @@ def parse_doc(d, path, bullets):
     for rm in roadmaps:
         raw = rm["facts"]
         # The same facts under other names ("Degree:", "Specialisation:").
-        for alias, key in (("Degree", "Current degree"), ("Specialisation", "Course"), ("Specialization", "Course"), ("Branch", "Course")):
+        for alias, key in (("Degree", "Current degree"), ("Specialisation", "Course"), ("Specialization", "Course"), ("Branch", "Course"),
+                           ("Relevant Course", "Course"), ("Starting point", "Starts"), ("Timeline", "Timeline assumption")):
             if raw.get(alias) and not raw.get(key):
                 raw[key] = raw.pop(alias)
+        # Labels written for the database, said the way a student reads them.
+        for old, new in (("Mapping", "Course alignment"), ("Taxonomy alignment", "Course alignment")):
+            if old in raw and new not in raw:
+                raw[new] = raw.pop(old)
         rm["desired"] = raw.get("Desired career", "")
         # Plain text that sits among the facts (a progression, a note on the
         # route) is real guidance - shown as the roadmap's intro.
@@ -579,6 +636,7 @@ def parse_doc(d, path, bullets):
 # Reviewed by hand: the file's role name -> the dropdown's name for the same role.
 ROLE_ALIASES = {
     "mining surveyor": "Mine Surveyor",
+    "meteorologist": "Meteorologist (IMD)",
 }
 
 
@@ -615,8 +673,9 @@ def main():
     slug_count = {}
     seen, duplicates = set(), []
     for rm in all_rm:
-        # The same roadmap pasted twice (word for word) is kept once.
-        key = json.dumps([norm(rm["role"]), rm["summary"], rm["facts"], rm["sections"]], ensure_ascii=False, sort_keys=True)
+        # The same roadmap pasted twice is kept once - same role, opening
+        # summary and facts (copies sometimes differ by a stray line further down).
+        key = json.dumps([norm(rm["role"]), rm["summary"], rm["facts"], None if rm["summary"] else rm["sections"]], ensure_ascii=False, sort_keys=True)
         if key in seen:
             duplicates.append(rm["title"])
             continue
@@ -653,7 +712,7 @@ def main():
         # most when picking a version); "about": the wider text around it.
         # "level": a version is only offered to students at that degree level.
         index["versions"][slug] = {"for": " ".join(v for v in (rm["facts"].get("Current degree", ""), rm["facts"].get("Course", "")) if v),
-                                   "about": rm["context"], "level": rm["level"]}
+                                   "course": rm["facts"].get("Course", ""), "about": rm["context"], "level": rm["level"]}
         index["roadmaps"].append({"slug": slug, "title": rm["title"], "role": rm["role"], "mappedTo": matched, "match": how, "source": rm["source"], "level": rm["level"],
                                   "writtenFor": " · ".join(v for v in (rm["facts"].get("Current degree", ""), rm["facts"].get("Course", "")) if v)})
         with open(os.path.join(out_dir, f"{slug}.json"), "w", encoding="utf-8") as fh:
@@ -671,7 +730,7 @@ def main():
     lines = ["# UG role roadmaps - mapping review", "",
              f"Built from: {', '.join(os.path.basename(f) for f in files)}", "",
              f"- Roadmaps read: {len(all_rm)}",
-             f"- Exact duplicates skipped (same roadmap twice in the files): {len(duplicates)}" + (f" - {', '.join(duplicates)}" if duplicates else ""),
+             f"- Duplicates skipped (the same roadmap pasted twice; copies may differ by a stray line): {len(duplicates)}" + (f" - {', '.join(duplicates)}" if duplicates else ""),
              f"- Linked to dropdown roles: {sum(1 for r in index['roadmaps'] if r['mappedTo'])} roadmaps -> {len(index['roles'])} dropdown roles",
              f"- Need review (no exact role in the dropdown): {len(review)}",
              f"- Roles with more than one version (the report picks the one closest to the student's course): {len(multi)}",

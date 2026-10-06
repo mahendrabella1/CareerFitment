@@ -1,13 +1,13 @@
 # UG role roadmaps - mapping review
 
-Built from: 1-150.docx, 151-200.docx, Degree - career paths.docx
+Built from: 1-150.docx, 151-200.docx, Degree - career paths.docx, 701-790.docx, 881-980.docx, 981-1085.docx
 
-- Roadmaps read: 342
-- Exact duplicates skipped (same roadmap twice in the files): 3 - Blockchain Architect Roadmap, Career roadmap · Mechatronics Engineer, Career: Genetic Engineer
-- Linked to dropdown roles: 339 roadmaps -> 288 dropdown roles
+- Roadmaps read: 652
+- Duplicates skipped (the same roadmap pasted twice; copies may differ by a stray line): 20 - Blockchain Architect Roadmap, Career roadmap · Mechatronics Engineer, Career: Genetic Engineer, Career roadmap · Genomics Data Analyst, Career Roadmap · Environmental Consultant, Career Roadmap · EHS Officer, Career Roadmap · Pollution Control Board Officer, Career roadmap — Sustainability Analyst, Ecologist Roadmap, Career Roadmap: Dietitian Assistant, Product Development Executive Roadmap, Career roadmap · Food Safety Officer, Career roadmap · Dietitian, Career Roadmap · Clinical Nutritionist, Career Roadmap · Sports Nutritionist, Career Roadmap · Wellness Consultant, Career roadmap — Diet Counsellor, Food Service Manager Roadmap, Career roadmap · Climate Data Analyst, Career Roadmap · Assistant Director
+- Linked to dropdown roles: 632 roadmaps -> 528 dropdown roles
 - Need review (no exact role in the dropdown): 0
-- Roles with more than one version (the report picks the one closest to the student's course): 26
-- Written for (degree level): doctoral 107, ug 232 - the UG report only offers a student roadmaps written for their own level (a Ph.D. plan starts at Ph.D. Year 1)
+- Roles with more than one version (the report picks the one closest to the student's course): 62
+- Written for (degree level): doctoral 107, ug 525 - the UG report only offers a student roadmaps written for their own level (a Ph.D. plan starts at Ph.D. Year 1)
 
 ## Needs review
 
@@ -17,17 +17,28 @@ Built from: 1-150.docx, 151-200.docx, Degree - career paths.docx
 ## Roles with more than one version
 
 - **Software Engineer**: B.Tech / B.E. — Computer Science & Engineering (CSE); B.Tech / B.E. (Bachelor of Technology / Engineering); B.Tech / B.E. (Bachelor of Technology / Engineering)
+- **Full Stack Developer**: B.Tech / B.E. — Computer Science & Engineering (CSE); BCA · Mobile App / Web / Game Development
+- **Web Developer**: B.Tech / B.E. — Computer Science & Engineering (CSE); course not stated
 - **DevOps Engineer**: B.Tech / B.E. — Computer Science & Engineering (CSE); B.Tech / B.E. (Bachelor of Technology / Engineering) · CSE – Cloud Computing
 - **Cloud Engineer**: B.Tech / B.E. — Computer Science & Engineering (CSE); B.Tech / B.E. (Bachelor of Technology / Engineering)
-- **Software Developer**: B.Tech / B.E. (Information Technology); B.Tech / B.E. — Electronics & Computer Engineering
+- **Software Developer**: B.Tech / B.E. (Information Technology); B.Tech / B.E. — Electronics & Computer Engineering; B.Sc Statistics & Computer Science / Mathematics & Computing; BCA (Bachelor of Computer Applications) · General BCA
 - **Network Engineer**: B.Tech / B.E. (Information Technology); B.Tech / B.E. (Bachelor of Technology / Engineering) · Electronics & Communication Engineering (ECE)
-- **Data Analyst**: B.Tech / B.E. (Bachelor of Technology / Engineering); B.Tech / B.E. (Bachelor of Technology / Engineering) · Computer Science & Business Systems (CSBS)
+- **System Administrator**: B.Tech / B.E. (Information Technology); BCA (Bachelor of Computer Applications) · BCA – Cloud Computing / DevOps
+- **Data Analyst**: B.Tech / B.E. (Bachelor of Technology / Engineering); B.Tech / B.E. (Bachelor of Technology / Engineering) · Computer Science & Business Systems (CSBS); BCA – Data Science / Analytics; course not stated
+- **Security Analyst**: B.Tech / B.E. (Bachelor of Technology / Engineering); BCA – Cyber Security / Ethical Hacking
+- **SOC Analyst**: B.Tech / B.E. (Bachelor of Technology / Engineering); BCA (Bachelor of Computer Applications) · BCA - Cyber Security / Ethical Hacking
+- **IoT Developer**: B.Tech / B.E. (Bachelor of Technology / Engineering); course not stated
 - **Embedded Software Engineer**: B.Tech / B.E. (Bachelor of Technology / Engineering) · CSE - Internet of Things (IoT); B.Tech / B.E. — Electronics & Computer Engineering
 - **Firmware Engineer**: B.Tech / B.E. (Bachelor of Technology / Engineering); course not stated
+- **Web3 Developer**: B.Tech / B.E. (Bachelor of Technology / Engineering); BCA (Bachelor of Computer Applications) · BCA - Blockchain / Web3
+- **Crypto Analyst**: B.Tech / B.E. (Bachelor of Technology / Engineering); BCA – Blockchain / Web3
+- **Game Developer**: B.Tech / B.E. (Bachelor of Technology / Engineering); BCA – Mobile App / Web / Game Development; BCA (Bachelor of Computer Applications)
+- **AR/VR Developer**: B.Tech / B.E. (Bachelor of Technology / Engineering) · CSE - Game Development / AR-VR; course not stated
 - **Telecom Engineer**: B.Tech / B.E. (Bachelor of Technology / Engineering); B.Tech / B.E. (Bachelor of Technology / Engineering)
 - **Maintenance Engineer**: B.Tech / B.E. (Bachelor of Technology / Engineering); B.Tech / B.E. · Mechanical Engineering
 - **Project Engineer**: B.Tech / B.E. (Bachelor of Technology / Engineering); B.Tech / B.E. Mechanical Engineering
 - **Automation Engineer**: B.Tech / B.E. (Bachelor of Technology / Engineering) · Electronics & Instrumentation Engineering (EIE); B.Tech / B.E. — Mechatronics Engineering; B.Tech / B.E. · Robotics & Automation Engineering
+- **Calibration Engineer**: course not stated; B.Sc (Bachelor of Science - General / Honours) · Applied Physics / Photonics / Instrumentation
 - **Optical Fibre Engineer**: course not stated; B.Tech / B.E. — Electronics & Telecommunication Engineering (E&TC)
 - **Production Engineer**: B.Tech / B.E. — Mechanical Engineering; B.Tech / B.E. — Petroleum Engineering; course not stated
 - **Quality Engineer**: B.Tech / B.E. — Mechanical Engineering; course not stated; course not stated; course not stated
@@ -35,13 +46,38 @@ Built from: 1-150.docx, 151-200.docx, Degree - career paths.docx
 - **Safety Engineer**: B.Tech / B.E. · Construction Engineering & Management; course not stated
 - **R&D Engineer**: course not stated; course not stated
 - **Materials Engineer**: course not stated; course not stated
-- **Research Associate**: course not stated; B.Tech / B.E. — Genetic Engineering
-- **Food Technologist**: B.Tech / B.E. — Food Technology; B.Tech / B.E. (Bachelor of Technology / Engineering) · Food Technology
+- **Research Associate**: course not stated; B.Tech / B.E. — Genetic Engineering; B.Sc (Bachelor of Science – General / Honours) · Genetics; B.Sc. (Bachelor of Science – General / Honours) · Bioinformatics; course not stated; course not stated; B.Sc (Bachelor of Science - General / Honours) · Immunology / Virology / Industrial Microbiology
+- **Fermentation Technologist**: course not stated; B.Sc (Bachelor of Science - General / Honours) · Immunology / Virology / Industrial Microbiology
+- **Bioinformatics Analyst**: course not stated; B.Sc (Bachelor of Science - General / Honours) · Bioinformatics
+- **Quality Analyst**: course not stated; B.Sc (Bachelor of Science - General / Honours) · Materials Science / Nanoscience
+- **Agricultural Officer**: course not stated; B.Sc (Bachelor of Science – General / Honours) · Agricultural Science (B.Sc General)
+- **Food Technologist**: B.Tech / B.E. — Food Technology; B.Tech / B.E. (Bachelor of Technology / Engineering) · Food Technology; B.Sc. (Bachelor of Science – General / Honours) · Food Science & Nutrition
+- **Quality Assurance Executive**: B.Tech / B.E. · Food Technology; B.Sc (Bachelor of Science - General / Honours) · Food Science & Nutrition
 - **Quality Controller**: B.Tech / B.E. (Bachelor of Technology / Engineering) · Dairy Technology; B.Tech / B.E. · Textile Engineering / Technology
+- **Product Development Executive**: B.Tech / B.E. in Dairy Technology; B.Sc Food Science & Nutrition
+- **Merchandiser**: B.Tech / B.E. (Bachelor of Technology / Engineering) · Textile Engineering / Technology; B.Sc Fashion Technology / Textile Science
 - **Professor**: Ph.D. - Tourism, Hospitality & Aviation Studies · Aviation & Airport Studies (Ph.D.); Ph.D. - Tourism, Hospitality & Aviation Studies · Hospitality & Culinary Sciences (Ph.D.); Ph.D. - Tourism, Hospitality & Aviation Studies · Tourism Studies & Heritage Tourism (Ph.D.); Ph.D. - Physical Education, Sports Science & Yoga · Sports Management, Coaching & Policy (Ph.D.); Ph.D. - Physical Education, Sports Science & Yoga · Yoga, Naturopathy & Wellness Sciences (Ph.D.); Ph.D. - Physical Education, Sports Science & Yoga · Sports Biomechanics, Physiology & Psychology (Ph.D.); Ph.D. - Interdisciplinary & Emerging Research Areas · Entrepreneurship, Innovation & Deep-Tech Commercialisation (Ph.D.); Ph.D. - Interdisciplinary & Emerging Research Areas · Cognitive Science, HCI & Neuro-Design (Ph.D.); Ph.D. - Interdisciplinary & Emerging Research Areas · Bio-Design, Synthetic Biology & Bio-Manufacturing (Ph.D.); Ph.D. - Interdisciplinary & Emerging Research Areas · Health Technology, Digital Health & AI in Medicine (Ph.D.); Ph.D. - Interdisciplinary & Emerging Research Areas · Urban Science, Smart Cities & Mobility (Ph.D.); Ph.D. - Interdisciplinary & Emerging Research Areas · Energy Transition, Climate Adaptation & Sustainability (Ph.D.); Ph.D. - Interdisciplinary & Emerging Research Areas · Science, Technology & Innovation Policy (Ph.D.); Ph.D. - Interdisciplinary & Emerging Research Areas · Data Science & Computational Social Science (Ph.D.); Ph.D. - Interdisciplinary & Emerging Research Areas · Artificial Intelligence, Ethics & Society (Ph.D.); Ph.D. - Law, Governance & Public Policy · Human Rights, Gender & Social Justice (Ph.D.); Ph.D. - Law, Governance & Public Policy · Environmental, Energy & Climate Law (Ph.D.); Ph.D. - Law, Governance & Public Policy · Corporate, Competition & Securities Law (Ph.D.); Ph.D. - Law, Governance & Public Policy · Criminal Law, Criminology & Forensic Law (Ph.D.); Ph.D. - Law, Governance & Public Policy · Technology, AI & Data Protection Law (Ph.D.); D.Sc / D.Litt / DBA / Post-Doctoral & Industry-Sponsored Doctorates · Interdisciplinary Ph.D. (Data Science, Sustainability, Public Health, Cognitive Science, Bioengineering, Energy); Ph.D. - Architecture, Planning & Design · Sustainable Built Environment & Building Science (Ph.D.)
 - **Policy Advisor**: Ph.D. - Interdisciplinary & Emerging Research Areas · Artificial Intelligence, Ethics & Society (Ph.D.); Ph.D. - Law, Governance & Public Policy · Constitutional, Public & International Law (Ph.D.)
 - **Regulatory Counsel**: Ph.D. - Law, Governance & Public Policy · Corporate, Competition & Securities Law (Ph.D.); Ph.D. - Law, Governance & Public Policy · Technology, AI & Data Protection Law (Ph.D.)
 - **Legal Scholar**: Ph.D. - Law, Governance & Public Policy · Constitutional, Public & International Law (Ph.D.); Ph.D. - Law, Governance & Public Policy · Technology, AI & Data Protection Law (Ph.D.)
+- **Teacher**: B.Sc. (Bachelor of Science – General / Honours) · Zoology; B.Sc. (Bachelor of Science – General / Honours) · Geography
+- **Research Assistant**: B.Sc. (Bachelor of Science – General / Honours) · Botany; B.Sc (Bachelor of Science - General / Honours) · Life Sciences / Biological Sciences; B.Sc. Psychology; B.Sc Anthropology; B.Sc (Bachelor of Science – General / Honours) · Biophysics / Biomedical Science; B.Sc (Bachelor of Science – General / Honours) · Neuroscience / Cognitive Science; B.Sc. (Bachelor of Science – General / Honours) · Clinical / Counselling / Child Psychology
+- **Clinical Research Coordinator**: B.Sc. (Bachelor of Science – General / Honours) · Life Sciences / Biological Sciences; B.Sc. (Bachelor of Science – General / Honours) · Neuroscience / Cognitive Science
+- **Mining Geologist**: B.Sc. (Bachelor of Science – General / Honours) · Geology / Earth Science; B.Sc. (Bachelor of Science – General / Honours) · Geology / Earth Science
+- **Cartographer**: B.Sc. (Bachelor of Science – General / Honours) · Geography; B.Sc (Bachelor of Science - General / Honours) · Remote Sensing & GIS
+- **Civil Services Aspirant Roles**: B.Sc Geography; B.Sc. (Bachelor of Science – General / Honours) · Anthropology
+- **Climate Data Analyst**: course not stated; course not stated
+- **Nutritionist**: B.Sc. Food Science & Nutrition; course not stated
+- **Early Childhood Educator**: B.Sc (Bachelor of Science – General / Honours) · Home Science; course not stated
+- **Extension Worker**: course not stated; B.Sc. (Bachelor of Science – General / Honours) · Cooperative / Rural Development / Rural Studies
+- **Behavioural Therapist Assistant**: B.Sc. (Bachelor of Science – General / Honours) · Psychology; B.Sc Clinical / Counselling / Child Psychology
+- **School Counsellor**: B.Sc (Bachelor of Science - General / Honours) · Psychology; B.Sc. (Bachelor of Science – General / Honours) · Clinical / Counselling / Child Psychology
+- **NGO Program Officer**: course not stated; B.Sc (Bachelor of Science – General / Honours) · Human Development / Early Childhood Development; B.Sc (General / Honours) · Cooperative / Rural Development / Rural Studies
+- **R&D Assistant**: B.Sc (Bachelor of Science - General / Honours) · Materials Science / Nanoscience; B.Sc Applied Physics / Photonics / Instrumentation
+- **Clinical Lab Associate**: course not stated; course not stated
+- **Digital Marketing Executive**: course not stated; course not stated
+- **Junior Data Scientist**: course not stated; BCA (Bachelor of Computer Applications) · BCA - Data Science / Analytics
+- **Python Developer**: BCA – Data Science / Analytics; BCA (Bachelor of Computer Applications) · BCA – Artificial Intelligence & Machine Learning
 
 ## Linked
 
@@ -386,3 +422,296 @@ Built from: 1-150.docx, 151-200.docx, Degree - career paths.docx
 | Career roadmap · Sustainability Consultant | Sustainability Consultant | via the file's 'Degree · Course · Career' line |
 | Career roadmap · Building Science Researcher | Building Science Researcher | via the file's 'Degree · Course · Career' line |
 | Career roadmap · Professor | Professor | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Lab Technician | Lab Technician | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Fisheries Officer | Fisheries Officer | exact |
+| Zoology Teacher Roadmap | Teacher | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Forest Department Roles | Forest Department Roles | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Botanist | Botanist | exact |
+| Career Roadmap · Plant Pathologist | Plant Pathologist | exact |
+| Career Roadmap · Herbarium Curator | Herbarium Curator | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Horticulturist | Horticulturist | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Research Assistant (Botany) | Research Assistant | via the file's 'Degree · Course · Career' line |
+| Forest Officer Roadmap | Forest Officer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Research Assistant | Research Assistant | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Lab Analyst | Lab Analyst | exact |
+| Life Sciences Teacher / Lecturer Roadmap | Teacher/Lecturer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Clinical Research Coordinator | Clinical Research Coordinator | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Science Content Writer | Science Content Writer | exact |
+| Career Roadmap · Genetic Counsellor | Genetic Counsellor | exact |
+| Career Roadmap · Lab Technologist | Lab Technologist | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Research Associate | Research Associate | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Cytogenetics Technician | Cytogenetics Technician | via the file's 'Degree · Course · Career' line |
+| Bioinformatics Assistant Roadmap | Bioinformatics Assistant | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Bioinformatics Analyst | Bioinformatics Analyst | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Computational Biologist | Computational Biologist | exact |
+| Bioinformatics Data Curator Roadmap | Data Curator | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Bioinformatics Research Associate | Research Associate | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Genomics Data Analyst | Genomics Data Analyst | exact |
+| Career Roadmap · Environmental Consultant | Environmental Consultant | exact |
+| Career Roadmap · EHS Officer | EHS Officer | exact |
+| Career Roadmap · Pollution Control Board Officer | Pollution Control Board Officer | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Sustainability Analyst | Sustainability Analyst | via the file's 'Degree · Course · Career' line |
+| Ecologist Roadmap | Ecologist | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Mining Geologist | Mining Geologist | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Water Quality Analyst | Water Quality Analyst | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Geologist | Geologist | exact |
+| Hydrogeologist Roadmap | Hydrogeologist | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Mining Geologist | Mining Geologist | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Exploration Geologist | Exploration Geologist | exact |
+| Career Roadmap · Geoscientist | Geoscientist | exact |
+| Career Roadmap · Geotechnical Analyst | Geotechnical Analyst | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · GIS Analyst | GIS Analyst | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Cartographer | Cartographer | via the file's 'Degree · Course · Career' line |
+| Urban Planner Assistant Roadmap | Urban Planner Assistant | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Remote Sensing Technician | Remote Sensing Technician | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Geography Teacher | Teacher | via the file's 'Desired career' line |
+| Civil Services Aspirant Roles Roadmap | Civil Services Aspirant Roles | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Weather Analyst | Weather Analyst | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Meteorologist | Meteorologist (IMD) | reviewed alias (ROLE_ALIASES) |
+| Career Roadmap · Climate Data Analyst | Climate Data Analyst | exact |
+| Career Roadmap · Aviation Weather Observer | Aviation Weather Observer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Forensic Analyst | Forensic Analyst | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Crime Scene Investigator | Crime Scene Investigator | via the file's 'Degree · Course · Career' line |
+| Forensic Lab Assistant Roadmap | Forensic Lab Assistant | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Fingerprint Expert | Fingerprint Expert | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Cyber Forensics Assistant | Cyber Forensics Assistant | exact |
+| Document Examiner Roadmap | Document Examiner | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Agricultural Officer | Agricultural Officer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Seed Technologist | Seed Technologist | exact |
+| Career Roadmap · Agronomy Assistant | Agronomy Assistant | exact |
+| Career Roadmap · Field Officer (Agri Inputs) | Field Officer (Agri Inputs) | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Soil Tester | Soil Tester | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Food Technologist | Food Technologist | via the file's 'Degree · Course · Career' line |
+| Nutritionist Roadmap | Nutritionist | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Quality Assurance Executive | Quality Assurance Executive | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Dietitian Assistant | Dietitian Assistant | exact |
+| Product Development Executive Roadmap | Product Development Executive | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Food Safety Officer | Food Safety Officer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Dietitian | Dietitian | exact |
+| Career Roadmap · Clinical Nutritionist | Clinical Nutritionist | exact |
+| Career Roadmap · Sports Nutritionist | Sports Nutritionist | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Wellness Consultant | Wellness Consultant | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Diet Counsellor | Diet Counsellor | via the file's 'Degree · Course · Career' line |
+| Food Service Manager Roadmap | Food Service Manager | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Home Science Teacher | Home Science Teacher | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Nutritionist | Nutritionist | exact |
+| Textile Designer Roadmap | Textile Designer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Early Childhood Educator | Early Childhood Educator | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Extension Worker | Extension Worker | exact |
+| Career Roadmap · Interior Decorator | Interior Decorator | exact |
+| Career Roadmap · Counsellor (Assistant) | Counsellor (Assistant) | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · HR Executive | HR Executive | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Behavioural Therapist Assistant | Behavioural Therapist Assistant | via the file's 'Degree · Course · Career' line |
+| Research Assistant Roadmap | Research Assistant | via the file's 'Degree · Course · Career' line |
+| Career roadmap · School Counsellor | School Counsellor | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Career Counsellor | Career Counsellor | exact |
+| Research Assistant Roadmap | Research Assistant | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Social Researcher | Social Researcher | via the file's 'Degree · Course · Career' line |
+| Career roadmap · NGO Program Officer | NGO Program Officer | exact |
+| Career Roadmap · Museum Assistant | Museum Assistant | exact |
+| Career Roadmap · Civil Services Aspirant Roles | Civil Services Aspirant Roles | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Industrial Chemist | Industrial Chemist | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Process Chemist | Process Chemist | via the file's 'Degree · Course · Career' line |
+| QC Chemist Roadmap | QC Chemist | via the file's 'Degree · Course · Career' line |
+| Career roadmap · R&D Assistant | R&D Assistant | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Quality Analyst | Quality Analyst | exact |
+| Career roadmap · Research Associate | Research Associate | exact |
+| Career roadmap · Polymer Technologist | Polymer Technologist | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Clinical Lab Associate | Clinical Lab Associate | exact |
+| Career Roadmap · Production Chemist | Production Chemist | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Formulation Assistant | Formulation Assistant | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Instrumentation Technician | Instrumentation Technician | exact |
+| Optics Technician Roadmap | Optics Technician | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Lab Engineer | Lab Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Calibration Engineer | Calibration Engineer | exact |
+| Career Roadmap · R&D Assistant | R&D Assistant | exact |
+| Career roadmap · Research Assistant | Research Assistant | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Clinical Lab Associate | Clinical Lab Associate | exact |
+| Career Roadmap · Biomedical Technician | Biomedical Technician | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Diagnostics Executive | Diagnostics Executive | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Science Writer | Science Writer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Research Associate | Research Associate | exact |
+| Molecular Diagnostics Technician Roadmap | Molecular Diagnostics Technician | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Genomics Lab Analyst | Genomics Lab Analyst | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Clinical Research Associate | Clinical Research Associate | exact |
+| Career Roadmap · QC Analyst | QC Analyst | exact |
+| Career Roadmap · Research Assistant | Research Assistant | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Neuro Lab Technician | Neuro Lab Technician | exact |
+| Career Roadmap · UX Research Assistant | UX Research Assistant | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Behavioural Data Analyst | Behavioural Data Analyst | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Clinical Research Coordinator | Clinical Research Coordinator | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Immunology Technician | Immunology Technician | exact |
+| Vaccine QC Analyst Roadmap | Vaccine QC Analyst | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Fermentation Technologist | Fermentation Technologist | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Research Associate | Research Associate | exact |
+| Career Roadmap · Biopharma Executive | Biopharma Executive | exact |
+| Career Roadmap · Marine Research Assistant | Marine Research Assistant | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Oceanographic Technician | Oceanographic Technician | exact |
+| Career Roadmap · Fisheries Analyst | Fisheries Analyst | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Coastal Zone Analyst | Coastal Zone Analyst | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Environmental Surveyor | Environmental Surveyor | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Climate Data Analyst | Climate Data Analyst | exact |
+| Sustainability Associate Roadmap | Sustainability Associate | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Carbon Analyst | Carbon Analyst | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Environmental Research Assistant | Environmental Research Assistant | exact |
+| Career Roadmap · ESG Analyst (Junior) | ESG Analyst (Junior) | exact |
+| Career Roadmap · Sustainability Executive | Sustainability Executive | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Environmental Consultant (Junior) | Environmental Consultant (Junior) | exact |
+| Career Roadmap · CSR Executive | CSR Executive | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Waste Management Officer | Waste Management Officer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · ESG Associate | ESG Associate | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Wildlife Biologist (Junior) | Wildlife Biologist (Junior) | exact |
+| Conservation Officer Roadmap | Conservation Officer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Field Ecologist | Field Ecologist | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Forest Guard | Forest Guard | exact |
+| Career Roadmap · NGO Conservation Officer | NGO Conservation Officer | exact |
+| Career Roadmap · Solar Technician | Solar Technician | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Energy Analyst | Energy Analyst | exact |
+| Career Roadmap · Renewable Project Assistant | Renewable Project Assistant | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Junior Energy Auditor | Energy Auditor (Junior) | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Wind Site Assessor | Wind Site Assessor | via the file's 'Degree · Course · Career' line |
+| Career roadmap · GIS Technician | GIS Technician | exact |
+| Remote Sensing Analyst Roadmap | Remote Sensing Analyst | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Cartographer | Cartographer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Geospatial Data Assistant | Geospatial Data Assistant | exact |
+| Career Roadmap · Surveying Assistant | Surveying Assistant | exact |
+| Career Roadmap · Disaster Response Officer | Disaster Response Officer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Emergency Planner (Junior) | Emergency Planner (Junior) | exact |
+| Career Roadmap · Risk Analyst | Risk Analyst | via the file's 'Degree · Course · Career' line |
+| Career roadmap — NGO Relief Coordinator | NGO Relief Coordinator | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · DMA Assistant | DMA Assistant | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Safety Officer | Safety Officer | exact |
+| Fire Safety Officer Roadmap | Fire Safety Officer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · EHS Executive | EHS Executive | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Industrial Hygiene Technician | Industrial Hygiene Technician | exact |
+| Career Roadmap · Safety Auditor | Safety Auditor | exact |
+| Career Roadmap · Baker / Pastry Chef | Baker/Pastry Chef | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Food Product Developer | Food Product Developer | exact |
+| Career Roadmap · Quality Analyst (Bakery) | Quality Analyst (Bakery) | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Culinary Entrepreneur | Culinary Entrepreneur | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Food Stylist | Food Stylist | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Front Office Associate | Front Office Associate | exact |
+| F&B Associate Roadmap | F&B Associate | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Housekeeping Executive | Housekeeping Executive | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Guest Relations Executive | Guest Relations Executive | exact |
+| Career Roadmap — Event Associate | Event Associate | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Fashion Technologist | Fashion Technologist | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Textile Quality Analyst | Textile Quality Analyst | exact |
+| Career Roadmap · Fashion Merchandiser | Merchandiser | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Apparel Production Executive | Apparel Production Executive | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Sourcing Executive | Sourcing Executive | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Interior Designer | Interior Designer | exact |
+| Space Planner Roadmap | Space Planner | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Design Assistant | Design Assistant | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Interior Design Visualiser | Visualiser | via the file's 'Desired career' line |
+| Career Roadmap — Site Supervisor | Site Supervisor | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Video Editor | Video Editor | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Cinematographer | Cinematographer | exact |
+| Career Roadmap · Assistant Director | Assistant Director | exact |
+| Career roadmap — Film Editor | Film Editor | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Content Producer | Content Producer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Photographer | Photographer | exact |
+| Sound Engineer Roadmap | Sound Engineer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Audio Editor | Audio Editor | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Studio Technician | Studio Technician | exact |
+| Career Roadmap — Videographer | Videographer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Game Artist | Game Artist | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Level Designer | Level Designer | exact |
+| Career Roadmap · 3D Artist | 3D Artist | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Concept Artist | Concept Artist | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Game Tester | Game Tester | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Digital Marketing Executive | Digital Marketing Executive | exact |
+| SEO Analyst Roadmap | SEO Analyst | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Social Media Analyst | Social Media Analyst | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Content Strategist | Content Strategist | exact |
+| Career Roadmap — Performance Marketer | Performance Marketer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Counsellor | Counsellor | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Child Development Assistant | Child Development Assistant | exact |
+| Career Roadmap · Behavioural Therapist Assistant | Behavioural Therapist Assistant | via the file's 'Degree · Course · Career' line |
+| Career roadmap — School Counsellor | School Counsellor | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Research Assistant | Research Assistant | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Sports Psychologist Assistant | Sports Psychologist Assistant | exact |
+| Sports Manager Roadmap | Sports Manager | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Talent Scout | Talent Scout | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Sports Marketing Executive | Sports Marketing Executive | exact |
+| Career Roadmap — Fitness Consultant | Fitness Consultant | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Yoga Instructor | Yoga Instructor | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Wellness Coach | Wellness Coach | exact |
+| Career Roadmap · Naturopathy Assistant | Naturopathy Assistant | via the file's 'Degree · Course · Career' line |
+| Career roadmap — Spa/Wellness Manager | Spa/Wellness Manager | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Lifestyle Consultant | Lifestyle Consultant | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Early Childhood Educator | Early Childhood Educator | exact |
+| Child Development Officer Roadmap | Child Development Officer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Anganwadi Supervisor | Anganwadi Supervisor | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Family Counsellor | Family Counsellor | exact |
+| Career Roadmap — NGO Program Officer | NGO Program Officer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Rural Development Officer | Rural Development Officer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Cooperative Bank Officer | Cooperative Bank Officer | exact |
+| Career Roadmap · NGO Program Officer | NGO Program Officer | exact |
+| Career roadmap — Micro-finance Executive | Micro-finance Executive | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Extension Worker | Extension Worker | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Ground Handling Executive | Ground Handling Executive | exact |
+| Airport Operations Executive Roadmap | Airport Operations Executive | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Cargo Executive | Cargo Executive | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Airline Reservation Executive | Airline Reservation Executive | exact |
+| Career Roadmap — Aviation Security Officer | Aviation Security Officer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Deck Cadet | Deck Cadet | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Engine Cadet | Engine Cadet | exact |
+| Career Roadmap · Port Operations Executive | Port Operations Executive | exact |
+| Career roadmap — Ship Agent | Ship Agent | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Junior Data Scientist | Junior Data Scientist | exact |
+| Software Developer Roadmap | Software Developer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Quant Analyst | Quant Analyst | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Cryptography Assistant | Cryptography Assistant | exact |
+| Career Roadmap — Analytics Associate | Analytics Associate | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Software Developer | Software Developer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Web Developer | Web Developer | exact |
+| Career Roadmap · Junior Programmer | Junior Programmer | exact |
+| Career roadmap — IT Support Executive | IT Support Executive | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Database Executive | Database Executive | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Testing Engineer | Testing Engineer | exact |
+| Data Analyst Roadmap | Data Analyst | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Junior Data Scientist | Junior Data Scientist | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: BI Executive | BI Executive | exact |
+| Career Roadmap · Python Developer | Python Developer | exact |
+| Career roadmap · Reporting Analyst | Reporting Analyst | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · AI/ML Trainee | AI/ML Trainee | exact |
+| Career Roadmap · Python Developer | Python Developer | exact |
+| Career roadmap — Data Annotation Lead | Data Annotation Lead | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Chatbot Developer | Chatbot Developer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Junior AI Engineer | Junior AI Engineer | exact |
+| Security Analyst Roadmap | Security Analyst | via the file's 'Degree · Course · Career' line |
+| Career roadmap · SOC Analyst | SOC Analyst | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Network Security Executive | Network Security Executive | exact |
+| Career Roadmap · Penetration Tester (Junior) | Penetration Tester (Junior) | exact |
+| Career roadmap · Forensics Assistant | Forensics Assistant | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Cloud Support Engineer | Cloud Support Engineer | exact |
+| Career Roadmap · DevOps Trainee | DevOps Trainee | exact |
+| Career roadmap — System Administrator | System Administrator | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Linux Administrator | Linux Administrator | via the file's 'Degree · Course · Career' line |
+| Career roadmap · AWS/Azure Associate | AWS/Azure Associate | exact |
+| Android Developer Roadmap | Android Developer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · iOS Developer | iOS Developer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Full Stack Developer | Full Stack Developer | exact |
+| Career Roadmap · Game Developer | Game Developer | exact |
+| Career roadmap · UI Developer | UI Developer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Digital Marketing Executive | Digital Marketing Executive | exact |
+| Career Roadmap · SEO Specialist | SEO Specialist | exact |
+| Career roadmap — E-Commerce Executive | E-Commerce Executive | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Social Media Manager | Social Media Manager | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Web Analyst | Web Analyst | exact |
+| Blockchain Developer (Junior) Roadmap | Blockchain Developer (Junior) | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Web3 Developer | Web3 Developer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Smart Contract Tester | Smart Contract Tester | exact |
+| Career Roadmap · Crypto Analyst | Crypto Analyst | exact |
+| Career roadmap · DApp Developer | DApp Developer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · IoT Developer | IoT Developer | exact |
+| Career Roadmap · Embedded Programmer | Embedded Programmer | exact |
+| Career Roadmap · Automation Technician | Automation Technician | via the file's 'Degree · Course · Career' line |
+| Career roadmap · AR/VR Developer | AR/VR Developer | exact |
+| Game Developer Roadmap | Game Developer | via the file's 'Degree · Course · Career' line |
+| Career roadmap · Unity Programmer | Unity Programmer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: 3D Interaction Designer | 3D Interaction Designer | exact |
+| Career Roadmap · Business Analyst (Junior) | Business Analyst (Junior) | exact |
+| Career roadmap · FinTech Developer | Fintech Developer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Data Analyst | Data Analyst | exact |

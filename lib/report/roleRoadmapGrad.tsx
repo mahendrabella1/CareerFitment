@@ -43,7 +43,7 @@ export interface RoleRoadmap {
 
 /** Per version: the degree/course it states it was written for, and the
  *  wider text around it (career cluster, route notes, opening lines). */
-export interface RoadmapVersion { for: string; about: string; level?: DegreeLevel }
+export interface RoadmapVersion { for: string; course?: string; about: string; level?: DegreeLevel }
 export type DegreeLevel = "ug" | "pg" | "doctoral";
 
 /** Same rule as degree_level() in scripts/build-ug-role-roadmaps.py. */
@@ -67,25 +67,55 @@ const words = (s: string) => new Set(s.toLowerCase().split(/[^a-z0-9]+/).filter(
 const phrase = (s: string) => ` ${s.toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, " ").trim()} `;
 const hits = (a: Set<string>, b: Set<string>) => [...a].filter((w) => b.has(w)).length;
 
-/** The version best matching the student's course, among those written for
- *  the student's own degree level (a Ph.D. plan starts at Ph.D. Year 1, so
- *  it is never offered to an undergraduate) - null when there is none.
- *  The student's exact course named in what a version was written for wins
- *  outright; then course words found there (x3), course words in the wider
- *  text, and degree words. The first version on a tie. */
+// The kind of degree, so a B.Tech student gets the B.Tech version rather
+// than the BCA one even though "technology"/"engineering" are too common to
+// count as words. First match wins (LLB before BA for "BA LLB").
+const FAMILIES: [string, RegExp][] = [
+  ["btech", /\bb\.?\s?tech\b|\bb\.?\s?e\.?(?=[\s/(]|$)|bachelor of (technology|engineering)/i],
+  ["bca", /\bbca\b|computer applications/i],
+  ["bsc", /\bb\.?\s?sc\b|bachelor of science/i],
+  ["bcom", /\bb\.?\s?com\b|bachelor of commerce/i],
+  ["bba", /\bbba\b|\bbbm\b|business administration/i],
+  ["bdes", /\bb\.?\s?des\b|bachelor of design/i],
+  ["law", /\bllb\b/i],
+  ["ba", /\bb\.?\s?a\b(?![a-z])|bachelor of arts/i],
+  ["pharm", /pharm/i],
+];
+export function degreeFamily(s: string): string | null {
+  return FAMILIES.find(([, re]) => re.test(s))?.[0] ?? null;
+}
+
+/** The version best matching the student, among those written for the
+ *  student's own degree level (a Ph.D. plan starts at Ph.D. Year 1, so it is
+ *  never offered to an undergraduate) - null when there is none. Scored by:
+ *  a different kind of degree (-8: B.Tech vs BCA); the student's exact course
+ *  named in what the version was written for (+10); how closely the
+ *  version's course matches theirs (up to +20, so "Psychology" prefers a
+ *  Psychology version over "Clinical / Counselling Psychology"); course words
+ *  found there (x3) and in the wider text; degree words. The first version
+ *  on a tie. */
 export function pickVersion(slugs: string[], versions: Record<string, RoadmapVersion>, degree: string, course: string): string | null {
   const level = degreeLevel(`${degree} ${course}`);
   const candidates = slugs.filter((s) => (versions[s]?.level ?? "ug") === level);
   if (!candidates.length) return null;
   const courseWords = words(course);
   const degreeWords = words(degree);
+  const family = degreeFamily(degree);
   let best = candidates[0];
-  let bestScore = -1;
+  let bestScore = -Infinity;
   for (const slug of candidates) {
     const v = versions[slug] ?? { for: "", about: "" };
     const forWords = words(v.for);
-    const score = (course.trim() && phrase(v.for).includes(phrase(course)) ? 10 : 0)
-      + 3 * hits(courseWords, forWords) + hits(courseWords, words(v.about)) + hits(degreeWords, forWords);
+    const vFamily = degreeFamily(v.for);
+    const vCourseWords = words(v.course || v.for);
+    const union = new Set([...courseWords, ...vCourseWords]).size;
+    // A different kind of degree counts against a version; the same kind adds
+    // nothing, so a version that doesn't state its degree isn't out-ranked by
+    // one that merely does.
+    const score = (family && vFamily && family !== vFamily ? -8 : 0)
+      + (course.trim() && phrase(v.for).includes(phrase(course)) ? 10 : 0)
+      + (union ? 20 * hits(courseWords, vCourseWords) / union : 0)
+      + 3 * hits(courseWords, forWords) + hits(courseWords, words(v.about)) + 0.5 * hits(degreeWords, forWords);
     if (score > bestScore) { best = slug; bestScore = score; }
   }
   return best;
