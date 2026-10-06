@@ -43,7 +43,15 @@ export interface RoleRoadmap {
 
 /** Per version: the degree/course it states it was written for, and the
  *  wider text around it (career cluster, route notes, opening lines). */
-export interface RoadmapVersion { for: string; about: string }
+export interface RoadmapVersion { for: string; about: string; level?: DegreeLevel }
+export type DegreeLevel = "ug" | "pg" | "doctoral";
+
+/** Same rule as degree_level() in scripts/build-ug-role-roadmaps.py. */
+export function degreeLevel(s: string): DegreeLevel {
+  if (/ph\.?\s?d\b|\bd\.\s?sc\b|d\.\s?litt|\bdba\b|doctorate|post-?doctoral|doctoral/i.test(s)) return "doctoral";
+  if (/\b(m\.\s?(tech|e|sc|a|com|phil|pharm|des|arch|ed|s)\b|mba\b|pgdm|master|post-?graduate)/i.test(s)) return "pg";
+  return "ug";
+}
 interface RoadmapIndex { roles: Record<string, string[]>; versions: Record<string, RoadmapVersion> }
 
 const BASE = "/roadmaps/ug";
@@ -59,16 +67,21 @@ const words = (s: string) => new Set(s.toLowerCase().split(/[^a-z0-9]+/).filter(
 const phrase = (s: string) => ` ${s.toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, " ").trim()} `;
 const hits = (a: Set<string>, b: Set<string>) => [...a].filter((w) => b.has(w)).length;
 
-/** The version best matching the student's course: the student's exact
- *  course named in what a version was written for wins outright; then
- *  course words found there (x3), course words in the wider text, and
- *  degree words. The first version on a tie. */
-export function pickVersion(slugs: string[], versions: Record<string, RoadmapVersion>, degree: string, course: string): string {
+/** The version best matching the student's course, among those written for
+ *  the student's own degree level (a Ph.D. plan starts at Ph.D. Year 1, so
+ *  it is never offered to an undergraduate) - null when there is none.
+ *  The student's exact course named in what a version was written for wins
+ *  outright; then course words found there (x3), course words in the wider
+ *  text, and degree words. The first version on a tie. */
+export function pickVersion(slugs: string[], versions: Record<string, RoadmapVersion>, degree: string, course: string): string | null {
+  const level = degreeLevel(`${degree} ${course}`);
+  const candidates = slugs.filter((s) => (versions[s]?.level ?? "ug") === level);
+  if (!candidates.length) return null;
   const courseWords = words(course);
   const degreeWords = words(degree);
-  let best = slugs[0];
+  let best = candidates[0];
   let bestScore = -1;
-  for (const slug of slugs) {
+  for (const slug of candidates) {
     const v = versions[slug] ?? { for: "", about: "" };
     const forWords = words(v.for);
     const score = (course.trim() && phrase(v.for).includes(phrase(course)) ? 10 : 0)
@@ -100,6 +113,7 @@ export function RoleRoadmapSwitch({ role, degree, course, found, fallback }: {
         const slugs = index?.roles[role];
         if (!index || !slugs?.length) return null;
         const slug = pickVersion(slugs, index.versions, degree, course);
+        if (!slug) return null;
         const res = await fetch(`${BASE}/${slug}.json`);
         return res.ok ? ((await res.json()) as RoleRoadmap) : null;
       })
