@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getFirestore } from "@/lib/firebase/admin";
 import { ApiError, caller, fail } from "@/lib/institution/server";
-import type { InstitutionMessage, StudentInboxMessage } from "@/lib/institution/types";
+import type { InstitutionMessage, MessageReply, StudentInboxMessage } from "@/lib/institution/types";
 
 export const dynamic = "force-dynamic";
 
@@ -11,17 +11,26 @@ export const dynamic = "force-dynamic";
  *
  * GET   their 30 newest messages, "{name}" filled with their first name
  * POST  { ids } - mark read; { clicked: id } - they followed its button;
- *       { applied: id } - they applied to the opportunity it announced.
+ *       { applied: id } - they applied to the opportunity it announced;
+ *       { reply: { id, text } } - reply to the sender (their school, or OneGrasp).
  *       Only messages addressed to them are touched.
  */
 export async function GET(req: Request) {
   try {
     const { uid } = await caller(req);
     const db = await getFirestore();
-    const [snap, user] = await Promise.all([
+    const [snap, user, replySnap] = await Promise.all([
       db.collection("institutionMessages").where("recipients", "array-contains", uid).get(),
       db.collection("users").doc(uid).get(),
+      db.collection("messageReplies").where("studentUid", "==", uid).get(),
     ]);
+    const threads = new Map<string, MessageReply[]>();
+    replySnap.docs.map((d) => d.data() as MessageReply).sort((a, b) => a.createdAt - b.createdAt)
+      .forEach((r) => threads.set(r.messageId, [...(threads.get(r.messageId) ?? []), r]));
+    // The school's answers are flagged once as new, then counted as seen.
+    const unseen = replySnap.docs.filter((d) => d.get("from") === "school" && !d.get("seenByStudent"));
+    const newReplyIn = new Set(unseen.map((d) => String(d.get("messageId"))));
+    if (unseen.length) { const b = db.batch(); unseen.forEach((d) => b.update(d.ref, { seenByStudent: true })); await b.commit(); }
     const first = String(user.get("name") || "").trim().split(" ")[0] || "there";
     const recent = snap.docs.map((d) => ({ ...(d.data() as InstitutionMessage), id: d.id })).sort((a, b) => b.createdAt - a.createdAt).slice(0, 30);
     const oppIds = [...new Set(recent.map((m) => m.opportunityId).filter(Boolean))] as string[];
@@ -33,8 +42,10 @@ export async function GET(req: Request) {
       ...(m.externalUrl ? { externalUrl: m.externalUrl } : {}),
       ...(m.opportunityId ? { opportunityId: m.opportunityId, applied: appliedTo.has(m.opportunityId) } : {}),
       from: m.institutionName, createdAt: m.createdAt, read: !!m.readBy?.[uid],
+      thread: (threads.get(m.id) ?? []).map((r) => ({ from: r.from, authorName: r.authorName, text: r.text, createdAt: r.createdAt })),
+      ...(newReplyIn.has(m.id) ? { newReply: true } : {}),
     }));
-    return NextResponse.json({ messages, unread: messages.filter((m) => !m.read).length });
+    return NextResponse.json({ messages, unread: messages.filter((m) => !m.read || m.newReply).length });
   } catch (e) {
     return fail(e);
   }
@@ -45,7 +56,7 @@ const ID = /^[A-Za-z0-9]{10,40}$/;
 export async function POST(req: Request) {
   try {
     const { uid } = await caller(req);
-    const body = (await req.json().catch(() => ({}))) as { ids?: unknown; clicked?: unknown; applied?: unknown };
+    const body = (await req.json().catch(() => ({}))) as { ids?: unknown; clicked?: unknown; applied?: unknown; reply?: unknown };
     const db = await getFirestore();
     const now = Date.now();
     const addressed = async (id: string) => {
@@ -57,6 +68,23 @@ export async function POST(req: Request) {
       const snap = await addressed(body.clicked);
       if (snap && !snap.get(`clickedBy.${uid}`)) await snap.ref.update({ [`clickedBy.${uid}`]: now, [`readBy.${uid}`]: snap.get(`readBy.${uid}`) ?? now });
       return NextResponse.json({ ok: true });
+    }
+    const reply = body.reply as { id?: unknown; text?: unknown } | undefined;
+    if (reply && typeof reply.id === "string" && ID.test(reply.id)) {
+      const text = String(reply.text ?? "").trim().slice(0, 1000);
+      if (!text) throw new ApiError(400, "Write your reply.");
+      const snap = await addressed(reply.id);
+      if (!snap) throw new ApiError(404, "Message not found.");
+      const user = await db.collection("users").doc(uid).get();
+      const ref = db.collection("messageReplies").doc();
+      const r: MessageReply = {
+        id: ref.id, messageId: snap.id, messageTitle: String(snap.get("title") || ""), institutionId: String(snap.get("institutionId")),
+        studentUid: uid, studentName: String(user.get("name") || "Student"), from: "student", authorName: String(user.get("name") || "Student"),
+        text, createdAt: now, seenBySchool: false, seenByStudent: true,
+      };
+      await ref.set(r);
+      if (!snap.get(`readBy.${uid}`)) await snap.ref.update({ [`readBy.${uid}`]: now });
+      return NextResponse.json({ ok: true, reply: { from: r.from, authorName: r.authorName, text: r.text, createdAt: r.createdAt } });
     }
     if (typeof body.applied === "string" && ID.test(body.applied)) {
       const snap = await addressed(body.applied);

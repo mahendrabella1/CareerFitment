@@ -12,6 +12,7 @@ import { Logo } from "@/app/Logo";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { apiFetch } from "@/lib/institution/client";
 import { QrCode } from "@/components/research/QrCode";
+import { HowItWorks } from "@/components/HowItWorks";
 import { KIND_LABEL, MILESTONE_KINDS, type Milestone } from "@/lib/institution/passport";
 
 const CSS = `
@@ -74,6 +75,11 @@ export default function MyPassportPage() {
               <h1>Career Passport</h1>
               <p className="pp-muted">Add what you&apos;ve done, with proof. {data?.institution ? <>Your school, <b>{data.institution}</b>, verifies each one</> : <>Once your school uses OneGrasp, it can verify each one</>} - verified milestones appear on your passport, which you can share with colleges and employers.</p>
             </div>
+            <HowItWorks id="passport" accent="#E23B41" steps={[
+              "Add a milestone: what you did, the type, the date, and a link to the proof (project, certificate, photo, GitHub or Drive).",
+              "It shows 'Waiting for your school' until your school checks the proof - then 'Verified ✓' or 'Not accepted' with their note.",
+              "Verified milestones appear on your public passport. Share the link or QR code on the right with colleges, employers or scholarship forms.",
+            ]} sync="Your school sees every milestone you add. Anyone with your passport link sees only verified milestones - never your phone or email." />
             <form className="pp-card" onSubmit={add}>
               <h2>Add a milestone</h2>
               <div className="pp-grid">

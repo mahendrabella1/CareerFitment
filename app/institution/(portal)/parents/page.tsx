@@ -14,6 +14,7 @@ import { send, useApi } from "@/components/institution/useApi";
 import { AREA_BY_KEY, parentAlignment, type Alignment, type ParentSurvey } from "@/lib/institution/features";
 import { VOICE_LANGS, VOICE_TEMPLATES, type VoiceTemplate } from "@/lib/institution/voice";
 import type { StudentRow } from "@/lib/institution/types";
+import { HowItWorks } from "@/components/HowItWorks";
 
 interface Data { students: StudentRow[]; links: Record<string, string>; surveys: Record<string, ParentSurvey> }
 
@@ -67,6 +68,7 @@ export default function ParentsPage() {
         </button>
         <button className="ip-btn" onClick={copyAll}>Copy links</button>
       </div>
+      <HowItWorks id="portal-parents" steps={["Create a private family link for a student and share it with the parents (WhatsApp, SMS or email).", "Parents open it without an account, answer a 2-minute survey, and later see their child's decision sheet and weekly progress there.", "Here you see each family's answer next to the child's result - Aligned, Partly aligned or Conflict - with a conversation guide for conflicts.", "Automated voice calls can update parents in English, Hindi or Telugu once OneGrasp has connected a calling provider."]} sync={"Parents only ever see their own child. The child sees the parents' 'We agree' / 'Let's discuss' in their Decision Room."} />
       {note && <div className="ip-alert good">{note}</div>}
 
       <div className="ip-kpis">

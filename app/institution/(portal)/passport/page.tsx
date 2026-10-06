@@ -9,6 +9,7 @@ import { Kpi, Section } from "@/components/institution/ui";
 import { send, useApi } from "@/components/institution/useApi";
 import { KIND_LABEL, type Milestone, type MilestoneStatus } from "@/lib/institution/passport";
 import { formatAgo } from "@/lib/institution/analytics";
+import { HowItWorks } from "@/components/HowItWorks";
 
 export default function PassportPage() {
   const { students } = usePortal();
@@ -36,6 +37,7 @@ export default function PassportPage() {
           <p className="ip-sub">Students add what they&apos;ve done - projects, certificates, internships, competitions - with proof. You verify it, and it appears on their shareable, QR-checkable Career Passport with your institution&apos;s name.</p>
         </div>
       </div>
+      <HowItWorks id="portal-passport" steps={["Students add achievements (projects, certificates, competitions, internships) with a link to the proof.", "New ones wait here, and the red badge on 'Career Passport' in the menu counts them.", "Check the proof, then verify or decline it - add a short note the student will see.", "Verified milestones appear on the student's public passport, which colleges and employers can check by QR code."]} sync={"The student sees your decision and note straight away; the public passport shows only verified milestones, never contact details."} />
       <div className="ip-kpis">
         <Kpi icon="clock" label="Waiting for you" value={count("pending")} sub="milestones to review" />
         <Kpi icon="award" label="Verified" value={count("verified")} sub="shown on students' passports" />

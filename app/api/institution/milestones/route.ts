@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { ApiError, fail, requireInstitution, studentOf } from "@/lib/institution/server";
+import { ApiError, fail, requireInstitution, rowsOf, studentOf } from "@/lib/institution/server";
 import type { Milestone } from "@/lib/institution/passport";
 
 export const dynamic = "force-dynamic";
@@ -14,8 +14,19 @@ export const dynamic = "force-dynamic";
 export async function GET(req: Request) {
   try {
     const { institution, db } = await requireInstitution(req);
-    const snap = await db.collection("milestones").where("institutionId", "==", institution.id).get();
-    const milestones = snap.docs.map((d) => ({ ...(d.data() as Milestone), id: d.id })).sort((a, b) => b.createdAt - a.createdAt).slice(0, 500);
+    // By the institution's own students - so milestones added before the
+    // school had a portal login (no institution on them yet) show up too,
+    // and get tagged with this institution for the navigation badge.
+    const uids = (await rowsOf(db, institution)).map((s) => s.uid);
+    const docs: FirebaseFirestore.QueryDocumentSnapshot[] = [];
+    for (let i = 0; i < uids.length; i += 30) docs.push(...(await db.collection("milestones").where("uid", "in", uids.slice(i, i + 30)).get()).docs);
+    const untagged = docs.filter((d) => d.get("institutionId") !== institution.id);
+    for (let i = 0; i < untagged.length; i += 400) {
+      const b = db.batch();
+      untagged.slice(i, i + 400).forEach((d) => b.update(d.ref, { institutionId: institution.id }));
+      await b.commit();
+    }
+    const milestones = docs.map((d) => ({ ...(d.data() as Milestone), id: d.id, institutionId: institution.id })).sort((a, b) => b.createdAt - a.createdAt).slice(0, 500);
     return NextResponse.json({ milestones });
   } catch (e) {
     return fail(e);

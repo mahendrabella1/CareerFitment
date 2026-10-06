@@ -89,6 +89,20 @@ As of this build, the `graduate` registration category is still gated `enabled: 
   - voice calls to parents: `lib/institution/voice.ts`, Twilio, needs `TWILIO_ACCOUNT_SID`/`TWILIO_AUTH_TOKEN`/`TWILIO_FROM_NUMBER`.
 - **Career areas and "change by 2035" levels** in `features.ts` are OneGrasp planning estimates, labelled as such in the UI.
 - **Voice-call translations** (Hindi/Telugu) should be reviewed by a native speaker.
+- **Messaging sync** (admin ↔ institution ↔ student):
+  - students reply under any message (`SchoolInbox` → `POST /api/student/messages {reply}`), stored in `messageReplies` (`from: "student" | "school"`, `seenBySchool`/`seenByStudent`);
+  - schools answer at `/institution/replies` and on the student page (`/api/institution/replies`);
+  - OneGrasp messages students as sender id `"onegrasp"` (`ONEGRASP_SENDER`, an `institutionMessages` doc with `institutionId: "onegrasp"`) and answers their replies from `/admin/messages` (`/api/admin/messages`);
+  - OneGrasp → schools: `portalNotices`; schools ↔ OneGrasp: `supportThreads` (`/institution/onegrasp`, labelled "Ask OneGrasp");
+  - portal nav badges come from `/api/institution/unread`, polled every minute in `components/institution/portalStore.tsx`.
+- **Admin "Open portal"** (`/admin/institutions`): opens `/institution?as=<id>`. That id goes into sessionStorage `og.viewInstitution` and is sent as the `X-View-Institution` header (`lib/institution/client.ts`). `requireInstitution` honours it only for admins (`viewAs: true`), and read-receipts are not marked while viewing.
+- **Signature features** (every class; linked from the Overview in `Dashboard.tsx` via `SIGNATURE`):
+  - Career Test-Drive: `/account/test-drive`, `lib/testDrive.ts`, `/api/test-drive`. Generated once per career by AI (`ANTHROPIC_API_KEY`, else `GROQ_API_KEY`; 503 without), grounded in the UG role roadmaps when one matches, cached in `testDrives/{slug}`. The result goes to `users/{uid}.testDrives`.
+  - Family Decision Room: `/account/decision-room`, `lib/decisionRoom.ts`, `/api/student/decision`. The sheet is stored on `users/{uid}.decision`. Parents answer on `/parent/[token]` (`decision.parentResponse`). `AREA_FACTS` are indicative India ranges, labelled as such.
+  - Career GPS: `/account/gps`, `lib/gps.ts`. The page computes missions from the student's own data and writes `users/{uid}.gps` from the browser; a week's missions stay fixed once saved.
+  - `testDrives` and `decision` are in `adminOnlyUserFields()` in `firestore.rules`, so students can't forge them; `gps` is student-writable.
+  - Schools see all three at `/institution/journeys` and on the student page; parents see the decision and this week's GPS on their family page.
+- **"How this works" panels** (`components/HowItWorks.tsx`) sit at the top of every portal page, the admin Institution Logins and Messages pages, and the student/parent pages above. `/institution/guide` explains every feature and the sync paths. When a feature changes, update its panel.
 
 ## Known pre-existing quirks (not yet fixed, flagged here so they aren't mistaken for new bugs)
 

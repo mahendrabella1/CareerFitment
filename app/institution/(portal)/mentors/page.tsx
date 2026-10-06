@@ -8,6 +8,7 @@ import { usePortal } from "@/components/institution/portalStore";
 import { Section } from "@/components/institution/ui";
 import { send, useApi } from "@/components/institution/useApi";
 import { AREA_BY_KEY, suggestMentors } from "@/lib/institution/features";
+import { HowItWorks } from "@/components/HowItWorks";
 
 interface Pair { id: string; mentorUid: string; menteeUid: string; mentorName: string; menteeName: string; area: string; createdAt: number }
 
@@ -35,6 +36,7 @@ export default function MentorsPage() {
           <p className="ip-sub">Seniors who are heading the same way as a junior - same career area, further along - matched automatically. Confirm a pair and both get an introduction; you arrange the first meeting. No contact details are shared.</p>
         </div>
       </div>
+      <HowItWorks id="portal-mentors" steps={["OneGrasp suggests pairs: a senior and a junior heading into the same career area.", "Accept a pair - both students get a message introducing them.", "End a pairing whenever you need to."]} sync={"Both students see the introduction message in their dashboard inbox."} />
       <Section title={`Suggested pairs (${suggestions.length})`} icon="sparkle" aside="best-prepared seniors first; up to 3 juniors each">
         {suggestions.length === 0 ? <div className="ip-muted">No new matches - pairs need students in different classes who share a career area and have completed the assessment.</div> : suggestions.map(({ mentor, mentee, area }) => (
           <div className="ip-rec" key={mentee.uid}>

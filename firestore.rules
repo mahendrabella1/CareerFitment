@@ -36,7 +36,9 @@ service cloud.firestore {
     // school's institution portal (and read its messages), or undo an
     // admin's archive.
     function adminOnlyUserFields() {
-      return ['institution', 'institutionalLinkCode', 'archived', 'archivedAt'];
+      // testDrives and decision (with the parents' answer) are written only by
+      // the server routes, so a student can't forge a parent's "We agree".
+      return ['institution', 'institutionalLinkCode', 'archived', 'archivedAt', 'testDrives', 'decision'];
     }
     // TODO once the payment routes write `paid` with the Admin SDK (today
     // app/PaymentGate.tsx markPaid() writes it from the browser), add

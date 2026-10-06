@@ -9,6 +9,7 @@ import { Section } from "@/components/institution/ui";
 import { send, useApi } from "@/components/institution/useApi";
 import { CAREER_AREAS } from "@/lib/institution/features";
 import type { Opportunity, OpportunityType } from "@/lib/institution/types";
+import { HowItWorks } from "@/components/HowItWorks";
 
 const TYPES: { key: OpportunityType; label: string }[] = [
   { key: "olympiad", label: "Olympiad" }, { key: "hackathon", label: "Hackathon" }, { key: "competition", label: "Competition" },
@@ -53,6 +54,7 @@ export default function OpportunitiesPage() {
           <p className="ip-sub">Post an olympiad, hackathon, workshop or internship - it goes only to the students it suits (by class and the career areas in their report), not to everyone. Track who applied and how they did.</p>
         </div>
       </div>
+      <HowItWorks id="portal-opportunities" steps={["Add an olympiad, hackathon, internship, scholarship or event with its link and deadline.", "Choose the classes and career areas it suits - you see how many students it will reach before you send.", "Matching students get a message with an 'Open' button and an 'I applied' button.", "Track who applied, and record outcomes (participated, shortlisted, won)."]} sync={"Only matching students see the opportunity. Their 'I applied' shows here straight away."} />
 
       <Section title="New opportunity" icon="target">
         <div style={{ display: "grid", gridTemplateColumns: "minmax(0,2fr) minmax(0,1fr) minmax(0,1fr)", gap: 10 }} className="op-grid">

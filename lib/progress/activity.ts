@@ -24,6 +24,10 @@ export const ACTIVITY_AREAS: ActivityArea[] = [
   { key: "startups", label: "Startups", paths: ["/account/startups", "/account/features/startups"] },
   { key: "internships", label: "Internships", paths: ["/account/internships", "/account/internships-new", "/account/features/internships", "/dashboard/internships"] },
   { key: "portfolio", label: "Portfolio", paths: ["/account/portfolio", "/portfolio"] },
+  { key: "passport", label: "Career Passport", paths: ["/account/passport"] },
+  { key: "test_drive", label: "Career Test-Drive", paths: ["/account/test-drive"] },
+  { key: "decision", label: "Family Decision Room", paths: ["/account/decision-room"] },
+  { key: "gps", label: "Career GPS", paths: ["/account/gps"] },
 ];
 
 export const AREA_LABEL: Record<string, string> = Object.fromEntries([...ACTIVITY_AREAS.map((a) => [a.key, a.label]), ["other", "Other pages"]]);

@@ -7,6 +7,7 @@ import { usePortal } from "@/components/institution/portalStore";
 import { Section } from "@/components/institution/ui";
 import { send } from "@/components/institution/useApi";
 import { decisionBriefText, decisionMomentFor, examsFor } from "@/lib/institution/features";
+import { HowItWorks } from "@/components/HowItWorks";
 
 export default function DecisionsPage() {
   const { students } = usePortal();
@@ -38,6 +39,7 @@ export default function DecisionsPage() {
           <p className="ip-sub">Every class has a big decision coming - stream choice, entrance exams, course and college, internships. Send each student their own one-page brief: the decision, their best fits and goal, the exam dates that matter for them, and the questions to settle with parents and the counsellor.</p>
         </div>
       </div>
+      <HowItWorks id="portal-decisions" steps={["Each class is shown with the big decision it faces next - stream, entrance exams, course and college, internships.", "Press 'See an example brief' to preview what a student will get.", "Press 'Send briefs' - every student gets their own brief: their fits and goal, the exam dates that matter to them, and questions to settle at home."]} sync={"Each brief arrives in the student's dashboard inbox as a recommendation, and they can reply to it."} />
       {msg && <div className="ip-alert good">{msg}</div>}
       {groups.map(([cls, rows]) => {
         const moment = decisionMomentFor(rows[0]);

@@ -19,6 +19,10 @@
  *   mentorPairs/{id}            a senior matched to mentor a junior
  *   observations/{inst}_{uid}   teachers' ratings of a student's traits
  *   voiceCalls/{id}             automated calls to parents
+ *   messageReplies/{id}         student <-> school/OneGrasp replies to a message
+ *   portalNotices/{id}          OneGrasp's notices to institutions
+ *   supportThreads/{id}         an institution's conversation with OneGrasp
+ *   testDrives/{slug}           a generated "day in the job" career simulation
  *
  * A student belongs to an institution when their profile's `institution`
  * (set by the school's registration link, typed at sign-up, or assigned by an
@@ -100,6 +104,56 @@ export interface StudentInboxMessage {
   opportunityId?: string;
   /** For an opportunity: whether the student said they applied. */
   applied?: boolean;
+  /** The conversation between this student and the sender about this message. */
+  thread?: { from: "student" | "school"; authorName: string; text: string; createdAt: number }[];
+  /** The sender answered since the student last looked. */
+  newReply?: boolean;
+}
+
+/** Sender id used for messages OneGrasp itself sends to students. */
+export const ONEGRASP_SENDER = "onegrasp";
+
+/** A reply in a student <-> school (or OneGrasp) conversation about one message. */
+export interface MessageReply {
+  id: string;
+  messageId: string;
+  messageTitle: string;
+  /** The sender of the original message: an institution id, or "onegrasp". */
+  institutionId: string;
+  studentUid: string;
+  studentName: string;
+  from: "student" | "school";
+  authorName: string;
+  text: string;
+  createdAt: number;
+  seenBySchool: boolean;
+  seenByStudent: boolean;
+}
+
+/** A notice OneGrasp posts to institutions' portals. */
+export interface PortalNotice {
+  id: string;
+  title: string;
+  body: string;
+  /** Institution ids, or ["all"]. */
+  institutionIds: string[];
+  createdAt: number;
+  createdBy: string;
+  readBy: Record<string, number>;
+}
+
+/** An institution's conversation with OneGrasp support. */
+export interface SupportThread {
+  id: string;
+  institutionId: string;
+  institutionName: string;
+  subject: string;
+  status: "open" | "closed";
+  createdAt: number;
+  updatedAt: number;
+  messages: { from: "school" | "onegrasp"; name: string; text: string; at: number }[];
+  unreadForAdmin: boolean;
+  unreadForSchool: boolean;
 }
 
 export type OpportunityType = "olympiad" | "hackathon" | "competition" | "workshop" | "internship" | "scholarship" | "event";
@@ -158,4 +212,10 @@ export interface StudentRow {
   goals: { done: number; total: number } | null;
   /** Legal "What would you do?" practice: counts only. */
   legal: { done: number; safest: number; byArea: Record<string, { done: number; safest: number }> } | null;
+  /** Career GPS: points, the streak still running, and this week's missions. */
+  gps: { points: number; streak: number; weekDone: number; weekTotal: number } | null;
+  /** Career Test-Drives taken: how much they enjoyed each day (1-5). */
+  testDrives: { career: string; enjoyment: number; completedAt: number }[];
+  /** Family Decision Room sheet, with the parents' response. */
+  decision: { pathA: string; pathB: string; chosen: "A" | "B" | "undecided"; reasons: string; savedAt: number; parentAnswer: "agree" | "discuss" | null } | null;
 }

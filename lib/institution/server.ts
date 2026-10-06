@@ -88,16 +88,26 @@ export interface InstitutionContext {
   db: Firestore;
 }
 
-export async function requireInstitution(req: Request): Promise<InstitutionContext> {
+export async function requireInstitution(req: Request): Promise<InstitutionContext & { viewAs: boolean }> {
   const c = await caller(req);
   const db = await getFirestore();
+  // A OneGrasp admin may open any institution's portal (sent as the
+  // X-View-Institution header from /admin/institutions -> "Open portal").
+  const viewId = req.headers.get("x-view-institution");
+  if (viewId && isAdmin(c.email)) {
+    const instSnap = await db.collection("institutions").doc(viewId).get();
+    if (!instSnap.exists) throw new ApiError(404, "That institution no longer exists.");
+    const institution = { ...(instSnap.data() as Institution), id: instSnap.id };
+    const account: InstitutionAccount = { uid: c.uid, institutionId: institution.id, username: "onegrasp-admin", displayName: "OneGrasp admin", active: true, createdAt: 0, createdBy: c.email };
+    return { caller: c, account, institution, db, viewAs: true };
+  }
   const accSnap = await db.collection("institutionAccounts").doc(c.uid).get();
   if (!accSnap.exists) throw new ApiError(403, "This login isn't an institution account.");
   const account = { ...(accSnap.data() as InstitutionAccount), uid: c.uid };
   if (!account.active) throw new ApiError(403, "This institution login has been switched off. Please contact OneGrasp.");
   const instSnap = await db.collection("institutions").doc(account.institutionId).get();
   if (!instSnap.exists) throw new ApiError(403, "This login's institution no longer exists. Please contact OneGrasp.");
-  return { caller: c, account, institution: { ...(instSnap.data() as Institution), id: instSnap.id }, db };
+  return { caller: c, account, institution: { ...(instSnap.data() as Institution), id: instSnap.id }, db, viewAs: false };
 }
 
 /** Every spelling students' profiles use for this institution. */
@@ -112,6 +122,7 @@ export const STUDENT_LIST_FIELDS = [
   "latestAssessment.completedAt", "latestAssessment.customFields", "latestAssessment.matches",
   "latestAssessment.topCareer", "latestAssessment.overallFitmentPct", "latestAssessment.desiredCareer",
   "latestAssessment.topStrengths", "latestAssessment.topIntelligences", "latestAssessment.strengthsBreakdown", "latestAssessment.quality",
+  "gps", "testDrives", "decision",
 ];
 
 /** How a school name is compared: spacing and capitals don't matter

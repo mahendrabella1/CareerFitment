@@ -9,6 +9,7 @@ import { Section } from "@/components/institution/ui";
 import { ComposeMessage, type ComposePreset } from "@/components/institution/ComposeMessage";
 import { formatAgo } from "@/lib/institution/analytics";
 import type { InstitutionMessage, MessageKind } from "@/lib/institution/types";
+import { HowItWorks } from "@/components/HowItWorks";
 
 type SentRow = Omit<InstitutionMessage, "recipients" | "readBy" | "clickedBy"> & { recipientCount: number; readCount: number; clickCount: number; actedCount: number };
 
@@ -63,6 +64,7 @@ export default function MessagesPage() {
         </div>
         <button className="ip-btn" onClick={() => setCompose({ audience: { type: "all" } })}><Icon name="bell" size={16} stroke={2} /> New message</button>
       </div>
+      <HowItWorks id="portal-messages" steps={["Choose who gets it: all students, chosen classes, or chosen students.", "Pick the type (message, reminder, alert, recommendation) and write it - {name} becomes each student's first name. Add a button to a page in the app if you like.", "Tick 'Also email' to send a copy to their email address too.", "The history shows how many opened each message and followed its button. Students can reply - replies arrive in 'Student replies'."]} sync={"Students see it in 'Messages from your school' on their dashboard, alerts first. OneGrasp's own messages to your students show there too, labelled OneGrasp."} />
 
       <Section title="Start from a template" icon="sparkle" aside={`goes to all ${total} students - you can change the audience`}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10 }}>

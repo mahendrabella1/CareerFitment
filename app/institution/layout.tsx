@@ -9,7 +9,7 @@
  */
 import { useEffect, useState } from "react";
 import { authErrorMessage, useAuth } from "@/lib/auth/AuthProvider";
-import { apiFetch, institutionLoginEmail } from "@/lib/institution/client";
+import { apiFetch, institutionLoginEmail, VIEW_KEY } from "@/lib/institution/client";
 import { PortalProvider, type PortalMe } from "@/components/institution/portalStore";
 import { PORTAL_CSS } from "@/components/institution/ui";
 import { Logo } from "@/app/Logo";
@@ -24,8 +24,19 @@ export default function InstitutionLayout({ children }: { children: React.ReactN
     setMe(null);
     setMeError("");
     if (!user) return;
+    // "Open portal" on /admin/institutions opens /institution?as=<id>: an
+    // admin then sees that institution's portal for this browser tab.
+    try {
+      const as = new URLSearchParams(window.location.search).get("as");
+      if (as && /^[A-Za-z0-9_-]{4,64}$/.test(as)) sessionStorage.setItem(VIEW_KEY, as);
+    } catch { /* storage blocked */ }
     apiFetch<PortalMe>("/api/institution/me").then(setMe).catch((e) => setMeError(e instanceof Error ? e.message : "Could not open the portal."));
   }, [user]);
+
+  function exitView() {
+    try { sessionStorage.removeItem(VIEW_KEY); } catch { /* storage blocked */ }
+    window.location.href = "/admin/institutions";
+  }
 
   let body: React.ReactNode;
   if (!ready) body = <Center>Accounts aren&apos;t configured on this deployment yet.</Center>;
@@ -44,7 +55,17 @@ export default function InstitutionLayout({ children }: { children: React.ReactN
       </Center>
     );
   } else if (!me) body = <Center>Opening your institution…</Center>;
-  else body = <PortalProvider me={me} logout={logout}>{children}</PortalProvider>;
+  else body = (
+    <>
+      {me.viewAs && (
+        <div style={{ background: "#141417", color: "#fff", padding: "8px 16px", display: "flex", gap: 12, alignItems: "center", justifyContent: "center", flexWrap: "wrap", fontSize: 13, fontWeight: 600 }}>
+          <span>You&apos;re viewing <b>{me.institution.name}</b>&apos;s portal as a OneGrasp admin - you see exactly what the school sees. Your visit doesn&apos;t mark anything as read for them.</span>
+          <button className="ip-btn sm" onClick={exitView}>Exit to admin</button>
+        </div>
+      )}
+      <PortalProvider me={me} logout={me.viewAs ? async () => exitView() : logout}>{children}</PortalProvider>
+    </>
+  );
 
   return (
     <div className="ip">

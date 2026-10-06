@@ -16,6 +16,10 @@ import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 import type { MessageKind, StudentRow } from "@/lib/institution/types";
 import { AREA_BY_KEY, TRAITS, decisionBriefText, parentAlignment, traitCheck, type ParentSurvey } from "@/lib/institution/features";
 import { KIND_LABEL as MILESTONE_KIND, type Milestone } from "@/lib/institution/passport";
+import { enjoymentLabel } from "@/lib/testDrive";
+import { usePortal } from "@/components/institution/portalStore";
+import { send } from "@/components/institution/useApi";
+import { HowItWorks } from "@/components/HowItWorks";
 
 interface Detail {
   student: StudentRow;
@@ -69,6 +73,7 @@ export default function StudentPage({ params }: { params: { uid: string } }) {
         ) : null}
         <button className="ip-btn" onClick={() => setCompose({ audience: only })}><Icon name="bell" size={16} stroke={2} /> Message</button>
       </div>
+      <HowItWorks id="portal-student" steps={["The top cards show the assessment status, time this week, days active and when they were last active.", "'Suggested next steps' come from their activity and results - press 'Send to student' to message one.", "Below: report trust, parents' view, teacher check, Career Passport, Career GPS, test-drives, family decision, time charts and courses.", "If the student replied to your messages, the conversation is at the bottom - answer it right there."]} sync={"The student sees your messages and answers in their dashboard inbox; parents see the decision sheet and weekly Career GPS on their family page."} />
 
       <div className="ip-kpis">
         <Kpi icon="check" label="Assessment" value={s.assessment.status === "completed" ? "Done" : s.assessment.status === "in_progress" ? "Unfinished" : "Pending"}
@@ -94,6 +99,8 @@ export default function StudentPage({ params }: { params: { uid: string } }) {
       </Section>
 
       <BeyondReport d={d} onBrief={() => { const b = decisionBriefText(s, now); setCompose({ audience: only, kind: "recommendation", title: b.title, body: b.body, link: "/account" }); }} />
+
+      <Journey s={s} />
 
       <div className="ip-grid2">
         <Section title="Daily time" icon="pulse" aside="minutes, last 30 days">
@@ -153,8 +160,94 @@ export default function StudentPage({ params }: { params: { uid: string } }) {
         )}
       </Section>
 
+      <Conversations uid={s.uid} name={s.name} tick={tick} />
+
       <ComposeMessage preset={compose} onClose={() => setCompose(null)} onSent={() => setTick((t) => t + 1)} />
     </>
+  );
+}
+
+/** Career GPS, Career Test-Drives and the Family Decision Room for one student. */
+function Journey({ s }: { s: StudentRow }) {
+  const d = s.decision;
+  return (
+    <div className="ip-grid2e">
+      <Section title="Career GPS and test-drives" icon="compass">
+        {s.gps ? (
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
+            <span className="ip-pill muted plain">{s.gps.points} points</span>
+            <span className="ip-pill muted plain">{s.gps.streak}-week streak</span>
+            <span className={`ip-pill ${s.gps.weekDone >= s.gps.weekTotal ? "good" : s.gps.weekDone > 0 ? "warn" : "muted"}`}>This week {s.gps.weekDone}/{s.gps.weekTotal}</span>
+          </div>
+        ) : <div className="ip-muted" style={{ marginBottom: 10 }}>Hasn&apos;t opened Career GPS yet (/account/gps).</div>}
+        {s.testDrives.length === 0 ? <div className="ip-muted">No career test-drives yet.</div> : s.testDrives.map((t) => (
+          <div key={t.career + t.completedAt} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 4 }}>
+            <span className={`ip-pill ${t.enjoyment >= 3.4 ? "good" : t.enjoyment >= 2.6 ? "warn" : "bad"}`}>{enjoymentLabel(t.enjoyment)} · {t.enjoyment}/5</span>
+            <span style={{ fontSize: 13 }}>{t.career} <span className="ip-muted">· {formatAgo(t.completedAt)}</span></span>
+          </div>
+        ))}
+      </Section>
+      <Section title="Family Decision Room" icon="signpost">
+        {!d ? <div className="ip-muted">No decision sheet yet - students compare two paths at /account/decision-room.</div> : (
+          <>
+            <div style={{ fontSize: 14 }}>Comparing <b>{d.pathA}</b> and <b>{d.pathB}</b> · {d.chosen === "undecided" ? "still deciding" : <>chose <b>{d.chosen === "A" ? d.pathA : d.pathB}</b></>}</div>
+            {d.reasons && <div className="ip-muted" style={{ marginTop: 4 }}>&ldquo;{d.reasons}&rdquo;</div>}
+            <div style={{ marginTop: 8 }}>{d.parentAnswer === "agree" ? <span className="ip-pill good">Parents agree</span> : d.parentAnswer === "discuss" ? <span className="ip-pill warn">Parents want to discuss - invite the family</span> : <span className="ip-pill muted">Parents haven&apos;t answered</span>}</div>
+            <div className="ip-muted" style={{ fontSize: 12, marginTop: 6 }}>Saved {formatAgoInline(d.savedAt)}</div>
+          </>
+        )}
+      </Section>
+    </div>
+  );
+}
+
+interface ThreadReply { id: string; from: "student" | "school"; authorName: string; text: string; createdAt: number; seenBySchool: boolean }
+interface Thread { messageId: string; messageTitle: string; replies: ThreadReply[]; unread: number }
+
+/** This student's replies to the institution's messages, with an answer box. */
+function Conversations({ uid, name, tick }: { uid: string; name: string; tick: number }) {
+  const { refreshUnread } = usePortal();
+  const [threads, setThreads] = useState<Thread[] | null>(null);
+  const [draft, setDraft] = useState<Record<string, string>>({});
+  const [busy, setBusy] = useState<string | null>(null);
+  const [err, setErr] = useState("");
+  const load = () => apiFetch<{ threads: Thread[] }>(`/api/institution/replies?uid=${uid}`).then((r) => {
+    setThreads(r.threads);
+    const unseen = r.threads.flatMap((t) => t.replies.filter((x) => x.from === "student" && !x.seenBySchool).map((x) => x.id));
+    if (unseen.length) void send("/api/institution/replies", "POST", { seen: unseen }).then(() => refreshUnread()).catch(() => undefined);
+  }).catch(() => setThreads([]));
+  useEffect(() => { void load(); }, [uid, tick]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  async function answer(messageId: string) {
+    const text = (draft[messageId] ?? "").trim();
+    if (!text) return;
+    setBusy(messageId); setErr("");
+    try { await send("/api/institution/replies", "POST", { messageId, studentUid: uid, text }); setDraft((d) => ({ ...d, [messageId]: "" })); await load(); }
+    catch (e) { setErr(e instanceof Error ? e.message : "Could not send."); }
+    finally { setBusy(null); }
+  }
+
+  if (!threads || threads.length === 0) return null;
+  return (
+    <Section title={`Conversation with ${name}`} icon="answer" aside="their replies to your messages" style={{ marginTop: 12 }}>
+      {err && <div className="ip-alert bad">{err}</div>}
+      {threads.map((t) => (
+        <div key={t.messageId} style={{ borderTop: "1px solid var(--line)", padding: "10px 0" }}>
+          <div className="ip-muted" style={{ fontWeight: 700, marginBottom: 6 }}>On &ldquo;{t.messageTitle}&rdquo;</div>
+          <div style={{ display: "grid", gap: 6 }}>
+            {t.replies.map((r) => (
+              <div key={r.id} style={{ justifySelf: r.from === "school" ? "end" : "start", maxWidth: "80%", background: r.from === "school" ? "var(--accentTint)" : "var(--line2)", borderRadius: 12, padding: "8px 12px", lineHeight: 1.5, whiteSpace: "pre-line" }}>
+                {r.text}<div className="ip-muted" style={{ fontSize: 11 }}>{r.from === "school" ? r.authorName : name} · {formatAgo(r.createdAt)}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+            <textarea className="ip-input" rows={1} maxLength={1000} placeholder={`Answer ${name}…`} value={draft[t.messageId] ?? ""} onChange={(e) => setDraft((d) => ({ ...d, [t.messageId]: e.target.value }))} />
+            <button className="ip-btn sm" disabled={busy === t.messageId || !(draft[t.messageId] ?? "").trim()} onClick={() => void answer(t.messageId)}>Send</button>
+          </div>
+        </div>
+      ))}
+    </Section>
   );
 }
 

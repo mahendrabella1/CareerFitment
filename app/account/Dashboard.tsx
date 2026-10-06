@@ -97,6 +97,14 @@ const NAV = [
 // temporarily disabled - flip to true to bring it back.
 const SHOW_TOOLKIT = false;
 
+/** OneGrasp's signature tools, linked from the Overview for every class. */
+const SIGNATURE = [
+  { href: "/account/gps", icon: "compass", title: "Career GPS", text: "Three small missions a week, picked for you. Keep your streak going." },
+  { href: "/account/test-drive", icon: "play", title: "Career Test-Drive", text: "Live a day in a career - five real moments - before you choose it." },
+  { href: "/account/decision-room", icon: "signpost", title: "Family Decision Room", text: "Compare two paths side by side with facts, and decide with your parents." },
+  { href: "/account/passport", icon: "award", title: "Career Passport", text: "Projects, certificates and wins with proof - verified by your school." },
+];
+
 const CANON = [
   "personality", "career_interest", "multiple_intelligence", "emotional_intelligence",
   "learning_styles", "motivators", "strengths", "aptitude",
@@ -575,14 +583,18 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
               <section id="overview" className="ash-sec">
                 {/* Messages from the student's school, if it uses the institution portal (renders nothing otherwise). */}
                 <SchoolInbox />
-                <Link href="/account/passport" style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, padding: "12px 16px", borderRadius: 14, border: "1px solid #ececef", background: "#fff", textDecoration: "none", color: "inherit" }}>
-                  <span style={{ width: 34, height: 34, borderRadius: 10, background: "#FDECED", color: "#E23B41", display: "grid", placeItems: "center", flex: "none" }}><Icon name="award" size={18} /></span>
-                  <span style={{ flex: 1, minWidth: 0 }}>
-                    <b style={{ display: "block", fontSize: 14 }}>Career Passport</b>
-                    <span style={{ fontSize: 12.5, color: "#63636f" }}>Add projects, certificates and wins with proof - your school verifies them and you share one QR-checkable record.</span>
-                  </span>
-                  <span style={{ fontWeight: 800, color: "#E23B41", fontSize: 13 }}>Open →</span>
-                </Link>
+                {/* OneGrasp's signature tools - the same for every class. */}
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 10, marginBottom: 16 }}>
+                  {SIGNATURE.map((f) => (
+                    <Link key={f.href} href={f.href} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "12px 14px", borderRadius: 14, border: "1px solid #ececef", background: "#fff", textDecoration: "none", color: "inherit" }}>
+                      <span style={{ width: 34, height: 34, borderRadius: 10, background: "#FDECED", color: "#E23B41", display: "grid", placeItems: "center", flex: "none" }}><Icon name={f.icon} size={18} /></span>
+                      <span style={{ flex: 1, minWidth: 0 }}>
+                        <b style={{ display: "block", fontSize: 14 }}>{f.title} <span style={{ color: "#E23B41" }}>→</span></b>
+                        <span style={{ fontSize: 12.5, color: "#63636f", lineHeight: 1.45 }}>{f.text}</span>
+                      </span>
+                    </Link>
+                  ))}
+                </div>
                 <div className="ash-banner">
                   <span className="ash-banner-ic"><Icon name="check" size={18} /></span>
                   <div className="ash-banner-t">

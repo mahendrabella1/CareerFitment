@@ -13,6 +13,7 @@ import {
   STATUS_META, courseTotals, daysActiveInLast, formatAgo, formatAgoInline, formatDuration, secondsInLast, studentStatus, type StudentStatus,
 } from "@/lib/institution/analytics";
 import type { StudentRow } from "@/lib/institution/types";
+import { HowItWorks } from "@/components/HowItWorks";
 
 type SortKey = "name" | "class" | "status" | "week" | "days" | "courses" | "last";
 
@@ -86,6 +87,7 @@ export default function StudentsPage() {
           <Icon name="bell" size={16} stroke={2} /> Message {picked.size || ""} selected
         </button>
       </div>
+      <HowItWorks id="portal-students" steps={["Every student linked to your institution is listed with their status, best-fit career, time spent and progress.", "Search by name, filter by class or status, and sort by any column.", "Select students to message just them, or open a student for the full picture.", "A student appears here when their profile names your institution. Missing someone? Share your registration link, or ask OneGrasp (menu: Ask OneGrasp) to add the spelling they used."]} sync={"Students never see this list - each student sees only their own data."} />
 
       <div className="ip-card" ref={top}>
         <div className="ip-toolbar">

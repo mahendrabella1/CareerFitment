@@ -8,6 +8,7 @@ import { usePortal } from "@/components/institution/portalStore";
 import { Section } from "@/components/institution/ui";
 import { send, useApi } from "@/components/institution/useApi";
 import { TRAITS, traitCheck } from "@/lib/institution/features";
+import { HowItWorks } from "@/components/HowItWorks";
 
 type Obs = Record<string, { ratings: Record<string, number>; by: string; updatedAt: number }>;
 
@@ -42,6 +43,7 @@ export default function ObservationsPage() {
           {classes.map((c) => <option key={c} value={c}>{categoryLabel(c)}</option>)}
         </select>
       </div>
+      <HowItWorks id="portal-observations" steps={["Pick a student and rate what teachers see in class on each trait, from 1 to 5.", "OneGrasp compares the ratings with the student's test results and flags big differences.", "A difference is a reason to talk with the student - the test may have missed something, or they may show it only outside class."]} sync={"Ratings are visible only to your institution's logins - never to students or parents."} />
 
       {gaps.length > 0 && (
         <Section title={`Where teachers and the test disagree (${gaps.length})`} icon="flag" style={{ marginBottom: 12 }}>

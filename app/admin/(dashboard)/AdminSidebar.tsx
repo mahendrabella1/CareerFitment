@@ -11,6 +11,7 @@ const NAV = [
   { href: "/admin/coupons", label: "Coupon Codes", icon: "bookmark" },
   { href: "/admin/institutional", label: "Institutional Links", icon: "school" },
   { href: "/admin/institutions", label: "Institution Logins", icon: "users" },
+  { href: "/admin/messages", label: "Messages", icon: "bell" },
   { href: "/admin/archives", label: "Archives", icon: "archive" },
 ];
 

@@ -9,6 +9,7 @@ import { Bars, Kpi, Section } from "@/components/institution/ui";
 import { ComposeMessage, type ComposePreset } from "@/components/institution/ComposeMessage";
 import { useApi } from "@/components/institution/useApi";
 import type { StudentRow } from "@/lib/institution/types";
+import { HowItWorks } from "@/components/HowItWorks";
 
 type Scam = Record<string, Record<string, { correct: number; total: number; rounds: number }>>;
 
@@ -66,6 +67,7 @@ export default function LifeSkillsPage() {
           <p className="ip-sub">How safe your students are with money scams and legal situations - from the Scam Shield games and &quot;What would you do?&quot; scenarios they play.</p>
         </div>
       </div>
+      <HowItWorks id="portal-life-skills" steps={["See how far each class has got in Money skills and Legal rights - lessons, games and 'What would you do?' scenarios.", "Only counts are shown - never which answer a student chose.", "Classes with low progress are a good target for a reminder from Messages."]} sync={"Students see their own progress in those courses."} />
 
       <div className="ip-kpis">
         <Kpi icon="shield" label="Scam spotting accuracy" value={v.practised.length ? `${v.overall}%` : "-"} sub={`${v.practised.length} students practised (${pct(v.practised.length)}%)`} />

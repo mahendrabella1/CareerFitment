@@ -20,6 +20,7 @@ import { useEffect, useMemo, useState } from "react";
 import { C } from "@/app/account/viz";
 import { Icon } from "@/app/Icons";
 import { apiFetch } from "@/lib/institution/client";
+import { HowItWorks } from "@/components/HowItWorks";
 import type { Institution, InstitutionAccount } from "@/lib/institution/types";
 
 type Row = Institution & { students: number; accounts: InstitutionAccount[] };
@@ -83,6 +84,12 @@ export default function AdminInstitutionsPage() {
         </div>
         {!form && <button style={S.btn} onClick={() => { setForm({}); setCreated(null); }}>+ New institution login</button>}
       </div>
+      <HowItWorks id="admin-institutions" accent="#E23B41" steps={[
+        "Press '+ New institution login', pick the school's name from the list of names students typed (with how many students each has), and add any other spellings so every student is linked.",
+        "Choose a username and password and press Create login - the password is shown once, so share it privately with the school.",
+        "The school signs in at /institution with that username. Use Reset password, Switch off or Delete on a login at any time.",
+        "'Open portal' shows you that school's portal exactly as they see it, in a new tab - useful when they ask for help. Your visit doesn't mark anything as read for them.",
+      ]} sync="Message schools and their students, and answer schools' support questions, from Messages in this sidebar." />
 
       {error && <div style={S.error}><Icon name="xcircle" size={16} /> {error}</div>}
       {ok && <div style={S.ok}><Icon name="check" size={16} /> {ok}</div>}
@@ -272,7 +279,8 @@ function InstitutionCard({ inst, knownSchools, onAddLogin, onPatch, onPassword }
             </div>
           )}
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <a style={{ ...S.ghostSm, textDecoration: "none" }} href={`/institution?as=${inst.id}`} target="_blank" rel="noreferrer" title="See exactly what this institution sees, in a new tab">Open portal ↗</a>
           <button style={S.ghostSm} onClick={() => setEditing((v) => !v)}>{editing ? "Close" : "Edit names"}</button>
           <button style={S.ghostSm} onClick={onAddLogin}>+ Add login</button>
         </div>

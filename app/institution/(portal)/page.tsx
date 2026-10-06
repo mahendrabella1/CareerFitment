@@ -8,6 +8,7 @@ import { usePortal } from "@/components/institution/portalStore";
 import { Bars, DailyChart, Kpi, Section, StatusPill } from "@/components/institution/ui";
 import { ComposeMessage, type ComposePreset } from "@/components/institution/ComposeMessage";
 import { STATUS_META, daysSinceActive, formatAgo, formatDuration, overview, studentStatus, type StudentStatus } from "@/lib/institution/analytics";
+import { HowItWorks } from "@/components/HowItWorks";
 
 export default function OverviewPage() {
   const { me, students, studentsError } = usePortal();
@@ -39,6 +40,7 @@ export default function OverviewPage() {
         </div>
         <button className="ip-btn" onClick={() => setCompose({ audience: { type: "all" } })}><Icon name="bell" size={16} stroke={2} /> Message students</button>
       </div>
+      <HowItWorks id="portal-overview" steps={["The cards at the top show your whole institution: assessments completed, students active this week, time spent and progress.", "'Needs a nudge' lists students who stopped or never started - send them a reminder in one click.", "The charts show daily activity and where students spend their time; click a student's name to open their profile.", "Press Refresh in the top bar for the latest numbers - students' activity is saved every minute while they use the app."]} sync={"Only your institution's logins see these numbers (and the OneGrasp team, when you ask them for help)."} />
       {studentsError && <div className="ip-alert bad">{studentsError}</div>}
 
       {o.insights.length > 0 && (

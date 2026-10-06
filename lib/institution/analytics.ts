@@ -10,6 +10,7 @@
 import { categoryLabel } from "@/lib/auth/formOptions";
 import { AREA_LABEL, dayKey, lastDays } from "@/lib/progress/activity";
 import type { MessageKind, StudentRow } from "@/lib/institution/types";
+import { liveStreak, weekOf, type GpsState } from "@/lib/gps";
 
 const DAY = 24 * 60 * 60 * 1000;
 
@@ -87,6 +88,20 @@ export function toStudentRow(uid: string, d: any, now: number = Date.now()): Stu
     courses,
     goals: g ? { done: Math.min(goalsDone, num(g.total) || goalsDone), total: num(g.total) } : null,
     legal: d?.progress?.legal ? { done: num(d.progress.legal.done), safest: num(d.progress.legal.safest), byArea: d.progress.legal.byArea ?? {} } : null,
+    gps: (() => {
+      const g = d?.gps as GpsState | undefined;
+      if (!g) return null;
+      const wk = weekOf(new Date(now));
+      const last = weekOf(new Date(wk.start - DAY)).key;
+      const w = g.weeks?.[wk.key];
+      return { points: num(g.points), streak: liveStreak(g, wk.key, last), weekDone: w?.done.length ?? 0, weekTotal: w?.missions.length ?? 3 };
+    })(),
+    testDrives: Object.values((d?.testDrives ?? {}) as Record<string, { career: string; enjoyment: number; completedAt: number }>)
+      .map((t) => ({ career: str(t.career), enjoyment: num(t.enjoyment), completedAt: num(t.completedAt) })).sort((x, y) => y.completedAt - x.completedAt),
+    decision: d?.decision?.pathA ? {
+      pathA: str(d.decision.pathA), pathB: str(d.decision.pathB), chosen: d.decision.chosen ?? "undecided", reasons: str(d.decision.reasons),
+      savedAt: num(d.decision.savedAt), parentAnswer: d.decision.parentResponse?.answer ?? null,
+    } : null,
   };
 }
 

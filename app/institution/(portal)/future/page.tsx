@@ -7,6 +7,7 @@ import { usePortal } from "@/components/institution/portalStore";
 import { Kpi, Section } from "@/components/institution/ui";
 import { ComposeMessage, type ComposePreset } from "@/components/institution/ComposeMessage";
 import { AREA_BY_KEY, futureOutlook, studentAreas } from "@/lib/institution/features";
+import { HowItWorks } from "@/components/HowItWorks";
 
 const CHANGE = {
   high: { label: "High change", tone: "bad", text: "Much of today's routine work in these areas is expected to be done with or by AI - students need to learn to work alongside it." },
@@ -32,6 +33,7 @@ export default function FuturePage() {
           <p className="ip-sub">How much the careers your students are heading for are expected to change by 2035 - and which skills to build now so they stay ahead.</p>
         </div>
       </div>
+      <HowItWorks id="portal-future" steps={["See the career areas your students are heading into, and how much AI is expected to change each one by 2035.", "Each area lists the skills to start building now - use them to plan clubs, workshops and electives.", "The outlook is based on published research on AI and jobs; it guides planning, not individual students."]} sync={"This page is only for your institution's staff."} />
       <div className="ip-kpis">
         <Kpi icon="flag" label="Heading for high-change careers" value={`${pct(o.byChange.high)}%`} sub={`${o.byChange.high} students`} />
         <Kpi icon="pulse" label="Medium change" value={`${pct(o.byChange.medium)}%`} sub={`${o.byChange.medium} students`} />
