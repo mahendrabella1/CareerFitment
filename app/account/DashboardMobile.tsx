@@ -151,7 +151,10 @@ export default function DashboardMobile({
     return CANON.map((k) => src.find((r) => r.key === k) ?? { key: k, label: CAT_LABEL[k], score: 0, bench: BENCH[k] || 50 });
   }, [a.radar, a.customDimensions]);
 
-  const fits = domainFit(a);
+  // Graduates rank their own career clusters (adaptGraduate.ts); the shared
+  // 15-domain domainFit() can't read that data and would show every UG
+  // student the same fields. Every other class is unchanged.
+  const fits: { name: string; fit: number; tagline: string; why: string }[] = a.customFields?.length ? a.customFields : domainFit(a);
   const topField = fits[0];
   const topDomainName = topField?.name ?? "your best-fit field";
   const topTheme = (a.themes ?? [])[0] ?? null;

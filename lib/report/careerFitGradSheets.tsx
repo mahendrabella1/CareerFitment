@@ -38,7 +38,7 @@ import { Icon } from "@/app/Icons";
 import type { GraduateScoreOutput } from "@/lib/newAssessment/scoringGrad";
 import { rankSuitabilityGrad } from "@/lib/newAssessment/scoringGrad";
 import type { RIASECScore } from "@/lib/newAssessment/scoring11_12";
-import { CAREER_CLUSTERS_18, CLUSTER_ROLES, clusterForDegreeCourse, clusterForRole, rolesForDegreeCourse } from "@/lib/report/careerClustersGrad";
+import { CAREER_CLUSTERS_18, CLUSTER_KEY_ROLES, CLUSTER_ROLES, clusterForDegreeCourse, clusterForRole, rolesForDegreeCourse } from "@/lib/report/careerClustersGrad";
 import { clusterRoadmapGradFor, type GradClusterRoadmap, type GradYearFocus } from "@/lib/report/clusterRoadmapsGrad";
 import { flagshipRoadmapForGrad, type FlagshipDomainRoadmapGrad } from "@/lib/report/flagshipRoadmapsGrad";
 import { findCareer1112 } from "@/lib/report/careerFitEngine1112";
@@ -342,11 +342,15 @@ const RESEARCHED_CAREERS = new Set(CAREERS_1112.map((c) => c.name));
  *  (they also have a full roadmap), then the rest, each group ordered by how
  *  well the role matches the student's interest code - instead of the first
  *  few roles alphabetically. */
-function featuredRoles(cluster: string, riasec: RIASECScore[], n: number, exclude?: Set<string>): string[] {
-  const roles = (CLUSTER_ROLES[cluster] ?? []).filter((r) => !exclude?.has(r));
+export function featuredRoles(cluster: string, riasec: RIASECScore[], n: number, exclude?: Set<string>): string[] {
+  // The cluster's representative roles first (closest to the student's
+  // interests first), then researched roles, then the rest.
+  const key = (CLUSTER_KEY_ROLES[cluster] ?? []).filter((r) => !exclude?.has(r));
+  const keySet = new Set(key);
+  const roles = (CLUSTER_ROLES[cluster] ?? []).filter((r) => !exclude?.has(r) && !keySet.has(r));
   const researched = roles.filter((r) => RESEARCHED_CAREERS.has(r));
   const rest = roles.filter((r) => !RESEARCHED_CAREERS.has(r));
-  return [...rankRolesByRiasec(researched, riasec), ...rankRolesByRiasec(rest, riasec)].slice(0, n);
+  return [...rankRolesByRiasec(key, riasec), ...rankRolesByRiasec(researched, riasec), ...rankRolesByRiasec(rest, riasec)].slice(0, n);
 }
 
 function ClusterCard({ cluster, score, rank, riasec }: { cluster: string; score: number; rank: number; riasec: RIASECScore[] }) {

@@ -64,6 +64,39 @@ export const CLUSTER_ROLES: Record<string, string[]> = Object.fromEntries(
   DATA.clusters.map((c) => [c.name, c.roles])
 );
 
+/** The roles that best represent each cluster, most typical first - picked
+ *  only from that cluster's own role list above (names exactly as in the
+ *  source data), so example roles shown to a student are the cluster's core
+ *  jobs, not roles it merely shares with other clusters (Data Analyst sits in
+ *  four) or that happen to have a researched roadmap. Any name that is not in
+ *  the cluster's list is dropped at load, so this can never show a role the
+ *  data doesn't have. */
+const KEY_ROLES_SOURCE: Record<string, string[]> = {
+  "Engineering, Technology & Computing": ["Software Engineer", "Data Scientist", "AI Engineer", "Cloud Architect", "Electrical Engineer", "Mechatronics Engineer", "Cyber Security Analyst"],
+  "Science, Mathematics & Research": ["Research Scientist", "Chemist", "Statistician", "Astrophysicist", "Medical Physicist"],
+  "Healthcare & Medicine": ["Family Physician", "Staff Nurse", "Pharmacist", "Physiotherapist", "Dentist"],
+  "Psychology, Humanities & Social Sciences": ["Clinical Psychologist (RCI)", "Counsellor", "Child Psychologist", "Social Worker", "Economist", "Sociologist", "Historian"],
+  "Sports, Fitness & Human Performance": ["Sports Coach", "Fitness Trainer", "Sports Scientist", "Sports Manager", "Yoga Instructor"],
+  "Agriculture, Food & Life Sciences": ["Agricultural Scientist", "Agronomist", "Food Technologist", "Farm Manager", "Horticulturist", "Veterinary Scientist", "Food Scientist"],
+  "Environment, Energy & Sustainability": ["Environmental Scientist", "Climate Scientist", "Sustainability Consultant", "Wind Energy Engineer", "ESG Analyst", "Wildlife Conservationist"],
+  "Architecture, Construction & Built Environment": ["Architect", "Urban Planner", "Interior Designer", "Structural Engineer", "Construction Manager", "Landscape Architect", "Quantity Surveyor"],
+  "Business, Finance & Entrepreneurship": ["Entrepreneur", "Chartered Accountant (Practice)", "Financial Analyst", "Marketing Manager", "Investment Banker", "Management Consultant", "HR Manager", "Business Analyst"],
+  "Law, Legal & Compliance": ["Advocate", "Corporate Lawyer", "Legal Advisor", "Company Secretary", "Compliance Officer", "Legal Analyst"],
+  "Government, Public Administration & Policy": ["Civil Servant", "Policy Analyst", "Diplomat (via IFS)", "Policy Advisor", "Municipal Officer"],
+  "Education & Learning": ["Teacher", "Lecturer", "Professor", "Primary Teacher", "School Counsellor", "Instructional Designer", "Curriculum Designer", "Education Consultant"],
+  "Media, Communication, Arts & Design": ["Graphic Designer", "Journalist", "Content Creator", "UX Designer", "Animator", "Photographer", "Copywriter", "Art Director"],
+  "Manufacturing & Industrial Production": ["Production Engineer", "Quality Engineer", "Industrial Engineer", "Plant Manager", "Quality Control Manager"],
+  "Supply Chain, Procurement & Logistics": ["Supply Chain Manager", "Logistics Manager", "Procurement Manager", "Operations Manager", "Warehouse Manager"],
+  "Travel, Tourism, Hospitality & Transport": ["Hotel General Manager", "Tourism Manager", "Travel Consultant", "Commercial Pilot (First Officer)", "Sous Chef", "Cabin Crew"],
+  "Defence, Security & Emergency Services": ["Army Officer", "Air Force Officer", "Naval Officer", "Police/Security Officer", "Fire Officer", "Disaster Risk Specialist"],
+};
+export const CLUSTER_KEY_ROLES: Record<string, string[]> = Object.fromEntries(
+  Object.entries(KEY_ROLES_SOURCE).map(([cluster, roles]) => {
+    const known = new Set(CLUSTER_ROLES[cluster] ?? []);
+    return [cluster, roles.filter((r) => known.has(r))];
+  })
+);
+
 /** Every unique job role across all 17 clusters (3,302 as of this build) -
  *  the wide, degree/stream-independent pool for the Career Selector's
  *  desired-career field, so a student isn't limited to a short curated

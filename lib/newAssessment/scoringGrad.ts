@@ -427,6 +427,12 @@ function buildPillars(responses: GraduateResponse, personality: PersonalityProfi
 // (shares of 100 split six ways would make every cluster look weak). Multiple Intelligence (10% in the original formula) is not
 // measured by the 8-pillar bank and is left out rather than guessed.
 const CLUSTER_WEIGHTS = { riasec: 0.25, strengths: 0.15, motivators: 0.15 };
+// A cluster's RIASEC signature is a Holland code, read in order: the first
+// letter is the cluster's main type. Weighting by position (3, 2, then 1)
+// means a student whose strongest interest is a cluster's MAIN type ranks it
+// above one where that type is only third - an equal average let a cluster
+// coded "IRC" score the same for an R-first student as one coded "RIC".
+const RIASEC_POSITION_WEIGHTS = [3, 2, 1, 1];
 
 function computeClusterAffinities(
   rates: ReturnType<typeof collectTags>,
@@ -437,6 +443,11 @@ function computeClusterAffinities(
   const strengthPct = (s: string) => pctOf(`str:${s}`);
   const motivatorPct = (m: string) => pctOf(`mot:${m}`);
   const avg = (vals: number[]) => (vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : 0);
+  const positional = (vals: number[]) => {
+    const w = vals.map((_, i) => RIASEC_POSITION_WEIGHTS[i] ?? 1);
+    const total = w.reduce((s, x) => s + x, 0);
+    return total ? vals.reduce((s, v, i) => s + v * w[i], 0) / total : 0;
+  };
   const selfReportedSet = new Set(selfReported);
 
   return CAREER_CLUSTERS_18
@@ -444,7 +455,7 @@ function computeClusterAffinities(
       const sig = CLUSTER_SIGNATURE[cluster];
       const parts: [number, number][] = [];
       if (sig) {
-        parts.push([avg(sig.riasec.map(riasecPct)), CLUSTER_WEIGHTS.riasec]);
+        parts.push([positional(sig.riasec.map(riasecPct)), CLUSTER_WEIGHTS.riasec]);
         if (sig.strengths.length) parts.push([avg(sig.strengths.map(strengthPct)), CLUSTER_WEIGHTS.strengths]);
         if (sig.motivators.length) parts.push([avg(sig.motivators.map(motivatorPct)), CLUSTER_WEIGHTS.motivators]);
       }

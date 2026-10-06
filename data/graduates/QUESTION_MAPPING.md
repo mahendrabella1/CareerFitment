@@ -179,7 +179,7 @@ Which factor most strongly motivates you to perform at your best?
 When choosing between two opportunities, which reward matters most to you?  
 - A. Learning and intellectual growth — “Learning”; `mot:Learning`
 - B. Financial growth and security — “Financial security”; `mot:Financial Security`
-- C. Status, recognition or influence — “Influence”; `mot:Leadership`
+- C. Status, recognition or influence — “Influence”; `mot:Recognition`, `mot:Leadership`
 - D. Flexibility and quality of life — “Quality of life”; `mot:Work-Life Balance`
 
 **Q22** · Motivators · Preference  

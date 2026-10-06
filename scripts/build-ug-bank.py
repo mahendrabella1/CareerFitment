@@ -188,7 +188,7 @@ P2 = [
     nominal(21, "Motivators", "When choosing between two opportunities, which reward matters most to you?",
         ["Learning and intellectual growth", "Financial growth and security", "Status, recognition or influence", "Flexibility and quality of life"],
         ["Learning", "Financial security", "Influence", "Quality of life"],
-        [["mot:Learning"], ["mot:Financial Security"], ["mot:Leadership"], ["mot:Work-Life Balance"]]),
+        [["mot:Learning"], ["mot:Financial Security"], ["mot:Recognition", "mot:Leadership"], ["mot:Work-Life Balance"]]),
     nominal(22, "Motivators", "You are most likely to stay committed to a difficult goal when:",
         ["You can see yourself becoming highly skilled", "The goal has meaningful personal importance", "You can see measurable progress", "Other people depend on your contribution"],
         ["Becoming skilled", "Personal meaning", "Visible progress", "Responsibility to others"],

@@ -114,6 +114,10 @@ export interface AssessmentSummary {
   // and dashboards render these pages (in this order) instead of the fixed
   // set; `radar` then carries the same keys. Absent for every other class.
   customDimensions?: CustomDimension[];
+  /** Best-fit fields ranked by the stage's own engine (Graduates' career
+   *  clusters). When present, dashboards show these instead of the shared
+   *  15-domain domainFit(), which cannot read that engine's data. */
+  customFields?: { name: string; fit: number; tagline: string; why: string }[];
 
   // Class-specific output data (stored as JSON blobs for class-specific report rendering)
   // These contain the full scoring output from each class's assessment

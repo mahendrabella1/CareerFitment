@@ -248,7 +248,10 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
   const activeCustom = customDims.get(dimKey) ?? customDims.get(radar[0]?.key);
 
   // Coherent recommendation: blend interest + abilities + intelligences + values.
-  const fits = domainFit(a);
+  // Graduates rank their own career clusters (adaptGraduate.ts); the shared
+  // 15-domain domainFit() can't read that data and would show every UG
+  // student the same fields. Every other class is unchanged.
+  const fits: { name: string; fit: number; tagline: string; why: string }[] = a.customFields?.length ? a.customFields : domainFit(a);
   const topField = fits[0];
   const topDomainName = topField?.name ?? "your best-fit field";
   // NOT an "overall fit" percentage. There isn't one, and there can't be.
@@ -639,7 +642,9 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
               <section id="fields" className="ash-sec">
                 <div className="ogd-card">
                   <CardHead icon="compass" title="Your best-fit fields"
-                    sub="Blended from your interests, abilities, intelligences and drivers - so these actually reinforce each other." />
+                    sub={a.customFields?.length
+                      ? "Matched from your interests, strengths and motivators - the same ranking as your report's Career Fitment page."
+                      : "Blended from your interests, abilities, intelligences and drivers - so these actually reinforce each other."} />
                   <div className="ogd-fields">
                     {fits.slice(0, 3).map((d, i) => (
                       <div className="ogd-field" key={d.name}>

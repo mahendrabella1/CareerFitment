@@ -10,6 +10,31 @@ import type { AssessmentSummary, ReportTheme } from "@/lib/auth/AuthProvider";
 import type { GraduateScoreOutput } from "@/lib/newAssessment/scoringGrad";
 import { rankSuitabilityGrad } from "@/lib/newAssessment/scoringGrad";
 import { pillarDimensionsGrad } from "@/lib/report/pillarNarrativeGrad";
+import { CLUSTER_SIGNATURE } from "@/lib/report/clusterSignatureGrad";
+import { featuredRoles } from "@/lib/report/careerFitGradSheets";
+
+const listJoin = (xs: string[]) => (xs.length > 1 ? `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}` : xs[0] ?? "");
+const RIASEC_NAME: Record<string, string> = { R: "Realistic", I: "Investigative", A: "Artistic", S: "Social", E: "Enterprising", C: "Conventional" };
+
+/** The dashboard's "best-fit fields": the same ranking as the report's
+ *  Career Fitment page (clusters by how well they match the student's own
+ *  answers, degree ignored), so the dashboard and the report never disagree. */
+function fieldsFromClusters(output: GraduateScoreOutput): NonNullable<AssessmentSummary["customFields"]> {
+  const topCodes = output.layer1.riasec.slice().sort((a, b) => b.percentile - a.percentile).slice(0, 3).map((r) => r.code);
+  return [...output.clusterAffinities]
+    .sort((a, b) => b.computedScore - a.computedScore)
+    .slice(0, 5)
+    .map((c) => {
+      const shared = (CLUSTER_SIGNATURE[c.cluster]?.riasec ?? []).filter((code) => topCodes.includes(code)).map((code) => RIASEC_NAME[code]);
+      const roles = featuredRoles(c.cluster, output.layer1.riasec, 3);
+      return {
+        name: c.cluster,
+        fit: c.computedScore,
+        tagline: roles.length ? `Roles like ${roles.join(", ")}` : "",
+        why: shared.length ? `Matches your ${listJoin(shared)} interests` : "Matches your strengths and motivators",
+      };
+    });
+}
 
 /** True only for the 8-pillar output. Records from the earlier UG question
  *  bank (no `version`) can't be re-scored, because raw answers were never
@@ -88,5 +113,6 @@ export function adaptGraduateToSummary(output: GraduateScoreOutput, base: Assess
     mbtiJP: l1.personality.axisScores.jp,
     radar,
     customDimensions,
+    customFields: fieldsFromClusters(output),
   };
 }
