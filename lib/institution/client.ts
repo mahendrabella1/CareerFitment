@@ -11,11 +11,13 @@ import { getFirebaseAuth } from "@/lib/firebase/client";
 export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
   const user = getFirebaseAuth()?.currentUser;
   if (!user) throw new Error("Please sign in.");
-  const token = await user.getIdToken();
-  const res = await fetch(path, {
+  const send = async (fresh: boolean) => fetch(path, {
     ...init,
-    headers: { ...(init.body ? { "Content-Type": "application/json" } : {}), ...(init.headers ?? {}), Authorization: `Bearer ${token}` },
+    headers: { ...(init.body ? { "Content-Type": "application/json" } : {}), ...(init.headers ?? {}), Authorization: `Bearer ${await user.getIdToken(fresh)}` },
   });
+  let res = await send(false);
+  // A rejected sign-in token gets one retry with a freshly issued one.
+  if (res.status === 401) res = await send(true);
   const data = (await res.json().catch(() => ({}))) as T & { error?: string };
   if (!res.ok) throw new Error(data.error || `Request failed (${res.status}).`);
   return data;

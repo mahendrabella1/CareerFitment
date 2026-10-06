@@ -66,6 +66,11 @@ export function isFirestoreConfigured(): boolean {
   return resolveServiceAccount() !== null;
 }
 
+/** The Firebase project the admin credentials belong to (null when none). */
+export function adminProjectId(): string | null {
+  return resolveServiceAccount()?.projectId ?? null;
+}
+
 /**
  * Lazily initialise the Admin app and return a Firestore handle. Throws if
  * called without credentials - callers must guard with isFirestoreConfigured().

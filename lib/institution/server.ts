@@ -12,8 +12,9 @@
  */
 import { NextResponse } from "next/server";
 import type { Firestore } from "firebase-admin/firestore";
-import { getFirestore, isFirestoreConfigured } from "@/lib/firebase/admin";
+import { adminProjectId, getFirestore, isFirestoreConfigured } from "@/lib/firebase/admin";
 import { getAdminAuth } from "@/lib/firebase/adminAuth";
+import { identityFromToken } from "@/lib/firebaseIdentity";
 import { isAdmin } from "@/lib/auth/admins";
 import type { Institution, InstitutionAccount } from "@/lib/institution/types";
 
@@ -31,7 +32,25 @@ export function fail(e: unknown) {
 
 export interface Caller { uid: string; email: string }
 
-/** The signed-in caller, from the "Authorization: Bearer <ID token>" header. */
+/** The Firebase project an ID token was issued for (its `aud` claim). */
+function tokenProject(token: string): string | null {
+  try {
+    const payload = JSON.parse(Buffer.from(token.split(".")[1] ?? "", "base64url").toString("utf8")) as { aud?: string };
+    return payload.aud ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The signed-in caller, from the "Authorization: Bearer <ID token>" header.
+ *
+ * Verified with the Admin SDK. If that fails for a reason other than an
+ * expired token, the cause is logged and the token is checked instead with
+ * Google's own account lookup (lib/firebaseIdentity.ts - what the payment
+ * routes use), so a server-side Admin SDK problem doesn't lock everyone out.
+ * Configuration problems are reported as such, never as "session expired".
+ */
 export async function caller(req: Request): Promise<Caller> {
   if (!isFirestoreConfigured()) {
     throw new ApiError(503, "This deployment has no Firebase admin credentials (FIREBASE_PROJECT_ID / FIREBASE_CLIENT_EMAIL / FIREBASE_PRIVATE_KEY).");
@@ -39,11 +58,37 @@ export async function caller(req: Request): Promise<Caller> {
   const header = req.headers.get("authorization") || "";
   const token = header.startsWith("Bearer ") ? header.slice(7).trim() : "";
   if (!token) throw new ApiError(401, "Please sign in.");
+
+  // The admin credentials must belong to the project students sign in to,
+  // or every read and write would go to the wrong database.
+  const signInProject = tokenProject(token);
+  const credsProject = adminProjectId();
+  if (signInProject && credsProject && signInProject !== credsProject) {
+    console.error(`[institution] admin credentials are for project "${credsProject}" but users sign in to "${signInProject}"`);
+    throw new ApiError(503, `Server setup problem: the Firebase admin credentials on this deployment are for project "${credsProject}", but users sign in to "${signInProject}". Set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL and FIREBASE_PRIVATE_KEY from a service account of "${signInProject}".`);
+  }
+
+  let adminAuth;
   try {
-    const decoded = await (await getAdminAuth()).verifyIdToken(token);
+    adminAuth = await getAdminAuth();
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error("[institution] could not load the Firebase admin credentials:", msg);
+    throw new ApiError(503, `Server setup problem: the Firebase admin credentials could not be loaded (${msg}). Check FIREBASE_PRIVATE_KEY - it must be the full key, including the BEGIN/END lines.`);
+  }
+
+  try {
+    const decoded = await adminAuth.verifyIdToken(token);
     return { uid: decoded.uid, email: decoded.email || "" };
-  } catch {
-    throw new ApiError(401, "Your session has expired - please sign in again.");
+  } catch (e) {
+    const code = (e as { code?: string })?.code || "";
+    if (code === "auth/id-token-expired" || code === "auth/id-token-revoked") {
+      throw new ApiError(401, "Your session has expired - please sign in again.");
+    }
+    console.error("[institution] verifyIdToken failed, trying the account lookup:", code, e instanceof Error ? e.message : e);
+    const id = await identityFromToken(token);
+    if (id.uid) return { uid: id.uid, email: id.email };
+    throw new ApiError(401, `Couldn't verify your sign-in${code ? ` (${code})` : ""}. Please sign out and sign in again.`);
   }
 }
 
