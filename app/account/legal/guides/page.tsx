@@ -5,6 +5,7 @@ import Link from "next/link";
 import { LegalShell, LEGAL_ACCENT as ACCENT } from "@/components/legal/LegalShell";
 import { LEGAL_AREAS, LEGAL_GUIDES, type AgeBand } from "@/data/legal/guides";
 import { Pager, usePaged } from "@/components/ui/Pager";
+import { PageHeader } from "@/components/course/fx";
 
 const AGE_LABEL: Record<AgeBand, string> = { SCHOOL: "School", COLLEGE: "College", WORKING: "Working", SENIOR: "60+" };
 const PAGE_SIZE = 12;
@@ -37,13 +38,8 @@ export default function LegalGuidesPage() {
     <LegalShell>
       <style dangerouslySetInnerHTML={{ __html: GUIDES_CSS }} />
       <div style={{ padding: "0 0 8px" }}>
-        <div style={{ marginBottom: 8, fontSize: 13 }}>
-          <Link href="/account/legal" style={{ color: "#94a3b8", textDecoration: "none" }}>← Legal Resources</Link>
-        </div>
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: "#0f172a", margin: "0 0 6px" }}>All {LEGAL_GUIDES.length} guides</h1>
-        <p style={{ color: "#64748b", margin: "0 0 18px", fontSize: 14, lineHeight: 1.6, maxWidth: 760 }}>
-          Organised by life area. Each guide is drafted from real, named laws and official sources, and is flagged for a lawyer&apos;s review before it can be relied on.
-        </p>
+        <PageHeader icon="book" eyebrow="Guides" title={`All ${LEGAL_GUIDES.length} guides`}
+          subtitle={<>Organised by life area. Each guide is drafted from real, named laws and official sources, and is flagged for a lawyer&apos;s review before it can be relied on.</>} />
 
         <div className="lg-chips" role="group" aria-label="Filter by life area">
           <button className="lg-chip" aria-pressed={area === null} onClick={() => setArea(null)}>All · {LEGAL_GUIDES.length}</button>
@@ -55,7 +51,7 @@ export default function LegalGuidesPage() {
 
         <div ref={top} className="lg-grid">
           {paged.items.map((g) => (
-            <Link key={g.slug} href={`/account/legal/guides/${g.slug}`} className="lg-card">
+            <Link key={g.slug} href={`/account/legal/guides/${g.slug}`} className="lg-card fx-lift">
               {!area && <span className="lg-area">{g.area}</span>}
               <span className="lg-title"><span>{g.number}.</span>{g.title}</span>
               <span className="lg-line">{g.oneLine}</span>

@@ -1,4 +1,5 @@
 import type { CountryProfile } from "@/data/studyAbroad/countries";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
 
@@ -18,10 +19,7 @@ const FACT_ROWS: { key: keyof CountryProfile; label: string }[] = [
 export function CountryProfileView({ country }: { country: CountryProfile }) {
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-        <span style={{ fontSize: 36 }}>{country.flag}</span>
-        <h1 style={{ fontSize: 24, fontWeight: 800, color: "#1a1a1a", margin: 0 }}>{country.name}</h1>
-      </div>
+      <PageHeader back={{ href: "/account/study-abroad/countries", label: "Compare countries" }} icon="globe" eyebrow="Country profile" title={country.name} />
 
       {country.whatChanged.length > 0 && (
         <div style={{ border: `2px solid ${ACCENT}`, background: `${ACCENT}0a`, borderRadius: 12, padding: "14px 16px", marginBottom: 20 }}>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { STUDY_ABROAD_COUNTRIES } from "@/data/studyAbroad/countries";
 import { STUDY_ABROAD_COURSES } from "@/data/studyAbroad/courses";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
 
@@ -20,13 +21,8 @@ function Card({ href, title, desc, color }: { href: string; title: string; desc:
 export function StudyAbroadHomeClient() {
   return (
     <div style={{ padding: "0 0 8px" }}>
-      <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
-        <Link href="/account" style={{ color: "#999", textDecoration: "none" }}>← Dashboard</Link>
-      </div>
-      <h1 style={{ fontSize: 28, fontWeight: 800, color: "#1a1a1a", margin: "0 0 6px" }}>✈️ Study Abroad</h1>
-      <p style={{ color: "#666", margin: "0 0 24px", fontSize: 14 }}>
-        Decide honestly before anyone sells you a university - check the money first, then compare countries, then browse programmes.
-      </p>
+      <PageHeader icon="globe" eyebrow="Decide" title="Your dashboard"
+        subtitle="Decide honestly before anyone sells you a university - check the money first, then compare countries, then browse programmes." />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12, marginBottom: 28 }}>
         <Card href="/account/study-abroad/roi" title="ROI calculator" desc="Full cost, loan EMI and realistic payback time - check this before applying anywhere." color={ACCENT} />
         <Card href="/account/study-abroad/countries" title="Compare countries" desc={`${STUDY_ABROAD_COUNTRIES.length} real country profiles with a "what changed" feed for each.`} color={ACCENT} />

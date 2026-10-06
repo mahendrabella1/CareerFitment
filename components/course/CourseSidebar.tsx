@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Icon } from "@/app/Icons";
 import { useEffect, useRef, useState } from "react";
 
 export type ItemStatus = "done" | "current" | "todo" | "locked";
@@ -27,33 +28,37 @@ const FILTER_FROM = 12;
 const META_MAX = 14;
 
 const SIDEBAR_CSS = `
-.cs-nav{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:12px 10px}
-.cs-back{display:inline-block;font-size:12px;font-weight:600;color:#64748b;text-decoration:none;padding:2px 8px 10px}
-.cs-back:hover{color:#0f172a}
-.cs-title{font-size:15px;font-weight:800;color:#0f172a;padding:0 8px;line-height:1.3}
-.cs-intro{font-size:12px;color:#64748b;line-height:1.5;padding:4px 8px 0}
-.cs-prog{padding:12px 8px 4px}
-.cs-group{border-top:1px solid #f1f5f9;margin-top:8px;padding-top:6px}
-.cs-ghead{width:100%;display:flex;align-items:center;gap:8px;padding:7px 8px;border:0;background:none;cursor:pointer;font:inherit;text-align:left;border-radius:8px}
-.cs-ghead:hover{background:#f8fafc}
-.cs-gtitle{flex:1;min-width:0;font-size:10.5px;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:.06em}
-.cs-gcount{font-size:10.5px;font-weight:700;color:#94a3b8;font-variant-numeric:tabular-nums}
-.cs-chev{flex:none;width:14px;height:14px;color:#94a3b8;transition:transform .15s}
+.cs-nav{background:#fff;border:1px solid #e7eaf2;border-radius:18px;padding:10px;box-shadow:0 1px 2px rgba(15,23,42,.04),0 10px 28px -20px rgba(15,23,42,.25)}
+.cs-back{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#64748b;text-decoration:none;padding:4px 10px 10px}
+.cs-back:hover{color:var(--accent)}
+.cs-title{font-family:"Plus Jakarta Sans",Inter,sans-serif;font-size:15px;font-weight:800;color:#0f172a;padding:2px 10px 0;line-height:1.3}
+.cs-intro{font-size:12px;color:#64748b;line-height:1.5;padding:4px 10px 0}
+.cs-prog{margin:4px 2px 6px;padding:12px;border-radius:14px;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 10%,#fff),#fff);border:1px solid color-mix(in srgb,var(--accent) 16%,#fff)}
+.cs-group{margin-top:2px}
+.cs-group+.cs-group{border-top:1px dashed #edf0f6;margin-top:4px;padding-top:4px}
+.cs-ghead{width:100%;display:flex;align-items:center;gap:8px;padding:9px 10px 7px;border:0;background:none;cursor:pointer;font:inherit;text-align:left;border-radius:10px}
+.cs-ghead:hover{background:#f6f8fc}
+.cs-gtitle{flex:1;min-width:0;font-size:10.5px;font-weight:800;color:#7a869a;text-transform:uppercase;letter-spacing:.08em}
+.cs-gcount{font-size:10px;font-weight:800;color:#7a869a;background:#f1f4f9;border-radius:999px;padding:2px 7px;font-variant-numeric:tabular-nums}
+.cs-chev{flex:none;width:14px;height:14px;color:#a3adbf;transition:transform .15s}
 .cs-ghead[aria-expanded="true"] .cs-chev{transform:rotate(90deg)}
-.cs-filter{display:block;width:calc(100% - 16px);margin:2px 8px 6px;font:inherit;font-size:12.5px;padding:7px 10px;border:1px solid #e2e8f0;border-radius:8px;background:#f8fafc;color:#0f172a}
-.cs-filter:focus{outline:2px solid var(--accent);outline-offset:-1px;background:#fff}
-.cs-item{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:8px;text-decoration:none;color:#1e293b;font-size:13px;font-weight:600;line-height:1.35}
-a.cs-item:hover{background:#f8fafc}
-.cs-item.is-current{background:color-mix(in srgb,var(--accent) 11%,#fff);color:#0f172a;font-weight:800}
-.cs-item.is-locked{color:#94a3b8}
-.cs-dot{flex:none;width:16px;height:16px;border-radius:999px;display:grid;place-items:center;font-size:9px;background:#f1f5f9;color:var(--accent)}
-.cs-item.is-done .cs-dot{background:var(--accent);color:#fff}
-.cs-item.is-current .cs-dot{background:#fff;border:2px solid var(--accent)}
+.cs-filter{display:block;width:calc(100% - 12px);margin:2px 6px 6px;font:inherit;font-size:12.5px;padding:8px 11px;border:1px solid #e6e9f2;border-radius:10px;background:#f7f9fc;color:#0f172a}
+.cs-filter:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 16%,transparent)}
+.cs-item{position:relative;display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:10px;text-decoration:none;color:#334155;font-size:13px;font-weight:600;line-height:1.35;transition:background .15s,color .15s}
+a.cs-item:hover{background:#f5f7fb;color:#0f172a}
+.cs-item.is-current{background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 13%,#fff),color-mix(in srgb,var(--accent) 4%,#fff));color:#0b1220;font-weight:800}
+.cs-item.is-current::before{content:"";position:absolute;left:-10px;top:7px;bottom:7px;width:3px;border-radius:0 3px 3px 0;background:var(--accent)}
+.cs-item.is-locked{color:#9aa4b5}
+.cs-dot{flex:none;width:16px;height:16px;border-radius:999px;display:grid;place-items:center;font-size:9px;font-weight:900;color:#fff}
+.cs-item.is-todo .cs-dot::after{content:"";width:6px;height:6px;border-radius:999px;background:#cdd5e2}
+.cs-item.is-current .cs-dot::after{content:"";width:8px;height:8px;border-radius:999px;background:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+.cs-item.is-done .cs-dot{background:var(--accent)}
+.cs-item.is-locked .cs-dot{font-size:10px;filter:grayscale(1);opacity:.7}
 .cs-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cs-meta{flex:none;font-size:10.5px;font-weight:600;color:#94a3b8}
-.cs-empty{font-size:12px;color:#94a3b8;padding:4px 8px 8px}
-.cs-foot{margin-top:12px;padding:10px 12px;border-radius:10px;font-size:12px;line-height:1.5;color:#334155;background:color-mix(in srgb,var(--accent) 7%,#fff);border:1px solid color-mix(in srgb,var(--accent) 22%,#fff)}
-.cs-foot b{display:block;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:3px}
+.cs-meta{flex:none;font-size:10.5px;font-weight:700;color:#97a1b3}
+.cs-empty{font-size:12px;color:#94a3b8;padding:4px 10px 8px}
+.cs-foot{margin:10px 2px 2px;padding:12px;border-radius:14px;font-size:12px;line-height:1.55;color:#334155;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 9%,#fff),#fff);border:1px solid color-mix(in srgb,var(--accent) 18%,#fff)}
+.cs-foot b{display:flex;align-items:center;gap:6px;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
 `;
 
 const GLYPH: Record<ItemStatus, string> = { done: "✓", current: "", todo: "", locked: "🔒" };
@@ -78,8 +83,9 @@ export function CourseSidebar({
   openOnlyCurrent,
 }: {
   accent: string;
-  backHref: string;
-  backLabel: string;
+  /** A back link above the menu - optional, the section banner has one. */
+  backHref?: string;
+  backLabel?: string;
   title?: string;
   intro?: string;
   groups: SidebarGroup[];
@@ -127,7 +133,7 @@ export function CourseSidebar({
   return (
     <nav aria-label="Section menu" className="cs-nav" style={{ ["--accent" as string]: accent }}>
       <style dangerouslySetInnerHTML={{ __html: SIDEBAR_CSS }} />
-      <Link href={backHref} className="cs-back">← {backLabel}</Link>
+      {backHref && <Link href={backHref} className="cs-back">← {backLabel}</Link>}
       {title && <div className="cs-title">{title}</div>}
       {intro && <div className="cs-intro">{intro}</div>}
 
@@ -201,7 +207,7 @@ export function CourseSidebar({
 
       {footer && (
         <div className="cs-foot">
-          <b>{footer.title}</b>
+          <b><Icon name="shield" size={13} stroke={2} />{footer.title}</b>
           {footer.text}
         </div>
       )}

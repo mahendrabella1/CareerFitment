@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#2563eb";
 
@@ -15,13 +15,8 @@ const STAGES: { stage: string; focus: string; doThis: string; exams: string }[] 
 export default function ExamsRoadmapPage() {
   return (
     <div style={{ padding: "0 0 8px" }}>
-      <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
-        <Link href="/account/exams" style={{ color: "#999", textDecoration: "none" }}>← Entrance Exams</Link>
-      </div>
-      <h1 style={{ fontSize: 26, fontWeight: 800, color: "#1a1a1a", margin: "0 0 6px" }}>What should I be doing this year?</h1>
-      <p style={{ color: "#666", margin: "0 0 24px", fontSize: 14 }}>
-        A stage-by-stage view - younger students get exploration and foundations, not pressure; older students get exact exam plans.
-      </p>
+      <PageHeader icon="route" eyebrow="Stage roadmap" title="What should I be doing this year?"
+        subtitle="A stage-by-stage view - younger students get exploration and foundations, not pressure; older students get exact exam plans." />
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 14 }}>
         {STAGES.map((s, i) => (

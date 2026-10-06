@@ -9,6 +9,7 @@ import { fetchScholarshipProfile, type StoredScholarshipProfile } from "@/lib/sc
 import { saveApplication } from "@/lib/scholarships/clientApplications";
 import { buildIcsCalendar, downloadFile, type IcsEvent } from "@/lib/calendar/ics";
 import { StatusChip } from "@/components/scholarships/StatusChip";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#166534";
 const fmt = (d: Date) => d.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "long", year: "numeric" });
@@ -45,15 +46,9 @@ export function ScholarshipDetailClient({ scholarship }: { scholarship: Scholars
 
   return (
     <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
-      <div style={{ marginBottom: 8, fontSize: 13 }}>
-        <Link href="/account/scholarships/dashboard" style={{ color: "#64748b", textDecoration: "none" }}>← Money you can apply for</Link>
-      </div>
-      <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
-        <span style={{ fontSize: 11, fontWeight: 800, color: ACCENT, textTransform: "uppercase", letterSpacing: ".04em" }}>{SCHOLARSHIP_TYPE_LABEL[scholarship.type]}</span>
-        <StatusChip scholarship={scholarship} />
-      </div>
-      <h1 style={{ fontSize: 24, fontWeight: 800, color: "#0f172a", margin: "6px 0 4px", lineHeight: 1.3 }}>{scholarship.name}</h1>
-      <p style={{ fontSize: 13, color: "#64748b", margin: 0 }}>{scholarship.provider}</p>
+      <PageHeader back={{ href: "/account/scholarships/dashboard", label: "Money you can apply for" }} icon="award"
+        eyebrow={SCHOLARSHIP_TYPE_LABEL[scholarship.type]} actions={<StatusChip scholarship={scholarship} />}
+        title={scholarship.name} subtitle={scholarship.provider} />
       <a href={scholarship.officialUrl} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: ACCENT, fontWeight: 700, textDecoration: "none", display: "inline-block", marginTop: 8 }}>
         Official site: {scholarship.officialUrl.replace(/^https?:\/\//, "").replace(/\/$/, "")} ↗
       </a>

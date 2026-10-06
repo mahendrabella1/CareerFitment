@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { HELP_CONTACTS } from "@/data/legal/helpContacts";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#166534";
 
@@ -15,10 +16,7 @@ export default function ScholarshipSafetyPage() {
   const cyberFraud = HELP_CONTACTS.find((c) => c.slug === "cyber-fraud");
   return (
     <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
-      <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
-        <Link href="/account/scholarships" style={{ color: "#999", textDecoration: "none" }}>← Scholarships</Link>
-      </div>
-      <h1 style={{ fontSize: 24, fontWeight: 800, color: "#1a1a1a", margin: "0 0 10px" }}>Scholarship scams and safety</h1>
+      <PageHeader icon="shield" eyebrow="Stay safe" title="Scholarship scams and safety" />
       <div style={{ border: "2px solid #dc2626", background: "#fef2f2", borderRadius: 12, padding: "14px 16px", marginBottom: 20 }}>
         <p style={{ fontSize: 14, fontWeight: 800, color: "#991b1b", margin: 0 }}>Genuine scholarships never ask you to pay to receive money.</p>
       </div>

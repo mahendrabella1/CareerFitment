@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { fetchProject, addSource, type ResearchProject } from "@/lib/research/clientProgress";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
 
@@ -26,8 +27,8 @@ export default function SourcesPage({ params }: { params: { id: string } }) {
 
   return (
     <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
-      <Link href={`/account/research/projects/${project.id}`} style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← {project.conferenceTitle}</Link>
-      <h1 style={{ fontSize: 20, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 20px" }}>Sources ({project.sources.length})</h1>
+      <PageHeader back={{ href: `/account/research/projects/${project.id}`, label: project.conferenceTitle }} icon="book" eyebrow="Your project"
+        title={`Sources (${project.sources.length})`} />
 
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
         {project.sources.map((s, i) => (

@@ -8,6 +8,10 @@ import { evaluate, type Verdict } from "@/lib/exams/eligibility";
 import { fetchExamProfile, saveExamProfile, type ExamProfile } from "@/lib/exams/clientProfile";
 import { fetchFollowedSlugs, followExam, unfollowExam, fetchAlertsSentKeys, recordAlertSent } from "@/lib/exams/clientFollow";
 import { dueAlerts, upcomingEvents } from "@/lib/exams/alertLogic";
+import { Icon } from "@/app/Icons";
+import { PageHeader } from "@/components/course/fx";
+
+const TOOL = { fontSize: 12.5, padding: "8px 13px", borderRadius: 999 } as const;
 
 const ACCENT = "#2563eb";
 
@@ -153,18 +157,13 @@ export function ExamsHomeClient() {
 
   return (
     <div style={{ padding: "0 0 8px" }}>
-      <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
-        <Link href="/account" style={{ color: "#999", textDecoration: "none" }}>← Dashboard</Link>
-      </div>
-      <h1 style={{ fontSize: 28, fontWeight: 800, color: "#1a1a1a", margin: "0 0 6px" }}>🧭 Entrance Exams & Eligibility</h1>
-      <p style={{ color: "#666", margin: "0 0 20px", fontSize: 14 }}>
-        Tell us your profile once - we'll show only the exams you're eligible for, now or soon, and track your deadlines.
-      </p>
-      <div style={{ marginBottom: 24, display: "flex", gap: 14, flexWrap: "wrap" }}>
-        <Link href="/account/exams/roadmap" style={{ fontSize: 13, fontWeight: 700, color: ACCENT, textDecoration: "none" }}>What should I be doing this year? →</Link>
-        <Link href="/account/exams/planner" style={{ fontSize: 13, fontWeight: 700, color: ACCENT, textDecoration: "none" }}>Study planner →</Link>
-        <Link href="/account/exams/mocks" style={{ fontSize: 13, fontWeight: 700, color: ACCENT, textDecoration: "none" }}>Practice mocks →</Link>
-        <Link href="/account/exams/wellbeing" style={{ fontSize: 13, fontWeight: 700, color: ACCENT, textDecoration: "none" }}>Wellbeing and backup paths →</Link>
+      <PageHeader icon="exam" eyebrow="Your exams" title="My exams and deadlines"
+        subtitle="Tell us your profile once - we'll show only the exams you're eligible for, now or soon, and track your deadlines." />
+      <div style={{ marginBottom: 24, display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <Link href="/account/exams/roadmap" className="fx-btn" style={TOOL}><Icon name="route" size={15} />What should I be doing this year?</Link>
+        <Link href="/account/exams/planner" className="fx-btn" style={TOOL}><Icon name="calendar" size={15} />Study planner</Link>
+        <Link href="/account/exams/mocks" className="fx-btn" style={TOOL}><Icon name="clock" size={15} />Practice mocks</Link>
+        <Link href="/account/exams/wellbeing" className="fx-btn" style={TOOL}><Icon name="heart" size={15} />Wellbeing and backup paths</Link>
       </div>
 
       {(!profile || editingProfile) && (

@@ -2,10 +2,10 @@
 
 import { useState, type CSSProperties, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { buildPlan, attendeePlan, type Level, type PlanStep } from "@/lib/research/plan";
 import { createProject } from "@/lib/research/clientProgress";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
 const LEVELS: { value: Level | "ATTENDEE"; label: string; desc: string }[] = [
@@ -60,8 +60,8 @@ export default function NewProjectPage() {
 
   return (
     <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
-      <Link href="/account/research" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Research & Conferences</Link>
-      <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 20px" }}>Start a research project</h1>
+      <PageHeader icon="flask" eyebrow="Your project" title="Start a research project"
+        subtitle="Pick a real conference, then work backwards from its date - your step plan appears below." />
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", columnGap: 16 }}>
       <Field label="Conference name">

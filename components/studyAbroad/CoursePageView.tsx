@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { CourseDef } from "@/data/studyAbroad/courses";
 import { countryByCode } from "@/data/studyAbroad/countries";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
 
@@ -8,8 +9,7 @@ export function CoursePageView({ course }: { course: CourseDef }) {
   const countries = course.oftenChosenCountries.map(countryByCode).filter(Boolean);
   return (
     <div>
-      <h1 style={{ fontSize: 24, fontWeight: 800, color: "#1a1a1a", margin: "0 0 6px" }}>{course.name}</h1>
-      <p style={{ fontSize: 13, color: "#64748b", margin: "0 0 18px" }}>Typical length: {course.typicalLength}</p>
+      <PageHeader back={{ href: "/account/study-abroad/courses", label: "Popular courses" }} icon="cap" eyebrow="Course" title={course.name} meta={[`Typical length: ${course.typicalLength}`]} />
 
       {countries.length > 0 && (
         <div style={{ marginBottom: 18 }}>

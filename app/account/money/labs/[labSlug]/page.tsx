@@ -10,6 +10,7 @@ import { SaveVsGrowLab } from "@/components/money/SaveVsGrowLab";
 import { SalarySlipLab } from "@/components/money/SalarySlipLab";
 import { RentVsBuyLab } from "@/components/money/RentVsBuyLab";
 import { labBySlug } from "@/data/money/labs";
+import { PageHeader } from "@/components/course/fx";
 
 export default function LabPage({ params }: { params: { labSlug: string } }) {
   const slug = params.labSlug;
@@ -26,9 +27,7 @@ export default function LabPage({ params }: { params: { labSlug: string } }) {
 
   return (
     <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
-      <Link href="/account/money/labs" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Money Labs</Link>
-      <h1 style={{ fontSize: 20, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 4px" }}>{lab.icon} {lab.title}</h1>
-      <p style={{ fontSize: 13.5, color: "#64748b", margin: "0 0 20px" }}>{lab.desc}</p>
+      <PageHeader back={{ href: "/account/money/labs", label: "Money Labs" }} icon="score" eyebrow="Money Lab" title={lab.title} subtitle={lab.desc} />
       {slug === "compounding" && <CompoundingLab />}
       {slug === "inflation" && <InflationLab />}
       {slug === "emi" && <EmiLab />}

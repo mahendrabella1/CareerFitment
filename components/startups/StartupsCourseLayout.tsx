@@ -74,13 +74,12 @@ export function StartupsCourseLayout({ track, children }: { track: PublicTrack; 
   return (
     <CoursePlayerShell
       accent={ACCENT}
+      accent2="#e11d48"
+      banner={{ title: "Startups", subtitle: "Watch, read, try it on your own idea, take the quiz - and finish with a real startup you've shaped yourself.", icon: "rocket", backHref: "/account", backLabel: "Dashboard" }}
       menuLabel="Startups menu"
       sidebar={
         <CourseSidebar
           accent={ACCENT}
-          backHref="/account"
-          backLabel="Dashboard"
-          title="Startups"
           groups={groups}
           progressLabel={{ done: doneLessons, total: totalLessons }}
           openOnlyCurrent

@@ -8,6 +8,7 @@ import { HELP_CONTACTS } from "@/data/legal/helpContacts";
 import { LETTER_TEMPLATES } from "@/lib/legal/templates";
 import { fetchBookmarkedSlugs, bookmarkGuide, unbookmarkGuide } from "@/lib/legal/clientBookmarks";
 import { LEGAL_ACCENT as ACCENT } from "@/components/legal/LegalShell";
+import { PageHeader } from "@/components/course/fx";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -41,9 +42,7 @@ export function GuideView({ guide }: { guide: LegalGuide }) {
 
   return (
     <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
-      <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
-        <Link href="/account/legal/guides" style={{ color: "#999", textDecoration: "none" }}>← All guides</Link>
-      </div>
+      <PageHeader back={{ href: "/account/legal/guides", label: "All guides" }} icon="book" eyebrow={guide.area} title={guide.title} subtitle={guide.oneLine} />
 
       <div style={{ border: "2px solid #f59e0b", background: "#fffbeb", borderRadius: 12, padding: "12px 16px", marginBottom: 18 }}>
         <div style={{ fontSize: 12.5, fontWeight: 800, color: "#92400e" }}>Draft content - not yet reviewed by a qualified advocate</div>
@@ -52,9 +51,6 @@ export function GuideView({ guide }: { guide: LegalGuide }) {
         </p>
       </div>
 
-      <div style={{ fontSize: 11, fontWeight: 700, color: ACCENT, textTransform: "uppercase", letterSpacing: ".04em" }}>{guide.area}</div>
-      <h1 style={{ fontSize: 24, fontWeight: 800, color: "#1a1a1a", margin: "4px 0 10px" }}>{guide.title}</h1>
-      <p style={{ fontSize: 14.5, color: "#334155", lineHeight: 1.6, margin: 0 }}>{guide.oneLine}</p>
 
       {user?.uid && (
         <button

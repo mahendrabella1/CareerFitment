@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { RESEARCH_OPPORTUNITIES, type AudienceLevel } from "@/data/research/opportunities";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
 const FILTERS: { value: AudienceLevel | "all"; label: string }[] = [
@@ -16,9 +17,7 @@ export default function ConferenceFinderPage() {
 
   return (
     <div style={{ padding: "0 0 8px" }}>
-      <Link href="/account/research" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Research & Conferences</Link>
-      <h1 style={{ fontSize: 24, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 6px" }}>🗓️ Conference Finder</h1>
-      <p style={{ color: "#888", fontSize: 13.5, margin: "0 0 10px" }}>Real, independently-known research opportunities in India and worldwide.</p>
+      <PageHeader icon="calendar" eyebrow="Find and get feedback" title="Conference Finder" subtitle="Real, independently-known research opportunities in India and worldwide." />
 
       <div style={{ background: "#fef3c7", color: "#92400e", borderRadius: 10, padding: "10px 14px", fontSize: 12, lineHeight: 1.6, marginBottom: 20 }}>
         OneGrasp's own 500+ virtual conferences aren't listed here yet - we don't have confirmed dates, subjects or fees for them to show accurately. This list will expand once that data is available.

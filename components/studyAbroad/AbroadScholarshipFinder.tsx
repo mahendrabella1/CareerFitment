@@ -70,7 +70,7 @@ export function AbroadScholarshipFinder() {
         <h2 style={h2}>{matches.length} scholarship{matches.length === 1 ? "" : "s"} you can aim for</h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 10 }}>
           {matches.map((s) => (
-            <article key={s.slug} style={{ border: "1px solid #e2e8f0", borderRadius: 12, padding: "12px 14px", display: "flex", flexDirection: "column", gap: 2 }}>
+            <article key={s.slug} className="fx-lift" style={{ border: "1px solid #e2e8f0", borderRadius: 12, padding: "12px 14px", display: "flex", flexDirection: "column", gap: 2 }}>
               <div style={{ display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", alignItems: "flex-start" }}>
                 <Link href={`/account/scholarships/${s.slug}`} style={{ fontSize: 14.5, fontWeight: 800, color: "#0f172a", textDecoration: "none", flex: "1 1 240px", minWidth: 0 }}>{s.name}</Link>
                 <StatusChip scholarship={s} />

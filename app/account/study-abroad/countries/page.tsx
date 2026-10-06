@@ -1,14 +1,10 @@
-import Link from "next/link";
 import { CountryComparison } from "@/components/studyAbroad/CountryComparison";
+import { PageHeader } from "@/components/course/fx";
 
 export default function CountriesComparePage() {
   return (
     <div style={{ padding: "0 0 8px" }}>
-      <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
-        <Link href="/account/study-abroad" style={{ color: "#999", textDecoration: "none" }}>← Study Abroad</Link>
-      </div>
-      <h1 style={{ fontSize: 24, fontWeight: 800, color: "#1a1a1a", margin: "0 0 6px" }}>Compare countries</h1>
-      <p style={{ color: "#666", margin: "0 0 20px", fontSize: 14 }}>Pick up to 4 destinations to compare side by side.</p>
+      <PageHeader icon="globe" eyebrow="Decide" title="Compare countries" subtitle="Pick up to 4 destinations to compare side by side." />
       <CountryComparison />
     </div>
   );

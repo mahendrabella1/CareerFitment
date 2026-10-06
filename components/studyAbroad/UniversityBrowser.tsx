@@ -56,7 +56,7 @@ export function UniversityBrowser() {
         {paged.items.map((u) => {
           const meta = STUDY_ABROAD_COUNTRIES.find((x) => x.code === u.countryCode);
           return (
-            <article key={u.slug} style={{ border: "1px solid #e2e8f0", borderRadius: 14, padding: "14px 16px", background: "#fff", display: "flex", flexDirection: "column", gap: 6 }}>
+            <article key={u.slug} className="fx-lift" style={{ border: "1px solid #e2e8f0", borderRadius: 14, padding: "14px 16px", background: "#fff", display: "flex", flexDirection: "column", gap: 6 }}>
               <Link href={`/account/study-abroad/universities/${u.slug}`} style={{ fontSize: 14.5, fontWeight: 800, color: "#0f172a", textDecoration: "none", lineHeight: 1.35 }}>{u.name}</Link>
               <div style={{ fontSize: 12.5, color: "#64748b" }}>{meta?.flag} {u.city} · {u.type === "public" ? "Public" : "Private"}</div>
               {u.tuitionNote && <div style={{ fontSize: 12, color: "#475569", lineHeight: 1.5 }}>{u.tuitionNote.split(". ")[0]}.</div>}

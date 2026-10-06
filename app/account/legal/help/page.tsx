@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { LegalShell, LEGAL_ACCENT as ACCENT } from "@/components/legal/LegalShell";
 import { PHONE_CONTACTS, ALL_PORTALS } from "@/data/legal/helpContacts";
+import { PageHeader } from "@/components/course/fx";
 
 const HELP_CSS = `
 .lh-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
@@ -20,11 +20,8 @@ export default function LegalHelpPage() {
     <LegalShell>
       <style dangerouslySetInnerHTML={{ __html: HELP_CSS }} />
       <div style={{ padding: "0 0 8px" }}>
-        <div style={{ marginBottom: 8, fontSize: 13 }}>
-          <Link href="/account/legal" style={{ color: "#94a3b8", textDecoration: "none" }}>← Legal Resources</Link>
-        </div>
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: "#0f172a", margin: "0 0 6px" }}>Emergency & help directory</h1>
-        <p style={{ color: "#64748b", margin: "0 0 22px", fontSize: 14 }}>Real, national, government-run helplines and portals - free to use. In an emergency, call 112 first.</p>
+        <PageHeader icon="phone" eyebrow="Start here" title="Emergency & help directory"
+          subtitle="Real, national, government-run helplines and portals - free to use. In an emergency, call 112 first." />
 
         <h2 className="lh-h">Phone helplines · {PHONE_CONTACTS.length}</h2>
         <div className="lh-grid" style={{ marginBottom: 28 }}>
@@ -43,7 +40,7 @@ export default function LegalHelpPage() {
         <h2 className="lh-h">Online portals · {ALL_PORTALS.length}</h2>
         <div className="lh-grid">
           {ALL_PORTALS.map((p) => (
-            <a key={p.url} href={p.url} target="_blank" rel="noreferrer" className="lh-portal">
+            <a key={p.url} href={p.url} target="_blank" rel="noreferrer" className="lh-portal fx-lift">
               <span style={{ fontSize: 13.5, fontWeight: 800, color: ACCENT }}>{p.name} ↗</span>
               <span style={{ fontSize: 12, color: "#64748b", lineHeight: 1.5 }}>{p.note}</span>
             </a>

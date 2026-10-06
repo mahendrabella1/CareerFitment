@@ -7,6 +7,7 @@ import type { PublicTrack } from "@/lib/startups/publicShape";
 import { fetchProgress, fetchSkillScoresHistory } from "@/lib/startups/clientProgress";
 import { moduleStatus, nextUnfinishedLesson, type ProgressMap } from "@/lib/startups/unlock";
 import { readinessScore } from "@/lib/startups/scoring";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#f97316";
 const STATUS_STYLE: Record<string, { bg: string; fg: string; label: string }> = {
@@ -49,13 +50,8 @@ export function StartupsHomeClient({ track }: { track: PublicTrack }) {
 
   return (
     <div>
-      <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
-        <Link href="/account" style={{ color: "#999", textDecoration: "none" }}>← Dashboard</Link>
-      </div>
-      <h1 style={{ fontSize: 28, fontWeight: 800, color: "#1a1a1a", margin: "0 0 6px" }}>🚀 Startups</h1>
-      <p style={{ color: "#666", margin: "0 0 28px", fontSize: 14 }}>
-        Finish with a real startup you've shaped yourself - watch, read, try it on your own idea, take the quiz.
-      </p>
+      <PageHeader icon="rocket" eyebrow={`${track.title} track`} title="Build a real startup, step by step"
+        subtitle="Finish with a real startup you've shaped yourself - watch, read, try it on your own idea, take the quiz." />
 
       {nextLesson && nextModule && (
         <Link href={`/account/startups/${track.slug}/${nextModule.slug}/${nextLesson.slug}`} style={{ textDecoration: "none" }}>
@@ -99,7 +95,7 @@ export function StartupsHomeClient({ track }: { track: PublicTrack }) {
           const status = moduleStatus(m, progress);
           const style = STATUS_STYLE[status];
           return (
-            <Link key={m.slug} href={`/account/startups/${track.slug}/${m.slug}`} style={{ textDecoration: "none" }}>
+            <Link key={m.slug} href={`/account/startups/${track.slug}/${m.slug}`} className="fx-lift" style={{ textDecoration: "none", borderRadius: 14 }}>
               <div style={{ border: "1px solid #e2e8f0", borderRadius: 14, padding: "14px 16px", display: "flex", flexDirection: "column", gap: 6, background: "#fff", height: "100%", boxSizing: "border-box" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
                   <span style={{ fontSize: 10.5, fontWeight: 800, color: ACCENT, textTransform: "uppercase", letterSpacing: ".06em" }}>Module {m.order}</span>
@@ -119,7 +115,7 @@ export function StartupsHomeClient({ track }: { track: PublicTrack }) {
           { href: "/account/startups/portfolio", title: "Your Startup Portfolio", note: "Everything you have written on your idea." },
           { href: "/account/startups/videos", title: "Video library", note: "Expert talks for each module." },
         ].map((x) => (
-          <Link key={x.href} href={x.href} style={{ textDecoration: "none", border: `1px solid ${ACCENT}33`, background: `${ACCENT}08`, borderRadius: 14, padding: "14px 16px", display: "flex", flexDirection: "column", gap: 3 }}>
+          <Link key={x.href} href={x.href} className="fx-lift" style={{ textDecoration: "none", border: `1px solid ${ACCENT}33`, background: `${ACCENT}08`, borderRadius: 14, padding: "14px 16px", display: "flex", flexDirection: "column", gap: 3 }}>
             <span style={{ fontSize: 14, fontWeight: 800, color: "#0f172a" }}>{x.title} →</span>
             <span style={{ fontSize: 12.5, color: "#64748b" }}>{x.note}</span>
           </Link>

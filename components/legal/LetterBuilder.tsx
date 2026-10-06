@@ -7,6 +7,7 @@ import { fillTemplate } from "@/lib/legal/templates";
 import { legalGuideBySlug } from "@/data/legal/guides";
 import { containsDistressLanguage } from "@/lib/legal/distressCheck";
 import { LEGAL_ACCENT as ACCENT } from "@/components/legal/LegalShell";
+import { PageHeader } from "@/components/course/fx";
 
 const LB_CSS = `
 .lb-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px;align-items:start}
@@ -32,12 +33,8 @@ export function LetterBuilder({ template }: { template: LetterTemplate }) {
   return (
     <div style={{ padding: "0 0 8px" }}>
       <style dangerouslySetInnerHTML={{ __html: LB_CSS }} />
-      <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
-        <Link href="/account/legal" style={{ color: "#999", textDecoration: "none" }}>← Legal Resources</Link>
-      </div>
-      <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a1a1a", margin: "0 0 6px" }}>{template.name}</h1>
-      {template.purpose && <p style={{ fontSize: 14, color: "#334155", margin: "0 0 6px", lineHeight: 1.6 }}>{template.purpose}</p>}
-      <p style={{ fontSize: 13, color: "#666", margin: "0 0 12px" }}>Fill this in and copy or print it. Nothing you type here is saved or sent anywhere - it only exists in this browser tab.</p>
+      <PageHeader icon="doc" eyebrow="Action tool" title={template.name} subtitle={template.purpose || undefined}
+        meta={["Nothing you type is saved or sent anywhere", "Copy or print when it's ready"]} />
       {relatedGuides.length > 0 && (
         <div style={{ display: "flex", flexWrap: "wrap", gap: 6, margin: "0 0 20px" }}>
           <span style={{ fontSize: 12, color: "#64748b", fontWeight: 700 }}>Read first:</span>

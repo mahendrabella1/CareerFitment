@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { universityBySlug, RECOGNITION_CHECKS, RANKING_PUBLISHERS } from "@/data/studyAbroad/universities";
 import { STUDY_ABROAD_COUNTRIES } from "@/data/studyAbroad/countries";
 import { SaveToShortlistButton } from "@/components/studyAbroad/UniversityBrowser";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
 
@@ -25,12 +26,8 @@ export default function UniversityPage({ params }: { params: { slug: string } })
 
   return (
     <div style={{ maxWidth: 820 }}>
-      <div style={{ marginBottom: 8, fontSize: 13 }}>
-        <Link href="/account/study-abroad/universities" style={{ color: "#64748b", textDecoration: "none" }}>← All universities</Link>
-      </div>
-      <div style={{ fontSize: 11, fontWeight: 800, color: ACCENT, textTransform: "uppercase", letterSpacing: ".06em" }}>{country?.flag} {country?.name}</div>
-      <h1 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", margin: "6px 0 4px" }}>{uni.name}</h1>
-      <p style={{ fontSize: 14, color: "#475569", margin: "0 0 10px" }}>{uni.city} · {uni.type === "public" ? "Public institution" : "Private institution"}</p>
+      <PageHeader back={{ href: "/account/study-abroad/universities", label: "All universities" }} icon="school" eyebrow={country?.name}
+        title={uni.name} subtitle={`${uni.city} · ${uni.type === "public" ? "Public institution" : "Private institution"}`} />
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
         <a href={uni.website} target="_blank" rel="noreferrer" style={{ fontSize: 13, fontWeight: 800, color: ACCENT, textDecoration: "none" }}>Official website: {uni.website.replace(/^https?:\/\//, "").replace(/\/$/, "")} ↗</a>
         <SaveToShortlistButton uni={uni} />

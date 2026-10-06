@@ -1,10 +1,10 @@
 import { HabitsTracker } from "@/components/money/HabitsTracker";
+import { PageHeader } from "@/components/course/fx";
 
 export default function MoneyHabitsPage() {
   return (
     <div style={{ maxWidth: 1040 }}>
-      <div style={{ fontSize: 11, fontWeight: 800, color: "#0ea05f", textTransform: "uppercase", letterSpacing: ".08em" }}>Real money habits</div>
-      <h1 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", margin: "6px 0 10px" }}>Track what you really spend</h1>
+      <PageHeader icon="pulse" eyebrow="Real money habits" title="Track what you really spend" />
       <HabitsTracker />
     </div>
   );

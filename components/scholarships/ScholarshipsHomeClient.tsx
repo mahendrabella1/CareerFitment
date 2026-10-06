@@ -10,6 +10,8 @@ import { rankMatches, totalApplyForValue } from "@/lib/scholarships/rank";
 import { fetchAlertsSentKeys, recordAlertSent } from "@/lib/scholarships/clientApplications";
 import { dueScholarshipAlerts } from "@/lib/scholarships/alertLogic";
 import { StatusChip } from "@/components/scholarships/StatusChip";
+import { Icon } from "@/app/Icons";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#166534";
 
@@ -275,17 +277,15 @@ export function ScholarshipsHomeClient() {
 
   return (
     <div style={{ padding: "0 0 8px" }}>
-      <h1 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", margin: "0 0 6px" }}>Money you can apply for</h1>
-      <p style={{ color: "#475569", margin: "0 0 16px", fontSize: 14, lineHeight: 1.6 }}>
-        Fill in your profile once. We show only the scholarships you qualify for, with real amounts, this year&apos;s dates and how to apply.
-      </p>
-      <div style={{ marginBottom: 20, display: "flex", gap: 14, flexWrap: "wrap" }}>
-        <Link href="/account/scholarships/calendar" style={quickLink}>Deadline calendar →</Link>
-        <Link href="/account/scholarships/applications" style={quickLink}>My applications →</Link>
-        <Link href="/account/scholarships/won" style={quickLink}>Money won and renewals →</Link>
-        <Link href="/account/scholarships/essay" style={quickLink}>Essay helper →</Link>
-        <Link href="/account/scholarships/vault" style={quickLink}>Document vault →</Link>
-        <Link href="/account/scholarships/safety" style={{ ...quickLink, color: "#b91c1c" }}>Scam warnings →</Link>
+      <PageHeader icon="award" eyebrow="Find" title="Money you can apply for"
+        subtitle={<>Fill in your profile once. We show only the scholarships you qualify for, with real amounts, this year&apos;s dates and how to apply.</>} />
+      <div style={{ marginBottom: 22, display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <Link href="/account/scholarships/calendar" className="fx-btn" style={TOOL}><Icon name="calendar" size={15} />Deadline calendar</Link>
+        <Link href="/account/scholarships/applications" className="fx-btn" style={TOOL}><Icon name="clusters" size={15} />My applications</Link>
+        <Link href="/account/scholarships/won" className="fx-btn" style={TOOL}><Icon name="award" size={15} />Money won and renewals</Link>
+        <Link href="/account/scholarships/essay" className="fx-btn" style={TOOL}><Icon name="answer" size={15} />Essay helper</Link>
+        <Link href="/account/scholarships/vault" className="fx-btn" style={TOOL}><Icon name="lock" size={15} />Document vault</Link>
+        <Link href="/account/scholarships/safety" className="fx-btn" style={{ ...TOOL, color: "#b91c1c" }}><Icon name="shield" size={15} />Scam warnings</Link>
       </div>
 
       {!user?.uid && (
@@ -406,7 +406,7 @@ export function ScholarshipsHomeClient() {
 const GROUP_SHOWN = 6;
 const inputStyle: CSSProperties = { width: "100%", padding: "10px 12px", fontSize: 14, border: "1px solid #cbd5e1", borderRadius: 9, background: "#fff", color: "#1e293b", boxSizing: "border-box" };
 const labelStyle: CSSProperties = { fontSize: 12.5, fontWeight: 700, color: "#475569", marginBottom: 5, marginTop: 14, display: "block" };
-const quickLink: CSSProperties = { fontSize: 13, fontWeight: 700, color: ACCENT, textDecoration: "none" };
+const TOOL: CSSProperties = { fontSize: 12.5, padding: "8px 13px", borderRadius: 999 };
 const statCard: CSSProperties = { border: `1px solid ${ACCENT}35`, background: `${ACCENT}08`, borderRadius: 14, padding: "16px 18px" };
 const statLabel: CSSProperties = { fontSize: 11, fontWeight: 800, letterSpacing: ".05em", textTransform: "uppercase", color: ACCENT };
 const statValue: CSSProperties = { fontSize: 28, fontWeight: 900, color: "#0f172a", marginTop: 4, fontVariantNumeric: "tabular-nums" };

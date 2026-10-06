@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth/AuthProvider";
-import { getUnit } from "@/data/research/studioUnits";
+import { getUnit, STUDIO_UNITS } from "@/data/research/studioUnits";
 import { fetchStudioNote, saveStudioNote } from "@/lib/research/clientProgress";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
 
@@ -36,9 +37,7 @@ export default function StudioUnitPage({ params }: { params: { unit: string } })
 
   return (
     <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
-      <Link href="/account/research/studio" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Research Studio</Link>
-      <p style={{ fontSize: 11, fontWeight: 800, color: ACCENT, textTransform: "uppercase", letterSpacing: ".04em", margin: "10px 0 2px" }}>Unit {unit.unit}</p>
-      <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a1a1a", margin: "0 0 18px" }}>{unit.title}</h1>
+      <PageHeader back={{ href: "/account/research/studio", label: "Research Studio" }} icon="book" eyebrow={`Unit ${unit.unit} of ${STUDIO_UNITS.length}`} title={unit.title} />
 
       <p style={{ fontSize: 15, lineHeight: 1.6, color: "#333", fontStyle: "italic", borderLeft: `3px solid ${ACCENT}`, paddingLeft: 14, marginBottom: 22 }}>{unit.hook}</p>
 

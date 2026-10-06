@@ -59,6 +59,26 @@ const P: Record<string, ReactNode> = {
   card: <><rect x="2.5" y="5.5" width="19" height="13" rx="2.5" /><path d="M2.5 10h19" /><path d="M6 14.5h3.5" /></>,
   bank: <><path d="M3 10 12 4l9 6" /><path d="M4 10h16" /><path d="M6 10v9M10 10v9M14 10v9M18 10v9" /><path d="M3.5 20.5h17" /></>,
   archive: <><rect x="3" y="4" width="18" height="4.5" rx="1" /><path d="M4.5 8.5v10a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-10" /><path d="M10 13h4" /></>,
+  // feature sections (legal, abroad, startups, research, money, scholarships, exams)
+  scale: <><path d="M12 3.5v17" /><path d="M7 20.5h10" /><path d="M4 7.5h16" /><path d="M6.5 7.5 3.5 14a3 3 0 0 0 6 0z" /><path d="M17.5 7.5 14.5 14a3 3 0 0 0 6 0z" /></>,
+  globe: <><circle cx="12" cy="12" r="9" /><path d="M3 12h18" /><path d="M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z" /></>,
+  rocket: <><path d="M12.5 15.5 8.5 11.5c1.6-4.6 5.2-7.6 11-8 -.4 5.8-3.4 9.4-8 11z" /><path d="M8.5 11.5H5.2l2.1-3.3c.5-.8 1.6-1.2 2.6-.9" /><path d="M12.5 15.5v3.3l3.3-2.1c.8-.5 1.2-1.6.9-2.6" /><path d="M6.5 15.8c-1.4.6-2.2 2.2-2.4 4.4 2.2-.2 3.8-1 4.4-2.4" /><circle cx="15.3" cy="8.7" r="1.4" /></>,
+  flask: <><path d="M9 3.5h6" /><path d="M10 3.5v6L4.8 18.3a1.6 1.6 0 0 0 1.4 2.2h11.6a1.6 1.6 0 0 0 1.4-2.2L14 9.5v-6" /><path d="M7.2 14.5h9.6" /></>,
+  wallet: <><path d="M19 7.5V6a1.5 1.5 0 0 0-1.5-1.5h-12A2.5 2.5 0 0 0 3 7v10.5A2.5 2.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V16" /><path d="M21 10h-4.5a2.5 2.5 0 0 0 0 5H21z" /><circle cx="16.6" cy="12.5" r=".7" fill="currentColor" stroke="none" /></>,
+  award: <><circle cx="12" cy="9" r="5.5" /><path d="m12 6.6.8 1.6 1.7.3-1.2 1.2.3 1.7-1.6-.8-1.6.8.3-1.7-1.2-1.2 1.7-.3z" /><path d="M8.8 13.6 7.5 21l4.5-2.5 4.5 2.5-1.3-7.4" /></>,
+  exam: <><rect x="5" y="4.5" width="14" height="16.5" rx="2" /><path d="M9 4.5V3h6v1.5" /><path d="m9 13 2 2 4-4.5" /></>,
+  book: <><path d="M5 19.5A2.5 2.5 0 0 1 7.5 17H20" /><path d="M7.5 3H20v18H7.5A2.5 2.5 0 0 1 5 18.5v-13A2.5 2.5 0 0 1 7.5 3z" /></>,
+  calendar: <><rect x="3.5" y="5" width="17" height="15.5" rx="2" /><path d="M3.5 10h17" /><path d="M8 3v4M16 3v4" /></>,
+  video: <><rect x="2.5" y="6" width="13.5" height="12" rx="2" /><path d="m16 10.2 5.5-3.2v10l-5.5-3.2" /></>,
+  doc: <><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5" /><path d="M9 13h6M9 17h6" /></>,
+  users: <><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20a6.5 6.5 0 0 1 13 0" /><path d="M16 4.7a3.5 3.5 0 0 1 0 6.6" /><path d="M18.2 14.3a6.5 6.5 0 0 1 3.3 5.7" /></>,
+  phone: <path d="M21 16.5v2.8a1.9 1.9 0 0 1-2.1 1.9A18.6 18.6 0 0 1 2.8 5.1 1.9 1.9 0 0 1 4.7 3h2.8a1.9 1.9 0 0 1 1.9 1.6c.1.9.4 1.8.7 2.6a1.9 1.9 0 0 1-.4 2L8.5 10.4a15 15 0 0 0 5.1 5.1l1.2-1.2a1.9 1.9 0 0 1 2-.4c.8.3 1.7.6 2.6.7a1.9 1.9 0 0 1 1.6 1.9z" />,
+  search: <><circle cx="11" cy="11" r="6.5" /><path d="m20 20-4.2-4.2" /></>,
+  arrowLeft: <><path d="M19 12H5" /><path d="m11 18-6-6 6-6" /></>,
+  arrowRight: <><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></>,
+  sparkle: <path d="M12 3.5 13.9 9l5.6 1.9-5.6 1.9L12 18.5l-1.9-5.7L4.5 10.9 10.1 9z" />,
+  layers: <><path d="m12 3 9 5-9 5-9-5z" /><path d="m3 13 9 5 9-5" /></>,
+  target: <><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none" /></>,
 };
 
 export function Icon({ name, size = 22, stroke = 1.7, style }: { name: string; size?: number; stroke?: number; style?: React.CSSProperties }) {

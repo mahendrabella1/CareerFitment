@@ -1,10 +1,10 @@
 import { WellbeingPage } from "@/components/exams/WellbeingPage";
+import { PageHeader } from "@/components/course/fx";
 
 export default function ExamsWellbeingPage() {
   return (
     <div>
-      <div style={{ fontSize: 11, fontWeight: 800, color: "#2563eb", textTransform: "uppercase", letterSpacing: ".08em" }}>Wellbeing and honest guidance</div>
-      <h1 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", margin: "6px 0 14px" }}>Plan the next step without pressure</h1>
+      <PageHeader icon="heart" eyebrow="Wellbeing and honest guidance" title="Plan the next step without pressure" />
       <WellbeingPage />
     </div>
   );

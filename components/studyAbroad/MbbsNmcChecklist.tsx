@@ -1,12 +1,13 @@
 import { NMC_CHECKLIST, NMC_SOURCE_URL, NMC_CHECKED_AT } from "@/data/studyAbroad/nmcChecklist";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
 
 export function MbbsNmcChecklist() {
   return (
     <div>
-      <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a1a1a", margin: "0 0 6px" }}>Safety: MBBS abroad and India's NMC rules</h1>
-      <p style={{ fontSize: 13, color: "#64748b", margin: "0 0 18px" }}>To practise in India, a foreign medical graduate must meet every one of these National Medical Commission requirements.</p>
+      <PageHeader icon="shield" eyebrow="Safety checks" title="MBBS abroad and India's NMC rules"
+        subtitle="To practise in India, a foreign medical graduate must meet every one of these National Medical Commission requirements." />
 
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
         {NMC_CHECKLIST.map((item, i) => (

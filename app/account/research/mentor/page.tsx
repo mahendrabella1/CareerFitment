@@ -15,6 +15,7 @@ import { useAuth } from "@/lib/auth/AuthProvider";
 import { isAdmin } from "@/lib/auth/admins";
 import { fetchPendingReviews, submitReview, type AbstractVersion } from "@/lib/research/clientProgress";
 import { RUBRIC_ITEMS, isApproved, type RubricScores } from "@/lib/research/rubric";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
 
@@ -35,8 +36,8 @@ export default function MentorQueuePage() {
 
   return (
     <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
-      <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a1a1a", margin: "0 0 6px" }}>Mentor Review Queue</h1>
-      <p style={{ fontSize: 13, color: "#888", margin: "0 0 22px" }}>{queue?.length ?? 0} abstract{queue?.length === 1 ? "" : "s"} awaiting review.</p>
+      <PageHeader icon="users" eyebrow="Find and get feedback" title="Mentor review queue"
+        subtitle={`${queue?.length ?? 0} abstract${queue?.length === 1 ? "" : "s"} awaiting review.`} />
 
       {queue === null && <p style={{ color: "#888" }}>Loading…</p>}
       {queue?.length === 0 && <p style={{ color: "#999", fontSize: 13 }}>Nothing to review right now.</p>}

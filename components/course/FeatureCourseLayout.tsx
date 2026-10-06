@@ -33,14 +33,12 @@ export function FeatureCourseLayout({ course, children }: { course: FeatureCours
   return (
     <CoursePlayerShell
       accent={course.accent}
+      accent2={course.accent2}
+      banner={{ title: course.title, subtitle: course.intro, icon: course.icon, backHref: "/account", backLabel: "Dashboard" }}
       menuLabel={`${course.title} menu`}
       sidebar={
         <CourseSidebar
           accent={course.accent}
-          backHref="/account"
-          backLabel="Dashboard"
-          title={course.title}
-          intro={course.intro}
           groups={groups}
           footer={course.safety ? { title: "Stay safe", text: course.safety } : undefined}
         />

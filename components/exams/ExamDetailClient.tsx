@@ -10,6 +10,7 @@ import { evaluate } from "@/lib/exams/eligibility";
 import { fetchExamProfile, type ExamProfile } from "@/lib/exams/clientProfile";
 import { fetchFollowedSlugs, followExam, unfollowExam } from "@/lib/exams/clientFollow";
 import { buildIcsCalendar, downloadFile } from "@/lib/calendar/ics";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#2563eb";
 
@@ -53,11 +54,8 @@ export function ExamDetailClient({ exam }: { exam: ExamDef }) {
 
   return (
     <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
-      <div style={{ marginBottom: 8, fontSize: 13 }}>
-        <Link href="/account/exams/dashboard" style={{ color: "#64748b", textDecoration: "none" }}>← My exams and deadlines</Link>
-      </div>
-      <h1 style={{ fontSize: 26, fontWeight: 800, color: "#0f172a", margin: "0 0 4px" }}>{exam.name}</h1>
-      <p style={{ color: "#64748b", margin: "0 0 4px", fontSize: 14 }}>Conducted by {exam.body} · {exam.cycle.year} cycle</p>
+      <PageHeader back={{ href: "/account/exams/dashboard", label: "My exams and deadlines" }} icon="exam" eyebrow="Exam directory"
+        title={exam.name} subtitle={`Conducted by ${exam.body} · ${exam.cycle.year} cycle`} />
       <a href={exam.officialUrl} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: ACCENT, fontWeight: 700, textDecoration: "none" }}>
         Official website: {exam.officialUrl.replace(/^https?:\/\//, "").replace(/\/$/, "")} ↗
       </a>

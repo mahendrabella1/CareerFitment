@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { fetchProject, fetchAbstracts, saveAbstractDraft, submitAbstract, type ResearchProject, type AbstractVersion } from "@/lib/research/clientProgress";
 import { RUBRIC_ITEMS } from "@/lib/research/rubric";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
 const TEMPLATE = "Background (1-2 sentences): why the topic matters.\n\nAim (1 sentence): the question you tried to answer.\n\nMethod (2 sentences): what you did, with whom, how many.\n\nResults (2-3 sentences): the main findings, with numbers.\n\nConclusion (1-2 sentences): what it means and what could come next.";
@@ -46,9 +46,8 @@ export default function AbstractPage({ params }: { params: { id: string } }) {
 
   return (
     <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
-      <Link href={`/account/research/projects/${project.id}`} style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← {project.conferenceTitle}</Link>
-      <h1 style={{ fontSize: 20, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 6px" }}>Abstract editor</h1>
-      <p style={{ fontSize: 12.5, color: "#888", margin: "0 0 18px" }}>Aim for about 250 words, using the 5-part structure.</p>
+      <PageHeader back={{ href: `/account/research/projects/${project.id}`, label: project.conferenceTitle }} icon="answer" eyebrow="Your project"
+        title="Abstract editor" subtitle="Aim for about 250 words, using the 5-part structure." />
 
       {text === "" && (
         <button onClick={() => setText(TEMPLATE)} style={{ fontSize: 12, color: ACCENT, background: "none", border: "none", cursor: "pointer", marginBottom: 10, fontWeight: 600 }}>

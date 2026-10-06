@@ -25,6 +25,10 @@ export interface CourseNavGroup {
 
 export interface FeatureCourse {
   accent: string;
+  /** Second colour of the section's banner gradient. */
+  accent2: string;
+  /** Icon name from app/Icons.tsx for the section banner. */
+  icon: string;
   title: string;
   intro: string;
   groups: CourseNavGroup[];
@@ -34,6 +38,8 @@ export interface FeatureCourse {
 
 export const MONEY_COURSE: FeatureCourse = {
   accent: "#0ea05f",
+  accent2: "#0d9488",
+  icon: "wallet",
   title: "Financial Literacy",
   intro: "Money skills are habits, not facts. Short, real tools instead of a syllabus.",
   groups: [
@@ -72,6 +78,8 @@ export const MONEY_COURSE: FeatureCourse = {
 
 export const RESEARCH_COURSE: FeatureCourse = {
   accent: "#7c3aed",
+  accent2: "#c026d3",
+  icon: "flask",
   title: "Research & Conferences",
   intro: "Pick a real conference, work backwards from its date, and present your own research.",
   groups: [
@@ -105,6 +113,8 @@ export const RESEARCH_COURSE: FeatureCourse = {
 
 export const LEGAL_COURSE: FeatureCourse = {
   accent: "#6366f1",
+  accent2: "#4338ca",
+  icon: "scale",
   title: "Legal Resources & Rights",
   intro: "Answer a couple of quick questions and get the right guide, steps and helpline in about three taps.",
   groups: [
@@ -140,6 +150,8 @@ export const LEGAL_COURSE: FeatureCourse = {
 
 export const EXAMS_COURSE: FeatureCourse = {
   accent: "#2563eb",
+  accent2: "#0891b2",
+  icon: "exam",
   title: "Entrance Exams & Eligibility",
   intro: "Fill in your profile once and see only the exams you can take now or soon, with a plan counting back from each date.",
   groups: [
@@ -169,6 +181,8 @@ export const EXAMS_COURSE: FeatureCourse = {
 
 export const SCHOLARSHIPS_COURSE: FeatureCourse = {
   accent: "#166534",
+  accent2: "#15803d",
+  icon: "award",
   title: "Scholarships",
   intro: "Find the money you qualify for, then get help winning it: documents, deadlines and renewals in one place.",
   groups: [
@@ -200,6 +214,8 @@ export const SCHOLARSHIPS_COURSE: FeatureCourse = {
 
 export const STUDY_ABROAD_COURSE: FeatureCourse = {
   accent: "#7c3aed",
+  accent2: "#2563eb",
+  icon: "globe",
   title: "Abroad Compass",
   intro: "Decide whether to go, where, for what course, and whether the numbers work, before anyone sells you a university.",
   groups: [

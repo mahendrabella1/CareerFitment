@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { SCAM_ITEMS, FAMILY_GUARD_ITEMS } from "@/data/money/scamItems";
 import { stripScamSecrets } from "@/lib/money/scoring";
 import { SwipeGame } from "@/components/money/SwipeGame";
 import { ScamOfTheWeekCard, SpotTheFake, TheCall, TooGoodToBeTrue } from "@/components/money/ScamModes";
+import { PageHeader } from "@/components/course/fx";
 
 const TITLES: Record<string, string> = {
   swipe: "Safe or Scam",
@@ -20,8 +20,7 @@ export default function ScamModePage({ params }: { params: { mode: string } }) {
 
   return (
     <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
-      <Link href="/account/money/scam-shield" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Scam Shield</Link>
-      <h1 style={{ fontSize: 20, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 20px" }}>{TITLES[mode]}</h1>
+      <PageHeader back={{ href: "/account/money/scam-shield", label: "Scam Shield" }} icon="shield" eyebrow="Scam Shield game" title={TITLES[mode]} />
       {(mode === "swipe" || mode === "family") && <SwipeGame mode={mode} items={stripScamSecrets(mode === "family" ? FAMILY_GUARD_ITEMS : SCAM_ITEMS)} />}
       {mode === "spot-the-fake" && <SpotTheFake />}
       {mode === "the-call" && <TheCall />}

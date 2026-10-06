@@ -11,16 +11,22 @@ const ACCENT = "#6366f1";
 
 function QuickExit() {
   return (
-    <button
-      onClick={() => window.location.replace("https://www.google.com")}
-      style={{
-        position: "fixed", right: 16, top: 16, zIndex: 50, borderRadius: 999, border: "none",
-        background: "#dc2626", color: "#fff", fontSize: 12.5, fontWeight: 800, padding: "9px 16px", cursor: "pointer",
-        boxShadow: "0 4px 12px rgba(220,38,38,.35)",
-      }}
-    >
-      Quick exit
-    </button>
+    <>
+      {/* Top-right on wide screens; bottom-right on phones and tablets, where
+          the top corner holds the section banner's back button. */}
+      <style dangerouslySetInnerHTML={{ __html: ".lg-quickexit{position:fixed;right:16px;top:16px;z-index:50}@media (max-width:1023px){.lg-quickexit{top:auto;bottom:16px}}" }} />
+      <button
+        className="lg-quickexit"
+        onClick={() => window.location.replace("https://www.google.com")}
+        style={{
+          borderRadius: 999, border: "none",
+          background: "#dc2626", color: "#fff", fontSize: 12.5, fontWeight: 800, padding: "9px 16px", cursor: "pointer",
+          boxShadow: "0 4px 12px rgba(220,38,38,.35)",
+        }}
+      >
+        Quick exit
+      </button>
+    </>
   );
 }
 

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { fetchProject, markStepDone, type ResearchProject } from "@/lib/research/clientProgress";
 import { STUDIO_UNITS } from "@/data/research/studioUnits";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
 
@@ -19,10 +20,8 @@ export default function ProjectTrackerPage({ params }: { params: { id: string } 
 
   return (
     <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
-      <Link href="/account/research" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Research & Conferences</Link>
-      <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 2px" }}>{project.conferenceTitle}</h1>
-      <p style={{ fontSize: 13, color: "#888", margin: "0 0 4px" }}>{project.conferenceOrganiser}</p>
-      <p style={{ fontSize: 13.5, color: "#444", margin: "0 0 22px", fontStyle: "italic" }}>{project.question || "No question written yet"}</p>
+      <PageHeader back={{ href: "/account/research", label: "Research & Conferences" }} icon="flask" eyebrow={project.conferenceOrganiser || "Your project"}
+        title={project.conferenceTitle} subtitle={<i>{project.question || "No question written yet"}</i>} />
 
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
         {project.steps.map((s) => {

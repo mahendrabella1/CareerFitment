@@ -6,6 +6,7 @@ import { useAuth } from "@/lib/auth/AuthProvider";
 import { scholarshipBySlug, cycleDate } from "@/data/scholarships/scholarships";
 import { fetchApplications, saveApplication, type ApplicationStatus, type ScholarshipApplication, type ScholarshipChecklist } from "@/lib/scholarships/clientApplications";
 import { StatusChip } from "@/components/scholarships/StatusChip";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#166534";
 
@@ -44,10 +45,8 @@ export function ApplicationsClient() {
 
   return (
     <div style={{ padding: "0 0 8px" }}>
-      <h1 style={{ fontSize: 24, fontWeight: 900, color: "#0f172a", margin: "0 0 6px" }}>My applications</h1>
-      <p style={{ color: "#475569", margin: "0 0 18px", fontSize: 14, lineHeight: 1.6 }}>
-        Track every scholarship you are applying to. Set the status as you go; once you are <b>Selected</b>, record the payment in <Link href="/account/scholarships/won" style={{ color: ACCENT, fontWeight: 800 }}>Money won</Link>.
-      </p>
+      <PageHeader icon="clusters" eyebrow="Track and prepare" title="My applications"
+        subtitle={<>Track every scholarship you are applying to. Set the status as you go; once you are <b>Selected</b>, record the payment in <Link href="/account/scholarships/won" style={{ color: ACCENT, fontWeight: 800 }}>Money won</Link>.</>} />
 
       {!user?.uid ? (
         <p style={{ fontSize: 13.5, color: "#64748b" }}>Sign in to track applications.</p>

@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useRef, useState, type CSSProperties } from "react";
-import Link from "next/link";
 import { CONCEPT_CARDS, type ConceptCard } from "@/data/money/conceptCards";
 import { ConceptCardView } from "@/components/money/ConceptCardView";
 import { Dialog } from "@/components/ui/Dialog";
 import { Pager, usePaged } from "@/components/ui/Pager";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#0ea05f";
 const TOPICS: ConceptCard["topic"][] = ["Earning", "Spending", "Saving", "Banking", "Digital payments", "Borrowing", "Investing", "Inflation", "Protect"];
@@ -40,9 +40,8 @@ export default function CardsPage() {
   return (
     <div style={{ padding: "0 0 8px" }}>
       <style dangerouslySetInnerHTML={{ __html: CARDS_CSS }} />
-      <Link href="/account/money" style={{ fontSize: 13, color: "#94a3b8", textDecoration: "none" }}>← Financial Literacy</Link>
-      <h1 style={{ fontSize: 26, fontWeight: 800, color: "#0f172a", margin: "10px 0 6px" }}>🗂️ Concept Library</h1>
-      <p style={{ color: "#64748b", fontSize: 14, margin: "0 0 18px" }}>Short, real ideas - 2 minutes each, with an Indian example and a quick check. Open a card to read it.</p>
+      <PageHeader icon="book" eyebrow="Learn" title="Concept Library"
+        subtitle="Short, real ideas - 2 minutes each, with an Indian example and a quick check. Open a card to read it." />
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 18 }}>
         <button onClick={() => setTopic(null)} style={chipStyle(topic === null)}>All · {CONCEPT_CARDS.length}</button>

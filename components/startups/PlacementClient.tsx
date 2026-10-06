@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { PLACEMENT_QUESTIONS, suggestTrack } from "@/lib/startups/placement";
 import { saveProfile } from "@/lib/startups/clientProgress";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#f97316";
 const TRACK_LABEL: Record<string, string> = { EXPLORER: "Explorer (class 6-8)", BUILDER: "Builder (class 9-12)", FOUNDER: "Founder (college)", OPERATOR: "Operator (professionals)" };
@@ -43,9 +44,7 @@ export function PlacementClient() {
 
   return (
     <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
-      <Link href="/account/startups" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Startups</Link>
-      <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 6px" }}>Quick placement quiz</h1>
-      <p style={{ fontSize: 13.5, color: "#888", margin: "0 0 28px" }}>5 questions, about 2 minutes.</p>
+      <PageHeader icon="target" eyebrow="Find your track" title="Quick placement quiz" subtitle="5 questions, about 2 minutes." />
 
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
         {PLACEMENT_QUESTIONS.map((q) => (

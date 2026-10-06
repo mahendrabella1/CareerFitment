@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { QuizPlayer, ResultsCard } from "@/components/startups/QuizPlayer";
 import { recordModuleTestAttempt, fetchLastModuleTestAttempt } from "@/lib/startups/clientProgress";
 import type { ClientQuizQuestion, GradeResult } from "@/lib/startups/scoring";
+import { PageHeader } from "@/components/course/fx";
 
 const COOLDOWN_MS = 60 * 60 * 1000;
 
@@ -51,8 +51,7 @@ export function ModuleTestClient({ trackSlug, moduleSlug, moduleTitle, passMark,
 
   return (
     <div style={{ maxWidth: 720 }}>
-      <Link href={`/account/startups/${trackSlug}/${moduleSlug}`} style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← {moduleTitle}</Link>
-      <h1 style={{ fontSize: 20, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 20px" }}>{moduleTitle} - Module Test</h1>
+      <PageHeader back={{ href: `/account/startups/${trackSlug}/${moduleSlug}`, label: moduleTitle }} icon="check" eyebrow="Module test" title={moduleTitle} />
 
       {!result && onCooldown && (
         <div style={{ textAlign: "center", padding: "32px 16px", border: "1px solid #eee", borderRadius: 12 }}>

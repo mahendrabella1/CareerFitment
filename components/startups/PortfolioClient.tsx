@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { fetchTaskSubmissions, type TaskSubmissionRow } from "@/lib/startups/clientProgress";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#f97316";
 const KIND_LABEL: Record<string, string> = { task: "Lesson task", mission: "Real-world mission", portfolio: "Portfolio item" };
@@ -19,9 +19,7 @@ export function PortfolioClient({ moduleTitles }: { moduleTitles: Record<string,
 
   return (
     <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
-      <Link href="/account/startups" style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← Startups</Link>
-      <h1 style={{ fontSize: 24, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 4px" }}>Your Startup Portfolio</h1>
-      <p style={{ color: "#888", fontSize: 13.5, margin: "0 0 24px" }}>Everything you've built, from your own idea - real proof of work.</p>
+      <PageHeader icon="archive" eyebrow="Your work" title="Your Startup Portfolio" subtitle="Everything you've built, from your own idea - real proof of work." />
 
       {rows === null && <p style={{ color: "#888" }}>Loading…</p>}
       {rows && rows.length === 0 && (

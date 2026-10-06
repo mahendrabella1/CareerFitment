@@ -3,6 +3,7 @@
 import { useRef, useState, type CSSProperties } from "react";
 import { STARTUP_VIDEO_LIBRARY } from "@/data/startups/videos";
 import { Pager, usePaged } from "@/components/ui/Pager";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#f97316";
 const PAGE_SIZE = 8;
@@ -20,10 +21,8 @@ export function VideoLibrary() {
 
   return (
     <div>
-      <h1 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", margin: "0 0 6px" }}>Video library</h1>
-      <p style={{ fontSize: 14, color: "#475569", margin: "0 0 16px", lineHeight: 1.6, maxWidth: 760 }}>
-        {ALL_VIDEOS.length} expert talks from Y Combinator, TED and Stanford, tagged by the module they support. Each video plays here, so you can watch without leaving the page.
-      </p>
+      <PageHeader icon="video" eyebrow="Learn from founders" title="Video library"
+        subtitle={`${ALL_VIDEOS.length} expert talks from Y Combinator, TED and Stanford, tagged by the module they support. Each video plays here, so you can watch without leaving the page.`} />
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
         <button onClick={() => setModule(null)} style={chip(module === null)}>All · {ALL_VIDEOS.length}</button>
@@ -34,7 +33,7 @@ export function VideoLibrary() {
 
       <div ref={top} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: 14, scrollMarginTop: 80 }}>
         {paged.items.map((v) => (
-          <article key={v.id} style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 14, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+          <article key={v.id} className="fx-lift" style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 14, overflow: "hidden", display: "flex", flexDirection: "column" }}>
             {playing === v.id ? (
               <iframe
                 src={`https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0`}

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { VAULT_DOC_LABELS, type VaultDocKind, type VaultFile, uploadVaultDocument, listVaultDocuments, deleteVaultDocument } from "@/lib/scholarships/clientVault";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#166534";
 
@@ -35,11 +35,8 @@ export function DocumentVaultClient() {
 
   return (
     <div style={{ padding: "0 0 8px" }}>
-      <div style={{ marginBottom: 8, fontSize: 13, color: "#999" }}>
-        <Link href="/account/scholarships" style={{ color: "#999", textDecoration: "none" }}>← Scholarships</Link>
-      </div>
-      <h1 style={{ fontSize: 24, fontWeight: 800, color: "#1a1a1a", margin: "0 0 6px" }}>Document vault</h1>
-      <p style={{ color: "#666", margin: "0 0 20px", fontSize: 14 }}>Upload each document once, reuse it for every application. Stored privately under your account.</p>
+      <PageHeader icon="lock" eyebrow="Track and prepare" title="Document vault"
+        subtitle="Upload each document once, reuse it for every application. Stored privately under your account." />
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 10 }}>
         {(Object.keys(VAULT_DOC_LABELS) as VaultDocKind[]).map((kind) => {

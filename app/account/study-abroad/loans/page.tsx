@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
 
@@ -16,11 +17,8 @@ const COMPARE = [
 export default function AbroadLoansPage() {
   return (
     <div>
-      <div style={{ fontSize: 11, fontWeight: 800, color: ACCENT, textTransform: "uppercase", letterSpacing: ".08em" }}>Money</div>
-      <h1 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", margin: "6px 0 8px" }}>Education loans for study abroad</h1>
-      <p style={{ fontSize: 14, color: "#475569", lineHeight: 1.6, margin: "0 0 16px", maxWidth: 700 }}>
-        A loan should follow the money check, not lead it. Work out the full cost and payback time in the <Link href="/account/study-abroad/roi" style={{ color: ACCENT, fontWeight: 800 }}>ROI calculator</Link> first, then compare at least three lenders on the same points.
-      </p>
+      <PageHeader icon="bank" eyebrow="Money" title="Education loans for study abroad"
+        subtitle={<>A loan should follow the money check, not lead it. Work out the full cost and payback time in the <Link href="/account/study-abroad/roi" style={{ color: ACCENT, fontWeight: 800 }}>ROI calculator</Link> first, then compare at least three lenders on the same points.</>} />
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))", gap: 14 }}>
       <section style={box}>

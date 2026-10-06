@@ -186,7 +186,7 @@ export function MockTestRunner({ mock }: { mock: MockTest }) {
     const past = history.filter((h) => h.mockId === mock.id);
     return (
       <section style={panel}>
-        <h2 style={h2}>{mock.title}</h2>
+        <h2 style={h2}>Before you start</h2>
         <p style={pText}>{mock.pattern}</p>
         <ul style={{ margin: "0 0 12px", paddingLeft: 18, fontSize: 13.5, color: "#334155", lineHeight: 1.7 }}>
           <li>{mock.questions.length} questions · {mock.minutes} minutes · the test submits itself when time runs out.</li>

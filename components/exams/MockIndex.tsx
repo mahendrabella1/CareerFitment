@@ -17,7 +17,7 @@ export function MockIndex() {
         const best = mine.length ? Math.max(...mine.map((a) => a.score)) : null;
         const max = m.questions.length * m.marking.correct;
         return (
-          <article key={m.id} style={{ border: "1px solid #e2e8f0", borderRadius: 16, padding: "16px 18px", background: "#fff", display: "flex", flexDirection: "column", gap: 6 }}>
+          <article key={m.id} className="fx-lift" style={{ border: "1px solid #e2e8f0", borderRadius: 16, padding: "16px 18px", background: "#fff", display: "flex", flexDirection: "column", gap: 6 }}>
             <div style={{ fontSize: 11, fontWeight: 800, color: ACCENT, textTransform: "uppercase", letterSpacing: ".05em" }}>{exam?.name ?? m.examSlug}</div>
             <div style={{ fontSize: 15, fontWeight: 800, color: "#0f172a", lineHeight: 1.35 }}>{m.title}</div>
             <div style={{ fontSize: 12.5, color: "#64748b" }}>{m.questions.length} questions · {m.minutes} min · +{m.marking.correct} / {m.marking.wrong}</div>

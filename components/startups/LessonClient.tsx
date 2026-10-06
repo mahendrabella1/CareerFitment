@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { YouTubeEmbed } from "@/components/startups/YouTubeEmbed";
 import { QuizPlayer, ResultsCard } from "@/components/startups/QuizPlayer";
 import { recordLessonAttempt, submitTask } from "@/lib/startups/clientProgress";
 import type { ClientQuizQuestion, GradeResult } from "@/lib/startups/scoring";
+import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#f97316";
 
@@ -53,12 +53,11 @@ export function LessonClient({ trackSlug, moduleSlug, moduleTitle, lesson, quiz,
 
   return (
     <div style={{ maxWidth: 760 }}>
-      <Link href={`/account/startups/${trackSlug}/${moduleSlug}`} style={{ fontSize: 13, color: "#999", textDecoration: "none" }}>← {moduleTitle}</Link>
+      <PageHeader back={{ href: `/account/startups/${trackSlug}/${moduleSlug}`, label: moduleTitle }} icon="play" eyebrow="Lesson"
+        title={lesson.title} meta={[`${lesson.durationMin} minutes`]} />
 
       {phase === "read" && (
         <>
-          <h1 style={{ fontSize: 22, fontWeight: 800, color: "#1a1a1a", margin: "10px 0 4px" }}>{lesson.title}</h1>
-          <p style={{ fontSize: 12.5, color: "#999", margin: "0 0 20px" }}>{lesson.durationMin} minutes</p>
 
           <p style={{ fontSize: 15, lineHeight: 1.6, color: "#333", fontStyle: "italic", borderLeft: `3px solid ${ACCENT}`, paddingLeft: 14, marginBottom: 22 }}>{lesson.hook}</p>
 
