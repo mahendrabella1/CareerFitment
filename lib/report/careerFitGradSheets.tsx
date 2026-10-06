@@ -47,6 +47,7 @@ import { detailedRoadmapFor, type DetailedCareerRoadmap } from "@/lib/report/car
 import { careerHorizonForCluster, HORIZON_PHASE_META, SKILL_LAYER_META, CAREER_HORIZON_GUIDANCE_NOTE, type ClusterCareerHorizon, type HorizonSkillLayers } from "@/lib/report/careerHorizonsGrad";
 import { computeSkillGap, type GapStatus, type MeasuredGapRow, type UnmeasuredGapRow } from "@/lib/report/skillGapGrad";
 import type { SkillEvidenceGrad } from "@/lib/newAssessment/skillEvidenceGrad";
+import { RoleRoadmapSwitch, type RoleRoadmap, type RoleRoadmapBlock } from "@/lib/report/roleRoadmapGrad";
 
 const SITE_URL_GRAD = (process.env.NEXT_PUBLIC_SITE_URL || "https://careerfitment.onegrasp.com").replace(/\/+$/, "");
 
@@ -1190,6 +1191,164 @@ function GaugeRow({ gauge, color }: { gauge: HorizonSkillGauge; color: string })
   );
 }
 
+// ---------------------------------------------------------------- Role roadmaps
+// The role-specific roadmaps from the Word files (lib/report/roleRoadmapGrad.tsx
+// loads them). Standard sections reuse the 7-step look above - same icons,
+// colours and numbering - and any extra section a roadmap has (projects,
+// specialisation lanes, a final skill stack...) gets a plain titled card.
+const ROLE_KIND_STEP: Record<string, number> = { build: 1, internships: 2, certifications: 3, careers: 4, pg_india: 5, abroad: 6, growth: 7 };
+
+function RoleLink({ text, url, color }: { text: string; url?: string; color: string }) {
+  const lines = text.split("\n");
+  const body = lines.map((l, i) => <span key={i}>{i > 0 && <br />}{l}</span>);
+  return url
+    ? <a href={url} target="_blank" rel="noreferrer" style={{ color, fontWeight: 700, textDecoration: "none" }}>{body} ↗</a>
+    : <>{body}</>;
+}
+
+function RoleBlocks({ blocks, color }: { blocks: RoleRoadmapBlock[]; color: string }) {
+  const out: React.ReactNode[] = [];
+  for (let i = 0; i < blocks.length; i++) {
+    const b = blocks[i];
+    // A run of "heading + one short line" pairs reads as a label/value list.
+    if (b.type === "h") {
+      const pairs: { k: string; v: RoleRoadmapBlock }[] = [];
+      let j = i;
+      while (blocks[j]?.type === "h" && blocks[j + 1]?.type === "p" && (blocks[j + 1] as { text: string }).text.length <= 160 && blocks[j + 2]?.type !== "p") {
+        pairs.push({ k: (blocks[j] as { text: string }).text, v: blocks[j + 1] });
+        j += 2;
+      }
+      if (pairs.length >= 2) {
+        out.push(
+          <div key={i} style={{ display: "grid", gridTemplateColumns: "minmax(120px, 34%) 1fr", gap: "0", border: "1px solid var(--line)", borderRadius: 12, overflow: "hidden", margin: "8px 0" }}>
+            {pairs.map((pr, n) => (
+              <div key={n} style={{ display: "contents" }}>
+                <div style={{ padding: "8px 12px", fontSize: 12, fontWeight: 800, color, background: `${color}0a`, borderTop: n ? "1px solid var(--line)" : "none" }}>{pr.k}</div>
+                <div style={{ padding: "8px 12px", fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.5, borderTop: n ? "1px solid var(--line)" : "none" }}>
+                  <RoleLink text={(pr.v as { text: string }).text} url={(pr.v as { url?: string }).url} color={color} />
+                </div>
+              </div>
+            ))}
+          </div>
+        );
+        i = j - 1;
+        continue;
+      }
+      out.push(<div key={i} style={{ fontSize: 12.5, fontWeight: 900, color: "var(--ink)", margin: "14px 0 6px" }}>{b.text}</div>);
+    } else if (b.type === "p") {
+      out.push(<p key={i} style={{ fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.6, margin: "6px 0" }}><RoleLink text={b.text} url={b.url} color={color} /></p>);
+    } else if (b.type === "note") {
+      out.push(
+        <div key={i} style={{ margin: "8px 0", padding: "9px 12px", borderLeft: `3px solid ${color}`, background: `${color}0a`, borderRadius: "0 10px 10px 0", fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.55 }}>
+          <b style={{ color: "var(--ink)" }}>{b.label}:</b> {b.text}
+        </div>
+      );
+    } else if (b.type === "flow") {
+      // A progression reads left to right with arrows; a skill stack with "+".
+      out.push(
+        <div key={i} style={{ margin: "8px 0" }}>
+          {b.label && <div style={{ fontSize: 12, fontWeight: 800, color: "var(--ink)", marginBottom: 6 }}>{b.label}</div>}
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "6px 0" }}>
+            {b.items.map((it, n) => (
+              <span key={n} style={{ display: "inline-flex", alignItems: "center" }}>
+                {n > 0 && <span aria-hidden style={{ color, fontWeight: 900, fontSize: 13, padding: "0 6px" }}>{b.sep ?? "→"}</span>}
+                <span style={{ fontSize: 12, fontWeight: 700, lineHeight: 1.35, color: "var(--ink-2)", background: `${color}0c`, border: `1px solid ${color}33`, borderRadius: 999, padding: "4px 10px" }}>{it}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      );
+    } else if (b.type === "list") {
+      // Short items (role titles, topics) sit in two columns.
+      const twoCol = b.items.length > 10 || (b.items.length >= 6 && b.items.every((it) => it.text.length <= 40));
+      out.push(
+        <ul key={i} style={{ margin: "6px 0", paddingLeft: 18, columns: twoCol ? 2 : 1, columnGap: 24 }}>
+          {b.items.map((it, n) => (
+            <li key={n} style={{ fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.6, breakInside: "avoid" }}><RoleLink text={it.text} url={it.url} color={color} /></li>
+          ))}
+        </ul>
+      );
+    } else if (b.type === "table") {
+      out.push(
+        <div key={i} style={{ overflowX: "auto", margin: "8px 0", border: "1px solid var(--line)", borderRadius: 12 }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+            {b.header.some(Boolean) && (
+              <thead>
+                <tr>{b.header.map((h, n) => <th key={n} style={{ textAlign: "left", padding: "8px 10px", fontSize: 10.5, fontWeight: 900, letterSpacing: ".04em", textTransform: "uppercase", color, background: `${color}0f`, borderBottom: `1px solid ${color}30`, whiteSpace: "nowrap" }}>{h}</th>)}</tr>
+              </thead>
+            )}
+            <tbody>
+              {b.rows.map((row, r) => (
+                <tr key={r} style={{ background: r % 2 ? "var(--line-2, #fafafb)" : "#fff" }}>
+                  {row.map((c, n) => (
+                    <td key={n} style={{ padding: "8px 10px", verticalAlign: "top", color: n === 0 ? "var(--ink)" : "var(--ink-2)", fontWeight: n === 0 ? 700 : 400, lineHeight: 1.5, borderTop: "1px solid var(--line)", minWidth: 110 }}>
+                      <RoleLink text={c.text} url={c.url} color={color} />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    }
+  }
+  return <>{out}</>;
+}
+
+function RoleRoadmapView({ rm, color }: { rm: RoleRoadmap; color: string }) {
+  const writtenFor = [rm.facts["Current degree"], rm.facts["Course"]].filter(Boolean).join(" · ");
+  const standard = new Set(rm.sections.map((s) => ROLE_KIND_STEP[s.kind]).filter(Boolean));
+  return (
+    <div>
+      {rm.summary && <p style={{ fontSize: 13.5, color: "var(--ink-2)", lineHeight: 1.6, margin: "0 0 12px", textAlign: "center" }}>{rm.summary}</p>}
+      {(writtenFor || rm.facts["Starts"]) && (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center", marginBottom: 12 }}>
+          {writtenFor && <span style={{ fontSize: 11.5, fontWeight: 700, color: "var(--ink-2)", background: `${color}0c`, border: `1px solid ${color}30`, borderRadius: 999, padding: "4px 11px" }}>Written for: {writtenFor}</span>}
+          {rm.facts["Starts"] && <span style={{ fontSize: 11.5, fontWeight: 700, color: "var(--ink-2)", background: `${color}0c`, border: `1px solid ${color}30`, borderRadius: 999, padding: "4px 11px" }}>Starts: {rm.facts["Starts"]}</span>}
+        </div>
+      )}
+      {writtenFor && (
+        <p style={{ fontSize: 11.5, color: "var(--muted)", textAlign: "center", margin: "0 0 14px" }}>If your degree or course is different, keep the same goals and adapt the year-by-year plan to your own subjects.</p>
+      )}
+      {rm.about.map((a, i) => (
+        <div key={i} style={{ margin: "0 0 10px", padding: "9px 12px", borderLeft: `3px solid ${color}`, background: `${color}0a`, borderRadius: "0 10px 10px 0", fontSize: 12.5, color: "var(--ink-2)", lineHeight: 1.55 }}>
+          <b style={{ color: "var(--ink)" }}>{a.label}:</b> {a.text}
+        </div>
+      ))}
+      {rm.intro && rm.intro.length > 0 && <div style={{ margin: "0 0 12px" }}><RoleBlocks blocks={rm.intro} color={color} /></div>}
+      {standard.size >= 4 && <RoadmapJourneyStrip />}
+      {rm.horizons.length > 0 && (
+        <div style={{ margin: "4px 0 18px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10 }}>
+          {rm.horizons.map((h, i) => (
+            <div key={i} style={{ border: `1px solid ${color}30`, borderTop: `3px solid ${color}`, borderRadius: 12, padding: "10px 12px", background: "#fff" }}>
+              <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: ".06em", textTransform: "uppercase", color }}>{h.period}</div>
+              <div style={{ fontSize: 12.5, fontWeight: 800, color: "var(--ink)", margin: "3px 0 4px" }}>{h.question}</div>
+              <div style={{ fontSize: 11.5, color: "var(--ink-2)", lineHeight: 1.5 }}>{h.output}</div>
+            </div>
+          ))}
+        </div>
+      )}
+      {rm.sections.map((s, i) => {
+        const step = ROLE_KIND_STEP[s.kind];
+        const accent = step ? sectionAccent(step) : color;
+        const body = <RoleBlocks blocks={s.blocks} color={accent} />;
+        return step ? (
+          <GradRoadmapSectionFrame key={i} index={step} title={s.heading}>{body}</GradRoadmapSectionFrame>
+        ) : (
+          <div key={i} style={{ marginTop: 18, paddingTop: 14, borderTop: `1px solid ${color}30` }}>
+            <div style={{ padding: "10px 12px", borderRadius: 13, background: `linear-gradient(110deg, ${color}10, #fff)`, border: `1px solid ${color}30` }}>
+              <h2 style={{ margin: 0, fontSize: 17, lineHeight: 1.25, letterSpacing: "-.02em", color: "var(--ink)" }}>{s.heading}</h2>
+            </div>
+            <div style={{ marginTop: 10 }}>{body}</div>
+          </div>
+        );
+      })}
+      <p className="disclaimer" style={{ marginTop: 18 }}>Fees, dates, eligibility and links change every year - confirm them on each official website before you apply or pay.</p>
+    </div>
+  );
+}
+
 /** A short signpost at the end of the 7-section roadmap pointing into the
  *  Career Horizon sheet that follows it - without this, the Horizon section
  *  (this product's real differentiator - a 20-year outlook, not just a
@@ -1660,7 +1819,24 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
               to the Suitability cluster with no pin at all only when no
               career was typed. See this file's header comment for the full
               rationale. */}
-          {(detailedRoadmap || flagshipRoadmap || genericRoadmap) && (
+          {/* A role-specific roadmap from the Word files wins when the
+              student's chosen career has one (picked for their course);
+              otherwise the tiers below, as before. */}
+          <RoleRoadmapSwitch
+            role={aspiration.desiredCareer || undefined}
+            degree={academicContext.degree}
+            course={academicContext.course}
+            found={(rm) => (
+              <div style={{ ...BREAK, marginTop: 20 }}>
+                <SecHead center eyebrow={`${rm.role} · career roadmap`} title="Your realistic path"
+                  sub={`A roadmap written for ${rm.role}: what to build each year, internships, certifications, jobs, master's options and how the career grows.`} />
+                <div style={{ marginTop: 16 }}>
+                  <RoleRoadmapView rm={rm} color={clusterColor(selectorCluster)} />
+                </div>
+                {careerHorizon && <CareerHorizonTeaser color={clusterColor(selectorCluster)} />}
+              </div>
+            )}
+            fallback={(detailedRoadmap || flagshipRoadmap || genericRoadmap) ? (
             <div style={{ ...BREAK, marginTop: 20 }}>
               <SecHead center
                 eyebrow={detailedRoadmap ? `${matchedCareer1112!.name} · researched career roadmap` : `${selectorCluster} · ${tier2Role ? "matching your selected career" : "your best-fit cluster"}`}
@@ -1681,7 +1857,8 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
               </div>
               {careerHorizon && <CareerHorizonTeaser color={clusterColor(selectorCluster)} />}
             </div>
-          )}
+            ) : null}
+          />
         </>
       ),
     },
