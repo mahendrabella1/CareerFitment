@@ -1,62 +1,241 @@
 rules_version = '2';
 
-// Firestore security rules for user accounts.
-// Deploy from the Firebase console (Firestore -> Rules) or `firebase deploy
-// --only firestore:rules`.
+// Firestore security rules for OneGrasp.
+// Deploy from the Firebase console (Firestore -> Rules) or
+// `firebase deploy --only firestore:rules`. This file is the source of truth -
+// keep it identical to what is deployed.
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Admins (keep in sync with lib/auth/admins.ts) may read every profile.
+    // ---------- Helpers ----------
+
+    // Admins (keep in sync with lib/auth/admins.ts).
     function isAdmin() {
       return request.auth != null
         && request.auth.token.email in ['support@onegrasp.com'];
     }
-    // A user may read/write their OWN profile; admins may read all profiles and
-    // write them (e.g. to assign a school).
+    function signedIn() {
+      return request.auth != null;
+    }
+    // The document being written carries the caller's uid.
+    function writesOwnUid() {
+      return signedIn() && request.resource.data.uid == request.auth.uid;
+    }
+    // The stored document belongs to the caller. A missing document is
+    // allowed so the app can check whether a record exists yet (that
+    // reveals nothing about anyone else).
+    function readsOwn() {
+      return signedIn() && (resource == null || resource.data.uid == request.auth.uid);
+    }
+    function ownsStored() {
+      return signedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    // Fields on users/{uid} that only an admin or the server (Admin SDK) may
+    // change. A student who could edit them could attach themselves to any
+    // school's institution portal (and read its messages), or undo an
+    // admin's archive.
+    function adminOnlyUserFields() {
+      return ['institution', 'institutionalLinkCode', 'archived', 'archivedAt'];
+    }
+    // TODO once the payment routes write `paid` with the Admin SDK (today
+    // app/PaymentGate.tsx markPaid() writes it from the browser), add
+    // 'paid', 'paymentStatus', 'paidAt', 'paymentId', 'amountPaid' and
+    // 'couponCode' above and require paid == false on create - until then a
+    // student can mark themselves paid from the browser console.
+
+    // ---------- Accounts and admin ----------
+
+    // A student reads and writes their OWN profile (assessment results, exam
+    // session, progress, active time); admins read and write every profile.
+    // The school, archive and link fields are admin/server-only after sign-up.
     match /users/{uid} {
-      allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
-      allow write: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin());
+      allow create: if isAdmin() || (signedIn() && request.auth.uid == uid
+        && request.resource.data.get('archived', false) == false);
+      allow update: if isAdmin() || (signedIn() && request.auth.uid == uid
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(adminOnlyUserFields()));
+      // Deleting their own document would also delete an archive flag.
+      allow delete: if isAdmin();
     }
-    // Admin-managed list of schools.
+    // Admin-managed list of schools. Only the admin console reads it.
     match /schools/{doc} {
-      allow read: if request.auth != null;
-      allow write: if isAdmin();
+      allow read, write: if isAdmin();
     }
-    // App settings written from /admin - currently `payment` (fee on/off and
-    // price). ONLY an admin may write: the server trusts these values when it
-    // creates a Razorpay order, so a student who could edit them could set
-    // their own price or waive the fee. Reads are open to signed-in users so
-    // the admin console can show the current state.
+    // App settings (payment on/off and price). Only admins may write: the
+    // server trusts these values when it creates a Razorpay order. Only the
+    // admin console reads them in the browser; the server uses the Admin SDK.
     match /settings/{doc} {
-      allow read: if request.auth != null;
-      allow write: if isAdmin();
+      allow read, write: if isAdmin();
     }
-    // Admin-managed coupon codes (/admin/coupons). Same reasoning as
-    // `settings` above - lib/coupons.ts reads these server-side (via the
-    // Admin SDK, which bypasses these rules) to price every order, so only an
-    // admin may add or remove one from here.
+    // Admin-managed coupon codes. Priced server-side via the Admin SDK, so no
+    // student needs to read them - and reading them would list every code.
     match /coupons/{doc} {
-      allow read: if request.auth != null;
-      allow write: if isAdmin();
+      allow read, write: if isAdmin();
     }
-    // Admin-managed institutional links (/admin/institutional) - a school's
-    // free-signup code and contact details. Tighter than `coupons` above:
-    // nothing needs authenticated-but-non-admin reads here. Redemption
-    // (marking a new student paid) and the pre-signup validity check both
-    // go through server routes using the Admin SDK, which bypasses these
-    // rules entirely - a signed-in student never reads or writes this
-    // collection directly, and it holds school contact emails/phones that
-    // shouldn't be readable by guessing the collection name in devtools.
+    // Admin-managed institutional links. Students never touch these directly;
+    // redemption goes through server routes using the Admin SDK.
     match /institutional_links/{code} {
       allow read, write: if isAdmin();
     }
-    // Institution portal - institutions, institutionAccounts and
-    // institutionMessages are read and written ONLY by the server routes in
-    // app/api/institution, app/api/admin/institutions and
-    // app/api/student/messages (Admin SDK, which bypasses these rules), so the
-    // default deny below is exactly right for them. A student's own progress
-    // and active time live on their users/{uid} doc (covered above).
-    // Everything else denied by default.
+
+    // ---------- Institution portal (server-only) ----------
+    // Read and written ONLY by app/api/institution, app/api/admin/institutions
+    // and app/api/student/messages with the Admin SDK (which bypasses these
+    // rules). Spelled out so nobody opens them up by accident.
+    match /institutions/{id} {
+      allow read, write: if false;
+    }
+    match /institutionAccounts/{uid} {
+      allow read, write: if false;
+    }
+    match /institutionMessages/{id} {
+      allow read, write: if false;
+    }
+
+    // ---------- One document per user (document id = uid) ----------
+
+    match /examProfile/{uid} {
+      allow read, write: if signedIn() && (request.auth.uid == uid || isAdmin());
+    }
+    match /scholarshipProfile/{uid} {
+      allow read, write: if signedIn() && (request.auth.uid == uid || isAdmin());
+    }
+    match /startupsProfile/{uid} {
+      allow read, write: if signedIn() && (request.auth.uid == uid || isAdmin());
+    }
+    match /studyAbroadRoiInputs/{uid} {
+      allow read, write: if signedIn() && (request.auth.uid == uid || isAdmin());
+    }
+
+    // ---------- Owner-only records (each document has a `uid` field) ----------
+
+    match /examsFollowed/{id} {
+      allow read: if readsOwn() || isAdmin();
+      allow create: if writesOwnUid();
+      allow update: if ownsStored() && writesOwnUid();
+      allow delete: if ownsStored();
+    }
+    match /examAlertsSent/{id} {
+      allow read: if readsOwn() || isAdmin();
+      allow create: if writesOwnUid();
+      allow update: if ownsStored() && writesOwnUid();
+      allow delete: if ownsStored();
+    }
+    match /legalBookmarks/{id} {
+      allow read: if readsOwn() || isAdmin();
+      allow create: if writesOwnUid();
+      allow update: if ownsStored() && writesOwnUid();
+      allow delete: if ownsStored();
+    }
+    match /scholarshipApplications/{id} {
+      allow read: if readsOwn() || isAdmin();
+      allow create: if writesOwnUid();
+      allow update: if ownsStored() && writesOwnUid();
+      allow delete: if ownsStored();
+    }
+    match /scholarshipAlertsSent/{id} {
+      allow read: if readsOwn() || isAdmin();
+      allow create: if writesOwnUid();
+      allow update: if ownsStored() && writesOwnUid();
+      allow delete: if ownsStored();
+    }
+    match /moneyScamRounds/{id} {
+      allow read: if readsOwn() || isAdmin();
+      allow create: if writesOwnUid();
+      allow update, delete: if false;
+    }
+    match /researchProjects/{id} {
+      allow read: if readsOwn() || isAdmin();
+      allow create: if writesOwnUid();
+      allow update: if ownsStored() && writesOwnUid();
+      allow delete: if ownsStored();
+    }
+    match /researchStudioNotes/{id} {
+      allow read: if readsOwn() || isAdmin();
+      allow create: if writesOwnUid();
+      allow update: if ownsStored() && writesOwnUid();
+      allow delete: if ownsStored();
+    }
+
+    // Startups progress. Attempts and submissions are append-only.
+    match /startupsLessonProgress/{id} {
+      allow read: if readsOwn() || isAdmin();
+      allow create: if writesOwnUid();
+      allow update: if ownsStored() && writesOwnUid();
+      allow delete: if false;
+    }
+    match /startupsModuleTestProgress/{id} {
+      allow read: if readsOwn() || isAdmin();
+      allow create: if writesOwnUid();
+      allow update: if ownsStored() && writesOwnUid();
+      allow delete: if false;
+    }
+    match /startupsQuizAttempts/{id} {
+      allow read: if readsOwn() || isAdmin();
+      allow create: if writesOwnUid();
+      allow update, delete: if false;
+    }
+    match /startupsTaskSubmissions/{id} {
+      allow read: if readsOwn() || isAdmin();
+      allow create: if writesOwnUid();
+      allow update, delete: if false;
+    }
+
+    // ---------- Research abstracts (owner + admin-as-mentor review) ----------
+
+    match /researchAbstracts/{id} {
+      // The owner reads their versions. The abstract page lists versions by
+      // projectId, so ownership is also checked through the parent project.
+      // Admins (standing in as mentors) read the review queue.
+      allow read: if signedIn() && (
+        resource == null
+        || resource.data.uid == request.auth.uid
+        || get(/databases/$(database)/documents/researchProjects/$(resource.data.projectId)).data.uid == request.auth.uid
+        || isAdmin()
+      );
+      // New drafts only, with no review attached.
+      allow create: if writesOwnUid()
+        && request.resource.data.status == 'draft'
+        && request.resource.data.review == null;
+      // The owner may only move a draft to "submitted"; admins write the review.
+      allow update: if (ownsStored()
+          && resource.data.status == 'draft'
+          && request.resource.data.status == 'submitted'
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']))
+        || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ---------- Public research profiles (linked from poster QR codes) ----------
+
+    match /researchProfiles/{slug} {
+      // Anyone may open one profile by its link (learners publish these on
+      // purpose; they hold no contact details). Listing them is limited to
+      // the owner's own (the app queries where uid == me) and admins, so the
+      // whole set can't be scraped.
+      allow get: if true;
+      allow list: if (signedIn() && resource.data.uid == request.auth.uid) || isAdmin();
+      allow create: if writesOwnUid();
+      allow update: if ownsStored() && writesOwnUid();
+      allow delete: if ownsStored() || isAdmin();
+    }
+
+    // ---------- Study-abroad reviews (verified before they're shown) ----------
+
+    match /studyAbroadReviews/{id} {
+      allow read: if resource.data.status == 'published'
+        || (signedIn() && resource.data.uid == request.auth.uid)
+        || isAdmin();
+      // Learners can only submit; staff verify and publish.
+      allow create: if writesOwnUid()
+        && request.resource.data.status == 'pending_verification';
+      allow update, delete: if isAdmin();
+    }
+
+    // ---------- Everything else denied by default ----------
+    // (leads, assessmentSessions, question_banks and couponRedemptions are
+    // used server-side with the Admin SDK, which bypasses these rules.)
     match /{document=**} {
       allow read, write: if false;
     }
