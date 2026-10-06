@@ -71,6 +71,12 @@ export function adminProjectId(): string | null {
   return resolveServiceAccount()?.projectId ?? null;
 }
 
+/** The service account itself (server only) - for calling Google APIs
+ *  directly, see lib/firebase/adminAuth.ts. */
+export function serviceAccount(): ServiceAccount | null {
+  return resolveServiceAccount();
+}
+
 /**
  * Lazily initialise the Admin app and return a Firestore handle. Throws if
  * called without credentials - callers must guard with isFirestoreConfigured().

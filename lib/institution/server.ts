@@ -13,8 +13,7 @@
 import { NextResponse } from "next/server";
 import type { Firestore } from "firebase-admin/firestore";
 import { adminProjectId, getFirestore, isFirestoreConfigured } from "@/lib/firebase/admin";
-import { getAdminAuth } from "@/lib/firebase/adminAuth";
-import { identityFromToken } from "@/lib/firebaseIdentity";
+import { AuthAdminError, verifySignIn } from "@/lib/firebase/adminAuth";
 import { isAdmin } from "@/lib/auth/admins";
 import type { Institution, InstitutionAccount } from "@/lib/institution/types";
 
@@ -26,6 +25,10 @@ export class ApiError extends Error {
 
 export function fail(e: unknown) {
   if (e instanceof ApiError) return NextResponse.json({ error: e.message }, { status: e.status });
+  if (e instanceof AuthAdminError) {
+    console.error("[institution] Firebase Auth admin call failed:", e.code, e.message);
+    return NextResponse.json({ error: `Firebase Authentication refused the change: ${e.message}` }, { status: 502 });
+  }
   console.error("[institution]", e instanceof Error ? e.message : e);
   return NextResponse.json({ error: "Something went wrong on the server. Please try again." }, { status: 500 });
 }
@@ -43,13 +46,10 @@ function tokenProject(token: string): string | null {
 }
 
 /**
- * The signed-in caller, from the "Authorization: Bearer <ID token>" header.
- *
- * Verified with the Admin SDK. If that fails for a reason other than an
- * expired token, the cause is logged and the token is checked instead with
- * Google's own account lookup (lib/firebaseIdentity.ts - what the payment
- * routes use), so a server-side Admin SDK problem doesn't lock everyone out.
- * Configuration problems are reported as such, never as "session expired".
+ * The signed-in caller, from the "Authorization: Bearer <ID token>" header,
+ * checked with Google's account lookup (lib/firebase/adminAuth.ts
+ * verifySignIn - firebase-admin/auth can't load on Vercel). Configuration
+ * problems are reported as such, never as "session expired".
  */
 export async function caller(req: Request): Promise<Caller> {
   if (!isFirestoreConfigured()) {
@@ -68,28 +68,9 @@ export async function caller(req: Request): Promise<Caller> {
     throw new ApiError(503, `Server setup problem: the Firebase admin credentials on this deployment are for project "${credsProject}", but users sign in to "${signInProject}". Set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL and FIREBASE_PRIVATE_KEY from a service account of "${signInProject}".`);
   }
 
-  let adminAuth;
-  try {
-    adminAuth = await getAdminAuth();
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e);
-    console.error("[institution] could not load the Firebase admin credentials:", msg);
-    throw new ApiError(503, `Server setup problem: the Firebase admin credentials could not be loaded (${msg}). Check FIREBASE_PRIVATE_KEY - it must be the full key, including the BEGIN/END lines.`);
-  }
-
-  try {
-    const decoded = await adminAuth.verifyIdToken(token);
-    return { uid: decoded.uid, email: decoded.email || "" };
-  } catch (e) {
-    const code = (e as { code?: string })?.code || "";
-    if (code === "auth/id-token-expired" || code === "auth/id-token-revoked") {
-      throw new ApiError(401, "Your session has expired - please sign in again.");
-    }
-    console.error("[institution] verifyIdToken failed, trying the account lookup:", code, e instanceof Error ? e.message : e);
-    const id = await identityFromToken(token);
-    if (id.uid) return { uid: id.uid, email: id.email };
-    throw new ApiError(401, `Couldn't verify your sign-in${code ? ` (${code})` : ""}. Please sign out and sign in again.`);
-  }
+  const id = await verifySignIn(token);
+  if (!id) throw new ApiError(401, "Your session has expired - please sign in again.");
+  return id;
 }
 
 export async function requireAdmin(req: Request): Promise<Caller & { db: Firestore }> {

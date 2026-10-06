@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAdminAuth } from "@/lib/firebase/adminAuth";
+import { createAuthUser, deleteAuthUser, updateAuthUser } from "@/lib/firebase/adminAuth";
 import { ApiError, fail, institutionNames, requireAdmin, usernameEmail, USERNAME_RE } from "@/lib/institution/server";
 import type { Institution, InstitutionAccount } from "@/lib/institution/types";
 
@@ -92,11 +92,9 @@ export async function POST(req: Request) {
       await ref.set(inst);
     }
 
-    const auth = await getAdminAuth();
     let uid: string;
     try {
-      const user = await auth.createUser({ email: usernameEmail(username), password, displayName: displayName || inst.name });
-      uid = user.uid;
+      uid = await createAuthUser({ email: usernameEmail(username), password, displayName: displayName || inst.name });
     } catch (e) {
       const code = (e as { code?: string })?.code || "";
       if (code.includes("email-already-exists")) throw new ApiError(409, `The username "${username}" is already taken.`);
@@ -119,7 +117,6 @@ export async function PATCH(req: Request) {
     const { db } = await requireAdmin(req);
     const body = (await req.json().catch(() => ({}))) as Record<string, unknown>;
     const action = String(body.action || "");
-    const auth = await getAdminAuth();
 
     if (action === "institution") {
       const ref = db.collection("institutions").doc(String(body.id || ""));
@@ -139,19 +136,17 @@ export async function PATCH(req: Request) {
     if (action === "password") {
       const password = String(body.password ?? "");
       if (password.length < 8) throw new ApiError(400, "Password must be at least 8 characters.");
-      await auth.updateUser(uid, { password });
-      await auth.revokeRefreshTokens(uid); // signs the old password's sessions out
+      await updateAuthUser(uid, { password, signOut: true }); // the old password's sessions end
       return NextResponse.json({ ok: true });
     }
     if (action === "active") {
       const active = !!body.active;
-      await auth.updateUser(uid, { disabled: !active });
-      if (!active) await auth.revokeRefreshTokens(uid);
+      await updateAuthUser(uid, { disabled: !active, signOut: !active });
       await ref.update({ active });
       return NextResponse.json({ ok: true });
     }
     if (action === "delete") {
-      await auth.deleteUser(uid).catch(() => undefined);
+      await deleteAuthUser(uid).catch(() => undefined);
       await ref.delete();
       return NextResponse.json({ ok: true });
     }
