@@ -1,13 +1,13 @@
 # UG role roadmaps - mapping review
 
-Built from: 1-150.docx, 151-200.docx, Degree - career paths.docx, 701-790.docx, 881-980.docx, 981-1085.docx, 500-550.docx, 550-683.docx, 684-700.docx, 1086-1195.docx, 1196-1298.docx, 1299-1400.docx, 1401-1497.docx, 1498-1585.docx
+Built from: 1-150.docx, 151-200.docx, Degree - career paths.docx, 701-790.docx, 881-980.docx, 981-1085.docx, 500-550.docx, 550-683.docx, 684-700.docx, 1086-1195.docx, 1196-1298.docx, 1299-1400.docx, 1401-1497.docx, 1498-1585.docx, 450-500.docx
 
-- Roadmaps read: 1340
-- Duplicates skipped (the same roadmap pasted twice; copies may differ by a stray line): 31 - Blockchain Architect Roadmap, Career roadmap · Mechatronics Engineer, Career: Genetic Engineer, Career roadmap · Genomics Data Analyst, Career Roadmap · Environmental Consultant, Career Roadmap · EHS Officer, Career Roadmap · Pollution Control Board Officer, Career roadmap — Sustainability Analyst, Ecologist Roadmap, Career Roadmap: Dietitian Assistant, Product Development Executive Roadmap, Career roadmap · Food Safety Officer, Career roadmap · Dietitian, Career Roadmap · Clinical Nutritionist, Career Roadmap · Sports Nutritionist, Career Roadmap · Wellness Consultant, Career roadmap — Diet Counsellor, Food Service Manager Roadmap, Career roadmap · Climate Data Analyst, Career Roadmap · Assistant Director, Software Architect (Trainee) Roadmap, Career Roadmap · Lab Technician, Career Roadmap · Data Engineer Trainee, Career Roadmap · Junior Business Analyst, Founder / Entrepreneur Roadmap, Career Roadmap · Finance Executive (Startup), Career Roadmap · Ticketing Executive, Career roadmap · Artist, Career roadmap · Artist, Career roadmap · Early Childhood Educator, Career roadmap · Field Researcher
-- Linked to dropdown roles: 1305 roadmaps -> 1009 dropdown roles
+- Roadmaps read: 1391
+- Duplicates skipped (the same roadmap pasted twice; copies may differ by a stray line): 32 - Blockchain Architect Roadmap, Career roadmap · Mechatronics Engineer, Career: Genetic Engineer, Career roadmap · Genomics Data Analyst, Career Roadmap · Environmental Consultant, Career Roadmap · EHS Officer, Career Roadmap · Pollution Control Board Officer, Career roadmap — Sustainability Analyst, Ecologist Roadmap, Career Roadmap: Dietitian Assistant, Product Development Executive Roadmap, Career roadmap · Food Safety Officer, Career roadmap · Dietitian, Career Roadmap · Clinical Nutritionist, Career Roadmap · Sports Nutritionist, Career Roadmap · Wellness Consultant, Career roadmap — Diet Counsellor, Food Service Manager Roadmap, Career roadmap · Climate Data Analyst, Career Roadmap · Assistant Director, Software Architect (Trainee) Roadmap, Career Roadmap · Lab Technician, Career Roadmap · Data Engineer Trainee, Career Roadmap · Junior Business Analyst, Founder / Entrepreneur Roadmap, Career Roadmap · Finance Executive (Startup), Career Roadmap · Ticketing Executive, Career roadmap · Artist, Career roadmap · Artist, Career roadmap · Early Childhood Educator, Career roadmap · Field Researcher, Career Roadmap · Aircraft Maintenance Engineer (B1/B2)
+- Linked to dropdown roles: 1355 roadmaps -> 1053 dropdown roles
 - Need review (no exact role in the dropdown): 4
-- Roles with more than one version (the report picks the one closest to the student's course): 166
-- Written for (degree level): doctoral 107, pg 4, ug 1198 - the UG report only offers a student roadmaps written for their own level (a Ph.D. plan starts at Ph.D. Year 1)
+- Roles with more than one version (the report picks the one closest to the student's course): 172
+- Written for (degree level): doctoral 107, pg 4, ug 1248 - the UG report only offers a student roadmaps written for their own level (a Ph.D. plan starts at Ph.D. Year 1)
 
 ## Needs review
 
@@ -43,6 +43,7 @@ Built from: 1-150.docx, 151-200.docx, Degree - career paths.docx, 701-790.docx, 
 - **Product Analyst**: B.Tech / B.E. (Bachelor of Technology / Engineering) · Computer Science & Business Systems (CSBS); BBA / BMS / BBM · BBA – FinTech
 - **Telecom Engineer**: B.Tech / B.E. (Bachelor of Technology / Engineering); B.Tech / B.E. (Bachelor of Technology / Engineering)
 - **Maintenance Engineer**: B.Tech / B.E. (Bachelor of Technology / Engineering); B.Tech / B.E. · Mechanical Engineering
+- **Power Plant Engineer**: B.Tech / B.E. (Bachelor of Technology / Engineering); B.Tech / B.E. (Bachelor of Technology / Engineering) · Power Engineering
 - **Project Engineer**: B.Tech / B.E. (Bachelor of Technology / Engineering); B.Tech / B.E. Mechanical Engineering
 - **Automation Engineer**: B.Tech / B.E. (Bachelor of Technology / Engineering) · Electronics & Instrumentation Engineering (EIE); B.Tech / B.E. — Mechatronics Engineering; B.Tech / B.E. · Robotics & Automation Engineering; B.Tech / B.E. — Engineering & Technology · Mechanical Engineering (Smart Mechanical / Mechatronics & Automation)
 - **Calibration Engineer**: course not stated; B.Sc (Bachelor of Science - General / Honours) · Applied Physics / Photonics / Instrumentation
@@ -53,6 +54,7 @@ Built from: 1-150.docx, 151-200.docx, Degree - career paths.docx, 701-790.docx, 
 - **Quality Engineer**: B.Tech / B.E. — Mechanical Engineering; course not stated; course not stated; course not stated
 - **Robotics Engineer**: B.Tech / B.E. · Mechatronics Engineering; B.Tech / B.E. — Robotics & Automation Engineering; B.Tech / B.E. (Bachelor of Technology / Engineering) · Mechanical Engineering (Smart Mechanical / Mechatronics & Automation)
 - **Service Engineer**: B.Tech / B.E. (Bachelor of Technology / Engineering); B.Sc (Bachelor of Science – General / Honours) · Electronics
+- **Geotechnical Engineer**: B.Tech / B.E. · Civil Engineering; B.Tech / B.E. · Geological / Applied Geology Engineering
 - **Safety Engineer**: B.Tech / B.E. · Construction Engineering & Management; course not stated
 - **Process Engineer**: course not stated; B.Tech / B.E. (Bachelor of Technology / Engineering) · Pulp, Paper & Coating Technology
 - **R&D Engineer**: course not stated; course not stated; B.Tech / B.E. · Micro & Nano Electronics
@@ -64,6 +66,7 @@ Built from: 1-150.docx, 151-200.docx, Degree - career paths.docx, 701-790.docx, 
 - **Fermentation Technologist**: course not stated; B.Sc (Bachelor of Science - General / Honours) · Immunology / Virology / Industrial Microbiology
 - **Bioinformatics Analyst**: course not stated; B.Sc (Bachelor of Science - General / Honours) · Bioinformatics
 - **Quality Analyst**: course not stated; B.Sc (Bachelor of Science - General / Honours) · Materials Science / Nanoscience; B.Sc (General / Honours) · Biochemistry
+- **Irrigation Engineer**: course not stated; B.Tech / B.E. (Bachelor of Technology / Engineering) · Water Resources / Hydrology Engineering
 - **Agricultural Officer**: course not stated; B.Sc (Bachelor of Science – General / Honours) · Agricultural Science (B.Sc General)
 - **Food Technologist**: B.Tech / B.E. — Food Technology; B.Tech / B.E. (Bachelor of Technology / Engineering) · Food Technology; B.Sc. (Bachelor of Science – General / Honours) · Food Science & Nutrition
 - **Quality Assurance Executive**: B.Tech / B.E. · Food Technology; B.Sc (Bachelor of Science - General / Honours) · Food Science & Nutrition
@@ -85,6 +88,7 @@ Built from: 1-150.docx, 151-200.docx, Degree - career paths.docx, 701-790.docx, 
 - **Clinical Research Coordinator**: B.Sc. (Bachelor of Science – General / Honours) · Life Sciences / Biological Sciences; B.Sc. (Bachelor of Science – General / Honours) · Neuroscience / Cognitive Science
 - **Lab Technologist**: B.Sc. (Bachelor of Science – General / Honours) · Genetics; B.Sc (Bachelor of Science - General / Honours) · Biochemistry
 - **Mining Geologist**: B.Sc. (Bachelor of Science – General / Honours) · Geology / Earth Science; B.Sc. (Bachelor of Science – General / Honours) · Geology / Earth Science
+- **Exploration Geologist**: course not stated; B.Tech / B.E. (Bachelor of Technology / Engineering) · Geological / Applied Geology Engineering
 - **GIS Analyst**: B.Sc (Bachelor of Science – General / Honours) · Geography; course not stated
 - **Cartographer**: B.Sc. (Bachelor of Science – General / Honours) · Geography; B.Sc (Bachelor of Science - General / Honours) · Remote Sensing & GIS; BA (Bachelor of Arts – General / Honours) · Geography
 - **Civil Services Aspirant Roles**: B.Sc Geography; B.Sc. (Bachelor of Science – General / Honours) · Anthropology
@@ -129,6 +133,7 @@ Built from: 1-150.docx, 151-200.docx, Degree - career paths.docx, 701-790.docx, 
 - **Social Media Manager**: BCA (Bachelor of Computer Applications) · BCA – Digital Marketing / E-Commerce; Management · BBA - Digital Marketing; course not stated; BA (Bachelor of Arts - General / Honours) · Media & Communication / Digital Media / Podcasting
 - **Web Analyst**: course not stated; BBA / BMS / BBM (Bachelor of Business Administration / Management Studies) · BBA – Digital Marketing
 - **Business Analyst (Junior)**: BCA – Business Analytics / FinTech; B.Com (Bachelor of Commerce) · B.Com – Computer Applications
+- **Avionics Technician**: B.Tech / B.E. (Bachelor of Technology / Engineering) · Aircraft Maintenance Engineering (AME - DGCA); B.Tech / B.E. · Aircraft Maintenance Engineering (AME - DGCA)
 - **Quality Manager**: B.Tech / B.E. · Pulp, Paper & Coating Technology; B.Tech / B.E. · Textile & Fashion Technology
 - **R&D Chemist**: B.Tech / B.E. · Pulp, Paper & Coating Technology; B.Sc (Bachelor of Science – General / Honours) · Chemistry
 - **CAE Engineer**: B.Tech / B.E. · Mechanical Engineering (Smart Mechanical / Mechatronics & Automation); B.Tech / B.E. · Mechanical Engineering (Smart Mechanical / Mechatronics & Automation)
@@ -186,6 +191,7 @@ Built from: 1-150.docx, 151-200.docx, Degree - career paths.docx, 701-790.docx, 
 - **Policy Researcher**: BA (Bachelor of Arts - General / Honours) · Economics; course not stated
 - **PR Executive**: BA (Bachelor of Arts - General / Honours) · Journalism & Mass Communication; BA (Bachelor of Arts – General / Honours) · Advertising / Public Relations / Event Management
 - **Digital Archivist**: BA (Bachelor of Arts – General / Honours); BA (Bachelor of Arts - General / Honours) · Digital Humanities / Cultural Studies
+- **Design Engineer (R&D)**: B.Tech / B.E. (Bachelor of Technology / Engineering) · Design Engineering / Engineering Design; B.Tech / B.E. (Bachelor of Technology / Engineering) · Design Engineering / Engineering Design
 
 ## Linked
 
@@ -1496,3 +1502,53 @@ Built from: 1-150.docx, 151-200.docx, Degree - career paths.docx, 701-790.docx, 
 | Career Roadmap: HR Executive | HR Executive | exact |
 | Career Roadmap · Research Assistant | Research Assistant | exact |
 | Career Roadmap · NGO Counsellor | NGO Counsellor | exact |
+| Career Roadmap · Integration Engineer | Integration Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Reliability Engineer | Reliability Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Technical Programme Manager | Technical Programme Manager | exact |
+| Career Roadmap — Product Design Engineer | Product Design Engineer | exact |
+| Career Roadmap · Design Engineer (R&D) | Design Engineer (R&D) | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Design Engineer (R&D) | Design Engineer (R&D) | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · CAD/PLM Specialist | CAD/PLM Specialist | via the file's 'Degree · Course · Career' line |
+| Career Roadmap: Prototyping Engineer | Prototyping Engineer | exact |
+| Career Roadmap — Innovation Engineer | Innovation Engineer | exact |
+| Career Roadmap · Nuclear Engineer | Nuclear Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Reactor Operations Engineer | Reactor Operations Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Radiation Safety Officer | Radiation Safety Officer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap — Scientific Officer (BARC/NPCIL) | Scientific Officer (BARC/NPCIL) | exact |
+| Career Roadmap · Nuclear Materials Engineer | Nuclear Materials Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Power Plant Engineer | Power Plant Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Grid Engineer | Grid Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Thermal Plant Operations Engineer | Thermal Plant Operations Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap — Transmission Engineer | Transmission Engineer | exact |
+| Career Roadmap · Energy Manager | Energy Manager | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Railway Engineer (IRSE/IRSME Track) | Railway Engineer (IRSE/IRSME track) | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Signalling Engineer | Signalling Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Rolling Stock Engineer | Rolling Stock Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap — Metro Systems Engineer | Metro Systems Engineer | exact |
+| Career Roadmap · Track Design Engineer | Track Design Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Smart City Engineer | Smart City Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Infrastructure Analyst | Infrastructure Analyst | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Urban IoT Engineer | Urban IoT Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap — BIM Coordinator | BIM Coordinator | exact |
+| Career Roadmap · Utilities Planning Engineer | Utilities Planning Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Hydrologist | Hydrologist | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Water Resources Engineer | Water Resources Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap — Irrigation Engineer | Irrigation Engineer | exact |
+| Career Roadmap · Dam Safety Engineer | Dam Safety Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Disaster Risk Analyst | Disaster Risk Analyst | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Structural Resilience Engineer | Structural Resilience Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Emergency Planner | Emergency Planner | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Geohazard Analyst | Geohazard Analyst | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Risk Assessment Engineer | Risk Assessment Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Geological Engineer | Geological Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Exploration Geologist | Exploration Geologist | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Geotechnical Engineer | Geotechnical Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Mineral Resource Analyst | Mineral Resource Analyst | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Groundwater Engineer | Groundwater Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Ocean Engineer | Ocean Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Offshore Structural Engineer | Offshore Structural Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Coastal Engineer | Coastal Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Marine Robotics Engineer | Marine Robotics Engineer | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Hydrographic Surveyor | Hydrographic Surveyor | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Aircraft Maintenance Engineer (B1/B2) | Aircraft Maintenance Engineer (B1/B2) | via the file's 'Degree · Course · Career' line |
+| Career Roadmap · Avionics Technician | Avionics Technician | via the file's 'Degree · Course · Career' line |
