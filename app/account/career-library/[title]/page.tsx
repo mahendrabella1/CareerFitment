@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Briefcase, TrendingUp, Users, Target, Zap, BookOpen, Code2, Award } from 'lucide-react';
 import { CAREER_LIBRARY_930_PLUS } from '@/lib/data/careerLibrary930Plus';
+import { CareerRoadmapLinks } from '@/components/careers/DegreeRoadmaps';
 
 const clusterIcons: Record<string, string> = {
   tech: '💻', engineering: '⚙️', business: '💼', health: '🏥',
@@ -158,6 +159,9 @@ export default function CareerDetailPage() {
 
           {/* Left Column */}
           <motion.div variants={itemVariants} style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+
+            {/* Degree roadmaps written for this career (renders nothing when there are none) */}
+            <CareerRoadmapLinks name={career.name} />
 
             {/* What They Do */}
             <div style={{ background: '#fff', padding: '32px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>

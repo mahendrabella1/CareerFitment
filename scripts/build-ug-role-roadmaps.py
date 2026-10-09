@@ -764,8 +764,37 @@ def slugify(s):
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")[:80]
 
 
+def write_catalog(repo):
+    """public/roadmaps/ug/catalog.json: every role with a roadmap, its career
+    cluster, and each version's level and what it was written for - what the
+    Career Library's "Degree roadmaps" browses (far smaller than index.json)."""
+    clusters = json.load(open(os.path.join(repo, "data/graduates/career-clusters.json"), encoding="utf-8"))["clusters"]
+    names = [c["name"] for c in clusters]
+    cluster_of = {}
+    for i, c in enumerate(clusters):
+        for r in c["roles"]:
+            cluster_of.setdefault(r, i)
+    out_dir = os.path.join(repo, "public/roadmaps/ug")
+    index = json.load(open(os.path.join(out_dir, "index.json"), encoding="utf-8"))
+    short = lambda s: re.sub(r"\s*\([^)]*\)", "", s or "").strip()
+    roles = []
+    for role in sorted(index["roles"]):
+        versions = []
+        for slug in index["roles"][role]:
+            v = index["versions"].get(slug, {})
+            versions.append({"slug": slug, "level": v.get("level", "ug"), "for": short(v.get("for", ""))[:120]})
+        roles.append({"role": role, "cluster": cluster_of.get(role, -1), "versions": versions})
+    with open(os.path.join(out_dir, "catalog.json"), "w", encoding="utf-8") as fh:
+        json.dump({"clusters": names, "roles": roles}, fh, ensure_ascii=False, separators=(",", ":"))
+    return len(roles)
+
+
 def main():
     repo, files = sys.argv[1], sys.argv[2:]
+    if files == ["--catalog-only"]:
+        # Rebuild just the catalog from the existing index (no Word files needed).
+        print(f"catalog: {write_catalog(repo)} roles")
+        return
     clusters = json.load(open(os.path.join(repo, "data/graduates/career-clusters.json"), encoding="utf-8"))["clusters"]
     roles = sorted({r for c in clusters for r in c["roles"]})
     by_norm = {}
@@ -837,6 +866,7 @@ def main():
     # one roadmap file it needs.
     with open(os.path.join(out_dir, "index.json"), "w", encoding="utf-8") as fh:
         json.dump({"roles": index["roles"], "versions": index["versions"]}, fh, ensure_ascii=False, separators=(",", ":"))
+    write_catalog(repo)
     stale = os.path.join(repo, "data/graduates/role-roadmaps-index.json")
     if os.path.exists(stale):
         os.remove(stale)

@@ -143,6 +143,16 @@ export default function CareerLibraryPage() {
       {/* Main Content */}
       <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '40px 24px' }}>
 
+        {/* Degree roadmaps: every role with a year-by-year plan for its degree */}
+        <Link href="/account/career-library/roadmaps" style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap', padding: '18px 22px', marginBottom: '36px', borderRadius: '14px', background: 'linear-gradient(110deg, #4c5fd5 0%, #6d7ff0 100%)', color: '#fff', textDecoration: 'none' }}>
+          <span style={{ fontSize: '34px' }}>🗺️</span>
+          <span style={{ flex: 1, minWidth: '220px' }}>
+            <span style={{ display: 'block', fontSize: '18px', fontWeight: 700 }}>Degree roadmaps for 1,500+ careers</span>
+            <span style={{ display: 'block', fontSize: '14px', opacity: 0.9, marginTop: '2px' }}>A year-by-year plan for your exact degree and course - skills, internships, certifications, jobs, PG, study abroad and growth.</span>
+          </span>
+          <span style={{ fontWeight: 700, fontSize: '14px', background: '#fff', color: '#4c5fd5', borderRadius: '8px', padding: '9px 16px' }}>Browse roadmaps →</span>
+        </Link>
+
         {/* Browse by Domain */}
         <div style={{ marginBottom: '48px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
