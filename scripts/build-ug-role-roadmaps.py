@@ -153,14 +153,14 @@ FACT_KEYS = ("Starts", "Current degree", "Course", "Timeline assumption")
 DROP_FACT = re.compile(r"(?i)^(desired career|target career|career cluster|largest gap|footer|verification note|(id|discipline|level|category|typical duration|degree|specialisation|specialization|branch|career id|stream|relevant course)$)")
 # Some files give the facts as a "Career Path" table (ID, Level, Degree,
 # Specialization, Target Career, ...) - read into the same fact names.
-TABLE_FACT = {"degree": "Current degree", "specialization": "Course", "specialisation": "Course", "branch": "Course",
+TABLE_FACT = {"degree": "Current degree", "ug degree": "Current degree", "specialization": "Course", "specialisation": "Course", "branch": "Course",
               "course": "Course", "target career": "Desired career", "career": "Desired career", "career cluster": "Career cluster"}
 
 
 def career_path_facts(header, rows):
     """{label: value} when a table is the roadmap's facts, else None."""
     hl = [h.strip().lower() for h in header]
-    if "degree" in hl and len(rows) == 1:
+    if any(h == "degree" or h == "ug degree" for h in hl) and len(rows) == 1:
         return {h: c["text"] for h, c in zip(header, rows[0])}
     if len(header) == 2 and hl[0] in ("field", "item", "parameter") and any(r and r[0]["text"].strip().lower() == "degree" for r in rows):
         return {r[0]["text"]: r[1]["text"] for r in rows if len(r) > 1}
@@ -182,6 +182,13 @@ def strip_heading(h):
 
 
 YEAR_BLOCK = re.compile(r"(?i)^(year|semester|sem)\s*\d")
+# The standard main headings, written out in full (a sub-heading like "Year 4 /
+# Clinical Internship" is not one).
+MAIN_HEADING = re.compile(r"(?i)^(internship strategy|internships? (and|&) (field|industry|clinical) (experience|exposure|training)"
+                          r"|entry[- ]level career options|careers? you can be hired as|jobs you can target( after .*)?"
+                          r"|certifications?|certifications? (and|&) (additional |short )?(learning|courses)|certifications in demand"
+                          r"|pg options( after .*)?|postgraduate (study|options)( in india)?|pg (and|&) advanced study( options)?"
+                          r"|study abroad( .*)?|career progression|going forward)$")
 STANDARD_KINDS = {"build", "internships", "certifications", "careers", "pg_india", "abroad", "growth"}
 
 
@@ -190,6 +197,9 @@ def role_from_title(title):
     t = re.sub(r"(?i)^career\s+roadmap\s*[:·—\-–]\s*", "", t)
     t = re.sub(r"(?i)\s*[:·—\-–]?\s*roadmap$", "", t)
     t = re.sub(r"(?i)^roadmap\s*[:·—\-–]\s*", "", t)
+    # "Career Roadmap: Industrial Engineering & Management → Process
+    # Improvement Engineer": the course, then the role.
+    t = t.split("→")[-1]
     return t.strip(" :·—-–")
 
 
@@ -233,9 +243,16 @@ ID_ONLY = re.compile(r"(?i)^id\s*\d+$")
 # "551 — B.Tech / B.E. Software Product Engineering → DevOps Engineer": a
 # spreadsheet row header before a roadmap's facts table (and its title).
 ROW_HEADER = re.compile(r"^(\d{2,5})\s*[—–-]\s*(.+?)\s*→\s*([^→]+?)\s*$")
-# "558. Cloud Support Engineer" followed by its facts ("UG: ... Target Career:
-# ...") is a roadmap title, not a numbered section heading.
-NUM_TITLE = re.compile(r"^(\d{2,5})\.\s+([^:→]{2,80})$")
+# "558. Cloud Support Engineer" / "1656 — Level Designer" followed by its facts
+# ("UG: ... Target Career: ..." / "Degree: ... Career: ...") is a roadmap
+# title, not a numbered section heading ("20. PG & Advanced Study").
+NUM_TITLE = re.compile(r"^(\d{2,5})(?:\.\s+|\s*[—–-]\s*)([^:→]{2,80})$")
+FACTS_START = re.compile(r"(?i)^\s*(ug|pg|degree|level|discipline)\s*:")
+# "Technical Artist — Career Roadmap": the role first.
+ROLE_FIRST_TITLE = re.compile(r"(?i)^(.{2,80}?)\s+[—–-]\s+career\s+roadmap\s*$")
+# "UG | Media, Design & Creative Arts | B.Des (Bachelor of Design) | Game Design"
+# under such a title: level, domain, degree, course.
+PIPE_FACTS = re.compile(r"(?i)^(ug|pg)\s*\|")
 
 
 def next_is_table(els, i):
@@ -253,7 +270,9 @@ def next_element(els, i):
             if t:
                 return t
     return ""
-NOT_TITLE = re.compile(r"(?i)(year|semester|week|month|skills?|learning|study|ug|degree|career|cluster-level|cluster)[\s-]*(by[\s-]*\w+[\s-]*)?roadmap\s*$|roadmap overview|^\d+\.")
+
+
+NOT_TITLE =re.compile(r"(?i)(year|semester|week|month|skills?|learning|study|ug|degree|career|cluster-level|cluster)[\s-]*(by[\s-]*\w+[\s-]*)?roadmap\s*$|roadmap overview|^\d+\.")
 CAREER_LINE = re.compile(r"(?i)(?:^|·\s*)career:\s*(.+)$")
 # The "Degree: ... · Course: ... · Career: ..." line some files put before a
 # roadmap's title, and the notes around it that are not for students.
@@ -267,6 +286,9 @@ def title_role(p, text, bold, pending):
         return None
     text = TITLE_PREFIX.sub("", text)
     big = (font_size(p) or 0) >= 16
+    first = ROLE_FIRST_TITLE.match(text)
+    if first and (big or bold) and not re.match(r"(?i)^(year|semester|ug|pg|degree|cluster|skills?|learning|study)\b", first.group(1)):
+        return first.group(1).strip()
     looks = bool(TITLE_PAT.search(text)) and not NOT_TITLE.search(text)
     if looks and (big or (bold and (pending or re.match(r"(?i)^career\s+roadmap\s*[:·—–-]", text)))):
         return role_from_title(text)
@@ -474,7 +496,8 @@ def parse_doc(d, path, bullets):
                 start_roadmap(TITLE_PREFIX.sub("", text), role)
                 continue
             num_title = NUM_TITLE.match(text) if bold and not is_list_item(el) else None
-            if num_title and re.search(r"(?i)target career:", next_element(els, i)):
+            nxt = next_element(els, i) if num_title else ""
+            if num_title and FACTS_START.match(nxt) and re.search(r"(?i)career\s*:", nxt):
                 start_roadmap(f"Career Roadmap · {num_title.group(2).strip()}", num_title.group(2).strip())
                 continue
             row = ROW_HEADER.match(text) if (bold or (font_size(p) or 0) >= 16) and not is_list_item(el) else None
@@ -502,6 +525,12 @@ def parse_doc(d, path, bullets):
                 flush_plain()
                 pending, preamble = meta, True
                 continue
+            if fresh and PIPE_FACTS.match(text):
+                parts = [x.strip() for x in text.split("|")]
+                if len(parts) >= 4:
+                    cur["facts"].setdefault("Current degree", parts[-2])
+                    cur["facts"].setdefault("Course", parts[-1])
+                    continue
             if re.match(r"(?i)^(course|career):", text) and (preamble or (fresh and cur["facts"].get("Current degree"))):
                 meta = degree_meta(p.text)  # the same line, split over two paragraphs
                 if preamble:
@@ -512,6 +541,12 @@ def parse_doc(d, path, bullets):
                     cur["meta_career"] = cur["meta_career"] or meta.get("Desired career", "")
                 continue
             if PREAMBLE_LINE.match(text):
+                continue
+            if preamble == "row" and bold_label(p) and not is_list_item(el):
+                # "Qualification note: ..." between the row's table and its
+                # title: one of the roadmap's facts, not the start of its text.
+                k, v = bold_label(p)
+                pending.setdefault(k, v)
                 continue
             if preamble:
                 if preamble != "row" and not (re.match(r"(?i)^(step\s*\d|facts$|career horizons|four career horizons)", text) or text.startswith("Starts:")):
@@ -566,7 +601,16 @@ def parse_doc(d, path, bullets):
                 if k in STANDARD_KINDS and (section is None or section["kind"] != k) and not DROP_SECTION.search(text):
                     open_section(text, size_p)
                     continue
-            
+            if (bold and not li and not step and not num and not cur.get("_head_size") and section is not None
+                    and MAIN_HEADING.match(text)):
+                # Files whose headings are all plain bold, no sizes: only the
+                # standard main headings ("Internship Strategy", "PG Options",
+                # "Career Progression") start a section; others stay sub-headings.
+                k = section_kind(text)
+                if k in STANDARD_KINDS and section["kind"] != k:
+                    open_section(text, size_p)
+                    continue
+
             # A facts paragraph ("UG: ... Specialization: ... Target Career: ...")
             # right under the title is the roadmap's facts, not its summary.
             if section is None and not cur["summary"] and not bold and not (bold_label(p) and re.search(r"(?i)target career:", text)):
