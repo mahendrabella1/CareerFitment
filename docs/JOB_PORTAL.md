@@ -13,7 +13,7 @@ the career roles students pick in their report.
 | `app/api/jobs/*` | `GET /api/jobs` (search), `GET /api/jobs/[id]`, `GET /api/jobs/stats` (the home page's counts, companies and field totals - counted from the live listings, `lib/jobs/stats.ts`), `GET /api/jobs/roles` (careers → job role names for "On my path"), `POST /api/jobs/report`, `GET`/`POST /api/jobs/sync` (daily import). |
 | `public/jobs/hero*.webp` | The home page photo (the dashboard's Internships image, resized). |
 | `supabase/migrations/20261017000000_job_portal.sql` | Tables, indexes and row-level security. |
-| `vercel.json` | The daily cron: `29 9 * * *` = 09:29 UTC = **2:59 PM IST** (Vercel schedules are in UTC; on the Hobby plan Vercel may start it any time within that hour). |
+| `vercel.json` | The daily cron: `30 10 * * *` = 10:30 UTC = **4:00 PM IST** (Vercel schedules are in UTC; on the Hobby plan Vercel may start it any time within that hour). |
 
 ## What makes it different from a plain job board
 
@@ -58,7 +58,7 @@ the career roles students pick in their report.
    | `JOB_SOURCES_OFF` | optional | Comma list of source ids to switch off, e.g. `remotive`. |
 
 4. **Deploy**, then run the first import by hand (otherwise the board stays
-   empty until the next 2:59 PM IST run):
+   empty until the next 4:00 PM IST run):
 
    ```bash
    curl -X POST https://<your-domain>/api/jobs/sync -H "Authorization: Bearer $CRON_SECRET"
@@ -124,7 +124,7 @@ workflow (save as `.github/workflows/jobs-sync.yml`, add `CRON_SECRET` and
 ```yaml
 name: Daily job import
 on:
-  schedule: [{ cron: "29 9 * * *" }]  # 2:59 PM IST
+  schedule: [{ cron: "30 10 * * *" }]  # 4:00 PM IST
   workflow_dispatch: {}
 jobs:
   sync:
