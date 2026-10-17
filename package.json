@@ -7,6 +7,7 @@
     "build": "node --max-old-space-size=4096 node_modules/next/dist/bin/next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
+    "test:jobs": "node --import ./tests/jobs/register.mjs --test \"tests/jobs/*.test.mjs\"",
     "seed:firestore": "node scripts/upload_to_firestore.mjs"
   },
   "dependencies": {
