@@ -50,7 +50,7 @@ export function ModuleTestClient({ trackSlug, moduleSlug, moduleTitle, passMark,
   const onCooldown = !!cooldownUntil && cooldownUntil > Date.now();
 
   return (
-    <div style={{ maxWidth: 720 }}>
+    <div className="fx-narrow" style={{ maxWidth: 720 }}>
       <PageHeader back={{ href: `/account/startups/${trackSlug}/${moduleSlug}`, label: moduleTitle }} icon="check" eyebrow="Module test" title={moduleTitle} />
 
       {!result && onCooldown && (

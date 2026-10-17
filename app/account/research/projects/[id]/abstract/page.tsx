@@ -45,7 +45,7 @@ export default function AbstractPage({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
+    <div className="fx-narrow" style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <PageHeader back={{ href: `/account/research/projects/${project.id}`, label: project.conferenceTitle }} icon="answer" eyebrow="Your project"
         title="Abstract editor" subtitle="Aim for about 250 words, using the 5-part structure." />
 

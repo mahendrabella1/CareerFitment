@@ -118,11 +118,11 @@ export function LabNote({ children }: { children: ReactNode }) {
 }
 
 export function StatBox({ label, value, tone }: { label: string; value: string; tone?: "good" | "bad" }) {
-  const color = tone === "good" ? "#0ea05f" : tone === "bad" ? "#dc2626" : "#0f172a";
+  const color = tone === "good" ? "#087f4b" : tone === "bad" ? "#b91c1c" : "#111827";
   return (
-    <div style={{ flex: "1 1 140px", border: "1px solid #e2e8f0", borderRadius: 10, padding: "10px 12px", textAlign: "center", minWidth: 0 }}>
-      <div style={{ fontSize: 11, color: "#64748b" }}>{label}</div>
-      <div style={{ fontSize: 17, fontWeight: 800, color, overflowWrap: "anywhere" }}>{value}</div>
+    <div style={{ flex: "1 1 140px", border: "1px solid #e5e7eb", borderRadius: 10, padding: "10px 12px", textAlign: "center", minWidth: 0, background: "#fff" }}>
+      <div style={{ fontSize: 12, color: "#6b7280" }}>{label}</div>
+      <div style={{ fontSize: 18, fontWeight: 700, color, overflowWrap: "anywhere", fontVariantNumeric: "tabular-nums" }}>{value}</div>
     </div>
   );
 }

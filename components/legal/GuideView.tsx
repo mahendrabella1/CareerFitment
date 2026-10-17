@@ -41,7 +41,7 @@ export function GuideView({ guide }: { guide: LegalGuide }) {
   }, [guide.sensitive]);
 
   return (
-    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
+    <div className="fx-narrow" style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <PageHeader back={{ href: "/account/legal/guides", label: "All guides" }} icon="book" eyebrow={guide.area} title={guide.title} subtitle={guide.oneLine} />
 
       <div style={{ border: "2px solid #f59e0b", background: "#fffbeb", borderRadius: 12, padding: "12px 16px", marginBottom: 18 }}>

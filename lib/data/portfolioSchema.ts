@@ -46,6 +46,7 @@ export interface PortfolioSkill {
 export interface PortfolioProfile {
   userId: string;
   profileSlug: string; // unique URL slug like "john-doe-engineer"
+  displayName?: string; // The name shown on the public page
   headline: string; // Professional headline
   bio: string; // Short bio/about
   profileImage?: string; // URL or base64

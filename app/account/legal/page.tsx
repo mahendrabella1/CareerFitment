@@ -9,8 +9,8 @@ export default function LegalHomePage() {
       <CourseLanding
         content={LEGAL_COURSE}
         topSlot={
-          <section style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, padding: "18px 18px 14px" }}>
-            <div style={{ fontSize: 12, fontWeight: 800, color: "#6366f1", textTransform: "uppercase", letterSpacing: ".05em", marginBottom: 10 }}>Start with your situation</div>
+          <section id="situation" style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 12, padding: "18px 18px 14px", scrollMarginTop: 110 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#6366f1", textTransform: "uppercase", letterSpacing: ".06em", marginBottom: 10 }}>Start with your situation</div>
             <Navigator />
           </section>
         }

@@ -5,7 +5,7 @@ import { STARTUP_VIDEO_LIBRARY } from "@/data/startups/videos";
 import { Pager, usePaged } from "@/components/ui/Pager";
 import { PageHeader } from "@/components/course/fx";
 
-const ACCENT = "#f97316";
+const ACCENT = "#c2410c";
 const PAGE_SIZE = 8;
 
 // One grid for every talk, with the module as a filter, instead of a

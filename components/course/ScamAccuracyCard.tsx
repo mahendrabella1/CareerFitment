@@ -16,7 +16,7 @@ export function ScamAccuracyCard({ accent }: { accent: string }) {
 
   if (!stat || stat.roundsPlayed === 0) {
     return (
-      <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, padding: "14px 18px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+      <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 12, padding: "14px 18px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
         <span style={{ fontSize: 13.5, color: "#475569" }}>Play one round of Scam Shield to see your accuracy here.</span>
         <Link href="/account/money/scam-shield" style={{ fontSize: 13, fontWeight: 800, color: accent, textDecoration: "none" }}>Start Scam Shield →</Link>
       </div>
@@ -24,7 +24,7 @@ export function ScamAccuracyCard({ accent }: { accent: string }) {
   }
 
   return (
-    <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 16, padding: "14px 18px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+    <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 12, padding: "14px 18px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
       <div>
         <div style={{ fontSize: 11, fontWeight: 800, color: "#64748b", textTransform: "uppercase", letterSpacing: ".05em" }}>Your Scam Shield accuracy</div>
         <div style={{ fontSize: 13, color: "#475569", marginTop: 2 }}>Across {stat.roundsPlayed} {stat.roundsPlayed === 1 ? "round" : "rounds"}</div>

@@ -1,297 +1,181 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+/**
+ * /portfolio/[slug] - a student's public portfolio page (made public from
+ * /account/portfolio). Shows only what /api/portfolio/public/[slug] returns.
+ */
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Mail, Phone, Link as LinkIcon, Share2, FileDown } from 'lucide-react';
+import { Mail, Phone, Link as LinkIcon } from 'lucide-react';
 import type { PortfolioProfile } from '@/lib/data/portfolioSchema';
+
+const CSS = `
+.pp{min-height:100vh;background:#f6f7f9;color:#111827;font-family:Inter,system-ui,'Segoe UI',sans-serif}
+.pp *{box-sizing:border-box}
+.pp-head{background:#fff;border-bottom:1px solid #e5e7eb}
+.pp-head-in{max-width:1080px;margin:0 auto;padding:36px 24px 28px;display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.pp-av{flex:none;width:96px;height:96px;border-radius:50%;display:grid;place-items:center;background:#eef2ff;color:#3730a3;font-size:38px;font-weight:700}
+.pp-who{flex:1 1 320px;min-width:0}
+.pp-who h1{font-size:28px;line-height:1.2;margin:0;letter-spacing:-.02em}
+.pp-line{font-size:15px;color:#374151;margin-top:6px;line-height:1.5}
+.pp-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.pp-meta span{font-size:12.5px;color:#374151;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:999px;padding:4px 10px}
+.pp-contact{display:flex;gap:8px;flex-wrap:wrap}
+.pp-btn{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;padding:9px 14px;border-radius:8px;border:1px solid #d1d5db;background:#fff;color:#111827;text-decoration:none}
+.pp-btn.primary{background:#2563eb;border-color:#2563eb;color:#fff}
+.pp-body{max-width:1080px;margin:0 auto;padding:24px;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
+.pp-col{display:flex;flex-direction:column;gap:16px;min-width:0}
+.pp-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px 24px}
+.pp-card h2{font-size:16px;margin:0 0 12px}
+.pp-item{padding:12px 0;border-top:1px solid #f0f1f3}
+.pp-item:first-of-type{border-top:0;padding-top:0}
+.pp-t{font-size:14.5px;font-weight:600}
+.pp-s{font-size:13px;color:#4b5563;margin-top:2px}
+.pp-d{font-size:12.5px;color:#6b7280;margin-top:2px}
+.pp-p{font-size:13.5px;color:#374151;line-height:1.6;margin:6px 0 0;white-space:pre-wrap}
+.pp-chips{display:flex;flex-wrap:wrap;gap:6px}
+.pp-chip{font-size:12.5px;font-weight:500;padding:5px 11px;border-radius:999px;background:#f3f4f6;border:1px solid #e5e7eb}
+.pp-links a{display:flex;align-items:center;gap:8px;font-size:13.5px;color:#2563eb;text-decoration:none;padding:4px 0;overflow-wrap:anywhere}
+.pp-foot{text-align:center;font-size:12px;color:#6b7280;padding:24px 16px 32px}
+.pp-center{min-height:100vh;display:grid;place-items:center;text-align:center;padding:24px}
+@media (max-width:860px){.pp-body{grid-template-columns:minmax(0,1fr);padding:16px}.pp-head-in{padding:24px 16px}.pp-card{padding:16px}.pp-who h1{font-size:24px}}
+`;
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const fmtMonth = (m?: string) => {
+  const [y, mo] = (m || '').split('-');
+  return y && mo ? `${MONTHS[Number(mo) - 1] ?? ''} ${y}` : '';
+};
+const span = (start?: string, end?: string, current?: boolean) => {
+  const a = fmtMonth(start);
+  const b = current ? 'Present' : fmtMonth(end);
+  return a || b ? `${a || '…'} – ${b || '…'}` : '';
+};
 
 export default function PublicPortfolioPage({ params }: { params: { slug: string } }) {
   const [portfolio, setPortfolio] = useState<PortfolioProfile | null>(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    loadPortfolio();
+    fetch(`/api/portfolio/public/${encodeURIComponent(params.slug)}`)
+      .then(async (res) => {
+        if (res.ok) setPortfolio(await res.json());
+        else setError(res.status === 404 ? 'This portfolio is private or no longer exists.' : 'This portfolio could not be loaded.');
+      })
+      .catch(() => setError('This portfolio could not be loaded.'));
   }, [params.slug]);
 
-  const loadPortfolio = async () => {
-    try {
-      const res = await fetch(`/api/portfolio/public/${params.slug}`);
-      if (!res.ok) {
-        if (res.status === 404) {
-          setError('Portfolio not found');
-        } else {
-          setError('Unable to load portfolio');
-        }
-      } else {
-        const data = await res.json();
-        setPortfolio(data);
-        // Increment view count
-        await fetch(`/api/portfolio/public/${params.slug}/view`, { method: 'POST' });
-      }
-    } catch (err) {
-      setError('Failed to load portfolio');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
+  if (!portfolio) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8fafc' }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ width: 48, height: 48, borderRadius: '50%', border: '3px solid #e5e7eb', borderTopColor: '#3b82f6', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
-          <p style={{ color: '#6b7280', fontWeight: 500 }}>Loading portfolio...</p>
+      <div className="pp">
+        <style dangerouslySetInnerHTML={{ __html: CSS }} />
+        <div className="pp-center">
+          {error ? (
+            <div>
+              <h1 style={{ fontSize: 24, margin: '0 0 8px' }}>Portfolio not available</h1>
+              <p style={{ color: '#6b7280', margin: '0 0 20px' }}>{error}</p>
+              <Link href="/" className="pp-btn primary">Go to OneGrasp</Link>
+            </div>
+          ) : <p style={{ color: '#6b7280' }}>Loading portfolio…</p>}
         </div>
       </div>
     );
   }
 
-  if (error || !portfolio) {
-    return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8fafc' }}>
-        <div style={{ textAlign: 'center', maxWidth: 400, padding: 40 }}>
-          <h1 style={{ fontSize: 28, fontWeight: 800, color: '#0f172a', marginBottom: 12 }}>Portfolio Not Found</h1>
-          <p style={{ fontSize: 16, color: '#64748b', marginBottom: 32 }}>{error || 'This portfolio is not available or has been removed.'}</p>
-          <Link href="/"
-            style={{
-              display: 'inline-block',
-              padding: '12px 32px',
-              background: '#3b82f6',
-              color: '#fff',
-              borderRadius: 8,
-              textDecoration: 'none',
-              fontWeight: 600,
-              fontSize: 14
-            }}
-          >
-            Back to Home
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  const p = portfolio;
+  const name = p.displayName || p.headline;
+  const links = [
+    { href: p.linkedin, label: 'LinkedIn' },
+    { href: p.github, label: 'GitHub' },
+    { href: p.website, label: 'Website' },
+    { href: p.twitter, label: 'X (Twitter)' },
+  ].filter((l) => l.href);
+  const updated = new Date(p.lastUpdated);
 
   return (
-    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)' }}>
-      <style dangerouslySetInnerHTML={{ __html: `@keyframes spin { to { transform: rotate(360deg); } }` }} />
-
-      {/* Cover Section */}
-      {portfolio.coverImage && (
-        <div style={{ height: 240, background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
-      )}
-
-      {/* Profile Header */}
-      <div style={{ background: '#fff', borderBottom: '1px solid #e5e7eb', padding: '40px 24px 32px' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr auto', gap: 32, alignItems: 'start' }}>
-          <div>
-            <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start' }}>
-              <div style={{
-                width: 140,
-                height: 140,
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 64,
-                fontWeight: 700,
-                color: '#fff',
-                border: '4px solid #fff'
-              }}>
-                {portfolio.headline.charAt(0)}
-              </div>
-              <div style={{ paddingTop: 8 }}>
-                <h1 style={{ fontSize: 32, fontWeight: 800, color: '#0f172a', margin: 0 }}>{portfolio.headline}</h1>
-                {portfolio.location && (
-                  <p style={{ fontSize: 16, color: '#64748b', margin: '8px 0 0' }}>📍 {portfolio.location}</p>
-                )}
-                {portfolio.careerFit && (
-                  <div style={{ marginTop: 12, padding: '8px 12px', background: '#f0f9ff', borderRadius: 6, display: 'inline-block' }}>
-                    <span style={{ fontSize: 12, color: '#0369a1', fontWeight: 600 }}>Top Career: <strong>{portfolio.careerFit}</strong></span>
-                  </div>
-                )}
-              </div>
+    <div className="pp">
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
+      <header className="pp-head">
+        <div className="pp-head-in">
+          <div className="pp-av" aria-hidden="true">{name.charAt(0).toUpperCase()}</div>
+          <div className="pp-who">
+            <h1>{name}</h1>
+            {p.displayName && <div className="pp-line">{p.headline}</div>}
+            <div className="pp-meta">
+              {p.location && <span>{p.location}</span>}
+              {p.careerFit && <span>Aiming for: {p.careerFit}</span>}
             </div>
           </div>
-
-          {/* Actions */}
-          <div style={{ display: 'flex', gap: 8, flexDirection: 'column' }}>
-            {portfolio.showEmail && portfolio.email && (
-              <a href={`mailto:${portfolio.email}`}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  padding: '10px 16px',
-                  background: '#3b82f6',
-                  color: '#fff',
-                  borderRadius: 6,
-                  textDecoration: 'none',
-                  fontSize: 13,
-                  fontWeight: 600
-                }}
-              >
-                <Mail size={16} /> Email
-              </a>
-            )}
-            {portfolio.showPhone && portfolio.phone && (
-              <a href={`tel:${portfolio.phone}`}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  padding: '10px 16px',
-                  background: '#f3f4f6',
-                  color: '#374151',
-                  borderRadius: 6,
-                  textDecoration: 'none',
-                  fontSize: 13,
-                  fontWeight: 600
-                }}
-              >
-                <Phone size={16} /> Call
-              </a>
-            )}
+          <div className="pp-contact">
+            {p.showEmail && p.email && <a className="pp-btn primary" href={`mailto:${p.email}`}><Mail size={15} /> Email</a>}
+            {p.showPhone && p.phone && <a className="pp-btn" href={`tel:${p.phone}`}><Phone size={15} /> Call</a>}
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Main Content */}
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '40px 24px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 40 }}>
-          {/* Left Column */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
-            {/* Bio */}
-            {portfolio.bio && (
-              <div style={{ background: '#fff', borderRadius: 12, padding: 24, border: '1px solid #e5e7eb' }}>
-                <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0f172a', margin: 0, marginBottom: 12 }}>About</h2>
-                <p style={{ fontSize: 14, color: '#475569', lineHeight: 1.8, margin: 0 }}>{portfolio.bio}</p>
-              </div>
-            )}
-
-            {/* Experience */}
-            {portfolio.experience.length > 0 && (
-              <div style={{ background: '#fff', borderRadius: 12, padding: 24, border: '1px solid #e5e7eb' }}>
-                <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0f172a', margin: 0, marginBottom: 20 }}>Experience</h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                  {portfolio.experience.map((exp, idx) => (
-                    <div key={exp.id} style={{ paddingBottom: idx < portfolio.experience.length - 1 ? 20 : 0, borderBottom: idx < portfolio.experience.length - 1 ? '1px solid #e5e7eb' : 'none' }}>
-                      <h3 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', margin: 0 }}>{exp.title}</h3>
-                      <p style={{ fontSize: 13, color: '#64748b', margin: '4px 0 0' }}>{exp.company}</p>
-                      <p style={{ fontSize: 12, color: '#94a3b8', margin: '4px 0 12px' }}>
-                        {exp.startDate} – {exp.currentlyWorking ? 'Present' : exp.endDate}
-                      </p>
-                      <p style={{ fontSize: 13, color: '#475569', lineHeight: 1.6, margin: 0 }}>{exp.description}</p>
-                    </div>
-                  ))}
+      <div className="pp-body">
+        <div className="pp-col">
+          {p.bio && <section className="pp-card"><h2>About</h2><p className="pp-p" style={{ marginTop: 0 }}>{p.bio}</p></section>}
+          {p.experience.length > 0 && (
+            <section className="pp-card">
+              <h2>Projects & experience</h2>
+              {p.experience.map((x) => (
+                <div key={x.id} className="pp-item">
+                  <div className="pp-t">{x.title}</div>
+                  <div className="pp-s">{x.company}{x.location ? ` · ${x.location}` : ''}</div>
+                  {span(x.startDate, x.endDate, x.currentlyWorking) && <div className="pp-d">{span(x.startDate, x.endDate, x.currentlyWorking)}</div>}
+                  {x.description && <p className="pp-p">{x.description}</p>}
                 </div>
-              </div>
-            )}
-
-            {/* Education */}
-            {portfolio.education.length > 0 && (
-              <div style={{ background: '#fff', borderRadius: 12, padding: 24, border: '1px solid #e5e7eb' }}>
-                <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0f172a', margin: 0, marginBottom: 20 }}>Education</h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                  {portfolio.education.map((edu, idx) => (
-                    <div key={edu.id} style={{ paddingBottom: idx < portfolio.education.length - 1 ? 20 : 0, borderBottom: idx < portfolio.education.length - 1 ? '1px solid #e5e7eb' : 'none' }}>
-                      <h3 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', margin: 0 }}>{edu.degree} in {edu.field}</h3>
-                      <p style={{ fontSize: 13, color: '#64748b', margin: '4px 0 0' }}>{edu.institution}</p>
-                      <p style={{ fontSize: 12, color: '#94a3b8', margin: 0 }}>
-                        {edu.startDate} – {edu.currentlyStudying ? 'Present' : edu.endDate}
-                      </p>
-                    </div>
-                  ))}
+              ))}
+            </section>
+          )}
+          {p.education.length > 0 && (
+            <section className="pp-card">
+              <h2>Education</h2>
+              {p.education.map((x) => (
+                <div key={x.id} className="pp-item">
+                  <div className="pp-t">{x.institution}</div>
+                  {(x.degree || x.field) && <div className="pp-s">{[x.degree, x.field].filter(Boolean).join(' · ')}</div>}
+                  {span(x.startDate, x.endDate, x.currentlyStudying) && <div className="pp-d">{span(x.startDate, x.endDate, x.currentlyStudying)}</div>}
+                  {x.description && <p className="pp-p">{x.description}</p>}
                 </div>
-              </div>
-            )}
-
-            {/* Certifications */}
-            {portfolio.certifications.length > 0 && (
-              <div style={{ background: '#fff', borderRadius: 12, padding: 24, border: '1px solid #e5e7eb' }}>
-                <h2 style={{ fontSize: 20, fontWeight: 700, color: '#0f172a', margin: 0, marginBottom: 20 }}>Certifications</h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                  {portfolio.certifications.map(cert => (
-                    <div key={cert.id} style={{ padding: 12, background: '#f8fafc', borderRadius: 8, borderLeft: '3px solid #3b82f6' }}>
-                      <h3 style={{ fontSize: 13, fontWeight: 700, color: '#0f172a', margin: 0 }}>{cert.name}</h3>
-                      <p style={{ fontSize: 12, color: '#64748b', margin: '2px 0 0' }}>{cert.issuer}</p>
-                    </div>
-                  ))}
+              ))}
+            </section>
+          )}
+          {p.certifications.length > 0 && (
+            <section className="pp-card">
+              <h2>Certificates & awards</h2>
+              {p.certifications.map((x) => (
+                <div key={x.id} className="pp-item">
+                  <div className="pp-t">{x.name}</div>
+                  {(x.issuer || x.issueDate) && <div className="pp-s">{[x.issuer, fmtMonth(x.issueDate)].filter(Boolean).join(' · ')}</div>}
+                  {x.credentialUrl && <a className="pp-d" style={{ color: '#2563eb' }} href={x.credentialUrl} target="_blank" rel="noopener noreferrer">View certificate ↗</a>}
                 </div>
-              </div>
-            )}
-          </div>
+              ))}
+            </section>
+          )}
+        </div>
 
-          {/* Right Column - Sidebar */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            {/* Skills */}
-            {portfolio.skills.length > 0 && (
-              <div style={{ background: '#fff', borderRadius: 12, padding: 20, border: '1px solid #e5e7eb' }}>
-                <h3 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', margin: 0, marginBottom: 12 }}>Skills</h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                  {portfolio.skills.map(skill => (
-                    <span key={skill.id}
-                      style={{
-                        padding: '6px 10px',
-                        background: '#e0e7ff',
-                        border: '1px solid #c7d2fe',
-                        borderRadius: 16,
-                        fontSize: 12,
-                        fontWeight: 600,
-                        color: '#4f46e5'
-                      }}
-                    >
-                      {skill.name}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Social Links */}
-            {(portfolio.website || portfolio.linkedin || portfolio.github || portfolio.twitter) && (
-              <div style={{ background: '#fff', borderRadius: 12, padding: 20, border: '1px solid #e5e7eb' }}>
-                <h3 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', margin: 0, marginBottom: 12 }}>Links</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  {portfolio.website && (
-                    <a href={portfolio.website} target="_blank" rel="noopener noreferrer"
-                      style={{ fontSize: 12, color: '#3b82f6', textDecoration: 'none', display: 'flex', gap: 6, alignItems: 'center' }}>
-                      <LinkIcon size={12} /> Website
-                    </a>
-                  )}
-                  {portfolio.linkedin && (
-                    <a href={portfolio.linkedin} target="_blank" rel="noopener noreferrer"
-                      style={{ fontSize: 12, color: '#0a66c2', textDecoration: 'none', display: 'flex', gap: 6, alignItems: 'center' }}>
-                      <LinkIcon size={12} /> LinkedIn
-                    </a>
-                  )}
-                  {portfolio.github && (
-                    <a href={portfolio.github} target="_blank" rel="noopener noreferrer"
-                      style={{ fontSize: 12, color: '#333', textDecoration: 'none', display: 'flex', gap: 6, alignItems: 'center' }}>
-                      <LinkIcon size={12} /> GitHub
-                    </a>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Stats */}
-            <div style={{ background: '#fff', borderRadius: 12, padding: 20, border: '1px solid #e5e7eb' }}>
-              <h3 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', margin: 0, marginBottom: 12 }}>Profile</h3>
-              <div style={{ fontSize: 12, color: '#64748b', lineHeight: 1.8 }}>
-                <p style={{ margin: '0 0 8px' }}>👁️ {portfolio.views} views</p>
-                <p style={{ margin: 0 }}>Last updated {new Date(portfolio.lastUpdated).toLocaleDateString()}</p>
-              </div>
-            </div>
-          </div>
+        <div className="pp-col">
+          {p.skills.length > 0 && (
+            <section className="pp-card">
+              <h2>Skills</h2>
+              <div className="pp-chips">{p.skills.map((s) => <span key={s.id} className="pp-chip">{s.name}</span>)}</div>
+            </section>
+          )}
+          {links.length > 0 && (
+            <section className="pp-card pp-links">
+              <h2>Links</h2>
+              {links.map((l) => <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"><LinkIcon size={14} />{l.label}</a>)}
+            </section>
+          )}
+          <section className="pp-card" style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.7 }}>
+            <div>{p.views} {p.views === 1 ? 'view' : 'views'}</div>
+            {!Number.isNaN(updated.getTime()) && <div>Updated {updated.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</div>}
+          </section>
         </div>
       </div>
-
-      {/* Footer */}
-      <div style={{ background: '#f8fafc', borderTop: '1px solid #e5e7eb', padding: '24px', textAlign: 'center', color: '#64748b', fontSize: 12 }}>
-        <p style={{ margin: 0 }}>Created with OneGrasp Career Assessment</p>
-      </div>
+      <footer className="pp-foot">Made with OneGrasp</footer>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import type { CourseContent } from "@/lib/course/types";
 
 export const MONEY_COURSE: CourseContent = {
   key: "money",
-  accent: "#0ea05f",
+  accent: "#087f4b",
   kicker: "Financial Literacy",
   title: "Money habits that hold up in real life",
   subtitle:

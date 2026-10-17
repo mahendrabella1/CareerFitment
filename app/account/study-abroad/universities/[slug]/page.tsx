@@ -25,7 +25,7 @@ export default function UniversityPage({ params }: { params: { slug: string } })
     : [];
 
   return (
-    <div style={{ maxWidth: 820 }}>
+    <div className="fx-narrow" style={{ maxWidth: 820 }}>
       <PageHeader back={{ href: "/account/study-abroad/universities", label: "All universities" }} icon="school" eyebrow={country?.name}
         title={uni.name} subtitle={`${uni.city} · ${uni.type === "public" ? "Public institution" : "Private institution"}`} />
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>

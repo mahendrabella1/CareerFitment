@@ -19,7 +19,7 @@ export default function ProjectTrackerPage({ params }: { params: { id: string } 
   if (project === null) return <div style={{ padding: 40, textAlign: "center", color: "#888" }}>Project not found.</div>;
 
   return (
-    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
+    <div className="fx-narrow" style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <PageHeader back={{ href: "/account/research", label: "Research & Conferences" }} icon="flask" eyebrow={project.conferenceOrganiser || "Your project"}
         title={project.conferenceTitle} subtitle={<i>{project.question || "No question written yet"}</i>} />
 

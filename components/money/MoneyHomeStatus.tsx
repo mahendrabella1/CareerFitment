@@ -14,8 +14,8 @@ export function MoneyHomeStatus() {
 
   const last = run?.history[run.history.length - 1];
   return (
-    <section style={{ background: "#fff", border: "1px solid #dcfce7", borderRadius: 16, padding: "16px 18px", marginBottom: 14 }}>
-      <div style={{ fontSize: 11, fontWeight: 800, color: "#0ea05f", textTransform: "uppercase", letterSpacing: ".06em" }}>Your Money Health</div>
+    <section style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 12, padding: "16px 18px" }}>
+      <div style={{ fontSize: 11, fontWeight: 800, color: "#087f4b", textTransform: "uppercase", letterSpacing: ".06em" }}>Your Money Health</div>
       {last?.pillars && run ? (
         <div style={{ display: "flex", gap: 18, flexWrap: "wrap", alignItems: "center", marginTop: 8 }}>
           <HealthRing total={last.health} pillars={last.pillars as Record<PillarKey, number>} size={120} />
@@ -24,15 +24,15 @@ export function MoneyHomeStatus() {
             <div><b>Level:</b> {levelFor(run.history.map((h) => h.health)) ?? "unlocks after 3 months"}</div>
             <div><b>Personality:</b> {personalityFor(run.history.flatMap((h) => (h.plan ? [h.plan] : [])))?.name ?? "unlocks after 3 months"}</div>
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 4 }}>
-              <Link href="/account/money/play" style={{ color: "#0ea05f", fontWeight: 800 }}>{run.month > 12 ? "See your year" : `Continue: month ${run.month}`} →</Link>
-              <Link href="/account/money/journey" style={{ color: "#0ea05f", fontWeight: 800 }}>Money Journey →</Link>
+              <Link href="/account/money/play" style={{ color: "#087f4b", fontWeight: 800 }}>{run.month > 12 ? "See your year" : `Continue: month ${run.month}`} →</Link>
+              <Link href="/account/money/journey" style={{ color: "#087f4b", fontWeight: 800 }}>Money Journey →</Link>
             </div>
           </div>
         </div>
       ) : (
         <p style={{ fontSize: 14, color: "#475569", margin: "6px 0 0", lineHeight: 1.6 }}>
           Your Money Health Score, Financial Age and Money Personality come from how you play, not from marks.{" "}
-          <Link href="/account/money/play" style={{ color: "#0ea05f", fontWeight: 800 }}>Play your first month →</Link>
+          <Link href="/account/money/play" style={{ color: "#087f4b", fontWeight: 800 }}>Play your first month →</Link>
         </p>
       )}
     </section>

@@ -9,7 +9,7 @@ import { moduleStatus, nextUnfinishedLesson, type ProgressMap } from "@/lib/star
 import { readinessScore } from "@/lib/startups/scoring";
 import { PageHeader } from "@/components/course/fx";
 
-const ACCENT = "#f97316";
+const ACCENT = "#c2410c";
 const STATUS_STYLE: Record<string, { bg: string; fg: string; label: string }> = {
   COMPLETED: { bg: "#dcfce7", fg: "#166534", label: "Done" },
   IN_PROGRESS: { bg: "#fef3c7", fg: "#92400e", label: "In progress" },
@@ -47,32 +47,35 @@ export function StartupsHomeClient({ track }: { track: PublicTrack }) {
   const next = nextUnfinishedLesson(track, progress);
   const nextModule = next ? track.modules.find((m) => m.slug === next.moduleSlug) : null;
   const nextLesson = nextModule?.lessons.find((l) => l.slug === next?.lessonSlug);
+  const nextHref = nextLesson && nextModule ? `/account/startups/${track.slug}/${nextModule.slug}/${nextLesson.slug}` : null;
+  const started = Object.keys(progress.lessonBestPercent).length > 0;
 
   return (
     <div>
       <PageHeader icon="rocket" eyebrow={`${track.title} track`} title="Build a real startup, step by step"
-        subtitle="Finish with a real startup you've shaped yourself - watch, read, try it on your own idea, take the quiz." />
+        subtitle="Finish with a real startup you've shaped yourself - watch, read, try it on your own idea, take the quiz."
+        actions={
+          <>
+            {nextHref && <Link href={nextHref} className="fx-btn fx-btn-primary">{started ? "Continue learning" : "Start lesson 1"} →</Link>}
+            <Link href="/account/startups/placement" className="fx-btn">Take the placement quiz</Link>
+          </>
+        } />
 
-      {nextLesson && nextModule && (
-        <Link href={`/account/startups/${track.slug}/${nextModule.slug}/${nextLesson.slug}`} style={{ textDecoration: "none" }}>
-          <div style={{
-            borderRadius: 14, padding: "18px 20px", marginBottom: 28, cursor: "pointer",
-            background: `linear-gradient(110deg, ${ACCENT}14, #fff)`, border: `1px solid ${ACCENT}40`,
-          }}>
-            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: ".04em", textTransform: "uppercase", color: ACCENT }}>Continue where you left off</div>
-            <div style={{ fontSize: 17, fontWeight: 700, color: "#1a1a1a", marginTop: 4 }}>{nextModule.title} → {nextLesson.title}</div>
-          </div>
+      {nextLesson && nextModule && nextHref && (
+        <Link href={nextHref} className="fx-lift" style={{ display: "block", textDecoration: "none", background: "#fff", border: "1px solid #e5e7eb", borderRadius: 12, padding: "16px 20px", marginBottom: 24 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: ACCENT }}>{started ? "Continue where you left off" : "Your first lesson"}</div>
+          <div style={{ fontSize: 16, fontWeight: 600, color: "#111827", marginTop: 4 }}>{nextModule.title} → {nextLesson.title}</div>
         </Link>
       )}
 
       {!next && (
-        <div style={{ borderRadius: 14, padding: "18px 20px", marginBottom: 28, background: "#dcfce7", border: "1px solid #86efac" }}>
-          <div style={{ fontSize: 15, fontWeight: 700, color: "#166534" }}>You've completed every module in the Builder track 🎉</div>
+        <div style={{ borderRadius: 12, padding: "16px 20px", marginBottom: 24, background: "#f0fdf4", border: "1px solid #bbf7d0" }}>
+          <div style={{ fontSize: 15, fontWeight: 600, color: "#166534" }}>You've completed every module in the Builder track.</div>
         </div>
       )}
 
       {readiness && readiness.overall > 0 && (
-        <div style={{ border: "1px solid #eee", borderRadius: 12, padding: "16px 18px", marginBottom: 24 }}>
+        <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 12, padding: "16px 18px", marginBottom: 24 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
             <span style={{ fontSize: 13, fontWeight: 700, color: "#1a1a1a" }}>Startup Readiness Score</span>
             <span style={{ fontSize: 20, fontWeight: 800, color: ACCENT }}>{readiness.overall}</span>
@@ -89,14 +92,14 @@ export function StartupsHomeClient({ track }: { track: PublicTrack }) {
         </div>
       )}
 
-      <h2 style={{ fontSize: 15, fontWeight: 700, color: "#1a1a1a", margin: "0 0 14px" }}>{track.title} track</h2>
+      <h2 style={{ fontSize: 18, fontWeight: 700, color: "#111827", margin: "0 0 14px" }}>{track.title} track: {track.modules.length} modules</h2>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 12 }}>
         {track.modules.map((m) => {
           const status = moduleStatus(m, progress);
           const style = STATUS_STYLE[status];
           return (
-            <Link key={m.slug} href={`/account/startups/${track.slug}/${m.slug}`} className="fx-lift" style={{ textDecoration: "none", borderRadius: 14 }}>
-              <div style={{ border: "1px solid #e2e8f0", borderRadius: 14, padding: "14px 16px", display: "flex", flexDirection: "column", gap: 6, background: "#fff", height: "100%", boxSizing: "border-box" }}>
+            <Link key={m.slug} href={`/account/startups/${track.slug}/${m.slug}`} className="fx-lift" style={{ textDecoration: "none", borderRadius: 12 }}>
+              <div style={{ border: "1px solid #e5e7eb", borderRadius: 12, padding: "14px 16px", display: "flex", flexDirection: "column", gap: 6, background: "#fff", height: "100%", boxSizing: "border-box" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
                   <span style={{ fontSize: 10.5, fontWeight: 800, color: ACCENT, textTransform: "uppercase", letterSpacing: ".06em" }}>Module {m.order}</span>
                   <span style={{ padding: "3px 9px", borderRadius: 999, fontSize: 11, fontWeight: 700, background: style.bg, color: style.fg, whiteSpace: "nowrap" }}>{style.label}</span>
@@ -115,8 +118,8 @@ export function StartupsHomeClient({ track }: { track: PublicTrack }) {
           { href: "/account/startups/portfolio", title: "Your Startup Portfolio", note: "Everything you have written on your idea." },
           { href: "/account/startups/videos", title: "Video library", note: "Expert talks for each module." },
         ].map((x) => (
-          <Link key={x.href} href={x.href} className="fx-lift" style={{ textDecoration: "none", border: `1px solid ${ACCENT}33`, background: `${ACCENT}08`, borderRadius: 14, padding: "14px 16px", display: "flex", flexDirection: "column", gap: 3 }}>
-            <span style={{ fontSize: 14, fontWeight: 800, color: "#0f172a" }}>{x.title} →</span>
+          <Link key={x.href} href={x.href} className="fx-lift" style={{ textDecoration: "none", border: "1px solid #e5e7eb", background: "#fff", borderRadius: 12, padding: "14px 16px", display: "flex", flexDirection: "column", gap: 3 }}>
+            <span style={{ fontSize: 14, fontWeight: 600, color: "#111827" }}>{x.title} →</span>
             <span style={{ fontSize: 12.5, color: "#64748b" }}>{x.note}</span>
           </Link>
         ))}

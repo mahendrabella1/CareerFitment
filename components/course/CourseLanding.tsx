@@ -3,62 +3,74 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import type { CourseContent, LessonContent } from "@/lib/course/types";
+import type { CourseNavItem } from "@/lib/course/featureCourses";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { readCourseDone, saveCourseDone } from "@/lib/progress/progressStore";
+import { Icon } from "@/app/Icons";
+import { HeaderNote, PageHeader } from "@/components/course/fx";
+import { useFeatureCourse } from "@/components/course/FeatureCourseLayout";
 
 // A module shows this many lessons before "Show all" - the exam directory
 // and the scholarship listing are 29 and 40 lessons long.
 const LESSONS_SHOWN = 8;
+// "What's inside" lists this many items per part before "+ N more".
+const ITEMS_SHOWN = 3;
 
 const LANDING_CSS = `
-.cl{display:flex;flex-direction:column;gap:18px}
-.cl-hero{border-radius:18px;padding:26px;background:linear-gradient(135deg,color-mix(in srgb,var(--cl) 12%,#fff),#fff 70%);border:1px solid color-mix(in srgb,var(--cl) 20%,#fff);display:grid;grid-template-columns:minmax(0,1.55fr) minmax(250px,1fr);gap:24px;align-items:start}
-.cl-kicker{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--cl)}
-.cl-title{font-size:30px;font-weight:900;color:#0f172a;margin:8px 0 8px;line-height:1.18;text-wrap:balance}
-.cl-sub{font-size:15px;color:#475569;margin:0;line-height:1.6;max-width:640px}
-.cl-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
-.cl-chip{font-size:12px;font-weight:700;color:#334155;background:#ffffffcc;border:1px solid #e2e8f0;padding:5px 11px;border-radius:999px}
-.cl-outcomes{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px 22px;padding-top:18px;border-top:1px solid color-mix(in srgb,var(--cl) 15%,#fff)}
-.cl-out{display:flex;gap:9px;font-size:13.5px;color:#1e293b;line-height:1.5}
-.cl-out span:first-child{color:var(--cl);font-weight:900}
-.cl-prog{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px;box-shadow:0 6px 18px rgba(15,23,42,.05)}
-.cl-prog-k{font-size:11px;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:.06em}
-.cl-prog-n{font-size:26px;font-weight:900;color:#0f172a;margin-top:4px;font-variant-numeric:tabular-nums}
-.cl-prog-n small{font-size:13px;font-weight:700;color:#64748b;margin-left:4px}
-.cl-bar{height:8px;border-radius:999px;background:#e2e8f0;overflow:hidden}
+.cl{display:flex;flex-direction:column;gap:28px}
+.cl>.fx-ph{margin-bottom:0}
+.cl-sh{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 12px;margin:0 0 14px}
+.cl-sh h2{font-size:18px;font-weight:700;color:#111827;margin:0}
+.cl-sh span{font-size:13px;color:#6b7280}
+.cl-grid{display:grid;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));gap:14px}
+.cl-g{display:flex;flex-direction:column;gap:10px;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px;min-width:0}
+.cl-g-h{display:flex;align-items:center;gap:10px}
+.cl-g-ic{flex:none;width:36px;height:36px;border-radius:9px;display:grid;place-items:center;color:var(--cl);background:color-mix(in srgb,var(--cl) 10%,#fff)}
+.cl-g-t{font-size:15px;font-weight:600;color:#111827;line-height:1.3}
+.cl-g-n{font-size:12px;color:#6b7280}
+.cl-g-b{font-size:13px;color:#4b5563;line-height:1.5;margin:0}
+.cl-g-l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;flex:1}
+.cl-g-l a{display:block;font-size:13px;color:#374151;text-decoration:none;padding:4px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cl-g-l a:hover{color:var(--cl)}
+.cl-g-l .more{font-size:12.5px;color:#9ca3af;padding:4px 0}
+.cl-g-cta{display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;color:var(--cl);text-decoration:none;padding-top:10px;border-top:1px solid #f0f1f3}
+.cl-g-cta:hover{text-decoration:underline}
+.cl-slot{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:12px;align-items:stretch}
+.cl-slot>*{margin:0!important;min-width:0}
+.cl-content{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden}
+.cl-chead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:16px 18px;border-bottom:1px solid #e5e7eb}
+.cl-chead h2{font-size:17px;font-weight:700;color:#111827;margin:0}
+.cl-chead .cl-meta{font-size:13px;color:#6b7280}
+.cl-chead .cl-right{margin-left:auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.cl-prog{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#4b5563;font-variant-numeric:tabular-nums}
+.cl-bar{width:90px;height:6px;border-radius:999px;background:#e5e7eb;overflow:hidden}
 .cl-bar>div{height:100%;background:var(--cl);transition:width .3s ease}
-.cl-next{margin-top:14px;padding-top:12px;border-top:1px dashed #e2e8f0}
-.cl-next-t{font-size:13.5px;font-weight:700;color:#0f172a;line-height:1.4;margin:4px 0 10px}
-.cl-btn{display:inline-flex;align-items:center;justify-content:center;width:100%;font:inherit;font-size:13.5px;font-weight:800;color:#fff;background:var(--cl);border:none;border-radius:10px;padding:10px 16px;cursor:pointer}
-.cl-btn:hover{filter:brightness(.95)}
-.cl-content{background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden}
-.cl-chead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:16px 18px;border-bottom:1px solid #e2e8f0}
-.cl-chead h2{font-size:17px;font-weight:800;color:#0f172a;margin:0}
-.cl-chead span{font-size:12.5px;color:#64748b}
-.cl-chead button{margin-left:auto;font:inherit;font-size:12.5px;font-weight:700;color:var(--cl);background:none;border:none;cursor:pointer;padding:4px 0}
-.cl-mod{border-bottom:1px solid #e2e8f0}
+.cl-toggle{font:inherit;font-size:13px;font-weight:600;color:#4b5563;background:none;border:none;cursor:pointer;padding:4px 0}
+.cl-toggle:hover{color:#111827}
+.cl-mod{border-bottom:1px solid #e5e7eb}
 .cl-mod:last-child{border-bottom:none}
-.cl-mhead{width:100%;display:grid;grid-template-columns:34px minmax(0,1fr) auto 16px;gap:14px;align-items:center;padding:14px 18px;background:#fff;border:none;cursor:pointer;font:inherit;text-align:left}
-.cl-mhead:hover{background:#fafbfd}
-.cl-mod.is-open .cl-mhead{background:color-mix(in srgb,var(--cl) 5%,#fff)}
-.cl-num{width:34px;height:34px;border-radius:10px;background:color-mix(in srgb,var(--cl) 14%,#fff);color:var(--cl);display:grid;place-items:center;font-weight:900;font-size:14px}
-.cl-mod.is-done .cl-num{background:var(--cl);color:#fff}
-.cl-mtitle{display:block;font-size:15.5px;font-weight:800;color:#0f172a;line-height:1.3}
-.cl-msum{display:block;font-size:13px;color:#64748b;line-height:1.5;margin-top:2px}
-.cl-mmeta{text-align:right;font-size:12px;color:#64748b;white-space:nowrap;font-variant-numeric:tabular-nums}
-.cl-mmeta b{display:block;font-size:12.5px;color:#334155}
-.cl-chev{width:16px;height:16px;color:#94a3b8;transition:transform .15s}
+.cl-mhead{width:100%;display:grid;grid-template-columns:32px minmax(0,1fr) auto 16px;gap:14px;align-items:center;padding:14px 18px;background:#fff;border:none;cursor:pointer;font:inherit;text-align:left}
+.cl-mhead:hover{background:#fafafa}
+.cl-num{width:32px;height:32px;border-radius:8px;background:#f3f4f6;color:#374151;display:grid;place-items:center;font-weight:700;font-size:13.5px}
+.cl-mod.is-done .cl-num{background:#dcfce7;color:#15803d}
+.cl-mtitle{display:block;font-size:15px;font-weight:600;color:#111827;line-height:1.3}
+.cl-msum{display:block;font-size:13px;color:#6b7280;line-height:1.5;margin-top:2px}
+.cl-mmeta{text-align:right;font-size:12px;color:#6b7280;white-space:nowrap;font-variant-numeric:tabular-nums}
+.cl-mmeta b{display:block;font-size:12.5px;font-weight:600;color:#374151}
+.cl-chev{width:16px;height:16px;color:#9ca3af;transition:transform .15s}
 .cl-mod.is-open .cl-chev{transform:rotate(90deg)}
-.cl-lessons{display:flex;flex-direction:column;gap:8px;padding:4px 18px 18px 66px}
-.cl-more{align-self:flex-start;font:inherit;font-size:13px;font-weight:800;color:var(--cl);background:color-mix(in srgb,var(--cl) 8%,#fff);border:1px solid color-mix(in srgb,var(--cl) 25%,#fff);border-radius:10px;padding:8px 14px;cursor:pointer}
+.cl-lessons{display:flex;flex-direction:column;gap:8px;padding:2px 18px 18px 64px}
+.cl-more{align-self:flex-start;font:inherit;font-size:13px;font-weight:600;color:#374151;background:#fff;border:1px solid #d1d5db;border-radius:8px;padding:7px 13px;cursor:pointer}
+.cl-more:hover{background:#f9fafb}
+@media (max-width:1180px){.cl-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:860px){
-  .cl-hero{grid-template-columns:minmax(0,1fr);padding:20px}
-  .cl-title{font-size:25px}
   .cl-mhead{grid-template-columns:30px minmax(0,1fr) 16px;padding:14px}
   .cl-mmeta{display:none}
   .cl-num{width:30px;height:30px}
-  .cl-lessons{padding:4px 12px 16px}
+  .cl-lessons{padding:2px 12px 16px}
+  .cl-chead .cl-right{margin-left:0;width:100%}
 }
+@media (max-width:620px){.cl-grid{grid-template-columns:minmax(0,1fr)}}
 `;
 
 function Chevron() {
@@ -70,6 +82,7 @@ function Chevron() {
 }
 
 export function CourseLanding({ content, topSlot }: { content: CourseContent; topSlot?: ReactNode }) {
+  const feature = useFeatureCourse();
   const { profile } = useAuth();
   const accountProgress = profile?.progress?.courses?.[content.key];
   const [done, setDone] = useState<string[]>([]);
@@ -121,54 +134,89 @@ export function CourseLanding({ content, topSlot }: { content: CourseContent; to
     });
   };
 
+  // "What's inside": every part of the section with its own way in. Index
+  // pages ("All labs") are the part's button rather than a line in its list.
+  const parts = (feature?.groups ?? []).map((g) => {
+    const live = g.items.filter((i) => !i.planned && i.href !== feature?.home);
+    const isIndex = (i: CourseNavItem) => live.some((o) => o !== i && o.href.startsWith(`${i.href}/`));
+    const items = live.filter((i) => !isIndex(i));
+    return { ...g, items, href: g.href ?? live[0]?.href };
+  }).filter((g) => g.items.length > 0 && g.href);
+  const cols = parts.length <= 4 ? parts.length : parts.length % 3 === 0 ? 3 : 4;
+
   return (
     <div className="cl" style={{ ["--cl" as string]: accent }}>
       <style dangerouslySetInnerHTML={{ __html: LANDING_CSS }} />
-      <section className="cl-hero">
-        <div>
-          <div className="cl-kicker">{content.kicker}</div>
-          <h1 className="cl-title">{content.title}</h1>
-          <p className="cl-sub">{content.subtitle}</p>
-          <div className="cl-chips">
-            {[`${content.modules.length} modules`, `${total} lessons`, `${totalMinutes} min total`].map((chip) => (
-              <span key={chip} className="cl-chip">{chip}</span>
-            ))}
+
+      <PageHeader
+        icon={feature?.icon}
+        eyebrow={content.kicker}
+        title={content.title}
+        subtitle={content.subtitle}
+        actions={feature ? (
+          <>
+            <Link href={feature.start.href} className="fx-btn fx-btn-primary">{feature.start.label}<Icon name="arrowRight" size={15} stroke={2} /></Link>
+            {feature.secondary && <Link href={feature.secondary.href} className="fx-btn">{feature.secondary.label}</Link>}
+          </>
+        ) : next ? (
+          <button className="fx-btn fx-btn-primary" onClick={() => openLesson(next)}>{completed === 0 ? "Start the course" : "Continue"}</button>
+        ) : null}
+        aside={content.outcomes.length > 0 ? (
+          <HeaderNote title="What you'll learn">
+            <ul>{content.outcomes.slice(0, 4).map((o) => <li key={o}>{o}</li>)}</ul>
+          </HeaderNote>
+        ) : undefined}
+      />
+
+      {topSlot && <div className="cl-slot">{topSlot}</div>}
+
+      {parts.length > 0 && (
+        <section aria-labelledby="cl-inside">
+          <div className="cl-sh">
+            <h2 id="cl-inside">What&apos;s inside</h2>
+            <span>Pick any part - each one opens straight into the tool.</span>
           </div>
-        </div>
-
-        <div className="cl-prog">
-          <div className="cl-prog-k">Your progress</div>
-          <div className="cl-prog-n">{percent}%<small>{completed} of {total} lessons</small></div>
-          <div className="cl-bar" style={{ marginTop: 8 }}><div style={{ width: `${percent}%` }} /></div>
-          {next ? (
-            <div className="cl-next">
-              <div className="cl-prog-k">{completed === 0 ? "Start with" : "Up next"}</div>
-              <div className="cl-next-t">{next.lesson.title}</div>
-              <button className="cl-btn" onClick={() => openLesson(next)}>{completed === 0 ? "Start course" : "Continue"} →</button>
-            </div>
-          ) : (
-            <div className="cl-next" style={{ fontSize: 13, fontWeight: 700, color: "#166534" }}>Every lesson is complete.</div>
-          )}
-        </div>
-
-        {content.outcomes.length > 0 && (
-          <div className="cl-outcomes">
-            {content.outcomes.map((o) => (
-              <div key={o} className="cl-out"><span>✓</span><span>{o}</span></div>
-            ))}
+          <div className="cl-grid" style={{ ["--cols" as string]: cols }}>
+            {parts.map((g) => {
+              const shown = g.items.slice(0, ITEMS_SHOWN);
+              const rest = g.items.length - shown.length;
+              return (
+                <div key={g.title} className="cl-g">
+                  <div className="cl-g-h">
+                    <span className="cl-g-ic" aria-hidden="true"><Icon name={g.icon ?? "layers"} size={18} stroke={1.9} /></span>
+                    <div style={{ minWidth: 0 }}>
+                      <div className="cl-g-t">{g.title}</div>
+                      <div className="cl-g-n">{g.items.length} {g.items.length === 1 ? "item" : "items"}</div>
+                    </div>
+                  </div>
+                  {g.blurb && <p className="cl-g-b">{g.blurb}</p>}
+                  <ul className="cl-g-l">
+                    {shown.map((i) => <li key={i.href}><Link href={i.href} title={i.label}>{i.label}</Link></li>)}
+                    {rest > 0 && <li className="more">+ {rest} more</li>}
+                  </ul>
+                  <Link href={g.href!} className="cl-g-cta">{g.cta ?? `Open ${g.title}`}<Icon name="arrowRight" size={14} stroke={2} /></Link>
+                </div>
+              );
+            })}
           </div>
-        )}
-      </section>
+        </section>
+      )}
 
-      {topSlot}
-
-      <section className="cl-content" aria-label="Course content">
+      <section className="cl-content" aria-label="Lessons">
         <div className="cl-chead">
-          <h2>Course content</h2>
-          <span>{content.modules.length} modules · {total} lessons · {totalMinutes} min</span>
-          <button onClick={() => setOpenModules(allOpen ? new Set() : new Set(content.modules.map((m) => m.id)))}>
-            {allOpen ? "Collapse all" : "Expand all"}
-          </button>
+          <h2>Lessons</h2>
+          <span className="cl-meta">{content.modules.length} modules · {total} lessons · {totalMinutes} min</span>
+          <div className="cl-right">
+            <span className="cl-prog"><span className="cl-bar"><div style={{ width: `${percent}%` }} /></span>{completed}/{total} done</span>
+            {next ? (
+              <button className="fx-btn" onClick={() => openLesson(next)}>{completed === 0 ? "Start lesson 1" : "Continue reading"}</button>
+            ) : (
+              <span style={{ fontSize: 13, fontWeight: 600, color: "#15803d" }}>All lessons complete</span>
+            )}
+            <button className="cl-toggle" onClick={() => setOpenModules(allOpen ? new Set() : new Set(content.modules.map((m) => m.id)))}>
+              {allOpen ? "Collapse all" : "Expand all"}
+            </button>
+          </div>
         </div>
 
         {content.modules.map((m, mi) => {
@@ -233,22 +281,22 @@ function LessonRow({
   onToggleDone: () => void;
 }) {
   return (
-    <div id={`lesson-${lesson.id}`} style={{ border: `1px solid ${isOpen ? accent : "#e2e8f0"}`, borderRadius: 12, background: isOpen ? `${accent}08` : "#fff", overflow: "hidden", scrollMarginTop: 72 }}>
+    <div id={`lesson-${lesson.id}`} style={{ border: `1px solid ${isOpen ? "#d1d5db" : "#e5e7eb"}`, borderRadius: 10, background: "#fff", overflow: "hidden", scrollMarginTop: 72 }}>
       <button
         onClick={onOpen}
         aria-expanded={isOpen}
         style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, padding: "11px 14px", background: "transparent", border: "none", cursor: "pointer", textAlign: "left", font: "inherit" }}
       >
-        <span style={{ flex: "none", width: 24, height: 24, borderRadius: 999, display: "grid", placeItems: "center", fontSize: 11, fontWeight: 900, background: isDone ? accent : "#f1f5f9", color: isDone ? "#fff" : accent, border: isDone ? "none" : `1.5px solid ${accent}55` }}>
+        <span style={{ flex: "none", width: 22, height: 22, borderRadius: 999, display: "grid", placeItems: "center", fontSize: 11, fontWeight: 700, background: isDone ? "#16a34a" : "#fff", color: isDone ? "#fff" : "#6b7280", border: isDone ? "none" : "1.5px solid #d1d5db" }}>
           {isDone ? "✓" : "▶"}
         </span>
-        <span style={{ flex: 1, minWidth: 0, fontSize: 14.5, fontWeight: 700, color: "#0f172a" }}>{lesson.title}</span>
-        <span style={{ fontSize: 12, color: "#64748b", flex: "none" }}>{lesson.minutes} min</span>
+        <span style={{ flex: 1, minWidth: 0, fontSize: 14.5, fontWeight: 600, color: "#111827" }}>{lesson.title}</span>
+        <span style={{ fontSize: 12, color: "#6b7280", flex: "none" }}>{lesson.minutes} min</span>
       </button>
 
       {isOpen && (
-        <div style={{ padding: "2px 16px 18px 50px", display: "flex", flexDirection: "column", gap: 12, maxWidth: 820 }}>
-          <p style={{ fontSize: 14, fontWeight: 700, color: accent, margin: 0, lineHeight: 1.5 }}>{lesson.summary}</p>
+        <div style={{ padding: "2px 16px 18px 48px", display: "flex", flexDirection: "column", gap: 12, maxWidth: 820 }}>
+          <p style={{ fontSize: 14, fontWeight: 600, color: "#374151", margin: 0, lineHeight: 1.5 }}>{lesson.summary}</p>
 
           {lesson.videoId && (
             <iframe
@@ -257,20 +305,20 @@ function LessonRow({
               loading="lazy"
               allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              style={{ width: "100%", maxWidth: "100%", aspectRatio: "16 / 9", border: 0, borderRadius: 12 }}
+              style={{ width: "100%", maxWidth: "100%", aspectRatio: "16 / 9", border: 0, borderRadius: 10 }}
             />
           )}
 
           {lesson.body.map((p, i) => (
-            <p key={i} style={{ fontSize: 14.5, color: "#334155", lineHeight: 1.7, margin: 0 }}>{p}</p>
+            <p key={i} style={{ fontSize: 14.5, color: "#374151", lineHeight: 1.7, margin: 0 }}>{p}</p>
           ))}
 
           {lesson.points && lesson.points.length > 0 && (
-            <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: 12, padding: "12px 14px" }}>
-              <div style={{ fontSize: 11, fontWeight: 800, color: "#64748b", textTransform: "uppercase", letterSpacing: ".05em", marginBottom: 6 }}>Key points</div>
+            <div style={{ background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 10, padding: "12px 14px" }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: ".06em", marginBottom: 6 }}>Key points</div>
               <ul style={{ margin: 0, paddingLeft: 18, display: "flex", flexDirection: "column", gap: 5 }}>
                 {lesson.points.map((pt) => (
-                  <li key={pt} style={{ fontSize: 13.5, color: "#1e293b", lineHeight: 1.55 }}>{pt}</li>
+                  <li key={pt} style={{ fontSize: 13.5, color: "#1f2937", lineHeight: 1.55 }}>{pt}</li>
                 ))}
               </ul>
             </div>
@@ -278,19 +326,16 @@ function LessonRow({
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
             {lesson.tool && (
-              <Link href={lesson.tool.href} style={{ fontSize: 13, fontWeight: 800, color: accent, background: `${accent}14`, border: `1px solid ${accent}40`, borderRadius: 10, padding: "8px 14px", textDecoration: "none" }}>
+              <Link href={lesson.tool.href} className="fx-btn fx-btn-primary" style={{ ["--accent" as string]: accent }}>
                 {lesson.tool.label} →
               </Link>
             )}
             {lesson.source && (
-              <a href={lesson.source.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12.5, color: "#475569", textDecoration: "underline" }}>
+              <a href={lesson.source.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12.5, color: "#4b5563", textDecoration: "underline" }}>
                 Source: {lesson.source.label}
               </a>
             )}
-            <button
-              onClick={onToggleDone}
-              style={{ marginLeft: "auto", fontSize: 13, fontWeight: 800, color: isDone ? "#166534" : "#fff", background: isDone ? "#dcfce7" : accent, border: "none", borderRadius: 10, padding: "8px 14px", cursor: "pointer" }}
-            >
+            <button onClick={onToggleDone} className="fx-btn" style={{ marginLeft: "auto", color: isDone ? "#15803d" : undefined }}>
               {isDone ? "Completed ✓ (undo)" : "Mark as complete"}
             </button>
           </div>

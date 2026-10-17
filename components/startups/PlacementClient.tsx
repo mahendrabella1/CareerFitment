@@ -7,7 +7,7 @@ import { PLACEMENT_QUESTIONS, suggestTrack } from "@/lib/startups/placement";
 import { saveProfile } from "@/lib/startups/clientProgress";
 import { PageHeader } from "@/components/course/fx";
 
-const ACCENT = "#f97316";
+const ACCENT = "#c2410c";
 const TRACK_LABEL: Record<string, string> = { EXPLORER: "Explorer (class 6-8)", BUILDER: "Builder (class 9-12)", FOUNDER: "Founder (college)", OPERATOR: "Operator (professionals)" };
 
 /** The placement quiz itself - the page wraps it in the Startups course frame. */
@@ -43,7 +43,7 @@ export function PlacementClient() {
   }
 
   return (
-    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
+    <div className="fx-narrow" style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <PageHeader icon="target" eyebrow="Find your track" title="Quick placement quiz" subtitle="5 questions, about 2 minutes." />
 
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>

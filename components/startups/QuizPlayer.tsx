@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import type { ClientQuizQuestion } from "@/lib/startups/scoring";
 import type { GradeResult } from "@/lib/startups/scoring";
 
-const ACCENT = "#f97316";
+const ACCENT = "#c2410c";
 
 export function QuizPlayer({ questions, onSubmit, submitting }: {
   questions: ClientQuizQuestion[];

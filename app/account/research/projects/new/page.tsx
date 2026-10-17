@@ -59,7 +59,7 @@ export default function NewProjectPage() {
   };
 
   return (
-    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
+    <div className="fx-narrow" style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <PageHeader icon="flask" eyebrow="Your project" title="Start a research project"
         subtitle="Pick a real conference, then work backwards from its date - your step plan appears below." />
 

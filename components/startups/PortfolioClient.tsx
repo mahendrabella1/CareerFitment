@@ -5,7 +5,7 @@ import { useAuth } from "@/lib/auth/AuthProvider";
 import { fetchTaskSubmissions, type TaskSubmissionRow } from "@/lib/startups/clientProgress";
 import { PageHeader } from "@/components/course/fx";
 
-const ACCENT = "#f97316";
+const ACCENT = "#c2410c";
 const KIND_LABEL: Record<string, string> = { task: "Lesson task", mission: "Real-world mission", portfolio: "Portfolio item" };
 
 export function PortfolioClient({ moduleTitles }: { moduleTitles: Record<string, string> }) {
@@ -18,7 +18,7 @@ export function PortfolioClient({ moduleTitles }: { moduleTitles: Record<string,
   }, [user?.uid]);
 
   return (
-    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
+    <div className="fx-narrow" style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <PageHeader icon="archive" eyebrow="Your work" title="Your Startup Portfolio" subtitle="Everything you've built, from your own idea - real proof of work." />
 
       {rows === null && <p style={{ color: "#888" }}>Loading…</p>}

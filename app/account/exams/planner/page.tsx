@@ -9,7 +9,7 @@ export default function ExamPlannerIndexPage() {
   const withSyllabus = SYLLABI.map((s) => ({ s, exam: EXAMS.find((e) => e.slug === s.examSlug) })).filter((x) => x.exam);
   const others = EXAMS.filter((e) => !SYLLABI.some((s) => s.examSlug === e.slug));
   return (
-    <div style={{ maxWidth: 880 }}>
+    <div className="fx-narrow" style={{ maxWidth: 880 }}>
       <PageHeader icon="calendar" eyebrow="Prepare" title="Study planner and syllabus tracker"
         subtitle="Pick your exam. Track every unit of the syllabus and get a weekly plan that counts back from exam day. Plans are saved on your device." />
 

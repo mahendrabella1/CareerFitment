@@ -45,7 +45,7 @@ export function ScholarshipDetailClient({ scholarship }: { scholarship: Scholars
   };
 
   return (
-    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
+    <div className="fx-narrow" style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <PageHeader back={{ href: "/account/scholarships/dashboard", label: "Money you can apply for" }} icon="award"
         eyebrow={SCHOLARSHIP_TYPE_LABEL[scholarship.type]} actions={<StatusChip scholarship={scholarship} />}
         title={scholarship.name} subtitle={scholarship.provider} />

@@ -15,7 +15,7 @@ const SCAMS = [
 export default function ScholarshipSafetyPage() {
   const cyberFraud = HELP_CONTACTS.find((c) => c.slug === "cyber-fraud");
   return (
-    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
+    <div className="fx-narrow" style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <PageHeader icon="shield" eyebrow="Stay safe" title="Scholarship scams and safety" />
       <div style={{ border: "2px solid #dc2626", background: "#fef2f2", borderRadius: 12, padding: "14px 16px", marginBottom: 20 }}>
         <p style={{ fontSize: 14, fontWeight: 800, color: "#991b1b", margin: 0 }}>Genuine scholarships never ask you to pay to receive money.</p>

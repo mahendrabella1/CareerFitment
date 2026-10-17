@@ -35,7 +35,7 @@ export default function MentorQueuePage() {
   }
 
   return (
-    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
+    <div className="fx-narrow" style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <PageHeader icon="users" eyebrow="Find and get feedback" title="Mentor review queue"
         subtitle={`${queue?.length ?? 0} abstract${queue?.length === 1 ? "" : "s"} awaiting review.`} />
 

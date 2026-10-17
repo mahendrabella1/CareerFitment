@@ -22,7 +22,7 @@ export default function StudioUnitPage({ params }: { params: { unit: string } })
 
   if (!unit) {
     return (
-      <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
+      <div className="fx-narrow" style={{ maxWidth: 880, padding: "0 0 8px" }}>
         <Link href="/account/research/studio" style={{ fontSize: 13, color: "#999" }}>← Research Studio</Link>
         <p style={{ marginTop: 20, color: "#888" }}>That unit doesn't exist.</p>
       </div>
@@ -36,7 +36,7 @@ export default function StudioUnitPage({ params }: { params: { unit: string } })
   };
 
   return (
-    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
+    <div className="fx-narrow" style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <PageHeader back={{ href: "/account/research/studio", label: "Research Studio" }} icon="book" eyebrow={`Unit ${unit.unit} of ${STUDIO_UNITS.length}`} title={unit.title} />
 
       <p style={{ fontSize: 15, lineHeight: 1.6, color: "#333", fontStyle: "italic", borderLeft: `3px solid ${ACCENT}`, paddingLeft: 14, marginBottom: 22 }}>{unit.hook}</p>

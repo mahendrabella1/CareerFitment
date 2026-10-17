@@ -52,7 +52,7 @@ export function SalarySlipLab() {
         {lines.map((l) => (
           <div key={l.label} style={row}>
             <span style={{ minWidth: 0 }}>− {l.label}<br /><span style={{ fontSize: 11.5, color: "#64748b" }}>{l.note}</span></span>
-            <span style={{ color: l.value > 0 ? "#b91c1c" : "#64748b", whiteSpace: "nowrap" }}>{inr(l.value)}</span>
+            <span style={{ color: l.value > 0 ? "#111827" : "#9ca3af", whiteSpace: "nowrap", fontVariantNumeric: "tabular-nums" }}>{inr(l.value)}</span>
           </div>
         ))}
         <div style={{ ...row, background: "#f0fdf4", borderBottom: "none" }}><span style={{ fontWeight: 900, color: "#14532d" }}>Reaches your bank</span><span style={{ fontWeight: 900, color: "#14532d" }}>{inr(b.inHandYear)} / yr · {inr(b.inHandMonth)} / mo</span></div>

@@ -8,7 +8,7 @@ import { fetchProgress, submitTask } from "@/lib/startups/clientProgress";
 import { lessonStatus, moduleStatus, moduleTestUnlocked, type ProgressMap } from "@/lib/startups/unlock";
 import { PageHeader } from "@/components/course/fx";
 
-const ACCENT = "#f97316";
+const ACCENT = "#c2410c";
 const STATUS_DOT: Record<string, string> = { COMPLETED: "#22c55e", IN_PROGRESS: "#f59e0b", NOT_STARTED: "#d1d5db", LOCKED: "#e5e7eb" };
 
 export function ModuleClient({ track, moduleSlug }: { track: PublicTrack; moduleSlug: string }) {
@@ -36,7 +36,7 @@ export function ModuleClient({ track, moduleSlug }: { track: PublicTrack; module
   };
 
   return (
-    <div style={{ maxWidth: 720 }}>
+    <div className="fx-narrow" style={{ maxWidth: 720 }}>
       <PageHeader back={{ href: "/account/startups", label: "All modules" }} icon="rocket" eyebrow={`Module ${module.order}`}
         title={module.title} subtitle={`Real-world mission: ${module.missionText}`} meta={[`Portfolio: ${module.portfolioItem}`]} />
 

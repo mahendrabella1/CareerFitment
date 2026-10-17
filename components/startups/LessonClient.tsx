@@ -9,7 +9,7 @@ import { recordLessonAttempt, submitTask } from "@/lib/startups/clientProgress";
 import type { ClientQuizQuestion, GradeResult } from "@/lib/startups/scoring";
 import { PageHeader } from "@/components/course/fx";
 
-const ACCENT = "#f97316";
+const ACCENT = "#c2410c";
 
 interface SafeLesson {
   slug: string; title: string; durationMin: number; youtubeId: string | null; videoStartSec: number;
@@ -52,7 +52,7 @@ export function LessonClient({ trackSlug, moduleSlug, moduleTitle, lesson, quiz,
   };
 
   return (
-    <div style={{ maxWidth: 760 }}>
+    <div className="fx-narrow" style={{ maxWidth: 760 }}>
       <PageHeader back={{ href: `/account/startups/${trackSlug}/${moduleSlug}`, label: moduleTitle }} icon="play" eyebrow="Lesson"
         title={lesson.title} meta={[`${lesson.durationMin} minutes`]} />
 

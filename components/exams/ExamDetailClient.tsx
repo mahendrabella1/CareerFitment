@@ -53,7 +53,7 @@ export function ExamDetailClient({ exam }: { exam: ExamDef }) {
   };
 
   return (
-    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
+    <div className="fx-narrow" style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <PageHeader back={{ href: "/account/exams/dashboard", label: "My exams and deadlines" }} icon="exam" eyebrow="Exam directory"
         title={exam.name} subtitle={`Conducted by ${exam.body} · ${exam.cycle.year} cycle`} />
       <a href={exam.officialUrl} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: ACCENT, fontWeight: 700, textDecoration: "none" }}>

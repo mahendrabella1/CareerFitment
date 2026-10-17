@@ -14,11 +14,11 @@ export function CourseAsideCard({
   hrefLabel?: string;
 }) {
   return (
-    <section style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 14, padding: "14px 16px" }}>
-      <div style={{ fontSize: 10.5, fontWeight: 800, color: accent, textTransform: "uppercase", letterSpacing: ".05em", marginBottom: 8 }}>{title}</div>
-      <div style={{ fontSize: 13, color: "#334155", lineHeight: 1.55 }}>{children}</div>
+    <section style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 12, padding: "14px 16px" }}>
+      <div style={{ fontSize: 12, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: ".06em", marginBottom: 8 }}>{title}</div>
+      <div style={{ fontSize: 13.5, color: "#374151", lineHeight: 1.55 }}>{children}</div>
       {href && hrefLabel && (
-        <Link href={href} style={{ display: "inline-block", marginTop: 10, fontSize: 12.5, fontWeight: 700, color: accent, textDecoration: "none" }}>{hrefLabel} →</Link>
+        <Link href={href} style={{ display: "inline-block", marginTop: 10, fontSize: 13, fontWeight: 600, color: accent, textDecoration: "none" }}>{hrefLabel} →</Link>
       )}
     </section>
   );
@@ -36,14 +36,14 @@ export interface NextBarLink {
 }
 
 const NEXTBAR_CSS = `
-.cnb{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.cnb a,.cnb .cnb-end{display:flex;flex-direction:column;gap:3px;min-width:0;padding:14px 16px;border-radius:14px;background:#fff;border:1px solid #e2e8f0;text-decoration:none;transition:border-color .15s,box-shadow .15s}
-.cnb a:hover{border-color:var(--cnb-accent);box-shadow:0 4px 14px rgba(15,23,42,.06)}
+.cnb{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:20px;border-top:1px solid #e5e7eb}
+.cnb a,.cnb .cnb-end{display:flex;flex-direction:column;gap:3px;min-width:0;padding:12px 16px;border-radius:10px;background:#fff;border:1px solid #e5e7eb;text-decoration:none;transition:border-color .15s,background .15s}
+.cnb a:hover{border-color:#c4c9d2;background:#fcfcfd}
 .cnb .cnb-next{grid-column:2;text-align:right;align-items:flex-end}
-.cnb .cnb-k{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#94a3b8}
-.cnb .cnb-next .cnb-k{color:var(--cnb-accent)}
-.cnb .cnb-l{font-size:14px;font-weight:800;color:#0f172a;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cnb .cnb-n{font-size:12px;color:#64748b}
+.cnb .cnb-k{font-size:12px;font-weight:500;color:#6b7280}
+.cnb .cnb-next .cnb-k{color:var(--cnb-accent);font-weight:600}
+.cnb .cnb-l{font-size:14px;font-weight:600;color:#111827;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cnb .cnb-n{font-size:12px;color:#6b7280}
 @media (max-width:640px){.cnb{grid-template-columns:1fr}.cnb .cnb-next{grid-column:1}}
 `;
 
@@ -62,7 +62,7 @@ export function CourseNextBar({ accent, prev, next, doneText }: { accent: string
       )}
       {next ? (
         <Link href={next.href} className="cnb-next">
-          <span className="cnb-k">Up next →</span>
+          <span className="cnb-k">Next →</span>
           <span className="cnb-l">{next.label}</span>
           {next.note && <span className="cnb-n">{next.note}</span>}
         </Link>

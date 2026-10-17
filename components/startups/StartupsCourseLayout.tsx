@@ -10,7 +10,7 @@ import { CoursePlayerShell } from "@/components/course/CoursePlayerShell";
 import { CourseSidebar, type SidebarGroup, type ItemStatus } from "@/components/course/CourseSidebar";
 import { CourseNextBar } from "@/components/course/CourseAside";
 
-const ACCENT = "#f97316";
+const ACCENT = "#c2410c";
 
 export function StartupsCourseLayout({ track, children }: { track: PublicTrack; children: React.ReactNode }) {
   const { user } = useAuth();
@@ -45,6 +45,14 @@ export function StartupsCourseLayout({ track, children }: { track: PublicTrack; 
     });
     return { title: `${m.order}. ${m.title}`, items };
   });
+  groups.push({
+    title: "More",
+    items: [
+      { href: "/account/startups/placement", label: "Placement quiz", meta: "2 min" },
+      { href: "/account/startups/portfolio", label: "Your Startup Portfolio" },
+      { href: "/account/startups/videos", label: "Video library" },
+    ].map((i) => ({ ...i, status: (pathname === i.href ? "current" : "todo") as ItemStatus })),
+  });
 
   const next = nextUnfinishedLesson(track, p);
   const nextModule = next ? track.modules.find((m) => m.slug === next.moduleSlug) : null;
@@ -54,6 +62,9 @@ export function StartupsCourseLayout({ track, children }: { track: PublicTrack; 
   // first lesson not finished yet.
   const flat = groups.flatMap((g) => g.items.filter((i) => i.status !== "locked").map((i) => ({ ...i, group: g.title })));
   const here = flat.findIndex((i) => i.status === "current");
+  // A module page sits under its own lessons in the menu, so it is named here.
+  const moduleHere = track.modules.find((m) => pathname === `/account/startups/${track.slug}/${m.slug}`);
+  const crumb = here >= 0 ? flat[here].label : moduleHere?.title;
   const prevItem = here > 0 ? flat[here - 1] : undefined;
   const nextItem = here >= 0 ? flat[here + 1] : undefined;
   const continueHref = next ? `/account/startups/${track.slug}/${next.moduleSlug}/${next.lessonSlug}` : undefined;
@@ -74,8 +85,9 @@ export function StartupsCourseLayout({ track, children }: { track: PublicTrack; 
   return (
     <CoursePlayerShell
       accent={ACCENT}
-      accent2="#e11d48"
       banner={{ title: "Startups", subtitle: "Watch, read, try it on your own idea, take the quiz - and finish with a real startup you've shaped yourself.", icon: "rocket", backHref: "/account", backLabel: "Dashboard" }}
+      homeHref="/account/startups"
+      crumb={crumb}
       menuLabel="Startups menu"
       sidebar={
         <CourseSidebar

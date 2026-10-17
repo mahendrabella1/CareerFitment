@@ -26,7 +26,7 @@ export default function SourcesPage({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div style={{ maxWidth: 880, padding: "0 0 8px" }}>
+    <div className="fx-narrow" style={{ maxWidth: 880, padding: "0 0 8px" }}>
       <PageHeader back={{ href: `/account/research/projects/${project.id}`, label: project.conferenceTitle }} icon="book" eyebrow="Your project"
         title={`Sources (${project.sources.length})`} />
 

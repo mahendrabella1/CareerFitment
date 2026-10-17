@@ -2,96 +2,63 @@
  * Portfolio API - Public Portfolio View
  * GET /api/portfolio/public/[slug]
  *
- * Gets a public portfolio by slug from Firestore
- * No authentication required (public endpoint)
- * Increments view counter on each access
+ * A portfolio its owner has made public, by slug. No sign-in needed. Counts
+ * one view per call and returns only what the owner chose to show.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { initializeApp, getApps, cert } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
+import { NextResponse } from 'next/server';
+import { getFirestore, isFirestoreConfigured } from '@/lib/firebase/admin';
+import { normalisePortfolio, PORTFOLIOS } from '@/lib/portfolio/server';
 
 export const dynamic = 'force-dynamic';
 
-function initFirebase() {
-  const apps = getApps();
-  if (apps.length === 0) {
-    initializeApp({
-      credential: cert({
-        projectId: process.env.FIREBASE_PROJECT_ID,
-        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-      }),
-    });
-  }
-  return getFirestore();
-}
+const SLUG = /^[a-z0-9-]{3,80}$/;
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(_req: Request, { params }: { params: { slug: string } }) {
   try {
-    const { slug } = params;
-
-    // Validate slug format
-    if (!slug || typeof slug !== 'string') {
-      return NextResponse.json(
-        { error: 'Invalid portfolio slug' },
-        { status: 400 }
-      );
+    if (!SLUG.test(params.slug ?? '')) {
+      return NextResponse.json({ error: 'Invalid portfolio link' }, { status: 400 });
     }
-
-    const db = initFirebase();
-
-    // Query for portfolio by slug
-    const querySnapshot = await db.collection('portfolios')
-      .where('profileSlug', '==', slug)
+    if (!isFirestoreConfigured()) {
+      return NextResponse.json({ error: 'Portfolios are not available on this deployment.' }, { status: 503 });
+    }
+    const db = await getFirestore();
+    const found = await db.collection(PORTFOLIOS)
+      .where('profileSlug', '==', params.slug)
       .where('isPublic', '==', true)
       .limit(1)
       .get();
-
-    if (querySnapshot.empty) {
-      return NextResponse.json(
-        { error: 'Portfolio not found or not public' },
-        { status: 404 }
-      );
+    if (found.empty) {
+      return NextResponse.json({ error: 'Portfolio not found or not public' }, { status: 404 });
     }
 
-    const portfolioDoc = querySnapshot.docs[0];
-    const portfolio = portfolioDoc.data();
+    const doc = found.docs[0];
+    const p = normalisePortfolio(doc.data());
+    await doc.ref.update({ views: p.views + 1 });
 
-    // Increment view counter
-    await querySnapshot.docs[0].ref.update({
-      views: (portfolio.views || 0) + 1
+    return NextResponse.json({
+      profileSlug: p.profileSlug,
+      displayName: p.displayName || '',
+      headline: p.headline,
+      bio: p.bio,
+      location: p.location || '',
+      website: p.website || '',
+      linkedin: p.linkedin || '',
+      github: p.github || '',
+      twitter: p.twitter || '',
+      careerFit: p.careerFit || '',
+      ...(p.showCareerScore && p.careerScore ? { careerScore: p.careerScore } : {}),
+      ...(p.showEmail && p.email ? { email: p.email, showEmail: true } : {}),
+      ...(p.showPhone && p.phone ? { phone: p.phone, showPhone: true } : {}),
+      experience: p.experience,
+      education: p.education,
+      certifications: p.certifications,
+      skills: p.skills,
+      views: p.views + 1,
+      lastUpdated: p.lastUpdated,
     });
-
-    // Return only public fields
-    const sanitized = {
-      profileSlug: portfolio.profileSlug,
-      headline: portfolio.headline,
-      bio: portfolio.bio,
-      location: portfolio.location,
-      website: portfolio.website || '',
-      linkedin: portfolio.linkedin || '',
-      github: portfolio.github || '',
-      twitter: portfolio.twitter || '',
-      careerFit: portfolio.careerFit || '',
-      careerScore: portfolio.careerScore || 0,
-      experience: portfolio.experience || [],
-      education: portfolio.education || [],
-      certifications: portfolio.certifications || [],
-      skills: portfolio.skills || [],
-      views: (portfolio.views || 0) + 1,
-      lastUpdated: portfolio.lastUpdated
-    };
-
-    return NextResponse.json(sanitized);
   } catch (error) {
     console.error('Error fetching public portfolio:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch portfolio', details: error instanceof Error ? error.message : 'Unknown error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch portfolio' }, { status: 500 });
   }
 }
