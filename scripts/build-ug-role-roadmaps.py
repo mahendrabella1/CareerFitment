@@ -33,7 +33,7 @@ import os
 import re
 import sys
 from collections import Counter
-from difflib import get_close_matches
+from difflib import SequenceMatcher, get_close_matches
 
 import docx
 from docx.table import Table
@@ -69,7 +69,9 @@ def clean_text(t):
     return fix_verify(t)
 
 
-AUTHOR_NOTE = re.compile(r"(?i)taxonomy-role|role mapping|mapping should|knowledge files?|horizon[- ]file|career-roadmaps|career-clusters|supplied sources|sources? (information )?conflicts?")
+AUTHOR_NOTE = re.compile(r"(?i)taxonomy-role|role mapping|mapping should|knowledge files?|horizon[- ]file|career-roadmaps|career-clusters|supplied sources|sources? (information )?conflicts?"
+                         r"|course[- ](specific |role )?taxonomy|degree taxonomy|internal (degree )?taxonomy|exact taxonomy|taxonomy (entry|match|files?)"
+                         r"|roadmap files|(files|taxonomy) could not be (inspected|verified)")
 
 
 # The author's "VERIFY" marker means different things:
@@ -150,11 +152,36 @@ KNOWN_SUBHEADS = {
 }
 FACT_KEYS = ("Starts", "Current degree", "Course", "Timeline assumption")
 # Facts that are bookkeeping or placeholders, not guidance for the student.
-DROP_FACT = re.compile(r"(?i)^(desired career|target career|career cluster|largest gap|footer|verification note|(id|discipline|level|category|typical duration|degree|specialisation|specialization|branch|career id|stream|relevant course)$)")
+DROP_FACT = re.compile(r"(?i)^(desired career|target career|career cluster|largest gap|footer|verification note|_row_degree|(id|discipline|level|category|typical duration|degree|specialisation|specialization|branch|career id|reference id|reference code|stream|relevant course|education level|reference age|typical entry-level age|broad domain|career category|domain|sector)$)")
 # Some files give the facts as a "Career Path" table (ID, Level, Degree,
 # Specialization, Target Career, ...) - read into the same fact names.
 TABLE_FACT = {"degree": "Current degree", "ug degree": "Current degree", "specialization": "Course", "specialisation": "Course", "branch": "Course",
               "course": "Course", "target career": "Desired career", "career": "Desired career", "career cluster": "Career cluster"}
+# Profile tables name the degree and the role many ways: "Recommended Degree",
+# "Recommended Qualification", "Undergraduate qualification", "Recommended UG
+# Programme"; "Target Job Role", "Target Role".
+DEGREE_KEY = re.compile(r"(?i)^((recommended|typical|undergraduate|ug)\s+)*(degree|qualification|programme|program)$")
+TARGET_KEY = re.compile(r"(?i)^(target\s+(career|job\s+role|role|job)|desired career)$")
+
+
+def fact_name(label):
+    """A table/line label under the fact name the rest of the build uses."""
+    l = label.strip().lower()
+    if l in TABLE_FACT:
+        return TABLE_FACT[l]
+    if DEGREE_KEY.match(l):
+        return "Current degree"
+    if TARGET_KEY.match(l):
+        return "Desired career"
+    return label.strip()
+
+
+def is_profile_table(header, rows):
+    """A "Field | Details" table that names the degree or the target role -
+    the roadmap's profile ("Career Profile", "Career classification")."""
+    hl = [h.strip().lower() for h in header]
+    return (len(header) == 2 and hl[0] in ("field", "item", "parameter")
+            and any(r and fact_name(r[0]["text"]) in ("Current degree", "Desired career") for r in rows))
 
 
 def career_path_facts(header, rows):
@@ -162,9 +189,13 @@ def career_path_facts(header, rows):
     hl = [h.strip().lower() for h in header]
     if any(h == "degree" or h == "ug degree" for h in hl) and len(rows) == 1:
         return {h: c["text"] for h, c in zip(header, rows[0])}
-    if len(header) == 2 and hl[0] in ("field", "item", "parameter") and any(r and r[0]["text"].strip().lower() == "degree" for r in rows):
+    if is_profile_table(header, rows):
         return {r[0]["text"]: r[1]["text"] for r in rows if len(r) > 1}
     return None
+
+
+def has_degree_fact(facts):
+    return any(fact_name(k) == "Current degree" for k in facts)
 
 
 def section_kind(heading):
@@ -237,7 +268,10 @@ def font_size(p):
 TITLE_PAT = re.compile(r"(?i)^(career\s+roadmap\b|roadmap\s*[:·—–-])|\broadmap\s*$")
 # The row number some files put in front of a title is not part of it:
 # "ID 600 — Career Roadmap: X", and a stray "3Career roadmap · X".
-TITLE_PREFIX = re.compile(r"(?i)^(?:id\s*\d+\s*[—–:·-]\s*|\d{1,4}\s*(?=career\s+roadmap\b))")
+TITLE_PREFIX = re.compile(r"(?i)^(?:id\s*\d+\s*[—–:·-]\s*|\d{1,4}\s*(?=career\s+roadmap\b)|\d{3,4}\s*\|\s*)")  # ... "842 | SAFETY SUPERVISOR — CAREER ROADMAP"
+PIPE_ID = re.compile(r"^(\d{3,4})\s*\|")
+# "01 | School / Classes 10–12", "14 | COMPLETE ROADMAP": a numbered section.
+PIPE_HEADING = re.compile(r"^(\d{1,2})\s*\|\s*(\S.*)$")
 # "Career Roadmap — ID 645": the role is only in the facts table that follows.
 ID_ONLY = re.compile(r"(?i)^id\s*\d+$")
 # "551 — B.Tech / B.E. Software Product Engineering → DevOps Engineer": a
@@ -253,11 +287,120 @@ ROLE_FIRST_TITLE = re.compile(r"(?i)^(.{2,80}?)\s+[—–-]\s+career\s+roadmap\s
 # "UG | Media, Design & Creative Arts | B.Des (Bachelor of Design) | Game Design"
 # under such a title: level, domain, degree, course.
 PIPE_FACTS = re.compile(r"(?i)^(ug|pg)\s*\|")
+# "Career Roadmap 101: ESG Technical Analyst": the number is the pending
+# list's Career ID, not part of the title.
+NUMBERED_TITLE = re.compile(r"(?i)^(career\s+roadmap)\s+#?(\d{1,4})\s*(?=[:·—–-])")
+# The first heading of a roadmap that has no title line: "1. Career Profile",
+# "1. Career classification", "1. Career overview". (A "1. ..." list item
+# under a progression line is not one.)
+PROFILE_HEAD = re.compile(r"(?i)^1\.\s+(career\s+(profile|classification|overview|snapshot|summary|identity)|overview|profile)\b")
+# A bare web domain on its own line is an image's source caption, not content.
+# Lowercase only: "B.Com" / "M.Com" are degrees, not captions.
+SOURCE_CAPTION = re.compile(r"^[a-z0-9-]{3,}(\.[a-z0-9-]+)*\.(com|org|net|in|gov|edu|io|co|uk|br|au|de)(\.[a-z]{2})?/?$")
+# "Career ID: 101 · Reference ID: 448 · Discipline: ..." under a title: the
+# roadmap's bookkeeping (Career ID = S.No in the pending list, Reference ID =
+# the spreadsheet row), never its summary.
+CAREER_ID_LINE = re.compile(r"(?i)^career\s*id\s*:\s*\d+")
+# Its labels, also when run together with no "·" ("Career ID: 312 Education
+# Level: Undergraduate (UG) Career Domain: ... Recommended Degree: ...").
+ID_LINE_LABEL = re.compile(r"(?i)(?:^|·|\s)\s*(Career ID|Reference ID|Reference code|Discipline|Education Level|Education Pathway|Career Domain|Career Area|Career category"
+                           r"|Recommended Degree|Degree|Specialisation|Specialization|Course|Target Career|Target Role|Level|Stream|Category|Domain|Education"
+                           r"|Sector|Qualification|Pathway)\s*:")
+# The facts line right under a title, in its other shapes: "Sector: ... |
+# Qualification: Diploma in ...", "Career Category: ... Education Pathway: ...
+# Target Role: ...", "901 | Manufacturing & Industrial Production".
+LEAD_FACTS_LINE = re.compile(r"(?i)^((career\s+id|sector|career\s+category|category|domain|discipline|education(\s+(level|pathway))?|stream|qualification|pathway)\s*:|\d{3,4}\s*\|)")
+# Labels whose value is the qualification itself when it reads as one.
+ROUTE_LABELS = {"qualification", "pathway", "education pathway", "education"}
+# "Career category: ... · Degree: B.Sc. in ..." / "Category: ... · Education:
+# ..." right under a title: the roadmap's facts, not its summary.
+FACTS_LINE = re.compile(r"(?i)^(career\s+category|category|education(\s+level)?|discipline|domain|stream|level)\s*:.*·.*\b(degree|education|career\s*id)\b")
+
+
+# An unlabelled degree among the line's pieces ("... · B.Sc – Actuarial Science · ...").
+DEGREE_PIECE = re.compile(r"^(B\.\s?[A-Za-z]{1,6}\b|B[A-Z][A-Za-z]{0,5}\b(?=\s|$|\s*[–-])|LL\.?B|MBBS|Diploma\b|ITI\b|D\.\s?Pharm|Bachelor\b)")
+# "Career Roadmap • Business, Finance & Entrepreneurship • B.Sc – Actuarial
+# Science • Career ID: 862" under a "179 — Pricing Analyst" title.
+BULLET_ID_LINE = re.compile(r"(?i)^career\s+roadmap\s*[•·].*\bcareer\s*id\s*:\s*\d+")
+
+
+def id_line_facts(text):
+    """Facts from a Career ID line: labelled values, and an unlabelled degree
+    (pieces split by "·", "•" or "|")."""
+    parts = ID_LINE_LABEL.split(re.sub(r"\s[|•]\s|•", " · ", text))
+    out, loose = {}, parts[0].split("·")
+    for label, value in zip(parts[1::2], parts[2::2]):
+        bits = [x.strip() for x in value.split("·")]
+        if bits[0]:
+            name = "Current degree" if label.strip().lower() in ROUTE_LABELS and DEGREE_PIECE.match(bits[0]) else fact_name(label)
+            out.setdefault(name, bits[0])
+        loose += bits[1:]
+    for k, piece in enumerate(x.strip() for x in loose):
+        if DEGREE_PIECE.match(piece):
+            out.setdefault("Current degree", piece)
+        elif k == 0 and re.fullmatch(r"\d{3,4}", piece):
+            out.setdefault("ID", piece)  # "901 | Manufacturing & Industrial Production"
+    return out
+
+
+def markdown_table_facts(text):
+    """{header: value} from a table typed as text ("| ID | Level | Degree /
+    Programme | ... | |---|---|...| | 705 | UG | ..."), else None."""
+    if not text.startswith("|") or not re.search(r"\|\s*:?-{3,}", text):
+        return None
+    cells = [c.strip() for c in text.strip().strip("|").split("|")]
+    sep = next((k for k, c in enumerate(cells) if re.fullmatch(r":?-{3,}:?", c)), None)
+    if not sep:
+        return None
+    header = [c for c in cells[:sep] if c]
+    values = [c for c in cells[sep:] if c and not re.fullmatch(r":?-{3,}:?", c)]
+    return dict(zip(header, values[:len(header)])) if values else None
+
+
+# Kept in capitals when an ALL-CAPS title or heading is put in normal case.
+ACRONYMS = {"ITI", "PG", "UG", "IT", "AI", "CNC", "EV", "HVAC", "COPA", "CAD", "QC", "QA", "GIS", "NCVT", "SCVT", "PMKVY", "NSDC", "DMLT",
+            "GNM", "ANM", "IOT", "PLC", "TIG", "MIG", "SCADA", "UAV", "DGCA", "AME", "LPG", "CCTV", "PCB", "MEP", "HR", "OJT", "NCC", "UPSC",
+            "SSC", "PV", "MRO", "B.SC", "B.VOC", "D.PHARM", "F&B", "NDT", "PPE", "ICU", "OT", "ECG", "MRI", "CT", "BPO", "KPO", "ERP", "SAP", "SEO", "UI", "UX", "3D", "2D"}
+
+
+def unshout(s, first_upper=True):
+    """ "ABROAD — EDUCATION" -> "Abroad — education", keeping acronyms."""
+    words = re.split(r"(\s+)", s.lower())
+    out = []
+    for w in words:
+        core = re.sub(r"[^\w.&+-]", "", w)
+        if core.upper() in ACRONYMS or re.fullmatch(r"[a-z]&[a-z]", core):
+            w = w.upper()
+        elif core in ("india", "indian"):
+            w = w.capitalize()
+        out.append(w)
+    t = "".join(out)
+    return (t[:1].upper() + t[1:]) if first_upper else t
+
+
+def title_case(s):
+    """ "SAFETY SUPERVISOR" -> "Safety Supervisor", keeping acronyms."""
+    return re.sub(r"[A-Za-z][\w.&'-]*", lambda m: m.group(0).upper() if m.group(0).upper() in ACRONYMS else m.group(0).capitalize(), s.lower())
 
 
 def next_is_table(els, i):
     """Whether the next non-empty element after els[i] is a table."""
     return next_element(els, i) == "table"
+
+
+def next_texts(els, i, n):
+    """The next n non-empty paragraph texts after els[i] ("table" for a table)."""
+    out = []
+    for el in els[i + 1:]:
+        if el.tag == W + "tbl":
+            out.append("table")
+        elif el.tag == W + "p":
+            t = "".join(x.text or "" for x in el.iter(W + "t")).strip()
+            if t:
+                out.append(t)
+        if len(out) >= n:
+            break
+    return out
 
 
 def next_element(els, i):
@@ -272,19 +415,19 @@ def next_element(els, i):
     return ""
 
 
-NOT_TITLE =re.compile(r"(?i)(year|semester|week|month|skills?|learning|study|ug|degree|career|cluster-level|cluster)[\s-]*(by[\s-]*\w+[\s-]*)?roadmap\s*$|roadmap overview|^\d+\.")
+NOT_TITLE =re.compile(r"(?i)(year|semester|week|month|skills?|learning|study|ug|degree|career|cluster-level|cluster)[\s-]*(by[\s-]*\w+[\s-]*)?roadmap\s*$|roadmap overview|^\d+\.|^\d{1,2}\s*\|")
 CAREER_LINE = re.compile(r"(?i)(?:^|·\s*)career:\s*(.+)$")
 # The "Degree: ... · Course: ... · Career: ..." line some files put before a
 # roadmap's title, and the notes around it that are not for students.
 DEGREE_LINE = re.compile(r"(?i)^degree:\s*\S")
-PREAMBLE_LINE = re.compile(r"(?i)^(cluster-level roadmap|role-list check\b|\d{1,5}\s*-\s*\d{1,5}$)")
+PREAMBLE_LINE = re.compile(r"(?i)^(cluster-level roadmap|role-list check\b|\d{1,5}\s*-\s*\d{1,5}$|career roadmap$)")
 
 
 def title_role(p, text, bold, pending):
     """The role a title line names, or None when the line is not a title."""
     if not text or len(text) > 120 or "\n" in text or re.match(r"(?i)^step\s*\d", text) or DEGREE_LINE.match(text):
         return None
-    text = TITLE_PREFIX.sub("", text)
+    text = NUMBERED_TITLE.sub(r"\1", TITLE_PREFIX.sub("", text))
     big = (font_size(p) or 0) >= 16
     first = ROLE_FIRST_TITLE.match(text)
     if first and (big or bold) and not re.match(r"(?i)^(year|semester|ug|pg|degree|cluster|skills?|learning|study)\b", first.group(1)):
@@ -296,14 +439,22 @@ def title_role(p, text, bold, pending):
     return m.group(1).strip(" .") if m else None
 
 
+META_LABEL = re.compile(r"(?i)(?:^|·|\s)\s*(Degree|Course|Specialisation|Specialization|Target Role|Target Career|Career Area|Career)\s*:")
+META_NAME = {"degree": "Current degree", "course": "Course", "specialisation": "Course", "specialization": "Course",
+             "career": "Desired career", "target role": "Desired career", "target career": "Desired career"}
+
+
 def degree_meta(text):
-    """{"Current degree", "Course", "Desired career"} from a Degree line."""
+    """{"Current degree", "Course", "Desired career"} from a Degree line -
+    "Degree: ... · Course: ... · Career: ...", or the labels run together
+    ("Degree: B.Voc – Drone Technology Target Role: ... Career Area: ...")."""
     t = text.replace("\n", " · ")
+    parts = META_LABEL.split(t)
     out = {}
-    for key, label in (("Degree", "Current degree"), ("Course", "Course"), ("Career", "Desired career")):
-        m = re.search(rf"(?i)\b{key}:\s*(.+?)\s*(?:·|$)", t)
-        if m and m.group(1).strip():
-            out[label] = m.group(1).strip()
+    for label, value in zip(parts[1::2], parts[2::2]):
+        name, value = META_NAME.get(label.lower()), value.strip(" ·")
+        if name and value:
+            out.setdefault(name, value)
     return out
 
 
@@ -313,9 +464,55 @@ def degree_level(s):
     s = s or ""
     if re.search(r"(?i)ph\.?\s?d\b|\bd\.\s?sc\b|d\.\s?litt|\bdba\b|doctorate|post-?doctoral|doctoral", s):
         return "doctoral"
+    # Integrated / dual-degree programmes (BS-MS, B.Tech+M.Tech, IPM BBA+MBA,
+    # LLB+LLM) start straight after Class 12 - undergraduate, though they name
+    # a master's. Same rule as INTEGRATED in lib/report/roleRoadmapGrad.tsx.
+    if re.search(r"(?i)dual[- ]degree|integrated\s+(programme in management|5-year|five[- ]year|b\.?\s?(tech|sc|ed|a)\b|bs-ms|bba|ll\.?\s?b|m\.?\s?(sc|a|tech)\b|ma\b)|\bipm\b|bba\s*\+\s*mba", s):
+        return "ug"
     if re.search(r"(?i)\b(m\.\s?(tech|e|sc|a|com|phil|pharm|des|arch|ed|s)\b|mba\b|pgdm|master|post-?graduate)", s):
         return "pg"
     return "ug"
+
+
+def name_from_neighbour(rm, prev):
+    """For a roadmap pasted without its title: the role numbered right after
+    the previous roadmap's ID (as a pending-list S.No, or as a sheet row), if
+    this roadmap's own text names it."""
+    if not prev or not SHEET_ROWS:
+        return None
+    m = re.match(r"\s*(\d+)", (prev.get("ids") or {}).get("row", "") or (prev.get("ids") or {}).get("career", ""))
+    if not m:
+        return None
+    n = int(m.group(1)) + 1
+    text = " ".join(json.dumps(s["blocks"], ensure_ascii=False) for s in rm["sections"]).lower()
+    for row in (PENDING_ROWS.get(n, 0), n):
+        if 1 <= row <= len(SHEET_ROWS):
+            role = SHEET_ROWS[row - 1][2]
+            if re.sub(r"\s*\([^)]*\)", "", role).lower() in text:
+                rm["facts"].setdefault("Reference ID", str(row))  # so its degree comes from that row
+                return role
+    return None
+
+
+def name_from_careers(rm):
+    """The first role a roadmap's "Careers you can be hired as" section names
+    ("Ayurvedic Physician, after completing ..." -> "Ayurvedic Physician")."""
+    for s in rm["sections"]:
+        if s["kind"] != "careers":
+            continue
+        for blk in s["blocks"]:
+            if blk.get("type") == "list" and blk["items"]:
+                first = blk["items"][0]["text"]
+            elif blk.get("type") == "table" and blk["rows"] and blk["rows"][0]:
+                first = blk["rows"][0][0]["text"]
+            elif blk.get("type") == "p":
+                first = blk["text"]
+            else:
+                continue  # a sub-heading ("First-job titles"), not a role
+            name = re.split(r",| \(| – | - |:", first or "")[0].strip()
+            if name and len(name.split()) <= 6:
+                return name
+    return "Untitled roadmap"
 
 
 def is_list_item(el):
@@ -324,6 +521,7 @@ def is_list_item(el):
 
 
 ARROW = ("↓", "→")
+ARROW_IN = re.compile(r"[→↓]")
 
 
 def flow_items(t):
@@ -373,7 +571,17 @@ def parse(path):
     # few that don't, runs of short lines are read as lists instead. A first
     # pass finds out, so the real pass sees exactly the same roadmaps.
     first = parse_doc(d, path, None)
-    return parse_doc(d, path, [rm["_li"] for rm in first])
+    roadmaps = parse_doc(d, path, [rm["_li"] for rm in first])
+    # A stray section or two pasted with no title (e.g. a lone "04 |
+    # Scholarships" between two roadmaps) is not a roadmap of its own.
+    keep = []
+    for k, rm in enumerate(roadmaps):
+        if rm.get("untitled") and len(rm["sections"]) < 3:
+            FRAGMENTS.append(f"{os.path.basename(path)}: {' / '.join(s['heading'] for s in rm['sections']) or 'empty'}"
+                             f" (after {roadmaps[k - 1]['role'] if k else 'the start'})")
+        else:
+            keep.append(rm)
+    return keep
 
 
 def parse_doc(d, path, bullets):
@@ -493,11 +701,29 @@ def parse_doc(d, path, bullets):
             bold = is_bold(p)
             role = title_role(p, text, bold, pending)
             if role:
-                start_roadmap(TITLE_PREFIX.sub("", text), role)
+                bare_title = TITLE_PREFIX.sub("", text)
+                start_roadmap(NUMBERED_TITLE.sub(r"\1", bare_title), role)
+                num = NUMBERED_TITLE.match(bare_title) or PIPE_ID.match(text)
+                if num:
+                    cur["facts"].setdefault("ID", num.group(num.lastindex))  # "Career Roadmap #866: ..." / "842 | SAFETY SUPERVISOR — ..."
+                if re.sub(r"[^A-Za-z]", "", role).isupper() and len(re.sub(r"[^A-Za-z]", "", role)) > 3:
+                    cur["_caps"] = True  # "SAFETY SUPERVISOR — CAREER ROADMAP": put in normal case later
+                left = bare_title.split("→")[0] if "→" in bare_title else ""
+                left = re.sub(r"(?i)^career\s+roadmap\s*#?\d*\s*[:·—–-]?\s*", "", left).strip(" :·—–-")
+                if left and DEGREE_PIECE.match(left):
+                    cur["facts"].setdefault("_row_degree", left)  # "... 670 — B.Sc. Computer Science → IT Support Engineer"
                 continue
             num_title = NUM_TITLE.match(text) if bold and not is_list_item(el) else None
             nxt = next_element(els, i) if num_title else ""
             if num_title and FACTS_START.match(nxt) and re.search(r"(?i)career\s*:", nxt):
+                start_roadmap(f"Career Roadmap · {num_title.group(2).strip()}", num_title.group(2).strip())
+                continue
+            if num_title and int(num_title.group(1)) > 25 and (PROFILE_HEAD.match(nxt) or BULLET_ID_LINE.match(nxt) or CAREER_ID_LINE.match(nxt)):
+                # "353 — Chip Design Engineer" then straight into "1. Career
+                # Profile" (or its Career ID line): a sheet row / S.No and its
+                # role, as the title. (A section number is never this large.)
+                flush_plain()
+                pending = {"ID": num_title.group(1)}
                 start_roadmap(f"Career Roadmap · {num_title.group(2).strip()}", num_title.group(2).strip())
                 continue
             row = ROW_HEADER.match(text) if (bold or (font_size(p) or 0) >= 16) and not is_list_item(el) else None
@@ -508,7 +734,24 @@ def parse_doc(d, path, bullets):
                 flush_plain()
                 pending, preamble = {"Desired career": row.group(3)}, "row"
                 continue
-            names_more = re.search(r"(?i)\b(course|career):", text)
+            if row and re.search(r"[A-Za-z]{3}", row.group(2)):
+                # "508 — B.Voc Drone Technology → Agri-Drone Operator" (or "724 —
+                # Merchant Navy / Maritime Programmes – ... → Second Officer")
+                # then straight into "1. Career classification" - or into a
+                # table typed as text, then "1. Career Overview": the row is the
+                # title. (A progression "2026–2035 → ..." is never followed by
+                # a profile heading.)
+                # (A bare "Career Roadmap" line may sit in between, and the
+                # profile heading may be unnumbered: "Career profile".)
+                nxt_texts = [t for t in next_texts(els, i, 3) if not re.fullmatch(r"(?i)career\s+roadmap", t)]
+                first = nxt_texts[0] if nxt_texts else ""
+                if (PROFILE_HEAD.match(first) or re.fullmatch(r"(?i)career\s+(profile|overview|classification)", first)
+                        or (first.startswith("|") and len(nxt_texts) > 1 and PROFILE_HEAD.match(nxt_texts[1]))):
+                    flush_plain()
+                    pending = {"Desired career": row.group(3), "_row_degree": row.group(2), "ID": row.group(1)}
+                    start_roadmap(f"Career Roadmap · {row.group(3)}", row.group(3))
+                    continue
+            names_more = re.search(r"(?i)\b(course|career|target role|target career):", text)
             in_facts = section is None or section["kind"] == "facts"
             fresh = cur is not None and cur["_n"] == 0 and not preamble  # just after a title
             if DEGREE_LINE.match(text) and (names_more or (cur is not None and not in_facts)):
@@ -527,9 +770,15 @@ def parse_doc(d, path, bullets):
                 continue
             if fresh and PIPE_FACTS.match(text):
                 parts = [x.strip() for x in text.split("|")]
-                if len(parts) >= 4:
-                    cur["facts"].setdefault("Current degree", parts[-2])
-                    cur["facts"].setdefault("Course", parts[-1])
+                # "UG | domain | degree | course", or "UG | domain | degree":
+                # the degree is the part that reads as one, not the domain.
+                at = next((k for k, x in enumerate(parts) if k and DEGREE_PIECE.match(x)), None)
+                if at is None and len(parts) >= 4:
+                    at = len(parts) - 2
+                if at is not None:
+                    cur["facts"].setdefault("Current degree", parts[at])
+                    if at + 1 < len(parts) and parts[at + 1]:
+                        cur["facts"].setdefault("Course", parts[at + 1])
                     continue
             if re.match(r"(?i)^(course|career):", text) and (preamble or (fresh and cur["facts"].get("Current degree"))):
                 meta = degree_meta(p.text)  # the same line, split over two paragraphs
@@ -540,8 +789,8 @@ def parse_doc(d, path, bullets):
                         cur["facts"].setdefault(k, v)
                     cur["meta_career"] = cur["meta_career"] or meta.get("Desired career", "")
                 continue
-            if PREAMBLE_LINE.match(text):
-                continue
+            if (PREAMBLE_LINE.match(text) and not is_list_item(el)) or re.fullmatch(r"\d{1,3}", text):
+                continue  # (a lone "8" / "13" is a stray page or image number; a bulleted "Career roadmap" is a project feature)
             if preamble == "row" and bold_label(p) and not is_list_item(el):
                 # "Qualification note: ..." between the row's table and its
                 # title: one of the roadmap's facts, not the start of its text.
@@ -554,6 +803,41 @@ def parse_doc(d, path, bullets):
                 # The title is missing: the Degree line's (or row's) career names the roadmap.
                 start_roadmap(f"{pending.get('Desired career', 'Career')} Roadmap", pending.get("Desired career", "Career"))
             if cur is None:
+                continue
+            if SOURCE_CAPTION.match(text) and not is_list_item(el):
+                continue  # (a bulleted "draw.io" is a tool, not a caption)
+            if (CAREER_ID_LINE.match(text) or BULLET_ID_LINE.match(text) or FACTS_LINE.match(text)) and not cur["sections"]:
+                for k, v in id_line_facts(text).items():
+                    cur["facts"].setdefault(k, v)
+                continue
+            if not cur["sections"] and not cur["summary"] and not is_list_item(el):
+                lead = LEAD_FACTS_LINE.match(text) and (len(id_line_facts(text)) >= 2 or PIPE_ID.match(text))
+                # "Engineering, Technology & Computing | ITI Trades – Motor Vehicle ..."
+                loose = (len(text) < 260 and re.search(r"\s[|·]\s", text) and not re.search(r"[.!?]\s*$", text)
+                         and any(DEGREE_PIECE.match(x.strip()) for x in re.split(r"\s[|·]\s", text)))
+                table_text = markdown_table_facts(text)
+                if lead or loose:
+                    for k, v in id_line_facts(text).items():
+                        cur["facts"].setdefault(k, v)
+                    continue
+                if table_text:
+                    for k, v in table_text.items():
+                        name = "Current degree" if "degree" in k.lower() or "programme" in k.lower() else fact_name(k)
+                        if v.strip():
+                            cur["facts"].setdefault(name, v.strip())
+                    continue
+                sub = re.match(r"^(.{2,80}?)\s+[—–-]\s+(.+)$", text)
+                if bold and sub and norm(sub.group(1)) == norm(cur["role"]) and DEGREE_PIECE.match(sub.group(2)):
+                    # "IoT Engineer — Bachelor of Science in Electronic Systems" under the title.
+                    cur["facts"].setdefault("Current degree", sub.group(2).strip())
+                    continue
+                if (cur["facts"] and not bold and len(text.split()) <= 4 and len(text) <= 40
+                        and not re.search(r"[.!?:]", text) and not ARROW_IN.search(text)):
+                    continue  # "Engineering & Technology" / "Electronics": the rest of the facts block
+            if (not cur["sections"] and not cur["summary"] and len(text) <= 120 and len(text.split()) <= 14 and DEGREE_PIECE.match(text)
+                    and not is_list_item(el) and not re.search(r"[.!?:]\s*$", text)):
+                # A bare "B.Sc. – Aviation Science" (or "... → Animator") under the title.
+                cur["facts"].setdefault("Current degree", text.split("→")[0].strip(" —–-"))
                 continue
             cur["_n"] += 1
             if text in ARROW:
@@ -568,6 +852,19 @@ def parse_doc(d, path, bullets):
             size_p = font_size(p) or 0
             if size_p >= 16:
                 bold = True  # a large line that is not a title is a heading
+            pipe_head = PIPE_HEADING.match(text) if bold and not li else None
+            if pipe_head:
+                # "01 | School / Classes 10–12" -> "1. School / Classes 10–12"
+                n_pipe = int(pipe_head.group(1))
+                text = f"{n_pipe}. {pipe_head.group(2).strip()}"
+                if cur.get("_pipe") and last_num >= 10 and n_pipe <= last_num - 5:
+                    # "14 | COMPLETE ROADMAP" then "04 | SCHOLARSHIPS ...": the
+                    # next roadmap pasted from its 4th section, without a title
+                    # (named later from its neighbour's ID and its own text).
+                    start_roadmap("", "")
+                    cur["_n"], cur["_pipe"] = 1, True
+                    last_num = n_pipe - 1
+                cur["_pipe"] = True
             step = re.match(r"(?i)^step\s*(\d+)\b", text)
             if not bold and len(text) < 90 and (re.match(r"(?i)^step\s*\d+\s*[:—–-]", text) or (not li and text.lower() in KNOWN_SUBHEADS)):
                 bold = True  # files without bold formatting
@@ -576,6 +873,17 @@ def parse_doc(d, path, bullets):
             # or "N." line is a sub-heading (a project's "Step 1 — Map activities").
             minor = bool(cur.get("_head_size")) and size_p < cur["_head_size"] - 2
             if bold and step and len(text) < 90 and not minor:
+                n_step = int(step.group(1))
+                seen_steps = cur.setdefault("_steps", set())
+                if n_step == 1 and 1 in seen_steps and max(seen_steps) >= 3:
+                    # A second Step 1 after a full run of steps, with no title
+                    # in between: the next roadmap was pasted without its title
+                    # (named later from its own "Careers you can be hired as"
+                    # list). A first Step 1 placed late is just out of order.
+                    start_roadmap("", "")
+                    cur["_n"] = 1
+                    seen_steps = cur.setdefault("_steps", set())
+                seen_steps.add(n_step)
                 uses_steps, sub_num = True, 0
                 open_section(text, size_p)
                 continue
@@ -672,7 +980,7 @@ def parse_doc(d, path, bullets):
             kv = career_path_facts([c["text"] for c in rows[0]], rows[1:]) if rows else None
             for k, v in (kv or {}).items():
                 if v.strip():
-                    pending.setdefault(TABLE_FACT.get(k.strip().lower(), k.strip()), v.strip())
+                    pending.setdefault(fact_name(k), v.strip())
         elif el.tag == W + "tbl" and cur is not None and not preamble:
             cur["_n"] += 1
             flush_plain()
@@ -686,11 +994,14 @@ def parse_doc(d, path, bullets):
             if "period" in hl and "assessment" in hl:
                 cur["horizons"] = [{"period": r[0]["text"], "question": r[1]["text"] if len(r) > 1 else "", "output": r[2]["text"] if len(r) > 2 else ""} for r in rows[1:] if r and r[0]["text"]]
                 continue
-            kv = career_path_facts(header, rows[1:]) if not cur["facts"] and len(cur["sections"]) <= 1 else None
+            # The facts table right under the title (a profile table even when a
+            # Degree line already gave the degree - setdefault keeps that one).
+            early = len(cur["sections"]) <= 1
+            kv = career_path_facts(header, rows[1:]) if early and (not has_degree_fact(cur["facts"]) or is_profile_table(header, rows[1:])) else None
             if kv:
                 for k, v in kv.items():
                     if v.strip():
-                        cur["facts"].setdefault(TABLE_FACT.get(k.strip().lower(), k.strip()), v.strip())
+                        cur["facts"].setdefault(fact_name(k), v.strip())
                 if section is not None and section["blocks"] and section["blocks"][-1]["type"] == "h":
                     section["blocks"].pop()  # its "Career Path" heading
                 continue
@@ -702,13 +1013,29 @@ def parse_doc(d, path, bullets):
             section["blocks"].append({"type": "table", "header": header, "rows": body})
     flush_plain()
 
-    for rm in roadmaps:
+    for k_rm, rm in enumerate(roadmaps):
+        if not rm["role"]:
+            # Pasted without its title: the role after its neighbour's in the
+            # sheet when its own text names that role, else the first role its
+            # careers list names - listed in the review sheet to confirm.
+            rm["role"], rm["untitled"] = name_from_neighbour(rm, roadmaps[k_rm - 1] if k_rm else None) or name_from_careers(rm), True
+            rm["title"] = f"Career Roadmap · {rm['role']}"
         raw = rm["facts"]
+        # Bookkeeping kept for coverage checks only (never written out): the
+        # pending list's Career ID and the spreadsheet row ("Reference ID").
+        rm["ids"] = {"career": (raw.get("Career ID") or "").strip(), "row": (raw.get("Reference ID") or raw.get("Reference code") or raw.get("ID") or "").strip()}
         # The same facts under other names ("Degree:", "Specialisation:").
         for alias, key in (("Degree", "Current degree"), ("UG", "Current degree"), ("Specialisation", "Course"), ("Specialization", "Course"), ("Branch", "Course"),
                            ("Relevant Course", "Course"), ("Starting point", "Starts"), ("Timeline", "Timeline assumption"), ("Target Career", "Desired career"), ("Target career", "Desired career")):
             if raw.get(alias) and not raw.get(key):
                 raw[key] = raw.pop(alias)
+        if raw.get("_row_degree") and not raw.get("Current degree"):
+            raw["Current degree"] = raw["_row_degree"]  # the row header's "B.Voc Drone Technology"
+        if (raw.get("Current degree") and raw.get("Course") and DEGREE_PIECE.match(raw["Course"])
+                and not re.search(r"\b(B\.\s?[A-Za-z]{1,6}|B[A-Z][A-Za-z]{0,5}|LL\.?B|MBBS|BA)\b", raw["Current degree"])):
+            # "Current degree: Media, Communication, Arts & Design" (the cluster)
+            # with "Course: BJMC / B.A. ...": the course line holds the degree.
+            raw["Current degree"], raw["Course"] = raw["Course"], ""
         # Labels written for the database, said the way a student reads them.
         for old, new in (("Mapping", "Course alignment"), ("Taxonomy alignment", "Course alignment")):
             if old in raw and new not in raw:
@@ -717,6 +1044,24 @@ def parse_doc(d, path, bullets):
         if ID_ONLY.match(rm["role"]) and rm["desired"]:
             # "Career Roadmap — ID 645": named by its facts table's career.
             rm["role"], rm["title"] = rm["desired"], f"Career Roadmap · {rm['desired']}"
+        row = sheet_row_for(rm) if SHEET_ROWS else None
+        if row:
+            # The sheet row it was written for: its exact dropdown name, and its
+            # degree and course when the file never states them.
+            degree, course, rm["sheet_role"] = SHEET_ROWS[row - 1]
+            if not raw.get("Current degree"):
+                raw["Current degree"], raw["Course"] = degree, raw.get("Course") or course
+        if rm.get("_caps"):
+            # "SAFETY SUPERVISOR — CAREER ROADMAP" and "05 | JOB OPTIONS": the
+            # sheet's own name for the role, and headings in normal case.
+            rm["role"] = rm.get("sheet_role") or title_case(rm["role"])
+            rm["title"] = f"Career Roadmap · {rm['role']}"
+            for s in rm["sections"]:
+                if s["heading"] == s["heading"].upper() and re.search(r"[A-Z]{3}", s["heading"]):
+                    s["heading"] = unshout(s["heading"])
+                for b in s["blocks"]:
+                    if b.get("type") == "h" and b["text"] == b["text"].upper() and re.search(r"[A-Z]{3}", b["text"]):
+                        b["text"] = unshout(b["text"])
         # Plain text that sits among the facts (a progression, a note on the
         # route) is real guidance - shown as the roadmap's intro.
         rm["intro"] = [b for s in rm["sections"] if s["kind"] == "facts" and not s.get("drop") for b in s["blocks"]]
@@ -724,7 +1069,8 @@ def parse_doc(d, path, bullets):
         rm["facts"] = {k: raw[k] for k in FACT_KEYS if raw.get(k)}
         # Other labelled lines in the facts block are real guidance
         # ("Career-route check: ...", "Mapping: ...") - kept as notes.
-        rm["about"] = [{"label": k, "text": v} for k, v in raw.items() if v and k not in FACT_KEYS and not DROP_FACT.search(k)]
+        rm["about"] = [{"label": k, "text": v} for k, v in raw.items() if v and k not in FACT_KEYS and not DROP_FACT.search(k)
+                       and not re.fullmatch(r"(?i)\s*(undergraduate|ug|undergraduate\s*\(ug\))\.?\s*", v)]  # "Education: Undergraduate" says nothing
         # What the roadmap was written for, used to pick between versions of
         # the same role (e.g. Project Engineer - Electrical vs Mechanical).
         # Facts first (the stated degree/course), then the route notes and
@@ -747,6 +1093,10 @@ ROLE_ALIASES = {
     "mining surveyor": "Mine Surveyor",
     "meteorologist": "Meteorologist (IMD)",
     "junior design strategist": "Design Strategist (Junior)",
+    "junior data analyst": "Data Analyst (Junior)",
+    "anganwadi worker": "Aanganwadi Worker",
+    "ground duty officer administration logistics": "Ground Duty Officer (Admin/Logistics)",
+    "junior engineer mechanical": "Junior Engineer (Mech)",
     # Not aliased on purpose: subject-specific "Mathematics/English/Philosophy
     # Teacher / Lecturer" and "Religious Studies Researcher" - the dropdown's
     # "Teacher/Lecturer" (6 subjects) and "Researcher" (9) are generic, and the
@@ -762,6 +1112,72 @@ def norm(s):
 
 def slugify(s):
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")[:80]
+
+
+# The sheet's UG rows in order - row N of Roles_Flat_Classified is
+# SHEET_ROWS[N - 1] = (degree, course, role). career-clusters.json's UG
+# masterRows flatten to exactly these rows (checked against the sheet).
+SHEET_ROWS = []
+FRAGMENTS = []  # stray untitled pieces skipped by parse_doc, for the report
+# Batches numbered by the pending-roadmaps list ("Career ID: 101" = its S.No)
+# map S.No -> sheet row through data/graduates/pending-roadmap-rows.json.
+PENDING_ROWS = {}
+
+
+def load_sheet_rows(repo):
+    c = json.load(open(os.path.join(repo, "data/graduates/career-clusters.json"), encoding="utf-8"))
+    SHEET_ROWS[:] = [(m["degree"], m["course"], r) for m in c["masterRows"] if m.get("level", "UG") == "UG" for r in m["roles"]]
+    pending = os.path.join(repo, "data/graduates/pending-roadmap-rows.json")
+    if os.path.exists(pending):
+        PENDING_ROWS.clear()
+        PENDING_ROWS.update({int(k): int(v) for k, v in json.load(open(pending, encoding="utf-8"))["rows"].items()})
+
+
+def role_tokens(s):
+    s = norm(re.sub(r"(?i)\bml\b", "machine learning", re.sub(r"(?i)\bai\b", "artificial intelligence", s or "")))
+    return set(s.split()) - {"and", "the", "of", "in"}
+
+
+def same_role(a, b):
+    """The same role written differently: "BMS Engineer" / "Battery Management
+    System (BMS) Engineer", "Data Scientist (Junior)" / "Junior Data Scientist"."""
+    ta, tb = role_tokens(a), role_tokens(b)
+    if bool(ta) and bool(tb) and (ta <= tb or tb <= ta):
+        return True
+    # one letter apart: "Anganwadi Worker" / "Aanganwadi Worker"
+    return bool(a and b) and SequenceMatcher(None, norm(a), norm(b)).ratio() >= 0.94
+
+
+def sheet_row_for(rm):
+    """The sheet row a roadmap was written for: the row its ID names, when that
+    row's role is the roadmap's role (an ID is sometimes the pending list's
+    S.No and sometimes the sheet row - the role tells them apart)."""
+    names = [x for x in (rm["role"], rm.get("desired", ""), rm.get("meta_career", "")) if x]
+    for v in (rm["ids"]["row"], rm["ids"]["career"]):
+        m = re.match(r"\s*(\d+)", str(v))  # "354 · Engineering, ... · Undergraduate (UG)"
+        n = int(m.group(1)) if m else 0
+        for row in (n, PENDING_ROWS.get(n, 0)):
+            if 1 <= row <= len(SHEET_ROWS) and any(same_role(SHEET_ROWS[row - 1][2], x) for x in names):
+                return row
+    # No usable ID: the role's only row in the sheet, if it has just one.
+    hits = [i + 1 for i, (_, _, r) in enumerate(SHEET_ROWS) if any(norm(r) == norm(x) for x in names)]
+    return hits[0] if len(hits) == 1 else None
+
+
+def name_variants(role):
+    """Other ways the dropdown may write a roadmap's role."""
+    out = []
+    head = re.split(r"\s+[—–]\s+", role)[0]          # "Surveyor — Mining Engineering"
+    if head != role:
+        out.append(head)
+    for r in [role] + out[:]:
+        m = re.match(r"(?i)^junior\s+(.+)$", r)        # "Junior Data Scientist"
+        if m:
+            out.append(f"{m.group(1)} (Junior)")
+        m = re.match(r"^(.+?)\s*\(([A-Z][A-Za-z0-9&/]{1,8})\)\s*(.*)$", r)  # "Battery Management System (BMS) Engineer"
+        if m and m.group(3):
+            out.append(f"{m.group(2)} {m.group(3)}")
+    return out
 
 
 def write_catalog(repo):
@@ -797,6 +1213,7 @@ def main():
         return
     clusters = json.load(open(os.path.join(repo, "data/graduates/career-clusters.json"), encoding="utf-8"))["clusters"]
     roles = sorted({r for c in clusters for r in c["roles"]})
+    load_sheet_rows(repo)
     by_norm = {}
     for r in roles:
         by_norm.setdefault(norm(r), []).append(r)
@@ -829,6 +1246,8 @@ def main():
         # The Degree line's "Career:" is the dropdown's own role name, so it
         # wins over a reworded title ("Food R&D Executive" -> "R&D Executive").
         matched, how = by_norm.get(norm(rm.get("meta_career", "")), []), "via the file's 'Degree · Course · Career' line"
+        if not matched and rm.get("sheet_role"):
+            matched, how = by_norm.get(norm(rm["sheet_role"]), []), "via the sheet row its ID names"
         if not matched:
             matched, how = by_norm.get(norm(rm["role"]), []), "exact"
             if matched and matched != [rm["role"]]:
@@ -839,12 +1258,23 @@ def main():
             matched = by_norm.get(norm(bare), []) if bare != rm["role"] else []
             if matched:
                 how = "name without the bracketed abbreviation"
+        if not matched:
+            # "Junior Data Scientist" -> "Data Scientist (Junior)", "Surveyor —
+            # Mining Engineering" -> "Surveyor", "Battery Management System
+            # (BMS) Engineer" -> "BMS Engineer"
+            for v in name_variants(rm["role"]):
+                matched = by_norm.get(norm(v), [])
+                if matched:
+                    how = f"name variant ({v})"
+                    break
         if not matched and norm(rm["role"]) in ROLE_ALIASES:
             matched, how = by_norm.get(norm(ROLE_ALIASES[norm(rm["role"])]), []), "reviewed alias (ROLE_ALIASES)"
         if not matched and rm.get("desired"):
             matched = by_norm.get(norm(rm["desired"]), [])
             if matched:
                 how = "via the file's 'Desired career' line"
+        if rm.get("untitled"):
+            how = "title missing in the file - named from its careers list; confirm"
         if matched:
             for r in matched:
                 index["roles"].setdefault(r, []).append(slug)
@@ -883,6 +1313,11 @@ def main():
              "## Needs review", "", "| Roadmap role | Title in file | Closest dropdown roles |", "|---|---|---|"]
     for role, title, sugg in review:
         lines.append(f"| {role} | {title} | {', '.join(sugg) or '-'} |")
+    untitled = [r for r in index["roadmaps"] if r["match"].startswith("title missing")]
+    lines += ["", "## Pasted without a title (named from the roadmap's own careers list - confirm)", ""]
+    lines += [f"- {r['role']} ({r['source']})" for r in untitled] or ["- none"]
+    lines += ["", "## Stray pieces skipped (a section or two pasted with no title)", ""]
+    lines += [f"- {f}" for f in dict.fromkeys(FRAGMENTS)] or ["- none"]
     lines += ["", "## Roles with more than one version", ""]
     by_slug = {r["slug"]: r for r in index["roadmaps"]}
     for role, slugs in multi.items():

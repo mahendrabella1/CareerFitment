@@ -46,9 +46,15 @@ export interface RoleRoadmap {
 export interface RoadmapVersion { for: string; course?: string; about: string; level?: DegreeLevel }
 export type DegreeLevel = "ug" | "pg" | "doctoral";
 
+// An integrated programme's name - not "integrated circuits" or "integrated into".
+const INTEGRATED = /dual[- ]degree|integrated\s+(programme in management|5-year|five[- ]year|b\.?\s?(tech|sc|ed|a)\b|bs-ms|bba|ll\.?\s?b|m\.?\s?(sc|a|tech)\b|ma\b)|\bipm\b|bba\s*\+\s*mba/i;
+
 /** Same rule as degree_level() in scripts/build-ug-role-roadmaps.py. */
 export function degreeLevel(s: string): DegreeLevel {
   if (/ph\.?\s?d\b|\bd\.\s?sc\b|d\.\s?litt|\bdba\b|doctorate|post-?doctoral|doctoral/i.test(s)) return "doctoral";
+  // Integrated / dual-degree programmes (BS-MS, B.Tech+M.Tech, BBA+MBA, LLB+LLM)
+  // start straight after Class 12 - undergraduate, though they name a master's.
+  if (INTEGRATED.test(s)) return "ug";
   if (/\b(m\.\s?(tech|e|sc|a|com|phil|pharm|des|arch|ed|s)\b|mba\b|pgdm|master|post-?graduate)/i.test(s)) return "pg";
   return "ug";
 }
@@ -71,6 +77,8 @@ const hits = (a: Set<string>, b: Set<string>) => [...a].filter((w) => b.has(w)).
 // than the BCA one even though "technology"/"engineering" are too common to
 // count as words. First match wins (LLB before BA for "BA LLB").
 const FAMILIES: [string, RegExp][] = [
+  // First: an integrated programme's name lists "B.Tech+M.Tech, B.Sc-M.Sc, ..."
+  ["integrated", INTEGRATED],
   ["btech", /\bb\.?\s?tech\b|\bb\.?\s?e\.?(?=[\s/(]|$)|bachelor of (technology|engineering)/i],
   ["bca", /\bbca\b|computer applications/i],
   ["bsc", /\bb\.?\s?sc\b|bachelor of science/i],
@@ -79,7 +87,14 @@ const FAMILIES: [string, RegExp][] = [
   ["bdes", /\bb\.?\s?des\b|bachelor of design/i],
   ["law", /\bllb\b/i],
   ["ba", /\bb\.?\s?a\b(?![a-z])|bachelor of arts/i],
+  // D.Pharm is a diploma, not a B.Pharm.
+  ["diploma", /\bd\.?\s?pharm\b/i],
   ["pharm", /pharm/i],
+  // Vocational routes are their own kinds: an ITI student gets the ITI
+  // version of "Solar Technician", not the B.Voc one.
+  ["bvoc", /\bb\.?\s?voc\b|bachelor of vocation/i],
+  ["diploma", /\bdiploma\b|polytechnic/i],
+  ["iti", /\biti\b|ncvt|scvt/i],
 ];
 export function degreeFamily(s: string): string | null {
   return FAMILIES.find(([, re]) => re.test(s))?.[0] ?? null;
@@ -88,7 +103,9 @@ export function degreeFamily(s: string): string | null {
 /** The version best matching the student, among those written for the
  *  student's own degree level (a Ph.D. plan starts at Ph.D. Year 1, so it is
  *  never offered to an undergraduate) - null when there is none. Scored by:
- *  a different kind of degree (-8: B.Tech vs BCA); the student's exact course
+ *  a different kind of degree (-16: B.Tech vs BCA, B.Voc vs Diploma - enough
+ *  that a version for the student's own kind of degree, or one that names no
+ *  degree, beats another degree's course-specific one); the student's exact course
  *  named in what the version was written for (+10); how closely the
  *  version's course matches theirs (up to +20, so "Psychology" prefers a
  *  Psychology version over "Clinical / Counselling Psychology"); course words
@@ -112,7 +129,7 @@ export function pickVersion(slugs: string[], versions: Record<string, RoadmapVer
     // A different kind of degree counts against a version; the same kind adds
     // nothing, so a version that doesn't state its degree isn't out-ranked by
     // one that merely does.
-    const score = (family && vFamily && family !== vFamily ? -8 : 0)
+    const score = (family && vFamily && family !== vFamily ? -16 : 0)
       + (course.trim() && phrase(v.for).includes(phrase(course)) ? 10 : 0)
       + (union ? 20 * hits(courseWords, vCourseWords) / union : 0)
       + 3 * hits(courseWords, forWords) + hits(courseWords, words(v.about)) + 0.5 * hits(degreeWords, forWords);
