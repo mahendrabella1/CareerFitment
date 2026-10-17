@@ -148,6 +148,25 @@ export interface JobSearchResult {
   pageSize: number;
 }
 
+/** Real counts over the active listings, for the portal's home view. */
+export interface JobStats {
+  total: number;
+  companies: number;
+  postedThisWeek: number;
+  fresher: number;
+  remote: number;
+  /** Active jobs per career cluster name. */
+  categories: Record<string, number>;
+  /** The companies with the most active listings. */
+  topCompanies: { name: string; logo: string | null; count: number }[];
+  /** The most common location labels, for the location box's suggestions. */
+  locations: string[];
+  /** The most common matched roles, for "Popular" searches. */
+  popularRoles: string[];
+  /** When the import last saw a live job (≈ the last successful update). */
+  lastUpdated: string | null;
+}
+
 /** A student's own tracker entry (Firestore users/{uid}.jobs.{jobId}). */
 export type TrackStatus = "saved" | "applied" | "interview" | "offer" | "closed";
 export interface TrackedJob {

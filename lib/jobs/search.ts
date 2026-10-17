@@ -4,7 +4,8 @@
  * /api/jobs routes); every filter value is checked against a fixed list.
  */
 import { getSupabaseClient } from "@/lib/supabase/client";
-import type { EmploymentType, JobDetail, JobListItem, JobSearchParams, JobSearchResult, WorkplaceType } from "./types";
+import type { EmploymentType, JobDetail, JobListItem, JobSearchParams, JobSearchResult, JobStats, WorkplaceType } from "./types";
+import { STATS_COLUMNS, summarizeJobs, type StatsRow } from "./stats";
 
 export const PAGE_SIZE = 20;
 export const EMPLOYMENT_TYPES: EmploymentType[] = ["Internship", "Full-time", "Part-time", "Contract", "Temporary"];
@@ -66,6 +67,20 @@ export async function searchJobs(p: JobSearchParams): Promise<JobSearchResult> {
     .range(from, from + PAGE_SIZE - 1);
   if (error) throw new Error(error.message);
   return { jobs: ((data ?? []) as unknown as Row[]).map(withReports), total: count ?? 0, page, pageSize: PAGE_SIZE };
+}
+
+/** Counts for the home view, read page by page (PostgREST returns at most 1,000 rows a request). */
+export async function getJobStats(): Promise<JobStats> {
+  const db = getSupabaseClient();
+  const rows: StatsRow[] = [];
+  for (let from = 0; from < 20_000; from += 1000) {
+    const { data, error } = await db.from("jobs").select(STATS_COLUMNS).eq("is_active", true).order("id").range(from, from + 999);
+    if (error) throw new Error(error.message);
+    const page = (data ?? []) as unknown as StatsRow[];
+    rows.push(...page);
+    if (page.length < 1000) break;
+  }
+  return summarizeJobs(rows, new Date());
 }
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;

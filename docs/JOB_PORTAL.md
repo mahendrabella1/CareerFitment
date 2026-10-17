@@ -10,7 +10,8 @@ the career roles students pick in their report.
 | `/account/jobs` | The same board inside the dashboard (menu: **Jobs**), plus **On my path** and the **My jobs** tracker. |
 | `components/jobs/JobBoard.tsx` | The whole UI: search, filters, list, detail panel, Trust Shield, report form, tracker. |
 | `lib/jobs/*` | Sources, normalising, classification, Trust Shield, importer, Supabase store, search. |
-| `app/api/jobs/*` | `GET /api/jobs` (search), `GET /api/jobs/[id]`, `POST /api/jobs/report`, `GET`/`POST /api/jobs/sync` (daily import). |
+| `app/api/jobs/*` | `GET /api/jobs` (search), `GET /api/jobs/[id]`, `GET /api/jobs/stats` (the home page's counts, companies and field totals - counted from the live listings, `lib/jobs/stats.ts`), `GET /api/jobs/roles` (careers → job role names for "On my path"), `POST /api/jobs/report`, `GET`/`POST /api/jobs/sync` (daily import). |
+| `public/jobs/hero*.webp` | The home page photo (the dashboard's Internships image, resized). |
 | `supabase/migrations/20261017000000_job_portal.sql` | Tables, indexes and row-level security. |
 | `vercel.json` | The daily cron (02:30 UTC = 08:00 IST). |
 
