@@ -94,6 +94,21 @@ const NAV = [
   { id: "resources", label: "Scholarships", icon: "star" },
 ];
 
+// Left-panel features -> their pages.
+const FEATURE_ROUTES: Record<string, string> = {
+  "careers": "/account/career-library",
+  "study-abroad": "/account/study-abroad",
+  "exams": "/account/exams",
+  "internships": "/account/internships-new",
+  "jobs": "/account/jobs",
+  "financial": "/account/money",
+  "legal": "/account/legal",
+  "research": "/account/research",
+  "startups": "/account/startups",
+  "resources": "/account/scholarships",
+  "portfolio": "/account/portfolio",
+};
+
 // Career-toolkit (colleges/exams/internships/scholarships/careers) is
 // temporarily disabled - flip to true to bring it back.
 const SHOW_TOOLKIT = false;
@@ -211,6 +226,20 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
   const first = name.split(/\s+/)[0] || "there";
   const initial = (name || email || "?").trim().charAt(0).toUpperCase();
 
+  // Load the feature pages in the background once the dashboard is idle, so a
+  // click in the left panel opens them at once (Next.js only prefetches in
+  // production builds).
+  useEffect(() => {
+    const run = () => Object.values(FEATURE_ROUTES).forEach((href) => router.prefetch(href));
+    const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number; cancelIdleCallback?: (id: number) => void };
+    if (w.requestIdleCallback) {
+      const handle = w.requestIdleCallback(run, { timeout: 3000 });
+      return () => w.cancelIdleCallback?.(handle);
+    }
+    const t = window.setTimeout(run, 1500);
+    return () => window.clearTimeout(t);
+  }, [router]);
+
   // Highlight the sidebar item for whichever section is in view.
   useEffect(() => {
     if (view !== "dashboard") return;
@@ -226,24 +255,9 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
 
   const go = (id: string) => {
     setNavOpen(false);
-    // Feature navigation map
-    const featureRoutes: Record<string, string> = {
-      "careers": "/account/career-library",
-      "study-abroad": "/account/study-abroad",
-      "exams": "/account/exams",
-      "internships": "/account/internships-new",
-      "jobs": "/account/jobs",
-      "financial": "/account/money",
-      "legal": "/account/legal",
-      "research": "/account/research",
-      "startups": "/account/startups",
-      "resources": "/account/scholarships",
-      "portfolio": "/account/portfolio",
-    };
-
     // Check if it's a feature ID and navigate to its page
-    if (featureRoutes[id]) {
-      router.push(featureRoutes[id]);
+    if (FEATURE_ROUTES[id]) {
+      router.push(FEATURE_ROUTES[id]);
     } else {
       document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
     }

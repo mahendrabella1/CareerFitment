@@ -6,7 +6,12 @@
 // here yet) keeps falling back to the generic 16-cluster CLUSTER_ROADMAPS
 // in clusterRoadmaps1112.ts - this file only ever ADDS detail, never
 // removes the fallback.
-import raw from "@/data/class-11-12/career-roadmaps-detailed.json";
+//
+// The file is ~3 MB, so it is NOT bundled into the dashboard: it loads on
+// demand (loadDetailedRoadmaps), only for the reports that use it (Class
+// 11-12 and Graduates). Pages that build those reports wait for it with
+// useDetailedRoadmapsReady (useDetailedRoadmaps.ts) before calling the sheet
+// builders, which then look roadmaps up synchronously as before.
 
 export interface YearFocus {
   year: string;
@@ -32,9 +37,21 @@ export interface DetailedCareerRoadmap {
   disclaimer: string | null;
 }
 
-export const CAREER_ROADMAPS_DETAILED: Record<string, DetailedCareerRoadmap> = raw as Record<string, DetailedCareerRoadmap>;
+let roadmaps: Record<string, DetailedCareerRoadmap> | null = null;
+let pending: Promise<void> | null = null;
 
+/** Fetches the roadmaps once (a separate chunk); later calls reuse it. */
+export function loadDetailedRoadmaps(): Promise<void> {
+  pending ??= import("@/data/class-11-12/career-roadmaps-detailed.json")
+    .then((m) => { roadmaps = ((m as { default?: unknown }).default ?? m) as Record<string, DetailedCareerRoadmap>; })
+    .catch((e) => { pending = null; throw e; });
+  return pending;
+}
+
+export const detailedRoadmapsLoaded = () => roadmaps !== null;
+
+/** The roadmap for a career - null when it has none, or before loadDetailedRoadmaps() finished. */
 export function detailedRoadmapFor(careerName: string | undefined | null): DetailedCareerRoadmap | null {
-  if (!careerName) return null;
-  return CAREER_ROADMAPS_DETAILED[careerName] ?? null;
+  if (!careerName || !roadmaps) return null;
+  return roadmaps[careerName] ?? null;
 }

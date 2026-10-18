@@ -33,6 +33,7 @@ Class 6 and 7 are structurally identical (same question counts/order/mapping tab
 | Career-fit engine | `lib/report/careerFitEngine1112.ts`, `lib/report/careerfit1112.ts` |
 | Report sheets | `lib/report/careerFit1112Sheets.tsx`, `lib/report/class11ExtraSheets.tsx` |
 | Report adapter | `lib/report/adaptClass11.ts` |
+| Detailed career roadmaps | `lib/report/careerRoadmapDetailed1112.ts` (~3 MB, from `data/class-11-12/career-roadmaps-detailed.json`) loads **on demand**, not in the dashboard bundle. Any page that builds 11-12 or Graduates report sheets must first wait with `useDetailedRoadmapsReady()` (`lib/report/useDetailedRoadmaps.ts`) - as `app/account/page.tsx`, `app/admin/report/[uid]` and `app/institution/report/[uid]` do - or `detailedRoadmapFor()` returns null and the report silently falls back to the cluster roadmap. |
 | Report pages | `app/account/FullReport.tsx`, `PersonalityMBTI.tsx` |
 | Category order | `ORDER_11_12` in `lib/newAssessment/data.ts` |
 
@@ -68,6 +69,7 @@ As of this build, the `graduate` registration category is still gated `enabled: 
 | `app/api/new-assessment/score/route.ts`, `app/api/new-assessment/generate/route.ts` | All | The two API routes that dispatch to whichever class's scorer/question-set based on the submitted stage - a shared parsing helper touched for one stage can break another's answer parsing. |
 | `app/NewExam.tsx` | All | The single exam-taking UI component every stage renders through, including the pre-exam "preinfo" screen (stream+career for 11-12, degree+course+year+career for Graduates) - a shared helper or the `phase` state machine touched for one stage's pre-exam flow can break another's. |
 | `lib/report/prepareStudentReport.ts` | All | The per-class `latestAssessment` -> FullReport adaptation used by every screen showing someone else's report (`/admin/report/[uid]`, the institution portal's report). `Dashboard.tsx` still has its own copy of the same branching - keep the two in step. |
+| `app/account/layout.tsx` | All | Deliberately has NO `dynamic = "force-dynamic"`: every `/account` page reads its data in the browser, so they are pre-built and served from the CDN (with it, each click was a server render in the US region - 1-8 s from India). A page that truly needs per-request server data should set its own `dynamic` export, not the layout. |
 | `lib/auth/AuthProvider.tsx`, `app/layout.tsx`, `components/course/CoursePlayerShell.tsx` | All | AuthProvider sets the per-student browser-storage scope on sign-in (`lib/progress/userStorage.ts`); the root layout mounts the activity tracker; the course shell waits for sign-in before rendering any tool so its first read uses the right student's key. |
 
 ## Per-student progress and the institution portal (all class groups)

@@ -12,6 +12,7 @@ import { Icon } from "@/app/Icons";
 import { categoryLabel } from "@/lib/auth/formOptions";
 import { apiFetch } from "@/lib/institution/client";
 import { prepareStudentReport } from "@/lib/report/prepareStudentReport";
+import { useDetailedRoadmapsReady } from "@/lib/report/useDetailedRoadmaps";
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 
 interface Profile { name: string; email: string; institution: string; category: string; latestAssessment: AssessmentSummary | null }
@@ -19,6 +20,7 @@ interface Profile { name: string; email: string; institution: string; category: 
 export default function InstitutionReportPage({ params }: { params: { uid: string } }) {
   const [p, setP] = useState<Profile | null>(null);
   const [error, setError] = useState("");
+  const roadmapsReady = useDetailedRoadmapsReady(p?.latestAssessment);
 
   useEffect(() => {
     apiFetch<{ profile: Profile }>(`/api/institution/students/${params.uid}`).then((r) => setP(r.profile)).catch((e) => setError(e instanceof Error ? e.message : "Could not load this report."));
@@ -36,6 +38,8 @@ export default function InstitutionReportPage({ params }: { params: { uid: strin
   if (error) return <>{bar}<div className="ip-main"><div className="ip-alert bad">{error}</div></div></>;
   if (!p) return <>{bar}<div className="ip-empty">Loading the report…</div></>;
   if (!p.latestAssessment) return <>{bar}<div className="ip-empty">{p.name} hasn&apos;t completed the assessment yet - there&apos;s no report to show.</div></>;
+
+  if (!roadmapsReady) return <>{bar}<div className="ip-empty">Loading the report…</div></>;
 
   const report = prepareStudentReport(p.latestAssessment);
   return (

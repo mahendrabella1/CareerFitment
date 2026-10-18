@@ -23,10 +23,12 @@ import { C } from "@/app/account/viz";
 import { S as SHARED, Center, emailReport } from "../../adminShared";
 import FullReport from "@/app/account/FullReport";
 import { prepareStudentReport } from "@/lib/report/prepareStudentReport";
+import { useDetailedRoadmapsReady } from "@/lib/report/useDetailedRoadmaps";
 
 export default function AdminReportPage({ params }: { params: { uid: string } }) {
   const [viewing, setViewing] = useState<UserProfile | null | "loading" | "error">("loading");
   const [sent, setSent] = useState<string>("");
+  const roadmapsReady = useDetailedRoadmapsReady(viewing && typeof viewing === "object" ? viewing.latestAssessment : null);
 
   useEffect(() => {
     let cancelled = false;
@@ -58,6 +60,8 @@ export default function AdminReportPage({ params }: { params: { uid: string } })
       </Center>
     );
   }
+
+  if (!roadmapsReady) return <Center>Loading…</Center>;
 
   const a = viewing.latestAssessment;
   const completed = (() => {

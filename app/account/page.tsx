@@ -13,6 +13,7 @@ import Link from "next/link";
 import { Logo } from "@/app/Logo";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import Dashboard from "@/app/account/Dashboard";
+import { useDetailedRoadmapsReady } from "@/lib/report/useDetailedRoadmaps";
 import { SchoolInbox } from "@/components/SchoolInbox";
 import { StudentHero } from "@/app/account/illustrations";
 import { C } from "@/app/account/viz";
@@ -27,6 +28,8 @@ const PAGE_CSS = `
 export default function AccountPage() {
   const router = useRouter();
   const { loading, user, profile, logout, ready } = useAuth();
+  // Class 11-12 / Graduates reports use a large roadmap file that loads on demand.
+  const roadmapsReady = useDetailedRoadmapsReady(profile?.latestAssessment);
 
   useEffect(() => {
     if (!loading && ready && !user) router.replace("/signin");
@@ -70,6 +73,7 @@ export default function AccountPage() {
   // dashboard shows the same findings in condensed form - both are read-only,
   // and the PDF students keep is the one emailed to them.
   if (a) {
+    if (!roadmapsReady) return <Centered><p style={S.muted}>Loading your report…</p></Centered>;
     // Assessment complete → render the redesigned dashboard with all features
     return (
       <>
