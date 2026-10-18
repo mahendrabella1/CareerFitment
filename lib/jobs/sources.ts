@@ -31,6 +31,14 @@ export function salaryText(min: unknown, max: unknown, currency: unknown, period
   return `${cur}${n(lo)}${Number.isFinite(hi) && hi > lo ? `–${n(hi)}` : ""}${per ? ` ${per}` : ""} (as listed)`;
 }
 
+/** A source's seniority labels -> "entry" (any entry/junior/intern), "senior" (all senior-type), else null. */
+export function seniorityLevel(labels: string[]): "entry" | "senior" | null {
+  const l = labels.map((x) => x.trim()).filter(Boolean);
+  if (l.some((x) => /entry|junior|intern|graduate/i.test(x))) return "entry";
+  if (l.length && l.every((x) => /senior|executive|director|manager|lead|principal|head|chief/i.test(x))) return "senior";
+  return null;
+}
+
 /** Text that was UTF-8 read as Latin-1 ("MÃ©xico") back to "México"; unchanged when unsure. */
 export function fixMojibake(s: string): string {
   if (!/[ÃÂ][\u0080-¿]/.test(s) || /[^\u0000-ÿ]/.test(s)) return s;
@@ -129,6 +137,7 @@ export function himalayas(env: Env): JobSource {
             postedAt: typeof j.pubDate === "number" ? j.pubDate : str(j.pubDate),
             sourceCategory: list(j.parentCategories).join(" "),
             tags: list(j.seniority).some((s) => /entry|junior|intern/i.test(s)) ? ["entry level"] : [],
+            level: seniorityLevel(list(j.seniority)),
           });
         }
         if (jobs.length < 20) break;
@@ -181,6 +190,7 @@ export function jobicy(): JobSource {
             postedAt: str(j.pubDate),
             sourceCategory: list(j.jobIndustry).join(" "),
             tags: /entry|junior/i.test(str(j.jobLevel)) ? ["entry level"] : [],
+            level: seniorityLevel(str(j.jobLevel).split(",")),
           });
         }
         await pause(250);

@@ -82,7 +82,7 @@ export function inferWorkplace(defaultRemote: boolean, ...hints: (string | null 
 export function experienceHint(title: string): ExperienceHint {
   const t = title.toLowerCase();
   if (/\bintern(ship)?\b|\btrainee\b|\bapprentice/.test(t)) return "internship";
-  if (/\b(senior|sr\.?|lead|principal|staff|head|director|vp|vice president|chief)\b/.test(t)) return "senior";
+  if (/\b(senior|sr\.?|lead|principal|principle|staff|head|director|vp|vice president|chief|co-?founder|founder|cto|ceo|cfo|coo|cso|cmo|cpo|ciso)\b/.test(t)) return "senior";
   if (/\b(junior|jr\.?|entry[- ]level|graduate|associate|fresher|campus)\b/.test(t)) return "entry";
   return null;
 }
@@ -133,7 +133,7 @@ export function normalizeJob(raw: RawJob, source: Pick<JobSource, "id" | "kind" 
       location,
       employment_type: employment,
       workplace_type: workplace,
-      experience_hint: experienceHint(title),
+      experience_hint: experienceHint(title) ?? raw.level ?? null,
       is_fresher: isFresherListing(title, `${text} ${description ?? ""}`),
       description,
       salary_text: cleanText(raw.salary, MAX.salary) || null,

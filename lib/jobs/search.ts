@@ -30,6 +30,7 @@ export function parseSearchParams(q: URLSearchParams, clusters: string[]): JobSe
     workplace: workplace && WORKPLACE_TYPES.includes(workplace) ? workplace : undefined,
     fresher: q.get("fresher") === "1" || undefined,
     roles: roles.length ? roles : undefined,
+    sort: q.get("sort") === "new" ? "new" : "student",
     page: Math.min(Math.max(parseInt(q.get("page") || "1", 10) || 1, 1), 50),
   };
 }
@@ -45,10 +46,14 @@ function withReports(r: Row): JobListItem {
   return job;
 }
 
-export async function searchJobs(p: JobSearchParams): Promise<JobSearchResult> {
-  const db = getSupabaseClient();
-  const page = p.page ?? 1;
-  let query = db.from("jobs").select(LIST_COLUMNS, { count: "exact" }).eq("is_active", true);
+// Student-friendly = the "Fresher-friendly" filter's rule.
+const STUDENT_FRIENDLY = "is_fresher.eq.true,experience_hint.in.(internship,entry),employment_type.eq.Internship";
+
+type Db = ReturnType<typeof getSupabaseClient>;
+
+/** The jobs query with every filter applied (no ordering or paging yet). */
+function filtered(db: Db, p: JobSearchParams, columns: string, head = false) {
+  let query = db.from("jobs").select(columns, { count: "exact", head }).eq("is_active", true);
   if (p.q) query = query.textSearch("search", p.q, { type: "websearch", config: "simple" });
   if (p.location) {
     query = /^remote$/i.test(p.location)
@@ -58,15 +63,53 @@ export async function searchJobs(p: JobSearchParams): Promise<JobSearchResult> {
   if (p.category) query = query.eq("category", p.category);
   if (p.type) query = query.eq("employment_type", p.type);
   if (p.workplace) query = query.eq("workplace_type", p.workplace);
-  if (p.fresher) query = query.or("is_fresher.eq.true,experience_hint.in.(internship,entry),employment_type.eq.Internship");
+  if (p.fresher) query = query.or(STUDENT_FRIENDLY);
   if (p.roles?.length) query = query.in("role_match", p.roles);
+  return query;
+}
+type Query = ReturnType<typeof filtered>;
+
+// "Students first" (the default order): internships, entry-level and
+// fresher-friendly jobs; then jobs that don't say; senior roles last. Newest
+// first within each. The three tiers split every job exactly once.
+const TIERS: ((q: Query) => Query)[] = [
+  (q) => q.or(STUDENT_FRIENDLY),
+  (q) => q.eq("is_fresher", false).neq("employment_type", "Internship").is("experience_hint", null),
+  (q) => q.eq("is_fresher", false).neq("employment_type", "Internship").eq("experience_hint", "senior"),
+];
+const newestFirst = (q: Query) => q.order("posted_at", { ascending: false, nullsFirst: false }).order("last_seen_at", { ascending: false });
+const toJobs = (data: unknown) => ((data ?? []) as unknown as Row[]).map(withReports);
+
+export async function searchJobs(p: JobSearchParams): Promise<JobSearchResult> {
+  const db = getSupabaseClient();
+  const page = p.page ?? 1;
   const from = (page - 1) * PAGE_SIZE;
-  const { data, count, error } = await query
-    .order("posted_at", { ascending: false, nullsFirst: false })
-    .order("last_seen_at", { ascending: false })
-    .range(from, from + PAGE_SIZE - 1);
-  if (error) throw new Error(error.message);
-  return { jobs: ((data ?? []) as unknown as Row[]).map(withReports), total: count ?? 0, page, pageSize: PAGE_SIZE };
+
+  // Newest first - or only student-friendly jobs anyway.
+  if (p.sort === "new" || p.fresher) {
+    const { data, count, error } = await newestFirst(filtered(db, p, LIST_COLUMNS)).range(from, from + PAGE_SIZE - 1);
+    if (error) throw new Error(error.message);
+    return { jobs: toJobs(data), total: count ?? 0, page, pageSize: PAGE_SIZE };
+  }
+
+  // Students first: count each tier, then read the page across tiers.
+  const counts = await Promise.all(TIERS.map(async (tier) => {
+    const { count, error } = await tier(filtered(db, p, "id", true));
+    if (error) throw new Error(error.message);
+    return count ?? 0;
+  }));
+  const jobs: JobListItem[] = [];
+  let skip = from, need = PAGE_SIZE;
+  for (let i = 0; i < TIERS.length && need > 0; i++) {
+    if (skip >= counts[i]) { skip -= counts[i]; continue; }
+    const take = Math.min(need, counts[i] - skip);
+    const { data, error } = await newestFirst(TIERS[i](filtered(db, p, LIST_COLUMNS))).range(skip, skip + take - 1);
+    if (error) throw new Error(error.message);
+    jobs.push(...toJobs(data));
+    need -= take;
+    skip = 0;
+  }
+  return { jobs, total: counts.reduce((a, b) => a + b, 0), page, pageSize: PAGE_SIZE };
 }
 
 /** Counts for the home view, read page by page (PostgREST returns at most 1,000 rows a request). */

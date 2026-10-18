@@ -35,8 +35,8 @@ const REPORT_REASONS = [
   { id: "other", label: "Something else" },
 ];
 
-interface Filters { q: string; location: string; type: string; workplace: string; category: string; fresher: boolean; path: boolean; all: boolean; page: number }
-const EMPTY: Filters = { q: "", location: "", type: "", workplace: "", category: "", fresher: false, path: false, all: false, page: 1 };
+interface Filters { q: string; location: string; type: string; workplace: string; category: string; fresher: boolean; path: boolean; all: boolean; sort: "" | "new"; page: number }
+const EMPTY: Filters = { q: "", location: "", type: "", workplace: "", category: "", fresher: false, path: false, all: false, sort: "", page: 1 };
 type SearchValue = { q: string; location: string; type: string };
 type NavId = "home" | "intern" | "remote" | "fresher" | "path" | "mine" | "";
 
@@ -49,6 +49,7 @@ function readUrl(): Filters {
   return {
     q: p.get("q") ?? "", location: p.get("location") ?? "", type: p.get("type") ?? "", workplace: p.get("workplace") ?? "",
     category: p.get("category") ?? "", fresher: p.get("fresher") === "1", path: p.get("path") === "1", all: p.get("all") === "1",
+    sort: p.get("sort") === "new" ? "new" : "",
     page: Math.max(1, Number(p.get("page")) || 1),
   };
 }
@@ -224,6 +225,7 @@ export function JobBoard({ variant }: { variant: "public" | "account" }) {
     if (f.workplace) p.set("workplace", f.workplace);
     if (f.category) p.set("category", f.category);
     if (f.fresher) p.set("fresher", "1");
+    if (f.sort) p.set("sort", f.sort);
     if (f.page > 1) p.set("page", String(f.page));
     const shown = new URLSearchParams(p);
     if (f.path) {
@@ -393,6 +395,13 @@ export function JobBoard({ variant }: { variant: "public" | "account" }) {
               <select value={filters.category} onChange={(e) => set({ category: e.target.value })}>
                 <option value="">All fields</option>
                 {JOB_CATEGORIES.map((c) => <option key={c} value={c}>{CATEGORY_SHORT[c] ?? c}</option>)}
+              </select>
+            </label>
+            <label className="jb-select jb-sort">
+              <span className="jb-sr">Order</span>
+              <select value={filters.sort} onChange={(e) => set({ sort: e.target.value === "new" ? "new" : "" })}>
+                <option value="">Students first</option>
+                <option value="new">Newest first</option>
               </select>
             </label>
             {hasFilter(filters) && <button className="jb-clear" onClick={() => go({ all: true })}>Clear all</button>}
@@ -668,7 +677,10 @@ function HomeView({ stats, latest, latestState, pathJobs, pathNames, hasCareers,
 
       <section className="jb-sec jb-wrap">
         <div className="jb-sec-h">
-          <h2>Latest job opportunities</h2>
+          <div>
+            <h2>Latest job opportunities</h2>
+            <p>Internships and fresher-friendly jobs first</p>
+          </div>
           {latest.length > 0 && <button className="jb-more" onClick={onBrowseAll}>View all jobs <Ic n="arrow" s={15} /></button>}
         </div>
         {latestState === "loading" && <div className="jb-rows">{Array.from({ length: 5 }).map((_, i) => <div key={i} className="jb-row jb-skel" aria-hidden="true"><i /><i /><i /></div>)}</div>}
@@ -1040,6 +1052,7 @@ const CSS = `
 .jb-sep{width:1px;height:20px;background:var(--line)}
 .jb-select select{font:inherit;font-size:13px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:#374151}
 .jb-select-sm select{padding:3px 6px;font-size:12px}
+.jb-sort{margin-left:auto}
 .jb-clear{font:inherit;font-size:13px;font-weight:600;color:var(--acc);background:none;border:0;cursor:pointer;padding:6px}
 .jb-main{display:grid;grid-template-columns:minmax(300px,420px) minmax(0,1fr);gap:16px;align-items:start;padding-bottom:40px}
 .jb-list{display:flex;flex-direction:column;gap:8px;min-width:0}

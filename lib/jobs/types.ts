@@ -27,6 +27,8 @@ export interface RawJob {
   postedAt?: string | number | null;
   /** The source's own category label ("Software Development"). */
   sourceCategory?: string | null;
+  /** The source's own seniority label, mapped (Himalayas, Jobicy). The title wins when it says. */
+  level?: ExperienceHint;
   tags?: string[];
 }
 
@@ -138,6 +140,8 @@ export interface JobSearchParams {
   fresher?: boolean;
   role?: string;
   roles?: string[];
+  /** "student" (default): internships / entry level / fresher-friendly first, senior roles last. "new": newest first. */
+  sort?: "student" | "new";
   page?: number;
 }
 
