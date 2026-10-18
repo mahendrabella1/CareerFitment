@@ -1,5 +1,10 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
+// Next.js keeps fetch() results in its Data Cache - on Vercel even across
+// deployments - unless a request opts out. Supabase reads must always be live
+// (the job portal's counts stayed frozen at the first import's 12 jobs).
+const liveFetch: typeof fetch = (input, init) => fetch(input, { ...init, cache: "no-store" });
+
 /**
  * Public/anon client - safe to use anywhere (RLS enforces read-only access
  * to journeys/blueprints/questions, and session-owner-only reads elsewhere).
@@ -14,7 +19,7 @@ export function getSupabaseClient(): SupabaseClient {
       "Missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY"
     );
   }
-  return createClient(url, anonKey);
+  return createClient(url, anonKey, { global: { fetch: liveFetch } });
 }
 
 /**
@@ -33,5 +38,6 @@ export function getSupabaseAdmin(): SupabaseClient {
   }
   return createClient(url, serviceKey, {
     auth: { autoRefreshToken: false, persistSession: false },
+    global: { fetch: liveFetch },
   });
 }

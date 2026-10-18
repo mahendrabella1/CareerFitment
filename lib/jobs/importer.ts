@@ -2,7 +2,8 @@
  * The daily import, independent of the database (the store is passed in), so
  * it is tested with an in-memory store (tests/jobs/importer.test.mjs).
  *
- * Per source, in isolation - one failing source never stops the others:
+ * All sources run at the same time (so the run fits a 60 s serverless limit),
+ * each in isolation - one failing source never stops the others:
  *   fetch (time-limited) -> normalise + validate -> dedupe -> upsert in batches
  *   on (source, external_id), stamping last_seen_at.
  * Expiry happens ONLY after a source's run fully succeeded:
@@ -61,17 +62,11 @@ export async function runImport(sources: JobSource[], store: JobStore, ctx: Omit
   const runId = await store.startRun(opts.trigger);
   const results: SourceRunResult[] = [];
 
-  for (const source of sources) {
+  const runOne = async (source: JobSource): Promise<SourceRunResult> => {
     const base: SourceRunResult = { source: source.id, status: "skipped", fetched: 0, valid: 0, upserted: 0, expired: 0, complete: false, message: "" };
-    if (!source.enabled) {
-      results.push({ ...base, message: source.disabledReason ?? "Disabled" });
-      continue;
-    }
+    if (!source.enabled) return { ...base, message: source.disabledReason ?? "Disabled" };
     const remaining = deadline - Date.now();
-    if (remaining < 5_000) {
-      results.push({ ...base, message: "Not started - the run's time budget was used up" });
-      continue;
-    }
+    if (remaining < 5_000) return { ...base, message: "Not started - the run's time budget was used up" };
     const result = { ...base };
     try {
       const previouslyActive = await store.activeCount(source.id);
@@ -118,9 +113,11 @@ export async function runImport(sources: JobSource[], store: JobStore, ctx: Omit
       result.status = "failed";
       result.message = safeMessage(e);
     }
-    results.push(result);
     await store.recordSource(source.id, { status: result.status, message: result.message, at: seenAt, success: result.status === "ok", complete: result.complete }).catch(() => undefined);
-  }
+    return result;
+  };
+  // Results keep the sources' order.
+  results.push(...(await Promise.all(sources.map(runOne))));
 
   const ran = results.filter((r) => r.status !== "skipped");
   const status = !ran.length ? "failed" : ran.every((r) => r.status === "ok") ? "ok" : ran.some((r) => r.status === "ok" || r.status === "partial") ? "partial" : "failed";
