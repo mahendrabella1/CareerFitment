@@ -107,7 +107,7 @@ As of this build, the `graduate` registration category is still gated `enabled: 
 - **Job portal** (every class; `/jobs` public, `/account/jobs` in the dashboard menu; full guide in `docs/JOB_PORTAL.md`):
   - listings live in **Supabase** (not Firestore): `supabase/migrations/20261017000000_job_portal.sql`, read with the anon key (RLS: active jobs only), written only by the server importer with `SUPABASE_SERVICE_ROLE_KEY`;
   - imported daily by Vercel Cron (`vercel.json`) → `/api/jobs/sync` (needs `CRON_SECRET`); logic in `lib/jobs/*`, UI in `components/jobs/JobBoard.tsx`;
-  - sources only with recorded permission (`lib/jobs/sources.ts`): Remotive on; Adzuna, Arbeitnow, employer boards off until confirmed - never scrape;
+  - sources only with recorded permission (`lib/jobs/sources.ts`): Remotive, Himalayas (jobs open to India), Jobicy and Remote OK on (public APIs that allow it, with credit + link back); Adzuna, Arbeitnow, employer boards off until confirmed - never scrape;
   - job titles are matched to the UG roadmap roles (`lib/jobs/classify.ts`, from `data/graduates/career-clusters.json` - read-only) for "On my path"; the student's tracker is `users/{uid}.jobs` (student-writable);
   - tests: `npm run test:jobs`.
 - **"How this works" panels** (`components/HowItWorks.tsx`) sit at the top of every portal page, the admin Institution Logins and Messages pages, and the student/parent pages above. `/institution/guide` explains every feature and the sync paths. When a feature changes, update its panel.

@@ -763,7 +763,7 @@ function JobPanel({ job, onPath, tracked, signedIn, onTrack, onReported }: {
       </div>
 
       <div className="jb-actions">
-        <a className="jb-btn jb-btn-primary" href={job.apply_url} target="_blank" rel="noopener noreferrer">Apply now <Ic n="external" s={15} /></a>
+        <a className="jb-btn jb-btn-primary" href={job.apply_url} target="_blank" rel="noopener">Apply now <Ic n="external" s={15} /></a>
         {signedIn ? (
           <>
             <button className="jb-btn" aria-pressed={Boolean(tracked)} onClick={() => onTrack(tracked ? null : "saved")}>{tracked ? "✓ Saved" : "Save"}</button>
@@ -811,7 +811,7 @@ function JobPanel({ job, onPath, tracked, signedIn, onTrack, onReported }: {
       </section>
 
       <footer className="jb-source">
-        <span>{job.attribution ?? "Third-party listing"}{job.source_url ? <> · <a href={job.source_url} target="_blank" rel="noopener noreferrer">view the original listing ↗</a></> : null}</span>
+        <span>{job.attribution ?? "Third-party listing"}{job.source_url ? <> · <a href={job.source_url} target="_blank" rel="noopener">view the original listing ↗</a></> : null}</span>
         <span>Last checked {ago(job.last_seen_at)}</span>
       </footer>
 
@@ -888,7 +888,7 @@ function MyJobs({ tracked, onMove, onBrowse }: { tracked: [string, TrackedJob][]
                 <b>{t.title}</b>
                 <span>{t.company}</span>
                 <div className="jb-row-links">
-                  <a className="jb-link" href={t.applyUrl} target="_blank" rel="noopener noreferrer">Original listing ↗</a>
+                  <a className="jb-link" href={t.applyUrl} target="_blank" rel="noopener">Original listing ↗</a>
                   <label className="jb-select jb-select-sm">
                     <span className="jb-sr">Move to</span>
                     <select value={t.status} onChange={(e) => onMove(id, t, (e.target.value || null) as TrackStatus | null)}>

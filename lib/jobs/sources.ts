@@ -17,6 +17,26 @@ const DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 const asArray = (v: unknown): Record<string, unknown>[] => (Array.isArray(v) ? (v as Record<string, unknown>[]) : []);
 const str = (v: unknown): string => (typeof v === "string" ? v : typeof v === "number" ? String(v) : "");
+const list = (v: unknown): string[] => (Array.isArray(v) ? v.map(str).filter(Boolean) : str(v) ? [str(v)] : []);
+const pause = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+const PERIOD: Record<string, string> = { hourly: "an hour", hour: "an hour", daily: "a day", weekly: "a week", monthly: "a month", month: "a month", annual: "a year", yearly: "a year", year: "a year" };
+/** "USD 50,000–70,000 a year (as listed)" - only when the source states a pay figure. */
+export function salaryText(min: unknown, max: unknown, currency: unknown, period: unknown): string | null {
+  const lo = Number(min), hi = Number(max);
+  if (!Number.isFinite(lo) || lo <= 0) return null;
+  const cur = typeof currency === "string" && /^[A-Z]{3}$/.test(currency) ? `${currency} ` : "";
+  const per = PERIOD[str(period).toLowerCase()];
+  const n = (v: number) => Math.round(v).toLocaleString("en-US");
+  return `${cur}${n(lo)}${Number.isFinite(hi) && hi > lo ? `–${n(hi)}` : ""}${per ? ` ${per}` : ""} (as listed)`;
+}
+
+/** Text that was UTF-8 read as Latin-1 ("MÃ©xico") back to "México"; unchanged when unsure. */
+export function fixMojibake(s: string): string {
+  if (!/[ÃÂ][\u0080-¿]/.test(s) || /[^\u0000-ÿ]/.test(s)) return s;
+  const t = Buffer.from(s, "latin1").toString("utf8");
+  return t.includes("�") ? s : t;
+}
 
 // ---------------------------------------------------------------- Remotive (worldwide remote)
 // Terms: https://github.com/remotive-com/remote-jobs-api (reviewed 2026-10-17).
@@ -59,6 +79,155 @@ export function remotive(enabled: boolean): JobSource {
         tags: Array.isArray(j.tags) ? (j.tags as unknown[]).map(str).filter(Boolean).slice(0, 15) : [],
       }));
       return { jobs: raw, complete: Number.isFinite(count) && count > 0 && count === jobs.length };
+    },
+  };
+}
+
+// ---------------------------------------------------------------- Himalayas (remote jobs open to India)
+// Terms: https://himalayas.app/docs/remote-jobs-api (reviewed 2026-10-18) -
+// for "commercial and personal integrations": show a visible Himalayas credit
+// with a link to himalayas.app; every Apply uses the API's applicationLink;
+// do not redistribute to other job boards or aggregators (incl. Google Jobs,
+// LinkedIn) - so no JobPosting markup. Public allowance without a key; data
+// refreshes every 24 h. Searches jobs open to candidates in India, 20 a page.
+export function himalayas(env: Env): JobSource {
+  const pages = Math.min(Math.max(Number(env.JOB_HIMALAYAS_PAGES) || 10, 1), 25);
+  return {
+    id: "himalayas",
+    name: "Himalayas",
+    kind: "aggregator",
+    termsUrl: "https://himalayas.app/docs/remote-jobs-api",
+    reviewedOn: "2026-10-18",
+    permissionNote: "Public API for commercial and personal use. Required: visible Himalayas credit linking to himalayas.app, Apply through the API's applicationLink, no redistribution to other job boards or aggregators (incl. Google Jobs, LinkedIn).",
+    attribution: "via Himalayas",
+    allowedApplyHosts: ["himalayas.app"],
+    completeSnapshot: false,
+    staleDays: 14,
+    keepDescription: true,
+    enabled: true,
+    async fetch(ctx: SourceContext): Promise<FetchResult> {
+      const seen = new Map<string, RawJob>();
+      for (let page = 1; page <= pages; page++) {
+        const data = (await ctx.fetchJson(`https://himalayas.app/jobs/api/search?country=India&page=${page}`)) as Record<string, unknown>;
+        const jobs = asArray(data?.jobs);
+        for (const j of jobs) {
+          const link = str(j.applicationLink);
+          const id = (str(j.guid) || link).replace(/^https:\/\/himalayas\.app\//, "");
+          const where = list(j.locationRestrictions);
+          seen.set(id, {
+            externalId: id,
+            title: str(j.title),
+            company: str(j.companyName),
+            companyLogo: str(j.companyLogo) || null,
+            location: where.length ? where.slice(0, 6).join(", ") : "Worldwide",
+            employmentType: str(j.employmentType),
+            workplace: "remote",
+            descriptionHtml: str(j.description) || str(j.excerpt),
+            salary: salaryText(j.minSalary, j.maxSalary, j.currency, j.salaryPeriod),
+            applyUrl: link,
+            sourceUrl: link,
+            postedAt: typeof j.pubDate === "number" ? j.pubDate : str(j.pubDate),
+            sourceCategory: list(j.parentCategories).join(" "),
+            tags: list(j.seniority).some((s) => /entry|junior|intern/i.test(s)) ? ["entry level"] : [],
+          });
+        }
+        if (jobs.length < 20) break;
+        await pause(250);
+      }
+      return { jobs: [...seen.values()], complete: false };
+    },
+  };
+}
+
+// ---------------------------------------------------------------- Jobicy (remote)
+// Terms: https://jobicy.com/jobs-rss-feed (reviewed 2026-10-18): "You may use
+// Jobicy listings in your own products and user experiences without requesting
+// individual permission." Required: credit Jobicy with a clickable link, keep
+// the canonical Jobicy job URL ("all application buttons redirect to the
+// original job URL provided in this feed"), cache, avoid excessive requests.
+// The feed holds jobs from the last 7 days, up to 200 a request.
+export function jobicy(): JobSource {
+  return {
+    id: "jobicy",
+    name: "Jobicy",
+    kind: "aggregator",
+    termsUrl: "https://jobicy.com/jobs-rss-feed",
+    reviewedOn: "2026-10-18",
+    permissionNote: "Public API that allows use in other products without asking. Required: credit Jobicy with a clickable link; Apply goes to the listing's Jobicy URL; no excessive requests (3 a day here).",
+    attribution: "via Jobicy",
+    allowedApplyHosts: ["jobicy.com"],
+    completeSnapshot: false,
+    staleDays: 14,
+    keepDescription: true,
+    enabled: true,
+    async fetch(ctx: SourceContext): Promise<FetchResult> {
+      const seen = new Map<string, RawJob>();
+      // The newest jobs anywhere, plus those open to Asia-Pacific and to anyone.
+      for (const q of ["count=200", "count=100&geo=apac", "count=100&geo=anywhere"]) {
+        const data = (await ctx.fetchJson(`https://jobicy.com/api/v2/remote-jobs?${q}`)) as Record<string, unknown>;
+        for (const j of asArray(data?.jobs)) {
+          seen.set(str(j.id), {
+            externalId: str(j.id),
+            title: str(j.jobTitle),
+            company: str(j.companyName),
+            companyLogo: str(j.companyLogo) || null,
+            location: str(j.jobGeo) || "Remote",
+            employmentType: list(j.jobType).join(" "),
+            workplace: "remote",
+            descriptionHtml: str(j.jobDescription) || str(j.jobExcerpt),
+            salary: salaryText(j.salaryMin, j.salaryMax, j.salaryCurrency, j.salaryPeriod),
+            applyUrl: str(j.url),
+            sourceUrl: str(j.url),
+            postedAt: str(j.pubDate),
+            sourceCategory: list(j.jobIndustry).join(" "),
+            tags: /entry|junior/i.test(str(j.jobLevel)) ? ["entry level"] : [],
+          });
+        }
+        await pause(250);
+      }
+      return { jobs: [...seen.values()], complete: false };
+    },
+  };
+}
+
+// ---------------------------------------------------------------- Remote OK
+// Terms (the API's own "legal" notice, reviewed 2026-10-18): link back - with
+// follow, not nofollow - to the job's URL on Remote OK and mention Remote OK
+// as the source; don't use the Remote OK logo (the name is fine). The feed is
+// the latest ~100 jobs. Its tags are broad and noisy, so they aren't used to
+// pick a field.
+export function remoteOk(): JobSource {
+  return {
+    id: "remoteok",
+    name: "Remote OK",
+    kind: "aggregator",
+    termsUrl: "https://remoteok.com/api",
+    reviewedOn: "2026-10-18",
+    permissionNote: "Public API. Required: a followed link back to the job's Remote OK URL and the name Remote OK as the source; no Remote OK logo.",
+    attribution: "via Remote OK",
+    allowedApplyHosts: ["remoteok.com"],
+    completeSnapshot: false,
+    staleDays: 14,
+    keepDescription: true,
+    enabled: true,
+    async fetch(ctx: SourceContext): Promise<FetchResult> {
+      const rows = asArray(await ctx.fetchJson("https://remoteok.com/api")).filter((j) => j.id && j.position);
+      return {
+        complete: false,
+        jobs: rows.map((j) => ({
+          externalId: str(j.id),
+          title: fixMojibake(str(j.position)),
+          company: fixMojibake(str(j.company)),
+          companyLogo: str(j.company_logo) || str(j.logo) || null,
+          location: fixMojibake(str(j.location)) || "Remote",
+          workplace: "remote",
+          descriptionHtml: fixMojibake(str(j.description)),
+          salary: salaryText(j.salary_min, j.salary_max, "USD", "yearly"),
+          applyUrl: str(j.url),
+          sourceUrl: str(j.url),
+          postedAt: str(j.date) || (typeof j.epoch === "number" ? j.epoch : null),
+        })),
+      };
     },
   };
 }
@@ -266,11 +435,13 @@ export function leverBoards(env: Env): JobSource[] {
 }
 
 /**
- * Every configured source. Remotive runs unless JOB_SOURCES_OFF lists it;
- * the others need their permission (and keys) configured first.
+ * Every configured source. Remotive, Himalayas, Jobicy and Remote OK (public
+ * APIs whose terms allow showing their jobs) run unless JOB_SOURCES_OFF lists
+ * them; the others need their permission (and keys) configured first.
+ * Himalayas runs early: its jobs are the ones open to candidates in India.
  */
 export function getSources(env: Env = process.env): JobSource[] {
   const off = new Set((env.JOB_SOURCES_OFF ?? "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean));
-  const all = [remotive(true), adzuna(env), arbeitnow(env), ...greenhouseBoards(env), ...leverBoards(env)];
+  const all = [remotive(true), himalayas(env), jobicy(), remoteOk(), adzuna(env), arbeitnow(env), ...greenhouseBoards(env), ...leverBoards(env)];
   return all.map((s) => (off.has(s.id) ? { ...s, enabled: false, disabledReason: "Switched off in JOB_SOURCES_OFF" } : s));
 }

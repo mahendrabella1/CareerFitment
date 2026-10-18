@@ -65,8 +65,19 @@ export function supabaseJobStore(db: SupabaseClient = getSupabaseAdmin()): JobSt
   };
 }
 
-/** fetch with a timeout, a fixed user agent and a size cap - for the adapters. */
+/** fetch with a timeout, a fixed user agent and a size cap - for the adapters.
+ *  A dropped connection ("fetch failed") is retried once; HTTP errors are not. */
 export async function fetchJson(url: string, init: { headers?: Record<string, string> } = {}): Promise<unknown> {
+  try {
+    return await fetchJsonOnce(url, init);
+  } catch (e) {
+    if (!(e instanceof TypeError)) throw e;
+    await new Promise((r) => setTimeout(r, 1500));
+    return fetchJsonOnce(url, init);
+  }
+}
+
+async function fetchJsonOnce(url: string, init: { headers?: Record<string, string> }): Promise<unknown> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 20_000);
   try {

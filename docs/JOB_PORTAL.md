@@ -68,7 +68,7 @@ the career roles students pick in their report.
    Without the Supabase variables every jobs route answers 503 and the board
    shows "The job portal is being set up".
 
-## Sources and permissions (reviewed 2026-10-17)
+## Sources and permissions (reviewed 2026-10-17, 2026-10-18)
 
 No source is scraped. Each one is an API whose terms allow showing its jobs,
 and stays off until that is confirmed. Where each permission was reviewed is
@@ -76,10 +76,15 @@ recorded in `lib/jobs/sources.ts` and in the `job_sources` table.
 
 | Source | State | Conditions we follow |
 |---|---|---|
-| **Remotive** (worldwide remote jobs) | **On** | Free public API ([terms](https://github.com/remotive-com/remote-jobs-api)). Link back to the Remotive job page and credit Remotive ("via Remotive" on every card). Jobs arrive with a 24 h delay. At most 4 fetches a day (we do 1). No resubmission to Google Jobs/LinkedIn - so the pages carry **no JobPosting structured data**. No sign-up gating - so `/jobs` is browsable without an account. |
-| **Adzuna** (India) | Off | [Terms](https://developer.adzuna.com/docs/terms_of_service) allow publishing listings with "Jobs by Adzuna", but commercial use needs Adzuna's agreement. To turn on: register at developer.adzuna.com, email Adzuna to confirm OneGrasp's use, then set the three `ADZUNA_*` variables. Only salaries the employer stated are shown (Adzuna's predicted salaries are not). |
+| **Remotive** (worldwide remote jobs) | **On** | Free public API, but it only exposes ~12 jobs ([terms](https://github.com/remotive-com/remote-jobs-api)). Link back to the Remotive job page and credit Remotive ("via Remotive" on every card). Jobs arrive with a 24 h delay. At most 4 fetches a day (we do 1). No resubmission to Google Jobs/LinkedIn - so the pages carry **no JobPosting structured data**. No sign-up gating - so `/jobs` is browsable without an account. |
+| **Himalayas** (remote jobs open to India) | **On** | Public API ([docs and terms](https://himalayas.app/docs/remote-jobs-api)), for commercial and personal use. We search jobs open to candidates in India (`country=India`, 20 a page, 10 pages a day - `JOB_HIMALAYAS_PAGES` to change). Required: visible Himalayas credit linking to himalayas.app ("via Himalayas" + the original-listing link); every Apply uses the API's `applicationLink`; no redistribution to other job boards or aggregators, including Google Jobs and LinkedIn. |
+| **Jobicy** (remote) | **On** | Public API ([docs](https://jobicy.com/jobs-rss-feed)): "You may use Jobicy listings in your own products and user experiences without requesting individual permission." Required: credit Jobicy with a clickable link; Apply goes to the listing's Jobicy URL; cache and avoid excessive requests (we make 3 a day: newest, APAC, anywhere). Jobs from the last 7 days. |
+| **Remote OK** (remote) | **On** | Public API ([remoteok.com/api](https://remoteok.com/api)); its terms: a followed link (not `nofollow`) back to the job's Remote OK URL and the name Remote OK as the source; don't use the Remote OK logo. Latest ~100 jobs. |
+| **Adzuna** (India) | Off | [Terms](https://developer.adzuna.com/docs/terms_of_service) allow publishing listings with an "Adzuna" label linked to Adzuna, but commercial use is limited to a 14-day trial, after which "a licence agreement may be required". To turn on: register at developer.adzuna.com, email Adzuna to confirm OneGrasp's use, then set the three `ADZUNA_*` variables. Only salaries the employer stated are shown (Adzuna's predicted salaries are not). |
 | **Arbeitnow** (Europe) | Off | [Terms](https://arbeitnow.com/en/terms) ask for a link back but restrict commercial public display. Turn on only with their written permission (`ARBEITNOW_PERMISSION_CONFIRMED_ON`). |
 | **Employer boards** (Greenhouse, Lever) | Off until configured | An employer's own careers feed, added only with that employer's permission: `JOB_GREENHOUSE_BOARDS='[{"token":"acme","company":"Acme","permissionUrl":"https://...","reviewedOn":"2026-10-20"}]'` (Lever: `"site"` instead of `"token"`). These listings show as **Verified source**. |
+
+Apply and original-listing links use `rel="noopener"` (not `noreferrer`/`nofollow`) so each source sees the visits it sends.
 
 Not used, on purpose: LinkedIn, Indeed, Naukri, Glassdoor and any other site
 without an API that permits this - scraping them breaks their terms.
