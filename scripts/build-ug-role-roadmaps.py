@@ -39,6 +39,9 @@ import docx
 from docx.table import Table
 from docx.text.paragraph import Paragraph
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ug_drafted_roadmaps import merge_drafts  # noqa: E402 - roles no Word file covers
+
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 R_ID = "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id"
 
@@ -1211,6 +1214,12 @@ def main():
         # Rebuild just the catalog from the existing index (no Word files needed).
         print(f"catalog: {write_catalog(repo)} roles")
         return
+    if files == ["--drafts-only"]:
+        # Re-add the drafted roadmaps (data/graduates/drafted-roadmaps.json) to
+        # the existing output, without re-reading the Word files.
+        added, skipped = merge_drafts(repo, write_catalog)
+        print(f"drafted roadmaps added {len(added)}, skipped {len(skipped)} (a researched roadmap exists)")
+        return
     clusters = json.load(open(os.path.join(repo, "data/graduates/career-clusters.json"), encoding="utf-8"))["clusters"]
     roles = sorted({r for c in clusters for r in c["roles"]})
     load_sheet_rows(repo)
@@ -1296,7 +1305,8 @@ def main():
     # one roadmap file it needs.
     with open(os.path.join(out_dir, "index.json"), "w", encoding="utf-8") as fh:
         json.dump({"roles": index["roles"], "versions": index["versions"]}, fh, ensure_ascii=False, separators=(",", ":"))
-    write_catalog(repo)
+    # Roles no Word file covers get their drafted roadmap (writes the catalog too).
+    drafted, _ = merge_drafts(repo, write_catalog)
     stale = os.path.join(repo, "data/graduates/role-roadmaps-index.json")
     if os.path.exists(stale):
         os.remove(stale)
