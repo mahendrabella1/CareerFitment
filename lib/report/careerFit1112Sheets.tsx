@@ -1569,7 +1569,7 @@ const CONCERN_POINTERS: Record<string, string> = {
   "Course Suitability: Picking the wrong course or struggling with academic difficulty.":
     "That's exactly what this ranking is for - every cluster below is ordered by how well it fits your own measured interests and abilities, not by popularity.",
   "Admissions & Competition: Cracking tough entrance exams and getting into a good college.":
-    "The Career Selector page ahead names the specific entrance exam for your chosen career, with a full roadmap to it.",
+    "The Career Selector page names the specific entrance exam for your chosen career, with a full roadmap to it.",
   "Career Outcomes: Getting a stable job, good salary, and career growth.":
     "Each cluster below shows its real entry/mid/senior salary range in India and abroad, under \"Typical earnings.\"",
   "Financial Cost: Affordability, high fees, or student expenses.":
@@ -1780,7 +1780,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                         <Icon name="cap" size={16} style={{ color: "#e08a1e", flex: "none", marginTop: 1 }} />
                         <span style={{ minWidth: 0 }}><b style={{ color: "var(--ink)" }}>Entrance exam:</b> {selector.career.typicalEntranceExam}</span>
                       </div>
-                      <div style={{ fontSize: 10.5, color: "var(--muted)", marginTop: 10, fontStyle: "italic", textAlign: "center" }}>The realistic path and simple next steps are on the Career Selector page ahead.</div>
+                      <div style={{ fontSize: 10.5, color: "var(--muted)", marginTop: 10, fontStyle: "italic", textAlign: "center" }}>The realistic path and simple next steps are on the Career Selector page, next.</div>
                     </div>
                     <SummitIllustration />
                   </div>
@@ -1790,60 +1790,6 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
               </div>
             </div>
           </div>
-        </>
-      ),
-    },
-    {
-      id: "career-fitment-1112",
-      kicker: "Career fitment",
-      node: (
-        <>
-          <PageHead eyebrow="What fits YOU" title="Career Fitment"
-            sub="Your top 5 domains, ranked purely by your assessment. Ignores your stream entirely - this is what your interests, aptitude and strength domains point toward, with no filter for what's currently reachable. Career Suitability, next, applies the real-world stream filter." />
-          <div style={{ marginTop: 20 }}>
-            <ConcernPointers concerns={output.layer4.topConcerns ?? []} />
-            {/* The consolidated table is the whole story here - Career
-                Suitability, next, is where each of these domains gets the
-                full per-role breakdown, since that's the realistic, stream-
-                filtered list worth reading in that much depth. */}
-            {fitmentGroups.length ? <ClusterSummaryTable groups={fitmentGroups} /> : <p>No matches yet.</p>}
-          </div>
-          <p className="disclaimer" style={{ marginTop: 16 }}>
-            You're free to explore any career, in any domain - this is a starting point, not a fixed path.
-          </p>
-        </>
-      ),
-    },
-    {
-      id: "career-suitability-1112",
-      kicker: "Career suitability",
-      node: (
-        <>
-          <PageHead eyebrow="What's realistic for your stream" title="Career Suitability"
-            sub={`Your top domains that ${streamKey || "your current stream"} actually reaches. Same ranking as Career Fitment, kept to only the careers you're already fully eligible for from your current stream (Native Fit) - no bridge step needed for any role shown here. Roles already listed under a domain in Career Fitment aren't repeated here - these are the next-best real options in the same domain.`} />
-          <div style={{ marginTop: 20 }}>
-            {suitabilityGroups.length ? <ClusterSummaryTable groups={suitabilityGroups} showCompanies /> : (
-              <p style={{ fontSize: 13, color: "var(--ink-2)" }}>Nothing in your top fitment domains is a Native Fit for your current stream yet - see the roadmap page next for bridge options toward what you actually want.</p>
-            )}
-          </div>
-          {suitabilityGroups.length > 0 && <div style={{ marginTop: 24, marginBottom: 16 }}><ScenariosLegend /></div>}
-          <div style={{ marginTop: suitabilityGroups.length > 0 ? 0 : 24 }}>
-            {suitabilityGroups.length ? suitabilityGroups.map((g, i) => (
-              <DomainBlock key={g.domain} g={g} rank={i + 1} badge={<Pill label="Native fit" tone={TONE.good} />} />
-            )) : null}
-          </div>
-          {suitabilityGroups.length > 0 && (
-            <div style={BREAK}>
-              <SecHead eyebrow="Real, verified funding - not JEE-score-gated" title="Funded programmes in your top domains"
-                sub="Genuinely funded or stipend-linked routes into these fields - government training, sponsorship or apprenticeship programmes, not ordinary paid courses. Every fact here comes from an official source, verified before publishing, not a guess." />
-              <div style={{ marginTop: 16 }}>
-                <FundedProgramsSection groups={suitabilityGroups} />
-                {!suitabilityGroups.some((g) => CLUSTER_FUNDED_PROGRAMS[g.domain as keyof typeof CLUSTER_FUNDED_PROGRAMS]?.length) && (
-                  <p style={{ fontSize: 12.5, color: "var(--ink-2)" }}>We haven't researched verified funded programmes for your specific top domains yet - this section is filled in cluster by cluster as it's confirmed against official sources, not guessed to fill space.</p>
-                )}
-              </div>
-            </div>
-          )}
         </>
       ),
     },
@@ -1946,7 +1892,7 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
                 </div>
               </div>
             ) : (
-              <p style={{ marginTop: 20, fontSize: 13, color: "var(--ink-2)" }}>&ldquo;{desiredCareer}&rdquo; isn&apos;t in our {totalCareers}-career reference list yet - talk to your counsellor about the specific path, using Career Fitment and Career Suitability above as your general direction.</p>
+              <p style={{ marginTop: 20, fontSize: 13, color: "var(--ink-2)" }}>&ldquo;{desiredCareer}&rdquo; isn&apos;t in our {totalCareers}-career reference list yet - talk to your counsellor about the specific path, using Career Fitment and Career Suitability, on the next pages, as your general direction.</p>
             )
           ) : roadmapDomain && flagshipRoadmap ? (
             <div style={{ marginTop: 20 }}>
@@ -1973,6 +1919,60 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
             </div>
           ) : (
             <p style={{ marginTop: 20, fontSize: 13, color: "var(--ink-2)" }}>You didn&apos;t name a specific career, so there&apos;s nothing to check here yet - Career Fitment and Career Suitability still stand on their own.</p>
+          )}
+        </>
+      ),
+    },
+    {
+      id: "career-fitment-1112",
+      kicker: "Career fitment",
+      node: (
+        <>
+          <PageHead eyebrow="What fits YOU" title="Career Fitment"
+            sub="Your top 5 domains, ranked purely by your assessment. Ignores your stream entirely - this is what your interests, aptitude and strength domains point toward, with no filter for what's currently reachable. Career Suitability, next, applies the real-world stream filter." />
+          <div style={{ marginTop: 20 }}>
+            <ConcernPointers concerns={output.layer4.topConcerns ?? []} />
+            {/* The consolidated table is the whole story here - Career
+                Suitability, next, is where each of these domains gets the
+                full per-role breakdown, since that's the realistic, stream-
+                filtered list worth reading in that much depth. */}
+            {fitmentGroups.length ? <ClusterSummaryTable groups={fitmentGroups} /> : <p>No matches yet.</p>}
+          </div>
+          <p className="disclaimer" style={{ marginTop: 16 }}>
+            You're free to explore any career, in any domain - this is a starting point, not a fixed path.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: "career-suitability-1112",
+      kicker: "Career suitability",
+      node: (
+        <>
+          <PageHead eyebrow="What's realistic for your stream" title="Career Suitability"
+            sub={`Your top domains that ${streamKey || "your current stream"} actually reaches. Same ranking as Career Fitment, kept to only the careers you're already fully eligible for from your current stream (Native Fit) - no bridge step needed for any role shown here. Roles already listed under a domain in Career Fitment aren't repeated here - these are the next-best real options in the same domain.`} />
+          <div style={{ marginTop: 20 }}>
+            {suitabilityGroups.length ? <ClusterSummaryTable groups={suitabilityGroups} showCompanies /> : (
+              <p style={{ fontSize: 13, color: "var(--ink-2)" }}>Nothing in your top fitment domains is a Native Fit for your current stream yet - see the Career Selector page for bridge options toward what you actually want.</p>
+            )}
+          </div>
+          {suitabilityGroups.length > 0 && <div style={{ marginTop: 24, marginBottom: 16 }}><ScenariosLegend /></div>}
+          <div style={{ marginTop: suitabilityGroups.length > 0 ? 0 : 24 }}>
+            {suitabilityGroups.length ? suitabilityGroups.map((g, i) => (
+              <DomainBlock key={g.domain} g={g} rank={i + 1} badge={<Pill label="Native fit" tone={TONE.good} />} />
+            )) : null}
+          </div>
+          {suitabilityGroups.length > 0 && (
+            <div style={BREAK}>
+              <SecHead eyebrow="Real, verified funding - not JEE-score-gated" title="Funded programmes in your top domains"
+                sub="Genuinely funded or stipend-linked routes into these fields - government training, sponsorship or apprenticeship programmes, not ordinary paid courses. Every fact here comes from an official source, verified before publishing, not a guess." />
+              <div style={{ marginTop: 16 }}>
+                <FundedProgramsSection groups={suitabilityGroups} />
+                {!suitabilityGroups.some((g) => CLUSTER_FUNDED_PROGRAMS[g.domain as keyof typeof CLUSTER_FUNDED_PROGRAMS]?.length) && (
+                  <p style={{ fontSize: 12.5, color: "var(--ink-2)" }}>We haven't researched verified funded programmes for your specific top domains yet - this section is filled in cluster by cluster as it's confirmed against official sources, not guessed to fill space.</p>
+                )}
+              </div>
+            </div>
           )}
         </>
       ),

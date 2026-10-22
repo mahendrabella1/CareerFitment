@@ -263,7 +263,7 @@ function SummitIllustration() {
 const GRAD_CONCERN_POINTERS: Record<string, string> = {
   "Choosing a field that does not suit me.": "Your Career Suitability ranking below is built from your measured profile, not a guess - use it as a real check against the field you're leaning toward.",
   "Finding stability, income and growth.": "Every cluster below links to real job roles currently listed in the data, plus how to advance further (PG routes, certifications) - concrete next steps, not just a fit score.",
-  "Meeting admission, licensing or certification requirements.": "The Career Selector page ahead lists the exact eligibility, duration and entrance routes for your specific degree.",
+  "Meeting admission, licensing or certification requirements.": "The Career Selector page lists the exact eligibility, duration and entrance routes for your specific degree.",
   "Affording further education or a career transition.": "Every cluster's roadmap covers government internships and PG entrance routes alongside private options, not just paid ones.",
   "Managing family expectations or relocation.": "The PG-in-India and Study Abroad sections give you real options on both fronts, so you can make the case for whichever direction fits your situation.",
   "Feeling overwhelmed by the number of possible paths.": "Your top-ranked cluster below is where to start - you don't need to evaluate all 17 at once.",
@@ -1614,7 +1614,7 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
                         <div style={{ fontSize: 17, color: "#e08a1e", margin: "4px 0" }}>↓</div>
                         <div style={{ fontSize: 17, fontWeight: 900, color: "var(--ink)", letterSpacing: "-.01em", wordBreak: "break-word" }}>{aspiration.desiredCareer}</div>
                       </div>
-                      <div style={{ fontSize: 10.5, color: "var(--muted)", marginTop: 10, fontStyle: "italic", textAlign: "center" }}>The realistic path and simple next steps are on the Career Selector page ahead.</div>
+                      <div style={{ fontSize: 10.5, color: "var(--muted)", marginTop: 10, fontStyle: "italic", textAlign: "center" }}>The realistic path and simple next steps are on the Career Selector page, next.</div>
                     </div>
                     <SummitIllustration />
                   </div>
@@ -1628,48 +1628,6 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
       ),
     },
     {
-      id: "career-fitment-grad",
-      kicker: "Career fitment",
-      node: (
-        <>
-          <PageHead eyebrow="What fits YOU" title="Career Fitment"
-            sub="The 5 career areas that match your answers best, whatever your degree. The next page looks at what fits your degree." />
-          <div style={{ marginTop: 20 }}>
-            <ConcernPointers concerns={aspiration.concerns} />
-            <p style={{ fontSize: 11.5, color: "var(--muted)", margin: "0 0 12px" }}>
-              <b>LPA</b> = lakh rupees per year (₹4 LPA ≈ ₹33,000 a month). <b>PG entrance exams</b> are the tests used for admission to master&apos;s programmes in that area.
-            </p>
-            {fitmentRanked.slice(0, 5).map((c, i) => <ClusterCard key={c.cluster} cluster={c.cluster} score={c.computedScore} rank={i + 1} riasec={output.layer1.riasec} />)}
-          </div>
-          <p className="disclaimer" style={{ marginTop: 16 }}>
-            You're free to explore any career, in any cluster - this is a starting point, not a fixed path.
-          </p>
-        </>
-      ),
-    },
-    {
-      id: "career-suitability-grad",
-      kicker: "Career suitability",
-      node: (
-        <>
-          <PageHead eyebrow="What's realistic for your degree" title="Career Suitability"
-            sub="The career area your degree belongs to comes first - even if its % is lower - because it's the most direct route from what you study. The others follow in order of how well they match your answers." />
-          {/* No standalone "roles your course leads to" callout here - when
-              degreeCluster resolves, it's always rank #1 below (see
-              suitabilityRanked), and SuitabilityDomainBlock already shows
-              those exact roles attributed to that card. A callout up here
-              would only ever be reachable when degreeCluster is null, which
-              also means degreeRoles is empty (same MASTER_ROWS_GRAD lookup),
-              so there'd never be anything to show it anyway. */}
-          <div style={{ marginTop: 20 }}>
-            {suitabilityRanked.slice(0, 5).map((c, i) => (
-              <SuitabilityDomainBlock key={c.cluster} cluster={c.cluster} score={c.suitabilityScore} rank={i + 1} degree={academicContext.degree} course={academicContext.course} riasec={output.layer1.riasec} />
-            ))}
-          </div>
-        </>
-      ),
-    },
-    {
       id: "career-selector-grad",
       kicker: "Career selector",
       node: (
@@ -1677,7 +1635,7 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
           <PageHead eyebrow="Your favourite career path" title="Career Selector"
             sub={aspiration.desiredCareer
               ? `${aspiration.desiredCareer} - your starting point, and the full journey to get there.`
-              : "You didn't name a career - the roadmap ahead is built from your own Career Suitability results instead."} />
+              : "You didn't name a career - the roadmap below is built from your own Career Suitability results instead."} />
 
           {aspiration.desiredCareer && (
             <div style={{ marginTop: 20 }}>
@@ -1759,6 +1717,48 @@ export function buildCareerFitGradSheets(output: GraduateScoreOutput): ReportShe
             </div>
             ) : null}
           />
+        </>
+      ),
+    },
+    {
+      id: "career-fitment-grad",
+      kicker: "Career fitment",
+      node: (
+        <>
+          <PageHead eyebrow="What fits YOU" title="Career Fitment"
+            sub="The 5 career areas that match your answers best, whatever your degree. The next page looks at what fits your degree." />
+          <div style={{ marginTop: 20 }}>
+            <ConcernPointers concerns={aspiration.concerns} />
+            <p style={{ fontSize: 11.5, color: "var(--muted)", margin: "0 0 12px" }}>
+              <b>LPA</b> = lakh rupees per year (₹4 LPA ≈ ₹33,000 a month). <b>PG entrance exams</b> are the tests used for admission to master&apos;s programmes in that area.
+            </p>
+            {fitmentRanked.slice(0, 5).map((c, i) => <ClusterCard key={c.cluster} cluster={c.cluster} score={c.computedScore} rank={i + 1} riasec={output.layer1.riasec} />)}
+          </div>
+          <p className="disclaimer" style={{ marginTop: 16 }}>
+            You're free to explore any career, in any cluster - this is a starting point, not a fixed path.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: "career-suitability-grad",
+      kicker: "Career suitability",
+      node: (
+        <>
+          <PageHead eyebrow="What's realistic for your degree" title="Career Suitability"
+            sub="The career area your degree belongs to comes first - even if its % is lower - because it's the most direct route from what you study. The others follow in order of how well they match your answers." />
+          {/* No standalone "roles your course leads to" callout here - when
+              degreeCluster resolves, it's always rank #1 below (see
+              suitabilityRanked), and SuitabilityDomainBlock already shows
+              those exact roles attributed to that card. A callout up here
+              would only ever be reachable when degreeCluster is null, which
+              also means degreeRoles is empty (same MASTER_ROWS_GRAD lookup),
+              so there'd never be anything to show it anyway. */}
+          <div style={{ marginTop: 20 }}>
+            {suitabilityRanked.slice(0, 5).map((c, i) => (
+              <SuitabilityDomainBlock key={c.cluster} cluster={c.cluster} score={c.suitabilityScore} rank={i + 1} degree={academicContext.degree} course={academicContext.course} riasec={output.layer1.riasec} />
+            ))}
+          </div>
         </>
       ),
     },
