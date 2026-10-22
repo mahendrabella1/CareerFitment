@@ -6,6 +6,8 @@
  * No deterministic labeling - encourages exploration and growth
  */
 
+import { useState } from "react";
+import { downloadReportHtml } from "@/lib/report/exportReportHtml";
 import { format } from "date-fns";
 import type { Class6ScoreOutput } from "@/lib/newAssessment/class6Scoring";
 import {
@@ -798,48 +800,23 @@ export function Class6Report({
   );
 }
 
-const CLASS6_LOGO = "/onegrasp-logo-tight.png";
-
-/** Same fix as FullReport.tsx's DownloadButton: inline the logo as a data:
- *  URI, since its "/..." path only resolves on the site's own origin - not
- *  in a downloaded file opened from disk or a print popup with no origin. */
-async function toDataURL(url: string): Promise<string> {
-  const res = await fetch(url);
-  const blob = await res.blob();
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
-}
-
 function Class6DownloadButton({ name }: { name?: string }) {
+  const [busy, setBusy] = useState(false);
   const handleDownload = async () => {
     const element = document.querySelector(".class6-report");
     if (!element) { alert("Report not found"); return; }
     const filename = `${name || "Class6-Report"}-${new Date().toISOString().split("T")[0]}`;
-    let html = element.outerHTML;
-    try {
-      const logoDataUrl = await toDataURL(CLASS6_LOGO);
-      html = html.split(`src="${CLASS6_LOGO}"`).join(`src="${logoDataUrl}"`);
-    } catch {
-      /* offline or blocked - leave the original path rather than fail the download */
-    }
-    const doc = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${filename}</title></head><body style="margin:0">${html}</body></html>`;
-    const blob = new Blob([doc], { type: "text/html;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${filename}.html`;
-    a.click();
-    URL.revokeObjectURL(url);
+    setBusy(true);
+    // Self-contained file (images, styles, fonts inside) - see lib/report/exportReportHtml.ts.
+    try { await downloadReportHtml(element, filename, { omit: ".c6-dl-btn" }); }
+    catch { alert("Couldn't prepare the download - please try again."); }
+    finally { setBusy(false); }
   };
   return (
-    <button onClick={handleDownload} className="c6-dl-btn">
+    <button onClick={handleDownload} className="c6-dl-btn" disabled={busy}>
       <span className="c6-dl-btn-icon">📋</span>
       <span>
-        <span className="c6-dl-btn-label">Download report</span>
+        <span className="c6-dl-btn-label">{busy ? "Preparing your report…" : "Download report"}</span>
         <span className="c6-dl-btn-desc">Saves as an HTML file you can open in any browser</span>
       </span>
     </button>

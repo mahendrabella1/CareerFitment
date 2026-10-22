@@ -127,13 +127,16 @@ export const PersonalityMBTI: React.FC<PersonalityMBTIProps> = ({ a }) => {
 
   return (
     <div>
-      <div style={{ display: "grid", gridTemplateColumns: "232px 1fr", gap: 28, alignItems: "center", background: C.redTint, border: `2px solid ${C.redLine}`, borderRadius: 16, padding: 26, marginBottom: 10 }}>
+      {/* Two columns on wide screens; stacked on phones (the inline 232px
+          column otherwise pushed the type and letters off the right edge). */}
+      <style>{`@media(max-width:600px){.mbti-hero{grid-template-columns:1fr !important;justify-items:center;gap:14px !important;padding:18px !important}.mbti-hero-text{text-align:center}.mbti-hero-text .mbti-letters{justify-content:center}}`}</style>
+      <div className="mbti-hero" style={{ display: "grid", gridTemplateColumns: "232px 1fr", gap: 28, alignItems: "center", background: C.redTint, border: `2px solid ${C.redLine}`, borderRadius: 16, padding: 26, marginBottom: 10 }}>
         <MBTICompass axes={axes} centerLabel={mbtiType} />
-        <div>
+        <div className="mbti-hero-text">
           <div style={{ fontSize: 44, fontWeight: 900, color: C.redStrong, letterSpacing: "-0.02em", lineHeight: 1 }}>{mbtiType}</div>
           <div style={{ fontSize: 19, fontWeight: 800, color: C.ink, marginTop: 6 }}>{typeInfo.type}</div>
           <p style={{ fontSize: 13, lineHeight: 1.6, color: C.ink2, marginTop: 8 }}>{typeInfo.description}</p>
-          <div style={{ display: "flex", gap: 8, marginTop: 14, flexWrap: "wrap" }}>
+          <div className="mbti-letters" style={{ display: "flex", gap: 8, marginTop: 14, flexWrap: "wrap" }}>
             {winners.map((w, i) => (
               <div key={w.key} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ background: "#fff", border: `1px solid ${C.redLine}`, borderRadius: 10, padding: "6px 11px", textAlign: "center", minWidth: 54 }}>

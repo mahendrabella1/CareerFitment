@@ -21,7 +21,8 @@
  * by re-enabling that guard, but it has no effect while it's mounted.
  */
 
-import { Fragment, useEffect, useMemo, useRef, type ReactNode } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { downloadReportHtml } from "@/lib/report/exportReportHtml";
 import type { AssessmentSummary, CustomDimension } from "@/lib/auth/AuthProvider";
 import { Icon, CATEGORY_ABBR } from "@/app/Icons";
 import { C, Ring, RadarChart, SkillBar, dimColor, type RadarDatum } from "@/app/account/viz";
@@ -82,6 +83,13 @@ const CAT: Record<string, Meta> = {
   // class 9-10 is completely unaffected.
   creativity: { label: "Creativity & Innovation", dim: "09", icon: "bulb", img: "https://onegrasp.com/wp-content/uploads/2026/09/ChatGPT-Image-Sep-11-2026-08_26_14-PM.png" },
 };
+/** Font size for a label inside a 96px score circle, set by its longest word
+ *  so a word never splits mid-way ("Investigativ / e"); very long words hyphenate. */
+function ringLabelSize(label: string): number {
+  const longest = Math.max(...label.split(/[\s-]+/).map((w) => w.length), 1);
+  return Math.max(11, Math.min(19, Math.floor(118 / longest)));
+}
+
 const CANON = ["personality", "career_interest", "multiple_intelligence", "emotional_intelligence", "learning_styles", "motivators", "strengths", "aptitude"];
 
 // "Typical student at your stage" markers - presentation-only benchmark.
@@ -336,7 +344,8 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
                 const isPersonality = d.key === "personality" && hasMBTIData;
                 const topResult = customDims.get(d.key)?.result ?? topResultFor(d.key, a, riasec);
                 const bigValue = isPersonality ? getMBTIType(a) : (topResult || `${Math.round(d.score)}%`);
-                const valSize = bigValue.length > 20 ? 15 : bigValue.length > 13 ? 17 : bigValue.length > 8 ? 19 : 22;
+                const longestWord = Math.max(...bigValue.split(/[\s-]+/).map((w) => w.length), 1);
+                const valSize = Math.min(bigValue.length > 20 ? 15 : bigValue.length > 13 ? 17 : bigValue.length > 8 ? 19 : 22, Math.max(13, Math.floor(190 / longestWord)));
                 return (
                   <div className="scoreCard" key={d.key} style={{ ["--sc" as string]: col, ["--sc-tint" as string]: col + "17" } as React.CSSProperties}>
                     {d.key === strongestKey ? <span className="scoreCard-top">Strongest</span> : null}
@@ -453,7 +462,7 @@ export default function FullReport({ a, name, institution, studentClass, extraSh
                   <Ring value={d.score} size={96} stroke={10} color={col}>
                     {subs.length ? (
                       <>
-                        <div className="ring-num ring-top" style={{ fontSize: subs[0].label.length > 12 ? 12 : subs[0].label.length > 7 ? 15 : 19 }}>{subs[0].label}</div>
+                        <div className="ring-num ring-top" style={{ fontSize: ringLabelSize(subs[0].label) }}>{subs[0].label}</div>
                         <div className="ring-den">Top</div>
                       </>
                     ) : (
@@ -1098,61 +1107,36 @@ function DomainCard({ d, rank, roles }: { d: DomainFit; rank: number; roles: Rep
   );
 }
 
-/** Fetches a same-origin asset and inlines it as a data: URI. Used only for
- *  the logo - everything else in the report already uses absolute CDN URLs,
- *  which keep working once downloaded, but the logo is served from this
- *  site's own "/..." path, which resolves to nothing once the markup is
- *  opened from a saved file or a print popup with no real origin of its own. */
-async function toDataURL(url: string): Promise<string> {
-  const res = await fetch(url);
-  const blob = await res.blob();
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
-}
-
 function DownloadButton({ name }: { name?: string }) {
+  const [busy, setBusy] = useState(false);
   const handleDownload = async () => {
     const element = document.querySelector(".frx");
     if (!element) {
       alert("Report not found");
       return;
     }
-
     const filename = `${name || "Assessment-Report"}-${new Date().toISOString().split("T")[0]}`;
-
-    // The rest of the report's images are absolute CDN URLs (onegrasp.com,
-    // images.unsplash.com) and keep working wherever this file is opened.
-    // Only the logo needs inlining - see toDataURL above.
-    let html = element.outerHTML;
+    setBusy(true);
     try {
-      const logoDataUrl = await toDataURL(LOGO);
-      html = html.split(`src="${LOGO}"`).join(`src="${logoDataUrl}"`);
+      // One self-contained file: images, styles and fonts travel inside it,
+      // so it looks right on a phone (iPhone's Files viewer loads nothing
+      // from the internet) - see lib/report/exportReportHtml.ts.
+      await downloadReportHtml(element, filename, {
+        omit: ".dl-btn",
+        extraCss: ".frx .rv{opacity:1!important;transform:none!important}",
+      });
     } catch {
-      /* offline or blocked - leave the original path rather than fail the download */
+      alert("Couldn't prepare the download - please try again.");
+    } finally {
+      setBusy(false);
     }
-    // `.frx`'s own <style> tag (the full report stylesheet) rides along
-    // inside `html` already, since it's a child of the element captured
-    // above - no separate stylesheet to attach.
-    const doc = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${filename}</title></head><body style="margin:0">${html}</body></html>`;
-
-    const blob = new Blob([doc], { type: "text/html;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${filename}.html`;
-    a.click();
-    URL.revokeObjectURL(url);
   };
 
   return (
-    <button onClick={handleDownload} className="dl-btn">
+    <button onClick={handleDownload} className="dl-btn" disabled={busy}>
       <span className="dl-btn-icon">📋</span>
       <span>
-        <span className="dl-btn-label">Download report</span>
+        <span className="dl-btn-label">{busy ? "Preparing your report…" : "Download report"}</span>
         <span className="dl-btn-desc">Saves as an HTML file you can open in any browser</span>
       </span>
     </button>
@@ -1243,7 +1227,7 @@ const CSS = `
 .frx .eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
 .frx .ring-num{font-size:24px;font-weight:800;color:var(--ink);line-height:1}
 .frx .ring-num small{font-size:14px;color:var(--muted);font-weight:700}
-.frx .ring-num.ring-top{max-width:72px;line-height:1.15;word-break:break-word;font-weight:800;color:var(--dc,var(--ink))}
+.frx .ring-num.ring-top{max-width:74px;line-height:1.15;-webkit-hyphens:auto;hyphens:auto;overflow-wrap:break-word;font-weight:800;color:var(--dc,var(--ink))}
 .frx .ring-den{font-size:10px;font-weight:700;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.05em}
 
 .frx .rh{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px}
@@ -1293,11 +1277,11 @@ const CSS = `
 /* illustration band */
 .frx .sband{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:18px;padding:22px 44px;
   background:linear-gradient(120deg,#fff,${C.bg});border-bottom:1px solid var(--line)}
-@media(max-width:720px){.frx .sband{grid-template-columns:1fr;padding:18px}.frx .sband-art{height:110px;justify-content:center}}
 .frx .sband-eye{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
 .frx .sband-title{color:var(--ink);font-size:clamp(22px,3.4vw,30px);font-weight:800;margin-top:6px}
 .frx .sband-art{height:150px;display:flex;align-items:center;justify-content:flex-end}
 .frx .sband-art img,.frx .sband-art svg{height:150px;width:100%;object-fit:contain}
+@media(max-width:720px){.frx .sband{grid-template-columns:1fr;padding:18px}.frx .sband-art{height:110px;justify-content:center}.frx .sband-art img,.frx .sband-art svg{height:110px}}
 
 /* contents */
 .frx .tocHeadline{font-size:clamp(22px,3.4vw,30px);font-weight:800;color:var(--ink);text-align:center;letter-spacing:-.01em;margin:0 0 26px}
@@ -1310,7 +1294,7 @@ const CSS = `
    always lands the line through the circle's centre, regardless of how many
    lines the label text below wraps to. */
 .frx .tocStop-line{flex:1 1 24px;height:2px;min-width:16px;background:var(--red-line);margin:22px 2px 0}
-@media(max-width:640px){.frx .tocPath{flex-direction:column}.frx .tocStop-line{display:none}}
+@media(max-width:640px){.frx .tocPath{flex-direction:column;align-items:stretch;gap:10px;max-width:320px;margin:0 auto}.frx .tocStop{flex-direction:row;width:auto;text-align:left;gap:12px}.frx .tocStop-line{display:none}}
 
 /* executive */
 .frx .exec{display:grid;grid-template-columns:1.2fr .8fr;gap:26px;align-items:center}
@@ -1370,7 +1354,7 @@ const CSS = `
 .frx .scoreCard-ic{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;
   background:var(--sc);color:#fff;flex:none;box-shadow:0 3px 8px rgba(20,20,25,.14)}
 .frx .scoreCard-lbl{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
-.frx .scoreCard-val{font-weight:800;color:var(--sc);letter-spacing:-.01em;line-height:1.2;overflow-wrap:break-word;min-height:1.2em}
+.frx .scoreCard-val{font-weight:800;color:var(--sc);letter-spacing:-.01em;line-height:1.2;-webkit-hyphens:auto;hyphens:auto;overflow-wrap:break-word;min-height:1.2em}
 /* .vpill is still used on the per-dimension pages further down. */
 .frx .vpill{font-size:11px;font-weight:800;padding:4px 11px;border-radius:999px;white-space:nowrap;justify-self:start}
 .frx .vpill.hi{background:var(--good-tint);color:#1f7a55}
