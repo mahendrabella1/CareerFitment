@@ -1367,6 +1367,12 @@ function FundedProgramCard({ p, color }: { p: FundedProgram; color: string }) {
   );
 }
 
+// The funded-programmes panel's own colours (green = money / funding), set
+// apart from the report's red section style.
+const FUNDED_ACCENT = "#1f8a5b";
+const FUNDED_BG = "#f1f9f4";
+const FUNDED_LINE = "#cfe8da";
+
 function FundedProgramsSection({ groups }: { groups: DomainGroup1112[] }) {
   const withPrograms = groups
     .map((g) => ({ g, programs: CLUSTER_FUNDED_PROGRAMS[g.domain as keyof typeof CLUSTER_FUNDED_PROGRAMS] }))
@@ -1377,7 +1383,7 @@ function FundedProgramsSection({ groups }: { groups: DomainGroup1112[] }) {
       {withPrograms.map(({ g, programs }) => {
         const color = clusterColor(g.domain);
         return (
-          <div key={g.domain} style={{ border: "1px solid var(--line)", borderRadius: 20, padding: 24, background: "#f8f9fc" }}>
+          <div key={g.domain} style={{ border: `1px solid ${FUNDED_LINE}`, borderRadius: 18, padding: "clamp(16px, 3.5vw, 24px)", background: "#fff" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 18, paddingBottom: 20, marginBottom: 20, borderBottom: "1px solid var(--line)" }}>
               <span style={{ width: 64, height: 64, borderRadius: "50%", background: `${color}16`, display: "grid", placeItems: "center", flex: "none" }}>
                 <Icon name="briefcase" size={26} style={{ color }} />
@@ -1963,14 +1969,27 @@ export function buildCareerFit1112Sheets(output: Class11ScoreOutput, category: "
             )) : null}
           </div>
           {suitabilityGroups.length > 0 && (
-            <div style={BREAK}>
-              <SecHead eyebrow="Real, verified funding - not JEE-score-gated" title="Funded programmes in your top domains"
-                sub="Genuinely funded or stipend-linked routes into these fields - government training, sponsorship or apprenticeship programmes, not ordinary paid courses. Every fact here comes from an official source, verified before publishing, not a guess." />
-              <div style={{ marginTop: 16 }}>
-                <FundedProgramsSection groups={suitabilityGroups} />
-                {!suitabilityGroups.some((g) => CLUSTER_FUNDED_PROGRAMS[g.domain as keyof typeof CLUSTER_FUNDED_PROGRAMS]?.length) && (
-                  <p style={{ fontSize: 12.5, color: "var(--ink-2)" }}>We haven't researched verified funded programmes for your specific top domains yet - this section is filled in cluster by cluster as it's confirmed against official sources, not guessed to fill space.</p>
-                )}
+            // Its own green "funding" panel, so it reads as a separate
+            // section rather than a continuation of the domain lists above.
+            <div style={{ marginTop: 36, borderRadius: 20, overflow: "hidden", border: `1px solid ${FUNDED_LINE}`, background: FUNDED_BG }}>
+              <div style={{ height: 5, background: FUNDED_ACCENT }} />
+              <div style={{ padding: "clamp(16px, 4vw, 28px)" }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 14, marginBottom: 18 }}>
+                  <span style={{ width: 46, height: 46, borderRadius: 14, background: FUNDED_ACCENT, color: "#fff", display: "grid", placeItems: "center", flex: "none" }}>
+                    <Icon name="award" size={22} />
+                  </span>
+                  <div style={{ minWidth: 0 }}>
+                    <span style={{ display: "block", fontSize: 11.5, fontWeight: 800, letterSpacing: ".12em", textTransform: "uppercase", color: FUNDED_ACCENT }}>Real, verified funding - not JEE-score-gated</span>
+                    <h2 style={{ margin: "4px 0 6px", fontSize: "clamp(20px, 3vw, 26px)", fontWeight: 800, color: "var(--ink)", letterSpacing: "-.01em" }}>Funded programmes in your top domains</h2>
+                    <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.6, color: "var(--ink-2)", maxWidth: 680 }}>Genuinely funded or stipend-linked routes into these fields - government training, sponsorship or apprenticeship programmes, not ordinary paid courses. Every fact here comes from an official source, verified before publishing, not a guess.</p>
+                  </div>
+                </div>
+                <div>
+                  <FundedProgramsSection groups={suitabilityGroups} />
+                  {!suitabilityGroups.some((g) => CLUSTER_FUNDED_PROGRAMS[g.domain as keyof typeof CLUSTER_FUNDED_PROGRAMS]?.length) && (
+                    <p style={{ fontSize: 12.5, color: "var(--ink-2)" }}>We haven't researched verified funded programmes for your specific top domains yet - this section is filled in cluster by cluster as it's confirmed against official sources, not guessed to fill space.</p>
+                  )}
+                </div>
               </div>
             </div>
           )}
