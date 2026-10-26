@@ -1,5 +1,5 @@
 "use client";
-/** /account/stress/test?band=0-5 - taking the Stress & Resilience Check. */
+/** /account/stress/test?band=0-5 - taking the Workplace Stress Check. */
 import { Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -22,14 +22,14 @@ function TestInner() {
   if (loading) return null;
   if (!user) {
     return (
-      <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", fontFamily: "Inter, system-ui, sans-serif", color: "#465467" }}>
-        <p>Please <Link href="/signin" style={{ color: "#0f766e", fontWeight: 700 }}>sign in</Link> to take the check.</p>
+      <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", fontFamily: "Inter, system-ui, sans-serif", color: "#52514e" }}>
+        <p>Please <Link href="/signin" style={{ color: "#256abf", fontWeight: 600 }}>sign in</Link> to take the check.</p>
       </div>
     );
   }
 
-  const onFinish = async (answers: Record<string, number>, facts: Record<string, string>, durationSec: number) => {
-    const result = buildResult(band, answers, facts, durationSec);
+  const onFinish = async (answers: Record<string, number>, durationSec: number) => {
+    const result = buildResult(band, answers, durationSec);
     await saveResult(user.uid, result);
     clearStressDraft();
     router.replace("/account/stress");

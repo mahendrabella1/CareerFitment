@@ -1,5 +1,5 @@
 /**
- * Working Professionals - Stress & Resilience Check (its own class group; see
+ * Working Professionals - Workplace Stress Check (its own class group; see
  * CLAUDE.md). Types shared by the question bank, the scorer and the results
  * page. Nothing here is used by the student assessments.
  */
@@ -7,86 +7,56 @@
 export type Band = "0-5" | "5-15" | "15+";
 export const BANDS: Band[] = ["0-5", "5-15", "15+"];
 
-export type ScaleKey = "freq" | "degree" | "agree" | "cope" | "exposure";
-/** The four workplace stressor areas - together they make the "load" pillar. */
-export type DomainKey = "workload" | "toxicity" | "culture" | "career";
-export const DOMAINS: DomainKey[] = ["workload", "toxicity", "culture", "career"];
-export type SectionKey = DomainKey | "signals" | "burnout" | "coping" | "resilience" | "recovery" | "control" | "support" | "checkin";
-export type PillarKey = "load" | "signals" | "burnout" | "coping" | "resilience" | "recovery" | "control" | "support";
-export const PILLARS: PillarKey[] = ["load", "signals", "burnout", "coping", "resilience", "recovery", "control", "support"];
-/** Pressure pillars: higher = more strain. Resource pillars: higher = better. */
-export const PRESSURE_PILLARS: PillarKey[] = ["load", "signals", "burnout"];
-
-export type CopeScale = "active" | "planning" | "reframing" | "emotional" | "advice" | "givingup" | "selfblame" | "substance";
-export const HELPFUL_COPING: CopeScale[] = ["active", "planning", "reframing", "emotional", "advice"];
-export const RISKY_COPING: CopeScale[] = ["givingup", "selfblame", "substance"];
+/** The four workplace stress areas the check measures. */
+export type AreaKey = "workload" | "toxicity" | "culture" | "career";
+export const AREAS: AreaKey[] = ["workload", "toxicity", "culture", "career"];
 
 export interface BankItem {
   id: string;
-  section: SectionKey;
+  area: AreaKey;
+  /** What the question is about - drives the "top stress points" and the plan. */
+  source: string;
+  /** Short name of the stress point, shown on the results page. */
+  label: string;
   text: string;
-  /** Falls back to the section's scale. */
-  scale?: ScaleKey;
-  reverse?: boolean;
-  /** Asked only in this experience band. */
-  band?: Band;
-  /** What a pressure item is about (workload, money...) - drives "what's driving your stress". */
-  source?: string;
-  sub?: string;
-  /** "CBI" / "BriefCOPE" - a published instrument, asked word for word. */
-  std?: "CBI" | "BriefCOPE";
-  copeScale?: CopeScale;
-  /** The hopelessness check-in: a high answer puts support first on the results page. */
-  safety?: boolean;
-  /** Any experience of this shows "your rights at work" on the results page. */
+  /** Any experience of this shows "your options" on the results page. */
   rights?: "harassment" | "discrimination";
 }
 
-export interface BankSection { id: SectionKey; title: string; intro: string; scale: ScaleKey }
-export interface BankFact { id: string; text: string; options: { label: string; value: string }[] }
+export interface BankArea { id: AreaKey; title: string; short: string; intro: string }
 export interface Bank {
   version: string;
   about: string;
   recall: string;
-  scales: Record<ScaleKey, { labels: string[]; values: number[] }>;
-  sections: BankSection[];
+  scale: { labels: string[]; values: number[] };
+  areas: BankArea[];
   items: BankItem[];
-  facts: BankFact[];
-  citations: string[];
+  closing: { id: string; text: string; options: string[]; values: number[] };
 }
 
-/** One screen of the test: a scored question or a fact about the work week. */
-export type Step =
-  | { kind: "item"; item: BankItem; section: BankSection; scale: ScaleKey }
-  | { kind: "fact"; fact: BankFact; section: BankSection };
+/** Low < 25 <= Mild < 45 <= Moderate < 65 <= High. */
+export type Level = "low" | "mild" | "moderate" | "high";
+export type Support = "none" | "watch" | "high";
+/** "Is it the work or the workplace?" - where the two axes put you. */
+export type Quadrant = "steady" | "load" | "place" | "both";
 
-export type Zone = "thriving" | "managing" | "stretched" | "strained" | "burnout";
-export type Safety = "none" | "watch" | "high";
-
-export interface Driver { source: string; value: number; domain?: DomainKey }
+export interface Hotspot { id: string; value: number }
 
 export interface StressScores {
-  /** 0-100, higher = more stress. */
-  index: number;
-  zone: Zone;
-  /** Composite of the three pressure pillars, 0-100. */
-  pressure: number;
-  /** Mean of the five resource pillars, 0-100. */
-  resources: number;
-  /** resources - pressure: positive = resources outweigh pressure. */
-  balance: number;
-  pillars: Record<PillarKey, number>;
-  /** The four workplace stressor areas, 0-100 (higher = more strain). */
-  domains: Record<DomainKey, number>;
-  /** Harassment or unfair treatment reported at least "once or twice". */
+  /** Workplace Stress Score, 0-100 (higher = more stress). */
+  overall: number;
+  level: Level;
+  /** Each area 0-100: the mean of its answers. */
+  areas: Record<AreaKey, number>;
+  /** Questions answered "Often" or "Almost always", strongest first. */
+  hotspots: Hotspot[];
+  /** Harassment or unfair treatment reported at least "Rarely". */
   rights: { harassment: boolean; discrimination: boolean };
-  signals: Record<"body" | "mind" | "emotions" | "behaviour", number>;
-  burnout: { personal: number; work: number; band: "low" | "moderate" | "high" | "severe" };
-  coping: { scales: Record<CopeScale, number>; helpful: number; risky: number };
-  recovery: { sleep: number | null };
-  support: { work: number; personal: number };
-  drivers: Driver[];
-  safety: Safety;
+  /** The closing "how are you coping" answer, 0-100 (higher = struggling more). */
+  coping: number;
+  support: Support;
+  /** x = the work itself (Workload), y = the workplace (the other three: 60% mean + 40% worst). */
+  compass: { work: number; place: number; quadrant: Quadrant };
   confidence: { level: "high" | "medium" | "low"; flags: string[] };
 }
 
@@ -96,20 +66,25 @@ export interface StressResult {
   takenAt: string;
   band: Band;
   durationSec: number;
-  /** Answer index per item id (0 = first option). */
+  /** Answer index per question id (0 = first option), including the closing question. */
   answers: Record<string, number>;
-  facts: Record<string, string>;
   scores: StressScores;
 }
 
+/** A weekly check-in: how heavy each area felt this week, 0-100. */
+export interface Pulse { week: string; at: string; values: Record<AreaKey, number> }
+
 export interface StressPlan {
   resultId: string;
+  startedAt: string;
+  /** The actions in the plan, in order. */
   actionIds: string[];
+  /** Ticked steps, keyed "actionId:stepIndex". */
   done: Record<string, boolean>;
-  checkins: { week: string; mood: number; at: string }[];
+  pulses: Pulse[];
 }
 
-/** users/{uid}.stress - written by the student's own browser (student-writable, like gps). */
+/** users/{uid}.stress - written by the person's own browser (student-writable, like gps). */
 export interface StressStore {
   results: StressResult[];
   plan?: StressPlan;

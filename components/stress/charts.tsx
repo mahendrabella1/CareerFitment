@@ -1,117 +1,182 @@
 "use client";
-/** SVG charts for the Stress & Resilience results page. Each has a text
- *  equivalent (aria-label / visible numbers) so nothing depends on the picture. */
-import { ZONE_META } from "@/lib/stress/content";
-import { ZONE_FROM } from "@/lib/stress/scoring";
-import type { Zone } from "@/lib/stress/types";
-import { PRESSURE, RESOURCE } from "./styles";
+/**
+ * The small charts on the Workplace Stress Check results page. Thin marks,
+ * hairline grids, one blue ramp for level; every chart has its numbers in
+ * text next to it, so nothing is readable by colour alone.
+ */
+import { useEffect, useRef, useState } from "react";
+import { BANK } from "@/lib/stress/bank";
+import { LEVEL_META, LEVELS } from "@/lib/stress/content";
+import { COMPASS_CUT, LEVEL_CUTS, levelFor } from "@/lib/stress/scoring";
+import type { Quadrant } from "@/lib/stress/types";
+import { ACCENT } from "./styles";
 
-const ZONES_ASC: Zone[] = [...ZONE_FROM].reverse().map(([z]) => z);
-const zoneStart = (z: Zone) => ZONE_FROM.find(([k]) => k === z)![1];
+const SPANS = [LEVEL_CUTS.mild, LEVEL_CUTS.moderate - LEVEL_CUTS.mild, LEVEL_CUTS.high - LEVEL_CUTS.moderate, 100 - LEVEL_CUTS.high];
 
-function polar(cx: number, cy: number, r: number, value: number) {
-  const a = Math.PI * (1 - value / 100);
-  return [cx + r * Math.cos(a), cy - r * Math.sin(a)];
-}
-function arc(cx: number, cy: number, r: number, from: number, to: number) {
-  const [x1, y1] = polar(cx, cy, r, from), [x2, y2] = polar(cx, cy, r, to);
-  return `M ${x1.toFixed(2)} ${y1.toFixed(2)} A ${r} ${r} 0 0 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`;
-}
-
-/** Semicircle gauge 0-100 with the five zones and a marker at the index. */
-export function Gauge({ value, zone }: { value: number; zone: Zone }) {
-  const cx = 150, cy = 150, r = 116, w = 20;
-  const [mx, my] = polar(cx, cy, r, value);
-  const meta = ZONE_META[zone];
+/** Where the score sits on the Low / Mild / Moderate / High scale. */
+export function ScaleStrip({ value, avg }: { value: number; avg?: number | null }) {
+  const edge = value < 8 ? "translateX(-8px)" : value > 92 ? "translateX(calc(-100% + 8px))" : "translateX(-50%)";
   return (
-    <svg viewBox="0 0 300 178" role="img" aria-label={`Stress Index ${value} out of 100: ${meta.label}`} style={{ width: "100%", maxWidth: 300, display: "block", margin: "0 auto" }}>
-      {ZONES_ASC.map((z, i) => {
-        const from = zoneStart(z), to = i < ZONES_ASC.length - 1 ? zoneStart(ZONES_ASC[i + 1]) : 100;
-        return <path key={z} d={arc(cx, cy, r, from + 0.6, to - 0.6)} stroke={ZONE_META[z].color} strokeOpacity={z === zone ? 1 : 0.22} strokeWidth={w} fill="none" strokeLinecap="butt" />;
-      })}
-      <circle cx={mx} cy={my} r={13} fill="#fff" stroke={meta.color} strokeWidth={5} />
-      <text x={cx} y={cy - 22} textAnchor="middle" style={{ font: "700 46px Poppins, Inter, sans-serif", fill: "#0f1728" }}>{value}</text>
-      <text x={cx} y={cy + 2} textAnchor="middle" style={{ font: "600 13px Inter, sans-serif", fill: "#6b7686" }}>Stress Index · out of 100</text>
-      <text x={cx - r} y={cy + 24} textAnchor="middle" style={{ font: "600 11px Inter, sans-serif", fill: "#98a2b3" }}>Low</text>
-      <text x={cx + r} y={cy + 24} textAnchor="middle" style={{ font: "600 11px Inter, sans-serif", fill: "#98a2b3" }}>High</text>
-    </svg>
-  );
-}
-
-/** A balance scale: pressure on the left, resources on the right; the heavier side sinks. */
-export function Seesaw({ pressure, resources }: { pressure: number; resources: number }) {
-  const tilt = Math.max(-14, Math.min(14, ((pressure - resources) / 100) * 30)); // +: pressure side down
-  const cx = 180, cy = 54, half = 126;
-  const a = (tilt * Math.PI) / 180;
-  // Beam ends: left = pressure, right = resources; a positive tilt lowers the left end.
-  const end = (side: -1 | 1) => [cx + side * half * Math.cos(a), cy - side * half * Math.sin(a)] as const;
-  const pan = (side: -1 | 1, value: number, label: string, color: string) => {
-    const [x, y] = end(side);
-    return (
-      <g key={label}>
-        <line x1={x} y1={y} x2={x} y2={y + 18} stroke="#c3cad4" strokeWidth={2} />
-        <path d={`M ${x - 44} ${y + 18} Q ${x} ${y + 46} ${x + 44} ${y + 18} Z`} fill={color} fillOpacity={0.16} stroke={color} strokeWidth={2} />
-        <text x={x} y={y + 76} textAnchor="middle" style={{ font: "700 24px Poppins, Inter, sans-serif", fill: color }}>{value}</text>
-        <text x={x} y={y + 95} textAnchor="middle" style={{ font: "700 12.5px Inter, sans-serif", fill: "#465467" }}>{label}</text>
-      </g>
-    );
-  };
-  return (
-    <svg viewBox="0 0 360 178" role="img" aria-label={`Pressure ${pressure}, resources ${resources}`} style={{ width: "100%", maxWidth: 440, display: "block", margin: "0 auto" }}>
-      <path d={`M ${cx - 15} 170 L ${cx} ${cy + 4} L ${cx + 15} 170 Z`} fill="#dfe4ea" />
-      <rect x={cx - 56} y={168} width={112} height={6} rx={3} fill="#dfe4ea" />
-      <line x1={end(-1)[0]} y1={end(-1)[1]} x2={end(1)[0]} y2={end(1)[1]} stroke="#475467" strokeWidth={5} strokeLinecap="round" />
-      <circle cx={cx} cy={cy} r={7} fill="#475467" />
-      {pan(-1, pressure, "Pressure", PRESSURE)}
-      {pan(1, resources, "Resources", RESOURCE)}
-    </svg>
-  );
-}
-
-/** A 0-100 bar with the Copenhagen Burnout Inventory's 50 and 75 cut-offs marked. */
-export function BurnoutMeter({ label, value }: { label: string; value: number }) {
-  const color = value >= 75 ? "#be123c" : value >= 50 ? "#c2410c" : RESOURCE;
-  return (
-    <div>
-      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13.5, marginBottom: 6 }}>
-        <b>{label}</b><b style={{ color }}>{value}</b>
+    <div className="ws-scale" role="img" aria-label={`Score ${value} out of 100, ${LEVEL_META[levelFor(value)].label}${avg != null ? `; average at your stage ${avg}` : ""}`}>
+      <div className="ws-mark" style={{ left: `${value}%`, transform: "translateX(-1px)" }}>
+        <b style={{ transform: edge }}>You · {value}</b>
+        <i />
       </div>
-      <div style={{ position: "relative", height: 12, borderRadius: 99, background: "linear-gradient(90deg,#e6f6f4 0 50%,#fff6e0 50% 75%,#ffe4e6 75%)" }}>
-        <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: `${value}%`, background: color, borderRadius: 99, opacity: 0.9 }} />
-        {[50, 75].map((t) => <span key={t} style={{ position: "absolute", left: `${t}%`, top: -3, bottom: -3, width: 2, background: "#fff" }} />)}
+      <div className="ws-scale-track">
+        {LEVELS.map((l, n) => <i key={l} style={{ flex: SPANS[n], background: LEVEL_META[l].color }} />)}
       </div>
-      <div style={{ position: "relative", height: 16, fontSize: 10.5, color: "#98a2b3", marginTop: 3 }}>
-        <span style={{ position: "absolute", left: 0 }}>Low</span>
-        <span style={{ position: "absolute", left: "50%", transform: "translateX(-50%)" }}>Moderate</span>
-        <span style={{ position: "absolute", left: "75%", transform: "translateX(-50%)" }}>High</span>
+      {avg != null && <span className="ws-avg" style={{ left: `${avg}%` }} title={`Average at your career stage: ${avg}`} />}
+      <div className="ws-scale-lbl">
+        {LEVELS.map((l, n) => <span key={l} style={{ flex: SPANS[n] }}>{LEVEL_META[l].label}</span>)}
       </div>
     </div>
   );
 }
 
-/** The Stress Index across retests, on the zone bands. */
-export function TrendChart({ points }: { points: { at: string; index: number }[] }) {
-  const W = 420, H = 230, padL = 30, padR = 18, padT = 22, padB = 30;
-  const n = points.length;
-  const inset = 18; // keeps the first and last points clear of the axis labels
-  const x = (i: number) => padL + inset + (n === 1 ? (W - padL - padR - 2 * inset) / 2 : (i * (W - padL - padR - 2 * inset)) / (n - 1));
-  const y = (v: number) => padT + ((100 - v) / 100) * (H - padT - padB);
-  const fmt = (iso: string) => new Date(iso).toLocaleDateString("en-IN", { day: "numeric", month: "short" });
+/** One area's bar: the fill's shade is its level; white ticks mark the level cut-offs. */
+export function AreaTrack({ value, avg }: { value: number; avg?: number | null }) {
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Stress Index over time: ${points.map((p) => `${fmt(p.at)} ${p.index}`).join(", ")}`} style={{ width: "100%", maxWidth: 640, display: "block", margin: "0 auto" }}>
-      {ZONES_ASC.map((z, i) => {
-        const from = zoneStart(z), to = i < ZONES_ASC.length - 1 ? zoneStart(ZONES_ASC[i + 1]) : 100;
-        return <rect key={z} x={padL} y={y(to)} width={W - padL - padR} height={y(from) - y(to)} fill={ZONE_META[z].color} fillOpacity={0.07} />;
-      })}
-      {[0, 25, 50, 75, 100].map((t) => <text key={t} x={padL - 8} y={y(t) + 4} textAnchor="end" style={{ font: "500 11.5px Inter, sans-serif", fill: "#98a2b3" }}>{t}</text>)}
-      {n > 1 && <polyline points={points.map((p, i) => `${x(i)},${y(p.index)}`).join(" ")} fill="none" stroke="#0f766e" strokeWidth={3} strokeLinejoin="round" strokeLinecap="round" />}
-      {points.map((p, i) => (
-        <g key={p.at}>
-          <circle cx={x(i)} cy={y(p.index)} r={6} fill="#fff" stroke="#0f766e" strokeWidth={3} />
-          <text x={x(i)} y={y(p.index) - 12} textAnchor="middle" style={{ font: "700 14px Inter, sans-serif", fill: "#0f1728" }}>{p.index}</text>
-          <text x={x(i)} y={H - 8} textAnchor="middle" style={{ font: "500 12.5px Inter, sans-serif", fill: "#6b7686" }}>{fmt(p.at)}</text>
+    <span className="ws-track" aria-hidden="true">
+      <i style={{ width: `${Math.max(value, 1.5)}%`, background: LEVEL_META[levelFor(value)].color }} />
+      {[LEVEL_CUTS.mild, LEVEL_CUTS.moderate, LEVEL_CUTS.high].map((c) => <s key={c} style={{ left: `${c}%` }} />)}
+      {avg != null && <u style={{ left: `calc(${avg}% - 3px)` }} />}
+    </span>
+  );
+}
+
+/** How often (Never .. Almost always) as 4 small steps plus the words. */
+export function AnswerSeg({ index }: { index: number }) {
+  return (
+    <span className="ws-ans">
+      <span className="ws-seg" aria-hidden="true">
+        {[1, 2, 3, 4].map((n) => <i key={n} style={n <= index ? { background: LEVEL_META[levelFor(n * 25)].color } : undefined} />)}
+      </span>
+      <span>{BANK.scale.labels[index] ?? "-"}</span>
+    </span>
+  );
+}
+
+const QUAD_LABEL: Record<Quadrant, string> = { steady: "Steady ground", load: "Heavy load", place: "Hard place", both: "Both" };
+
+/** "Is it the work or the workplace?" - Workload across, the other three areas up. */
+export function Compass({ work, place, quadrant }: { work: number; place: number; quadrant: Quadrant }) {
+  const L = 34, T = 8, S = 216, PAD = 10;
+  const x = (v: number) => L + PAD + (v / 100) * (S - 2 * PAD);
+  const y = (v: number) => T + S - PAD - (v / 100) * (S - 2 * PAD);
+  const cx = x(COMPASS_CUT), cy = y(COMPASS_CUT);
+  const quads: { q: Quadrant; x: number; y: number; w: number; h: number; lx: number; ly: number; anchor: "start" | "end" }[] = [
+    { q: "place", x: L, y: T, w: cx - L, h: cy - T, lx: L + 8, ly: T + 16, anchor: "start" },
+    { q: "both", x: cx, y: T, w: L + S - cx, h: cy - T, lx: L + S - 8, ly: T + 16, anchor: "end" },
+    { q: "steady", x: L, y: cy, w: cx - L, h: T + S - cy, lx: L + 8, ly: T + S - 10, anchor: "start" },
+    { q: "load", x: cx, y: cy, w: L + S - cx, h: T + S - cy, lx: L + S - 8, ly: T + S - 10, anchor: "end" },
+  ];
+  const px = x(work), py = y(place);
+  const labelLeft = px > L + S - 40;
+  const labelY = py > T + S - 24 ? py - 10 : py + 4;
+  // A corner label the dot (or its "You") would sit on is left out - the quadrant is named beside the chart.
+  const clash = (r: (typeof quads)[number]) => {
+    const lx0 = r.anchor === "start" ? r.lx : r.lx - 80, lx1 = lx0 + 80;
+    return px + 40 > lx0 && px - 14 < lx1 && Math.abs(py - (r.ly - 4)) < 16;
+  };
+  return (
+    <svg viewBox="0 0 260 262" role="img" aria-label={`The work (Workload) ${work}, the workplace ${place}: ${QUAD_LABEL[quadrant]}`}>
+      {quads.map((r) => (
+        <g key={r.q}>
+          <rect x={r.x} y={r.y} width={r.w} height={r.h} fill={r.q === quadrant ? "#edf3fb" : "#fafaf8"} />
+          {!clash(r) && <text x={r.lx} y={r.ly} textAnchor={r.anchor} fontSize="10.5" fontWeight={r.q === quadrant ? 650 : 500} fill={r.q === quadrant ? "#0b0b0b" : "#898781"}>{QUAD_LABEL[r.q]}</text>}
         </g>
       ))}
+      <line x1={cx} y1={T} x2={cx} y2={T + S} stroke="#e1e0d9" strokeWidth="1" />
+      <line x1={L} y1={cy} x2={L + S} y2={cy} stroke="#e1e0d9" strokeWidth="1" />
+      <line x1={L} y1={T} x2={L} y2={T + S} stroke="#c3c2b7" strokeWidth="1" />
+      <line x1={L} y1={T + S} x2={L + S} y2={T + S} stroke="#c3c2b7" strokeWidth="1" />
+      <text x={L + S / 2} y={T + S + 22} textAnchor="middle" fontSize="11" fill="#52514e" fontWeight="600">The work (Workload): {work} →</text>
+      <text transform={`translate(${L - 14} ${T + S / 2}) rotate(-90)`} textAnchor="middle" fontSize="11" fill="#52514e" fontWeight="600">The workplace: {place} →</text>
+      <g>
+        <title>{`Workload ${work} · Workplace ${place}`}</title>
+        <circle cx={px} cy={py} r="12" fill="transparent" />
+        <circle cx={px} cy={py} r="6.5" fill={ACCENT} stroke="#fff" strokeWidth="2.5" />
+        <text x={labelLeft ? px - 12 : px + 12} y={labelY} textAnchor={labelLeft ? "end" : "start"} fontSize="11.5" fontWeight="650" fill="#0b0b0b">You</text>
+      </g>
     </svg>
+  );
+}
+
+/** A tiny trend: first point = the check, then each weekly check-in. */
+export function Sparkline({ values }: { values: number[] }) {
+  const W = 120, H = 34, P = 4;
+  const x = (i: number) => (values.length < 2 ? W / 2 : P + (i / (values.length - 1)) * (W - 2 * P));
+  const y = (v: number) => P + (1 - v / 100) * (H - 2 * P);
+  const d = values.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(" ");
+  const last = values[values.length - 1] ?? 0;
+  return (
+    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} aria-hidden="true" style={{ display: "block" }}>
+      <line x1={P} y1={H - P} x2={W - P} y2={H - P} stroke="#e6e5df" strokeWidth="1" />
+      {values.length > 1 && <path d={d} fill="none" stroke={ACCENT} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />}
+      <circle cx={x(values.length - 1)} cy={y(last)} r="3.5" fill={ACCENT} stroke="#fff" strokeWidth="2" />
+    </svg>
+  );
+}
+
+/** Overall score across retakes, with the level cut-offs as hairlines. Drawn
+ *  at its real pixel width, so the text stays 11px at any size. */
+export function TrendChart({ points }: { points: { label: string; value: number }[] }) {
+  const box = useRef<HTMLDivElement>(null);
+  const [W, setW] = useState(640);
+  useEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([e]) => setW(Math.max(280, Math.round(e.contentRect.width))));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  return <div ref={box}><TrendSvg points={points} W={W} /></div>;
+}
+
+function TrendSvg({ points, W }: { points: { label: string; value: number }[]; W: number }) {
+  const H = 200, L = 34, R = 70, T = 18, B = 30;
+  const pw = W - L - R, ph = H - T - B;
+  const x = (i: number) => L + (points.length < 2 ? pw / 2 : (i / (points.length - 1)) * pw);
+  const y = (v: number) => T + (1 - v / 100) * ph;
+  const d = points.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(p.value).toFixed(1)}`).join(" ");
+  const bands: [string, number][] = [["Low", 12], ["Mild", 35], ["Moderate", 55], ["High", 82]];
+  return (
+    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ display: "block" }} role="img" aria-label={`Workplace Stress Score over time: ${points.map((p) => `${p.label} ${p.value}`).join(", ")}`}>
+      {[0, LEVEL_CUTS.mild, LEVEL_CUTS.moderate, LEVEL_CUTS.high, 100].map((v) => (
+        <g key={v}>
+          <line x1={L} y1={y(v)} x2={L + pw} y2={y(v)} stroke={v === 0 ? "#c3c2b7" : "#e6e5df"} strokeWidth="1" />
+          <text x={L - 8} y={y(v) + 4} textAnchor="end" fontSize="11" fill="#898781" style={{ fontVariantNumeric: "tabular-nums" }}>{v}</text>
+        </g>
+      ))}
+      {bands.map(([t, v]) => <text key={t} x={L + pw + 10} y={y(v) + 4} fontSize="11" fill="#898781">{t}</text>)}
+      <path d={d} fill="none" stroke={ACCENT} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+      {points.map((p, i) => (
+        <g key={i}>
+          <title>{`${p.label}: ${p.value}`}</title>
+          <circle cx={x(i)} cy={y(p.value)} r="12" fill="transparent" />
+          <circle cx={x(i)} cy={y(p.value)} r="4.5" fill={ACCENT} stroke="#fff" strokeWidth="2" />
+          {(points.length <= 8 || i === 0 || i === points.length - 1) && (
+            <text x={x(i)} y={H - 8} textAnchor="middle" fontSize="11" fill="#898781">{p.label}</text>
+          )}
+        </g>
+      ))}
+      {points.length > 0 && (
+        <text x={x(points.length - 1)} y={y(points[points.length - 1].value) - 12} textAnchor="middle" fontSize="12.5" fontWeight="650" fill="#0b0b0b">{points[points.length - 1].value}</text>
+      )}
+    </svg>
+  );
+}
+
+/** Steps done in one action, as a thin ring. */
+export function Ring({ done, total }: { done: number; total: number }) {
+  const r = 19, c = 2 * Math.PI * r, f = total ? done / total : 0;
+  return (
+    <div className="ws-ring" aria-label={`${done} of ${total} steps done`}>
+      <svg width="46" height="46" viewBox="0 0 46 46">
+        <circle cx="23" cy="23" r={r} fill="none" stroke="#edf3fb" strokeWidth="4" />
+        {f > 0 && <circle cx="23" cy="23" r={r} fill="none" stroke={ACCENT} strokeWidth="4" strokeLinecap="round" strokeDasharray={`${f * c} ${c}`} transform="rotate(-90 23 23)" />}
+      </svg>
+      <span>{done}/{total}</span>
+    </div>
   );
 }

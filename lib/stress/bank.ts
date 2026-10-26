@@ -1,27 +1,13 @@
 import raw from "@/data/professionals/stress-bank.json";
-import type { Band, Bank, BankItem, ScaleKey, Step } from "./types";
+import type { AreaKey, Band, Bank, BankArea, BankItem } from "./types";
 
 export const BANK = raw as unknown as Bank;
 
-const sectionOf = (id: string) => BANK.sections.find((s) => s.id === id)!;
-export const scaleOf = (item: BankItem): ScaleKey => item.scale ?? sectionOf(item.section).scale;
+export const areaOf = (id: AreaKey): BankArea => BANK.areas.find((a) => a.id === id)!;
+export const itemById = (id: string): BankItem | undefined => BANK.items.find((i) => i.id === id);
+export const itemsIn = (area: AreaKey): BankItem[] => BANK.items.filter((i) => i.area === area);
 
-/** The scored questions for one experience band: the shared core plus that band's own. */
-export function itemsFor(band: Band): BankItem[] {
-  return BANK.items.filter((i) => !i.band || i.band === band);
-}
-
-/** Every screen of the test, in order: scored questions section by section, then the work-week facts. */
-export function stepsFor(band: Band): Step[] {
-  const steps: Step[] = [];
-  for (const section of BANK.sections) {
-    for (const item of itemsFor(band).filter((i) => i.section === section.id)) {
-      steps.push({ kind: "item", item, section, scale: scaleOf(item) });
-    }
-  }
-  const checkin = sectionOf("checkin");
-  for (const fact of BANK.facts) steps.push({ kind: "fact", fact, section: checkin });
-  return steps;
-}
+/** Every question in the order asked: area by area, then the closing question. */
+export const QUESTION_COUNT = BANK.items.length + 1;
 
 export const isBand = (v: unknown): v is Band => v === "0-5" || v === "5-15" || v === "15+";

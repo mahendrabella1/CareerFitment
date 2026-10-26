@@ -1,6 +1,6 @@
 "use client";
 /**
- * /account/stress - home of the Working Professionals' Stress & Resilience
+ * /account/stress - home of the Working Professionals' Workplace Stress
  * Check: the start screen before the first check, the results page after.
  */
 import { useEffect, useState } from "react";
@@ -15,8 +15,8 @@ import { StressResults } from "@/components/stress/StressResults";
 
 export default function StressHomePage() {
   const router = useRouter();
-  const { user, profile, loading, ready } = useAuth();
-  const [store, setStore] = useState<StressStore | null>(null);
+  const { user, profile, loading, ready, logout } = useAuth();
+  const [store, setStore] = useState<(StressStore & { hadOlder: boolean }) | null>(null);
   const [error, setError] = useState("");
   const [benchmarks, setBenchmarks] = useState<Benchmarks | null>(null);
 
@@ -34,12 +34,13 @@ export default function StressHomePage() {
 
   if (!ready) return <Center>Accounts aren&apos;t configured on this deployment yet.</Center>;
   if (loading) return <Center>Loading…</Center>;
-  if (!user) return <Center>Please <Link href="/signin" style={{ color: "#0f766e", fontWeight: 700 }}>sign in</Link> to take the Stress &amp; Resilience Check.</Center>;
+  if (!user) return <Center>Please <Link href="/signin" style={{ color: "#256abf", fontWeight: 600 }}>sign in</Link> to take the Workplace Stress Check.</Center>;
   if (error) return <Center>{error}</Center>;
   if (!store) return <Center>Loading your results…</Center>;
 
+  const signOut = () => { void logout().then(() => router.replace("/")); };
   const start = (b: Band) => router.push(`/account/stress/test?band=${encodeURIComponent(b)}`);
-  if (!latest) return <StressIntro initialBand={band} onStart={start} />;
+  if (!latest) return <StressIntro initialBand={band} onStart={start} onSignOut={signOut} rebuilt={store.hadOlder} />;
 
   const onPlanChange = (p: StressPlan) => {
     setStore((s) => (s ? { ...s, plan: p } : s));
@@ -54,10 +55,11 @@ export default function StressHomePage() {
       firstName={(profile?.name || "").trim().split(/\s+/)[0] || undefined}
       onPlanChange={onPlanChange}
       retakeHref={`/account/stress/test?band=${encodeURIComponent(band)}`}
+      onSignOut={signOut}
     />
   );
 }
 
 function Center({ children }: { children: React.ReactNode }) {
-  return <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", padding: 24, fontFamily: "Inter, system-ui, sans-serif", color: "#465467", fontSize: 15, background: "#f5f7f8" }}><div>{children}</div></div>;
+  return <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", padding: 24, fontFamily: "Inter, system-ui, sans-serif", color: "#52514e", fontSize: 15, background: "#f7f7f5" }}><div>{children}</div></div>;
 }

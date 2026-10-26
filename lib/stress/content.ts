@@ -1,218 +1,423 @@
 /**
- * Words for the Stress & Resilience results page: zones, pillars, the four
- * workplace stressor areas, what drives stress, career-stage notes and the
- * action library behind the 30-day plan. Plain, warm, non-clinical language -
- * this is a wellbeing check, never a diagnosis.
+ * The words of the Workplace Stress Check: levels, the four areas, notes per
+ * career stage, the "work or workplace" quadrants and the action library the
+ * 30-day plan is built from. Pure data + small pure helpers.
  */
-import { PRESSURE_PILLARS, type Band, type DomainKey, type PillarKey, type StressScores, type Zone } from "./types";
+import { BANK, areaOf, itemById } from "./bank";
+import { AREAS, type AreaKey, type Band, type Level, type Quadrant, type StressScores } from "./types";
+import { valueOf } from "./scoring";
 
-export const HELPLINE = { name: "Tele-MANAS", number: "14416", alt: "1-800-891-4416", note: "Free, 24x7 mental-health support from the Government of India, in 20+ languages." };
+export const HELPLINE = { name: "Tele-MANAS", number: "14416", alt: "1-800-891-4416", note: "Free, confidential, 24x7 mental-health support from the Government of India, in 20+ languages." };
 
-export const BAND_META: Record<Band, { label: string; title: string; blurb: string; typical: string[] }> = {
+export const BAND_META: Record<Band, { label: string; title: string }> = {
+  "0-5": { label: "0-5 years", title: "Early career" },
+  "5-15": { label: "5-15 years", title: "Mid career" },
+  "15+": { label: "15+ years", title: "Senior career" },
+};
+
+/** One hue, light -> dark: the darker the step, the more stress. */
+export const LEVEL_META: Record<Level, { label: string; color: string; range: string }> = {
+  low: { label: "Low", color: "#86b6ef", range: "0-24" },
+  mild: { label: "Mild", color: "#5598e7", range: "25-44" },
+  moderate: { label: "Moderate", color: "#256abf", range: "45-64" },
+  high: { label: "High", color: "#104281", range: "65-100" },
+};
+export const LEVELS: Level[] = ["low", "mild", "moderate", "high"];
+
+export const AREA_META: Record<AreaKey, { label: string; icon: string; question: string; text: Record<Level, string> }> = {
+  workload: {
+    label: "Workload", icon: "briefcase", question: "Is your load sustainable?",
+    text: {
+      low: "Your workload feels manageable - the hours, deadlines and clarity are working for you.",
+      mild: "Mostly manageable, with a few pressure points worth keeping an eye on.",
+      moderate: "Your workload is regularly more than is sustainable. This is usually the most fixable area - through priorities, deadlines and boundaries.",
+      high: "Your workload is consistently too heavy. Left as it is, this is the classic route to burnout - start with one conversation about priorities this week.",
+    },
+  },
+  toxicity: {
+    label: "Toxic behaviour", icon: "shield", question: "How do people behave around you?",
+    text: {
+      low: "You see little toxic behaviour at work - a real asset.",
+      mild: "Some difficult behaviour shows up now and then. Worth noticing; not yet a pattern.",
+      moderate: "Toxic behaviour is a regular part of your work life. Protect yourself: keep a record, build allies and know your options.",
+      high: "You're working in a hostile environment. It isn't your fault and it isn't normal - keep a record, use the routes open to you, and think about your options.",
+    },
+  },
+  culture: {
+    label: "Culture & safety", icon: "users", question: "Is it safe to be yourself?",
+    text: {
+      low: "Your workplace feels safe and supportive - you can speak up and get help.",
+      mild: "Mostly supportive, with some politics or tension in places.",
+      moderate: "It often doesn't feel safe to speak up or rely on others. Allies and careful framing help while you work out what can change.",
+      high: "The culture around you is draining - politics, poor support or a poor fit. Look after your energy, and be honest with yourself about whether this can change.",
+    },
+  },
+  career: {
+    label: "Career & security", icon: "route", question: "Is this job building your future?",
+    text: {
+      low: "You feel secure, you're growing and you feel fairly rewarded.",
+      mild: "Mostly positive, with one or two worries about growth, pay or security.",
+      moderate: "Worries about job security, growth or pay are weighing on you. A safety net and one clear growth conversation will reduce them.",
+      high: "Your career feels stuck or insecure, and that weighs on everything else. Build your safety net now, and get clear on what it would take to grow - here or elsewhere.",
+    },
+  },
+};
+
+export const STAGE_NOTES: Record<Band, Record<AreaKey, string>> = {
   "0-5": {
-    label: "0 - 5 years", title: "Early career",
-    blurb: "The first years at work are a steep climb: new skills, a first manager, proving yourself and often a first salary to manage.",
-    typical: ["Learning fast while expected to deliver", "Self-doubt and comparing with friends", "Saying yes to everything to prove yourself", "A salary that has to cover rent and EMIs"],
+    workload: "Early on, many people say yes to everything to prove themselves. Agreeing priorities is a career skill, not a weakness.",
+    toxicity: "Newer employees are more often on the receiving end of blame and credit-stealing. A written trail protects you more than seniority would.",
+    culture: "In your first jobs, a good manager and a few supportive peers matter more than the company's name. If you have neither, that's worth acting on.",
+    career: "Slow promotion in the first two years is common; how much you're learning matters more. If you aren't learning, that's the real warning sign.",
   },
   "5-15": {
-    label: "5 - 15 years", title: "Mid career",
-    blurb: "Mid-career brings more responsibility at work and at home at the same time - often the most loaded years.",
-    typical: ["Leading people for the first time", "Staying at the same level too long", "Children, parents and work all at once", "Skills that AI and new tools are changing"],
+    workload: "Mid-career is often the most loaded stage - more responsibility at work and at home at the same time. Delegating and saying no become essential.",
+    toxicity: "You may be handling difficult behaviour from above and below. Model the behaviour you want - and still keep records.",
+    culture: "Office politics often peaks here, as roles near the top get fewer. Allies across teams are your best protection.",
+    career: "Staying at one level for 3+ years, or skills that new tools are replacing, are the most common mid-career worries. A skill sprint and a growth conversation help.",
   },
   "15+": {
-    label: "15+ years", title: "Senior career",
-    blurb: "Senior roles carry decisions that affect many people, and fewer people to share them with.",
-    typical: ["Weight of decisions after work hours", "Staying relevant as the field changes", "Few people to speak openly with", "Long-term family finances and health"],
+    workload: "Senior roles carry decisions that follow you home. Protecting thinking time and delegating matter as much as the hours.",
+    toxicity: "At senior level you set the tone. If the behaviour comes from above you, your experience and network give you more options than it may feel like.",
+    culture: "Senior people often have few people to speak openly with. An outside mentor or peer group fills that gap.",
+    career: "Restructuring hits senior roles hard. Your network, a refreshed profile and savings are your safety net - and experience is valued in advisory, consulting and teaching roles too.",
   },
 };
 
-export const ZONE_META: Record<Zone, { label: string; color: string; tint: string; headline: string }> = {
-  thriving: { label: "Thriving", color: "#15803d", tint: "#ecfdf3", headline: "You're handling pressure well and have resources to spare." },
-  managing: { label: "Managing", color: "#0f766e", tint: "#ecfdfa", headline: "Some pressure, but you're coping well. Small habits will keep it this way." },
-  stretched: { label: "Stretched", color: "#b45309", tint: "#fffbeb", headline: "Pressure is starting to outrun your recovery. A good moment to act early." },
-  strained: { label: "Strained", color: "#c2410c", tint: "#fff7ed", headline: "Stress is affecting you noticeably. A few targeted changes can turn this around." },
-  burnout: { label: "Burnout risk", color: "#be123c", tint: "#fff1f2", headline: "Your answers show signs of burnout. Please make recovery your first priority." },
+export const QUADRANT_META: Record<Quadrant, { title: string; text: string; focus: string }> = {
+  steady: {
+    title: "Steady ground",
+    text: "Neither the work nor the workplace is weighing heavily on you. Keep the habits that protect this.",
+    focus: "Keep your boundaries and recovery time.",
+  },
+  load: {
+    title: "Good place, heavy load",
+    text: "The workplace itself seems okay - it's the amount and organisation of the work that hurts. That's the most fixable combination: change how the work is set up, not where you work.",
+    focus: "Focus on priorities, deadlines and boundaries.",
+  },
+  place: {
+    title: "Manageable work, hard place",
+    text: "The work itself is manageable, but the people, culture or prospects are not. Talking about workload won't fix this - protect yourself and start building options.",
+    focus: "Focus on records, allies and your safety net.",
+  },
+  both: {
+    title: "Heavy load in a hard place",
+    text: "Both the work and the workplace are weighing on you. Look after your health first, fix what you can quickly, and start a calm 6-month plan for your options.",
+    focus: "Start with recovery and one priorities conversation; build your safety net alongside.",
+  },
 };
 
-export const PILLAR_META: Record<PillarKey, { label: string; short: string; icon: string; high: string; mid: string; low: string }> = {
-  load: { label: "Work pressures", short: "Workload, behaviour at work, culture, career security", icon: "briefcase", high: "A lot is weighing on you at work right now.", mid: "Noticeable pressure at work - worth keeping an eye on.", low: "Pressure at work feels manageable." },
-  signals: { label: "Stress signals", short: "How stress shows in body and mind", icon: "pulse", high: "Stress is showing in your sleep, body or mood.", mid: "Some stress signals are showing.", low: "Few stress signals right now." },
-  burnout: { label: "Burnout", short: "Copenhagen Burnout Inventory", icon: "power", high: "Your energy is running low.", mid: "Your energy is starting to dip.", low: "Your energy is holding up." },
-  coping: { label: "Coping balance", short: "Helpful vs risky ways of coping", icon: "shield", high: "You mostly cope in helpful ways.", mid: "A mix of helpful and less helpful coping.", low: "Some ways of coping are working against you." },
-  resilience: { label: "Resilience", short: "How fast you bounce back", icon: "route", high: "You bounce back well.", mid: "You usually bounce back, given time.", low: "Setbacks stay with you for a while." },
-  recovery: { label: "Recovery", short: "Sleep, breaks and switching off", icon: "clock", high: "You recharge well.", mid: "You recharge some of the time.", low: "You're not getting enough time to recharge." },
-  control: { label: "Staying calm", short: "Noticing and managing your reactions", icon: "heart", high: "You manage your reactions well.", mid: "Mostly calm, with some reactive moments.", low: "Pressure can push you into reactions you regret." },
-  support: { label: "Support", short: "Manager, family, friends and mentors", icon: "users", high: "You have good people around you.", mid: "Some support, with room for more.", low: "You may be carrying this alone." },
-};
-
-/** The four workplace stressor areas (together: "Work pressures"). */
-export const DOMAIN_META: Record<DomainKey, { label: string; icon: string; short: string; high: string; mid: string; low: string }> = {
-  workload: { label: "Workload", icon: "briefcase", short: "Tasks, deadlines, hours, control, clarity",
-    high: "Your workload and how work is organised are a major strain.", mid: "Your workload is noticeable - worth keeping an eye on.", low: "Your workload feels under control." },
-  toxicity: { label: "Behaviour at work", icon: "shield", short: "Fear-based leadership, gaslighting, gossip, harassment",
-    high: "You're dealing with harmful behaviour at work. That isn't your fault - and it's worth acting on.", mid: "Some harmful behaviour around you - don't let it become normal.", low: "Little harmful behaviour around you." },
-  culture: { label: "Culture & relationships", icon: "users", short: "Politics, bullying, psychological safety, fit",
-    high: "Your workplace culture or relationships are wearing you down.", mid: "Parts of your workplace culture are a strain.", low: "Your workplace feels safe and respectful." },
-  career: { label: "Career & job security", icon: "route", short: "Job security, growth, pay, recognition",
-    high: "Worry about your job, pay or growth is weighing on you.", mid: "Some worry about your job, pay or growth.", low: "You feel reasonably secure about your career." },
-};
-
-/** A pillar or area score in plain words, whichever direction "good" is for it. */
-export function pillarTone(key: PillarKey | DomainKey, score: number): "good" | "okay" | "watch" {
-  const isResource = !(PRESSURE_PILLARS as string[]).includes(key) && !["workload", "toxicity", "culture", "career"].includes(key);
-  const strain = isResource ? 100 - score : score;
-  return strain < 40 ? "good" : strain < 60 ? "okay" : "watch";
-}
-
-export const DRIVER_META: Record<string, { label: string; icon: string }> = {
-  // Workload
-  tasks: { label: "Too many tasks", icon: "briefcase" },
-  deadlines: { label: "Unrealistic deadlines", icon: "clock" },
-  overtime: { label: "Working overtime", icon: "clock" },
-  balance: { label: "Work-life imbalance", icon: "home" },
-  boundaries: { label: "No boundaries after work hours", icon: "phone" },
-  outside: { label: "Responsibilities outside your job", icon: "home" },
-  flexibility: { label: "No freedom or flexibility", icon: "lock" },
-  excluded: { label: "Left out of decisions", icon: "user" },
-  expectations: { label: "Unclear expectations", icon: "signpost" },
-  communication: { label: "Poor communication", icon: "doc" },
-  roleconflict: { label: "Conflicting demands", icon: "scale" },
-  learning: { label: "Steep learning curve", icon: "book" },
-  proving: { label: "Saying yes to everything", icon: "check" },
-  leading: { label: "Managing people", icon: "users" },
-  familybalance: { label: "Work-family balance", icon: "home" },
-  responsibility: { label: "Weight of big decisions", icon: "scale" },
-  longhours: { label: "Long working hours", icon: "clock" },
-  noleave: { label: "No time off this year", icon: "calendar" },
-  commute: { label: "Long commute", icon: "route" },
-  sleep: { label: "Short sleep", icon: "clock" },
-  // Behaviour at work
-  fearleader: { label: "Fear-based leadership", icon: "power" },
-  gaslighting: { label: "Gaslighting - facts twisted or denied", icon: "help" },
-  gossip: { label: "Gossip and rumours", icon: "users" },
-  cliques: { label: "Cliques and exclusion", icon: "users" },
-  credit: { label: "Undermining or credit stealing", icon: "xcircle" },
-  discrimination: { label: "Unfair or unethical treatment", icon: "scale" },
-  harassment: { label: "Harassment", icon: "shield" },
-  hostileteam: { label: "Hostile team dynamics", icon: "users" },
-  // Culture & relationships
-  politics: { label: "Office politics", icon: "compass" },
-  bullying: { label: "Bullying or being belittled", icon: "shield" },
-  psychsafety: { label: "Not safe to speak up", icon: "lock" },
-  peers: { label: "No support from colleagues", icon: "users" },
-  fit: { label: "Your values don't fit the organisation", icon: "compass" },
-  orgchange: { label: "Organisational change", icon: "layers" },
-  relations: { label: "Strained relationships at work", icon: "users" },
-  isolation: { label: "No one to confide in at work", icon: "user" },
-  // Career & job security
-  layoffs: { label: "Fear of layoffs", icon: "shield" },
-  suddenloss: { label: "Risk of sudden job loss", icon: "xcircle" },
-  promotion: { label: "No chance of promotion", icon: "flag" },
-  skills: { label: "No skill development", icon: "book" },
-  costofliving: { label: "Salary below cost of living", icon: "wallet" },
-  payeffort: { label: "Pay doesn't match effort", icon: "wallet" },
-  recognition: { label: "No recognition", icon: "award" },
-  stuck: { label: "Feeling stuck in your career", icon: "route" },
-  confidence: { label: "Self-doubt at work", icon: "help" },
-  comparison: { label: "Comparing yourself with others", icon: "users" },
-  plateau: { label: "Same level for too long", icon: "flag" },
-  future: { label: "AI and changing skills", icon: "cpu" },
-  relevance: { label: "Staying relevant", icon: "compass" },
-  longterm: { label: "Long-term family finances", icon: "bank" },
-};
-
-export interface StressAction {
+export interface Action {
   id: string;
+  area: AreaKey | "support";
   title: string;
   why: string;
-  steps: string[];
+  time: string;
+  /** week 3 = weeks 3-4. */
+  steps: { week: 1 | 2 | 3; text: string }[];
+  script?: { label: string; text: string };
   link?: { href: string; label: string };
-  /** Driver sources or weak pillars this action answers. */
-  for: string[];
 }
 
-export const ACTIONS: StressAction[] = [
-  { id: "talk", title: "Talk to someone this week", for: ["safety"], why: "Carrying heavy feelings alone makes them heavier. Talking is the fastest relief.",
-    steps: ["Tell one person you trust how you've really been feeling", `If it feels heavy, call ${HELPLINE.name} on ${HELPLINE.number} - free and confidential`, "If your company has an employee assistance programme, book a session"] },
-  { id: "harassment-rights", title: "Know your rights - and use them", for: ["harassment"], why: "Harassment at work is never your fault, and Indian law gives you a clear way to act on it.",
-    steps: ["Write down each incident privately: date, what happened, who saw it - and keep any messages", "Organisations with 10 or more employees must have an Internal Committee under the POSH Act; a complaint is normally made within 3 months of the incident (this can be extended by another 3). Women employees can also use the government's SHe-Box portal (shebox.wcd.gov.in)", "Talk to someone you trust, and see OneGrasp's Law & Rights section for your options"],
-    link: { href: "/account/legal", label: "Open Law & Rights" } },
-  { id: "toxic-record", title: "Keep a private record and know your options", for: ["discrimination", "gaslighting", "fearleader", "credit", "bullying", "hostileteam"], why: "Harmful behaviour wears you down partly because it's hard to pin down. A record makes it real - for you and for anyone you report it to.",
-    steps: ["After each incident, note the date, what was said or done, and who was there - email it to yourself", "Share what's happening with one trusted person outside the situation", "If it continues, raise it with HR or a senior leader, using your notes - and check your rights in Law & Rights"],
-    link: { href: "/account/legal", label: "Open Law & Rights" } },
-  { id: "allies", title: "Build two allies at work", for: ["politics", "gossip", "cliques", "peers", "relations", "isolation", "orgchange"], why: "Politics and exclusion hit hardest when you're on your own. Two trusted allies change how work feels.",
-    steps: ["Pick two colleagues you respect - ideally in different teams", "Have a coffee or a 15-minute call with each this week, with no agenda", "Stay out of gossip yourself: change the subject or simply don't add to it"] },
-  { id: "speak-safely", title: "Raise one concern the safe way", for: ["psychsafety", "excluded", "communication", "fit"], why: "In places where speaking up feels risky, a calm one-to-one with facts is the safest way to be heard.",
-    steps: ["Choose one concern that matters most and write it in two sentences", "Raise it one-to-one, not in a group: \"I noticed X; it affects Y; could we try Z?\"", "Ask to be included in the next decision that affects your work"] },
-  { id: "clarity", title: "Get your expectations in writing", for: ["expectations", "roleconflict", "communication", "orgchange"], why: "Unclear or conflicting expectations create stress you can't work your way out of.",
-    steps: ["Write down what you think your top priorities and deliverables are", "Send it to your manager and ask: \"Is this right? What would you change?\"", "When two people ask for conflicting things, ask your manager to decide the order"] },
-  { id: "priorities", title: "Agree your top 3 priorities every Monday", for: ["tasks", "deadlines", "proving", "overtime"], why: "Most overload comes from everything feeling urgent at once.",
-    steps: ["List everything on your plate, then pick the 3 that matter most this week", "Share the 3 with your manager in two lines and ask: \"Anything to drop or delay?\"", "Say \"not this week\" to anything outside the 3 unless it's truly urgent"] },
-  { id: "focus", title: "Protect two focus blocks a day", for: ["tasks", "deadlines", "longhours", "overtime"], why: "Deep work in short protected blocks gets more done in fewer hours.",
-    steps: ["Block two 90-minute slots in your calendar each day", "Turn off chat and email notifications during them", "Do your hardest task in the first block"] },
-  { id: "manager-talk", title: "Have a 20-minute workload talk with your manager", for: ["excluded", "flexibility", "leading", "deadlines"], why: "Managers often don't see the full load. A calm, specific ask changes more than silent effort.",
-    steps: ["Write down your current tasks and roughly how long each takes", "Ask for one specific change: a deadline, a priority, or support", "Agree a date to check in again"] },
-  { id: "flex-proposal", title: "Propose a flexible arrangement", for: ["flexibility", "balance", "familybalance", "outside", "commute"], why: "A small, specific change in when or where you work can ease a lot of pressure.",
-    steps: ["Decide what would help most: start/end times, a work-from-home day, or a compressed week", "Write a short proposal showing how your work will still get done", "Ask for a one-month trial, then review it together"] },
-  { id: "pay-talk", title: "Prepare a pay and recognition conversation", for: ["payeffort", "recognition", "costofliving"], why: "Feeling underpaid or unseen is a strong, lasting stressor - and asking with evidence works better than waiting.",
-    steps: ["List your achievements from the last 12 months, with numbers where you can", "Check what similar roles pay in your city", "Ask your manager for a review meeting, and request one clear outcome"] },
-  { id: "safety-net", title: "Build your safety net", for: ["layoffs", "suddenloss"], why: "Job insecurity eases when you know you'd land on your feet.",
-    steps: ["Update your CV and LinkedIn this week", "Start (or top up) an emergency fund towards 3-6 months of expenses", "Reconnect with 3 people in your field - and look at live roles on your path"],
-    link: { href: "/account/jobs", label: "Explore jobs on your path" } },
-  { id: "money", title: "Make a 30-day money plan", for: ["costofliving", "longterm"], why: "Money worry eases fastest when you can see the numbers and have a buffer.",
-    steps: ["List income, fixed costs (rent, EMIs) and what's left", "Set aside a small fixed amount each month towards a 3-month emergency fund", "Use OneGrasp's Money labs to build the plan"], link: { href: "/account/money", label: "Open Money labs" } },
-  { id: "career-map", title: "Map your next career step", for: ["stuck", "promotion", "skills", "plateau", "relevance", "future", "fit"], why: "Feeling stuck is stressful mostly because the next step is unclear.",
-    steps: ["Pick 3 roles you'd like in 2-3 years", "Check what each needs in the Career Library and live job listings", "Choose one skill to build this month and block an hour a week for it"], link: { href: "/account/jobs", label: "Explore jobs on your path" } },
-  { id: "learning-buddy", title: "Find a learning buddy", for: ["learning", "confidence", "skills"], why: "Learning alongside someone halves the stress of a steep curve.",
-    steps: ["Ask a colleague or senior for a 30-minute weekly chat", "Bring your 2 biggest questions each time", "Write down one thing you learned after each chat"] },
-  { id: "wins-log", title: "Keep a daily wins log", for: ["confidence", "comparison", "selfblame", "recognition"], why: "Self-doubt and self-blame shrink when you have evidence of what you do well.",
-    steps: ["Each evening, write 2 things that went well and 1 thing you learned", "Re-read the week's list every Friday", "Mute or limit the social feeds that make you compare"] },
-  { id: "no-practice", title: "Practise one polite \"not now\"", for: ["proving", "tasks", "boundaries"], why: "Saying yes to everything spreads you too thin - and people respect clear limits.",
-    steps: ["When a new request comes, ask for 5 minutes before you answer", "Reply: \"I can do this by [date], or now if we move [task]\"", "Note how it went - most people accept it"] },
-  { id: "boundaries", title: "Set an off-hours limit for work messages", for: ["boundaries", "balance", "recovery", "longhours"], why: "Constant availability keeps stress switched on all evening.",
-    steps: ["Choose a time after which you don't check work messages", "Turn off work notifications after that time", "Tell your team, and agree how they reach you only for true emergencies"] },
-  { id: "shutdown", title: "Start a 10-minute shutdown ritual", for: ["recovery", "overtime", "longhours", "responsibility"], why: "Switching off after work is the single strongest habit for recovering from stress.",
-    steps: ["At the end of work, write tomorrow's top 3 tasks", "Close the laptop and say \"done for today\"", "Do one thing that marks the switch: a walk, a shower, music"] },
-  { id: "sleep", title: "Fix your sleep window", for: ["sleep", "signals"], why: "Sleep is when your body clears the day's stress. Short sleep makes everything harder.",
-    steps: ["Same sleep and wake time every day, weekends included (within an hour)", "No screens for 30 minutes before bed", "Keep caffeine to before 2 pm"] },
-  { id: "move", title: "Move for 20 minutes a day", for: ["recovery", "signals"], why: "Physical activity is one of the most reliable ways to bring stress down.",
-    steps: ["Walk, cycle or do any exercise for 20 minutes daily", "Try a walking call or a walk after lunch", "Track the days you did it - aim for 5 a week"] },
-  { id: "breathe", title: "Use the 90-second pause", for: ["control", "signals"], why: "A short pause turns a reaction into a response.",
-    steps: ["When you feel stress rising, stop for 90 seconds before replying", "Breathe in for 4 counts, out for 6, five times", "Then ask: \"What's the one thing I need here?\""] },
-  { id: "coping-swap", title: "Swap one escape habit for a reset", for: ["substance", "givingup"], why: "Alcohol, endless scrolling or giving up bring short relief but make stress come back stronger.",
-    steps: ["Notice when you reach for the habit and what triggered it", "Replace it 3 times this week with a walk, a call or 10 minutes outside", "If cutting down feels hard, talk to a doctor or counsellor"] },
-  { id: "support-circle", title: "Rebuild your support circle", for: ["support", "isolation", "peers"], why: "People with support around them handle the same pressure with less strain.",
-    steps: ["Name 2 people you can talk to - one at work, one outside", "Reach out to each this week, even just for a chai or a call", "Ask a senior person to be an informal mentor"] },
-  { id: "break-plan", title: "Plan a real break", for: ["noleave", "burnout", "recovery"], why: "Without time off, recovery never fully catches up with pressure.",
-    steps: ["Block at least 2-3 days of leave in the next 6 weeks", "Keep one full day each week completely work-free", "Before leave, hand over and set an out-of-office"] },
-  { id: "family-share", title: "Share the load at home", for: ["outside", "familybalance", "balance"], why: "Home responsibilities feel lighter when they're planned and shared.",
-    steps: ["List the week's home tasks with your partner or family", "Agree who does what, and one thing to drop or outsource", "Protect one family evening a week from work"] },
-  { id: "commute", title: "Make your commute count", for: ["commute"], why: "A long commute can become recovery time instead of lost time.",
-    steps: ["Use it for music, a podcast or a call with a friend - not work email", "Ask about one or two work-from-home days a week", "Shift travel by 30 minutes to avoid peak traffic if you can"] },
-  { id: "delegate", title: "Delegate one thing you hold too tightly", for: ["leading", "responsibility", "tasks"], why: "Leaders burn out when they carry what their team could carry.",
-    steps: ["Pick one recurring task someone else could do 80% as well", "Hand it over with a clear outcome and a check-in date", "Use the time freed for thinking, not more tasks"] },
+export const ACTIONS: Action[] = [
+  {
+    id: "talk", area: "support", title: "Talk to someone this week", time: "15 min",
+    why: "You said you're struggling. You don't have to work this out alone - talking to someone is the most useful first step.",
+    steps: [
+      { week: 1, text: "Tell one person you trust how things really are." },
+      { week: 1, text: "If it feels heavy, call Tele-MANAS on 14416 - free, confidential, 24x7, in your language." },
+      { week: 2, text: "Ask HR whether your company offers an Employee Assistance Programme (free, private counselling)." },
+      { week: 3, text: "If sleep, appetite or mood stay low for two weeks or more, see a doctor or counsellor." },
+    ],
+  },
+  // ---------- Workload ----------
+  {
+    id: "priorities", area: "workload", title: "Agree your top priorities with your manager", time: "30 min to prepare, 20 min to talk",
+    why: "Too many tasks usually means nobody has said what can wait. One conversation can take a third off your list.",
+    steps: [
+      { week: 1, text: "List everything on your plate, with rough hours for each." },
+      { week: 1, text: "Book 20 minutes with your manager - say it's about priorities, not a complaint." },
+      { week: 2, text: "Agree your top three, and what can wait, move or be dropped." },
+      { week: 3, text: "Re-check the list in your weekly 1:1 before saying yes to anything new." },
+    ],
+    script: { label: "Message to book the conversation", text: "Hi [Name], could we take 20 minutes this week to go through my current work? I have more on my plate than I can do well, and I'd like to agree the top priorities so the important things get my best effort. I'll bring a list." },
+  },
+  {
+    id: "deadline", area: "workload", title: "Answer unrealistic deadlines with options", time: "5 min each time",
+    why: "Saying yes to every deadline and missing some hurts you more than an early, calm \"here's what's possible\".",
+    steps: [
+      { week: 1, text: "When the next deadline lands, estimate it honestly before you reply." },
+      { week: 1, text: "Reply with two options: the full thing later, or a smaller version on time." },
+      { week: 2, text: "Note which option was chosen, in a short email or chat message." },
+      { week: 3, text: "Track how often deadlines move - bring the pattern to your manager." },
+    ],
+    script: { label: "Reply to an unrealistic deadline", text: "Thanks - I want to get this right. To do all of it by [date], I'd have to pause [other task]. Two options: (1) the full version by [later date], or (2) [smaller scope] by [date] and the rest by [later date]. Which works better for you?" },
+  },
+  {
+    id: "boundary", area: "workload", title: "Set one after-hours boundary", time: "15 min to set up",
+    why: "Being always available keeps your stress response switched on. One clear, announced boundary is easier to keep than many vague ones.",
+    steps: [
+      { week: 1, text: "Pick one rule - for example no work messages after 9 pm, or no laptop on Sundays." },
+      { week: 1, text: "Turn off work notifications for that time on your phone." },
+      { week: 2, text: "Tell your team, and agree what counts as a real emergency and how to reach you." },
+      { week: 3, text: "Keep a tally: how often you broke it, and whether anything actually went wrong." },
+    ],
+    script: { label: "Message to your team", text: "Quick note: from this week I'll be offline from [9 pm] to [8 am] on weekdays. If something is truly urgent, please call me on [number]. Everything else I'll pick up first thing in the morning." },
+  },
+  {
+    id: "flex", area: "workload", title: "Propose a 4-week flexibility trial", time: "30 min",
+    why: "A small, time-limited trial is far easier for a manager to say yes to than a permanent change.",
+    steps: [
+      { week: 1, text: "Decide the one change that would help most - start time, one home day, a fixed finish time." },
+      { week: 1, text: "Write a short proposal: what changes, how work stays covered, how you'll measure it." },
+      { week: 2, text: "Share it with your manager and ask for a 4-week trial." },
+      { week: 3, text: "At the end, review the results together and agree what continues." },
+    ],
+    script: { label: "Flexibility trial proposal", text: "I'd like to propose a 4-week trial: [the change, e.g. working from home on Wednesdays / starting at 8 and finishing at 5]. My deliverables and response times stay the same, and [how meetings and cover are handled]. After 4 weeks we can review [deadlines met, output] and decide together whether to continue." },
+  },
+  {
+    id: "clarity", area: "workload", title: "Write down what \"good\" looks like in your role", time: "45 min",
+    why: "Unclear expectations and clashing requests are among the most common - and most fixable - causes of work stress.",
+    steps: [
+      { week: 1, text: "Write your top 5 responsibilities and how you think success is measured." },
+      { week: 1, text: "Note the requests that clash, and who they come from." },
+      { week: 2, text: "Go through it with your manager and correct it together." },
+      { week: 2, text: "Send a short recap email so the agreement is in writing." },
+      { week: 3, text: "When requests clash, point both people to the agreed priorities." },
+    ],
+    script: { label: "Recap email after the conversation", text: "Thanks for the time today. To confirm what we agreed: my main priorities are (1) …, (2) …, (3) … Success looks like … When requests clash with these, I'll check with you before switching. Please tell me if I've missed anything." },
+  },
+  {
+    id: "recovery", area: "workload", title: "Protect your recovery time", time: "10-20 min a day",
+    why: "Exhaustion builds when recovery shrinks. Small, fixed recovery habits work better than a once-a-year holiday.",
+    steps: [
+      { week: 1, text: "Set a fixed sleep window and keep it on weekdays for a week." },
+      { week: 1, text: "Take one real 10-minute break in your workday, away from screens." },
+      { week: 2, text: "Keep one day a week fully work-free, messages included." },
+      { week: 3, text: "Put your next leave on the calendar, even if it's only 2-3 days." },
+    ],
+  },
+  // ---------- Toxic behaviour ----------
+  {
+    id: "rights", area: "toxicity", title: "Know your options on harassment and unfair treatment", time: "20 min to read",
+    why: "You don't have to put up with it. Indian law gives you clear routes - with deadlines that matter.",
+    steps: [
+      { week: 1, text: "Find your company's POSH policy and who sits on its Internal Committee - every organisation with 10 or more employees must have one." },
+      { week: 1, text: "Start a private, dated record of what happened (use the incident template in \"Keep a private, dated record\")." },
+      { week: 2, text: "A POSH complaint should be filed within 3 months of the incident (the committee can extend this by 3 more). For unfair treatment, use HR's grievance process or the ethics helpline, in writing." },
+      { week: 3, text: "If it isn't handled, women can also complain on the government's SHe-Box portal (shebox.wcd.gov.in); a lawyer or our Law & Rights page can help with next steps." },
+    ],
+    link: { href: "/account/legal", label: "Open Law & Rights" },
+  },
+  {
+    id: "record", area: "toxicity", title: "Keep a private, dated record", time: "5 min after each incident",
+    why: "Gaslighting, credit-stealing and bullying thrive on vague memories. A same-day written record protects you and makes any complaint credible.",
+    steps: [
+      { week: 1, text: "Start a private note on your own phone or email - not a company device or drive." },
+      { week: 1, text: "For each incident, write the date, what was said or done, who was there and how it affected your work." },
+      { week: 2, text: "Keep copies of related emails and messages, within your company's rules." },
+      { week: 3, text: "Read it back: is there a pattern? That's the basis for any conversation with HR." },
+    ],
+    script: { label: "Incident record template", text: "Date and time:\nWhere:\nWho was involved:\nWhat was said or done (exact words if you can):\nWho else saw or heard it:\nHow it affected you or your work:\nEvidence (emails, messages, files):" },
+  },
+  {
+    id: "visible", area: "toxicity", title: "Make your work visible", time: "10 min a week",
+    why: "If someone takes credit or later \"remembers it differently\", a short written trail settles it - calmly.",
+    steps: [
+      { week: 1, text: "After important meetings, send a 3-line recap of decisions and who does what." },
+      { week: 2, text: "Send your manager a short weekly update: done, in progress, blocked." },
+      { week: 3, text: "Present your own work in reviews and demos wherever you can." },
+    ],
+    script: { label: "Meeting recap", text: "Thanks all. To recap today: we decided …; I'll do … by …; [Name] will do … by … Let me know if I've got anything wrong." },
+  },
+  {
+    id: "gossip", area: "toxicity", title: "Step out of gossip and cliques", time: "A few minutes a day",
+    why: "You can't fix a team's culture alone, but you can stop it pulling you in - and build ties outside the clique.",
+    steps: [
+      { week: 1, text: "Prepare one neutral line to leave gossip without offending anyone." },
+      { week: 2, text: "Have one coffee or lunch with someone outside your usual group." },
+      { week: 3, text: "Share credit openly in team settings - it lowers the temperature." },
+    ],
+    script: { label: "Neutral ways to step out", text: "\"I don't know the full story, so I'll stay out of it.\"\n\"Let's not talk about them when they're not here - shall we get back to the plan?\"\n\"If it matters, I'd rather ask them directly.\"" },
+  },
+  {
+    id: "escalate", area: "toxicity", title: "Raise a pattern safely", time: "1 hour to prepare",
+    why: "One-off rudeness can be talked through. A pattern of fear, blame or belittling is a management problem - raise it with facts.",
+    steps: [
+      { week: 1, text: "Keep your record for 2-3 weeks so you can show a pattern." },
+      { week: 2, text: "Decide where to raise it: your manager's manager, HR or an ethics channel." },
+      { week: 2, text: "Ask for the meeting in writing, and bring 2-3 specific examples." },
+      { week: 3, text: "Send a short summary afterwards and ask what happens next, and by when." },
+    ],
+    script: { label: "Email to HR or a skip-level manager", text: "Hi [Name], I'd like to request a confidential conversation about a pattern of behaviour in my team that is affecting my work. I have notes of specific incidents from [dates]. Could we meet this week or next? Thank you." },
+  },
+  // ---------- Culture & psychological safety ----------
+  {
+    id: "allies", area: "culture", title: "Build two allies", time: "30 min a week",
+    why: "Peer support is one of the strongest buffers against work stress - and it makes politics less dangerous.",
+    steps: [
+      { week: 1, text: "Name two people you trust or respect, ideally in different teams." },
+      { week: 2, text: "Have a coffee or call with each - ask about their work and offer help first." },
+      { week: 3, text: "Keep a regular check-in going, even 15 minutes every two weeks." },
+    ],
+  },
+  {
+    id: "speakup", area: "culture", title: "Speak up with less risk", time: "5 min before a meeting",
+    why: "When it doesn't feel safe to disagree, framing matters. Questions and facts get heard; accusations get defended.",
+    steps: [
+      { week: 1, text: "Before your next meeting, write down the one point you want to raise." },
+      { week: 1, text: "Phrase it as a question or a risk, backed by one fact." },
+      { week: 2, text: "Share it with an ally first, so you're not alone in the room." },
+      { week: 3, text: "Follow up in writing so your input is on record." },
+    ],
+    script: { label: "Safer ways to disagree", text: "\"Can I check one risk before we decide? …\"\n\"What would we need to see to know this is working?\"\n\"I might be missing something - the data I have shows …\"" },
+  },
+  {
+    id: "values", area: "culture", title: "Run a values check on this job", time: "30 min",
+    why: "Feeling you don't fit is draining over time. Knowing what you need tells you what to fix - and what to walk away from.",
+    steps: [
+      { week: 1, text: "Write your 5 non-negotiables at work (for example honesty, learning, fair pay, family time)." },
+      { week: 1, text: "Score this job from 1 to 5 on each." },
+      { week: 2, text: "For each low score, decide honestly: can this change here, or not?" },
+      { week: 3, text: "If two or more can't change, start building your safety net and options." },
+    ],
+  },
+  {
+    id: "change", area: "culture", title: "Get clarity on the change", time: "20 min",
+    why: "Uncertainty is often more stressful than bad news. Three good questions usually tell you more than the town hall did.",
+    steps: [
+      { week: 1, text: "Write down what you don't know about the change and how it might affect you." },
+      { week: 1, text: "Ask your manager the three questions in the script." },
+      { week: 2, text: "Agree what you'll focus on during the change, so you're judged on the right things." },
+    ],
+    script: { label: "Three questions for your manager", text: "1. What does this change mean for my role and my team in the next 3 months?\n2. What will matter most in how my work is judged during the change?\n3. When will we know more, and how will we hear?" },
+  },
+  // ---------- Career & job security ----------
+  {
+    id: "safetynet", area: "career", title: "Build your 6-month safety net", time: "2 hours over the month",
+    why: "Fear of layoffs is worst when you feel trapped. Savings, an updated CV and a warm network turn fear into a plan.",
+    steps: [
+      { week: 1, text: "Update your CV and LinkedIn with your results from the last 2 years." },
+      { week: 1, text: "Check your notice period, notice pay and any severance terms in your appointment letter." },
+      { week: 2, text: "Work out your monthly must-pay costs and set a target of 3-6 months' savings." },
+      { week: 3, text: "Reconnect with 3 people in your field - not to ask for a job, just to stay in touch." },
+      { week: 3, text: "Look at what's open in your field, so you know your market." },
+    ],
+    link: { href: "/jobs", label: "Browse current jobs" },
+  },
+  {
+    id: "growth", area: "career", title: "Ask for a growth conversation", time: "20 min",
+    why: "Many people wait years for a promotion that was never discussed. Asking what it takes - and writing it down - makes the path visible.",
+    steps: [
+      { week: 1, text: "Book time with your manager about your next 12 months." },
+      { week: 2, text: "Ask what the next role needs, and what's missing today." },
+      { week: 2, text: "Agree 2-3 goals and a date to review them, in writing." },
+      { week: 3, text: "Start on the first goal and mention progress in your 1:1s." },
+    ],
+    script: { label: "Message to your manager", text: "Hi [Name], I'd like to talk about my growth here. Could we take 30 minutes to discuss what the next level looks like for me, what I'd need to show, and a realistic timeline? I want to be sure I'm working on the right things." },
+  },
+  {
+    id: "pay", area: "career", title: "Prepare a pay conversation", time: "2 hours to prepare",
+    why: "Pay that doesn't match your effort or your costs is a real stressor - and a conversation backed by facts is far more likely to work.",
+    steps: [
+      { week: 1, text: "Collect salary data for your role, city and experience from 2-3 sources." },
+      { week: 1, text: "List your results from the last year - with numbers wherever possible." },
+      { week: 2, text: "Ask for a meeting before the appraisal cycle closes, not after." },
+      { week: 3, text: "Make your ask with a number and a reason. If it's \"not now\", ask what would make it \"yes\", and when." },
+    ],
+    script: { label: "Opening your pay conversation", text: "I'd like to discuss my compensation. Over the last year I've [2-3 results]. From what I can see, similar roles in [city] pay around [range]. I'd like to ask for a revision to [number]. What would it take to get there, and by when?" },
+  },
+  {
+    id: "skills", area: "career", title: "Start a 30-day skill sprint", time: "3 hours a week",
+    why: "Learning something that moves your career forward is one of the fastest ways to feel less stuck - and it makes you safer in a layoff.",
+    steps: [
+      { week: 1, text: "Pick one skill that keeps appearing in job posts for your next role." },
+      { week: 1, text: "Block 3 hours a week for it in your calendar." },
+      { week: 2, text: "Use it on one real task at work, however small." },
+      { week: 3, text: "Add it to your CV and tell your manager what you've learned." },
+    ],
+  },
+  {
+    id: "wins", area: "career", title: "Keep a wins log", time: "5 min a week",
+    why: "When effort goes unnoticed, people stop noticing it themselves. A weekly log fixes both - and makes appraisals much easier.",
+    steps: [
+      { week: 1, text: "Every Friday, write down 3 things you finished, fixed or helped with." },
+      { week: 2, text: "Add numbers where you can: time saved, money, customers, quality." },
+      { week: 3, text: "Share one win in your next 1:1 or team update." },
+    ],
+  },
 ];
 
-const ACTION = new Map(ACTIONS.map((a) => [a.id, a]));
+export const actionById = (id: string): Action | undefined => ACTIONS.find((a) => a.id === id);
 
-/** The 3 actions for the 30-day plan: support and rights first when needed,
- *  then the strongest drivers, then the weakest resource. */
-export function planActionsFor(s: StressScores): string[] {
-  const picks: string[] = [];
-  const add = (id?: string) => { if (id && !picks.includes(id) && picks.length < 3) picks.push(id); };
-  const forKey = (key: string) => ACTIONS.find((a) => a.for.includes(key) && !picks.includes(a.id))?.id;
+/** For each stress point, the actions that address it, best first. */
+export const SOURCE_ACTIONS: Record<string, string[]> = {
+  tasks: ["priorities", "deadline"], deadlines: ["deadline", "priorities"], overtime: ["boundary", "recovery"],
+  balance: ["boundary", "flex"], outside: ["flex", "boundary"], control: ["flex", "clarity"],
+  excluded: ["speakup", "clarity"], expectations: ["clarity", "priorities"], communication: ["clarity", "change"],
+  roleconflict: ["clarity", "priorities"], exhaustion: ["recovery", "boundary"],
+  fearleader: ["record", "escalate"], gaslighting: ["record", "visible"], gossip: ["gossip", "allies"],
+  cliques: ["gossip", "allies"], credit: ["visible", "record"], discrimination: ["rights", "record"],
+  harassment: ["rights", "record"], hostileteam: ["escalate", "record"],
+  politics: ["allies", "speakup"], bullying: ["record", "escalate"], psychsafety: ["speakup", "allies"],
+  peers: ["allies"], fit: ["values"], orgchange: ["change", "values"], relations: ["allies", "gossip"],
+  layoffs: ["safetynet", "skills"], suddenloss: ["safetynet"], promotion: ["growth", "skills"],
+  skills: ["skills", "growth"], costofliving: ["pay", "safetynet"], payeffort: ["pay", "wins"], recognition: ["wins", "visible"],
+};
+/** When an area has no clear stress point: a habit that keeps it healthy. */
+const AREA_DEFAULT: Record<AreaKey, string> = { workload: "recovery", toxicity: "allies", culture: "allies", career: "wins" };
 
-  if (s.safety === "high") add("talk");
-  if (s.rights?.harassment) add("harassment-rights");
-  else if (s.rights?.discrimination) add("toxic-record");
-  for (const d of s.drivers.slice(0, 2)) add(forKey(d.source));
-  if (s.coping.scales.substance >= 50 || s.coping.scales.givingup >= 50) add("coping-swap");
-  if (s.recovery.sleep !== null && s.recovery.sleep <= 25) add("sleep");
-  const resources: PillarKey[] = ["recovery", "support", "control", "resilience", "coping"];
-  const weakest = [...resources].sort((a, b) => s.pillars[a] - s.pillars[b]);
-  for (const k of weakest) add(forKey(k));
-  if (s.burnout.band !== "low") add("break-plan");
-  return picks.length ? picks : ["shutdown", "move", "support-circle"];
+/** Stress points answered "Sometimes" or more, strongest first (ties: the more stressed area). */
+export function rankedPoints(s: StressScores, answers: Record<string, number>) {
+  return BANK.items
+    .map((i, n) => ({ item: i, value: valueOf(answers[i.id]) ?? 0, n }))
+    .filter((x) => x.value >= 50)
+    .sort((a, b) => b.value - a.value || s.areas[b.item.area] - s.areas[a.item.area] || a.n - b.n);
 }
 
-export const actionById = (id: string) => ACTION.get(id);
+/** The actions that best address one area, from its own answers. */
+export function actionsForArea(area: AreaKey, s: StressScores, answers: Record<string, number>): string[] {
+  const out: string[] = [];
+  for (const p of rankedPoints(s, answers).filter((x) => x.item.area === area)) {
+    for (const id of SOURCE_ACTIONS[p.item.source] ?? []) if (!out.includes(id)) out.push(id);
+  }
+  for (const a of ACTIONS) if (a.area === area && !out.includes(a.id)) out.push(a.id);
+  return out;
+}
+
+/** The 30-day plan: support first when needed, the rights card when relevant,
+ *  then 3 actions aimed at the strongest stress points (at most 2 per area). */
+export function planActionsFor(s: StressScores, answers: Record<string, number>): string[] {
+  const out: string[] = [];
+  if (s.support !== "none") out.push("talk");
+  if (s.rights.harassment || s.rights.discrimination) out.push("rights");
+  const focus: string[] = [];
+  const perArea: Partial<Record<string, number>> = {};
+  const take = (id: string) => {
+    const a = actionById(id);
+    if (!a || out.includes(id) || focus.includes(id) || (perArea[a.area] ?? 0) >= 2) return false;
+    focus.push(id);
+    perArea[a.area] = (perArea[a.area] ?? 0) + 1;
+    return true;
+  };
+  for (const p of rankedPoints(s, answers)) {
+    if (focus.length >= 3) break;
+    for (const id of SOURCE_ACTIONS[p.item.source] ?? []) if (take(id)) break;
+  }
+  for (const area of [...AREAS].sort((a, b) => s.areas[b] - s.areas[a])) {
+    if (focus.length >= 3) break;
+    take(AREA_DEFAULT[area]);
+  }
+  return [...out, ...focus];
+}
+
+const lower = (t: string) => t.charAt(0).toLowerCase() + t.slice(1);
+
+/** One plain sentence: where the stress comes from. */
+export function summaryLine(s: StressScores): string {
+  const top = [...AREAS].filter((a) => s.areas[a] >= 25).sort((a, b) => s.areas[b] - s.areas[a]).slice(0, 2);
+  if (!top.length) return "Nothing stands out as a strong source of stress at work right now.";
+  const areas = top.map((a) => areaOf(a).title).join(" and ");
+  const points = s.hotspots.slice(0, 2).map((h) => itemById(h.id)?.label).filter(Boolean).map((l) => lower(l!));
+  return `Most of it comes from ${areas}${points.length ? ` - especially ${points.join(" and ")}` : ""}.`;
+}

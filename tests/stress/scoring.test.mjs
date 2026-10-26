@@ -1,128 +1,125 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { BANK, itemsFor, stepsFor } from "../../lib/stress/bank.ts";
-import { cbiBand, itemValue, scoreStress, zoneFor } from "../../lib/stress/scoring.ts";
-import { ACTIONS, DRIVER_META, planActionsFor } from "../../lib/stress/content.ts";
-import { DOMAINS } from "../../lib/stress/types.ts";
+import { BANK, QUESTION_COUNT, itemsIn } from "../../lib/stress/bank.ts";
+import { levelFor, quadrantFor, scoreStress } from "../../lib/stress/scoring.ts";
+import { ACTIONS, SOURCE_ACTIONS, actionsForArea, planActionsFor, summaryLine } from "../../lib/stress/content.ts";
+import { AREAS } from "../../lib/stress/types.ts";
 
-const item = (id) => BANK.items.find((i) => i.id === id);
-/** Answers where every item gets the same option index. */
-const all = (band, idx) => Object.fromEntries(itemsFor(band).map((i) => [i.id, idx]));
-const facts = { F_SLEEP: "7-8", F_HOURS: "40-48", F_LEAVE: "11-20", F_COMMUTE: "lt30" };
-const RESOURCE_SECTIONS = ["resilience", "control", "support", "recovery"];
+/** Every area question gets the same option index; the closing question gets `cope`. */
+const all = (idx, cope = 1) => ({ ...Object.fromEntries(BANK.items.map((i) => [i.id, idx])), [BANK.closing.id]: cope });
+const byId = (id) => BANK.items.find((i) => i.id === id);
 
-/** Low pressure everywhere, strong resources. */
-function calm(band) {
-  const a = all(band, 0);
-  for (const i of itemsFor(band)) {
-    if (RESOURCE_SECTIONS.includes(i.section)) a[i.id] = i.reverse ? 0 : 4;
-    if (i.copeScale && ["active", "planning", "reframing", "emotional", "advice"].includes(i.copeScale)) a[i.id] = 3;
-  }
-  a.CBW7 = 4; a.W2 = 4;
-  return a;
-}
-
-test("each band gets the shared core plus only its own 4 questions", () => {
-  for (const band of ["0-5", "5-15", "15+"]) {
-    const own = itemsFor(band).filter((i) => i.band);
-    assert.equal(own.length, 4, band);
-    assert.ok(own.every((i) => i.band === band));
-    assert.equal(stepsFor(band).length, itemsFor(band).length + BANK.facts.length);
-  }
-  assert.equal(new Set(BANK.items.map((i) => i.id)).size, BANK.items.length, "item ids are unique");
+test("four areas, 30-40 questions, ids unique", () => {
+  assert.deepEqual(BANK.areas.map((a) => a.id), AREAS);
+  assert.ok(QUESTION_COUNT >= 30 && QUESTION_COUNT <= 40, `${QUESTION_COUNT} questions`);
+  assert.deepEqual(AREAS.map((a) => itemsIn(a).length), [11, 8, 7, 7]);
+  const ids = [...BANK.items.map((i) => i.id), BANK.closing.id];
+  assert.equal(new Set(ids).size, ids.length);
 });
 
-test("the four workplace areas cover what was asked for", () => {
-  const ofDomain = (d) => BANK.items.filter((i) => i.section === d && !i.band).map((i) => i.source);
-  assert.deepEqual(ofDomain("workload"), ["tasks", "deadlines", "overtime", "balance", "boundaries", "outside", "flexibility", "excluded", "expectations", "communication", "roleconflict"]);
-  assert.deepEqual(ofDomain("toxicity"), ["fearleader", "gaslighting", "gossip", "cliques", "credit", "discrimination", "harassment", "hostileteam"]);
-  assert.deepEqual(ofDomain("culture"), ["politics", "bullying", "psychsafety", "peers", "fit", "orgchange", "relations"]);
-  assert.deepEqual(ofDomain("career"), ["layoffs", "suddenloss", "promotion", "skills", "costofliving", "payeffort", "recognition", "stuck"]);
-  const sources = BANK.items.map((i) => i.source).filter(Boolean);
-  assert.ok(sources.every((s) => DRIVER_META[s]), "every stress source has words");
+test("the areas cover what was asked for", () => {
+  const src = (a) => itemsIn(a).map((i) => i.source);
+  assert.deepEqual(src("workload"), ["tasks", "deadlines", "overtime", "balance", "outside", "control", "excluded", "expectations", "communication", "roleconflict", "exhaustion"]);
+  assert.deepEqual(src("toxicity"), ["fearleader", "gaslighting", "gossip", "cliques", "credit", "discrimination", "harassment", "hostileteam"]);
+  assert.deepEqual(src("culture"), ["politics", "bullying", "psychsafety", "peers", "fit", "orgchange", "relations"]);
+  assert.deepEqual(src("career"), ["layoffs", "suddenloss", "promotion", "skills", "costofliving", "payeffort", "recognition"]);
 });
 
-test("the standard instruments are complete: CBI personal 6 + work 7, Brief COPE 8 scales x 2", () => {
-  const cbi = BANK.items.filter((i) => i.std === "CBI");
-  assert.equal(cbi.filter((i) => i.sub === "personal").length, 6);
-  assert.equal(cbi.filter((i) => i.sub === "work").length, 7);
-  const byScale = {};
-  BANK.items.filter((i) => i.std === "BriefCOPE").forEach((i) => (byScale[i.copeScale] = (byScale[i.copeScale] ?? 0) + 1));
-  assert.deepEqual(Object.values(byScale), Array(8).fill(2));
+test("every stress point has actions, and every action is real", () => {
+  for (const i of BANK.items) assert.ok(SOURCE_ACTIONS[i.source]?.length, i.source);
+  const ids = new Set(ACTIONS.map((a) => a.id));
+  assert.equal(ids.size, ACTIONS.length);
+  for (const list of Object.values(SOURCE_ACTIONS)) for (const id of list) assert.ok(ids.has(id), id);
+  for (const a of ACTIONS) assert.ok(a.steps.length >= 3 && a.steps.every((s) => [1, 2, 3].includes(s.week)), a.id);
 });
 
-test("CBI scoring: 0/25/50/75/100, last work item reversed, published bands", () => {
-  assert.equal(itemValue(item("CBP1"), 3), 75);
-  assert.equal(itemValue(item("CBW7"), 4), 0, "\"always\" enough energy = no burnout");
-  assert.equal(itemValue(item("CBW7"), 0), 100);
-  assert.equal(cbiBand(49), "low");
-  assert.equal(cbiBand(50), "moderate");
-  assert.equal(cbiBand(75), "high");
-  assert.equal(cbiBand(100), "severe");
-  assert.equal(Math.round(itemValue(item("BC2"), 1)), 33, "Brief COPE's 4 points");
+test("levels and quadrants", () => {
+  assert.equal(levelFor(24), "low");
+  assert.equal(levelFor(25), "mild");
+  assert.equal(levelFor(45), "moderate");
+  assert.equal(levelFor(65), "high");
+  assert.equal(quadrantFor(10, 10), "steady");
+  assert.equal(quadrantFor(60, 10), "load");
+  assert.equal(quadrantFor(10, 60), "place");
+  assert.equal(quadrantFor(45, 45), "both");
 });
 
-test("a calm profile lands in thriving, a heavy one in burnout risk", () => {
-  const good = scoreStress("0-5", calm("0-5"), facts, 900);
-  assert.equal(good.zone, "thriving");
-  assert.ok(good.index < 25, `index ${good.index}`);
-  assert.ok(DOMAINS.every((d) => good.domains[d] === 0));
-  assert.equal(good.safety, "none");
-  assert.deepEqual(good.rights, { harassment: false, discrimination: false });
+test("never everywhere = 0 and low; almost always = 100 and high", () => {
+  const calm = scoreStress(all(0, 0), 300);
+  assert.equal(calm.overall, 0);
+  assert.equal(calm.level, "low");
+  assert.deepEqual(calm.hotspots, []);
+  assert.equal(calm.support, "none");
+  assert.equal(calm.confidence.level, "high", "all 'Never' is a plausible answer, not straight-lining");
+  assert.equal(summaryLine(calm), "Nothing stands out as a strong source of stress at work right now.");
 
-  const heavy = all("0-5", 4);
-  for (const i of itemsFor("0-5")) {
-    if (RESOURCE_SECTIONS.includes(i.section)) heavy[i.id] = i.reverse ? 4 : 0;
-    if (i.section === "coping") heavy[i.id] = ["givingup", "selfblame", "substance"].includes(i.copeScale) ? 3 : 0;
-  }
-  heavy.CBW7 = 0;
-  const bad = scoreStress("0-5", heavy, { F_SLEEP: "lt5", F_HOURS: "gt65", F_LEAVE: "0", F_COMMUTE: "gt120" }, 1200);
-  assert.equal(bad.zone, "burnout");
-  assert.ok(bad.index >= 70, `index ${bad.index}`);
-  assert.ok(DOMAINS.every((d) => bad.domains[d] === 100));
-  assert.equal(bad.safety, "high");
-  assert.deepEqual(bad.rights, { harassment: true, discrimination: true });
+  const heavy = scoreStress(all(4, 4), 300);
+  assert.equal(heavy.overall, 100);
+  assert.equal(heavy.level, "high");
+  assert.ok(AREAS.every((a) => heavy.areas[a] === 100));
+  assert.equal(heavy.support, "high");
+  assert.equal(heavy.compass.quadrant, "both");
+  assert.deepEqual(heavy.rights, { harassment: true, discrimination: true });
 });
 
-test("work pressures: one severe area isn't averaged away (60% mean + 40% worst)", () => {
-  const a = calm("5-15");
-  for (const i of itemsFor("5-15").filter((x) => x.section === "toxicity")) a[i.id] = 4;
-  const s = scoreStress("5-15", a, facts, 900);
-  assert.equal(s.domains.toxicity, 100);
-  assert.equal(s.domains.workload, 0);
-  assert.equal(s.pillars.load, Math.round(0.6 * 25 + 0.4 * 100), "mean 25, worst 100 -> 55");
+test("one severe area isn't averaged away (60% mean + 40% worst)", () => {
+  const a = all(0, 0);
+  for (const i of itemsIn("career")) a[i.id] = 4;
+  const s = scoreStress(a, 300);
+  assert.equal(s.areas.career, 100);
+  assert.equal(s.overall, Math.round(0.6 * 25 + 0.4 * 100), "mean 25, worst 100 -> 55");
+  assert.equal(s.level, "moderate");
+  assert.equal(s.compass.place, Math.round(0.6 * (100 / 3) + 0.4 * 100), "the same 60/40 blend -> 60");
+  assert.equal(s.compass.quadrant, "place", "one severe workplace area isn't 'steady ground'");
 });
 
-test("a single 'once or twice' harassment answer shows rights at work, and the plan leads with them", () => {
-  const a = calm("0-5");
-  a.TX7 = 1;
-  const s = scoreStress("0-5", a, facts, 900);
+test("hot spots: Often or more, strongest first, ties to the more stressed area", () => {
+  const a = all(0, 0);
+  a.WK1 = 3; a.CS1 = 4; a.CS5 = 3; a.CS6 = 3;
+  const s = scoreStress(a, 300);
+  assert.deepEqual(s.hotspots.map((h) => h.id), ["CS1", "CS5", "CS6", "WK1"]);
+  assert.equal(summaryLine(s), "Most of it comes from Career & job security - especially fear of layoffs and salary below cost of living.", "Workload (7) is low, so it isn't named");
+});
+
+test("a single 'Rarely' harassment answer shows the options card, and the plan leads with it", () => {
+  const a = all(0, 0);
+  a[byId("TB7").id] = 1;
+  const s = scoreStress(a, 300);
   assert.equal(s.rights.harassment, true);
-  assert.equal(planActionsFor(s)[0], "harassment-rights");
+  assert.equal(s.rights.discrimination, false);
+  assert.equal(planActionsFor(s, a)[0], "rights");
 });
 
-test("drivers: answers and work-week facts count, strongest first, with their area", () => {
-  const a = all("0-5", 0);
-  a.E1b = 4; a.CR5 = 3;
-  const s = scoreStress("0-5", a, { ...facts, F_HOURS: "56-65" }, 900);
-  assert.deepEqual(s.drivers.map((d) => d.source), ["confidence", "costofliving", "longhours"]);
-  assert.deepEqual(s.drivers.map((d) => d.domain), ["career", "career", "workload"]);
+test("the plan: support first when struggling, then 3 focus actions aimed at the top stress points", () => {
+  const a = all(0, 3);
+  a.WK1 = 4; a.WK2 = 4; a.WK3 = 4; a.CS1 = 3;
+  const s = scoreStress(a, 300);
+  assert.equal(s.support, "watch");
+  const plan = planActionsFor(s, a);
+  assert.deepEqual(plan, ["talk", "priorities", "deadline", "safetynet"], "max 2 per area, so layoffs gets its action");
+  assert.equal(new Set(plan).size, plan.length);
 });
 
-test("answer-quality flags: same answer everywhere and racing through", () => {
-  const s = scoreStress("5-15", all("5-15", 2), facts, 60);
+test("a calm profile still gets 3 healthy habits", () => {
+  const a = all(0, 0);
+  const plan = planActionsFor(scoreStress(a, 300), a);
+  assert.equal(plan.length, 3);
+  assert.ok(plan.every((id) => ACTIONS.some((x) => x.id === id)));
+});
+
+test("area suggestions follow that area's answers first", () => {
+  const a = all(0, 0);
+  a.CU5 = 4;
+  const s = scoreStress(a, 300);
+  assert.equal(actionsForArea("culture", s, a)[0], "values");
+});
+
+test("answer-quality flags: same non-zero answer everywhere, racing through", () => {
+  const s = scoreStress(all(2, 2), 40);
   assert.ok(s.confidence.flags.includes("same-answer"));
   assert.ok(s.confidence.flags.includes("too-fast"));
   assert.equal(s.confidence.level, "low");
-});
-
-test("the 30-day plan: support first when needed, 3 distinct real actions", () => {
-  const a = all("15+", 0);
-  a.W1 = 4; a.S1 = 4; a.CR5 = 4;
-  const s = scoreStress("15+", a, facts, 900);
-  const plan = planActionsFor(s);
-  assert.equal(plan[0], "talk");
-  assert.equal(plan.length, 3);
-  assert.equal(new Set(plan).size, 3);
-  assert.ok(plan.every((id) => ACTIONS.some((x) => x.id === id)));
+  assert.equal(scoreStress(all(2, 2), 300).confidence.level, "low");
+  const varied = all(1, 1); varied.WK1 = 3;
+  assert.equal(scoreStress(varied, 40).confidence.level, "medium");
 });

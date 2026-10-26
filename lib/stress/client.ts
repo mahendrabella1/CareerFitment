@@ -1,28 +1,36 @@
 "use client";
 /**
- * Saving and loading the Stress & Resilience Check from the browser:
- * results and the 30-day plan live on the person's own users/{uid}.stress
- * (student-writable, like gps); the anonymous career-stage comparison goes
- * through /api/stress/benchmarks.
+ * Saving and loading the Workplace Stress Check from the browser: results and
+ * the 30-day plan live on the person's own users/{uid}.stress (student-
+ * writable, like gps); the anonymous career-stage comparison goes through
+ * /api/stress/benchmarks.
  */
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDb, getFirebaseAuth } from "@/lib/firebase/client";
 import { scoreStress } from "./scoring";
 import { planActionsFor } from "./content";
 import { BANK } from "./bank";
-import type { Band, StressPlan, StressResult, StressStore } from "./types";
+import type { AreaKey, Band, StressPlan, StressResult, StressStore } from "./types";
 
 const MAX_RESULTS = 12;
 
-export async function loadStress(uid: string): Promise<StressStore> {
+/** Results from before the four-area check (v1/v2) have a different shape and
+ *  can't be shown on this page - they're left out, and dropped on the next save. */
+const isCurrent = (r: StressResult | undefined): r is StressResult =>
+  !!r && typeof r.scores?.overall === "number" && !!r.scores?.areas;
+
+export async function loadStress(uid: string): Promise<StressStore & { hadOlder: boolean }> {
   const db = getDb();
-  if (!db) return { results: [] };
+  if (!db) return { results: [], hadOlder: false };
   const snap = await getDoc(doc(db, "users", uid));
   const s = snap.exists() ? (snap.data().stress as StressStore | undefined) : undefined;
-  return { results: Array.isArray(s?.results) ? s!.results : [], plan: s?.plan };
+  const all = Array.isArray(s?.results) ? s!.results : [];
+  const results = all.filter(isCurrent);
+  const plan = s?.plan && results.some((r) => r.id === s.plan!.resultId) && Array.isArray(s.plan.pulses) ? s.plan : undefined;
+  return { results, plan, hadOlder: all.length > results.length };
 }
 
-export function buildResult(band: Band, answers: Record<string, number>, facts: Record<string, string>, durationSec: number): StressResult {
+export function buildResult(band: Band, answers: Record<string, number>, durationSec: number): StressResult {
   return {
     id: `st_${Date.now().toString(36)}`,
     version: BANK.version,
@@ -30,8 +38,7 @@ export function buildResult(band: Band, answers: Record<string, number>, facts: 
     band,
     durationSec,
     answers,
-    facts,
-    scores: scoreStress(band, answers, facts, durationSec),
+    scores: scoreStress(answers, durationSec),
   };
 }
 
@@ -42,7 +49,13 @@ export async function saveResult(uid: string, result: StressResult): Promise<Str
   if (!db) throw new Error("Accounts aren't configured on this deployment.");
   const prev = await loadStress(uid);
   const results = [...prev.results, result].slice(-MAX_RESULTS);
-  const plan: StressPlan = { resultId: result.id, actionIds: planActionsFor(result.scores), done: {}, checkins: [] };
+  const plan: StressPlan = {
+    resultId: result.id,
+    startedAt: result.takenAt,
+    actionIds: planActionsFor(result.scores, result.answers),
+    done: {},
+    pulses: [],
+  };
   await updateDoc(doc(db, "users", uid), { stress: { results, plan } });
   void submitBenchmark(result);
   return { results, plan };
@@ -61,12 +74,12 @@ async function submitBenchmark(result: StressResult) {
     await fetch("/api/stress/benchmarks", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ band: result.band, index: result.scores.index, pillars: result.scores.pillars }),
+      body: JSON.stringify({ band: result.band, overall: result.scores.overall, areas: result.scores.areas }),
     });
   } catch { /* the comparison is a nicety */ }
 }
 
-export interface Benchmarks { ready: boolean; n: number; needed?: number; index?: number[]; pillars?: Record<string, number[]> }
+export interface Benchmarks { ready: boolean; n: number; needed?: number; overall?: number[]; areas?: Record<AreaKey, number[]> }
 
 export async function loadBenchmarks(band: Band): Promise<Benchmarks> {
   try {

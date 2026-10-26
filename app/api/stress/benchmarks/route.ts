@@ -1,21 +1,23 @@
 /**
- * Career-stage comparison for the Stress & Resilience Check.
+ * Career-stage comparison for the Workplace Stress Check.
  *
- * POST (signed in): records the caller's latest scores - band, index and the 8
- * pillars only, no answers or identity beyond the doc id - in the server-only
- * collection stressBenchmarks/{uid}, so each person counts once.
- * GET ?band=0-5: deciles of the index and each pillar for that band, once at
- * least MIN_N people have taken the check; until then { ready: false }.
+ * POST (signed in): records the caller's latest scores - band, overall score
+ * and the 4 area scores only, no answers or identity beyond the doc id - in
+ * the server-only collection stressBenchmarks/{uid}, so each person counts once.
+ * GET ?band=0-5: deciles of the overall score and each area for that band, once
+ * at least MIN_N people have taken the current check; until then { ready: false }.
  */
 import { NextResponse } from "next/server";
 import { getFirestore, isFirestoreConfigured } from "@/lib/firebase/admin";
 import { verifySignIn } from "@/lib/firebase/adminAuth";
 import { isBand } from "@/lib/stress/bank";
-import { PILLARS, type Band } from "@/lib/stress/types";
+import { AREAS, type Band } from "@/lib/stress/types";
 
 export const dynamic = "force-dynamic";
 
 const COLLECTION = "stressBenchmarks";
+/** Rows from the earlier 8-pillar check have no `v` and aren't comparable. */
+const VERSION = 3;
 const MIN_N = 30;
 const cache = new Map<Band, { at: number; body: unknown }>();
 
@@ -36,14 +38,14 @@ export async function GET(req: Request) {
   try {
     const db = await getFirestore();
     const snap = await db.collection(COLLECTION).where("band", "==", band).limit(20_000).get();
-    const rows = snap.docs.map((d) => d.data());
+    const rows = snap.docs.map((d) => d.data()).filter((r) => r.v === VERSION);
     const body = rows.length < MIN_N
       ? { ready: false, n: rows.length, needed: MIN_N }
       : {
           ready: true,
           n: rows.length,
-          index: deciles(rows.map((r) => r.index as number)),
-          pillars: Object.fromEntries(PILLARS.map((p) => [p, deciles(rows.map((r) => (r.pillars?.[p] as number) ?? 0))])),
+          overall: deciles(rows.map((r) => r.overall as number)),
+          areas: Object.fromEntries(AREAS.map((a) => [a, deciles(rows.map((r) => (r.areas?.[a] as number) ?? 0))])),
         };
     cache.set(band, { at: Date.now(), body });
     return NextResponse.json(body);
@@ -58,18 +60,18 @@ export async function POST(req: Request) {
   const token = (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
   const who = token ? await verifySignIn(token).catch(() => null) : null;
   if (!who) return NextResponse.json({ ok: false, reason: "sign-in" }, { status: 401 });
-  const body = (await req.json().catch(() => null)) as { band?: unknown; index?: unknown; pillars?: Record<string, unknown> } | null;
-  const index = num(body?.index);
-  if (!body || !isBand(body.band) || index === null) return NextResponse.json({ ok: false, reason: "invalid" }, { status: 400 });
-  const pillars: Record<string, number> = {};
-  for (const p of PILLARS) {
-    const v = num(body.pillars?.[p]);
+  const body = (await req.json().catch(() => null)) as { band?: unknown; overall?: unknown; areas?: Record<string, unknown> } | null;
+  const overall = num(body?.overall);
+  if (!body || !isBand(body.band) || overall === null) return NextResponse.json({ ok: false, reason: "invalid" }, { status: 400 });
+  const areas: Record<string, number> = {};
+  for (const a of AREAS) {
+    const v = num(body.areas?.[a]);
     if (v === null) return NextResponse.json({ ok: false, reason: "invalid" }, { status: 400 });
-    pillars[p] = v;
+    areas[a] = v;
   }
   try {
     const db = await getFirestore();
-    await db.collection(COLLECTION).doc(who.uid).set({ band: body.band, index, pillars, at: new Date().toISOString() });
+    await db.collection(COLLECTION).doc(who.uid).set({ v: VERSION, band: body.band, overall, areas, at: new Date().toISOString() });
     cache.delete(body.band);
     return NextResponse.json({ ok: true });
   } catch (e) {
