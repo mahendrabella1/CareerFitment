@@ -34,7 +34,15 @@ const MILESTONES = [
   // downstream) - only the user-facing label changed, per instruction to
   // call this "Undergraduates" everywhere the student sees it.
   { value: "graduate", label: "Undergraduates", icon: "cap", color: "#e08a0a", soft: "#fdf1dd", enabled: true },
-  { value: "experienced_professional", label: "Professionals", icon: "briefcase", color: "#0d9488", soft: "#dff5f2", enabled: false },
+  // Working professionals take the Stress & Resilience Check (lib/stress/*), not
+  // a student assessment - step 2 asks their experience band instead.
+  { value: "experienced_professional", label: "Working Professionals", icon: "briefcase", color: "#0d9488", soft: "#dff5f2", enabled: true },
+];
+const PRO = "experienced_professional";
+const BAND_OPTIONS = [
+  { value: "0-5", label: "0 - 5 years", hint: "Early career", icon: "route" },
+  { value: "5-15", label: "5 - 15 years", hint: "Mid career", icon: "briefcase" },
+  { value: "15+", label: "15+ years", hint: "Senior career", icon: "flag" },
 ];
 const STAGES = [
   { value: CLARITY_STAGES[0], label: "I have no idea about my career", icon: "help", color: "#c0564f" },
@@ -58,7 +66,7 @@ function RegisterForm() {
   const { ready, register, refreshProfile } = useAuth();
 
   const [step, setStep] = useState(0);
-  const [f, setF] = useState({ name: "", category: "", clarity: "", email: "", phone: "", city: "", institution: "", age: "", password: "" });
+  const [f, setF] = useState({ name: "", category: "", clarity: "", experienceBand: "", email: "", phone: "", city: "", institution: "", age: "", password: "" });
   const [showPw, setShowPw] = useState(false);
   const [touched, setTouched] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -108,7 +116,8 @@ function RegisterForm() {
   const phoneOk = phoneIsValid(f.phone);
   const pwOk = passwordIsValid(f.password);
   const step0Ok = nameOk && f.category !== "";
-  const step1Ok = f.clarity !== "";
+  const isPro = f.category === PRO;
+  const step1Ok = isPro ? f.experienceBand !== "" : f.clarity !== "";
   const step2Ok = emailOk && phoneOk && pwOk;
   const done0 = step0Ok, done1 = step1Ok, done2 = step2Ok;
 
@@ -123,8 +132,9 @@ function RegisterForm() {
     try {
       await register({
         name: f.name, email: f.email, phone: f.phone, institution: f.institution,
-        category: f.category, journeyCode: journeyForCategory(f.category), clarity: f.clarity,
+        category: f.category, journeyCode: journeyForCategory(f.category), clarity: isPro ? "" : f.clarity,
         password: f.password, city: f.city, age: f.age,
+        ...(isPro ? { experienceBand: f.experienceBand } : {}),
       });
       setDone(true);
       trackEvent("CompleteRegistration", { content_name: f.category, status: true });
@@ -171,7 +181,7 @@ function RegisterForm() {
           return;
         }
       }
-      setTimeout(() => router.push("/?begin=1"), 1100);
+      setTimeout(() => router.push(isPro ? "/account/stress" : "/?begin=1"), 1100);
     } catch (err) {
       setError(authErrorMessage(err));
       setSubmitting(false);
@@ -223,10 +233,10 @@ function RegisterForm() {
                 <>
                   <p style={S.doneSub}>Your account was created.</p>
                   <p style={{ ...S.doneSub, color: "#b91c1c", fontWeight: 700, marginTop: 6 }}>{instFailMsg}</p>
-                  <button style={{ ...S.next, marginTop: 18 }} onClick={() => router.push("/?begin=1")}>Continue →</button>
+                  <button style={{ ...S.next, marginTop: 18 }} onClick={() => router.push(isPro ? "/account/stress" : "/?begin=1")}>Continue →</button>
                 </>
               ) : (
-                <p style={S.doneSub}>Account created - taking you to your assessment…</p>
+                <p style={S.doneSub}>Account created - taking you to your {isPro ? "Stress & Resilience Check" : "assessment"}…</p>
               )}
             </div>
           ) : step === 0 ? (
@@ -267,8 +277,21 @@ function RegisterForm() {
             /* ---------------- Step 2: Current stage ---------------- */
             <>
               <h2 style={S.h}>Set your current stage.</h2>
-              <div style={S.confirmPill}><Icon name="check" size={14} /> {MILESTONES.find((m) => m.value === f.category)?.label} · career guidance</div>
-              <div style={S.sectionLabel}>Where are you right now?</div>
+              <div style={S.confirmPill}><Icon name="check" size={14} /> {MILESTONES.find((m) => m.value === f.category)?.label} · {isPro ? "stress & resilience" : "career guidance"}</div>
+              <div style={S.sectionLabel}>{isPro ? "How long have you been working?" : "Where are you right now?"}</div>
+              {isPro ? (
+              <div style={S.stages} className="og-st">
+                {BAND_OPTIONS.map((c, i) => {
+                  const sel = f.experienceBand === c.value;
+                  return (
+                    <button key={c.value} onClick={() => set("experienceBand", c.value)} className="rin" style={{ ...S.sCard, animationDelay: `${i * 70}ms`, ...(sel ? { borderColor: "#0d9488", boxShadow: "0 0 0 3px #0d948822" } : {}) }}>
+                      <span style={{ ...S.sIcon, color: sel ? "#0d9488" : "#9aa3b2", ...(sel ? { borderColor: "#0d9488" } : {}) }}><Icon name={c.icon} size={21} stroke={1.6} /></span>
+                      <span style={{ ...S.sLabel, ...(sel ? { color: "#0d9488", fontWeight: 700 } : {}) }}>{c.label} <span style={{ fontWeight: 500, color: "#7a8494" }}>· {c.hint}</span></span>
+                    </button>
+                  );
+                })}
+              </div>
+              ) : (
               <div style={S.stages} className="og-st">
                 {STAGES.map((c, i) => {
                   const sel = f.clarity === c.value;
@@ -280,7 +303,8 @@ function RegisterForm() {
                   );
                 })}
               </div>
-              {touched && !f.clarity && <div style={S.err}>Please choose one option above.</div>}
+              )}
+              {touched && !step1Ok && <div style={S.err}>Please choose one option above.</div>}
               <div style={S.footer}>
                 <button style={S.ghostBtn} onClick={() => { setTouched(false); setStep(0); }}>← Back</button>
                 <button style={S.next} onClick={() => { if (step1Ok) { setTouched(false); setStep(2); } else setTouched(true); }}>Next →</button>
@@ -307,9 +331,9 @@ function RegisterForm() {
               {emailOk && phoneOk && (
                 <div className="rin">
                   <div style={S.grid2} className="og-g2">
-                    <Field label="School / College / Company" value={f.institution} onChange={(v) => set("institution", v)} placeholder="Where you study / work" optional
+                    <Field label={isPro ? "Company" : "School / College / Company"} value={f.institution} onChange={(v) => set("institution", v)} placeholder={isPro ? "Where you work" : "Where you study / work"} optional
                       locked={Boolean(instCheck && instCheck !== "checking" && instCheck.valid)} />
-                    <Field label="Age" value={f.age} onChange={(v) => set("age", v.replace(/[^\d]/g, "").slice(0, 2))} placeholder="e.g. 17" optional />
+                    <Field label="Age" value={f.age} onChange={(v) => set("age", v.replace(/[^\d]/g, "").slice(0, 2))} placeholder={isPro ? "e.g. 29" : "e.g. 17"} optional />
                   </div>
                   <div style={{ position: "relative", marginTop: 4 }}>
                     <label style={S.fLabel}>Create your password {pwOk && <span style={S.okInline}>✓</span>}</label>

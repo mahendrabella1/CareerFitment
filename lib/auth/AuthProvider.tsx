@@ -5,6 +5,7 @@
  * Firestore profile, and exposes register / signIn / logout + saveAssessment.
  */
 
+import type { StressStore } from "@/lib/stress/types";
 import {
   createContext,
   useContext,
@@ -184,6 +185,10 @@ export interface UserProfile {
   progress?: StudentProgress;
   /** Active time in the app, written by components/ActivityTracker.tsx. */
   activity?: StudentActivity;
+  /** Working professionals only: years of work experience ("0-5", "5-15", "15+"). */
+  experienceBand?: string;
+  /** Working professionals' Stress & Resilience Check (lib/stress/types.ts). */
+  stress?: StressStore;
 }
 
 export type RegisterInput = {
@@ -198,6 +203,8 @@ export type RegisterInput = {
   password: string;
   city?: string;
   age?: string;
+  /** Working professionals only. */
+  experienceBand?: string;
 };
 
 interface AuthState {
@@ -310,6 +317,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       age: (input.age || "").trim(),
       paid: false,
       paymentStatus: "unpaid",
+      ...(input.experienceBand ? { experienceBand: input.experienceBand } : {}),
     };
     await setDoc(doc(db, "users", cred.user.uid), {
       ...profileDoc,

@@ -12,7 +12,7 @@ export const CATEGORY_OPTIONS: { value: string; label: string; journey: string }
   { value: "class_11", label: "Class 11", journey: "career_planning" },
   { value: "class_12", label: "Class 12", journey: "career_planning" },
   { value: "graduate", label: "Undergraduate (18 – 21)", journey: "graduate_readiness" },
-  { value: "experienced_professional", label: "Professional (35 – 55)", journey: "leadership_excellence" },
+  { value: "experienced_professional", label: "Working Professional", journey: "leadership_excellence" },
   // Kept only so categoryLabel() still shows a friendly name for accounts
   // registered before the 11/12 split - no longer offered at registration.
   { value: "class_11_12", label: "Class 11 – 12", journey: "career_planning" },

@@ -35,6 +35,12 @@ export default function AccountPage() {
     if (!loading && ready && !user) router.replace("/signin");
   }, [loading, ready, user, router]);
 
+  // Working professionals' home is their Stress & Resilience Check.
+  const isPro = profile?.category === "experienced_professional" && !profile?.latestAssessment;
+  useEffect(() => {
+    if (isPro) router.replace("/account/stress");
+  }, [isPro, router]);
+
   if (!ready) {
     return (
       <Centered>
@@ -45,6 +51,7 @@ export default function AccountPage() {
   }
   if (loading) return <Centered><p style={S.muted}>Loading…</p></Centered>;
   if (!user) return <Centered><p style={S.muted}>Redirecting to sign in…</p></Centered>;
+  if (isPro) return <Centered><p style={S.muted}>Opening your Stress &amp; Resilience Check…</p></Centered>;
 
   const a = profile?.latestAssessment;
   const signOut = () => { void logout().then(() => router.push("/signin")); };

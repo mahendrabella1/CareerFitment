@@ -236,8 +236,9 @@ service cloud.firestore {
     }
 
     // ---------- Everything else denied by default ----------
-    // (leads, assessmentSessions, question_banks and couponRedemptions are
-    // used server-side with the Admin SDK, which bypasses these rules.)
+    // (leads, assessmentSessions, question_banks, couponRedemptions and
+    // stressBenchmarks are used server-side with the Admin SDK, which
+    // bypasses these rules.)
     match /{document=**} {
       allow read, write: if false;
     }

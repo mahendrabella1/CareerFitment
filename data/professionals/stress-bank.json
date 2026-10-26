@@ -1,0 +1,134 @@
+{
+  "version": "stress-2026.10-v1",
+  "about": "OneGrasp Stress & Resilience Check for working professionals (0-5, 5-15, 15+ years). Burnout uses the Copenhagen Burnout Inventory (Kristensen et al., 2005), personal and work-related scales, word for word. Coping uses eight scales of the Brief COPE (Carver, 1997), word for word, with the time frame set to the last 4 weeks as the author allows. Every other section is OneGrasp's own wording in the same standard format (4-week recall, 5-point scales scored 0-100). Item ids are stable - results store answers by id, so never reuse an id for a different question.",
+  "recall": "the last 4 weeks",
+  "scales": {
+    "freq": { "labels": ["Never / almost never", "Seldom", "Sometimes", "Often", "Always"], "values": [0, 25, 50, 75, 100] },
+    "degree": { "labels": ["To a very low degree", "To a low degree", "Somewhat", "To a high degree", "To a very high degree"], "values": [0, 25, 50, 75, 100] },
+    "agree": { "labels": ["Strongly disagree", "Disagree", "Neutral", "Agree", "Strongly agree"], "values": [0, 25, 50, 75, 100] },
+    "cope": { "labels": ["I haven't been doing this at all", "A little bit", "A medium amount", "I've been doing this a lot"], "values": [0, 33.33, 66.67, 100] }
+  },
+  "sections": [
+    { "id": "load", "title": "Your pressures", "intro": "How often each of these weighed on you in the last 4 weeks.", "scale": "freq" },
+    { "id": "signals", "title": "How stress shows up", "intro": "How often you noticed each of these in the last 4 weeks.", "scale": "freq" },
+    { "id": "burnout", "title": "Your energy", "intro": "These questions are the Copenhagen Burnout Inventory, a widely used burnout measure.", "scale": "freq" },
+    { "id": "coping", "title": "How you cope", "intro": "Think about how you've been dealing with stress in the last 4 weeks. Rate each one on its own - not on whether it seems to be working.", "scale": "cope" },
+    { "id": "resilience", "title": "Bouncing back", "intro": "How much you agree with each statement about yourself.", "scale": "agree" },
+    { "id": "recovery", "title": "Recovery & boundaries", "intro": "How often you did each of these in the last 4 weeks.", "scale": "freq" },
+    { "id": "control", "title": "Staying calm", "intro": "How much you agree with each statement about yourself.", "scale": "agree" },
+    { "id": "support", "title": "Your support", "intro": "How much you agree with each statement right now.", "scale": "agree" },
+    { "id": "checkin", "title": "A quick check-in", "intro": "Two last questions about the last 4 weeks, then a few facts about your work week.", "scale": "freq" }
+  ],
+  "items": [
+    { "id": "L1", "section": "load", "source": "workload", "text": "I had more work than I could finish in my working hours." },
+    { "id": "L2", "section": "load", "source": "deadlines", "text": "I worked against tight or unrealistic deadlines." },
+    { "id": "L3", "section": "load", "source": "role", "text": "I was unsure what was expected of me, or my priorities kept changing." },
+    { "id": "L4", "section": "load", "source": "control", "text": "I had little say over how or when I do my work." },
+    { "id": "L5", "section": "load", "source": "manager", "text": "My manager's behaviour or expectations put me under strain." },
+    { "id": "L6", "section": "load", "source": "people", "text": "Conflict or tension with colleagues or clients affected me." },
+    { "id": "L7", "section": "load", "source": "security", "text": "I worried about losing my job, or about layoffs." },
+    { "id": "L8", "section": "load", "source": "money", "text": "Money worries - bills, rent, EMIs or debt - were on my mind." },
+    { "id": "L9", "section": "load", "source": "family", "text": "Responsibilities at home - family, children, parents, household - added to my load." },
+    { "id": "L10", "section": "load", "source": "health", "text": "My own health, or a family member's health, worried me." },
+    { "id": "L11", "section": "load", "source": "career", "text": "I felt stuck, or unsure where my career is going." },
+
+    { "id": "E1", "section": "load", "band": "0-5", "source": "confidence", "text": "I felt I wasn't good enough for my role, or that others would find out I don't know enough." },
+    { "id": "E2", "section": "load", "band": "0-5", "source": "comparison", "text": "I compared my salary, title or progress with friends and felt behind." },
+    { "id": "E3", "section": "load", "band": "0-5", "source": "learning", "text": "I struggled to learn new tools, processes or skills fast enough." },
+    { "id": "E4", "section": "load", "band": "0-5", "source": "proving", "text": "I felt I had to say yes to everything to prove myself." },
+
+    { "id": "M1", "section": "load", "band": "5-15", "source": "leading", "text": "Managing or guiding other people added to my stress." },
+    { "id": "M2", "section": "load", "band": "5-15", "source": "plateau", "text": "I felt my growth or promotion had stalled." },
+    { "id": "M3", "section": "load", "band": "5-15", "source": "balance", "text": "Balancing work with family needs - children, parents, partner - was hard." },
+    { "id": "M4", "section": "load", "band": "5-15", "source": "future", "text": "I worried that new technology or AI could make my skills less valuable." },
+
+    { "id": "S1", "section": "load", "band": "15+", "source": "responsibility", "text": "The weight of decisions affecting my team or business stayed with me after work." },
+    { "id": "S2", "section": "load", "band": "15+", "source": "relevance", "text": "I worried about staying relevant in my field." },
+    { "id": "S3", "section": "load", "band": "15+", "source": "isolation", "text": "I felt I had no one at work I could openly share my concerns with." },
+    { "id": "S4", "section": "load", "band": "15+", "source": "longterm", "text": "Planning my family's long-term financial security - retirement, children's education, parents' care - worried me." },
+
+    { "id": "G1", "section": "signals", "sub": "body", "text": "I had trouble falling asleep, or woke up feeling unrested." },
+    { "id": "G2", "section": "signals", "sub": "body", "text": "I had headaches, body aches, stomach trouble or tight muscles." },
+    { "id": "G3", "section": "signals", "sub": "mind", "text": "I found it hard to concentrate, or kept forgetting things." },
+    { "id": "G4", "section": "signals", "sub": "mind", "text": "I couldn't stop thinking about work or problems." },
+    { "id": "G5", "section": "signals", "sub": "emotions", "text": "I felt irritable, or snapped at people more than usual." },
+    { "id": "G6", "section": "signals", "sub": "emotions", "text": "I felt anxious, tense or on edge." },
+    { "id": "G7", "section": "signals", "sub": "behaviour", "text": "I avoided people, or pulled away from things I usually enjoy." },
+    { "id": "G8", "section": "signals", "sub": "behaviour", "text": "I relied more on caffeine, junk food, screens, smoking or alcohol to get through the day." },
+
+    { "id": "CBP1", "section": "burnout", "std": "CBI", "sub": "personal", "scale": "freq", "text": "How often do you feel tired?" },
+    { "id": "CBP2", "section": "burnout", "std": "CBI", "sub": "personal", "scale": "freq", "text": "How often are you physically exhausted?" },
+    { "id": "CBP3", "section": "burnout", "std": "CBI", "sub": "personal", "scale": "freq", "text": "How often are you emotionally exhausted?" },
+    { "id": "CBP4", "section": "burnout", "std": "CBI", "sub": "personal", "scale": "freq", "text": "How often do you think: \"I can't take it anymore\"?" },
+    { "id": "CBP5", "section": "burnout", "std": "CBI", "sub": "personal", "scale": "freq", "text": "How often do you feel worn out?" },
+    { "id": "CBP6", "section": "burnout", "std": "CBI", "sub": "personal", "scale": "freq", "text": "How often do you feel weak and susceptible to illness?" },
+    { "id": "CBW1", "section": "burnout", "std": "CBI", "sub": "work", "scale": "degree", "text": "Is your work emotionally exhausting?" },
+    { "id": "CBW2", "section": "burnout", "std": "CBI", "sub": "work", "scale": "degree", "text": "Do you feel burnt out because of your work?" },
+    { "id": "CBW3", "section": "burnout", "std": "CBI", "sub": "work", "scale": "degree", "text": "Does your work frustrate you?" },
+    { "id": "CBW4", "section": "burnout", "std": "CBI", "sub": "work", "scale": "freq", "text": "Do you feel worn out at the end of the working day?" },
+    { "id": "CBW5", "section": "burnout", "std": "CBI", "sub": "work", "scale": "freq", "text": "Are you exhausted in the morning at the thought of another day at work?" },
+    { "id": "CBW6", "section": "burnout", "std": "CBI", "sub": "work", "scale": "freq", "text": "Do you feel that every working hour is tiring for you?" },
+    { "id": "CBW7", "section": "burnout", "std": "CBI", "sub": "work", "scale": "freq", "reverse": true, "text": "Do you have enough energy for family and friends during leisure time?" },
+
+    { "id": "BC2", "section": "coping", "std": "BriefCOPE", "copeScale": "active", "text": "I've been concentrating my efforts on doing something about the situation I'm in." },
+    { "id": "BC7", "section": "coping", "std": "BriefCOPE", "copeScale": "active", "text": "I've been taking action to try to make the situation better." },
+    { "id": "BC14", "section": "coping", "std": "BriefCOPE", "copeScale": "planning", "text": "I've been trying to come up with a strategy about what to do." },
+    { "id": "BC25", "section": "coping", "std": "BriefCOPE", "copeScale": "planning", "text": "I've been thinking hard about what steps to take." },
+    { "id": "BC12", "section": "coping", "std": "BriefCOPE", "copeScale": "reframing", "text": "I've been trying to see it in a different light, to make it seem more positive." },
+    { "id": "BC17", "section": "coping", "std": "BriefCOPE", "copeScale": "reframing", "text": "I've been looking for something good in what is happening." },
+    { "id": "BC5", "section": "coping", "std": "BriefCOPE", "copeScale": "emotional", "text": "I've been getting emotional support from others." },
+    { "id": "BC15", "section": "coping", "std": "BriefCOPE", "copeScale": "emotional", "text": "I've been getting comfort and understanding from someone." },
+    { "id": "BC10", "section": "coping", "std": "BriefCOPE", "copeScale": "advice", "text": "I've been getting help and advice from other people." },
+    { "id": "BC23", "section": "coping", "std": "BriefCOPE", "copeScale": "advice", "text": "I've been trying to get advice or help from other people about what to do." },
+    { "id": "BC6", "section": "coping", "std": "BriefCOPE", "copeScale": "givingup", "text": "I've been giving up trying to deal with it." },
+    { "id": "BC16", "section": "coping", "std": "BriefCOPE", "copeScale": "givingup", "text": "I've been giving up the attempt to cope." },
+    { "id": "BC13", "section": "coping", "std": "BriefCOPE", "copeScale": "selfblame", "text": "I've been criticizing myself." },
+    { "id": "BC26", "section": "coping", "std": "BriefCOPE", "copeScale": "selfblame", "text": "I've been blaming myself for things that happened." },
+    { "id": "BC4", "section": "coping", "std": "BriefCOPE", "copeScale": "substance", "text": "I've been using alcohol or other drugs to make myself feel better." },
+    { "id": "BC11", "section": "coping", "std": "BriefCOPE", "copeScale": "substance", "text": "I've been using alcohol or other drugs to help me get through it." },
+
+    { "id": "R1", "section": "resilience", "text": "I usually recover quickly after a hard day or a setback." },
+    { "id": "R2", "section": "resilience", "reverse": true, "text": "When things go wrong, it takes me a long time to feel normal again." },
+    { "id": "R3", "section": "resilience", "text": "I believe I can handle most problems that come my way." },
+    { "id": "R4", "section": "resilience", "reverse": true, "text": "Difficult situations tend to knock me down for a long time." },
+    { "id": "R5", "section": "resilience", "text": "I can usually find something to learn from a setback." },
+    { "id": "R6", "section": "resilience", "reverse": true, "text": "When pressure builds, I lose confidence in myself." },
+
+    { "id": "V1", "section": "recovery", "sub": "detach", "text": "After work, I was able to switch off and stop thinking about work." },
+    { "id": "V2", "section": "recovery", "sub": "relax", "text": "I made time for things that relax me - walks, music, hobbies, time with people I like." },
+    { "id": "V3", "section": "recovery", "sub": "active", "text": "I got at least 30 minutes of physical activity on most days." },
+    { "id": "V4", "section": "recovery", "sub": "breaks", "text": "I took short breaks during my working day." },
+    { "id": "V5", "section": "recovery", "sub": "boundaries", "text": "I kept clear limits on work calls and messages in my personal time." },
+    { "id": "V6", "section": "recovery", "sub": "dayoff", "text": "I had at least one full day a week without any work." },
+
+    { "id": "C1", "section": "control", "text": "I notice early when stress is building up in me." },
+    { "id": "C2", "section": "control", "text": "When I'm upset, I can calm myself down before I respond." },
+    { "id": "C3", "section": "control", "text": "I can stay composed when someone criticises my work." },
+    { "id": "C4", "section": "control", "reverse": true, "text": "Under pressure, I say or do things I later regret." },
+    { "id": "C5", "section": "control", "text": "I know which situations or people trigger my stress." },
+
+    { "id": "P1", "section": "support", "sub": "work", "text": "My manager supports me when work gets difficult." },
+    { "id": "P2", "section": "support", "sub": "work", "text": "I can raise problems at work without fear of negative consequences." },
+    { "id": "P3", "section": "support", "sub": "work", "text": "My colleagues help me when I need it." },
+    { "id": "P4", "section": "support", "sub": "work", "text": "At work, I feel I belong and am treated with respect." },
+    { "id": "P5", "section": "support", "sub": "personal", "text": "I have family or friends I can talk to about how I feel." },
+    { "id": "P6", "section": "support", "sub": "personal", "text": "I have someone I can go to for advice about my work or career." },
+
+    { "id": "W1", "section": "checkin", "safety": true, "text": "I felt hopeless about the future." },
+    { "id": "W2", "section": "checkin", "reverse": true, "text": "Overall, I felt in control of my life." }
+  ],
+  "facts": [
+    { "id": "F_SLEEP", "text": "On a typical work night, how many hours do you sleep?", "options": [
+      { "label": "Less than 5", "value": "lt5" }, { "label": "5 - 6", "value": "5-6" }, { "label": "6 - 7", "value": "6-7" }, { "label": "7 - 8", "value": "7-8" }, { "label": "More than 8", "value": "gt8" } ] },
+    { "id": "F_HOURS", "text": "How many hours do you work in a typical week, including work from home?", "options": [
+      { "label": "Under 40", "value": "lt40" }, { "label": "40 - 48", "value": "40-48" }, { "label": "49 - 55", "value": "49-55" }, { "label": "56 - 65", "value": "56-65" }, { "label": "More than 65", "value": "gt65" } ] },
+    { "id": "F_LEAVE", "text": "How many days of leave have you taken in the last 12 months (not counting sick days)?", "options": [
+      { "label": "None", "value": "0" }, { "label": "1 - 5", "value": "1-5" }, { "label": "6 - 10", "value": "6-10" }, { "label": "11 - 20", "value": "11-20" }, { "label": "More than 20", "value": "gt20" } ] },
+    { "id": "F_COMMUTE", "text": "How long is your daily commute, both ways together?", "options": [
+      { "label": "I work from home", "value": "none" }, { "label": "Under 30 min", "value": "lt30" }, { "label": "30 - 60 min", "value": "30-60" }, { "label": "1 - 2 hours", "value": "60-120" }, { "label": "More than 2 hours", "value": "gt120" } ] }
+  ],
+  "citations": [
+    "Kristensen, T. S., Borritz, M., Villadsen, E., & Christensen, K. B. (2005). The Copenhagen Burnout Inventory: A new tool for the assessment of burnout. Work & Stress, 19(3), 192-207.",
+    "Carver, C. S. (1997). You want to measure coping but your protocol's too long: Consider the Brief COPE. International Journal of Behavioral Medicine, 4(1), 92-100."
+  ]
+}

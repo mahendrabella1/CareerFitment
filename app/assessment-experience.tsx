@@ -974,6 +974,8 @@ export default function AssessmentExperience() {
     // Signed-in users are handled by the NewExam early-return below;
     // signed-out users go to register (which comes back with ?begin=1).
     if (!user) router.replace("/register");
+    // Working professionals take the Stress & Resilience Check, not a student assessment.
+    else if (profile?.category === "experienced_professional") router.replace("/account/stress");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authLoading, user, beginHandled, hasBegin, router]);
 
@@ -1086,6 +1088,7 @@ export default function AssessmentExperience() {
   // New set-based assessment: entered via /?begin=1 by a signed-in user.
   if (hasBegin && !results) {
     if (user && profile) {
+      if (profile.category === "experienced_professional") return null; // redirected to /account/stress above
       // The fee gate. `profile.paid` is written server-side by
       // /api/payment/verify after the signature is checked, so it cannot be set
       // from the browser; `paidNow` only covers the gap before that write is
