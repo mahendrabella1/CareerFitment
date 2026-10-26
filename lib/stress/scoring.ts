@@ -11,6 +11,10 @@
  *  - Coping = the Brief COPE's own scales (each the mean of its two items).
  *    Carver gives no overall coping score, so the "coping balance" pillar is
  *    OneGrasp's: 50 + (helpful - risky) / 2.
+ *  - Work pressures ("load") = four areas - workload, behaviour at work,
+ *    culture & relationships, career & job security - each the mean of its
+ *    answers; load = 60% their mean + 40% the highest one, so one severe area
+ *    (e.g. harassment) isn't averaged away.
  *  - Stress Index (OneGrasp's) = 70% pressure (40% load, 25% signals, 35%
  *    burnout) + 30% missing resources (100 - mean of the five resource
  *    pillars). Zones: under 25 thriving, 25-39 managing, 40-54 stretched,
@@ -18,9 +22,10 @@
  *    "high" band (75+) always means the burnout-risk zone.
  */
 import { BANK, itemsFor, scaleOf } from "./bank";
-import { HELPFUL_COPING, PILLARS, RISKY_COPING, type Band, type BankItem, type CopeScale, type Driver, type PillarKey, type Safety, type StressScores, type Zone } from "./types";
+import { DOMAINS, HELPFUL_COPING, PILLARS, RISKY_COPING, type Band, type BankItem, type CopeScale, type DomainKey, type Driver, type PillarKey, type Safety, type StressScores, type Zone } from "./types";
 
 export const PRESSURE_WEIGHTS = { load: 0.4, signals: 0.25, burnout: 0.35 } as const;
+export const LOAD_WEIGHTS = { mean: 0.6, max: 0.4 } as const;
 export const INDEX_WEIGHTS = { pressure: 0.7, missingResources: 0.3 } as const;
 export const ZONE_FROM: [Zone, number][] = [["burnout", 70], ["strained", 55], ["stretched", 40], ["managing", 25], ["thriving", 0]];
 const ZONE_ORDER: Zone[] = ["thriving", "managing", "stretched", "strained", "burnout"];
@@ -52,14 +57,15 @@ export const cbiBand = (score: number): StressScores["burnout"]["band"] =>
 /** Facts about the work week that point to a cause on their own. */
 function factDrivers(facts: Record<string, string>): Driver[] {
   const out: Driver[] = [];
+  const w = "workload" as const;
   const hours = facts.F_HOURS, sleep = facts.F_SLEEP, leave = facts.F_LEAVE, commute = facts.F_COMMUTE;
-  if (hours === "gt65") out.push({ source: "longhours", value: 100 });
-  else if (hours === "56-65") out.push({ source: "longhours", value: 75 });
+  if (hours === "gt65") out.push({ source: "longhours", value: 100, domain: w });
+  else if (hours === "56-65") out.push({ source: "longhours", value: 75, domain: w });
   if (sleep === "lt5") out.push({ source: "sleep", value: 100 });
   else if (sleep === "5-6") out.push({ source: "sleep", value: 75 });
-  if (leave === "0") out.push({ source: "noleave", value: 70 });
-  if (commute === "gt120") out.push({ source: "commute", value: 90 });
-  else if (commute === "60-120") out.push({ source: "commute", value: 60 });
+  if (leave === "0") out.push({ source: "noleave", value: 70, domain: w });
+  if (commute === "gt120") out.push({ source: "commute", value: 90, domain: w });
+  else if (commute === "60-120") out.push({ source: "commute", value: 60, domain: w });
   return out;
 }
 
@@ -86,8 +92,13 @@ export function scoreStress(band: Band, answers: Record<string, number>, facts: 
   const recoveryParts = ofSection("recovery").map(val);
   if (sleep !== null) recoveryParts.push(sleep);
 
+  // The four workplace stressor areas.
+  const domains = Object.fromEntries(DOMAINS.map((d) => [d, meanOf(ofSection(d))])) as Record<DomainKey, number>;
+  const domainValues = DOMAINS.map((d) => domains[d]);
+  const load = LOAD_WEIGHTS.mean * mean(domainValues) + LOAD_WEIGHTS.max * Math.max(...domainValues);
+
   const pillars: Record<PillarKey, number> = {
-    load: meanOf(ofSection("load")),
+    load,
     signals: meanOf(ofSection("signals")),
     burnout,
     coping: clamp(50 + (helpful - risky) / 2),
@@ -101,17 +112,21 @@ export function scoreStress(band: Band, answers: Record<string, number>, facts: 
   const resources = mean(["coping", "resilience", "recovery", "control", "support"].map((k) => pillars[k as PillarKey]));
   const index = round(clamp(INDEX_WEIGHTS.pressure * pressure + INDEX_WEIGHTS.missingResources * (100 - resources)));
 
-  // What's driving it: pressure answers at "sometimes" or more, plus the work-week facts; strongest per source.
-  const bySource = new Map<string, number>();
-  for (const i of ofSection("load")) {
+  // What's driving it: pressure answers at the middle of the scale or more,
+  // plus the work-week facts; strongest per source.
+  const pressureItems = items.filter((i) => (DOMAINS as string[]).includes(i.section));
+  const bySource = new Map<string, Driver>();
+  const keepMax = (d: Driver) => { const prev = bySource.get(d.source); if (!prev || d.value > prev.value) bySource.set(d.source, d); };
+  for (const i of pressureItems) {
     const v = val(i);
-    if (v >= 50 && i.source) bySource.set(i.source, Math.max(bySource.get(i.source) ?? 0, v));
+    if (v >= 50 && i.source) keepMax({ source: i.source, value: v, domain: i.section as DomainKey });
   }
-  for (const d of factDrivers(facts)) bySource.set(d.source, Math.max(bySource.get(d.source) ?? 0, d.value));
-  const order = [...ofSection("load").map((i) => i.source!), "longhours", "sleep", "noleave", "commute"];
-  const drivers = [...bySource.entries()]
-    .map(([source, value]) => ({ source, value }))
-    .sort((a, b) => b.value - a.value || order.indexOf(a.source) - order.indexOf(b.source));
+  factDrivers(facts).forEach(keepMax);
+  const order = [...pressureItems.map((i) => i.source!), "longhours", "sleep", "noleave", "commute"];
+  // Ties go to the cause from the more strained area, then question order.
+  const areaOf = (d: Driver) => (d.domain ? domains[d.domain] : 0);
+  const drivers = [...bySource.values()].sort((a, b) => b.value - a.value || areaOf(b) - areaOf(a) || order.indexOf(a.source) - order.indexOf(b.source));
+  const reported = (kind: "harassment" | "discrimination") => items.some((i) => i.rights === kind && val(i) >= 25);
 
   // Safety: the hopelessness check-in, and CBI's "I can't take it anymore".
   const w1 = items.find((i) => i.safety);
@@ -138,6 +153,8 @@ export function scoreStress(band: Band, answers: Record<string, number>, facts: 
     resources: r(resources),
     balance: r(resources - pressure),
     pillars: Object.fromEntries(PILLARS.map((k) => [k, r(pillars[k])])) as Record<PillarKey, number>,
+    domains: Object.fromEntries(DOMAINS.map((d) => [d, r(domains[d])])) as Record<DomainKey, number>,
+    rights: { harassment: reported("harassment"), discrimination: reported("discrimination") },
     signals: { body: r(subMean("signals", "body")), mind: r(subMean("signals", "mind")), emotions: r(subMean("signals", "emotions")), behaviour: r(subMean("signals", "behaviour")) },
     burnout: { personal: r(personal), work: r(work), band: cbiBand(burnout) },
     coping: { scales: Object.fromEntries(Object.entries(scales).map(([k, v]) => [k, r(v)])) as Record<CopeScale, number>, helpful: r(helpful), risky: r(risky) },

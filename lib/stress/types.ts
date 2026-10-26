@@ -7,8 +7,11 @@
 export type Band = "0-5" | "5-15" | "15+";
 export const BANDS: Band[] = ["0-5", "5-15", "15+"];
 
-export type ScaleKey = "freq" | "degree" | "agree" | "cope";
-export type SectionKey = "load" | "signals" | "burnout" | "coping" | "resilience" | "recovery" | "control" | "support" | "checkin";
+export type ScaleKey = "freq" | "degree" | "agree" | "cope" | "exposure";
+/** The four workplace stressor areas - together they make the "load" pillar. */
+export type DomainKey = "workload" | "toxicity" | "culture" | "career";
+export const DOMAINS: DomainKey[] = ["workload", "toxicity", "culture", "career"];
+export type SectionKey = DomainKey | "signals" | "burnout" | "coping" | "resilience" | "recovery" | "control" | "support" | "checkin";
 export type PillarKey = "load" | "signals" | "burnout" | "coping" | "resilience" | "recovery" | "control" | "support";
 export const PILLARS: PillarKey[] = ["load", "signals", "burnout", "coping", "resilience", "recovery", "control", "support"];
 /** Pressure pillars: higher = more strain. Resource pillars: higher = better. */
@@ -35,6 +38,8 @@ export interface BankItem {
   copeScale?: CopeScale;
   /** The hopelessness check-in: a high answer puts support first on the results page. */
   safety?: boolean;
+  /** Any experience of this shows "your rights at work" on the results page. */
+  rights?: "harassment" | "discrimination";
 }
 
 export interface BankSection { id: SectionKey; title: string; intro: string; scale: ScaleKey }
@@ -58,7 +63,7 @@ export type Step =
 export type Zone = "thriving" | "managing" | "stretched" | "strained" | "burnout";
 export type Safety = "none" | "watch" | "high";
 
-export interface Driver { source: string; value: number }
+export interface Driver { source: string; value: number; domain?: DomainKey }
 
 export interface StressScores {
   /** 0-100, higher = more stress. */
@@ -71,6 +76,10 @@ export interface StressScores {
   /** resources - pressure: positive = resources outweigh pressure. */
   balance: number;
   pillars: Record<PillarKey, number>;
+  /** The four workplace stressor areas, 0-100 (higher = more strain). */
+  domains: Record<DomainKey, number>;
+  /** Harassment or unfair treatment reported at least "once or twice". */
+  rights: { harassment: boolean; discrimination: boolean };
   signals: Record<"body" | "mind" | "emotions" | "behaviour", number>;
   burnout: { personal: number; work: number; band: "low" | "moderate" | "high" | "severe" };
   coping: { scales: Record<CopeScale, number>; helpful: number; risky: number };

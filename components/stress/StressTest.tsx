@@ -13,8 +13,13 @@ import type { Band, SectionKey } from "@/lib/stress/types";
 import { STRESS_CSS } from "./styles";
 
 const DRAFT_KEY = "onegrasp.stress.draft.v1";
-const SECTION_ICON: Record<SectionKey, string> = { load: "briefcase", signals: "pulse", burnout: "power", coping: "shield", resilience: "route", recovery: "clock", control: "heart", support: "users", checkin: "check" };
-const RECALL_SECTIONS: SectionKey[] = ["load", "signals", "coping", "recovery", "checkin"];
+const SECTION_ICON: Record<SectionKey, string> = { workload: "briefcase", toxicity: "shield", culture: "users", career: "route", signals: "pulse", burnout: "power", coping: "shield", resilience: "route", recovery: "clock", control: "heart", support: "users", checkin: "check" };
+/** The time frame shown above a question, from the bank's sections. The CBI
+ *  is asked exactly as published, with no time frame. */
+const RECALL: Partial<Record<SectionKey, string>> = {
+  workload: "In the last 4 weeks", toxicity: "In the last 6 months", culture: "Right now", career: "Right now",
+  signals: "In the last 4 weeks", coping: "In the last 4 weeks", recovery: "In the last 4 weeks", checkin: "In the last 4 weeks",
+};
 const STD_NOTE: Partial<Record<SectionKey, string>> = {
   burnout: "Standard scale: Copenhagen Burnout Inventory (Kristensen et al., 2005), asked word for word.",
   coping: "Standard scale: Brief COPE (Carver, 1997), eight of its scales, asked word for word.",
@@ -155,12 +160,7 @@ export function StressTest({ band, onFinish, exitHref }: {
           </section>
         ) : (
           <section className="st-q st-fade" key={step.kind === "item" ? step.item.id : step.fact.id} aria-live="polite">
-            {/* The 4-week recall applies to OneGrasp's frequency sections and the
-                Brief COPE (whose author allows setting the time frame) - not to
-                the CBI, which is asked exactly as published, without one. */}
-            {step.kind === "item" && RECALL_SECTIONS.includes(step.section.id) && (
-              <div className="st-q-recall">In the last 4 weeks</div>
-            )}
+            {step.kind === "item" && RECALL[step.section.id] && <div className="st-q-recall">{RECALL[step.section.id]}</div>}
             <h2 className="st-q-text">{step.kind === "item" ? step.item.text : step.fact.text}</h2>
             <div className="st-opts" role="radiogroup" aria-label="Your answer">
               {options.map((label, i) => (

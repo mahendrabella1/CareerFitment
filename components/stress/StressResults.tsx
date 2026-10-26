@@ -8,10 +8,10 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Icon } from "@/app/Icons";
-import { ACTIONS, BAND_META, DRIVER_META, HELPLINE, PILLAR_META, ZONE_META, actionById, pillarTone } from "@/lib/stress/content";
+import { ACTIONS, BAND_META, DOMAIN_META, DRIVER_META, HELPLINE, PILLAR_META, ZONE_META, actionById, pillarTone } from "@/lib/stress/content";
 import { BANK } from "@/lib/stress/bank";
 import { percentileFrom, type Benchmarks } from "@/lib/stress/client";
-import { PILLARS, PRESSURE_PILLARS, type CopeScale, type PillarKey, type StressPlan, type StressResult } from "@/lib/stress/types";
+import { DOMAINS, PILLARS, PRESSURE_PILLARS, type CopeScale, type DomainKey, type PillarKey, type StressPlan, type StressResult } from "@/lib/stress/types";
 import { BurnoutMeter, Gauge, Seesaw, TrendChart } from "./charts";
 import { PRESSURE, RESOURCE, STRESS_CSS } from "./styles";
 
@@ -79,9 +79,10 @@ export function StressResults({ result, history, plan, benchmarks, firstName, on
 
       <main className="st-wrap" style={{ paddingTop: 24, paddingBottom: 48 }}>
         {s.safety !== "none" && <CareBanner strong={s.safety === "high"} />}
+        {(s.rights.harassment || s.rights.discrimination) && <RightsCard harassment={s.rights.harassment} spaced={s.safety !== "none"} />}
 
         {/* ---------- above the fold ---------- */}
-        <section className="st-card st-hero" style={{ marginTop: s.safety !== "none" ? 16 : 0, background: `linear-gradient(135deg, #fff 55%, ${zone.tint})` }}>
+        <section className="st-card st-hero" style={{ marginTop: s.safety !== "none" || s.rights.harassment || s.rights.discrimination ? 16 : 0, background: `linear-gradient(135deg, #fff 55%, ${zone.tint})` }}>
           <Gauge value={s.index} zone={s.zone} />
           <div>
             <span className="st-zone" style={{ background: zone.tint, color: zone.color, border: `1px solid ${zone.color}33` }}>
@@ -133,8 +134,18 @@ function Overview({ result, benchmarks }: { result: StressResult; benchmarks: Be
   const s = result.scores;
   const band = BAND_META[result.band];
   const pct = benchmarks?.ready ? percentileFrom(benchmarks.index, s.index) : null;
+  const top = [...DOMAINS].sort((a, b) => s.domains[b] - s.domains[a])[0];
   return (
     <div className="st-stack">
+      <section className="st-card">
+        <span className="st-eyebrow">Your workplace stressors</span>
+        <h2 className="st-h2">{s.domains[top] >= 60 ? `${DOMAIN_META[top].label} is your biggest source of strain` : s.domains[top] >= 40 ? "Some strain across your work" : "Your work environment looks healthy"}</h2>
+        <p className="st-sub">Four areas of work stress, each scored 0-100. Higher means more strain. Together they make your &quot;Work pressures&quot; score.</p>
+        <div className="st-grid4 st-domains" style={{ marginTop: 14 }}>
+          {DOMAINS.map((d) => <DomainTile key={d} d={d} result={result} />)}
+        </div>
+      </section>
+
       <section className="st-card">
         <span className="st-eyebrow">Your stress balance</span>
         <h2 className="st-h2">{s.balance <= -15 ? "Pressure is outweighing your resources" : s.balance >= 15 ? "Your resources outweigh your pressure" : "Pressure and resources are in balance"}</h2>
@@ -235,7 +246,7 @@ function Drivers({ result }: { result: StressResult }) {
           {s.drivers.length ? s.drivers.slice(0, 7).map((d) => (
             <div key={d.source} className="st-driver">
               <span className="st-driver-ic"><Icon name={DRIVER_META[d.source]?.icon ?? "pulse"} size={17} /></span>
-              <span><b>{DRIVER_META[d.source]?.label ?? d.source}</b><small>{d.value >= 100 ? "All the time" : d.value >= 75 ? "Often" : "Sometimes"}</small></span>
+              <span><b>{DRIVER_META[d.source]?.label ?? d.source}</b><small>{d.domain ? DOMAIN_META[d.domain].label : "Your work week"}</small></span>
               <span className="st-bar-track"><span className="st-bar-fill" style={{ display: "block", width: `${d.value}%`, background: PRESSURE }} /></span>
               <b style={{ textAlign: "right", color: PRESSURE }}>{d.value}</b>
             </div>
@@ -406,6 +417,54 @@ function ProgressTab({ history, retakeHref, nextRetake }: { history: StressResul
 
 // ---------------------------------------------------------------- shared
 
+function DomainTile({ d, result }: { d: DomainKey; result: StressResult }) {
+  const s = result.scores;
+  const meta = DOMAIN_META[d];
+  const score = s.domains[d];
+  const tone = pillarTone(d, score);
+  const causes = s.drivers.filter((x) => x.domain === d && x.source !== "longhours" && x.source !== "noleave" && x.source !== "commute").slice(0, 2);
+  return (
+    <div className="st-pillar" style={tone === "watch" ? { borderColor: "#fed7aa" } : undefined}>
+      <div className="st-pillar-h">
+        <span className="st-pillar-ic" style={{ background: "var(--press-t)", color: PRESSURE }}><Icon name={meta.icon} size={17} /></span>
+        <div style={{ minWidth: 0 }}>
+          <div className="st-pillar-name">{meta.label}</div>
+          <div style={{ fontSize: 11.5, color: "var(--muted)", lineHeight: 1.35 }}>{meta.short}</div>
+        </div>
+      </div>
+      <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 8 }}>
+        <span className="st-pillar-score">{score}</span>
+        <span className={`st-tone ${tone}`}>{tone === "good" ? "Low" : tone === "okay" ? "Moderate" : "High"}</span>
+      </div>
+      <div className="st-bar-track"><div className="st-bar-fill" style={{ width: `${score}%`, background: PRESSURE }} /></div>
+      <p>{tone === "good" ? meta.low : tone === "okay" ? meta.mid : meta.high}</p>
+      {causes.length > 0 && (
+        <ul style={{ margin: 0, paddingLeft: 16, fontSize: 12.5, color: "var(--ink2)", lineHeight: 1.5 }}>
+          {causes.map((c) => <li key={c.source}>{DRIVER_META[c.source]?.label ?? c.source}</li>)}
+        </ul>
+      )}
+      {d === "workload" && <p style={{ fontSize: 12, color: "var(--muted)" }}>Exhaustion from your burnout check: <b style={{ color: "var(--ink)" }}>{s.burnout.work}</b></p>}
+    </div>
+  );
+}
+
+function RightsCard({ harassment, spaced }: { harassment: boolean; spaced: boolean }) {
+  return (
+    <div className="st-care" style={{ marginTop: spaced ? 12 : 0, background: "#f5f3ff", borderColor: "#ddd6fe", color: "#3b2a74" }}>
+      <Icon name="shield" size={22} style={{ flex: "none", marginTop: 2 }} />
+      <div>
+        <b>You have rights at work</b>
+        <div style={{ marginTop: 4 }}>
+          {harassment
+            ? "You told us you've faced harassment. That is never your fault. Organisations with 10 or more employees must have an Internal Committee under the POSH Act to handle sexual-harassment complaints - usually made within 3 months of the incident. Women employees can also complain on the government's SHe-Box portal. "
+            : "You told us you've seen or faced unfair or unethical treatment. Keep a private record of what happened, and know that you can raise it with HR, a senior leader or outside bodies. "}
+          <Link href="/account/legal" style={{ color: "inherit", fontWeight: 800 }}>See your options in Law &amp; Rights →</Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function CareBanner({ strong }: { strong: boolean }) {
   return (
     <div className={`st-care${strong ? " is-strong" : ""}`} role={strong ? "alert" : undefined}>
@@ -429,7 +488,8 @@ function Method() {
       <ul style={{ paddingLeft: 18, marginTop: 12 }}>
         <li><b>Burnout</b> uses the Copenhagen Burnout Inventory (personal and work-related scales), asked word for word and scored with its own method - each answer 0 to 100, a scale&apos;s score is the average; 50+ moderate, 75+ high.</li>
         <li><b>Coping</b> uses eight scales of the Brief COPE, asked word for word. Its author gives no overall coping score, so the &quot;coping balance&quot; area is ours: helpful strategies minus risky ones.</li>
-        <li><b>Pressure, stress signals, resilience, recovery, staying calm and support</b> are OneGrasp&apos;s own questions in the same standard format: a 4-week recall and 5-point answer scales scored 0-100.</li>
+        <li><b>Work pressures</b> cover four areas, in OneGrasp&apos;s own questions: workload (last 4 weeks), behaviour at work such as fear-based leadership, gaslighting or harassment (last 6 months, as standard workplace-behaviour questionnaires do), culture &amp; relationships, and career &amp; job security (both as things stand now). Each area is the average of its answers; the overall score is 60% their average plus 40% the highest area, so one severe area isn&apos;t averaged away.</li>
+        <li><b>Stress signals, resilience, recovery, staying calm and support</b> are OneGrasp&apos;s own questions in the same standard format: 5-point answer scales scored 0-100.</li>
         <li><b>Stress Index</b> (OneGrasp): 70% pressure (40% load, 25% signals, 35% burnout) plus 30% missing resources. A burnout score in the inventory&apos;s high band always puts you in the burnout-risk zone.</li>
         <li>Career-stage comparisons use anonymous scores from people in the same experience band, shown only once at least 30 have taken the check.</li>
       </ul>

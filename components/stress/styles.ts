@@ -145,7 +145,7 @@ export const STRESS_CSS = `
   .st-tab-long{display:none}.st-tab-short{display:inline}
   .st-tab{padding:9px 8px;font-size:13.5px}
   .st-opt-key{display:none}
-  .st-bands{grid-template-columns:minmax(0,1fr)!important}
+  .st-bands,.st-domains{grid-template-columns:minmax(0,1fr)!important}
   .st-bands .st-opt{flex-direction:row!important;align-items:center!important;justify-content:space-between}
   .st-compare{grid-template-columns:minmax(0,1fr) 56px}
   .st-compare-track{grid-column:1/-1;order:3}
