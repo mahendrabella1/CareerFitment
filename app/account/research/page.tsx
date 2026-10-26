@@ -1,7 +1,7 @@
-import { CourseLanding } from "@/components/course/CourseLanding";
+import { FeatureLanding } from "@/components/feature/FeatureLanding";
 import { ResearchActiveCard } from "@/components/course/ResearchActiveCard";
 import { RESEARCH_COURSE } from "@/data/courses/research";
 
 export default function ResearchHomePage() {
-  return <CourseLanding content={RESEARCH_COURSE} topSlot={<ResearchActiveCard accent={RESEARCH_COURSE.accent} />} />;
+  return <FeatureLanding content={RESEARCH_COURSE} topSlot={<ResearchActiveCard accent={RESEARCH_COURSE.accent} />} />;
 }

@@ -81,6 +81,7 @@ const NAV = [
   { id: "fields", label: "Best-fit Fields", icon: "compass" },
   { id: "mind", label: "How You Think", icon: "multiple_intelligence" },
   { id: "plan", label: "My Plan", icon: "check" },
+  { id: "progress", label: "My Progress", icon: "score", external: true, href: "/account/progress" },
   { id: "portfolio", label: "Build Your Website", icon: "user", external: true, href: "/account/portfolio" },
   { id: "careers", label: "Career Library", icon: "briefcase" },
   { id: "study-abroad", label: "Study Abroad", icon: "signpost" },
@@ -107,6 +108,7 @@ const FEATURE_ROUTES: Record<string, string> = {
   "startups": "/account/startups",
   "resources": "/account/scholarships",
   "portfolio": "/account/portfolio",
+  "progress": "/account/progress",
 };
 
 // Career-toolkit (colleges/exams/internships/scholarships/careers) is

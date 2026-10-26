@@ -1,6 +1,6 @@
-import { CourseLanding } from "@/components/course/CourseLanding";
+import { FeatureLanding } from "@/components/feature/FeatureLanding";
 import { SCHOLARSHIPS_COURSE } from "@/data/courses/scholarships";
 
 export default function ScholarshipsPage() {
-  return <CourseLanding content={SCHOLARSHIPS_COURSE} />;
+  return <FeatureLanding content={SCHOLARSHIPS_COURSE} />;
 }

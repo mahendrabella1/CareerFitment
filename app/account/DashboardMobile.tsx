@@ -63,6 +63,7 @@ const NAV = [
   { id: "fields", label: "Best-fit Fields", icon: "compass" },
   { id: "mind", label: "How You Think", icon: "multiple_intelligence" },
   { id: "plan", label: "My Plan", icon: "check" },
+  { id: "progress", label: "My Progress", icon: "score" },
   { id: "careers", label: "Career Library", icon: "briefcase" },
   { id: "study-abroad", label: "Study Abroad", icon: "signpost" },
   { id: "exams", label: "Entrance Exams", icon: "edit" },
@@ -137,6 +138,7 @@ export default function DashboardMobile({
       "research": "/account/research",
       "startups": "/account/startups",
       "resources": "/account/scholarships",
+      "progress": "/account/progress",
     };
 
     if (featureRoutes[id]) {

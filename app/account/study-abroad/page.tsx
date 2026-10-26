@@ -1,6 +1,6 @@
-import { CourseLanding } from "@/components/course/CourseLanding";
+import { FeatureLanding } from "@/components/feature/FeatureLanding";
 import { STUDY_ABROAD_COURSE } from "@/data/courses/studyAbroad";
 
 export default function StudyAbroadPage() {
-  return <CourseLanding content={STUDY_ABROAD_COURSE} />;
+  return <FeatureLanding content={STUDY_ABROAD_COURSE} />;
 }

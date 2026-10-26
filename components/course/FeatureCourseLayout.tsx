@@ -7,7 +7,7 @@ import { CourseSidebar, type SidebarGroup, type SidebarItem } from "@/components
 import { CourseNextBar } from "@/components/course/CourseAside";
 import type { CourseNavItem, FeatureCourse } from "@/lib/course/featureCourses";
 
-/** The section a page sits in - CourseLanding reads it for "What's inside". */
+/** The section a page sits in - FeatureLanding reads it for its parts, search and tabs. */
 const FeatureCourseContext = createContext<FeatureCourse | null>(null);
 export const useFeatureCourse = () => useContext(FeatureCourseContext);
 
@@ -45,6 +45,19 @@ export function FeatureCourseLayout({ course, children }: { course: FeatureCours
   // The deepest menu item this page sits under names it in the breadcrumbs.
   const crumb = navGroups.flatMap((g) => g.items).filter(matches).sort((a, b) => b.href.length - a.href.length)[0]?.label;
 
+  // The section's parts as tabs under the top bar; the part this page sits in is marked.
+  const allTabs = [
+    { href: course.home, label: "Overview", active: pathname === course.home },
+    ...navGroups.map((g) => {
+      const live = g.items.filter((i) => !i.planned);
+      const inGroup = live.some(matches) || (!!g.href && (pathname === g.href || pathname.startsWith(`${g.href}/`)));
+      return { href: g.href ?? live[0]?.href ?? course.home, label: g.title, active: pathname !== course.home && inGroup };
+    }),
+  ];
+  // A page listed in two parts marks only the first.
+  const firstActive = allTabs.findIndex((t) => t.active);
+  const tabs = allTabs.map((t, i) => ({ ...t, active: i === firstActive }));
+
   return (
     <FeatureCourseContext.Provider value={course}>
       <CoursePlayerShell
@@ -52,6 +65,7 @@ export function FeatureCourseLayout({ course, children }: { course: FeatureCours
         banner={{ title: course.title, subtitle: course.intro, icon: course.icon, backHref: "/account", backLabel: "Dashboard" }}
         homeHref={course.home}
         crumb={crumb}
+        tabs={tabs}
         menuLabel={`${course.title} menu`}
         sidebar={
           <CourseSidebar

@@ -90,6 +90,18 @@ Registration category `"experienced_professional"` (label "Working Professionals
 
 - **Browser storage is per student.** Every feature tool's localStorage key goes through `scopedKey()` (`lib/progress/userStorage.ts`) - never a bare fixed key, or students on a shared computer see each other's data. Data saved before this was adopted once per device by the first account to sign in.
 - **Progress synced to the account:** feature-course lessons and the dashboard's 30/90-day goals (`lib/progress/progressStore.ts`) on `users/{uid}.progress`; active time by area and day (`components/ActivityTracker.tsx`, areas in `lib/progress/activity.ts`) on `users/{uid}.activity`.
+- **Feature home pages** (every class; Money, Legal, Exams, Scholarships, Study Abroad, Research, Startups, Career Library, Internships):
+  - built from `components/feature/*`: a hero band with the section's 3D illustration, a search over the section's pages and lessons ("/" focuses it) and a first-visit tour;
+  - the illustrations are `public/features/<key>.webp` and `<key>-640.webp`, generated in Canva with the background cut out to transparency; the source design in Canva is "OneGrasp feature illustrations (export)";
+  - the tour is seen once per student per feature, stored under the key `onegrasp.tour.<key>.v1` via `scopedKey()`;
+  - each section's headline, tour slides and layout come from `lib/features/catalog.ts`: a level path (Money), a course page (Research, Startups), a help desk (Legal), a catalogue (Exams, Scholarships), a decision board (Study Abroad), plus library (Career Library) and listing (Internships);
+  - lesson-based sections render `FeatureLanding`, which replaced `CourseLanding` (the old component is no longer used). Lessons open in `LessonDrawer`, and progress is still saved to `progress.courses.<key>`. `?lesson=<id>` opens a lesson directly;
+  - `CoursePlayerShell` draws the section's parts as tabs under the top bar. A section's home page is full width, with its menu as a drawer, and the shell links to My Progress.
+- **My Progress** (`/account/progress`, "My Progress" in both `Dashboard.tsx` and `DashboardMobile.tsx` menus; `components/progress/MyProgress.tsx`):
+  - shows overall completion, the top three features, and every feature's modules (done or pending) with a "Continue" link to the next lesson;
+  - also shows a 16-week activity calendar with the current streak (a day counts with 1+ minute), and time spent per area;
+  - reads the student's own data only: `progress.courses.*`, the Startups progress collections, `progress.legal`, the Scam Shield tally on this device, and `activity`;
+  - the server page sends only course outlines (titles) to the browser, never lesson text or quiz answers.
 - **Institution portal** (`/institution`, `app/institution/**`, `components/institution/**`, `lib/institution/**`): a school's login (created at `/admin/institutions`) sees only students whose profile `institution` equals the institution's name or an alias. All data goes through server routes (`app/api/institution/**`, `app/api/admin/institutions`, `app/api/student/messages`) that verify the Firebase ID token with the Admin SDK - they need `FIREBASE_PROJECT_ID`/`FIREBASE_CLIENT_EMAIL`/`FIREBASE_PRIVATE_KEY` (503 without). Collections `institutions`, `institutionAccounts`, `institutionMessages` are server-only. Students see messages in `components/SchoolInbox.tsx` (dashboard + the no-assessment screen). Analytics/recommendations are pure functions in `lib/institution/analytics.ts`.
 - **Portal features** (pure logic in `lib/institution/features.ts`; server-only collections listed in `lib/institution/types.ts`):
   - parent alignment: public survey `/parent/[token]`;

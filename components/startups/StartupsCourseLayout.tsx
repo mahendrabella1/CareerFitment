@@ -82,12 +82,21 @@ export function StartupsCourseLayout({ track, children }: { track: PublicTrack; 
     />
   );
 
+  const extras = ["/account/startups/placement", "/account/startups/portfolio", "/account/startups/videos"];
+  const tabs = [
+    { href: "/account/startups", label: "Course", active: !extras.some((h) => pathname === h) },
+    { href: extras[0], label: "Placement quiz", active: pathname === extras[0] },
+    { href: extras[1], label: "Your portfolio", active: pathname === extras[1] },
+    { href: extras[2], label: "Video library", active: pathname === extras[2] },
+  ];
+
   return (
     <CoursePlayerShell
       accent={ACCENT}
       banner={{ title: "Startups", subtitle: "Watch, read, try it on your own idea, take the quiz - and finish with a real startup you've shaped yourself.", icon: "rocket", backHref: "/account", backLabel: "Dashboard" }}
       homeHref="/account/startups"
       crumb={crumb}
+      tabs={tabs}
       menuLabel="Startups menu"
       sidebar={
         <CourseSidebar

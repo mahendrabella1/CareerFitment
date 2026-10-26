@@ -1,11 +1,11 @@
-import { CourseLanding } from "@/components/course/CourseLanding";
+import { FeatureLanding } from "@/components/feature/FeatureLanding";
 import { ScamAccuracyCard } from "@/components/course/ScamAccuracyCard";
 import { MoneyHomeStatus } from "@/components/money/MoneyHomeStatus";
 import { MONEY_COURSE } from "@/data/courses/money";
 
 export default function MoneyHomePage() {
   return (
-    <CourseLanding
+    <FeatureLanding
       content={MONEY_COURSE}
       topSlot={
         <>
