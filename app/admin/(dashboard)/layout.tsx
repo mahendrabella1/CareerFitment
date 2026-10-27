@@ -25,7 +25,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <div style={S.page}>
       <header style={S.header} className="og-adm-header">
-        <Link href="/" style={{ textDecoration: "none" }}><Logo height={38} /></Link>
+        <div style={S.headLeft}>
+          <Link href="/" style={{ textDecoration: "none", display: "flex" }}><Logo height={34} /></Link>
+          <span style={S.title}>Admin</span>
+        </div>
         <div style={S.headRight}>
           <span style={S.adminTag}><Icon name="shield" size={14} /> {email}</span>
           <button style={S.logout} onClick={() => void logout()}>Sign out</button>
@@ -39,12 +42,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   );
 }
 
+// Same look as the student pages: warm off-white, ink, hairlines, small corners.
 const S: Record<string, React.CSSProperties> = {
-  page: { minHeight: "100vh", background: C.bg, fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: C.ink },
-  header: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 24px", background: "#fff", borderBottom: `1px solid ${C.line}` },
-  headRight: { display: "flex", alignItems: "center", gap: 12 },
-  adminTag: { display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12.5, color: C.ink2, fontWeight: 600, background: C.line2, border: `1px solid ${C.line}`, borderRadius: 999, padding: "6px 12px" },
-  logout: { padding: "9px 16px", background: "#fff", color: C.redStrong, border: `1px solid ${C.redLine}`, borderRadius: 10, fontSize: 13.5, fontWeight: 700, cursor: "pointer" },
+  page: { minHeight: "100vh", background: "#fbfaf8", fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: C.ink },
+  header: { position: "sticky", top: 0, zIndex: 20, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, height: 60, padding: "0 24px", background: "#fff", borderBottom: "1px solid #e8e5df" },
+  headLeft: { display: "flex", alignItems: "center", gap: 14 },
+  title: { fontFamily: "Poppins, Inter, sans-serif", fontSize: 15, fontWeight: 600, color: "#16181d", paddingLeft: 14, borderLeft: "1px solid #e8e5df" },
+  headRight: { display: "flex", alignItems: "center", gap: 10 },
+  adminTag: { display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, color: "#4a4f59", fontWeight: 500, background: "#f7f5f1", border: "1px solid #e8e5df", borderRadius: 6, padding: "6px 10px" },
+  logout: { height: 36, padding: "0 14px", background: "#fff", color: "#16181d", border: "1px solid #d9d5cd", borderRadius: 6, fontSize: 13.5, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" },
   shell: { maxWidth: 1360, margin: "0 auto", display: "flex", alignItems: "flex-start" },
   body: { flex: 1, minWidth: 0, padding: "24px" },
 };

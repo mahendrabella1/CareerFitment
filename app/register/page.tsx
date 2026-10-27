@@ -18,8 +18,10 @@ import { getFirebaseAuth } from "@/lib/firebase/client";
 import { CLARITY_STAGES, journeyForCategory, PASSWORD_RULES, passwordIsValid, emailIsValid, phoneIsValid } from "@/lib/auth/formOptions";
 import { trackEvent } from "@/lib/metaPixel";
 
-const NAVY = "#2f3f9e";
-const BG = "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1600&q=70";
+// One ink colour for every choice and button (the same look as the dashboard
+// and feature pages); the per-milestone colours below are no longer drawn.
+const NAVY = "#16181d";
+const WARM = "#f4f0eb";
 
 // Classes 6, 7, 8, 9–10, 11, 12 and Undergraduates are available; the rest are shown but disabled ("Soon").
 const MILESTONES = [
@@ -201,7 +203,7 @@ function RegisterForm() {
       <div style={S.page}>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div style={S.overlay} />
-      <Link href="/" style={S.home}>HOME</Link>
+      <Link href="/" style={S.home}>← Home</Link>
 
       <div style={S.card}>
         {!done && refCode && instCheck !== "checking" && instCheck && instCheck.valid && (
@@ -217,8 +219,8 @@ function RegisterForm() {
             return (
               <button key={t} onClick={() => canGoTo(i) && setStep(i)} disabled={!canGoTo(i)}
                 style={{ ...S.tab, ...(isActive ? S.tabActive : {}), ...(canGoTo(i) ? {} : S.tabLocked) }}>
-                {complete && !isActive && <span style={S.tabTick}>✓</span>}
-                {t.toUpperCase()}
+                {complete && !isActive ? <span style={S.tabTick}>✓</span> : <span style={S.tabNum}>{i + 1}</span>}
+                {t}
               </button>
             );
           })}
@@ -258,10 +260,10 @@ function RegisterForm() {
                   return (
                     <button key={m.value} disabled={off} onClick={() => { if (!off) set("category", m.value); }}
                       title={off ? "Coming soon" : m.label}
-                      style={{ ...S.mCard, ...(off ? { opacity: 0.5, cursor: "not-allowed", background: "#f7f8fb" } : {}), ...(sel ? { borderColor: m.color, boxShadow: `0 0 0 3px ${m.color}22`, background: "#fff" } : {}) }}>
+                      style={{ ...S.mCard, ...(off ? { opacity: 0.5, cursor: "not-allowed", background: "#f7f8fb" } : {}), ...(sel ? S.picked : {}) }}>
                       {off && <span style={S.soon}>Soon</span>}
-                      <span style={{ ...S.mIcon, ...(sel ? { background: m.soft, color: m.color } : { background: "#f1f3f7", color: "#9aa3b2" }) }}><Icon name={m.icon} size={21} stroke={1.6} /></span>
-                      <span style={{ ...S.mLabel, ...(sel ? { color: m.color } : {}) }}>{m.label}</span>
+                      <span style={{ ...S.mIcon, ...(sel ? { background: NAVY, color: "#fff" } : { background: WARM, color: "#4a4f59" }) }}><Icon name={m.icon} size={20} stroke={1.6} /></span>
+                      <span style={S.mLabel}>{m.label}</span>
                     </button>
                   );
                 })}
@@ -284,9 +286,9 @@ function RegisterForm() {
                 {BAND_OPTIONS.map((c, i) => {
                   const sel = f.experienceBand === c.value;
                   return (
-                    <button key={c.value} onClick={() => set("experienceBand", c.value)} className="rin" style={{ ...S.sCard, animationDelay: `${i * 70}ms`, ...(sel ? { borderColor: "#0d9488", boxShadow: "0 0 0 3px #0d948822" } : {}) }}>
-                      <span style={{ ...S.sIcon, color: sel ? "#0d9488" : "#9aa3b2", ...(sel ? { borderColor: "#0d9488" } : {}) }}><Icon name={c.icon} size={21} stroke={1.6} /></span>
-                      <span style={{ ...S.sLabel, ...(sel ? { color: "#0d9488", fontWeight: 700 } : {}) }}>{c.label} <span style={{ fontWeight: 500, color: "#7a8494" }}>· {c.hint}</span></span>
+                    <button key={c.value} onClick={() => set("experienceBand", c.value)} className="rin" style={{ ...S.sCard, animationDelay: `${i * 70}ms`, ...(sel ? S.picked : {}) }}>
+                      <span style={{ ...S.sIcon, ...(sel ? { background: NAVY, color: "#fff", borderColor: NAVY } : {}) }}><Icon name={c.icon} size={20} stroke={1.6} /></span>
+                      <span style={{ ...S.sLabel, ...(sel ? { fontWeight: 600 } : {}) }}>{c.label} <span style={{ fontWeight: 500, color: "#7b808b" }}>· {c.hint}</span></span>
                     </button>
                   );
                 })}
@@ -296,9 +298,9 @@ function RegisterForm() {
                 {STAGES.map((c, i) => {
                   const sel = f.clarity === c.value;
                   return (
-                    <button key={c.value} onClick={() => set("clarity", c.value)} className="rin" style={{ ...S.sCard, animationDelay: `${i * 70}ms`, ...(sel ? { borderColor: c.color, boxShadow: `0 0 0 3px ${c.color}22` } : {}) }}>
-                      <span style={{ ...S.sIcon, color: sel ? c.color : "#9aa3b2", ...(sel ? { borderColor: c.color } : {}) }}><Icon name={c.icon} size={21} stroke={1.6} /></span>
-                      <span style={{ ...S.sLabel, ...(sel ? { color: c.color, fontWeight: 700 } : {}) }}>{c.label}</span>
+                    <button key={c.value} onClick={() => set("clarity", c.value)} className="rin" style={{ ...S.sCard, animationDelay: `${i * 70}ms`, ...(sel ? S.picked : {}) }}>
+                      <span style={{ ...S.sIcon, ...(sel ? { background: NAVY, color: "#fff", borderColor: NAVY } : {}) }}><Icon name={c.icon} size={20} stroke={1.6} /></span>
+                      <span style={{ ...S.sLabel, ...(sel ? { fontWeight: 600 } : {}) }}>{c.label}</span>
                     </button>
                   );
                 })}
@@ -370,7 +372,7 @@ function RegisterForm() {
         )}
       </div>
 
-      <div style={S.brand}><span style={S.brandChip}><Logo height={26} /></span></div>
+      <div style={S.brand}><Link href="/" style={S.brandChip} aria-label="OneGrasp home"><Logo height={40} /></Link></div>
       </div>
     </div>
   );
@@ -406,7 +408,7 @@ function InstitutionalLinkBlocked({ reason, schoolName }: { reason: string; scho
         <Link href="/" style={S.home}>HOME</Link>
         <div style={S.card}>
           <div style={S.doneWrap}>
-            <div style={{ ...S.doneCheck, background: "linear-gradient(135deg,#c0564f,#e08a0a)", boxShadow: "0 14px 30px rgba(192,86,79,.35)" }}>!</div>
+            <div style={{ ...S.doneCheck, background: "#b42318" }}>!</div>
             <h2 style={S.doneTitle}>{title}</h2>
             <p style={{ ...S.doneSub, maxWidth: 380, margin: "0 auto" }}>{body}</p>
             <Link href="/register" style={{ ...S.next, marginTop: 22, display: "inline-block", textDecoration: "none" }}>
@@ -441,22 +443,23 @@ const S: Record<string, React.CSSProperties> = {
   // The shell stacks the sale ribbon above the form: the form keeps filling the
   // rest of the screen rather than being pushed a banner's height off it.
   shell: { display: "flex", flexDirection: "column", minHeight: "100vh" },
-  page: { position: "relative", flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px", fontFamily: "'Poppins', Inter, system-ui, sans-serif", background: `url(${BG}) center/cover fixed` },
-  overlay: { position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(20,26,44,.62), rgba(20,26,44,.72))" },
-  home: { position: "absolute", top: 20, right: 20, zIndex: 3, background: NAVY, color: "#fff", textDecoration: "none", fontSize: 12.5, fontWeight: 700, letterSpacing: .5, padding: "9px 20px", borderRadius: 8, border: "1px solid rgba(255,255,255,.25)" },
-  brand: { position: "absolute", bottom: 16, left: 0, right: 0, display: "flex", justifyContent: "center", zIndex: 2 },
-  brandChip: { background: "#fff", borderRadius: 8, padding: "6px 12px", display: "inline-flex", boxShadow: "0 6px 16px rgba(0,0,0,.2)" },
+  page: { position: "relative", flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "84px 20px 40px", fontFamily: "Inter, system-ui, sans-serif", background: "#fbfaf8", color: NAVY },
+  overlay: { display: "none" },
+  home: { position: "absolute", top: 20, right: 20, zIndex: 3, background: "#fff", color: NAVY, textDecoration: "none", fontSize: 13.5, fontWeight: 600, padding: "8px 14px", borderRadius: 6, border: "1px solid #d9d5cd" },
+  brand: { position: "absolute", top: 16, left: 20, display: "flex", zIndex: 2 },
+  brandChip: { display: "inline-flex" },
 
-  card: { position: "relative", zIndex: 2, width: "100%", maxWidth: 840, background: "#fff", borderRadius: 14, boxShadow: "0 26px 70px rgba(0,0,0,.34)", overflow: "hidden" },
-  tabs: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", background: "#f3f4f7" },
-  tab: { position: "relative", padding: "13px 8px", border: "none", background: "transparent", fontSize: 11, fontWeight: 800, letterSpacing: .5, color: "#8a90a0", cursor: "pointer", textTransform: "uppercase" },
-  tabActive: { background: NAVY, color: "#fff", boxShadow: "0 8px 22px rgba(47,63,158,.4)" },
+  card: { position: "relative", zIndex: 2, width: "100%", maxWidth: 840, background: "#fff", borderRadius: 10, border: "1px solid #e8e5df", boxShadow: "0 18px 50px rgba(22,24,29,.08)", overflow: "hidden" },
+  tabs: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", background: "#fff", borderBottom: "1px solid #e8e5df" },
+  tab: { position: "relative", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "15px 8px", border: "none", borderBottom: "2px solid transparent", marginBottom: -1, background: "transparent", fontSize: 13, fontWeight: 600, color: "#7b808b", cursor: "pointer", fontFamily: "inherit" },
+  tabActive: { color: NAVY, borderBottomColor: NAVY },
   tabLocked: { opacity: .55, cursor: "not-allowed" },
-  tabTick: { color: "#16a34a", marginRight: 5, fontWeight: 800 },
+  tabTick: { display: "inline-grid", placeItems: "center", width: 20, height: 20, borderRadius: "50%", background: "#15803d", color: "#fff", fontSize: 11, fontWeight: 700 },
+  tabNum: { display: "inline-grid", placeItems: "center", width: 20, height: 20, borderRadius: "50%", border: "1px solid #d9d5cd", fontSize: 11, fontWeight: 600 },
 
-  body: { padding: "24px 34px 6px", minHeight: 310 },
-  h: { textAlign: "center", fontSize: 20, fontWeight: 700, color: "#1f2740", margin: "2px 0 18px" },
-  subhint: { textAlign: "center", fontSize: 12.5, color: "#8a90a0", margin: "-10px 0 16px" },
+  body: { padding: "28px 34px 6px", minHeight: 310 },
+  h: { textAlign: "left", fontFamily: "Poppins, Inter, sans-serif", fontSize: 24, fontWeight: 600, letterSpacing: "-.015em", color: NAVY, margin: "0 0 18px" },
+  subhint: { textAlign: "left", fontSize: 14, color: "#7b808b", margin: "-10px 0 18px" },
 
   offer: { display: "flex", alignItems: "center", justifyContent: "center", flexWrap: "wrap", gap: 10, background: "#fff7f7", border: "1px solid #f7d3d5", borderRadius: 10, padding: "9px 12px", margin: "0 0 16px" },
   instBanner: { textAlign: "center", fontSize: 12.5, fontWeight: 600, color: "#137a45", background: "#eafaf1", borderBottom: "1px solid #bfe8d3", padding: "10px 16px" },
@@ -465,53 +468,54 @@ const S: Record<string, React.CSSProperties> = {
   offerNow: { color: "#1f2740", fontSize: 17, fontWeight: 800 },
   offerTxt: { fontSize: 11.5, fontWeight: 600, color: "#8a5b5e" },
 
-  floatLabel: { display: "block", fontSize: 12, color: "#9aa1ad", marginBottom: 2 },
+  floatLabel: { display: "block", fontSize: 13.5, fontWeight: 600, color: "#4a4f59", marginBottom: 6 },
   underWrap: { position: "relative", marginBottom: 6, maxWidth: 480 },
-  underInput: { width: "100%", border: "none", borderBottom: "1.5px solid #dfe3ea", fontSize: 14.5, padding: "7px 24px 7px 0", outline: "none", background: "transparent" },
-  okTick: { position: "absolute", right: 0, top: 9, color: "#16a34a", fontWeight: 800, fontSize: 13 },
+  underInput: { width: "100%", height: 46, border: "1px solid #d9d5cd", borderRadius: 6, fontSize: 15, padding: "0 36px 0 13px", outline: "none", background: "#fff", boxSizing: "border-box", fontFamily: "inherit", color: NAVY },
+  okTick: { position: "absolute", right: 13, top: 13, color: "#15803d", fontWeight: 700, fontSize: 14 },
 
-  sectionLabel: { fontSize: 13, fontWeight: 700, color: "#1f2740", margin: "20px 0 12px" },
-  muted: { color: "#9aa1ad", fontWeight: 500 },
+  sectionLabel: { fontSize: 14, fontWeight: 600, color: NAVY, margin: "24px 0 12px" },
+  muted: { color: "#7b808b", fontWeight: 400 },
 
-  milestones: { display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10 },
-  mCard: { position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, padding: "14px 6px", background: "#fff", border: "1.5px solid #eceef3", borderRadius: 12, cursor: "pointer", transition: "border-color .15s, box-shadow .15s" },
-  soon: { position: "absolute", top: 6, right: 6, fontSize: 8.5, fontWeight: 800, letterSpacing: .4, textTransform: "uppercase", color: "#94a3b8", background: "#eef1f6", border: "1px solid #e2e6ee", borderRadius: 5, padding: "2px 5px" },
-  mIcon: { width: 46, height: 46, borderRadius: "50%", display: "grid", placeItems: "center", transition: "box-shadow .15s" },
-  mLabel: { fontSize: 11.5, fontWeight: 700, color: "#334155", textAlign: "center", lineHeight: 1.3 },
+  milestones: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 },
+  mCard: { position: "relative", display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", background: "#fff", border: "1px solid #e8e5df", borderRadius: 8, cursor: "pointer", textAlign: "left", fontFamily: "inherit", transition: "border-color .15s, box-shadow .15s" },
+  picked: { borderColor: NAVY, boxShadow: `inset 0 0 0 1px ${NAVY}`, background: "#fff" },
+  soon: { position: "absolute", top: 6, right: 6, fontSize: 9, fontWeight: 700, letterSpacing: .4, textTransform: "uppercase", color: "#7b808b", background: "#f4f0eb", borderRadius: 4, padding: "2px 5px" },
+  mIcon: { width: 36, height: 36, flex: "none", borderRadius: 6, display: "grid", placeItems: "center", transition: "background .15s, color .15s" },
+  mLabel: { fontSize: 14, fontWeight: 600, color: NAVY, lineHeight: 1.3 },
   mSel: { position: "absolute", top: 7, right: 7, width: 16, height: 16, borderRadius: "50%", color: "#fff", fontSize: 10, fontWeight: 800, display: "grid", placeItems: "center" },
 
-  confirmPill: { display: "inline-flex", alignItems: "center", gap: 6, background: "#eef2ff", color: NAVY, fontSize: 12, fontWeight: 700, padding: "6px 13px", borderRadius: 999, marginBottom: 2 },
+  confirmPill: { display: "inline-flex", alignItems: "center", gap: 6, background: WARM, color: NAVY, fontSize: 13, fontWeight: 600, padding: "6px 12px", borderRadius: 6, marginBottom: 2 },
   stages: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 },
-  sCard: { position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 10, padding: "18px 10px", background: "#fff", border: "1.5px solid #eceef3", borderRadius: 12, cursor: "pointer", textAlign: "center", transition: "border-color .15s, box-shadow .15s" },
-  sIcon: { width: 46, height: 46, borderRadius: "50%", border: "1.5px solid #e4e7ee", display: "grid", placeItems: "center", transition: "border-color .15s, background .15s, color .15s" },
-  sLabel: { fontSize: 12, fontWeight: 600, color: "#334155", lineHeight: 1.4 },
+  sCard: { position: "relative", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 12, padding: "16px 14px", background: "#fff", border: "1px solid #e8e5df", borderRadius: 8, cursor: "pointer", textAlign: "left", fontFamily: "inherit", transition: "border-color .15s, box-shadow .15s" },
+  sIcon: { width: 36, height: 36, borderRadius: 6, border: "1px solid #e8e5df", background: WARM, color: "#4a4f59", display: "grid", placeItems: "center", transition: "background .15s, color .15s" },
+  sLabel: { fontSize: 14, fontWeight: 500, color: NAVY, lineHeight: 1.45 },
 
-  grid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 14 },
-  fLabel: { display: "block", fontSize: 12, color: "#6b7280", fontWeight: 600, marginBottom: 4 },
-  optTag: { color: "#b6bcc7", fontWeight: 500 },
-  okInline: { color: "#16a34a", fontWeight: 800 },
-  input: { width: "100%", border: "none", borderBottom: "1.5px solid #dfe3ea", fontSize: 14, padding: "7px 52px 7px 0", outline: "none", background: "transparent", boxSizing: "border-box" },
-  inputBad: { borderBottomColor: "#dc2626" },
-  pwToggle: { position: "absolute", right: 0, top: 26, background: "none", border: "none", color: NAVY, fontWeight: 700, fontSize: 12, cursor: "pointer" },
-  rules: { listStyle: "none", padding: "8px 0 0", margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "2px 14px" },
-  rule: { fontSize: 10.5, fontWeight: 600 },
+  grid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 },
+  fLabel: { display: "block", fontSize: 13.5, color: "#4a4f59", fontWeight: 600, marginBottom: 6 },
+  optTag: { color: "#7b808b", fontWeight: 400 },
+  okInline: { color: "#15803d", fontWeight: 700 },
+  input: { width: "100%", height: 46, border: "1px solid #d9d5cd", borderRadius: 6, fontSize: 15, padding: "0 64px 0 13px", outline: "none", background: "#fff", boxSizing: "border-box", fontFamily: "inherit", color: NAVY },
+  inputBad: { borderColor: "#b42318" },
+  pwToggle: { position: "absolute", right: 8, top: 35, background: "none", border: "none", color: "#4a4f59", fontWeight: 600, fontSize: 13, cursor: "pointer", fontFamily: "inherit" },
+  rules: { listStyle: "none", padding: "10px 0 0", margin: 0, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "4px 14px" },
+  rule: { fontSize: 12, fontWeight: 500 },
 
-  footer: { display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 24, paddingTop: 4 },
-  ghostBtn: { background: "#eef0f4", color: "#475569", border: "none", borderRadius: 8, padding: "12px 22px", fontSize: 13, fontWeight: 700, cursor: "pointer", textDecoration: "none", display: "inline-block" },
-  next: { background: NAVY, color: "#fff", border: "none", borderRadius: 8, padding: "12px 30px", fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: "0 10px 22px rgba(47,63,158,.32)" },
-  disabled: { opacity: .45, cursor: "not-allowed", boxShadow: "none" },
-  err: { color: "#dc2626", fontSize: 11.5, marginTop: 4 },
-  errorBox: { background: "#fee2e2", border: "1px solid #fca5a5", color: "#b91c1c", padding: "9px 12px", borderRadius: 9, fontSize: 13, marginBottom: 14, fontWeight: 600 },
+  footer: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginTop: 28, paddingTop: 18, borderTop: "1px solid #f0ede8" },
+  ghostBtn: { background: "#fff", color: NAVY, border: "1px solid #d9d5cd", borderRadius: 6, padding: "0 16px", height: 42, display: "inline-flex", alignItems: "center", fontSize: 14, fontWeight: 600, cursor: "pointer", textDecoration: "none", fontFamily: "inherit" },
+  next: { background: NAVY, color: "#fff", border: "1px solid " + NAVY, borderRadius: 6, padding: "0 22px", height: 42, fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" },
+  disabled: { opacity: .45, cursor: "not-allowed" },
+  err: { color: "#b42318", fontSize: 12.5, marginTop: 6 },
+  errorBox: { background: "#fdf2f2", border: "1px solid #f3c8c8", color: "#9f1d1d", padding: "10px 12px", borderRadius: 6, fontSize: 13.5, marginBottom: 16 },
 
-  progress: { display: "flex", justifyContent: "center", gap: 8, padding: "10px 0 20px" },
-  dot: { width: 8, height: 8, borderRadius: "50%", background: "#d7dbe3" },
-  dotOn: { background: NAVY, width: 22, borderRadius: 5 },
-  dotDone: { background: "#16a34a" },
+  progress: { display: "flex", justifyContent: "center", gap: 6, padding: "14px 0 20px" },
+  dot: { width: 8, height: 8, borderRadius: "50%", background: "#e1ddd5" },
+  dotOn: { background: NAVY, width: 20, borderRadius: 4 },
+  dotDone: { background: "#15803d" },
 
   doneWrap: { textAlign: "center", padding: "40px 0 20px" },
-  doneCheck: { width: 76, height: 76, borderRadius: "50%", margin: "0 auto 16px", background: "linear-gradient(135deg,#16a34a,#22c55e)", color: "#fff", fontSize: 40, fontWeight: 800, display: "grid", placeItems: "center", boxShadow: "0 14px 30px rgba(22,163,74,.4)" },
-  doneTitle: { fontSize: 22, fontWeight: 800, color: "#1f2740", margin: "0 0 6px" },
-  doneSub: { fontSize: 14, color: "#64748b" },
+  doneCheck: { width: 64, height: 64, borderRadius: "50%", margin: "0 auto 16px", background: "#15803d", color: "#fff", fontSize: 32, fontWeight: 700, display: "grid", placeItems: "center" },
+  doneTitle: { fontFamily: "Poppins, Inter, sans-serif", fontSize: 24, fontWeight: 600, color: NAVY, margin: "0 0 6px" },
+  doneSub: { fontSize: 14.5, color: "#4a4f59" },
 };
 
 const CSS = `

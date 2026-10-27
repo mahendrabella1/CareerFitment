@@ -80,11 +80,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (!user && !bypass) {
     return (
-      <div style={{ minHeight: "100vh", background: C.bg, display: "flex", alignItems: "center", justifyContent: "center", padding: 20, fontFamily: "Inter, system-ui, Segoe UI, sans-serif" }}>
+      <div style={{ minHeight: "100vh", background: "#fbfaf8", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: INK }}>
         <style dangerouslySetInnerHTML={{ __html: ADMIN_CSS }} />
         <form onSubmit={adminSignIn} style={S.loginCard}>
-          <div style={S.loginBadge}><Icon name="lock" size={26} /></div>
-          <h1 style={S.loginTitle}>Admin sign in</h1>
+          <div style={S.loginBadge}><Icon name="lock" size={20} /></div>
+          <h1 style={S.loginTitle}>OneGrasp admin</h1>
           <p style={S.loginSub}>Restricted to OneGrasp administrators.</p>
           {loginError && <div style={S.error}>{loginError}</div>}
           <label style={S.loginLabel}>Email</label>
@@ -116,14 +116,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   );
 }
 
+// Same look as the student pages: warm off-white, ink, hairlines, small corners.
+const INK = "#16181d";
 const S: Record<string, React.CSSProperties> = {
-  error: { display: "flex", alignItems: "center", gap: 8, background: C.redTint, border: `1px solid ${C.redLine}`, color: C.redStrong, padding: "10px 14px", borderRadius: 10, fontSize: 13, marginBottom: 12, fontWeight: 600 },
-  loginCard: { width: "100%", maxWidth: 400, background: "#fff", borderRadius: 18, padding: "34px 32px", boxShadow: "0 20px 50px rgba(20,20,25,.14)", textAlign: "center", border: `1px solid ${C.line}` },
-  loginBadge: { width: 56, height: 56, borderRadius: 16, background: C.redTint, color: C.red, display: "grid", placeItems: "center", margin: "0 auto 14px" },
-  loginTitle: { fontSize: 22, fontWeight: 800, margin: "0 0 4px" },
-  loginSub: { fontSize: 13.5, color: C.ink3, margin: "0 0 22px" },
-  loginLabel: { display: "block", textAlign: "left", fontSize: 12.5, fontWeight: 700, color: C.ink2, marginBottom: 6 },
-  loginInput: { width: "100%", padding: "11px 13px", borderRadius: 10, border: `1px solid ${C.line}`, fontSize: 14.5, outline: "none", boxSizing: "border-box", color: C.ink },
-  loginBtn: { width: "100%", marginTop: 20, padding: "13px", background: C.red, color: "#fff", border: "none", borderRadius: 11, fontSize: 15, fontWeight: 800, cursor: "pointer" },
-  linkBtn: { marginTop: 12, background: "none", border: "none", color: C.red, fontWeight: 700, fontSize: 14, cursor: "pointer" },
+  error: { display: "flex", alignItems: "center", gap: 8, background: "#fdf2f2", border: "1px solid #f3c8c8", color: "#9f1d1d", padding: "10px 12px", borderRadius: 6, fontSize: 13.5, marginBottom: 14, textAlign: "left" },
+  loginCard: { width: "100%", maxWidth: 400, background: "#fff", borderRadius: 10, padding: "30px 28px", boxShadow: "0 18px 50px rgba(22,24,29,.08)", textAlign: "left", border: "1px solid #e8e5df" },
+  loginBadge: { width: 40, height: 40, borderRadius: 6, background: "#f4f0eb", color: INK, display: "grid", placeItems: "center", margin: "0 0 16px" },
+  loginTitle: { fontFamily: "Poppins, Inter, sans-serif", fontSize: 24, fontWeight: 600, letterSpacing: "-.015em", margin: "0 0 4px", color: INK },
+  loginSub: { fontSize: 14, color: "#7b808b", margin: "0 0 22px" },
+  loginLabel: { display: "block", textAlign: "left", fontSize: 13.5, fontWeight: 600, color: "#4a4f59", marginBottom: 6 },
+  loginInput: { width: "100%", height: 46, padding: "0 13px", borderRadius: 6, border: "1px solid #d9d5cd", fontSize: 15, outline: "none", boxSizing: "border-box", color: INK, fontFamily: "inherit" },
+  loginBtn: { width: "100%", height: 46, marginTop: 20, background: INK, color: "#fff", border: "none", borderRadius: 6, fontSize: 15, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" },
+  linkBtn: { marginTop: 12, background: "none", border: "none", color: INK, fontWeight: 600, fontSize: 14, cursor: "pointer", textDecoration: "underline" },
 };

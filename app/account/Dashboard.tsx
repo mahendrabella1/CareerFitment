@@ -4,15 +4,16 @@
  * Dashboard - the student's /account home, for every class group.
  *
  * Laid out like the feature pages (components/feature/*): a grouped menu on
- * the left, a top bar with a greeting and a search over results and tools,
- * then, in the same order as the menu:
+ * the left (features first), a top bar with a greeting and a search over
+ * results and tools, then:
+ *   · Toolkit    - "your report is ready" with the report button, then every
+ *                  feature as a tile with its 3D illustration and progress
  *   · Overview   - the profile hero (archetype, strongest interest, key
  *                  numbers), OneGrasp's tools, profile bars and the radar
  *   · Dimensions - the eight dimensions as tabs, one full breakdown at a time
  *   · Fields     - ranked best-fit fields
  *   · Mind       - how you think & work
  *   · Plan       - the 30/90-day checklist
- *   · Toolkit    - every feature with its 3D illustration and progress
  *
  * Warm off-white surfaces, ink text and buttons, hairline borders, small
  * corners; OneGrasp red only for "you are here" marks and the radar. The
@@ -82,17 +83,17 @@ const KPI = [
   { c: "#111827", t: "#f9fafb" },
 ];
 
-// Left-sidebar navigation, in groups. "Your results" entries scroll to their
-// section (in this order on the page, so the scroll-spy matches); the rest
-// open their own page (FEATURE_ROUTES). `art` is a feature's 3D illustration.
+// Left-sidebar navigation, in groups - the features first, as on the page.
+// "Your results" entries scroll to their section (in this order on the page,
+// so the scroll-spy matches); the rest open their own page (FEATURE_ROUTES).
+// `art` is a feature's 3D illustration.
 const RESULTS = "Your results";
 const NAV: { id: string; label: string; icon: string; group: string; art?: string }[] = [
-  { id: "overview", label: "Overview", icon: "clusters", group: RESULTS },
+  { id: "overview", label: "Your profile", icon: "clusters", group: RESULTS },
   { id: "dimensions", label: "8 Dimensions", icon: "radar", group: RESULTS },
   { id: "fields", label: "Best-fit fields", icon: "compass", group: RESULTS },
   { id: "mind", label: "How you think", icon: "multiple_intelligence", group: RESULTS },
   { id: "plan", label: "My plan", icon: "check", group: RESULTS },
-  { id: "toolkit", label: "Your toolkit", icon: "layers", group: RESULTS },
   { id: "progress", label: "My Progress", icon: "score", group: "Track", art: "progress" },
   { id: "careers", label: "Career Library", icon: "briefcase", group: "Explore", art: "careers" },
   { id: "exams", label: "Entrance Exams", icon: "edit", group: "Explore", art: "exams" },
@@ -106,19 +107,24 @@ const NAV: { id: string; label: string; icon: string; group: string; art?: strin
   { id: "startups", label: "Startups", icon: "flag", group: "Explore", art: "startups" },
   { id: "portfolio", label: "Build your website", icon: "user", group: "Create" },
 ];
-const NAV_GROUPS = [RESULTS, "Track", "Explore", "Create"];
+const NAV_GROUPS = ["Explore", RESULTS, "Track", "Create"];
 
-/** The toolkit grid: every feature with its illustration (lib/features/catalog.ts). */
-const TOOLKIT: { key: string; text: string }[] = [
-  { key: "careers", text: "930 careers - what they do, what they pay, how to get there." },
-  { key: "exams", text: "Every entrance exam, who can take it and when." },
-  { key: "scholarships", text: "Money you qualify for, with every deadline." },
-  { key: "study-abroad", text: "Decide whether, where and what - and if the money works." },
+/** The toolkit at the top of the dashboard: every feature with its 3D
+ *  illustration (lib/features/catalog.ts), then jobs, progress and the
+ *  website builder - 12 tiles, so the grid fills evenly at 4, 3, 2 or 1 columns. */
+const TOOLKIT: { key: string; text: string; href?: string; title?: string; photo?: string; icon?: string }[] = [
+  { key: "careers", text: "930 careers - what they do and pay." },
+  { key: "exams", text: "Every exam, who can take it, when." },
+  { key: "scholarships", text: "Money you qualify for, with deadlines." },
+  { key: "study-abroad", text: "Where, what - and does the money work." },
   { key: "internships", text: "Free programmes from real companies." },
-  { key: "money", text: "Money skills as a level path, games and labs." },
-  { key: "legal", text: "Your rights, helplines and ready-to-send letters." },
-  { key: "research", text: "From a good question to a conference talk." },
+  { key: "jobs", title: "Jobs", href: "/account/jobs", photo: "/jobs/hero-800.webp", text: "Fresh internships and fresher jobs." },
+  { key: "money", text: "Money skills as a level path and games." },
+  { key: "legal", text: "Rights, helplines, ready-made letters." },
+  { key: "research", text: "From a question to a conference talk." },
   { key: "startups", text: "Build a startup, lesson by lesson." },
+  { key: "progress", text: "Every lesson done and still to do." },
+  { key: "portfolio", title: "Build your website", href: "/account/portfolio", icon: "user", text: "Your own portfolio site in minutes." },
 ];
 
 // Left-panel features -> their pages.
@@ -486,11 +492,8 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
   const search: SearchItem[] = [
     ...navItems.filter((n) => n.group === RESULTS).map((n) => ({ label: n.label, kind: "Section", onSelect: () => go(n.id) })),
     { label: "Full report", kind: "Report", hint: "Every page of your assessment", onSelect: openReport },
-    ...TOOLKIT.map((t) => ({ label: FEATURES[t.key].title, kind: "Feature", hint: t.text, href: FEATURES[t.key].href })),
-    { label: "Jobs", kind: "Feature", hint: "Fresh internships and fresher jobs", href: "/account/jobs" },
-    { label: "My Progress", kind: "Page", hint: "Lessons, modules, streak and time", href: "/account/progress" },
+    ...TOOLKIT.map((t) => ({ label: t.title ?? FEATURES[t.key].title, kind: "Feature", hint: t.text, href: t.href ?? FEATURES[t.key].href })),
     ...SIGNATURE.map((s) => ({ label: s.title, kind: "Tool", hint: s.text, href: s.href })),
-    { label: "Build your website", kind: "Tool", href: "/account/portfolio" },
     ...fits.slice(0, 3).map((f) => ({ label: f.name, kind: "Best-fit field", onSelect: () => go("fields") })),
   ];
 
@@ -570,10 +573,53 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
             {/* Messages from the student's school, if it uses the institution portal (renders nothing otherwise). */}
             <SchoolInbox />
 
+            {/* ===== REPORT + TOOLKIT - first thing on the page ===== */}
+            <section id="toolkit" className="db-sec db-first">
+              <div className="db-report">
+                <div style={{ minWidth: 0 }}>
+                  <span className="db-kicker">Your career report{dateStr ? ` · ${dateStr}` : ""}</span>
+                  <b>Your report is ready, {first}.</b>
+                  <small>Every page of your assessment - your profile, best-fit careers and the plan. A PDF copy is in your email.</small>
+                </div>
+                <div className="db-report-a">
+                  <button className="db-btn pri" onClick={openReport}>Open my full report <Icon name="arrowRight" size={16} stroke={2} /></button>
+                  <button className="db-btn" onClick={() => go("overview")}>See my profile</button>
+                </div>
+              </div>
+
+              <div className="db-sec-h" style={{ marginTop: 28 }}>
+                <div><h2>Your toolkit</h2><p>Everything OneGrasp gives you - pick up where you left off.</p></div>
+                <Link href="/account/progress" className="db-more" style={{ marginTop: 0 }}>See my progress <Icon name="arrowRight" size={14} stroke={2} /></Link>
+              </div>
+              <div className="db-kit">
+                {TOOLKIT.map((t) => {
+                  const f = FEATURES[t.key];
+                  const c = courseKey[t.key] ? courses[courseKey[t.key]] : undefined;
+                  const done = c?.done?.length ?? 0;
+                  const pct = c?.total ? Math.round((done / c.total) * 100) : 0;
+                  return (
+                    <Link key={t.key} href={t.href ?? f.href}>
+                      <span className={`db-kit-art${t.photo ? " is-photo" : ""}`}>
+                        {t.icon
+                          ? <Icon name={t.icon} size={30} stroke={1.5} />
+                          // eslint-disable-next-line @next/next/no-img-element
+                          : <img src={t.photo ?? featureArt(t.key).thumb} alt="" loading="lazy" />}
+                      </span>
+                      <span className="db-kit-b">
+                        <b>{t.title ?? f.title}</b>
+                        <small>{t.text}</small>
+                        {c && done > 0 && <span className="db-kit-p"><i><b style={{ width: `${pct}%` }} /></i>{done}/{c.total}</span>}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </section>
+
             {extrasBefore("overview")}
 
             {/* ===== OVERVIEW ===== */}
-            <section id="overview" className="db-sec db-first">
+            <section id="overview" className="db-sec">
               <div className="db-hero">
                 <div className="db-hero-l">
                   <span className="db-kicker">Your career profile{dateStr ? ` · ${dateStr}` : ""}</span>
@@ -585,9 +631,8 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                     {a.topCareer ? <span>Best fit: <b>{a.topCareer}</b></span> : null}
                   </div>
                   <div className="db-actions">
-                    <button className="db-btn pri" onClick={openReport}>Open my full report <Icon name="arrowRight" size={16} stroke={2} /></button>
                     <button className="db-btn" onClick={() => go("fields")}>See best-fit fields</button>
-                    <span className="db-note"><Icon name="check" size={14} stroke={2} /> A PDF copy was emailed to you</span>
+                    <button className="db-btn" onClick={() => go("dimensions")}>All 8 dimensions</button>
                   </div>
                 </div>
                 <div className="db-hero-r">
@@ -726,48 +771,6 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                 <Toolkit tab={toolkitTab} setTab={setToolkitTab} />
               </section>
             )}
-
-            {extrasBefore("toolkit")}
-
-            {/* ===== TOOLKIT ===== */}
-            <section id="toolkit" className="db-sec">
-              <div className="db-sec-h"><div><h2>Your toolkit</h2><p>Everything OneGrasp gives you, in one place.</p></div>
-                <Link href="/account/progress" className="db-more" style={{ marginTop: 0 }}>See my progress <Icon name="arrowRight" size={14} stroke={2} /></Link>
-              </div>
-              <div className="db-kit">
-                {TOOLKIT.map((t) => {
-                  const f = FEATURES[t.key];
-                  const c = courseKey[t.key] ? courses[courseKey[t.key]] : undefined;
-                  const done = c?.done?.length ?? 0;
-                  const pct = c?.total ? Math.round((done / c.total) * 100) : 0;
-                  return (
-                    <Link key={t.key} href={f.href}>
-                      <span className="db-kit-art">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={featureArt(t.key).card} alt="" loading="lazy" />
-                      </span>
-                      <span className="db-kit-b">
-                        <b>{f.title}</b>
-                        <small>{t.text}</small>
-                        {c && done > 0
-                          ? <span className="db-kit-p"><i><b style={{ width: `${pct}%` }} /></i>{done}/{c.total} lessons</span>
-                          : <span className="db-kit-p db-kit-open">Open <Icon name="arrowRight" size={13} stroke={2} /></span>}
-                      </span>
-                    </Link>
-                  );
-                })}
-              </div>
-              <Link href="/account/jobs" className="db-jobs">
-                <span className="db-jobs-t">
-                  <span className="db-kicker">Jobs board</span>
-                  <b>Internships and fresher jobs, checked for scams</b>
-                  <small>Fresh listings every day. Jobs for your best-fit careers are marked &quot;On my path&quot;.</small>
-                  <span className="db-btn" style={{ alignSelf: "flex-start", marginTop: 14 }}>Browse jobs <Icon name="arrowRight" size={15} stroke={2} /></span>
-                </span>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/jobs/hero-800.webp" alt="" loading="lazy" />
-              </Link>
-            </section>
 
             {/* Anything not anchored to a section lands here, at the end. */}
             {extraSections
@@ -1842,26 +1845,26 @@ const DASH_CSS = `
 .db .ogd-goal-text{font-size:14px;line-height:1.5;color:var(--ink2)}
 .db .ogd-goal-item.done .ogd-goal-text{color:var(--mute);text-decoration:line-through}
 
-/* toolkit */
-.db-kit{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.db-kit>a{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink);overflow:hidden}
+/* report banner + toolkit (top of the page) */
+.db-report{display:flex;align-items:center;gap:16px 24px;flex-wrap:wrap;justify-content:space-between;padding:22px 24px;background:var(--warm);border:1px solid var(--line);border-radius:10px}
+.db-report>div:first-child{flex:1 1 360px}
+.db-report b{display:block;font-family:Poppins,Inter,sans-serif;font-size:22px;font-weight:600;margin-top:6px;line-height:1.25}
+.db-report small{display:block;font-size:14px;color:var(--ink2);margin-top:4px;line-height:1.5}
+.db-report-a{display:flex;gap:10px;flex-wrap:wrap}
+.db-kit{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.db-kit>a{display:grid;grid-template-columns:84px minmax(0,1fr);background:#fff;border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink);overflow:hidden;min-height:92px}
 .db-kit>a:hover{border-color:#c9c4ba}
-.db-kit-art{height:148px;background:var(--warm);display:grid;place-items:center;border-bottom:1px solid var(--line)}
-.db-kit-art img{max-height:120px;max-width:76%;width:auto;height:auto;transition:transform .2s}
-.db-kit>a:hover .db-kit-art img{transform:translateY(-3px)}
-.db-kit-b{padding:14px 16px 16px;display:flex;flex-direction:column;gap:4px;flex:1}
-.db-kit-b>b{font-size:15px;font-weight:600}
-.db-kit-b>small{font-size:13px;color:var(--mute);line-height:1.45}
-.db-kit-p{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:12px;font-size:12.5px;color:var(--mute)}
+.db-kit-art{background:var(--warm);display:grid;place-items:center;border-right:1px solid var(--line);color:var(--ink)}
+.db-kit-art img{width:70px;height:58px;object-fit:contain;transition:transform .2s}
+.db-kit-art.is-photo img{width:100%;height:100%;object-fit:cover}
+.db-kit>a:hover .db-kit-art img{transform:translateY(-2px)}
+.db-kit>a:hover .db-kit-art.is-photo img{transform:none}
+.db-kit-b{padding:12px 14px;display:flex;flex-direction:column;justify-content:center;gap:3px;min-width:0}
+.db-kit-b>b{font-size:14.5px;font-weight:600;line-height:1.3}
+.db-kit-b>small{font-size:12.5px;color:var(--mute);line-height:1.4}
+.db-kit-p{display:flex;align-items:center;gap:8px;padding-top:6px;font-size:11.5px;color:var(--mute);font-variant-numeric:tabular-nums}
 .db-kit-p i{flex:1;height:4px;border-radius:2px;background:#ece9e3;overflow:hidden;display:block}
 .db-kit-p i b{display:block;height:100%;background:var(--ink)}
-.db-kit-open{font-weight:600;color:var(--ink)}
-.db-jobs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,380px);margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;text-decoration:none;color:var(--ink)}
-.db-jobs:hover{border-color:#c9c4ba}
-.db-jobs-t{display:flex;flex-direction:column;gap:6px;padding:24px 26px}
-.db-jobs-t>b{font-family:Poppins,Inter,sans-serif;font-size:19px;font-weight:600;line-height:1.3}
-.db-jobs-t>small{font-size:14px;color:var(--mute);line-height:1.5}
-.db-jobs img{width:100%;height:100%;min-height:180px;object-fit:cover;display:block}
 
 /* details */
 .db .ogd-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px}
@@ -1869,8 +1872,11 @@ const DASH_CSS = `
 .db .ogd-detail-k{font-size:13px;color:var(--mute)}
 .db .ogd-detail-v{font-size:14px;font-weight:600;text-align:right}
 
-@media (max-width:1180px){
+@media (max-width:1240px){
   .db-tools{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .db-kit{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:760px){
   .db-kit{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width:1000px){
@@ -1889,8 +1895,6 @@ const DASH_CSS = `
   .db-hello{flex:1}
   .db-msearch{display:block}
   .db-two{grid-template-columns:minmax(0,1fr)}
-  .db-jobs{grid-template-columns:minmax(0,1fr)}
-  .db-jobs img{min-height:0;height:180px}
 }
 @media (max-width:640px){
   .db-main{padding:16px 14px 56px}
@@ -1904,12 +1908,11 @@ const DASH_CSS = `
   .db-stat:nth-child(n+3){border-top:1px solid var(--line)}
   .db-stat b{font-size:19px}
   .db-tools{grid-template-columns:minmax(0,1fr)}
-  .db-kit{grid-template-columns:minmax(0,1fr);gap:10px}
-  .db-kit>a{flex-direction:row}
-  .db-kit-art{width:108px;height:auto;min-height:100px;flex:none;border-bottom:0;border-right:1px solid var(--line)}
-  .db-kit-art img{max-height:70px;max-width:86%}
-  .db-kit-b{padding:12px 14px}
-  .db-kit-p{padding-top:8px}
+  .db-kit{grid-template-columns:minmax(0,1fr);gap:8px}
+  .db-report{padding:18px 16px}
+  .db-report b{font-size:19px}
+  .db-report-a{width:100%}
+  .db-report-a .db-btn{flex:1}
   .db-card:not(.db-dims),.db-dimbody{padding:18px 16px}
   .db-fields{padding:4px 16px}
   .db .ogd-mind,.db .ogd-goal-cols,.db .ogd-details,.db .ogd-dim-subs{grid-template-columns:minmax(0,1fr)}

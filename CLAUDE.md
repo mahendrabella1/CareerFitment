@@ -104,9 +104,11 @@ Registration category `"experienced_professional"` (label "Working Professionals
   - the server page sends only course outlines (titles) to the browser, never lesson text or quiz answers.
 - **Student dashboard** (`/account`, `app/account/Dashboard.tsx`, every class):
   - layout:
-    - a grouped menu on the left (Your results / Track / Explore / Create), with features shown by their 3D thumbnails;
+    - a grouped menu on the left (Explore first, then Your results / Track / Create), with features shown by their 3D thumbnails;
     - a top bar with a greeting and a search over results and tools;
-    - then Overview (profile hero, key numbers, OneGrasp tools, profile bars and radar), 8 Dimensions (tabs), Best-fit fields, How you think, My plan and Your toolkit (every feature's illustration and progress, plus the jobs board);
+    - first on the page, "your report is ready" with the report button, then Your toolkit: 12 tiles covering every feature, jobs, My Progress and the website builder, each with its illustration and lesson progress;
+    - then the profile (hero, key numbers, OneGrasp tools, profile bars and radar), 8 Dimensions (tabs), Best-fit fields, How you think and My plan;
+  - Sign-in (`app/signin/page.tsx`), register (`app/register/page.tsx`, look only, logic unchanged) and the admin login and shell (`app/admin/layout.tsx`, `app/admin/(dashboard)/layout.tsx`, `AdminSidebar.tsx`) use the same look. The admin pages' inner content keeps its own styles;
   - the dashboard view uses `DASH_CSS`, scoped to `.db`. The report and feature views keep the original `LEGACY_CSS`, so the report looks exactly as before;
   - `DashboardMobile.tsx` is not rendered anywhere: `/account` uses `Dashboard.tsx`, which is responsive.
 - **Institution portal** (`/institution`, `app/institution/**`, `components/institution/**`, `lib/institution/**`): a school's login (created at `/admin/institutions`) sees only students whose profile `institution` equals the institution's name or an alias. All data goes through server routes (`app/api/institution/**`, `app/api/admin/institutions`, `app/api/student/messages`) that verify the Firebase ID token with the Admin SDK - they need `FIREBASE_PROJECT_ID`/`FIREBASE_CLIENT_EMAIL`/`FIREBASE_PRIVATE_KEY` (503 without). Collections `institutions`, `institutionAccounts`, `institutionMessages` are server-only. Students see messages in `components/SchoolInbox.tsx` (dashboard + the no-assessment screen). Analytics/recommendations are pure functions in `lib/institution/analytics.ts`.
