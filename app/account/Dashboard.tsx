@@ -23,7 +23,6 @@
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useAuth, type AssessmentSummary, type CustomDimension, type UserProfile } from "@/lib/auth/AuthProvider";
 import { readGoals, saveGoals } from "@/lib/progress/progressStore";
 import { dayKey } from "@/lib/progress/activity";
@@ -118,6 +117,13 @@ const TOOLKIT: { key: string; text: string; href?: string; title?: string; photo
   { key: "portfolio", title: "Build your website", href: "/account/portfolio", icon: "user", text: "Your own portfolio site in minutes." },
 ];
 
+/** Everything the dashboard opens - features, tools, the report - opens in a
+ *  new tab, so this tab always stays on the dashboard. */
+const NEW_TAB = { target: "_blank", rel: "noopener" } as const;
+/** The full report has its own address so it can open in a tab of its own. */
+const REPORT_HREF = "/account?view=report";
+const openInNewTab = (href: string) => window.open(href, "_blank", "noopener");
+
 // Left-panel features -> their pages.
 const FEATURE_ROUTES: Record<string, string> = {
   "careers": "/account/career-library",
@@ -209,8 +215,9 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
   // `stale` = saved by an earlier version of the assessment: no usable scores.
   const prepared = useMemo(() => prepareStudentReport(savedSummary, { sheets: false }), [savedSummary]);
   const a = prepared.summary;
-  const router = useRouter();
-  const [view, setView] = useState<"dashboard" | "report" | "feature">("dashboard");
+  // Opened from REPORT_HREF: this tab is the report's own.
+  const [reportTab] = useState(() => typeof window !== "undefined" && new URLSearchParams(window.location.search).get("view") === "report");
+  const [view, setView] = useState<"dashboard" | "report" | "feature">(reportTab ? "report" : "dashboard");
   const [navOpen, setNavOpen] = useState(false);
   const [active, setActive] = useState("overview");
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
@@ -250,20 +257,6 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
   const first = name.split(/\s+/)[0] || "there";
   const initial = (name || email || "?").trim().charAt(0).toUpperCase();
 
-  // Load the feature pages in the background once the dashboard is idle, so a
-  // click in the left panel opens them at once (Next.js only prefetches in
-  // production builds).
-  useEffect(() => {
-    const run = () => Object.values(FEATURE_ROUTES).forEach((href) => router.prefetch(href));
-    const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number; cancelIdleCallback?: (id: number) => void };
-    if (w.requestIdleCallback) {
-      const handle = w.requestIdleCallback(run, { timeout: 3000 });
-      return () => w.cancelIdleCallback?.(handle);
-    }
-    const t = window.setTimeout(run, 1500);
-    return () => window.clearTimeout(t);
-  }, [router]);
-
   // Highlight the sidebar item for whichever section is in view.
   useEffect(() => {
     if (view !== "dashboard") return;
@@ -277,14 +270,32 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
     return () => io.disconnect();
   }, [view]);
 
+  // Features open in other tabs, so re-read the profile when the student comes
+  // back to this one - lessons done or a retake there show up here.
+  const { refreshProfile } = useAuth();
+  useEffect(() => {
+    let last = Date.now();
+    const onShow = () => {
+      if (document.visibilityState !== "visible" || Date.now() - last < 15000) return;
+      last = Date.now();
+      void refreshProfile();
+    };
+    document.addEventListener("visibilitychange", onShow);
+    return () => document.removeEventListener("visibilitychange", onShow);
+  }, [refreshProfile]);
+
+  // Result sections scroll within the dashboard; features are links (NEW_TAB).
   const go = (id: string) => {
     setNavOpen(false);
-    // Check if it's a feature ID and navigate to its page
-    if (FEATURE_ROUTES[id]) {
-      router.push(FEATURE_ROUTES[id]);
-    } else {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+  // The report's own tab closes back to the dashboard tab. If the browser
+  // won't close it, it turns into the dashboard instead.
+  const backToDashboard = () => {
+    if (reportTab) window.close();
+    if (window.location.search) window.history.replaceState(null, "", "/account");
+    setView("dashboard");
+    window.scrollTo(0, 0);
   };
 
   // Graduates (UG) supply their own 8 pillar dimensions (customDimensions);
@@ -366,7 +377,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
       <div className="ogd-reportwrap">
         <style dangerouslySetInnerHTML={{ __html: LEGACY_CSS }} />
         <div className="ogd-reportbar og-noprint">
-          <button className="ogd-btn ghost" onClick={() => { setView("dashboard"); window.scrollTo(0, 0); }}>
+          <button className="ogd-btn ghost" onClick={backToDashboard}>
             <Icon name="chevronLeft" size={16} /> Back to dashboard
           </button>
           <span className="ogd-mailnote">
@@ -383,7 +394,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
               This report was generated by an earlier version of the assessment. Retake the assessment
               to see your updated report with the current question set and scoring.
             </p>
-            <button className="ogd-btn solid" onClick={() => { setView("dashboard"); window.scrollTo(0, 0); }}>
+            <button className="ogd-btn solid" onClick={backToDashboard}>
               Back to dashboard
             </button>
           </div>
@@ -416,7 +427,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
   const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
   const today = new Date().toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long" });
   const classLabel = profile?.category ? categoryLabel(profile.category) : "";
-  const openReport = () => { setView("report"); window.scrollTo(0, 0); };
+  const openReport = () => openInNewTab(REPORT_HREF);
   const themes3 = (a.themes ?? []).slice(0, 3);
   // Some class adapters start the summary with the student's name, which is
   // saved empty - so it can begin ", you're a..." Trim that and capitalise.
@@ -441,8 +452,8 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
   const search: SearchItem[] = [
     ...navItems.filter((n) => n.group === RESULTS && shown(n)).map((n) => ({ label: n.label, kind: "Section", onSelect: () => go(n.id) })),
     { label: "Full report", kind: "Report", hint: "Every page of your assessment", onSelect: openReport },
-    ...TOOLKIT.map((t) => ({ label: t.title ?? FEATURES[t.key].title, kind: "Feature", hint: t.text, href: t.href ?? FEATURES[t.key].href })),
-    ...SIGNATURE.map((s) => ({ label: s.title, kind: "Tool", hint: s.text, href: s.href })),
+    ...TOOLKIT.map((t) => ({ label: t.title ?? FEATURES[t.key].title, kind: "Feature", hint: t.text, href: t.href ?? FEATURES[t.key].href, newTab: true })),
+    ...SIGNATURE.map((s) => ({ label: s.title, kind: "Tool", hint: s.text, href: s.href, newTab: true })),
     ...fits.slice(0, 3).map((f) => ({ label: f.name, kind: "Best-fit field", onSelect: () => go("fields") })),
   ];
 
@@ -453,7 +464,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
 
       {/* ============================ SIDEBAR ============================ */}
       <aside className={`db-side${navOpen ? " open" : ""} og-noprint`} aria-label="Dashboard menu">
-        <div className="db-brand"><Link href="/" style={{ textDecoration: "none" }}><Logo height={42} /></Link></div>
+        <div className="db-brand"><Link href="/" {...NEW_TAB} style={{ textDecoration: "none" }}><Logo height={42} /></Link></div>
         <div className="db-me">
           <span className="db-ava">{initial}</span>
           <div style={{ minWidth: 0 }}><b>{name || "You"}</b><small>{classLabel || email}</small></div>
@@ -462,13 +473,20 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
           {NAV_GROUPS.map((g) => (
             <div key={g}>
               <div className="db-nav-lbl">{g}</div>
-              {navItems.filter((n) => n.group === g && shown(n)).map((n) => (
-                <button key={n.id} className={`db-navi${active === n.id ? " on" : ""}`} onClick={() => go(n.id)} aria-current={active === n.id ? "true" : undefined}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  {n.art ? <img src={featureArt(n.art).thumb} alt="" /> : <Icon name={n.icon} size={17} />}
-                  <span>{n.label}</span>
-                </button>
-              ))}
+              {navItems.filter((n) => n.group === g && shown(n)).map((n) => {
+                const inner = (
+                  <>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    {n.art ? <img src={featureArt(n.art).thumb} alt="" /> : <Icon name={n.icon} size={17} />}
+                    <span>{n.label}</span>
+                  </>
+                );
+                return FEATURE_ROUTES[n.id] ? (
+                  <Link key={n.id} href={FEATURE_ROUTES[n.id]} {...NEW_TAB} className="db-navi" onClick={() => setNavOpen(false)}>{inner}</Link>
+                ) : (
+                  <button key={n.id} className={`db-navi${active === n.id ? " on" : ""}`} onClick={() => go(n.id)} aria-current={active === n.id ? "true" : undefined}>{inner}</button>
+                );
+              })}
             </div>
           ))}
         </nav>
@@ -485,7 +503,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
           </div>
           <div className="db-top-search"><FeatureSearch items={search} placeholder="Search your results, features and tools" /></div>
           <div className="db-top-r">
-            <Link href="/account/progress" className="db-topbtn"><Icon name="score" size={15} /><span>My progress</span></Link>
+            <Link href="/account/progress" {...NEW_TAB} className="db-topbtn"><Icon name="score" size={15} /><span>My progress</span></Link>
             <div className="ash-user-wrap">
               <button className="ash-top-ava" onClick={() => setMenuOpen((o) => !o)} aria-label="Account">{initial}</button>
               {menuOpen && (
@@ -531,14 +549,14 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                   <small>Every page of your assessment - your profile, best-fit careers and the plan. A PDF copy is in your email.</small>
                 </div>
                 <div className="db-report-a">
-                  <button className="db-btn pri" onClick={openReport}>Open my full report <Icon name="arrowRight" size={16} stroke={2} /></button>
+                  <Link href={REPORT_HREF} {...NEW_TAB} className="db-btn pri">Open my full report <Icon name="arrowRight" size={16} stroke={2} /></Link>
                   <button className="db-btn" onClick={() => go("overview")}>See my profile</button>
                 </div>
               </div>
 
               <div className="db-sec-h" style={{ marginTop: 28 }}>
                 <div><h2>Your toolkit</h2><p>Everything OneGrasp gives you - pick up where you left off.</p></div>
-                <Link href="/account/progress" className="db-more" style={{ marginTop: 0 }}>See my progress <Icon name="arrowRight" size={14} stroke={2} /></Link>
+                <Link href="/account/progress" {...NEW_TAB} className="db-more" style={{ marginTop: 0 }}>See my progress <Icon name="arrowRight" size={14} stroke={2} /></Link>
               </div>
               <div className="db-kit">
                 {TOOLKIT.map((t) => {
@@ -547,7 +565,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                   const done = c?.done?.length ?? 0;
                   const pct = c?.total ? Math.round((done / c.total) * 100) : 0;
                   return (
-                    <Link key={t.key} href={t.href ?? f.href}>
+                    <Link key={t.key} href={t.href ?? f.href} {...NEW_TAB}>
                       <span className={`db-kit-art${t.photo ? " is-photo" : ""}`}>
                         {t.icon
                           ? <Icon name={t.icon} size={30} stroke={1.5} />
@@ -606,13 +624,13 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                   <div className="db-stat"><span>Interest code</span><b>{code || "-"}</b><small>From your career interests</small></div>
                   <div className="db-stat"><span>Strongest area</span><b>{strongest ? Math.round(strongest.score) : "-"}</b><small>{strongest ? (CAT_LABEL[strongest.key] ?? strongest.label) : ""}</small></div>
                   <div className="db-stat"><span>Emotional intelligence</span><b>{a.ei != null ? Math.round(a.ei) : "-"}</b><small>{eiResult || "Out of 100"}</small></div>
-                  <Link href="/account/progress" className="db-stat db-stat-link"><span>Learning so far</span><b>{lessonsDone} {lessonsDone === 1 ? "lesson" : "lessons"}</b><small>{streak > 0 ? `${streak}-day streak` : "Start any feature"} · My Progress →</small></Link>
+                  <Link href="/account/progress" {...NEW_TAB} className="db-stat db-stat-link"><span>Learning so far</span><b>{lessonsDone} {lessonsDone === 1 ? "lesson" : "lessons"}</b><small>{streak > 0 ? `${streak}-day streak` : "Start any feature"} · My Progress →</small></Link>
                 </div>
               </div>
 
               <div className="db-tools">
                 {SIGNATURE.map((f) => (
-                  <Link key={f.href} href={f.href} className="db-tool">
+                  <Link key={f.href} href={f.href} {...NEW_TAB} className="db-tool">
                     <span className="db-tool-ic"><Icon name={f.icon} size={19} /></span>
                     <span style={{ minWidth: 0 }}><b>{f.title}</b><small>{f.text}</small></span>
                     <Icon name="arrowRight" size={16} stroke={2} />
@@ -636,7 +654,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                 <div className="db-card">
                   <CardHead icon="pulse" title="Your shape" sub="Your eight scores, with the dotted line showing a typical student." />
                   <div className="ogd-radar-chart"><RadarChart data={radar} color={IN} abbr={CATEGORY_ABBR} /></div>
-                  <button className="db-more" onClick={openReport}>Read the detailed analysis <Icon name="arrowRight" size={14} stroke={2} /></button>
+                  <Link href={REPORT_HREF} {...NEW_TAB} className="db-more">Read the detailed analysis <Icon name="arrowRight" size={14} stroke={2} /></Link>
                 </div>
               </div>
             </section>
@@ -677,7 +695,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                 <p>{a.customFields?.length
                   ? "Matched from your interests, strengths and motivators - the same ranking as your report's Career Fitment page."
                   : "Blended from your interests, abilities, intelligences and drivers."}</p></div>
-                <Link href="/account/career-library" className="db-more" style={{ marginTop: 0 }}>Explore careers <Icon name="arrowRight" size={14} stroke={2} /></Link>
+                <Link href="/account/career-library" {...NEW_TAB} className="db-more" style={{ marginTop: 0 }}>Explore careers <Icon name="arrowRight" size={14} stroke={2} /></Link>
               </div>
               <div className="db-card db-fields">
                 {fits.slice(0, 3).map((d, i) => (
@@ -725,8 +743,8 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                   <h2>Your scores can&apos;t be shown here yet</h2>
                   <p>Your saved result was made by an earlier version of the assessment, so this page can&apos;t read its scores. Your full report shows what was saved; retaking the assessment brings your profile, dimensions and best-fit fields to this page.</p>
                   <div className="db-actions">
-                    <button className="db-btn pri" onClick={openReport}>Open my full report <Icon name="arrowRight" size={16} stroke={2} /></button>
-                    <Link href="/?begin=1" className="db-btn">Retake the assessment</Link>
+                    <Link href={REPORT_HREF} {...NEW_TAB} className="db-btn pri">Open my full report <Icon name="arrowRight" size={16} stroke={2} /></Link>
+                    <Link href="/?begin=1" {...NEW_TAB} className="db-btn">Retake the assessment</Link>
                   </div>
                 </div>
               </section>
@@ -1634,7 +1652,7 @@ const DASH_CSS = `
 .db-me small{display:block;font-size:12px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .db-nav{flex:1;overflow-y:auto;padding:2px 10px 14px;scrollbar-width:thin}
 .db-nav-lbl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding:16px 10px 6px}
-.db-navi{position:relative;display:flex;align-items:center;gap:10px;width:100%;height:36px;padding:0 10px;border:0;background:none;border-radius:6px;font-size:13.5px;font-weight:500;color:var(--ink2);cursor:pointer;text-align:left}
+.db-navi{position:relative;display:flex;align-items:center;gap:10px;width:100%;height:36px;padding:0 10px;border:0;background:none;border-radius:6px;font-size:13.5px;font-weight:500;color:var(--ink2);cursor:pointer;text-align:left;text-decoration:none}
 .db-navi:hover{background:var(--soft);color:var(--ink)}
 .db-navi svg{color:var(--mute);flex:none}
 .db-navi img{width:26px;height:22px;object-fit:contain;flex:none;margin:0 -3px 0 -4px}

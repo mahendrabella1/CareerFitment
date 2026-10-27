@@ -149,7 +149,7 @@ export function SchoolInbox() {
                 <div className="si-body">{m.body}</div>
                 {m.externalUrl
                   ? <a className="si-go" href={m.externalUrl} target="_blank" rel="noreferrer" onClick={() => clicked(m.id)}>Open ↗</a>
-                  : m.link && <Link className="si-go" href={m.link} onClick={() => clicked(m.id)}>Open →</Link>}
+                  : m.link && <Link className="si-go" href={m.link} target="_blank" rel="noopener" onClick={() => clicked(m.id)}>Open ↗</Link>}
                 {m.opportunityId && (
                   m.applied
                     ? <span className="si-go" style={{ background: "#eaf6f0", color: "#1f7a55" }}>Applied ✓</span>

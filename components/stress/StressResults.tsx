@@ -30,6 +30,8 @@ const SECTIONS = [
   { id: "ws-plan", label: "30-day plan", icon: "calendar" },
   { id: "ws-progress", label: "Progress", icon: "pulse" },
 ];
+/** Links off the dashboard open in a new tab, so this tab stays on the results. */
+const NEW_TAB ={ target: "_blank", rel: "noopener" } as const;
 const fmtDate = (iso: string) => new Date(iso).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
 const median = (d?: number[]) => (d && d.length === 11 ? d[5] : null);
 /** The question topics a driver is measured from (topics, never the answers). */
@@ -116,12 +118,12 @@ export function StressResults({ result, history, plan, benchmarks, firstName, on
             </button>
           ))}
           <div className="ws-side-lbl">Help</div>
-          <Link className="ws-navi" href="/account/legal"><Icon name="scale" size={17} /><span>Law &amp; Rights</span></Link>
-          <Link className="ws-navi" href="/jobs"><Icon name="briefcase" size={17} /><span>Jobs board</span></Link>
+          <Link className="ws-navi" href="/account/legal" {...NEW_TAB}><Icon name="scale" size={17} /><span>Law &amp; Rights</span></Link>
+          <Link className="ws-navi" href="/jobs" {...NEW_TAB}><Icon name="briefcase" size={17} /><span>Jobs board</span></Link>
           <a className="ws-navi" href={`tel:${HELPLINE.number}`}><Icon name="phone" size={17} /><span>{HELPLINE.name} {HELPLINE.number}</span></a>
         </nav>
         <div className="ws-side-foot">
-          <Link className="ws-btn ws-btn-pri" style={{ width: "100%" }} href={retakeHref}>Retake the check</Link>
+          <Link className="ws-btn ws-btn-pri" style={{ width: "100%" }} href={retakeHref} {...NEW_TAB}>Retake the check</Link>
           {onSignOut && <button className="ws-btn" style={{ width: "100%", marginTop: 8 }} onClick={onSignOut}><Icon name="power" size={15} /> Sign out</button>}
         </div>
       </aside>
@@ -136,7 +138,7 @@ export function StressResults({ result, history, plan, benchmarks, firstName, on
           </div>
           <div className="ws-top-r">
             <button className="ws-btn ws-btn-sm ws-hide-sm" onClick={() => window.print()}><Icon name="save" size={15} /> Save as PDF</button>
-            <Link className="ws-btn ws-btn-sm" href={retakeHref}>Retake</Link>
+            <Link className="ws-btn ws-btn-sm" href={retakeHref} {...NEW_TAB}>Retake</Link>
           </div>
         </header>
 
@@ -459,7 +461,7 @@ function RightsCallout({ harassment, discrimination, onPlan }: { harassment: boo
           <li>Keep a private, dated record of what happened - it makes any complaint far stronger.</li>
         </ul>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 12 }} className="ws-noprint">
-          <Link className="ws-btn ws-btn-sm" href="/account/legal">Law &amp; Rights</Link>
+          <Link className="ws-btn ws-btn-sm" href="/account/legal" {...NEW_TAB}>Law &amp; Rights</Link>
           <button className="ws-btn ws-btn-sm" onClick={onPlan}>See the steps in your plan</button>
         </div>
       </div>

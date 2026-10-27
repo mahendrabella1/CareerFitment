@@ -124,7 +124,7 @@ export function PlanSection({ result, plan, onChange }: { result: StressResult; 
                     <Icon name="doc" size={14} /> {isOpen ? "Hide" : a.script.label}
                   </button>
                 )}
-                {a.link && <Link className="ws-btn ws-btn-sm" href={a.link.href}>{a.link.label} <Icon name="arrowRight" size={14} /></Link>}
+                {a.link && <Link className="ws-btn ws-btn-sm" href={a.link.href} target="_blank" rel="noopener">{a.link.label} <Icon name="arrowRight" size={14} /></Link>}
                 <button className="ws-link" style={{ marginLeft: "auto", fontSize: 13, color: "var(--muted)" }} onClick={() => remove(a.id)}>Remove</button>
               </div>
             </article>

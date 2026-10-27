@@ -23,6 +23,15 @@ export default function StressHomePage() {
   useEffect(() => {
     if (!user) return;
     loadStress(user.uid).then(setStore).catch(() => setError("Couldn't load your results. Please refresh."));
+    // Retakes and links open in other tabs; re-read when the person comes back here.
+    let last = Date.now();
+    const onShow = () => {
+      if (document.visibilityState !== "visible" || Date.now() - last < 15000) return;
+      last = Date.now();
+      loadStress(user.uid).then(setStore).catch(() => undefined);
+    };
+    document.addEventListener("visibilitychange", onShow);
+    return () => document.removeEventListener("visibilitychange", onShow);
   }, [user]);
 
   const latest = store?.results[store.results.length - 1];

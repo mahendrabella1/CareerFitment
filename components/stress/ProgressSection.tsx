@@ -109,7 +109,7 @@ export function ProgressSection({ result, history, plan, onChange, retakeHref }:
               {isDue ? "It's been 30 days - a retake now will show what has changed." : `Next full check due ${short(due.toISOString())}.`}
             </p>
           </div>
-          <Link className={`ws-btn ws-btn-sm ws-noprint${isDue ? " ws-btn-pri" : ""}`} href={retakeHref}>Retake the check</Link>
+          <Link className={`ws-btn ws-btn-sm ws-noprint${isDue ? " ws-btn-pri" : ""}`} href={retakeHref} target="_blank" rel="noopener">Retake the check</Link>
         </div>
         {runs.length > 1 ? (
           <>

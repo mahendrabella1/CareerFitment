@@ -17,6 +17,8 @@ export interface SearchItem {
   /** The part of the section it sits in. */
   hint?: string;
   href?: string;
+  /** Open `href` in a new tab (the dashboard keeps its own tab). */
+  newTab?: boolean;
   onSelect?: () => void;
   keywords?: string;
 }
@@ -73,6 +75,7 @@ export function FeatureSearch({ items, placeholder, onQuery, value }: {
     setOpen(false);
     setQ("");
     if (item.onSelect) item.onSelect();
+    else if (item.href && item.newTab) window.open(item.href, "_blank", "noopener");
     else if (item.href) router.push(item.href);
   };
 
@@ -119,7 +122,7 @@ export function FeatureSearch({ items, placeholder, onQuery, value }: {
               </>
             );
             return r.href && !r.onSelect ? (
-              <Link key={`${r.kind}-${r.label}-${i}`} href={r.href} role="option" aria-selected={i === sel} onMouseEnter={() => setSel(i)} onClick={() => setOpen(false)}>{inner}</Link>
+              <Link key={`${r.kind}-${r.label}-${i}`} href={r.href} {...(r.newTab ? { target: "_blank", rel: "noopener" } : {})} role="option" aria-selected={i === sel} onMouseEnter={() => setSel(i)} onClick={() => setOpen(false)}>{inner}</Link>
             ) : (
               <button key={`${r.kind}-${r.label}-${i}`} type="button" role="option" aria-selected={i === sel} onMouseEnter={() => setSel(i)} onClick={() => choose(r)}>{inner}</button>
             );
