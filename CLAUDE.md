@@ -104,6 +104,12 @@ Registration category `"experienced_professional"` (label "Working Professionals
   - also shows a 16-week activity calendar with the current streak (a day counts with 1+ minute), and time spent per area;
   - reads the student's own data only: `progress.courses.*`, the Startups progress collections, `progress.legal`, the Scam Shield tally on this device, and `activity`;
   - the server page sends only course outlines (titles) to the browser, never lesson text or quiz answers.
+- **Home page** (`/`, `app/Landing.tsx`, rendered by `app/assessment-experience.tsx` only when no assessment is in progress; its `onStart` is the gated start - register, or the dashboard when signed in):
+  - order: the hero (the hook on the left; the dashboard tour playing muted on the right, with a clickable 13-chapter bar; a one-line "Built for"), the report, photos from our sessions, how it works as one story picture, every feature as zig-zag rows (text one side, its video playing on the other), the four decision tools, schools, working professionals, trust, FAQ;
+  - words, numbers, video links and photo captions are in `components/home/homeContent.ts` - every number there is one the app itself shows, so check the feature before changing it;
+  - videos are hosted in the WordPress media library on onegrasp.com (MP4, H.264, fast start - WebM won't play on iPhones). `components/home/HomeVideo.tsx` loads nothing until a video is on screen or played, plays muted while at least half visible, and lets only one video have sound; people who ask for less motion or to save data get a play button instead;
+  - stills from the videos, the two Canva illustrations (story, FAQ - pages 12-13 of the Canva design "OneGrasp feature illustrations (export)") and the photo-grid copies are in `public/home/`; `components/home/StoryGrid.tsx` loads a photo's original only when it's opened;
+  - the photo viewer is `position:fixed` inside `#stories`, so that section opts out of the scroll-in lift (a transformed ancestor would pin the viewer to the section);
 - **Student dashboard** (`/account`, `app/account/Dashboard.tsx`, every class):
   - layout:
     - a grouped menu on the left (Explore first, then Your results / Track / Create), with features shown by their 3D thumbnails;

@@ -1,781 +1,706 @@
 "use client";
 
 /**
- * Landing - the marketing home. Clean, editorial, WHITE canvas with a serif
- * headline, the eight dimensions shown right in the hero (reference layout),
- * then storytelling sections that animate in on scroll: explore-each-dimension
- * with photos, the science, real-world stats with charts, a report preview and
- * reviews. Self-contained (`ogl-*` classes). `onStart` runs the gated CTA.
+ * Landing - the marketing home, rendered by app/assessment-experience.tsx
+ * when nothing is in progress. `onStart` is its gated start: register when
+ * signed out, the dashboard when signed in (professionals go on to the
+ * stress check from there).
+ *
+ * Order: a hero (the hook on the left, the dashboard tour playing on the
+ * right with a clickable chapter timeline, and a one-line "built for"); the
+ * report; photos from our sessions; the four steps as one story picture;
+ * then zig-zag rows (text one side, a video playing on the other) for every
+ * feature and schools; the decision tools, professionals, trust, FAQ.
+ *
+ * Motion costs nothing to load: sections stack like pages (rounded top edges
+ * that overlap) and lift as they scroll in (CSS scroll-driven animation where
+ * the browser has it), and content slides in once as it is reached
+ * (useReveal, one IntersectionObserver). Nothing moves for people who asked
+ * their device for less motion.
+ *
+ * Videos load only when played or on screen (components/home/HomeVideo.tsx);
+ * the words, numbers and photo captions are in components/home/homeContent.ts.
+ * Same look as the dashboard and sign-in: warm off-white, ink text and
+ * buttons, OneGrasp red for accents.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MutableRefObject, type RefObject } from "react";
 import { Icon } from "@/app/Icons";
+import { featureArt } from "@/lib/features/catalog";
+import { HomeVideo, type HomeVideoHandle } from "@/components/home/HomeVideo";
+import { StoryGrid } from "@/components/home/StoryGrid";
+import {
+  CONTACT, DIMENSIONS, FACTS, FAQ, FEATURES, REPORT_VIDEO, SCHOOLS_VIDEO, SCHOOL_POINTS,
+  STAGES, STEPS, TOOLS, TOUR, TOUR_CHAPTERS, TOUR_END,
+} from "@/components/home/homeContent";
 
-const LOGO = "https://onegrasp.com/wp-content/uploads/2026/07/onegrasp-logo.png";
-const IMG = (id: string, w = 720) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=72`;
-
-const PRIMARY = "#3b5bdb";
-const INK = "#151a24";
-
-const GALLERY_COLORS = [
-  "#f5d5d5", "#fde8d1", "#d4f1d4", "#e8d5f2", "#d5e8f7", "#d5f1f0", "#fef3cd", "#d5f2fb",
-  "#f5d9f0", "#e8d5fb", "#fce4c6", "#d5ead5", "#d5e9f5", "#e8e0f7",
-];
-
-const GALLERY_IMAGES = [
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_103613991-scaled.jpg", title: "Personality Analysis", what: "Understand how you naturally think, behave, and make decisions", color: GALLERY_COLORS[0] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_105125190_HDR-scaled.jpg", title: "Career Interests", what: "Discover fields and work environments that genuinely excite you", color: GALLERY_COLORS[1] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120203457_PORTRAIT-scaled.jpg", title: "Multiple Intelligence", what: "Identify your unique ways of thinking and learning", color: GALLERY_COLORS[2] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120614298-scaled.jpg", title: "Emotional Intelligence", what: "Build self-awareness and stronger relationships", color: GALLERY_COLORS[3] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_120615426-scaled.jpg", title: "Learning Preferences", what: "Find study methods that work best for you", color: GALLERY_COLORS[4] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG_20260418_122233827-scaled.jpg", title: "Motivators & Values", what: "Align your career with what truly energizes you", color: GALLERY_COLORS[5] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG-20260420-WA0060.jpg", title: "Strengths Discovery", what: "Leverage your greatest talents and abilities", color: GALLERY_COLORS[6] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418103653_01-scaled.jpg", title: "Aptitude Assessment", what: "Know your logical, verbal, and spatial strengths", color: GALLERY_COLORS[7] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/IMG20260418112244-scaled.jpg", title: "Career Matching", what: "Find your best-fit careers from 1000+ options", color: GALLERY_COLORS[8] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM-1.jpeg", title: "Personal Profile", what: "Get a science-backed roadmap for your future", color: GALLERY_COLORS[9] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.13-AM.jpeg", title: "Stream Guidance", what: "Choose the right stream based on your fit", color: GALLERY_COLORS[10] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.41.36-AM.jpeg", title: "College Planning", what: "Pick colleges and degrees aligned with your goals", color: GALLERY_COLORS[11] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.02-AM.jpeg", title: "Career Clarity", what: "Know exactly what career path suits you best", color: GALLERY_COLORS[12] },
-  { img: "https://onegrasp.com/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-28-at-10.42.01-AM.jpeg", title: "Future Ready", what: "Take the first step toward your ideal career", color: GALLERY_COLORS[13] },
-];
-
-function GalleryGrid({ onStart }: { onStart: () => void }) {
-  return (
-    <div className="ogl-gallery-flip">
-      {GALLERY_IMAGES.map((item, i) => (
-        <div key={i} className="ogl-flip-card ogl-reveal" style={{ transitionDelay: `${i * 40}ms` }}>
-          <div className="ogl-flip-inner">
-            <div className="ogl-flip-front">
-              <img src={item.img} alt={item.title} />
-            </div>
-            <div className="ogl-flip-back" style={{ background: item.color }}>
-              <div className="ogl-flip-content">
-                <h3>{item.title}</h3>
-                <div className="ogl-flip-warning">
-                  <p>{item.what}</p>
-                </div>
-                <button className="ogl-flip-btn" onClick={onStart}>Take Assessment</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
+type TimeSink = MutableRefObject<((t: number) => void) | null>;
 
 export default function Landing({ onStart }: { onStart: () => void }) {
   const root = useRef<HTMLDivElement>(null);
+  const tour = useRef<HomeVideoHandle>(null);
+  // The tour reports its time straight to the chapter bar, so only the bar re-renders.
+  const tourTime: TimeSink = useRef(null);
+  useReveal(root);
 
-  useEffect(() => {
-    const els = root.current?.querySelectorAll(".ogl-reveal");
-    if (!els || !("IntersectionObserver" in window)) { els?.forEach((e) => e.classList.add("in")); return; }
-    // Reveal each element only when it actually scrolls into view (then stop
-    // watching it), so each section animates in as the user reaches it.
-    const io = new IntersectionObserver(
-      (entries) => entries.forEach((en) => {
-        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
-      }),
-      { threshold: 0.2, rootMargin: "0px 0px -10% 0px" }
-    );
-    els.forEach((e) => io.observe(e));
-    return () => io.disconnect();
-  }, []);
+  const goTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  // Played inside the click, so phones allow sound.
+  const watchWithSound = () => {
+    document.getElementById("tour")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    tour.current?.playFrom(0);
+  };
 
   return (
-    <div ref={root} className="ogl-land">
+    <div ref={root} className="hm">
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
-      {/* nav */}
-      <header className="ogl-nav">
-        <div className="ogl-nav-in">
-          <img src={LOGO} alt="OneGrasp" className="ogl-logo" />
-          <nav className="ogl-nav-links">
-            <a href="#measure">What we measure</a>
-            <a href="#science">The science</a>
-            <a href="#why">Why it matters</a>
-            <a href="#reviews">Reviews</a>
+      <header className="hm-nav">
+        <div className="hm-in hm-nav-in">
+          <a href="/" className="hm-brand" aria-label="OneGrasp home">
+            {/* A trimmed, transparent copy - the shared logo PNG has wide built-in padding. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/home/logo.png" alt="OneGrasp" width={75} height={44} />
+          </a>
+          <nav className="hm-links" aria-label="On this page">
+            <a href="#stories">Our work</a>
+            <a href="#how">How it works</a>
+            <a href="#inside">What&apos;s inside</a>
+            <a href="#schools">For schools</a>
+            <a href="#professionals">Professionals</a>
+            <a href="#faq">FAQ</a>
           </nav>
-          <div className="ogl-nav-cta">
-            <a href="/signin" className="ogl-btn-ghost">Sign in</a>
-            <button className="ogl-btn" onClick={onStart}>Start assessment <Icon name="chevronRight" size={16} /></button>
+          <div className="hm-nav-cta">
+            <a href="/signin" className="hm-btn hm-btn-ghost">Sign in</a>
+            <button type="button" className="hm-btn hm-btn-pri" onClick={onStart}>
+              <span className="hm-hide-sm">Start assessment</span><span className="hm-show-sm">Start</span>
+            </button>
           </div>
         </div>
       </header>
 
-      {/* hero - text left, image right */}
-      <section className="ogl-hero">
-        <div className="ogl-hero-copy ogl-reveal ogl-from-left">
-          <span className="ogl-eyebrow">Career fitment, backed by science</span>
-          <h1 className="ogl-h1 ogl-serif">
-            Find the career you’re<br />built to{" "}
-            <span className="ogl-rot-wrap"><Rotator words={["love.", "master.", "lead.", "grow in."]} /></span>
-          </h1>
-          <p className="ogl-lead">
-            Most people choose a career on a hunch. OneGrasp measures <b>eight sides of
-            how you think, learn and work</b>, then maps you to the paths where you’ll
-            genuinely excel - clear, personal and backed by science.
-          </p>
-          <div className="ogl-hero-tags">
-            {["Personality", "Interests", "Intelligences", "Aptitude", "+4 more"].map((t) => (
-              <span key={t} className="ogl-tag">{t}</span>
-            ))}
-          </div>
-          <div className="ogl-hero-actions">
-            <button className="ogl-btn ogl-btn-lg" onClick={onStart}>Take the assessment <Icon name="chevronRight" size={17} /></button>
-            <a href="#science" className="ogl-btn-ghost ogl-btn-lg"><Icon name="play" size={14} /> See how it works</a>
-          </div>
-
-        </div>
-
-        <div className="ogl-hero-media ogl-reveal ogl-from-right">
-          <div className="ogl-hero-photo">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="https://onegrasp.com/wp-content/uploads/2026/07/ChatGPT-Image-Jul-10-2026-05_34_15-PM.png" alt="Discover the career that fits you" />
-            <div className="ogl-photo-badge">
-              <span className="ogl-photo-badge-ic"><Icon name="score" size={16} /></span>
-              <span><b>Science-backed</b><small>Trusted by 50K+ students &amp; professionals</small></span>
-            </div>
-          </div>
-          <div className="ogl-trust">
-            <span><Icon name="lock" size={16} /> <b>100% Confidential</b><small>Your data is secure</small></span>
-            <span><Icon name="score" size={16} /> <b>Research-backed</b><small>Established frameworks</small></span>
-            <span><Icon name="user" size={16} /> <b>50K+ Users</b><small>Students &amp; professionals</small></span>
-          </div>
-        </div>
-      </section>
-
-      {/* gallery */}
-      <section className="ogl-sec">
-        <div className="ogl-sec-head ogl-reveal">
-          <span className="ogl-kicker">Our community</span>
-          <h2 className="ogl-h2 ogl-serif">Meet the people finding clarity.</h2>
-          <p className="ogl-sub">Students and professionals from across India discovering their best-fit careers.</p>
-        </div>
-        <GalleryGrid onStart={onStart} />
-        <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>Join our community <Icon name="chevronRight" size={16} /></button></div>
-      </section>
-
-      {/* why it matters - the story */}
-      <section id="why" className="ogl-sec">
-        <div className="ogl-why-top">
-          <div className="ogl-why-copy ogl-reveal ogl-from-left">
-            <span className="ogl-kicker">Why this matters</span>
-            <h2 className="ogl-why-h">You’re at a crossroads. Which road is actually <span className="ogl-hl">yours</span>?</h2>
-            <p className="ogl-sub">
-              Marks, peer pressure, a gut feeling at 16 or 21 - that’s what most big
-              choices come down to. But the right road gets a lot clearer once you can
-              see how you actually think, learn and work. <b>OneGrasp</b> turns that signpost
-              of doubts into one clear direction that genuinely fits you.
-            </p>
-          </div>
-          <div className="ogl-why-art ogl-reveal ogl-from-right"><WhyArt /></div>
-        </div>
-
-        <div className="ogl-facts">
-          {FACTS.map((f, i) => (
-            <div key={i} className="ogl-fact ogl-reveal ogl-pop" style={{ transitionDelay: `${i * 110}ms`, borderColor: f.soft }}>
-              <span className="ogl-fact-wave" style={{ background: f.soft }} />
-              <div className="ogl-fact-row">
-                <span className="ogl-fact-ic" style={{ background: f.soft, color: f.color }}><Icon name={f.icon} size={22} /></span>
-                <div className="ogl-fact-stat" style={{ color: f.color }}>{f.stat}</div>
+      <main>
+        {/* ---------- hero: the promise, the tour playing, who it's for ---------- */}
+        <section className="hm-hero">
+          <div className="hm-in">
+            {/* Text left, the tour playing right - both on the first screen. */}
+            <div className="hm-hero-grid">
+              <div className="hm-hero-copy">
+                <span className="hm-kicker hm-enter">For Class 6 to undergraduates</span>
+                <h1 className="hm-enter hm-d1">Stop guessing your career. <em>Start knowing it.</em></h1>
+                <p className="hm-lead hm-enter hm-d2">
+                  One test shows how you think, learn and work - and the careers you&apos;re built for.
+                  Then your report, your roadmap and every tool to get there, in one dashboard.
+                </p>
+                <div className="hm-actions hm-enter hm-d3">
+                  <button type="button" className="hm-btn hm-btn-pri hm-btn-lg" onClick={onStart}>Take the test now <Icon name="arrowRight" size={17} /></button>
+                  <a className="hm-btn hm-btn-lg" href="#inside" onClick={(e) => { e.preventDefault(); goTo("inside"); }}>
+                    See what you get <span className="hm-down"><Icon name="arrowRight" size={15} /></span>
+                  </a>
+                </div>
+                <p className="hm-assure hm-enter hm-d3"><Icon name="check" size={15} stroke={2.4} /> Your report is ready the moment you finish</p>
+                <ul className="hm-facts hm-enter hm-d4">
+                  {FACTS.map((x) => <li key={x.l}><b>{x.n}</b>{x.l}</li>)}
+                </ul>
               </div>
-              <div className="ogl-fact-bar" style={{ background: f.color }} />
-              <div className="ogl-fact-text">{f.text}</div>
-            </div>
-          ))}
-        </div>
-        <div className="ogl-facts-note ogl-reveal"><span className="ogl-note-shield"><Icon name="shield" size={16} /></span> Figures reflect widely reported workforce-engagement and career-satisfaction research, shown to illustrate the cost of misalignment.</div>
-        <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>Take the assessment <Icon name="chevronRight" size={16} /></button></div>
-      </section>
 
-      {/* explore each dimension - with photos */}
-      <section id="measure" className="ogl-sec ogl-alt">
-        <div className="ogl-sec-head ogl-reveal">
-          <span className="ogl-kicker">What we measure</span>
-          <h2 className="ogl-h2 ogl-serif">Eight dimensions. One complete picture.</h2>
-          <p className="ogl-sub">Each dimension uses an established framework, so your report reads like a proper profile - not a personality quiz.</p>
-        </div>
-        <div className="ogl-dims">
-          {DIMENSIONS.map((d, i) => (
-            <div key={d.title} className="ogl-dim ogl-reveal ogl-pop" style={{ transitionDelay: `${i * 75}ms` }}>
-              <div className="ogl-dim-img"><img src={d.img} alt={d.title} loading="lazy" /><span className="ogl-dim-ic"><Icon name={d.icon} size={19} /></span></div>
-              <div className="ogl-dim-body">
-                <div className="ogl-dim-t">{d.title}</div>
-                <div className="ogl-dim-f">{d.framework}</div>
-                <div className="ogl-dim-d">{d.desc}</div>
+              <div id="tour" className="hm-hero-video hm-enter hm-d2">
+                <HomeVideo ref={tour} video={TOUR} title="OneGrasp dashboard tour" auto eager onTime={(t) => tourTime.current?.(t)} />
+                <ChapterBar sink={tourTime} onPick={(t) => tour.current?.seek(t)} />
               </div>
             </div>
-          ))}
-        </div>
-        <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>Discover your eight dimensions <Icon name="chevronRight" size={16} /></button></div>
-      </section>
 
-      {/* the science */}
-      <section id="science" className="ogl-sec">
-        <div className="ogl-sec-head ogl-reveal">
-          <span className="ogl-kicker">How we evaluate</span>
-          <h2 className="ogl-h2 ogl-serif">A scientific method, <span className="ogl-hl">end to end.</span></h2>
-          <p className="ogl-sub">Every answer is scored against an established model, combined, then translated into plain-English guidance.</p>
-        </div>
-        <div className="ogl-steps">
-          {STEPS.map((s, i) => (
-            <div key={s.t} className="ogl-step-cell">
-              <div className="ogl-step ogl-reveal ogl-pop" style={{ transitionDelay: `${i * 90}ms`, borderBottomColor: s.color }}>
-                <span className="ogl-step-n" style={{ background: s.color }}>{i + 1}</span>
-                <span className="ogl-step-ic" style={{ background: s.soft, color: s.color }}><Icon name={s.ic} size={26} /></span>
-                <div className="ogl-step-t">{s.t}</div>
-                <div className="ogl-step-d">{s.d}</div>
+            <div className="hm-built" aria-label="Who it's for">
+              <span className="hm-built-lbl">Built for</span>
+              <div className="hm-built-row">
+                {STAGES.map((s, i) => {
+                  const inner = (
+                    <>
+                      <span className="hm-ic hm-ic-sm"><Icon name={s.icon} size={16} /></span>
+                      <span><b>{s.title}</b><small>{s.short}</small></span>
+                    </>
+                  );
+                  const props = { className: "hm-built-i", title: s.text, "data-rv": "", style: { transitionDelay: `${i * 60}ms` } };
+                  return s.school
+                    ? <a key={s.key} href="#schools" {...props}>{inner}</a>
+                    : <button key={s.key} type="button" onClick={onStart} {...props}>{inner}</button>;
+                })}
               </div>
-              {i < STEPS.length - 1 && <span className="ogl-step-arrow"><Icon name="chevronRight" size={15} /></span>}
             </div>
-          ))}
-        </div>
-        <div className="ogl-sci-banner ogl-reveal">
-          <span className="ogl-sci-shield"><Icon name="shield" size={26} /></span>
-          <div className="ogl-sci-text">
-            <b>Built on science. Made simple.</b>
-            <span>Our framework combines global, established models with advanced analytics to deliver clarity you can actually use.</span>
           </div>
-          <div className="ogl-sci-charts">
-            <MiniDonut pct={72} color="#2f6bff" />
-            <svg viewBox="0 0 90 46" width="90" height="46" aria-hidden>
-              <rect x="4" y="26" width="12" height="16" rx="2" fill="#dbe6ff" />
-              <rect x="22" y="18" width="12" height="24" rx="2" fill="#bcd2ff" />
-              <rect x="40" y="10" width="12" height="32" rx="2" fill="#2f6bff" />
-              <polyline points="6,22 28,14 46,6 66,12 86,4" fill="none" stroke="#7c3aed" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              {[[6, 22], [28, 14], [46, 6], [66, 12], [86, 4]].map(([x, y], k) => <circle key={k} cx={x} cy={y} r="2.4" fill="#7c3aed" />)}
-            </svg>
-          </div>
-        </div>
-        <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>See it work on you <Icon name="chevronRight" size={16} /></button></div>
-      </section>
+        </section>
 
-      {/* proof / charts */}
-      <section className="ogl-sec ogl-alt">
-        <div className="ogl-sec-head ogl-reveal">
-          <span className="ogl-kicker">The cost of getting it wrong</span>
-          <h2 className="ogl-h2 ogl-serif">Alignment isn’t a luxury - it’s the difference.</h2>
-        </div>
-        <div className="ogl-proof">
-          <div className="ogl-proof-card ogl-reveal ogl-from-left">
-            <h3 className="ogl-proof-t">Engagement by career fit</h3>
-            <BarChart data={[
-              { label: "Well matched", value: 82, color: "#2f9e6f" },
-              { label: "Somewhat", value: 54, color: PRIMARY },
-              { label: "Mismatched", value: 21, color: "#c0564f" },
-            ]} />
-            <p className="ogl-proof-note">People in roles that fit their strengths report far higher day-to-day engagement.</p>
+        {/* ---------- the report: right after the hero ---------- */}
+        <section id="report" className="hm-sec hm-sheet hm-bg-white">
+          <div className="hm-in hm-zz is-even">
+            <div className="hm-zz-copy" data-rv="">
+              <span className="hm-kicker">Your report</span>
+              <h2>A report that explains you - and shows the way.</h2>
+              <p className="hm-sub">Built from your own answers: your eight dimensions in plain words, then the careers that fit you and the road to them.</p>
+              <ul className="hm-dims">{DIMENSIONS.map((d) => <li key={d}>{d}</li>)}</ul>
+              <div className="hm-views">
+                <span className="hm-views-lbl">From Class 11, three views of your career</span>
+                <ul>
+                  <li title="The careers that fit you">Career Fitment</li>
+                  <li title="The careers that fit your stream">Career Suitability</li>
+                  <li title="The road to the career you chose">Career Selector</li>
+                </ul>
+              </div>
+            </div>
+            <div className="hm-zz-media" data-rv="right"><HomeVideo video={REPORT_VIDEO} title="The Career Fitment report, explained" auto /></div>
           </div>
-          <div className="ogl-proof-card ogl-reveal ogl-from-right" style={{ transitionDelay: "90ms" }}>
-            <h3 className="ogl-proof-t">Why students switch paths</h3>
-            <PieChart data={[
-              { label: "Wrong fit / interest", value: 42, color: PRIMARY },
-              { label: "Poor guidance", value: 33, color: "#d99a2b" },
-              { label: "Financial / other", value: 25, color: "#a4708a" },
-            ]} />
-            <p className="ogl-proof-note">A large share of course and career switches trace back to weak early self-knowledge.</p>
-          </div>
-        </div>
-        <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>Get on the right side <Icon name="chevronRight" size={16} /></button></div>
-      </section>
+        </section>
 
-      {/* report preview */}
-      <section className="ogl-sec">
-        <div className="ogl-report-row">
-          <div className="ogl-report-viz ogl-reveal ogl-from-left"><ReportMock /></div>
-          <div className="ogl-report-copy ogl-reveal ogl-from-right">
-            <span className="ogl-kicker">Your report</span>
-            <h2 className="ogl-h2 ogl-serif">One clear map of all eight areas.</h2>
-            <p className="ogl-sub">Every answer comes together in a single visual profile - with a plain-English read on each dimension and the careers that fit you best. Sign in any time to revisit it.</p>
-            <ul className="ogl-check">
-              <li>Ranked career matches with fit scores</li>
-              <li>Personality, intelligences, EI, learning style &amp; motivators</li>
-              <li>Strengths &amp; aptitude, scored objectively</li>
-            </ul>
-            <button className="ogl-btn ogl-btn-lg" onClick={onStart}>Build my report <Icon name="chevronRight" size={17} /></button>
+        {/* ---------- photos from our sessions ---------- */}
+        <section id="stories" className="hm-sec hm-sheet hm-bg-warm">
+          <div className="hm-in">
+            <Head kicker="Our work" title="From our sessions with schools and colleges." sub="Assessment days, career talks, workshops and one-to-one guidance. Open any photo to see it larger." />
+            <StoryGrid />
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* reviews */}
-      <section id="reviews" className="ogl-sec ogl-alt">
-        <div className="ogl-rev-head ogl-reveal">
-          <div>
-            <span className="ogl-kicker">What people say</span>
-            <h2 className="ogl-h2 ogl-serif">Clarity people wish they’d had sooner.</h2>
-          </div>
-          <div className="ogl-rev-score">
-            <div className="ogl-rev-score-n">4.9<span>/5</span></div>
-            <div className="ogl-stars">★★★★★</div>
-            <div className="ogl-rev-score-l">from 2,000+ assessments</div>
-          </div>
-        </div>
-        <div className="ogl-reviews">
-          {REVIEWS.map((r, i) => (
-            <figure key={r.name} className={`ogl-review ogl-reveal ogl-pop${i === 1 ? " ogl-review-hot" : ""}`} style={{ transitionDelay: `${i * 110}ms` }}>
-              <span className="ogl-quote">“</span>
-              <div className="ogl-stars">★★★★★</div>
-              <blockquote className="ogl-review-q">{r.quote}</blockquote>
-              <figcaption className="ogl-review-by">
-                <span className="ogl-ava" style={{ background: r.color }}>{r.name.charAt(0)}</span>
-                <span><b>{r.name}</b><span className="ogl-review-role">{r.role}</span></span>
-              </figcaption>
+        {/* ---------- how it works, as one story ---------- */}
+        <section id="how" className="hm-sec hm-sheet hm-bg-page">
+          <div className="hm-in">
+            <Head kicker="How it works" title="From one test to a plan you can follow." />
+            <figure className="hm-story" data-rv="zoom">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/home/story.webp" srcSet="/home/story-820.webp 820w, /home/story.webp 1600w" sizes="(max-width: 900px) 100vw, 1132px"
+                alt="A student takes the test, reads their report, explores the dashboard and climbs towards a flag" width={1600} height={583} loading="lazy" decoding="async" />
             </figure>
-          ))}
-        </div>
-        <div className="ogl-sec-cta ogl-reveal"><button className="ogl-btn ogl-btn-lg" onClick={onStart}>Start your assessment <Icon name="chevronRight" size={16} /></button></div>
-      </section>
+            <ol className="hm-steps">
+              {STEPS.map((s, i) => (
+                <li key={s.t} data-rv="" style={{ transitionDelay: `${i * 90}ms` }}>
+                  <span className="hm-step-n">{i + 1}</span>
+                  <div><h3>{s.t}</h3><p>{s.d}</p></div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
 
-      {/* final CTA */}
-      <section className="ogl-cta ogl-reveal ogl-mid">
-        <h2 className="ogl-cta-t ogl-serif">Your clearest career decision starts here.</h2>
-        <p className="ogl-cta-s">Take 25 minutes today to save years of second-guessing.</p>
-        <button className="ogl-btn ogl-btn-light ogl-btn-lg" onClick={onStart}>Start the assessment <Icon name="chevronRight" size={17} /></button>
-      </section>
+        {/* ---------- every feature: zig-zag rows, each with its own video ---------- */}
+        <section id="inside" className="hm-sec hm-sheet hm-bg-warm">
+          <div className="hm-in">
+            <Head kicker="What's inside your dashboard" title="Everything you can do after the test." sub={`${FEATURES.length} tools, each with its own short video - they play as you scroll.`} />
+            <div className="hm-zzs">
+              {FEATURES.map((x, i) => {
+                const flip = i % 2 === 1;
+                return (
+                  <article key={x.key} className={`hm-zz${flip ? " is-flip" : ""}`}>
+                    <div className="hm-zz-copy" data-rv="">
+                      <div className="hm-zz-head">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={x.photo ?? featureArt(x.art!).thumb} alt="" loading="lazy" className={x.photo ? "is-photo" : undefined} />
+                        <span className="hm-zz-n">{String(i + 1).padStart(2, "0")} / {FEATURES.length}</span>
+                      </div>
+                      <h3>{x.title}</h3>
+                      <p className="hm-zz-line">{x.line}</p>
+                      <ul className="hm-ticks">{x.points.map((p) => <li key={p}>{p}</li>)}</ul>
+                    </div>
+                    <div className="hm-zz-media" data-rv={flip ? "left" : "right"}><HomeVideo video={x.video} title={x.title} auto /></div>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
 
-      <footer className="ogl-footer">
-        <div className="ogl-footer-inner">
-          <div className="ogl-footer-left">
-            <img src={LOGO} alt="OneGrasp" />
+        {/* ---------- decision tools ---------- */}
+        <section id="tools" className="hm-sec hm-sheet hm-bg-page">
+          <div className="hm-in">
+            <Head kicker="Help with the decision" title="Four tools for the hardest part: choosing." />
+            <div className="hm-tools">
+              {TOOLS.map((t, i) => (
+                <div key={t.title} className="hm-tool" data-rv="" style={{ transitionDelay: `${i * 80}ms` }}>
+                  <span className="hm-ic"><Icon name={t.icon} size={19} /></span>
+                  <h3>{t.title}</h3>
+                  <p>{t.text}</p>
+                </div>
+              ))}
+            </div>
+            <p className="hm-note">Plus a builder for your own portfolio website, and a jobs board that marks the openings on your career path.</p>
+          </div>
+        </section>
+
+        {/* ---------- schools ---------- */}
+        <section id="schools" className="hm-sec hm-sheet hm-bg-warm">
+          <div className="hm-in hm-zz">
+            <div className="hm-zz-copy" data-rv="">
+              <span className="hm-kicker">For schools &amp; colleges</span>
+              <h2>See every student&apos;s journey - and act on it.</h2>
+              <p className="hm-sub">A portal for your institution: every student&apos;s results and progress in one place, and the tools to reach the ones who need you.</p>
+              <ul className="hm-ticks">{SCHOOL_POINTS.map((p) => <li key={p}>{p}</li>)}</ul>
+              <div className="hm-actions">
+                <a className="hm-btn hm-btn-pri hm-btn-lg" href={`mailto:${CONTACT.email}?subject=${encodeURIComponent("OneGrasp for our school")}`}>Book a demo <Icon name="arrowRight" size={17} /></a>
+                <a className="hm-btn hm-btn-lg" href={`tel:${CONTACT.phone}`}><Icon name="phone" size={15} /> {CONTACT.phoneLabel}</a>
+              </div>
+            </div>
+            <div className="hm-zz-media" data-rv="right"><HomeVideo video={SCHOOLS_VIDEO} title="The OneGrasp institution portal" auto /></div>
+          </div>
+        </section>
+
+        {/* ---------- working professionals ---------- */}
+        <section id="professionals" className="hm-sec hm-sheet hm-bg-page">
+          <div className="hm-in">
+            <div className="hm-pro" data-rv="">
+              <div>
+                <span className="hm-kicker">For working professionals</span>
+                <h2>Find out where your work stress comes from.</h2>
+                <p className="hm-sub">A private check across workload, behaviour at work, culture and career security. You get your stress score, the drivers behind it, and a 30-day plan with steps and ready-to-send messages.</p>
+                <ul className="hm-ticks">
+                  <li>Private - nothing is shared with your employer</li>
+                  <li>Compared anonymously with people at your career stage, once enough have taken it</li>
+                  <li>A weekly check-in, to see whether your plan is working</li>
+                </ul>
+                <button type="button" className="hm-btn hm-btn-pri hm-btn-lg" onClick={onStart}>Take the stress check <Icon name="arrowRight" size={17} /></button>
+              </div>
+              <dl className="hm-pro-stats">
+                <div><dt>34</dt><dd>questions</dd></div>
+                <div><dt>~5 min</dt><dd>to finish</dd></div>
+                <div><dt>14</dt><dd>stress drivers</dd></div>
+                <div><dt>30-day</dt><dd>plan, step by step</dd></div>
+              </dl>
+            </div>
+          </div>
+        </section>
+
+        {/* ---------- honest about it ---------- */}
+        <section id="trust" className="hm-sec hm-sheet hm-bg-warm">
+          <div className="hm-in">
+            <Head kicker="Honest about how it works" title="A guide you can trust - and question." />
+            <div className="hm-trust">
+              {[
+                { icon: "shield", t: "Built on established psychology", d: "Questions written by OneGrasp for each stage, scored against well-researched ways of describing how people think, learn and work." },
+                { icon: "lock", t: "Private by default", d: "Your answers stay on your account. Your school sees your results only if you register under it, and your parents see only what you share with them." },
+                { icon: "compass", t: "A starting point, not a verdict", d: "Your report shows where you fit best today. Talk it through with your parents, teachers or a counsellor - it's a guide, not a final answer." },
+              ].map((c, i) => (
+                <div key={c.t} data-rv="" style={{ transitionDelay: `${i * 80}ms` }}>
+                  <span className="hm-ic"><Icon name={c.icon} size={19} /></span>
+                  <h3>{c.t}</h3>
+                  <p>{c.d}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ---------- FAQ ---------- */}
+        <section id="faq" className="hm-sec hm-sheet hm-bg-page">
+          <div className="hm-in hm-faq-in">
+            <div className="hm-faq-side">
+              <Head kicker="Questions" title="Good to know." sub="Still unsure? Write to us any time." />
+              <figure className="hm-faq-art" data-rv="zoom">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/home/faq.webp" srcSet="/home/faq-480.webp 480w, /home/faq.webp 760w" sizes="(max-width: 900px) 70vw, 380px"
+                  alt="A student and parent looking at a laptop together, with questions in mind" width={760} height={942} loading="lazy" decoding="async" />
+              </figure>
+            </div>
+            <div className="hm-faq" data-rv="">
+              {FAQ.map((x) => (
+                <details key={x.q}>
+                  <summary>{x.q}</summary>
+                  <p>{x.a}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="hm-cta hm-sheet">
+          <div className="hm-in" data-rv="">
+            <h2>Your next step starts with one test.</h2>
+            <p>Start today - or watch the 90-second tour first.</p>
+            <div className="hm-actions hm-center">
+              <button type="button" className="hm-btn hm-btn-light hm-btn-lg" onClick={onStart}>Start the assessment <Icon name="arrowRight" size={17} /></button>
+              <button type="button" className="hm-btn hm-btn-line hm-btn-lg" onClick={watchWithSound}><Icon name="play" size={15} /> Watch the tour</button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="hm-foot">
+        <div className="hm-in hm-foot-in">
+          <div className="hm-foot-brand">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <span className="hm-logo-chip"><img src="/home/logo.png" alt="OneGrasp" width={48} height={28} /></span>
             <span>Career fitment, backed by science</span>
           </div>
-          <div className="ogl-footer-center">
-            <a href="tel:+918977760442">+91 8977760442</a>
-            <a href="mailto:support@onegrasp.com">support@onegrasp.com</a>
-            <a href="https://careerfitment.onegrasp.com" target="_blank">careerfitment.onegrasp.com</a>
+          <div className="hm-foot-links">
+            <a href={`tel:${CONTACT.phone}`}>{CONTACT.phoneLabel}</a>
+            <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+            <a href="/jobs">Jobs board</a>
+            <a href="/signin">Sign in</a>
           </div>
-          <div className="ogl-footer-right">
-            <a href="/signin">Sign In</a>
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-            <span>© {new Date().getFullYear()} OneGrasp</span>
-          </div>
+          <span className="hm-copy">© {new Date().getFullYear()} OneGrasp</span>
         </div>
       </footer>
     </div>
   );
 }
 
-/* ------------------------------- content ------------------------------- */
-const DIMENSIONS = [
-  { title: "Personality", short: "How you naturally think, feel and behave.", desc: "How you engage, decide, handle pressure and recharge.", framework: "Big Five (OCEAN)", icon: "user", img: IMG("photo-1522071820081-009f0129c71c") },
-  { title: "Career Interest", short: "Work environments that match your interests.", desc: "The fields and activities that genuinely pull you in.", framework: "Interest clustering", icon: "compass", img: IMG("photo-1541339907198-e08756dedf3f") },
-  { title: "Multiple Intelligence", short: "Your natural abilities beyond traditional IQ.", desc: "The ways you most naturally think and process the world.", framework: "Gardner’s 8 intelligences", icon: "bulb", img: IMG("photo-1532094349884-543bc11b234d") },
-  { title: "Emotional Intelligence", short: "How you understand and manage emotions.", desc: "Reading situations, managing yourself and relating to others.", framework: "EI scenarios", icon: "pulse", img: IMG("photo-1552664730-d307ca884978") },
-  { title: "Learning Preferences", short: "The kinds of study material you prefer.", desc: "Which kinds of study material you prefer - visual, aural, reading, kinesthetic. A study aid, not a career signal.", framework: "VARK", icon: "learning_styles", img: IMG("photo-1503676260728-1c00da094a0b") },
-  { title: "Motivators", short: "What drives you and keeps you going.", desc: "What energises you - and what quietly burns you out.", framework: "Work-values model", icon: "match", img: IMG("photo-1454165804606-c3d57bc86b40") },
-  { title: "Strengths", short: "Your core strengths and how to use them.", desc: "Problem-solving, critical thinking, decisions and communication.", framework: "Reasoning + self-report", icon: "star", img: IMG("photo-1503387762-592deb58ef4e") },
-  { title: "Aptitude", short: "Your ability to learn and solve problems.", desc: "Verbal, numerical, logical and spatial reasoning, scored objectively.", framework: "Cognitive reasoning", icon: "cpu", img: IMG("photo-1461749280684-dccba630e2f6") },
-];
-
-const STEPS = [
-  { ic: "answer", t: "Answer", d: "Stage-appropriate questions across all eight dimensions, with visuals and audio where it helps.", color: "#2f6bff", soft: "#e9f0ff" },
-  { ic: "score", t: "Score", d: "Each response is scored against its established model - Big Five, Gardner, VARK, EI and more.", color: "#16a34a", soft: "#e6f6ec" },
-  { ic: "combine", t: "Combine", d: "Dimensions are weighted and cross-checked to build one coherent profile.", color: "#7c3aed", soft: "#f1e9fd" },
-  { ic: "match", t: "Match", d: "Your interests and aptitudes map to specific career clusters and roles.", color: "#f59e0b", soft: "#fdf1dd" },
-  { ic: "explain", t: "Explain", d: "You get a clear report - a single visual map plus plain-English guidance.", color: "#14b8a6", soft: "#e0f5f2" },
-];
-
-const FACTS = [
-  { stat: "~2 in 3", text: "employees feel disengaged at work - most in roles that never fit them.", icon: "user", color: "#dc2626", soft: "#fdecec" },
-  { stat: "50%+", text: "of students reconsider their stream or degree within the first two years.", icon: "cap", color: "#e08a0a", soft: "#fdf1dd" },
-  { stat: "90,000", text: "hours are spent working across an average lifetime - spend them well.", icon: "clock", color: "#2f6bff", soft: "#e9f0ff" },
-];
-
-const REVIEWS = [
-  { name: "Aarav", role: "Class 11 student", color: "#3b5bdb", quote: "I always assumed engineering. The report showed my strengths pointed to design and communication - it genuinely changed my plan." },
-  { name: "Priya", role: "Graduate", color: "#2f9e6f", quote: "The eight-area chart made everything click. For the first time my choices felt based on something real, not just marks." },
-  { name: "Rahul", role: "Parent", color: "#a4708a", quote: "As a parent this gave us a calm, structured conversation instead of arguments. Worth every minute." },
-];
-
-/* ------------------------------- visuals ------------------------------- */
-/** Polished report-card mockup for the "Your report" section. */
-function ReportMock() {
-  const bars: [string, number][] = [["Aptitude", 78], ["Strengths", 72], ["Emotional Int.", 84], ["Interests", 66]];
+function Head({ kicker, title, sub }: { kicker: string; title: string; sub?: string }) {
   return (
-    <div className="ogl-repcard">
-      <div className="ogl-repcard-top">
-        <div>
-          <div className="ogl-repcard-kick">Career Report</div>
-          <div className="ogl-repcard-name">Design &amp; Media</div>
-        </div>
-        <div className="ogl-repcard-fit"><b>86%</b><span>top fit</span></div>
+    <div className="hm-head" data-rv="">
+      <span className="hm-kicker">{kicker}</span>
+      <h2>{title}</h2>
+      {sub && <p className="hm-sub">{sub}</p>}
+    </div>
+  );
+}
+
+/** The tour's 13 chapters: a segmented bar that fills as it plays, and the
+ *  chapter names to jump with (the active one kept in view on phones). */
+function ChapterBar({ sink, onPick }: { sink: TimeSink; onPick: (t: number) => void }) {
+  const [t, setT] = useState(0);
+  const row = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    sink.current = setT;
+    return () => { sink.current = null; };
+  }, [sink]);
+  const cur = TOUR_CHAPTERS.reduce((a, c, i) => (t >= c.t ? i : a), -1);
+  useEffect(() => {
+    const r = row.current;
+    const b = r?.children[cur] as HTMLElement | undefined;
+    if (r && b && r.scrollWidth > r.clientWidth) r.scrollTo({ left: b.offsetLeft - r.clientWidth / 2 + b.offsetWidth / 2, behavior: "smooth" });
+  }, [cur]);
+
+  return (
+    <div className="hm-chap">
+      <div className="hm-chap-bar" aria-hidden="true">
+        {TOUR_CHAPTERS.map((c, i) => {
+          const end = TOUR_CHAPTERS[i + 1]?.t ?? TOUR_END;
+          const f = t <= c.t ? 0 : t >= end ? 1 : (t - c.t) / (end - c.t);
+          return (
+            <button key={c.t} type="button" tabIndex={-1} style={{ flexGrow: end - c.t }} onClick={() => onPick(c.t)} title={c.label}>
+              <i style={{ transform: `scaleX(${f})` }} />
+            </button>
+          );
+        })}
       </div>
-      <div className="ogl-repcard-radar"><RadarMock /></div>
-      <div className="ogl-repcard-bars">
-        {bars.map(([l, v]) => (
-          <div key={l} className="ogl-repcard-bar">
-            <span>{l}</span>
-            <i><b style={{ width: `${v}%` }} /></i>
-            <em>{v}</em>
-          </div>
+      <div ref={row} className="hm-chap-row" role="group" aria-label="Jump to a part of the tour">
+        {TOUR_CHAPTERS.map((c, i) => (
+          <button key={c.t} type="button" aria-pressed={cur === i} onClick={() => onPick(c.t)}>{c.label}</button>
         ))}
       </div>
     </div>
   );
 }
 
-function RadarMock() {
-  const vals = [72, 66, 84, 78, 61, 70, 74, 80];
-  const n = vals.length, cx = 110, cy = 110, R = 92;
-  const ang = (i: number) => -Math.PI / 2 + (i * 2 * Math.PI) / n;
-  const poly = (frac: number, arr?: number[]) =>
-    vals.map((v, i) => { const r = R * (arr ? arr[i] / 100 : frac); return `${cx + r * Math.cos(ang(i))},${cy + r * Math.sin(ang(i))}`; }).join(" ");
-  return (
-    <svg viewBox="0 0 220 220" className="ogl-radar">
-      {[0.25, 0.5, 0.75, 1].map((f) => <polygon key={f} points={poly(f)} fill="none" stroke="#e5e8ee" strokeWidth="1" />)}
-      {vals.map((_, i) => <line key={i} x1={cx} y1={cy} x2={cx + R * Math.cos(ang(i))} y2={cy + R * Math.sin(ang(i))} stroke="#e5e8ee" strokeWidth="1" />)}
-      <polygon points={poly(1, vals)} fill="rgba(59,91,219,.16)" stroke={PRIMARY} strokeWidth="2.2" strokeLinejoin="round" />
-      {vals.map((v, i) => { const r = R * (v / 100); return <circle key={i} cx={cx + r * Math.cos(ang(i))} cy={cy + r * Math.sin(ang(i))} r="3" fill={PRIMARY} />; })}
-    </svg>
-  );
-}
-
-function BarChart({ data }: { data: { label: string; value: number; color: string }[] }) {
-  return (
-    <div className="ogl-bc">
-      {data.map((d) => (
-        <div key={d.label} className="ogl-bc-row">
-          <span className="ogl-bc-l">{d.label}</span>
-          <div className="ogl-bc-track"><div className="ogl-bc-fill" style={{ width: `${d.value}%`, background: d.color }} /></div>
-          <span className="ogl-bc-v">{d.value}%</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function PieChart({ data }: { data: { label: string; value: number; color: string }[] }) {
-  const total = data.reduce((s, d) => s + d.value, 0) || 1;
-  let acc = 0; const R = 60, C = 70;
-  return (
-    <div className="ogl-pie">
-      <svg viewBox="0 0 140 140" width="140" height="140">
-        {data.map((d, i) => {
-          const a0 = (acc / total) * 2 * Math.PI; acc += d.value;
-          const a1 = (acc / total) * 2 * Math.PI;
-          const x0 = C + R * Math.sin(a0), y0 = C - R * Math.cos(a0);
-          const x1 = C + R * Math.sin(a1), y1 = C - R * Math.cos(a1);
-          const large = a1 - a0 > Math.PI ? 1 : 0;
-          return <path key={i} d={`M${C},${C} L${x0},${y0} A${R},${R} 0 ${large} 1 ${x1},${y1} Z`} fill={d.color} />;
-        })}
-        <circle cx={C} cy={C} r="30" fill="#fff" />
-      </svg>
-      <div className="ogl-pie-leg">
-        {data.map((d) => <span key={d.label}><i style={{ background: d.color }} />{d.label} · {d.value}%</span>)}
-      </div>
-    </div>
-  );
-}
-
-/** Animated rotating word for the hero headline. */
-function Rotator({ words }: { words: string[] }) {
-  const [i, setI] = useState(0);
+/** Content below the fold slides in once as it's reached ([data-rv] =
+ *  "" up, "left", "right", "zoom"). Anything already on screen at load is
+ *  left alone, so nothing visible ever blinks. Off for reduced motion. */
+function useReveal(root: RefObject<HTMLElement>) {
   useEffect(() => {
-    const id = setInterval(() => setI((v) => (v + 1) % words.length), 2200);
-    return () => clearInterval(id);
-  }, [words.length]);
-  return <span key={i} className="ogl-rot">{words[i]}</span>;
-}
-
-/** Uses the provided illustration (public/why-this-matters.png); if it isn't
- *  present yet, gracefully falls back to the inline SVG scene below. */
-function WhyArt() {
-  const [failed, setFailed] = useState(false);
-  if (failed) return <WhyIllustration />;
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src="https://onegrasp.com/wp-content/uploads/2026/07/ChatGPT-Image-Jul-10-2026-06_22_06-PM.png" alt="Choosing the right path with clarity" className="ogl-why-svg" onError={() => setFailed(true)} />;
-}
-
-/** Stylized scene: a traveller at a signpost of doubts, a clear road to the peak. */
-function WhyIllustration() {
-  const signs = ["Marks", "Peer Pressure", "Guesswork", "Uncertainty"];
-  const road = "M96 384 C 150 340, 128 292, 220 274 S 356 250, 402 196";
-  return (
-    <svg viewBox="0 0 520 400" className="ogl-why-svg" role="img" aria-label="Choosing a path with clarity">
-      <rect x="0" y="0" width="520" height="400" rx="22" fill="#f2f6ff" />
-      <circle cx="426" cy="120" r="54" fill="#fff2d6" />
-      {/* mountains */}
-      <path d="M300 262 L360 168 L420 262 Z" fill="#dbe6fb" />
-      <path d="M336 262 L418 108 L500 262 Z" fill="#c7d6f4" />
-      <path d="M418 108 L446 160 L426 170 L406 156 L392 168 Z" fill="#fff" />
-      <line x1="418" y1="108" x2="418" y2="80" stroke="#334155" strokeWidth="3" />
-      <path d="M418 82 L440 89 L418 97 Z" fill="#2f6bff" />
-      {/* grass */}
-      <ellipse cx="80" cy="372" rx="60" ry="16" fill="#dcefe0" />
-      <ellipse cx="470" cy="316" rx="46" ry="13" fill="#dcefe0" />
-      {/* road */}
-      <path d={road} fill="none" stroke="#e5ebf6" strokeWidth="36" strokeLinecap="round" />
-      <path d={road} fill="none" stroke="#fff" strokeWidth="22" strokeLinecap="round" />
-      <path d={road} fill="none" stroke="#c3d2ee" strokeWidth="2.5" strokeDasharray="7 11" strokeLinecap="round" />
-      {/* goal check */}
-      <circle cx="402" cy="196" r="15" fill="#2f6bff" />
-      <path d="M395 196 l5 5 9-10" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
-      <rect x="344" y="220" width="150" height="26" rx="13" fill="#fff" stroke="#e3e8f0" />
-      <text x="357" y="237" fontSize="11" fontWeight="800" fill="#2f6bff" fontFamily="Poppins,Inter,sans-serif">Clarity · Purpose · Path</text>
-      {/* signpost */}
-      <rect x="150" y="120" width="8" height="176" rx="4" fill="#b9c2d0" />
-      {signs.map((s, i) => {
-        const y = 132 + i * 38;
-        return (
-          <g key={s}>
-            <path d={`M150 ${y} h -84 l -13 14 l 13 14 h 84 z`} fill="#fff" stroke="#e3e8f0" />
-            <circle cx="58" cy={y + 14} r="3.5" fill="#9aa6b6" />
-            <text x="78" y={y + 18} fontSize="12" fontWeight="700" fill="#5b6470" fontFamily="Poppins,Inter,sans-serif">{s}</text>
-          </g>
-        );
-      })}
-      {/* traveller */}
-      <path d="M196 336 q22 -52 44 0 z" fill="#2f5bd6" />
-      <rect x="204" y="322" width="8" height="24" rx="3" fill="#1f2b4a" />
-      <rect x="224" y="322" width="8" height="24" rx="3" fill="#1f2b4a" />
-      <circle cx="218" cy="266" r="14" fill="#f0c9a8" />
-      <path d="M205 262 q4 -16 13 -16 q11 0 13 15 q-7 -6 -13 -6 q-8 0 -13 7z" fill="#26324d" />
-      <path d="M240 300 l24 -8" stroke="#f0c9a8" strokeWidth="7" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function MiniDonut({ pct, color }: { pct: number; color: string }) {
-  const r = 26, c = 2 * Math.PI * r;
-  return (
-    <svg viewBox="0 0 64 64" width="60" height="60">
-      <circle cx="32" cy="32" r={r} fill="none" stroke="#eceef2" strokeWidth="7" />
-      <circle cx="32" cy="32" r={r} fill="none" stroke={color} strokeWidth="7" strokeLinecap="round"
-        strokeDasharray={c} strokeDashoffset={c * (1 - pct / 100)} transform="rotate(-90 32 32)" />
-    </svg>
-  );
+    const el = root.current;
+    if (!el || !("IntersectionObserver" in window) || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    const fold = window.innerHeight * 0.92;
+    const items = Array.from(el.querySelectorAll<HTMLElement>("[data-rv]")).filter((n) => n.getBoundingClientRect().top > fold);
+    items.forEach((n) => n.classList.add("rv-wait"));
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.remove("rv-wait"); io.unobserve(e.target); }
+    }), { rootMargin: "0px 0px -8% 0px" });
+    items.forEach((n) => io.observe(n));
+    return () => io.disconnect();
+  }, [root]);
 }
 
 /* -------------------------------- styles ------------------------------- */
 const CSS = `
-.ogl-land{background:#fff;color:${INK};font-family:'Poppins',Inter,system-ui,Segoe UI,sans-serif;-webkit-font-smoothing:antialiased}
-.ogl-land *{box-sizing:border-box}
-.ogl-serif{font-family:'Poppins',Inter,sans-serif;font-weight:700;letter-spacing:-.015em}
-.ogl-hl{color:${PRIMARY};box-shadow:inset 0 -0.28em 0 rgba(59,91,219,.16)}
-.ogl-reveal{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
-.ogl-reveal.ogl-from-left{transform:translateX(-52px)}
-.ogl-reveal.ogl-from-right{transform:translateX(52px)}
-.ogl-reveal.ogl-pop{transform:translateY(34px) scale(.92);transition:opacity .42s cubic-bezier(.2,.8,.25,1.05),transform .42s cubic-bezier(.2,.8,.25,1.05)}
-.ogl-reveal.ogl-mid{transform:scale(.9)}
-.ogl-reveal.in{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){.ogl-reveal{transition:opacity .3s;transform:none}}
+.hm{--ink:#16181d;--ink2:#4a4f59;--mute:#7b808b;--line:#e8e5df;--soft:#f7f5f1;--warm:#f4f0eb;--page:#fbfaf8;--base:#c9c4ba;--red:#db3433;--sheet:26px;
+  background:var(--page);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip}
+.hm *{box-sizing:border-box}
+.hm h1,.hm h2,.hm h3{font-family:Poppins,Inter,sans-serif;letter-spacing:-.015em;color:var(--ink)}
+/* Zero-weight resets, so a single class (.hm-sub, .hm-note...) can set its own margins. */
+.hm :where(h1,h2,h3,p,ul,ol,dl,dd,figure){margin:0}
+.hm :where(a){color:inherit}
+.hm button{font-family:inherit}
+.hm section[id]{scroll-margin-top:60px}
+.hm button:focus-visible,.hm a:focus-visible,.hm summary:focus-visible{outline:2px solid #2563eb;outline-offset:2px}
+.hm-in{max-width:1180px;margin:0 auto;padding:0 24px}
+.hm-show-sm{display:none}
 
-.ogl-nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid #eef0f4}
-.ogl-nav-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:20px;padding:6px 24px}
-.ogl-logo{height:116px;width:auto;display:block}
-@media(max-width:600px){.ogl-logo{height:76px}.ogl-nav-in{gap:10px;padding:6px 14px}}
-@media(max-width:380px){.ogl-logo{height:60px}}
-.ogl-nav-links{display:flex;gap:24px;margin-left:28px;flex:1}
-.ogl-nav-links a{color:#4b5563;text-decoration:none;font-size:13.5px;font-weight:600}
-.ogl-nav-links a:hover{color:${INK}}
-.ogl-nav-cta{display:flex;align-items:center;gap:10px}
-@media(max-width:880px){.ogl-nav-links{display:none}}
+/* nav */
+.hm-nav{position:sticky;top:0;z-index:50;background:rgba(251,250,248,.9);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
+.hm-nav-in{display:flex;align-items:center;gap:26px;height:64px}
+.hm-brand{display:flex;flex:none;text-decoration:none}
+.hm-brand img{height:42px;width:auto;max-width:none;display:block}
+.hm-links{display:flex;gap:22px;flex:1}
+.hm-links a{font-size:14px;font-weight:500;color:var(--ink2);text-decoration:none;position:relative}
+.hm-links a::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.hm-links a:hover{color:var(--ink)}
+.hm-links a:hover::after{transform:scaleX(1)}
+.hm-nav-cta{display:flex;gap:8px;margin-left:auto}
 
-.ogl-btn{display:inline-flex;align-items:center;gap:6px;background:${INK};color:#fff;border:none;border-radius:11px;padding:11px 18px;font-size:14px;font-weight:700;cursor:pointer;transition:transform .12s,box-shadow .2s;box-shadow:0 8px 20px rgba(21,26,36,.18)}
-.ogl-btn:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(21,26,36,.24)}
-.ogl-btn-lg{padding:14px 24px;font-size:15px;border-radius:12px}
-.ogl-btn-light{background:#fff;color:${INK};box-shadow:0 12px 30px rgba(0,0,0,.16)}
-.ogl-btn-ghost{display:inline-flex;align-items:center;gap:7px;background:transparent;color:#374151;border:1px solid #dfe3ea;border-radius:11px;padding:11px 16px;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer}
-.ogl-btn-ghost:hover{border-color:#c4cbd6}
-.ogl-btn-lg.ogl-btn-ghost{padding:14px 20px}
-.ogl-sec-cta{display:flex;justify-content:center;margin-top:38px}
+/* buttons */
+.hm-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:42px;padding:0 16px;border-radius:6px;border:1px solid #d9d5cd;background:#fff;color:var(--ink);font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .15s,border-color .15s,transform .15s}
+.hm-btn:hover{background:var(--soft)}
+.hm-btn:active{transform:translateY(1px)}
+.hm-btn-pri{background:var(--ink);border-color:var(--ink);color:#fff}
+.hm-btn-pri:hover{background:#2b2e35}
+.hm-btn-lg{height:50px;padding:0 22px;font-size:15px}
+.hm-btn-ghost{border-color:transparent;background:none}
+.hm-btn-ghost:hover{background:var(--warm)}
+.hm-btn-light{background:#fff;border-color:#fff;color:var(--ink)}
+.hm-btn-light:hover{background:#f1efea}
+.hm-btn-line{background:transparent;border-color:rgba(255,255,255,.35);color:#fff}
+.hm-btn-line:hover{background:rgba(255,255,255,.08)}
 
-/* hero - fills the first screen */
-.ogl-hero{max-width:1160px;margin:0 auto;min-height:calc(100vh - 66px);display:grid;grid-template-columns:1.08fr .92fr;gap:48px;align-items:center;padding:20px 44px 40px}
-@media(max-width:940px){.ogl-hero{min-height:0;grid-template-columns:1fr;gap:26px;padding:22px 26px 34px}}
-.ogl-hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 24px}
-.ogl-tag{background:#f2f5fb;border:1px solid #e6ecf6;color:#3f4855;font-size:12.5px;font-weight:600;padding:6px 13px;border-radius:999px}
-.ogl-hero-photo{position:relative;border-radius:20px;overflow:hidden;box-shadow:0 26px 60px rgba(21,26,36,.16);aspect-ratio:4/3.7;background:#eef1f5}
-.ogl-hero-photo img{width:100%;height:100%;object-fit:cover;display:block}
-.ogl-photo-badge{position:absolute;left:16px;bottom:16px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.96);border-radius:12px;padding:10px 13px;box-shadow:0 12px 26px rgba(21,26,36,.16)}
-.ogl-photo-badge-ic{width:30px;height:30px;border-radius:8px;background:#eef2ff;color:${PRIMARY};display:grid;place-items:center;flex-shrink:0}
-.ogl-photo-badge b{font-size:13px;display:block}
-.ogl-photo-badge small{font-size:11px;color:#6b7280;display:block}
-.ogl-trust{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;border:1px solid #eef0f4;border-radius:14px;padding:14px}
-.ogl-trust span{display:flex;flex-direction:column;gap:2px;font-size:11.5px;color:#6b7280}
-.ogl-trust span svg{color:${PRIMARY}}
-.ogl-trust b{font-size:12.5px;color:${INK}}
-.ogl-trust small{font-size:11px;color:#8a919c}
+/* hero */
+.hm-hero{position:relative;padding:26px 0 calc(36px + var(--sheet));background:linear-gradient(180deg,var(--page) 0%,var(--warm) 100%)}
+.hm-hero::before{content:"";position:absolute;inset:0 0 40%;background-image:radial-gradient(#e3ded4 1px,transparent 1.2px);background-size:22px 22px;-webkit-mask-image:linear-gradient(to bottom,#000,transparent);mask-image:linear-gradient(to bottom,#000,transparent);pointer-events:none}
+.hm-hero .hm-in{position:relative}
+/* Text left, the tour right - side by side, both on the first screen. */
+.hm-hero-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:48px;align-items:center;padding-top:14px}
+.hm-hero-video{min-width:0}
+.hm-hero h1{font-size:clamp(32px,3.6vw,52px);line-height:1.08;font-weight:700;margin-top:12px;text-wrap:balance}
+.hm-hero h1 em{font-style:normal;color:var(--red);display:inline-block}
+.hm-lead{font-size:17px;color:var(--ink2);margin-top:16px;max-width:34em}
+.hm-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.hm-center{justify-content:center}
+.hm-down{display:inline-flex;transform:rotate(90deg)}
+.hm-assure{display:flex;align-items:center;gap:7px;margin-top:14px;font-size:13.5px;color:var(--ink2)}
+.hm-assure svg{color:#16a34a;flex:none}
+.hm-facts{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:26px;border-top:1px solid var(--line)}
+.hm-facts li{padding:12px 10px 0 0;font-size:12.5px;color:var(--mute);line-height:1.35}
+.hm-facts b{display:block;margin-bottom:2px;font-family:Poppins,Inter,sans-serif;font-size:22px;font-weight:600;line-height:1.15;color:var(--ink);font-variant-numeric:tabular-nums}
+.hm-hero-video .hm-video{border-radius:14px;box-shadow:0 30px 70px -20px rgba(22,24,29,.32),0 0 0 1px rgba(22,24,29,.06)}
+.hm-chap{margin-top:12px}
+.hm-chap-bar{display:flex;gap:3px;height:6px}
+.hm-chap-bar button{position:relative;min-width:0;height:100%;padding:0;border:0;border-radius:3px;background:#e3ded4;cursor:pointer;overflow:hidden}
+.hm-chap-bar button:hover{background:#d6d0c4}
+.hm-chap-bar i{position:absolute;inset:0;background:var(--red);transform-origin:left;transition:transform .3s linear}
+.hm-chap-row{position:relative;display:flex;gap:6px;margin-top:10px;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(to right,transparent,#000 16px,#000 calc(100% - 16px),transparent);mask-image:linear-gradient(to right,transparent,#000 16px,#000 calc(100% - 16px),transparent);padding:0 16px}
+.hm-chap-row::-webkit-scrollbar{display:none}
+.hm-chap-row button{flex:none;height:30px;padding:0 11px;border:1px solid var(--line);border-radius:6px;background:#fff;font-size:12.5px;font-weight:500;color:var(--ink2);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.hm-chap-row button:hover{border-color:var(--base);color:var(--ink)}
+.hm-chap-row button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.hm-built{display:grid;gap:10px;margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}
+.hm-built-lbl{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.hm-built-row{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.hm-built-i{display:flex;align-items:center;gap:10px;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;font:inherit;color:var(--ink);text-align:left;text-decoration:none;cursor:pointer;transition:border-color .15s,transform .2s}
+.hm-built-i:hover{border-color:var(--base);transform:translateY(-2px)}
+.hm-built-i b{display:block;font-size:13.5px;font-weight:600;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hm-built-i small{display:block;font-size:12px;color:var(--mute);line-height:1.3}
+.hm-built-i>span:last-child{min-width:0}
 
-.ogl-eyebrow{display:inline-block;background:#eef2ff;color:${PRIMARY};font-size:12px;font-weight:700;padding:6px 13px;border-radius:999px;text-transform:uppercase;letter-spacing:.6px}
-.ogl-h1{font-size:clamp(28px,3.2vw,42px);line-height:1.14;font-weight:700;margin:14px 0 0;color:${INK}}
-.ogl-rot-wrap{display:inline-block;position:relative}
-.ogl-rot{display:inline-block;color:${PRIMARY};box-shadow:inset 0 -0.16em 0 rgba(59,91,219,.16);animation:oglRot .55s cubic-bezier(.2,.8,.2,1)}
-@keyframes oglRot{0%{opacity:0;transform:translateY(14px) rotateX(-40deg)}100%{opacity:1;transform:none}}
-.ogl-lead{font-size:16px;line-height:1.68;color:#454b57;margin:14px 0 22px;max-width:540px}
-.ogl-hero-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px 16px;margin-bottom:24px}
-@media(max-width:420px){.ogl-hero-grid{grid-template-columns:1fr}}
-.ogl-hg{display:flex;flex-direction:column;gap:1px;padding-left:2px}
-.ogl-hg-ic{width:34px;height:34px;border-radius:9px;background:#f4f6fb;border:1px solid #e9edf4;color:${PRIMARY};display:grid;place-items:center;margin-bottom:7px}
-.ogl-hg-t{font-size:13.5px;font-weight:700}
-.ogl-hg-d{font-size:11.5px;color:#8a919c;line-height:1.4;margin-top:1px}
-.ogl-hero-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.ogl-offer{display:inline-flex;align-items:center;gap:11px;flex-wrap:wrap;margin-top:16px;padding:9px 15px;
-  background:#fff7f7;border:1px solid #f7d3d5;border-radius:12px}
-.ogl-offer-badge{background:#e0242e;color:#fff;font-size:11px;font-weight:800;letter-spacing:.04em;border-radius:6px;padding:4px 8px}
-.ogl-offer-price{display:inline-flex;align-items:baseline;gap:8px}
-.ogl-offer-price s{color:#a2a7b4;font-size:14px;font-weight:600}
-.ogl-offer-price b{color:${INK};font-size:20px;font-weight:800}
-.ogl-offer-txt{font-size:12px;font-weight:600;color:#8a5b5e}
+/* video */
+.hm-video{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#15171c;box-shadow:0 18px 44px -16px rgba(22,24,29,.24),0 0 0 1px rgba(22,24,29,.06)}
+.hm-video video{position:absolute;inset:0;width:100%;height:100%;display:block;background:#15171c;cursor:pointer}
+.hm-video-cover{position:absolute;inset:0;padding:0;border:0;cursor:pointer;background:#15171c;display:block;width:100%}
+.hm-video-cover img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease,filter .2s}
+.hm-video-cover:hover img{transform:scale(1.015);filter:brightness(.95)}
+.hm-play{position:absolute;left:50%;top:50%;width:66px;height:66px;margin:-33px 0 0 -33px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;padding-left:3px;box-shadow:0 10px 30px rgba(0,0,0,.28);transition:background .15s}
+.hm-video-cover:hover .hm-play{background:var(--red)}
+.hm-len{position:absolute;right:12px;bottom:12px;background:rgba(22,24,29,.84);color:#fff;font-size:12.5px;font-weight:600;padding:3px 8px;border-radius:4px;font-variant-numeric:tabular-nums}
+.hm-vctl{position:absolute;right:12px;bottom:12px;display:flex;gap:6px}
+.hm-vctl button{display:inline-flex;align-items:center;gap:6px;height:34px;min-width:34px;padding:0 10px;justify-content:center;border:0;border-radius:6px;background:rgba(22,24,29,.78);color:#fff;font-size:12.5px;font-weight:600;cursor:pointer;backdrop-filter:blur(4px)}
+.hm-vctl button:hover{background:rgba(22,24,29,.92)}
 
-/* sections */
-.ogl-sec{max-width:1180px;margin:0 auto;padding:70px 24px}
-.ogl-alt{max-width:none;background:#f7f8fa;border-top:1px solid #eef0f4;border-bottom:1px solid #eef0f4}
-.ogl-alt>*{max-width:1180px;margin-left:auto;margin-right:auto}
-.ogl-sec-head{max-width:740px;margin:0 auto 40px;text-align:center}
-.ogl-kicker{font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:${PRIMARY}}
-.ogl-h2{font-size:clamp(25px,3.3vw,35px);font-weight:700;margin:12px 0 0;line-height:1.16}
-.ogl-sub{font-size:16px;line-height:1.68;color:#454b57;margin:14px 0 0}
+/* sections stacked like pages */
+.hm-sec{padding:52px 0}
+.hm-sheet{position:relative;margin-top:calc(-1 * var(--sheet));border-radius:var(--sheet) var(--sheet) 0 0;box-shadow:0 -16px 34px -24px rgba(22,24,29,.3)}
+.hm-bg-white{background:#fff}
+.hm-bg-page{background:var(--page)}
+.hm-bg-warm{background:var(--warm)}
+.hm-head{max-width:720px;margin-bottom:24px}
+.hm-head h2,.hm-zz h2,.hm-pro h2{font-size:clamp(26px,3vw,38px);line-height:1.15;font-weight:700;margin-top:8px;text-wrap:balance}
+.hm-kicker{display:block;font-size:12.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+.hm-sub{font-size:16.5px;color:var(--ink2);margin-top:12px;max-width:62ch}
+.hm-note{font-size:14px;color:var(--mute);margin-top:18px}
+.hm-ic{width:40px;height:40px;border-radius:8px;background:var(--warm);display:grid;place-items:center;color:var(--ink);flex:none}
+.hm-ic-sm{width:32px;height:32px;border-radius:7px}
+.hm-bg-warm .hm-ic{background:var(--soft)}
+.hm-ticks{list-style:none;padding:0;display:grid;gap:8px}
+.hm-ticks li{position:relative;padding-left:24px;font-size:14.5px;color:var(--ink2);line-height:1.5}
+.hm-ticks li::before{content:"";position:absolute;left:2px;top:6px;width:11px;height:6px;border-left:2px solid var(--red);border-bottom:2px solid var(--red);transform:rotate(-45deg)}
 
-.ogl-why-top{display:grid;grid-template-columns:1fr 1.2fr;gap:44px;align-items:center;margin-bottom:46px}
-@media(max-width:880px){.ogl-why-top{grid-template-columns:1fr;gap:24px}}
-.ogl-why-h{font-family:'Poppins',Inter,sans-serif;font-size:clamp(26px,3.4vw,38px);font-weight:700;letter-spacing:-.02em;line-height:1.14;margin:12px 0 0}
-.ogl-why-art{display:flex;justify-content:center}
-.ogl-why-svg{width:100%;max-width:680px;height:auto;border-radius:16px}
+/* photos */
+.hm-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.hm-chips button{height:34px;padding:0 13px;border:1px solid var(--line);border-radius:6px;background:#fff;font-size:13.5px;font-weight:500;color:var(--ink2);cursor:pointer}
+.hm-chips button:hover{border-color:var(--base);color:var(--ink)}
+.hm-chips button em{font-style:normal;color:var(--mute);margin-left:6px;font-variant-numeric:tabular-nums}
+.hm-chips button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.hm-chips button[aria-pressed="true"] em{color:rgba(255,255,255,.6)}
+.hm-stories{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:128px;grid-auto-flow:dense;gap:10px}
+.hm-st{position:relative;padding:0;border:0;border-radius:8px;overflow:hidden;cursor:zoom-in;background:var(--warm);grid-row:span 2}
+.hm-st.is-wide{grid-column:span 2}
+.hm-st img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+.hm-st:hover img{transform:scale(1.05)}
+.hm-st-cap{position:absolute;left:0;right:0;bottom:0;padding:30px 12px 10px;background:linear-gradient(to top,rgba(15,17,21,.8),rgba(15,17,21,0));color:#fff;text-align:left;opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s}
+.hm-st:hover .hm-st-cap,.hm-st:focus-visible .hm-st-cap{opacity:1;transform:none}
+.hm-st-cap b{display:block;font-size:13px;font-weight:600;line-height:1.35}
+.hm-st-cap small{display:block;font-size:11.5px;opacity:.78;margin-top:2px}
+@media (hover:none){.hm-st-cap{opacity:1;transform:none}}
+.hm-stories-more{display:flex;justify-content:center;margin-top:18px}
+.hm-lb{position:fixed;inset:0;z-index:100;background:rgba(10,11,14,.975);display:grid;place-items:center;padding:60px 76px;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.hm-lb,.hm-lb *{box-sizing:border-box}
+.hm-lb figure{margin:0;display:flex;flex-direction:column;align-items:center;max-width:100%}
+.hm-lb img{max-width:min(1200px,100%);max-height:calc(100vh - 160px);object-fit:contain;display:block;border-radius:6px;background:center/contain no-repeat}
+.hm-lb figcaption{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;width:100%;margin-top:12px;color:#e5e7eb;font-size:14px}
+.hm-lb figcaption span{color:#9ca3af;font-variant-numeric:tabular-nums}
+.hm-lb-x,.hm-lb-prev,.hm-lb-next{position:absolute;width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-size:26px;line-height:1;cursor:pointer;display:grid;place-items:center;font-family:inherit}
+.hm-lb-x:hover,.hm-lb-prev:hover,.hm-lb-next:hover{background:rgba(255,255,255,.16)}
+.hm-lb-x{top:14px;right:14px}
+.hm-lb-prev{left:16px;top:50%;margin-top:-23px}
+.hm-lb-next{right:16px;top:50%;margin-top:-23px}
 
-.ogl-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-@media(max-width:820px){.ogl-facts{grid-template-columns:1fr}}
-.ogl-fact{position:relative;overflow:hidden;background:#fff;border:1px solid #eceef2;border-radius:18px;padding:24px 24px 22px;box-shadow:0 4px 16px rgba(21,26,36,.05)}
-.ogl-fact-wave{position:absolute;left:0;right:0;bottom:0;height:38px;border-radius:50% 50% 0 0 / 100% 100% 0 0;opacity:.5}
-.ogl-fact-row{display:flex;align-items:center;gap:14px;position:relative}
-.ogl-fact-ic{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;flex-shrink:0}
-.ogl-fact-stat{font-size:32px;font-weight:700;line-height:1}
-.ogl-fact-bar{width:34px;height:3px;border-radius:2px;margin:14px 0 10px;position:relative}
-.ogl-fact-text{font-size:14px;color:#5b6470;line-height:1.55;position:relative}
-.ogl-facts-note{display:flex;align-items:flex-start;gap:10px;justify-content:center;text-align:left;font-size:12.5px;color:#6b7280;line-height:1.5;background:#eef6f0;border:1px solid #d9ece1;border-radius:12px;padding:12px 16px;margin:22px auto 0;max-width:720px}
-.ogl-note-shield{color:#2f9e6f;flex-shrink:0;margin-top:1px}
+/* how it works: one story picture, four steps under it */
+.hm-story{margin:4px -8px 0}
+.hm-story img{width:100%;height:auto;display:block}
+.hm-steps{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:10px}
+.hm-steps li{display:flex;gap:12px;align-items:flex-start;padding-top:14px;border-top:2px solid var(--line)}
+.hm-step-n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:Poppins,Inter,sans-serif;font-size:13px;font-weight:600}
+.hm-steps h3{font-size:16.5px;font-weight:600;line-height:1.3}
+.hm-steps p{font-size:14px;color:var(--ink2);margin-top:4px;line-height:1.5}
 
-.ogl-dims{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-@media(max-width:980px){.ogl-dims{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.ogl-dims{grid-template-columns:1fr}}
-.ogl-dim{background:#fff;border:1px solid #eceef2;border-radius:16px;overflow:hidden;transition:transform .18s,box-shadow .2s}
-.ogl-dim:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(21,26,36,.08)}
-.ogl-dim-img{position:relative;height:116px;overflow:hidden;background:#f0f2f5}
-.ogl-dim-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
-.ogl-dim:hover .ogl-dim-img img{transform:scale(1.05)}
-.ogl-dim-ic{position:absolute;left:14px;bottom:-17px;width:40px;height:40px;border-radius:11px;background:#fff;border:1px solid #eceef2;display:grid;place-items:center;color:${PRIMARY};box-shadow:0 6px 14px rgba(21,26,36,.12)}
-.ogl-dim-body{padding:26px 18px 20px}
-.ogl-dim-t{font-size:16px;font-weight:700}
-.ogl-dim-f{font-size:12px;font-weight:700;color:${PRIMARY};margin:3px 0 8px}
-.ogl-dim-d{font-size:13.5px;color:#5b6470;line-height:1.55}
+/* zig-zag rows: text one side, a playing video on the other */
+.hm-zzs{display:grid;gap:56px}
+.hm-zz{display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);gap:52px;align-items:center}
+.hm-zz.is-flip{grid-template-columns:minmax(0,1.14fr) minmax(0,.86fr)}
+.hm-zz.is-flip .hm-zz-copy{order:2}
+.hm-zz.is-even{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px}
+.hm-zz-head{display:flex;align-items:center;gap:12px}
+.hm-zz-head img{width:64px;height:52px;object-fit:contain;display:block;transition:transform .4s}
+.hm-zz:hover .hm-zz-head img{transform:translateY(-3px) rotate(-3deg)}
+.hm-zz-head img.is-photo{width:58px;height:44px;object-fit:cover;border-radius:6px}
+.hm-zz-n{font-size:12.5px;font-weight:600;letter-spacing:.06em;color:var(--mute);font-variant-numeric:tabular-nums}
+.hm-zz h3{font-size:clamp(22px,2.2vw,28px);font-weight:700;line-height:1.2;margin-top:12px}
+.hm-zz-line{font-size:16px;color:var(--ink2);margin-top:6px}
+.hm-zz .hm-ticks{margin-top:16px}
+.hm-dims{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
+.hm-dims li{padding:6px 11px;border:1px solid var(--line);border-radius:6px;background:#fff;font-size:13.5px;font-weight:500;color:var(--ink)}
+.hm-views{margin-top:16px}
+.hm-views-lbl{display:block;font-size:12.5px;font-weight:600;color:var(--mute)}
+.hm-views ul{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.hm-views li{padding:6px 11px;border-left:3px solid var(--red);background:#fff;border-radius:0 6px 6px 0;font-size:13.5px;font-weight:600;cursor:help}
+#report .hm-sub{margin-top:10px}
+#report .hm-dims{margin-top:14px}
+#report .hm-dims li{padding:5px 10px;font-size:13px}
+#schools .hm-ticks{margin-top:18px}
 
-.ogl-steps{display:flex;align-items:stretch;gap:0;margin-top:24px}
-@media(max-width:900px){.ogl-steps{flex-wrap:wrap;justify-content:center;gap:14px}}
-.ogl-step-cell{flex:1;display:flex;align-items:stretch}
-@media(max-width:900px){.ogl-step-cell{flex:0 0 260px}}
-.ogl-step{position:relative;flex:1;background:#fff;border:1px solid #edf0f5;border-bottom:3px solid;border-radius:16px;padding:34px 18px 22px;text-align:center;margin-top:14px;box-shadow:0 4px 16px rgba(21,26,36,.05)}
-.ogl-step-n{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:30px;height:30px;border-radius:50%;color:#fff;font-size:14px;font-weight:700;display:grid;place-items:center;box-shadow:0 6px 14px rgba(21,26,36,.18)}
-.ogl-step-ic{width:58px;height:58px;border-radius:50%;margin:6px auto 12px;display:grid;place-items:center}
-.ogl-step-t{font-size:16px;font-weight:700}
-.ogl-step-d{font-size:12.5px;color:#6b7280;line-height:1.5;margin-top:8px}
-.ogl-step-arrow{display:flex;align-items:center;justify-content:center;color:#c3ccda;width:38px;flex-shrink:0}
-@media(max-width:900px){.ogl-step-arrow{display:none}}
+/* tools, professionals, trust */
+.hm-tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.hm-tool,.hm-trust>div{padding:22px;background:#fff;border:1px solid var(--line);border-radius:8px;transition:border-color .2s,transform .25s}
+.hm-tool:hover,.hm-trust>div:hover{border-color:var(--base);transform:translateY(-3px)}
+.hm-tool h3,.hm-trust h3{font-size:16.5px;font-weight:600;margin-top:14px}
+.hm-tool p,.hm-trust p{font-size:14px;color:var(--ink2);margin-top:6px;line-height:1.6}
+.hm-pro{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:44px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:36px}
+.hm-pro .hm-ticks{margin:18px 0 24px}
+.hm-pro-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.hm-pro-stats>div{padding:20px;border-bottom:1px solid var(--line)}
+.hm-pro-stats>div:nth-child(odd){border-right:1px solid var(--line)}
+.hm-pro-stats>div:nth-last-child(-n+2){border-bottom:0}
+.hm-pro-stats dt{font-family:Poppins,Inter,sans-serif;font-size:28px;font-weight:600;line-height:1.1;letter-spacing:-.02em}
+.hm-pro-stats dd{font-size:13px;color:var(--mute);margin-top:3px}
+.hm-trust{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 
-.ogl-sci-banner{display:flex;align-items:center;gap:18px;background:#f7f9fc;border:1px solid #e9edf3;border-radius:18px;padding:20px 24px;margin-top:34px}
-@media(max-width:700px){.ogl-sci-banner{flex-direction:column;text-align:center}}
-.ogl-sci-shield{width:52px;height:52px;border-radius:14px;background:#eaf0ff;color:${PRIMARY};display:grid;place-items:center;flex-shrink:0}
-.ogl-sci-text{flex:1}
-.ogl-sci-text b{display:block;font-size:16px;font-weight:700;margin-bottom:3px}
-.ogl-sci-text span{font-size:13.5px;color:#6b7280;line-height:1.5}
-.ogl-sci-charts{display:flex;align-items:center;gap:16px;flex-shrink:0}
+/* faq */
+.hm-faq-in{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:48px;align-items:start}
+.hm-faq-side{position:sticky;top:84px}
+.hm-faq-art{max-width:340px}
+.hm-faq-art img{width:100%;height:auto;display:block;border-radius:14px;box-shadow:0 18px 40px -20px rgba(22,24,29,.3)}
+.hm-faq{border-top:1px solid var(--line)}
+.hm-faq details{border-bottom:1px solid var(--line)}
+.hm-faq summary{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:17px 0;cursor:pointer;font-weight:600;font-size:16px;list-style:none;transition:color .15s}
+.hm-faq summary:hover{color:var(--red)}
+.hm-faq summary::-webkit-details-marker{display:none}
+.hm-faq summary::after{content:"+";font-size:22px;font-weight:400;color:var(--mute);line-height:1;transition:transform .25s}
+.hm-faq details[open] summary::after{transform:rotate(45deg)}
+.hm-faq p{padding:0 0 18px;font-size:15px;color:var(--ink2);max-width:62ch}
+.hm-faq details[open] p{animation:hmFade .35s ease}
 
-.ogl-proof{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media(max-width:820px){.ogl-proof{grid-template-columns:1fr}}
-.ogl-proof-card{background:#fff;border:1px solid #eceef2;border-radius:18px;padding:26px 24px;box-shadow:0 2px 12px rgba(21,26,36,.04)}
-.ogl-proof-t{font-size:16px;font-weight:700;margin:0 0 18px}
-.ogl-proof-note{font-size:13px;color:#6b7280;line-height:1.55;margin:16px 0 0}
-.ogl-bc{display:flex;flex-direction:column;gap:14px}
-.ogl-bc-row{display:flex;align-items:center;gap:12px}
-.ogl-bc-l{width:112px;font-size:13.5px;color:#374151;font-weight:600;flex-shrink:0}
-.ogl-bc-track{flex:1;height:14px;background:#eef1f5;border-radius:8px;overflow:hidden}
-.ogl-bc-fill{height:100%;border-radius:8px;transition:width 1s ease}
-.ogl-bc-v{width:38px;text-align:right;font-weight:700;font-size:13.5px}
-.ogl-pie{display:flex;gap:20px;align-items:center;flex-wrap:wrap;justify-content:center}
-.ogl-pie-leg{display:flex;flex-direction:column;gap:8px;font-size:13px;color:#374151}
-.ogl-pie-leg span{display:flex;align-items:center;gap:8px}
-.ogl-pie-leg i{width:11px;height:11px;border-radius:3px;display:inline-block}
+/* cta + footer */
+.hm-cta{background:var(--ink);padding:64px 0 calc(64px + 4px);text-align:center}
+.hm-cta h2{color:#fff;font-size:clamp(28px,3.6vw,44px);font-weight:700;text-wrap:balance}
+.hm-cta p{color:rgba(255,255,255,.72);margin-top:10px;font-size:16px}
+.hm-foot{background:#0f1115;color:#aab0bb;padding:24px 0}
+.hm-foot-in{display:flex;align-items:center;justify-content:space-between;gap:16px 24px;flex-wrap:wrap}
+.hm-foot-brand{display:flex;align-items:center;gap:12px;font-size:13px}
+.hm-logo-chip{background:#fff;border-radius:6px;padding:4px 8px;display:inline-flex}
+.hm-logo-chip img{height:28px;width:auto;max-width:none;display:block}
+.hm-foot-links{display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
+.hm-foot-links a{color:#cfd4dc;text-decoration:none}
+.hm-foot-links a:hover{color:#fff}
+.hm-copy{font-size:12.5px;color:#6b7280}
 
-.ogl-report-row{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:center}
-@media(max-width:860px){.ogl-report-row{grid-template-columns:1fr;gap:24px}}
-.ogl-report-viz{display:flex;justify-content:center;background:linear-gradient(140deg,#eaf0fc,#f6f8fd);border-radius:24px;padding:36px 26px}
-.ogl-radar{width:210px;height:210px;display:block}
-.ogl-repcard{background:#fff;border:1px solid #edf0f6;border-radius:20px;padding:20px;box-shadow:0 26px 60px rgba(21,26,36,.14);max-width:390px;width:100%}
-.ogl-repcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px}
-.ogl-repcard-kick{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#94a3b8}
-.ogl-repcard-name{font-size:18px;font-weight:700;color:${INK};margin-top:2px}
-.ogl-repcard-fit{text-align:center;background:#eef2ff;border-radius:12px;padding:7px 13px}
-.ogl-repcard-fit b{display:block;font-size:19px;font-weight:700;color:${PRIMARY}}
-.ogl-repcard-fit span{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:#9aa6c4}
-.ogl-repcard-radar{display:flex;justify-content:center}
-.ogl-repcard-radar svg{width:186px;height:186px}
-.ogl-repcard-bars{display:flex;flex-direction:column;gap:9px;margin-top:6px}
-.ogl-repcard-bar{display:flex;align-items:center;gap:10px;font-size:12px;color:#5b6470;font-weight:600}
-.ogl-repcard-bar span{width:82px;flex-shrink:0}
-.ogl-repcard-bar i{flex:1;height:8px;background:#eef1f5;border-radius:6px;overflow:hidden;display:block}
-.ogl-repcard-bar b{display:block;height:100%;background:${PRIMARY};border-radius:6px}
-.ogl-repcard-bar em{width:24px;text-align:right;font-style:normal;color:${INK};font-weight:700}
-.ogl-check{list-style:none;padding:0;margin:16px 0 24px;display:flex;flex-direction:column;gap:10px}
-.ogl-check li{position:relative;padding-left:28px;font-size:14.5px;color:#374151;line-height:1.5}
-.ogl-check li:before{content:"✓";position:absolute;left:0;top:0;width:19px;height:19px;background:#e9f4ef;color:#2f9e6f;border-radius:50%;font-size:12px;font-weight:700;display:grid;place-items:center}
+/* motion - cheap: transforms and opacity only */
+@keyframes hmUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes hmFade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.hm-enter{animation:hmUp .7s cubic-bezier(.2,.7,.2,1) both}
+.hm-d1{animation-delay:.06s}.hm-d2{animation-delay:.14s}.hm-d3{animation-delay:.22s}.hm-d4{animation-delay:.32s}
+[data-rv]{transition:opacity .75s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1)}
+.rv-wait{opacity:0;transform:translateY(26px)}
+.rv-wait[data-rv="left"]{transform:translateX(-40px)}
+.rv-wait[data-rv="right"]{transform:translateX(40px)}
+.rv-wait[data-rv="zoom"]{transform:scale(.95)}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hm-sheet{animation:hmSheet linear both;animation-timeline:view();animation-range:entry 0% entry 60%}
+    @keyframes hmSheet{from{transform:translateY(46px) scale(.985)}to{transform:none}}
+    /* The photo viewer is position:fixed inside this section - a transformed
+       ancestor would pin it to the section instead of the screen. */
+    #stories.hm-sheet{animation:none}
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .hm *,.hm *::before,.hm *::after{animation:none!important;transition:none!important}
+}
 
-.ogl-rev-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;max-width:1180px;margin:0 auto 38px;flex-wrap:wrap}
-.ogl-rev-head .ogl-h2{margin-top:10px}
-.ogl-rev-score{text-align:right;flex-shrink:0}
-.ogl-rev-score-n{font-size:36px;font-weight:700;color:${INK};line-height:1;font-family:'Poppins',Inter,sans-serif}
-.ogl-rev-score-n span{font-size:16px;color:#9aa6c4;font-weight:600}
-.ogl-rev-score-l{font-size:12px;color:#8a919c;margin-top:3px}
-.ogl-reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-@media(max-width:860px){.ogl-reviews{grid-template-columns:1fr}.ogl-rev-head{text-align:left}.ogl-rev-score{text-align:left}}
-.ogl-review{position:relative;overflow:hidden;background:#fff;border:1px solid #eceef2;border-radius:18px;padding:28px 24px 24px;margin:0;box-shadow:0 6px 20px rgba(21,26,36,.05)}
-.ogl-review-hot{border-color:#c9d6f5;box-shadow:0 20px 46px rgba(59,91,219,.16)}
-.ogl-quote{position:absolute;top:2px;right:20px;font-family:Georgia,serif;font-size:70px;color:#eef1f8;line-height:1;pointer-events:none}
-.ogl-stars{color:#e0a92e;font-size:15px;letter-spacing:2px}
-.ogl-review-q{position:relative;font-size:15px;line-height:1.62;color:#374151;margin:12px 0 18px}
-.ogl-review-by{display:flex;align-items:center;gap:11px}
-.ogl-ava{width:40px;height:40px;border-radius:50%;color:#fff;font-weight:700;display:grid;place-items:center;font-size:16px;flex-shrink:0}
-.ogl-review-by b{font-size:14px;display:block}
-.ogl-review-role{font-size:12.5px;color:#8a919c}
-
-.ogl-cta{background:${INK};color:#fff;text-align:center;padding:66px 24px}
-.ogl-cta-t{font-size:clamp(28px,5vw,48px);font-weight:800;margin:0 0 16px;color:#fff;line-height:1.2;letter-spacing:-.02em}
-.ogl-cta-s{font-size:16px;opacity:.85;margin:12px 0 26px}
-
-.ogl-gallery-flip{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin:48px 0;perspective:1000px}
-@media(max-width:1200px){.ogl-gallery-flip{grid-template-columns:repeat(3,1fr);gap:22px}}
-@media(max-width:768px){.ogl-gallery-flip{grid-template-columns:repeat(2,1fr);gap:20px}}
-@media(max-width:480px){.ogl-gallery-flip{grid-template-columns:1fr;gap:18px}}
-.ogl-flip-card{aspect-ratio:1;cursor:pointer;perspective:1000px;height:100%}
-.ogl-flip-inner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.68,-.55,.265,1.55);transform-style:preserve-3d;box-shadow:0 12px 32px rgba(21,26,36,.16)}
-.ogl-flip-card:hover .ogl-flip-inner{transform:rotateY(180deg)}
-.ogl-flip-front,.ogl-flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;border-radius:18px;font-weight:700}
-.ogl-flip-front{background:#fff;border:2px solid #e5e8ee;overflow:hidden}
-.ogl-flip-front img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
-.ogl-flip-card:hover .ogl-flip-front img{transform:scale(1.08)}
-.ogl-flip-back{color:#151a24;transform:rotateY(180deg);padding:28px 24px;text-align:center}
-.ogl-flip-content{display:flex;flex-direction:column;gap:14px;justify-content:center;align-items:center;height:100%;width:100%}
-.ogl-flip-content h3{font-size:17px;margin:0;line-height:1.2;font-weight:800;letter-spacing:-.3px;color:#0f172a}
-.ogl-flip-warning{display:flex;flex-direction:column;gap:8px;align-items:center;flex:1;justify-content:center}
-.ogl-warning-icon{font-size:28px;display:block}
-.ogl-flip-warning p{font-size:13px;margin:0;line-height:1.5;opacity:.85;font-weight:500;color:#374151}
-.ogl-flip-btn{background:#fff;color:#0f172a;border:none;padding:12px 24px;border-radius:24px;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 6px 16px rgba(0,0,0,.15);text-transform:uppercase;letter-spacing:.5px}
-.ogl-flip-btn:hover{transform:scale(1.08);box-shadow:0 8px 20px rgba(0,0,0,.25)}
-@media(prefers-reduced-motion:reduce){.ogl-flip-inner{transition:none}}
-
-.ogl-footer{background:#151a24;padding:20px 24px}
-.ogl-footer-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
-@media(max-width:768px){.ogl-footer-inner{flex-direction:column;gap:16px;text-align:center}}
-.ogl-footer-left{display:flex;align-items:center;gap:12px;flex-shrink:0}
-.ogl-footer-left img{height:28px;width:auto}
-.ogl-footer-left span{font-size:12px;color:#cbd5e1}
-.ogl-footer-center{display:flex;gap:16px;flex:1;justify-content:center;flex-wrap:wrap}
-@media(max-width:768px){.ogl-footer-center{order:3;flex-basis:100%}}
-.ogl-footer-center a{font-size:12px;color:#cbd5e1;text-decoration:none;transition:color .2s}
-.ogl-footer-center a:hover{color:#fff}
-.ogl-footer-right{display:flex;gap:14px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;align-items:center}
-@media(max-width:768px){.ogl-footer-right{order:2;justify-content:center}}
-.ogl-footer-right a{font-size:12px;color:#cbd5e1;text-decoration:none;transition:color .2s}
-.ogl-footer-right a:hover{color:#fff}
-.ogl-footer-right span{font-size:11px;color:#64748b}
+@media (max-width:1080px){
+  .hm-links{display:none}
+  .hm-tools{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hm-built-row{display:flex;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .hm-built-row::-webkit-scrollbar{display:none}
+  .hm-built-i{flex:none}
+}
+@media (max-width:900px){
+  .hm-hero{padding:22px 0 calc(28px + var(--sheet))}
+  /* Stacked on phones and tablets: headline, buttons, then the tour - the
+     numbers move under it, so the video is on the first screen too. */
+  .hm-hero-grid{display:flex;flex-direction:column;align-items:stretch;gap:0;padding-top:0}
+  .hm-hero-copy{display:contents}
+  .hm-hero-video{order:1;margin-top:22px}
+  .hm-hero .hm-facts{order:2}
+  .hm-pro,.hm-faq-in{grid-template-columns:minmax(0,1fr);gap:26px}
+  .hm-zz,.hm-zz.is-flip,.hm-zz.is-even{grid-template-columns:minmax(0,1fr);gap:18px}
+  .hm-zz.is-flip .hm-zz-copy{order:0}
+  .hm-zzs{gap:44px}
+  .hm-stories{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:116px}
+  .hm-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hm-trust{grid-template-columns:minmax(0,1fr)}
+  .hm-sec{padding:40px 0}
+  .hm-pro{padding:24px}
+  .hm-faq-side{position:static}
+  .hm-faq-art{max-width:260px}
+  .rv-wait[data-rv="left"],.rv-wait[data-rv="right"]{transform:translateY(26px)}
+}
+@media (max-width:560px){
+  .hm{--sheet:18px}
+  .hm-in{padding:0 16px}
+  .hm-nav-in{height:58px;gap:10px}
+  .hm-brand img{height:38px}
+  .hm-hide-sm{display:none}
+  .hm-show-sm{display:inline}
+  .hm-hero h1{margin-top:14px}
+  .hm-lead{font-size:16px}
+  .hm-actions .hm-btn{width:100%}
+  .hm-facts{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:4px}
+  .hm-facts b{font-size:20px}
+  .hm-hero .hm-hero-video{width:calc(100% + 12px);margin-top:20px;margin-left:-6px;margin-right:-6px}
+  .hm-hero-video .hm-video{border-radius:10px}
+  .hm-chap-row{margin-left:-16px;margin-right:-16px}
+  .hm-built{margin-top:22px}
+  .hm-built-row{margin:0 -16px;padding:0 16px 2px}
+  .hm-tools,.hm-steps,.hm-views{grid-template-columns:minmax(0,1fr)}
+  .hm-steps{gap:12px}
+  .hm-story{margin:0 -16px}
+  .hm-play{width:56px;height:56px;margin:-28px 0 0 -28px}
+  .hm-pro-stats dt{font-size:24px}
+  .hm-pro{padding:20px}
+  .hm-stories{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:104px;gap:8px}
+  .hm-lb{padding:56px 10px 76px}
+  .hm-lb-prev,.hm-lb-next{top:auto;bottom:16px;margin-top:0}
+  .hm-lb-prev{left:calc(50% - 56px)}
+  .hm-lb-next{right:calc(50% - 56px)}
+}
 `;
