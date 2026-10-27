@@ -36,16 +36,7 @@ import dynamic from "next/dynamic";
 import { Icon, CATEGORY_ABBR } from "@/app/Icons";
 import { categoryLabel } from "@/lib/auth/formOptions";
 import { C, Ring, SkillBar, RadarChart, dimColor, type RadarDatum } from "@/app/account/viz";
-import { adaptClass11ToSummary, isCurrentClass11Shape } from "@/lib/report/adaptClass11";
-import { buildClass11ExtraSheets } from "@/lib/report/class11ExtraSheets";
-import { buildCareerFit1112Sheets } from "@/lib/report/careerFit1112Sheets";
-import { adaptGraduateToSummary, isCurrentGraduateShape } from "@/lib/report/adaptGraduate";
-import { buildCareerFitGradSheets } from "@/lib/report/careerFitGradSheets";
-import { buildGradExtraSheets } from "@/lib/report/gradExtraSheets";
-import {
-  adaptClass6ToSummary, adaptClass7ToSummary, adaptClass8ToSummary,
-  isCurrentClass6Shape, isCurrentClass7Shape, isCurrentClass8Shape,
-} from "@/lib/report/adaptClass678";
+import { prepareStudentReport } from "@/lib/report/prepareStudentReport";
 // The full report is ~85KB of source behind a "Full report" click, and most
 // dashboard visits never open it. Loading it on demand keeps that weight off
 // the dashboard's own first paint.
@@ -212,13 +203,12 @@ export interface ExtraSection {
 }
 
 export default function Dashboard({ a: savedSummary, profile, email, onSignOut, extraSections = [] }: { a: AssessmentSummary; profile?: UserProfile | null; email?: string | null; onSignOut?: () => void; extraSections?: ExtraSection[] }) {
-  // Undergraduate results are stored as the scorer's raw output; the dashboard
-  // needs the adapted summary (8 pillars, interest code, EI...) everywhere, not
-  // only inside the full report. Every other class passes through unchanged.
-  const a = useMemo(() => {
-    const g = (savedSummary as any)?.graduateOutput;
-    return savedSummary?.journeyCode === "grad" && isCurrentGraduateShape(g) ? adaptGraduateToSummary(g, savedSummary) : savedSummary;
-  }, [savedSummary]);
+  // Classes 6-8, 11-12 and Graduates store their scorer's raw output; the
+  // dashboard reads the same adapted summary as the report
+  // (lib/report/prepareStudentReport.ts), or every number would show as 0.
+  // `stale` = saved by an earlier version of the assessment: no usable scores.
+  const prepared = useMemo(() => prepareStudentReport(savedSummary, { sheets: false }), [savedSummary]);
+  const a = prepared.summary;
   const router = useRouter();
   const [view, setView] = useState<"dashboard" | "report" | "feature">("dashboard");
   const [navOpen, setNavOpen] = useState(false);
@@ -330,6 +320,13 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
   const arch = archetype(a);
   const code = a.riasecCode || (a.themes ?? []).slice(0, 3).map((t) => t.letter).join("");
   const strongest = radar.slice().sort((x, y) => y.score - x.score)[0];
+  // A result with no usable scores (an earlier assessment version) gets a
+  // plain notice on the dashboard instead of every number drawn as 0.
+  const hasScores = !prepared.stale && radar.some((r) => r.score > 0);
+  const hasMind = [a.topIntelligences, a.topAptitudes, a.topValues, a.learningStyles].some((l) => (l ?? []).length > 0);
+  // Menu and search list only the result sections actually on the page.
+  const shown = (n: { id: string; group: string }) =>
+    n.group !== RESULTS || (hasScores ? n.id !== "mind" || hasMind : n.id === "overview");
   const plan = actionPlan(a, topDomainName);
   const scoreOf = (k: string) => radar.find((r) => r.key === k)?.score ?? 0;
   const pbars = customDims.size
@@ -359,63 +356,11 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
   }
 
   if (view === "report") {
-    const journeyCode = a.journeyCode || "";
-    const isClass6 = journeyCode === "6";
-    const isClass7 = journeyCode === "7";
-    const isClass8 = journeyCode === "8";
-    // "11" and "12" are the current, separately-registered classes; "11-12"
-    // is the legacy combined category kept working for older accounts.
-    const isClass1112 = journeyCode === "11" || journeyCode === "12" || journeyCode === "11-12";
-    // A report saved before the class 11-12 question-bank/scoring rewrite is
-    // shaped like the old (partly fake/hardcoded) engine - not just missing
-    // a few fields, but scored by logic this whole pass replaced. Rendering
-    // it through the new adapter either crashes on the shape mismatch or
-    // silently shows stale numbers, so it's treated as "no report yet"
-    // instead, with a clear way forward.
-    const class11Output = (a as any).class11Output;
-    const class11Ready = isClass1112 && isCurrentClass11Shape(class11Output);
-    const class11Stale = isClass1112 && !!class11Output && !class11Ready;
-
-    const isGraduate = journeyCode === "grad";
-    const graduateOutput = (a as any).graduateOutput;
-    const graduateReady = isGraduate && isCurrentGraduateShape(graduateOutput);
-    const graduateStale = isGraduate && !!graduateOutput && !graduateReady;
-
-    // Same staleness guard for classes 6-8: a report saved before the
-    // 15-domain catalogue rebuild (see lib/report/knowledge.ts) has
-    // domainAffinities scored against the OLD, differently-meaning 8-letter
-    // domains - not a smaller version of the current data, but affinities
-    // for domains that no longer exist.
-    const class6Output = (a as any).class6Output;
-    const class7Output = (a as any).class7Output;
-    const class8Output = (a as any).class8Output;
-    const class6Ready = isClass6 && isCurrentClass6Shape(class6Output);
-    const class7Ready = isClass7 && isCurrentClass7Shape(class7Output);
-    const class8Ready = isClass8 && isCurrentClass8Shape(class8Output);
-    const class678Stale =
-      (isClass6 && !!class6Output && !class6Ready) ||
-      (isClass7 && !!class7Output && !class7Ready) ||
-      (isClass8 && !!class8Output && !class8Ready);
-
-    let reportSummary = a;
-    let reportExtraSheets: { id: string; kicker: string; node: ReactNode }[] = [];
-    if (class11Ready) {
-      reportSummary = adaptClass11ToSummary(class11Output, a);
-      const c1112Category = journeyCode === "11" ? "class_11" : journeyCode === "12" ? "class_12" : "class_11_12";
-      reportExtraSheets = [
-        ...buildCareerFit1112Sheets(class11Output, c1112Category),
-        ...buildClass11ExtraSheets(class11Output),
-      ];
-    } else if (graduateReady) {
-      reportSummary = adaptGraduateToSummary(graduateOutput, a);
-      reportExtraSheets = [...buildCareerFitGradSheets(graduateOutput), ...buildGradExtraSheets(graduateOutput)];
-    } else if (class6Ready) {
-      reportSummary = adaptClass6ToSummary(class6Output, a);
-    } else if (class7Ready) {
-      reportSummary = adaptClass7ToSummary(class7Output, a);
-    } else if (class8Ready) {
-      reportSummary = adaptClass8ToSummary(class8Output, a);
-    }
+    // The same per-class adaptation every report screen uses
+    // (lib/report/prepareStudentReport.ts): a stale report (saved by an
+    // earlier version of the assessment) is shown as "needs a refresh"
+    // rather than rendered with numbers the current scoring can't explain.
+    const rep = prepareStudentReport(savedSummary);
 
     return (
       <div className="ogd-reportwrap">
@@ -429,7 +374,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
           </span>
         </div>
 
-        {class11Stale || class678Stale || graduateStale ? (
+        {rep.stale ? (
           <div style={{ maxWidth: 560, margin: "80px auto", textAlign: "center", padding: "0 20px" }}>
             <h2 style={{ fontSize: 20, fontWeight: 800, color: "#141417", marginBottom: 10 }}>
               Your report needs a quick refresh
@@ -449,13 +394,13 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
           // report is genuinely identical (same code, CSS, images) rather
           // than a separately designed report per class that drifts from it.
           <FullReport
-            a={reportSummary}
+            a={rep.summary}
             name={name}
             institution={profile?.institution || undefined}
             studentClass={profile?.category ? categoryLabel(profile.category) : undefined}
-            hideCareerFitSections={class11Ready || graduateReady}
+            hideCareerFitSections={rep.hideCareerFitSections}
             extraSheets={[
-              ...reportExtraSheets,
+              ...rep.extraSheets,
               ...extraSections
                 .filter((x) => x.inFullReport)
                 .map((x) => ({ id: x.id, kicker: x.label, node: x.reportNode ?? x.node })),
@@ -473,6 +418,10 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
   const classLabel = profile?.category ? categoryLabel(profile.category) : "";
   const openReport = () => { setView("report"); window.scrollTo(0, 0); };
   const themes3 = (a.themes ?? []).slice(0, 3);
+  // Some class adapters start the summary with the student's name, which is
+  // saved empty - so it can begin ", you're a..." Trim that and capitalise.
+  const heroRaw = (a.summary || arch.tagline || "").replace(/^[\s,;:-]+/, "");
+  const heroLine = heroRaw.charAt(0).toUpperCase() + heroRaw.slice(1);
   const eiResult = resultOf("emotional_intelligence", a)?.value;
 
   // The student's own progress across the feature courses and days active
@@ -490,7 +439,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
   const courseKey: Record<string, string> = { money: "money", legal: "legal", exams: "exams", scholarships: "scholarships", "study-abroad": "study-abroad", research: "research" };
 
   const search: SearchItem[] = [
-    ...navItems.filter((n) => n.group === RESULTS).map((n) => ({ label: n.label, kind: "Section", onSelect: () => go(n.id) })),
+    ...navItems.filter((n) => n.group === RESULTS && shown(n)).map((n) => ({ label: n.label, kind: "Section", onSelect: () => go(n.id) })),
     { label: "Full report", kind: "Report", hint: "Every page of your assessment", onSelect: openReport },
     ...TOOLKIT.map((t) => ({ label: t.title ?? FEATURES[t.key].title, kind: "Feature", hint: t.text, href: t.href ?? FEATURES[t.key].href })),
     ...SIGNATURE.map((s) => ({ label: s.title, kind: "Tool", hint: s.text, href: s.href })),
@@ -513,7 +462,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
           {NAV_GROUPS.map((g) => (
             <div key={g}>
               <div className="db-nav-lbl">{g}</div>
-              {navItems.filter((n) => n.group === g).map((n) => (
+              {navItems.filter((n) => n.group === g && shown(n)).map((n) => (
                 <button key={n.id} className={`db-navi${active === n.id ? " on" : ""}`} onClick={() => go(n.id)} aria-current={active === n.id ? "true" : undefined}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   {n.art ? <img src={featureArt(n.art).thumb} alt="" /> : <Icon name={n.icon} size={17} />}
@@ -616,6 +565,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
               </div>
             </section>
 
+            {hasScores ? (<>
             {extrasBefore("overview")}
 
             {/* ===== OVERVIEW ===== */}
@@ -624,7 +574,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                 <div className="db-hero-l">
                   <span className="db-kicker">Your career profile{dateStr ? ` · ${dateStr}` : ""}</span>
                   <h1>{arch.name}</h1>
-                  <p className="db-hero-tag">{a.summary || arch.tagline}</p>
+                  <p className="db-hero-tag">{heroLine}</p>
                   <div className="db-chips">
                     {code ? <span><b>{code}</b> interest code</span> : null}
                     {topField ? <span>Top field: <b>{topField.name}</b></span> : null}
@@ -745,18 +695,20 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
 
             {extrasBefore("mind")}
 
-            {/* ===== MIND ===== */}
-            <section id="mind" className="db-sec">
-              <div className="db-sec-h"><div><h2>How you think and work</h2><p>Your natural leanings across four lenses.</p></div></div>
-              <div className="db-card">
-                <div className="ogd-mind">
-                  <MiniList title="Intelligences" items={(a.topIntelligences ?? []).map((x) => ({ label: x.name, score: x.score }))} icon="multiple_intelligence" />
-                  <MiniList title="Aptitudes" items={(a.topAptitudes ?? []).map((x) => ({ label: x.skill, score: x.score }))} icon="aptitude" />
-                  <MiniList title="Motivators" items={(a.topValues ?? []).map((x) => ({ label: x.tag, score: x.score }))} icon="motivators" />
-                  <MiniList title="Learning styles" items={(a.learningStyles ?? []).map((x) => ({ label: x.name, score: x.score }))} icon="learning_styles" />
+            {/* ===== MIND ===== (left out when the result has none of the four lists) */}
+            {hasMind && (
+              <section id="mind" className="db-sec">
+                <div className="db-sec-h"><div><h2>How you think and work</h2><p>Your natural leanings across four lenses.</p></div></div>
+                <div className="db-card">
+                  <div className="ogd-mind">
+                    <MiniList title="Intelligences" items={(a.topIntelligences ?? []).map((x) => ({ label: x.name, score: x.score }))} icon="multiple_intelligence" />
+                    <MiniList title="Aptitudes" items={(a.topAptitudes ?? []).map((x) => ({ label: x.skill, score: x.score }))} icon="aptitude" />
+                    <MiniList title="Motivators" items={(a.topValues ?? []).map((x) => ({ label: x.tag, score: x.score }))} icon="motivators" />
+                    <MiniList title="Learning styles" items={(a.learningStyles ?? []).map((x) => ({ label: x.name, score: x.score }))} icon="learning_styles" />
+                  </div>
                 </div>
-              </div>
-            </section>
+              </section>
+            )}
 
             {extrasBefore("plan")}
 
@@ -764,6 +716,21 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
             <section id="plan" className="db-sec">
               <GoalTracker plan={plan} goalKey={String(a.completedAt)} domain={topDomainName} />
             </section>
+            </>) : (
+              // No usable scores - saved by an earlier version of the
+              // assessment. Say so plainly rather than drawing 0s.
+              <section id="overview" className="db-sec">
+                <div className="db-card db-noscores">
+                  <span className="db-kicker">Your profile</span>
+                  <h2>Your scores can&apos;t be shown here yet</h2>
+                  <p>Your saved result was made by an earlier version of the assessment, so this page can&apos;t read its scores. Your full report shows what was saved; retaking the assessment brings your profile, dimensions and best-fit fields to this page.</p>
+                  <div className="db-actions">
+                    <button className="db-btn pri" onClick={openReport}>Open my full report <Icon name="arrowRight" size={16} stroke={2} /></button>
+                    <Link href="/?begin=1" className="db-btn">Retake the assessment</Link>
+                  </div>
+                </div>
+              </section>
+            )}
 
             {/* ===== CAREER TOOLKIT (in-dashboard listings) - temporarily disabled ===== */}
             {SHOW_TOOLKIT && (
@@ -1844,6 +1811,10 @@ const DASH_CSS = `
 .db .ogd-goal-item.done .ogd-goal-box{background:#15803d;border-color:#15803d}
 .db .ogd-goal-text{font-size:14px;line-height:1.5;color:var(--ink2)}
 .db .ogd-goal-item.done .ogd-goal-text{color:var(--mute);text-decoration:line-through}
+
+.db-noscores{padding:26px}
+.db-noscores h2{font-size:21px;font-weight:600;margin-top:8px}
+.db-noscores p{font-size:14.5px;line-height:1.6;color:var(--ink2);margin-top:8px;max-width:66ch}
 
 /* report banner + toolkit (top of the page) */
 .db-report{display:flex;align-items:center;gap:16px 24px;flex-wrap:wrap;justify-content:space-between;padding:22px 24px;background:var(--warm);border:1px solid var(--line);border-radius:10px}

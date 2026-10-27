@@ -31,7 +31,11 @@ export interface PreparedReport {
   stale: boolean;
 }
 
-export function prepareStudentReport(a: AssessmentSummary): PreparedReport {
+/** `sheets: false` skips building the extra report pages - the student
+ *  dashboard (app/account/Dashboard.tsx) only needs the adapted summary, so
+ *  its numbers are the report's numbers for every class. */
+export function prepareStudentReport(a: AssessmentSummary, opts: { sheets?: boolean } = {}): PreparedReport {
+  const withSheets = opts.sheets !== false;
   const journeyCode = a.journeyCode || "";
   const isClass6 = journeyCode === "6";
   const isClass7 = journeyCode === "7";
@@ -65,10 +69,10 @@ export function prepareStudentReport(a: AssessmentSummary): PreparedReport {
   if (class11Ready) {
     summary = adaptClass11ToSummary(class11Output, a);
     const c1112Category = journeyCode === "11" ? "class_11" : journeyCode === "12" ? "class_12" : "class_11_12";
-    extraSheets = [...buildCareerFit1112Sheets(class11Output, c1112Category), ...buildClass11ExtraSheets(class11Output)];
+    if (withSheets) extraSheets = [...buildCareerFit1112Sheets(class11Output, c1112Category), ...buildClass11ExtraSheets(class11Output)];
   } else if (graduateReady) {
     summary = adaptGraduateToSummary(graduateOutput, a);
-    extraSheets = [...buildCareerFitGradSheets(graduateOutput), ...buildGradExtraSheets(graduateOutput)];
+    if (withSheets) extraSheets = [...buildCareerFitGradSheets(graduateOutput), ...buildGradExtraSheets(graduateOutput)];
   } else if (class6Ready) {
     summary = adaptClass6ToSummary(class6Output, a);
   } else if (class7Ready) {
