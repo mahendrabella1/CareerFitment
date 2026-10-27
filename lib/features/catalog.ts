@@ -136,5 +136,12 @@ export const FEATURES: Record<string, FeatureMeta> = {
 
 export const featureArt = (key: string) => {
   const art = FEATURES[key]?.art ?? key;
-  return { src: `/features/${art}.webp`, srcSet: `/features/${art}-640.webp 640w, /features/${art}.webp 1200w` };
+  return {
+    src: `/features/${art}.webp`,
+    srcSet: `/features/${art}-640.webp 640w, /features/${art}.webp 1200w`,
+    /** 160px wide, for menus and lists. */
+    thumb: `/features/${art}-160.webp`,
+    /** 600px wide, for cards. */
+    card: `/features/${art}-640.webp`,
+  };
 };

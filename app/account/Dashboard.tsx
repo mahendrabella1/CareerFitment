@@ -1,21 +1,23 @@
 "use client";
 
 /**
- * Dashboard - the premium /account experience (2026 redesign).
+ * Dashboard - the student's /account home, for every class group.
  *
- * A calm, scannable control centre built on the saved assessment summary:
- *   · Hero      - archetype, strongest-interest ring, quick stats, actions
- *   · KPI strip - four at-a-glance tiles
- *   · Profile   - interactive 8-dimension radar + a plain-language snapshot
- *   · Matches   - ranked career fits
- *   · Dimensions- expandable accordion, each with a benchmark comparison
- *   · Mind      - how you think & work (small multiples)
- *   · Plan      - 30/90-day goal tracker with live progress
- *   · Resources - where to learn & get funded
+ * Laid out like the feature pages (components/feature/*): a grouped menu on
+ * the left, a top bar with a greeting and a search over results and tools,
+ * then, in the same order as the menu:
+ *   · Overview   - the profile hero (archetype, strongest interest, key
+ *                  numbers), OneGrasp's tools, profile bars and the radar
+ *   · Dimensions - the eight dimensions as tabs, one full breakdown at a time
+ *   · Fields     - ranked best-fit fields
+ *   · Mind       - how you think & work
+ *   · Plan       - the 30/90-day checklist
+ *   · Toolkit    - every feature with its 3D illustration and progress
  *
- * Palette: white / near-black / grey with a single light-red accent. All
- * charts are hand-built SVG (see ./viz). The in-depth report lives in
- * <FullReport/>, reachable via the "Full report" action.
+ * Warm off-white surfaces, ink text and buttons, hairline borders, small
+ * corners; OneGrasp red only for "you are here" marks and the radar. The
+ * in-depth report lives in <FullReport/> ("Open my full report") and keeps
+ * its own styles (LEGACY_CSS).
  */
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
@@ -23,6 +25,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth, type AssessmentSummary, type CustomDimension, type UserProfile } from "@/lib/auth/AuthProvider";
 import { readGoals, saveGoals } from "@/lib/progress/progressStore";
+import { dayKey } from "@/lib/progress/activity";
+import { FEATURES, featureArt } from "@/lib/features/catalog";
+import { FeatureSearch, type SearchItem } from "@/components/feature/FeatureSearch";
+import { FP_CSS } from "@/components/feature/styles";
 import { SchoolInbox } from "@/components/SchoolInbox";
 import { Logo } from "@/app/Logo";
 import dynamic from "next/dynamic";
@@ -64,6 +70,8 @@ import FeaturesHub from "@/app/account/FeaturesHub";
 
 // Dashboard accent - OneGrasp red theme (white, black, grey, red #db3433).
 const IN = "#db3433", IN_STRONG = "#b82a2b", IN_TINT = "#fef0f0", IN_LINE = "#f5d5d5";
+// Ink for bars and buttons on the dashboard view; red stays for "you are here" marks.
+const INK = "#16181d";
 // The same branded "eight dimensions" illustration used on the full report cover.
 const DIMS8 = "https://onegrasp.com/wp-content/uploads/2026/07/ChatGPT-Image-Jul-10-2026-05_34_15-PM.png";
 // KPI tile accent colours (red / grey / grey-dark / black), matching OneGrasp design.
@@ -74,25 +82,43 @@ const KPI = [
   { c: "#111827", t: "#f9fafb" },
 ];
 
-// Left-sidebar navigation → scrolls to the matching section id.
-const NAV = [
-  { id: "overview", label: "Overview", icon: "clusters" },
-  { id: "dimensions", label: "8 Dimensions", icon: "radar" },
-  { id: "fields", label: "Best-fit Fields", icon: "compass" },
-  { id: "mind", label: "How You Think", icon: "multiple_intelligence" },
-  { id: "plan", label: "My Plan", icon: "check" },
-  { id: "progress", label: "My Progress", icon: "score", external: true, href: "/account/progress" },
-  { id: "portfolio", label: "Build Your Website", icon: "user", external: true, href: "/account/portfolio" },
-  { id: "careers", label: "Career Library", icon: "briefcase" },
-  { id: "study-abroad", label: "Study Abroad", icon: "signpost" },
-  { id: "exams", label: "Entrance Exams", icon: "edit" },
-  { id: "internships", label: "Internships", icon: "route" },
-  { id: "jobs", label: "Jobs", icon: "search" },
-  { id: "financial", label: "Financial Literacy", icon: "card" },
-  { id: "legal", label: "Legal Resources", icon: "shield" },
-  { id: "research", label: "Research Opportunities", icon: "pulse" },
-  { id: "startups", label: "Startup Ecosystem", icon: "flag" },
-  { id: "resources", label: "Scholarships", icon: "star" },
+// Left-sidebar navigation, in groups. "Your results" entries scroll to their
+// section (in this order on the page, so the scroll-spy matches); the rest
+// open their own page (FEATURE_ROUTES). `art` is a feature's 3D illustration.
+const RESULTS = "Your results";
+const NAV: { id: string; label: string; icon: string; group: string; art?: string }[] = [
+  { id: "overview", label: "Overview", icon: "clusters", group: RESULTS },
+  { id: "dimensions", label: "8 Dimensions", icon: "radar", group: RESULTS },
+  { id: "fields", label: "Best-fit fields", icon: "compass", group: RESULTS },
+  { id: "mind", label: "How you think", icon: "multiple_intelligence", group: RESULTS },
+  { id: "plan", label: "My plan", icon: "check", group: RESULTS },
+  { id: "toolkit", label: "Your toolkit", icon: "layers", group: RESULTS },
+  { id: "progress", label: "My Progress", icon: "score", group: "Track", art: "progress" },
+  { id: "careers", label: "Career Library", icon: "briefcase", group: "Explore", art: "careers" },
+  { id: "exams", label: "Entrance Exams", icon: "edit", group: "Explore", art: "exams" },
+  { id: "resources", label: "Scholarships", icon: "star", group: "Explore", art: "scholarships" },
+  { id: "study-abroad", label: "Study Abroad", icon: "signpost", group: "Explore", art: "study-abroad" },
+  { id: "internships", label: "Internships", icon: "route", group: "Explore", art: "internships" },
+  { id: "jobs", label: "Jobs", icon: "briefcase", group: "Explore" },
+  { id: "financial", label: "Financial Literacy", icon: "card", group: "Explore", art: "money" },
+  { id: "legal", label: "Law & Rights", icon: "shield", group: "Explore", art: "legal" },
+  { id: "research", label: "Research", icon: "pulse", group: "Explore", art: "research" },
+  { id: "startups", label: "Startups", icon: "flag", group: "Explore", art: "startups" },
+  { id: "portfolio", label: "Build your website", icon: "user", group: "Create" },
+];
+const NAV_GROUPS = [RESULTS, "Track", "Explore", "Create"];
+
+/** The toolkit grid: every feature with its illustration (lib/features/catalog.ts). */
+const TOOLKIT: { key: string; text: string }[] = [
+  { key: "careers", text: "930 careers - what they do, what they pay, how to get there." },
+  { key: "exams", text: "Every entrance exam, who can take it and when." },
+  { key: "scholarships", text: "Money you qualify for, with every deadline." },
+  { key: "study-abroad", text: "Decide whether, where and what - and if the money works." },
+  { key: "internships", text: "Free programmes from real companies." },
+  { key: "money", text: "Money skills as a level path, games and labs." },
+  { key: "legal", text: "Your rights, helplines and ready-to-send letters." },
+  { key: "research", text: "From a good question to a conference talk." },
+  { key: "startups", text: "Build a startup, lesson by lesson." },
 ];
 
 // Left-panel features -> their pages.
@@ -200,9 +226,9 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
   const [menuOpen, setMenuOpen] = useState(false);
   // Sidebar order must match render order, or the scroll-spy highlights the
   // wrong entry. Both are derived from the same list.
-  const navItems = [
+  const navItems: { id: string; label: string; icon: string; group: string; art?: string }[] = [
     ...NAV.flatMap((n) => [
-      ...extraSections.filter((x) => x.before === n.id).map((x) => ({ id: x.id, label: x.label, icon: x.icon })),
+      ...extraSections.filter((x) => x.before === n.id).map((x) => ({ id: x.id, label: x.label, icon: x.icon, group: RESULTS })),
       n,
     ]),
     // Anchored extras render before their section; the rest render after the
@@ -211,7 +237,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
     // which made the scroll-spy highlight the wrong entry the whole way down.
     ...extraSections
       .filter((x) => !x.before || !NAV.some((n) => n.id === x.before))
-      .map((x) => ({ id: x.id, label: x.label, icon: x.icon })),
+      .map((x) => ({ id: x.id, label: x.label, icon: x.icon, group: RESULTS })),
   ];
   // Extras anchored to a section, rendered wherever that section is. `before`
   // was documented as accepting any built-in id but only "dimensions" was
@@ -222,7 +248,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
     extraSections
       .filter((x) => x.before === id)
       .map((x) => (
-        <section key={x.id} id={x.id} className="ash-sec">{x.node}</section>
+        <section key={x.id} id={x.id} className="db-sec">{x.node}</section>
       ));
   const name = (profile?.name || "").trim();
   const first = name.split(/\s+/)[0] || "there";
@@ -245,7 +271,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
   // Highlight the sidebar item for whichever section is in view.
   useEffect(() => {
     if (view !== "dashboard") return;
-    const secs = Array.from(document.querySelectorAll<HTMLElement>(".ash-sec[id]"));
+    const secs = Array.from(document.querySelectorAll<HTMLElement>(".db-sec[id]"));
     if (!secs.length || !("IntersectionObserver" in window)) return;
     const io = new IntersectionObserver(
       (es) => { const vis = es.filter((e) => e.isIntersecting).sort((x, y) => y.intersectionRatio - x.intersectionRatio)[0]; if (vis) setActive(vis.target.id); },
@@ -320,7 +346,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
   if (view === "feature") {
     return (
       <div style={{ background: "#fff", minHeight: "100vh" }}>
-        <style dangerouslySetInnerHTML={{ __html: CSS }} />
+        <style dangerouslySetInnerHTML={{ __html: LEGACY_CSS }} />
         {selectedFeature && <FeaturesDetailPage featureId={selectedFeature} onClose={() => { setView("dashboard"); window.scrollTo(0, 0); }} />}
       </div>
     );
@@ -387,7 +413,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
 
     return (
       <div className="ogd-reportwrap">
-        <style dangerouslySetInnerHTML={{ __html: CSS }} />
+        <style dangerouslySetInnerHTML={{ __html: LEGACY_CSS }} />
         <div className="ogd-reportbar og-noprint">
           <button className="ogd-btn ghost" onClick={() => { setView("dashboard"); window.scrollTo(0, 0); }}>
             <Icon name="chevronLeft" size={16} /> Back to dashboard
@@ -434,40 +460,80 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
     );
   }
 
+  // ------------------------------------------------------------ dashboard view
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+  const today = new Date().toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long" });
+  const classLabel = profile?.category ? categoryLabel(profile.category) : "";
+  const openReport = () => { setView("report"); window.scrollTo(0, 0); };
+  const themes3 = (a.themes ?? []).slice(0, 3);
+  const eiResult = resultOf("emotional_intelligence", a)?.value;
+
+  // The student's own progress across the feature courses and days active
+  // (lib/progress) - the full breakdown lives on /account/progress.
+  const courses = profile?.progress?.courses ?? {};
+  const lessonsDone = Object.values(courses).reduce((n, c) => n + (c?.done?.length ?? 0), 0);
+  const byDay = profile?.activity?.byDay ?? {};
+  let streak = 0;
+  for (let i = 0; i < 400; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    if ((byDay[dayKey(d)] ?? 0) >= 60) streak++;
+    else if (i > 0) break;
+  }
+  const courseKey: Record<string, string> = { money: "money", legal: "legal", exams: "exams", scholarships: "scholarships", "study-abroad": "study-abroad", research: "research" };
+
+  const search: SearchItem[] = [
+    ...navItems.filter((n) => n.group === RESULTS).map((n) => ({ label: n.label, kind: "Section", onSelect: () => go(n.id) })),
+    { label: "Full report", kind: "Report", hint: "Every page of your assessment", onSelect: openReport },
+    ...TOOLKIT.map((t) => ({ label: FEATURES[t.key].title, kind: "Feature", hint: t.text, href: FEATURES[t.key].href })),
+    { label: "Jobs", kind: "Feature", hint: "Fresh internships and fresher jobs", href: "/account/jobs" },
+    { label: "My Progress", kind: "Page", hint: "Lessons, modules, streak and time", href: "/account/progress" },
+    ...SIGNATURE.map((s) => ({ label: s.title, kind: "Tool", hint: s.text, href: s.href })),
+    { label: "Build your website", kind: "Tool", href: "/account/portfolio" },
+    ...fits.slice(0, 3).map((f) => ({ label: f.name, kind: "Best-fit field", onSelect: () => go("fields") })),
+  ];
+
   return (
-    <div className="ash">
-      <style dangerouslySetInnerHTML={{ __html: CSS }} />
-      {navOpen && <div className="ash-scrim og-noprint" onClick={() => setNavOpen(false)} />}
+    <div className="db">
+      <style dangerouslySetInnerHTML={{ __html: DASH_CSS + FP_CSS }} />
+      {navOpen && <div className="db-scrim og-noprint" onClick={() => setNavOpen(false)} />}
 
       {/* ============================ SIDEBAR ============================ */}
-      <aside className={`ash-side${navOpen ? " open" : ""} og-noprint`}>
-        <div className="ash-brand"><Link href="/" style={{ textDecoration: "none" }}><Logo height={50} /></Link></div>
-        <nav className="ash-nav">
-          <div className="ash-nav-lbl">Menu</div>
-          {navItems.map((n) => (
-            <button key={n.id} className={`ash-navi${active === n.id ? " on" : ""}`} onClick={() => go(n.id)}>
-              <Icon name={n.icon} size={18} /><span>{n.label}</span>
-            </button>
+      <aside className={`db-side${navOpen ? " open" : ""} og-noprint`} aria-label="Dashboard menu">
+        <div className="db-brand"><Link href="/" style={{ textDecoration: "none" }}><Logo height={42} /></Link></div>
+        <div className="db-me">
+          <span className="db-ava">{initial}</span>
+          <div style={{ minWidth: 0 }}><b>{name || "You"}</b><small>{classLabel || email}</small></div>
+        </div>
+        <nav className="db-nav">
+          {NAV_GROUPS.map((g) => (
+            <div key={g}>
+              <div className="db-nav-lbl">{g}</div>
+              {navItems.filter((n) => n.group === g).map((n) => (
+                <button key={n.id} className={`db-navi${active === n.id ? " on" : ""}`} onClick={() => go(n.id)} aria-current={active === n.id ? "true" : undefined}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  {n.art ? <img src={featureArt(n.art).thumb} alt="" /> : <Icon name={n.icon} size={17} />}
+                  <span>{n.label}</span>
+                </button>
+              ))}
+            </div>
           ))}
         </nav>
-        <div className="ash-side-foot">
-          <div className="ash-user">
-            <span className="ash-ava">{(name || email || "?").trim().charAt(0).toUpperCase()}</span>
-            <div className="ash-user-i"><div className="ash-user-n">{name || "You"}</div><div className="ash-user-e">{email}</div></div>
-          </div>
-          {onSignOut ? <button className="ash-signout" onClick={onSignOut}><Icon name="power" size={14} /> Sign out</button> : null}
-        </div>
+        {onSignOut ? <div className="db-side-foot"><button className="db-signout" onClick={onSignOut}><Icon name="power" size={14} /> Sign out</button></div> : null}
       </aside>
 
       {/* ============================ BODY ============================ */}
-      <div className="ash-body">
-        <header className="ash-top og-noprint">
-          <button className="ash-burger" onClick={() => setNavOpen((o) => !o)} aria-label="Menu"><Icon name="clusters" size={18} /></button>
-          <div className="ash-top-t">
-            <div className="ash-top-h">Welcome back, {first}</div>
-            <div className="ash-top-s">Here&apos;s your career assessment overview</div>
+      <div className="db-body">
+        <header className="db-top og-noprint">
+          <button className="db-burger" onClick={() => setNavOpen((o) => !o)} aria-label="Menu"><Icon name="menu" size={18} /></button>
+          <div className="db-hello">
+            <b>{greeting}, {first}</b>
+            <small>{today}{classLabel ? ` · ${classLabel}` : ""}</small>
           </div>
-          <div className="ash-top-actions">
+          <div className="db-top-search"><FeatureSearch items={search} placeholder="Search your results, features and tools" /></div>
+          <div className="db-top-r">
+            <Link href="/account/progress" className="db-topbtn"><Icon name="score" size={15} /><span>My progress</span></Link>
             <div className="ash-user-wrap">
               <button className="ash-top-ava" onClick={() => setMenuOpen((o) => !o)} aria-label="Account">{initial}</button>
               {menuOpen && (
@@ -485,7 +551,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                       <MRow k="Phone" v={profile?.phone} />
                       <MRow k="School / College" v={profile?.institution} />
                       <MRow k="Desired career" v={profile?.desiredCareer} />
-                      <MRow k="Category" v={profile?.category} />
+                      <MRow k="Class" v={classLabel} />
                       <MRow k="Current status" v={profile?.clarity} />
                     </div>
                     {onSignOut ? (
@@ -498,316 +564,232 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
           </div>
         </header>
 
-        <main className="ash-main">
-          <div className="ash-grid">
-            <div className="ash-content">
+        <main className="db-main">
+          <div className="db-wrap">
+            <div className="db-msearch og-noprint"><FeatureSearch items={search} placeholder="Search your results and tools" /></div>
+            {/* Messages from the student's school, if it uses the institution portal (renders nothing otherwise). */}
+            <SchoolInbox />
 
-              {/* ===== FEATURES HUB ===== */}
-              <section id="careers" className="ash-sec" style={{paddingTop: 0, paddingBottom: 0, marginLeft: '-24px', marginRight: '-24px', paddingLeft: 0, paddingRight: 0}}>
-                <div style={{background: 'linear-gradient(135deg, #f0e7ff 0%, #e8f4ff 100%)'}}>
-                  {/* Hero Section */}
-                  <div style={{display: 'flex', alignItems: 'center', padding: '48px 60px', gap: '48px', maxWidth: '100%', margin: '0 auto'}}>
-                    <div style={{flex: 1}}>
-                      <h2 style={{fontSize: '40px', fontWeight: '800', color: C.ink, margin: '0 0 12px 0', lineHeight: 1.2}}>
-                        Your Report &amp; Career Toolkit
-                      </h2>
-                      <p style={{fontSize: '16px', color: C.ink3, margin: 0, marginBottom: '20px', lineHeight: 1.6}}>
-                        Access curated resources to shape your future - colleges, internships, scholarships, and proven career development strategies tailored to your profile.
-                      </p>
-                      <div style={{width: '80px', height: '3px', background: IN, marginTop: '16px', marginBottom: '24px', borderRadius: '2px'}}></div>
-                      <button style={{backgroundColor: IN, color: '#fff', padding: '12px 28px', border: 'none', borderRadius: '6px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', transition: 'all 200ms ease'}} onClick={() => { setView("report"); window.scrollTo(0, 0); }}>
-                        View Full Report
-                      </button>
-                    </div>
-                    <div style={{flex: 1.2, textAlign: 'center', minWidth: 0}}>
-                      <img src="https://onegrasp.com/wp-content/uploads/2026/08/69045c6d-9060-4669-8cc6-b8cf030a3f35.png" alt="Career Toolkit" style={{maxWidth: '100%', height: 'auto', maxHeight: '420px'}} />
-                    </div>
+            {extrasBefore("overview")}
+
+            {/* ===== OVERVIEW ===== */}
+            <section id="overview" className="db-sec db-first">
+              <div className="db-hero">
+                <div className="db-hero-l">
+                  <span className="db-kicker">Your career profile{dateStr ? ` · ${dateStr}` : ""}</span>
+                  <h1>{arch.name}</h1>
+                  <p className="db-hero-tag">{a.summary || arch.tagline}</p>
+                  <div className="db-chips">
+                    {code ? <span><b>{code}</b> interest code</span> : null}
+                    {topField ? <span>Top field: <b>{topField.name}</b></span> : null}
+                    {a.topCareer ? <span>Best fit: <b>{a.topCareer}</b></span> : null}
                   </div>
+                  <div className="db-actions">
+                    <button className="db-btn pri" onClick={openReport}>Open my full report <Icon name="arrowRight" size={16} stroke={2} /></button>
+                    <button className="db-btn" onClick={() => go("fields")}>See best-fit fields</button>
+                    <span className="db-note"><Icon name="check" size={14} stroke={2} /> A PDF copy was emailed to you</span>
+                  </div>
+                </div>
+                <div className="db-hero-r">
+                  <span className="db-kicker">Strongest interest</span>
+                  <div className="db-big">{topInterestScore}<small>%</small></div>
+                  <div className="db-big-l">{topInterestName}</div>
+                  <div className="db-big-s">of your interest answers lean this way</div>
+                  {themes3.length > 0 && (
+                    <div className="db-themes">
+                      {themes3.map((t) => (
+                        <div className="db-theme" key={t.title}>
+                          <span>{t.title}</span>
+                          <SkillBar value={t.score} color={INK} height={6} track="#ece9e3" />
+                          <b>{Math.round(t.score)}</b>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className="db-stats">
+                  <div className="db-stat"><span>Interest code</span><b>{code || "-"}</b><small>From your career interests</small></div>
+                  <div className="db-stat"><span>Strongest area</span><b>{strongest ? Math.round(strongest.score) : "-"}</b><small>{strongest ? (CAT_LABEL[strongest.key] ?? strongest.label) : ""}</small></div>
+                  <div className="db-stat"><span>Emotional intelligence</span><b>{a.ei != null ? Math.round(a.ei) : "-"}</b><small>{eiResult || "Out of 100"}</small></div>
+                  <Link href="/account/progress" className="db-stat db-stat-link"><span>Learning so far</span><b>{lessonsDone} {lessonsDone === 1 ? "lesson" : "lessons"}</b><small>{streak > 0 ? `${streak}-day streak` : "Start any feature"} · My Progress →</small></Link>
+                </div>
+              </div>
 
-                  {/* Features Grid with Background Images */}
-                  <div style={{padding: '0 60px 48px', maxWidth: '100%', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px'}}>
-                    {[
-                      {id:'startups', title:'Startups', desc:'Connect with innovative founders and ideas.', color:'#ea580c', emoji:'🚀', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_39_45-AM.png)'},
-                      {id:'research', title:'Research', desc:'Explore cutting-edge research programs.', color:'#0369a1', emoji:'🔬', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_40_43-AM.png)'},
-                      {id:'financial', title:'Financial Literacy', desc:'Build practical money management skills.', color:'#16a34a', emoji:'₹', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_41_34-AM.png)'},
-                      {id:'legal', title:'Law & Rights', desc:'Know your legal rights and protections.', color:'#7c3aed', emoji:'⚖️', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_42_40-AM.png)'},
-                      {id:'careers', title:'Career Library', desc:'Explore 500+ careers with detailed paths.', color:'#2563eb', emoji:'🎓', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_49_20-AM.png)'},
-                      {id:'study-abroad', title:'Study Abroad', desc:'Discover universities worldwide.', color:'#dc2626', emoji:'✈️', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_46_05-AM.png)'},
-                      {id:'exams', title:'Entrance Exams', desc:'Explore exams and eligibility details.', color:'#9333ea', emoji:'📝', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_54_06-AM.png)'},
-                      {id:'internships', title:'Internships', desc:'Gain real-world experience with top opportunities.', color:'#ca8a04', emoji:'💼', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-11_02_22-AM.png)'},
-                      {id:'resources', title:'Scholarships', desc:'Fund your education with 200+ awards.', color:'#f59e0b', emoji:'🎓', bg:'url(https://onegrasp.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-27-2026-10_59_10-AM.png)'},
-                    ].map((feature) => (
-                      <div key={feature.id} onClick={() => go(feature.id)} style={{background:'#fff', borderRadius:'10px', border:`1px solid ${C.line}`, cursor:'pointer', transition:'all 250ms ease', boxShadow:'0 1px 4px rgba(0,0,0,0.04)', overflow:'hidden', display:'flex', flexDirection:'column', height: '100%'}}>
-                        <div style={{height:'140px', backgroundImage:feature.bg, backgroundSize:'cover', backgroundPosition:'center', position:'relative'}}>
-                          <div style={{position:'absolute', inset:0, background:'linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.2) 100%)'}}></div>
-                        </div>
-                        <div style={{padding:'16px 16px 18px', flex:1, display:'flex', flexDirection:'column'}}>
-                          <div style={{display:'flex', alignItems:'center', gap:'10px', marginBottom:'10px'}}>
-                            <div style={{width:'40px', height:'40px', borderRadius:'50%', background:feature.color, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'20px', flexShrink:0}}>
-                              {feature.emoji}
-                            </div>
-                            <h3 style={{fontSize:'15px', fontWeight:'700', color:C.ink, margin:0}}>{feature.title}</h3>
-                          </div>
-                          <p style={{fontSize:'12px', color:C.ink3, margin:'0 0 12px 0', lineHeight:1.4, flex:1}}>{feature.desc}</p>
-                          <div style={{display:'flex', alignItems:'center', color:feature.color, fontSize:'13px', fontWeight:'600'}}>
-                            <span>→</span>
-                          </div>
-                        </div>
+              <div className="db-tools">
+                {SIGNATURE.map((f) => (
+                  <Link key={f.href} href={f.href} className="db-tool">
+                    <span className="db-tool-ic"><Icon name={f.icon} size={19} /></span>
+                    <span style={{ minWidth: 0 }}><b>{f.title}</b><small>{f.text}</small></span>
+                    <Icon name="arrowRight" size={16} stroke={2} />
+                  </Link>
+                ))}
+              </div>
+
+              <div className="db-two">
+                <div className="db-card">
+                  <CardHead icon="user" title="Profile at a glance" sub="Three quick reads of who you are at school and work." />
+                  <div className="ogd-pbars">
+                    {pbars.map((b) => (
+                      <div className="ogd-pbar" key={b.label}>
+                        <div className="ogd-pbar-top"><span>{b.label}</span><b>{Math.round(b.score)}</b></div>
+                        <SkillBar value={b.score} color={INK} height={7} track="#ece9e3" />
                       </div>
                     ))}
                   </div>
+                  <button className="db-more" onClick={() => go("dimensions")}>All eight dimensions <Icon name="arrowRight" size={14} stroke={2} /></button>
                 </div>
-              </section>
+                <div className="db-card">
+                  <CardHead icon="pulse" title="Your shape" sub="Your eight scores, with the dotted line showing a typical student." />
+                  <div className="ogd-radar-chart"><RadarChart data={radar} color={IN} abbr={CATEGORY_ABBR} /></div>
+                  <button className="db-more" onClick={openReport}>Read the detailed analysis <Icon name="arrowRight" size={14} stroke={2} /></button>
+                </div>
+              </div>
+            </section>
 
-              {/* ===== DIMENSIONS ===== */}
-              <section id="dimensions" className="ash-sec">
-                <div className="ogd-card">
-                  <CardHead icon="radar" title="Your eight dimensions"
-                    sub="Tap a dimension below to see its full breakdown - everything from your report, right here." />
-                  {/* Undergraduates: the active pillar's own picture instead of
-                      the shared eight-dimension graphic (which names the
-                      school dimensions). */}
+            {extrasBefore("dimensions")}
+
+            {/* ===== DIMENSIONS ===== */}
+            <section id="dimensions" className="db-sec">
+              <div className="db-sec-h"><div><h2>Your eight dimensions</h2><p>Pick one to see what it means, your strengths and what to work on.</p></div></div>
+              <div className="db-card db-dims">
+                <div className="db-dimtabs" role="tablist" aria-label="Dimensions">
+                  {radar.map((d) => (
+                    <button key={d.key} role="tab" aria-selected={dimKey === d.key} className="db-dimtab" onClick={() => setDimKey(d.key)} title={CAT_LABEL[d.key] ?? d.label}>
+                      <Icon name={customDims.get(d.key)?.icon ?? d.key} size={18} />
+                      <span>{DIM_TAB_LABEL[d.key] ?? customDims.get(d.key)?.short ?? d.label}</span>
+                      <b>{Math.round(d.score)}</b>
+                    </button>
+                  ))}
+                </div>
+                <div className="db-dimbody">
                   {activeCustom?.img ? (
-                    <div className="ogd-dims8 pillar" style={{ background: dimColor(activeCustom.key) + "12" }}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={activeCustom.img} alt={activeCustom.label} loading="lazy" />
-                    </div>
-                  ) : (
-                    <div className="ogd-dims8">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={DIMS8} alt="The eight dimensions of your profile" loading="lazy" />
-                    </div>
-                  )}
-                  <div className="ogd-dimtabs">
-                    {radar.map((d) => (
-                      <button key={d.key} className={`ogd-dimtab${dimKey === d.key ? " on" : ""}`} onClick={() => setDimKey(d.key)} title={CAT_LABEL[d.key] ?? d.label}>
-                        <span className="ogd-dimtab-ic"><Icon name={customDims.get(d.key)?.icon ?? d.key} size={20} /></span>
-                        <span className="ogd-dimtab-lab">
-                          {d.score > 0 ? <span className="ogd-dimtab-check"><Icon name="check" size={10} stroke={2.4} /></span> : null}
-                          {DIM_TAB_LABEL[d.key] ?? customDims.get(d.key)?.short ?? d.label}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
+                    // Undergraduates: the active pillar's own picture.
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img className="db-pillar" src={activeCustom.img} alt="" loading="lazy" />
+                  ) : null}
                   {activeCustom
                     ? <CustomDimPanel c={activeCustom} />
                     : <DimPanel d={radar.find((r) => r.key === dimKey) ?? radar[0]} a={a} />}
                 </div>
+              </div>
+            </section>
+
+            {extrasBefore("fields")}
+
+            {/* ===== FIELDS ===== */}
+            <section id="fields" className="db-sec">
+              <div className="db-sec-h"><div><h2>Your best-fit fields</h2>
+                <p>{a.customFields?.length
+                  ? "Matched from your interests, strengths and motivators - the same ranking as your report's Career Fitment page."
+                  : "Blended from your interests, abilities, intelligences and drivers."}</p></div>
+                <Link href="/account/career-library" className="db-more" style={{ marginTop: 0 }}>Explore careers <Icon name="arrowRight" size={14} stroke={2} /></Link>
+              </div>
+              <div className="db-card db-fields">
+                {fits.slice(0, 3).map((d, i) => (
+                  <div className="db-field" key={d.name}>
+                    <span className="db-field-rk">{i + 1}</span>
+                    <div style={{ minWidth: 0 }}>
+                      <div className="db-field-top"><b>{d.name}</b><span>{d.fit}%</span></div>
+                      <SkillBar value={d.fit} color={i === 0 ? IN : INK} height={6} track="#ece9e3" />
+                      <p>{d.tagline} · <b>{d.why}</b></p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {extrasBefore("mind")}
+
+            {/* ===== MIND ===== */}
+            <section id="mind" className="db-sec">
+              <div className="db-sec-h"><div><h2>How you think and work</h2><p>Your natural leanings across four lenses.</p></div></div>
+              <div className="db-card">
+                <div className="ogd-mind">
+                  <MiniList title="Intelligences" items={(a.topIntelligences ?? []).map((x) => ({ label: x.name, score: x.score }))} icon="multiple_intelligence" />
+                  <MiniList title="Aptitudes" items={(a.topAptitudes ?? []).map((x) => ({ label: x.skill, score: x.score }))} icon="aptitude" />
+                  <MiniList title="Motivators" items={(a.topValues ?? []).map((x) => ({ label: x.tag, score: x.score }))} icon="motivators" />
+                  <MiniList title="Learning styles" items={(a.learningStyles ?? []).map((x) => ({ label: x.name, score: x.score }))} icon="learning_styles" />
+                </div>
+              </div>
+            </section>
+
+            {extrasBefore("plan")}
+
+            {/* ===== PLAN ===== */}
+            <section id="plan" className="db-sec">
+              <GoalTracker plan={plan} goalKey={String(a.completedAt)} domain={topDomainName} />
+            </section>
+
+            {/* ===== CAREER TOOLKIT (in-dashboard listings) - temporarily disabled ===== */}
+            {SHOW_TOOLKIT && (
+              <section id="resources" className="db-sec">
+                <Toolkit tab={toolkitTab} setTab={setToolkitTab} />
               </section>
+            )}
 
-              {extrasBefore("overview")}
+            {extrasBefore("toolkit")}
 
-              {/* ===== OVERVIEW ===== */}
-              <section id="overview" className="ash-sec">
-                {/* Messages from the student's school, if it uses the institution portal (renders nothing otherwise). */}
-                <SchoolInbox />
-                {/* OneGrasp's signature tools - the same for every class. */}
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 10, marginBottom: 16 }}>
-                  {SIGNATURE.map((f) => (
-                    <Link key={f.href} href={f.href} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "12px 14px", borderRadius: 14, border: "1px solid #ececef", background: "#fff", textDecoration: "none", color: "inherit" }}>
-                      <span style={{ width: 34, height: 34, borderRadius: 10, background: "#FDECED", color: "#E23B41", display: "grid", placeItems: "center", flex: "none" }}><Icon name={f.icon} size={18} /></span>
-                      <span style={{ flex: 1, minWidth: 0 }}>
-                        <b style={{ display: "block", fontSize: 14 }}>{f.title} <span style={{ color: "#E23B41" }}>→</span></b>
-                        <span style={{ fontSize: 12.5, color: "#63636f", lineHeight: 1.45 }}>{f.text}</span>
+            {/* ===== TOOLKIT ===== */}
+            <section id="toolkit" className="db-sec">
+              <div className="db-sec-h"><div><h2>Your toolkit</h2><p>Everything OneGrasp gives you, in one place.</p></div>
+                <Link href="/account/progress" className="db-more" style={{ marginTop: 0 }}>See my progress <Icon name="arrowRight" size={14} stroke={2} /></Link>
+              </div>
+              <div className="db-kit">
+                {TOOLKIT.map((t) => {
+                  const f = FEATURES[t.key];
+                  const c = courseKey[t.key] ? courses[courseKey[t.key]] : undefined;
+                  const done = c?.done?.length ?? 0;
+                  const pct = c?.total ? Math.round((done / c.total) * 100) : 0;
+                  return (
+                    <Link key={t.key} href={f.href}>
+                      <span className="db-kit-art">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={featureArt(t.key).card} alt="" loading="lazy" />
+                      </span>
+                      <span className="db-kit-b">
+                        <b>{f.title}</b>
+                        <small>{t.text}</small>
+                        {c && done > 0
+                          ? <span className="db-kit-p"><i><b style={{ width: `${pct}%` }} /></i>{done}/{c.total} lessons</span>
+                          : <span className="db-kit-p db-kit-open">Open <Icon name="arrowRight" size={13} stroke={2} /></span>}
                       </span>
                     </Link>
-                  ))}
-                </div>
-                <div className="ash-banner">
-                  <span className="ash-banner-ic"><Icon name="check" size={18} /></span>
-                  <div className="ash-banner-t">
-                    <b>Assessment complete</b>
-                    <span>Your personalised results are ready{dateStr ? ` · completed ${dateStr}` : ""}.</span>
-                  </div>
-                  <div className="ash-banner-a">
-                    <button className="ogd-btn solid sm" onClick={() => setView("report")}><Icon name="explain" size={14} /> View report</button>
-                    <button className="ogd-btn ghost sm" onClick={() => go("matches")}>View matches</button>
-                  </div>
-                </div>
-
-                <div className="ogd-hero dark">
-                  <div className="ogd-hero-l">
-                    <span className="ogd-eyebrow">Your archetype</span>
-                    <div className="ogd-arch">{arch.name}</div>
-                    <div className="ogd-arch-ul" />
-                    <p className="ogd-arch-tag">{a.summary || arch.tagline}</p>
-                    <div className="ogd-hero-chips">
-                      {code ? <span className="ogd-chip"><b>{code}</b> interest code</span> : null}
-                      {a.topCareer ? <span className="ogd-chip"><b>{a.topCareer}</b> best fit</span> : null}
-                      {dateStr ? <span className="ogd-chip ghost">Completed {dateStr}</span> : null}
-                    </div>
-                  </div>
-                  <div className="ogd-hero-r">
-                    <div className="ogd-ring-glow">
-                      <Ring value={topInterestScore} size={168} stroke={13} color={IN} track="rgba(255,255,255,0.14)">
-                        <div className="ogd-ring-pct">{topInterestScore}<small>%</small></div>
-                        <div className="ogd-ring-lab">{topInterestName}</div>
-                      </Ring>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="ogd-kpis">
-                  <KpiTile icon="star" c={KPI[0]} label="Strongest interest" value={topInterestName}
-                    sub={topTheme ? `${topInterestScore}% of your interest answers` : ""} subAccent />
-                  <KpiTile icon="career_interest" c={KPI[1]} label="Interest code" value={code || "-"} sub="Based on your career interests" />
-                  <KpiTile icon="motivators" c={KPI[2]} label="Strongest area"
-                    value={strongest ? String(Math.round(strongest.score)) : "-"} sub={strongest ? (CAT_LABEL[strongest.key] ?? strongest.label) : ""} />
-                  <KpiTile icon="heart" c={KPI[3]} label="Emotional Intelligence"
-                    value={a.ei != null ? String(Math.round(a.ei)) : "-"} sub={resultOf("emotional_intelligence", a)?.value || "Solid EQ"} />
-                </div>
-
-                <div className="ogd-grid-radar">
-                  <div className="ogd-card">
-                    <CardHead icon="user" title="Profile at a glance" sub="A quick snapshot of your personality and preferences." />
-                    <div className="ogd-pbars">
-                      {pbars.map((b) => (
-                        <div className="ogd-pbar" key={b.label}>
-                          <div className="ogd-pbar-top"><span>{b.label}</span><b>{Math.round(b.score)}%</b></div>
-                          <SkillBar value={b.score} color={b.c} height={9} />
-                        </div>
-                      ))}
-                    </div>
-                    <button className="ogd-morelink" onClick={() => go("dimensions")}>View full profile <Icon name="chevronRight" size={14} /></button>
-                  </div>
-                  <div className="ogd-card">
-                    <CardHead icon="pulse" title="Your snapshot" sub="Key highlights from your assessment." />
-                    <div className="ogd-radar-chart"><RadarChart data={radar} color={IN} abbr={CATEGORY_ABBR} /></div>
-                    <button className="ogd-morelink" onClick={() => setView("report")}>View detailed analysis <Icon name="chevronRight" size={14} /></button>
-                  </div>
-                </div>
-              </section>
-
-              {extrasBefore("fields")}
-
-              {/* ===== FIELDS ===== */}
-              <section id="fields" className="ash-sec">
-                <div className="ogd-card">
-                  <CardHead icon="compass" title="Your best-fit fields"
-                    sub={a.customFields?.length
-                      ? "Matched from your interests, strengths and motivators - the same ranking as your report's Career Fitment page."
-                      : "Blended from your interests, abilities, intelligences and drivers - so these actually reinforce each other."} />
-                  <div className="ogd-fields">
-                    {fits.slice(0, 3).map((d, i) => (
-                      <div className="ogd-field" key={d.name}>
-                        <div className="ogd-field-rk">{i + 1}</div>
-                        <div className="ogd-field-main">
-                          <div className="ogd-field-top">
-                            <span className="ogd-field-nm">{d.name}</span>
-                            <span className="ogd-field-fit">{d.fit}%</span>
-                          </div>
-                          <SkillBar value={d.fit} color={IN} />
-                          <div className="ogd-field-why">{d.tagline} · <b>{d.why}</b></div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </section>
-
-              {extrasBefore("mind")}
-
-              {/* ===== MIND ===== */}
-              <section id="mind" className="ash-sec">
-                <div className="ogd-card">
-                  <CardHead icon="multiple_intelligence" title="How you think & work" sub="Your natural leanings across four lenses." />
-                  <div className="ogd-mind">
-                    <MiniList title="Intelligences" items={(a.topIntelligences ?? []).map((x) => ({ label: x.name, score: x.score }))} icon="multiple_intelligence" />
-                    <MiniList title="Aptitudes" items={(a.topAptitudes ?? []).map((x) => ({ label: x.skill, score: x.score }))} icon="aptitude" />
-                    <MiniList title="Motivators" items={(a.topValues ?? []).map((x) => ({ label: x.tag, score: x.score }))} icon="motivators" />
-                    <MiniList title="Learning styles" items={(a.learningStyles ?? []).map((x) => ({ label: x.name, score: x.score }))} icon="learning_styles" />
-                  </div>
-                </div>
-              </section>
-
-              {extrasBefore("plan")}
-
-              {/* ===== PLAN ===== */}
-              <section id="plan" className="ash-sec">
-                <GoalTracker plan={plan} goalKey={String(a.completedAt)} domain={topDomainName} />
-              </section>
-
-              {/* ===== CAREER TOOLKIT (in-dashboard listings) - temporarily disabled ===== */}
-              {SHOW_TOOLKIT && (
-                <section id="resources" className="ash-sec">
-                  <Toolkit tab={toolkitTab} setTab={setToolkitTab} />
-                </section>
-              )}
-
-              {/* Anything not anchored to a section lands here, at the end. */}
-              {extraSections
-                .filter((x) => !x.before || !NAV.some((n) => n.id === x.before))
-                .map((x) => (
-                  <section key={x.id} id={x.id} className="ash-sec">{x.node}</section>
-                ))}
-
-              {/* ===== DETAILS ===== */}
-              <section className="ash-sec">
-                <div className="ogd-card ogd-profile">
-                  <CardHead icon="user" title="Your details" />
-                  <div className="ogd-details">
-                    <Detail k="Full name" v={name || "-"} />
-                    <Detail k="Email" v={email || profile?.email || "-"} />
-                    <Detail k="Phone" v={profile?.phone || "-"} />
-                    <Detail k="School / College / Company" v={profile?.institution || "-"} />
-                    <Detail k="Desired career" v={profile?.desiredCareer || "-"} />
-                    <Detail k="Current status" v={profile?.clarity || "-"} />
-                  </div>
-                </div>
-              </section>
-            </div>
-
-            {/* ===== RIGHT RAIL ===== */}
-            <aside className="ash-rail og-noprint">
-              <div className="ogd-card rail-card">
-                <div className="rail-h">Your top match</div>
-                <div className="rail-top-nm">{topField?.name || a.topCareer || "-"}</div>
-                {topField?.tagline ? <div className="rail-top-tag">{topField.tagline}</div> : null}
-                <div className="rail-top-fit">Drawn from your <b>{topInterestName}</b> answers</div>
+                  );
+                })}
               </div>
+              <Link href="/account/jobs" className="db-jobs">
+                <span className="db-jobs-t">
+                  <span className="db-kicker">Jobs board</span>
+                  <b>Internships and fresher jobs, checked for scams</b>
+                  <small>Fresh listings every day. Jobs for your best-fit careers are marked &quot;On my path&quot;.</small>
+                  <span className="db-btn" style={{ alignSelf: "flex-start", marginTop: 14 }}>Browse jobs <Icon name="arrowRight" size={15} stroke={2} /></span>
+                </span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/jobs/hero-800.webp" alt="" loading="lazy" />
+              </Link>
+            </section>
 
-              <div className="ogd-card rail-card">
-                <div className="rail-h">Interest strength</div>
-                <Ring value={topInterestScore} size={100} stroke={8} color={IN}>
-                  <div style={{fontSize:'24px', fontWeight:'800', color:C.ink}}>{topInterestScore}%</div>
-                </Ring>
-                <div style={{fontSize:'12px', color:C.ink3, textAlign:'center', marginTop:'8px'}}>{topInterestName}</div>
-              </div>
+            {/* Anything not anchored to a section lands here, at the end. */}
+            {extraSections
+              .filter((x) => !x.before || !NAV.some((n) => n.id === x.before))
+              .map((x) => (
+                <section key={x.id} id={x.id} className="db-sec">{x.node}</section>
+              ))}
 
-              <div className="ogd-card rail-card">
-                <div className="rail-h">Featured features</div>
-                <div className="rail-feature">
-                  <Icon name="lightbulb" size={18} style={{color:'#ff6b35'}} />
-                  <div><div style={{fontSize:'12px', fontWeight:'700', color:C.ink}}>Startups</div><div style={{fontSize:'10px', color:C.ink3}}>12 opportunities</div></div>
-                </div>
-                <div className="rail-feature">
-                  <Icon name="microscope" size={18} style={{color:'#004e89'}} />
-                  <div><div style={{fontSize:'12px', fontWeight:'700', color:C.ink}}>Research</div><div style={{fontSize:'10px', color:C.ink3}}>12 programs</div></div>
-                </div>
-                <div className="rail-feature">
-                  <Icon name="piggybank" size={18} style={{color:'#1e7b34'}} />
-                  <div><div style={{fontSize:'12px', fontWeight:'700', color:C.ink}}>Finances</div><div style={{fontSize:'10px', color:C.ink3}}>12 courses</div></div>
-                </div>
-                <div className="rail-feature">
-                  <Icon name="scale" size={18} style={{color:'#8b5a8e'}} />
-                  <div><div style={{fontSize:'12px', fontWeight:'700', color:C.ink}}>Law & Rights</div><div style={{fontSize:'10px', color:C.ink3}}>12 resources</div></div>
+            {/* ===== DETAILS ===== */}
+            <section className="db-sec">
+              <div className="db-sec-h"><div><h2>Your details</h2></div></div>
+              <div className="db-card">
+                <div className="ogd-details">
+                  <Detail k="Full name" v={name || "-"} />
+                  <Detail k="Email" v={email || profile?.email || "-"} />
+                  <Detail k="Phone" v={profile?.phone || "-"} />
+                  <Detail k="School / College / Company" v={profile?.institution || "-"} />
+                  <Detail k="Desired career" v={profile?.desiredCareer || "-"} />
+                  <Detail k="Current status" v={profile?.clarity || "-"} />
                 </div>
               </div>
-
-              <div className="ogd-card rail-card">
-                <div className="rail-h">Next steps</div>
-                <button className="rail-act primary" onClick={() => setView("report")}><Icon name="explain" size={16} /> View report</button>
-                <div className="rail-note"><Icon name="check" size={14} /> PDF emailed to you</div>
-              </div>
-
-              {SHOW_TOOLKIT && (
-                <div className="ogd-card rail-card">
-                  <div className="rail-h">Career toolkit</div>
-                  <button className="rail-act" onClick={() => go("resources")}><Icon name="route" size={16} /> Explore toolkit</button>
-                  <div className="rail-toolhint">Colleges · exams · internships · scholarships - more in your menu.</div>
-                </div>
-              )}
-            </aside>
+            </section>
           </div>
         </main>
       </div>
@@ -816,17 +798,6 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
 }
 
 /* =============================== pieces ================================ */
-
-function KpiTile({ icon, c, label, value, sub, subAccent }: { icon: string; c: { c: string; t: string }; label: string; value: string; sub?: string; subAccent?: boolean }) {
-  return (
-    <div className="ogd-kpi">
-      <span className="ogd-kpi-ic" style={{ color: c.c, background: c.t }}><Icon name={icon} size={18} /></span>
-      <div className="ogd-kpi-label">{label}</div>
-      <div className="ogd-kpi-value">{value}</div>
-      {sub ? <div className="ogd-kpi-sub" style={subAccent ? { color: c.c, fontWeight: 700 } : undefined}>{sub}</div> : null}
-    </div>
-  );
-}
 
 function CardHead({ icon, title, sub }: { icon: string; title: string; sub?: string }) {
   return (
@@ -1021,7 +992,7 @@ function MiniList({ title, items, icon }: { title: string; items: { label: strin
       {items.slice(0, 4).map((it) => (
         <div className="ogd-minirow" key={it.label}>
           <span className="ogd-minilab">{it.label}</span>
-          <SkillBar value={(it.score / max) * 100} color={IN} height={6} />
+          <SkillBar value={(it.score / max) * 100} color={INK} height={6} track="#ece9e3" />
         </div>
       ))}
     </div>
@@ -1053,7 +1024,7 @@ function GoalTracker({ plan, goalKey, domain }: { plan: { days30: string[]; days
     <section className="ogd-card">
       <div className="ogd-goal-head">
         <CardHead icon="check" title="Your action plan" sub={`Small steps toward ${domain}. Check items off as you go.`} />
-        <Ring value={progress} size={72} stroke={8} color={progress >= 100 ? C.good : IN}>
+        <Ring value={progress} size={72} stroke={7} color={progress >= 100 ? C.good : INK} track="#ece9e3">
           <div className="ogd-goal-prog">{count}<small>/{all.length}</small></div>
         </Ring>
       </div>
@@ -1084,8 +1055,10 @@ function GoalItem({ text, done, onToggle }: { text: string; done: boolean; onTog
 }
 
 /* =============================== styles =============================== */
+// The report and feature views keep the original styles (LEGACY_CSS) - the
+// report's look is unchanged. The dashboard view has its own (DASH_CSS, below).
 const SIDE = 244;
-const CSS = `
+const LEGACY_CSS = `
 /* ===================== APP SHELL ===================== */
 .ash{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:${C.ink};background:${C.bg};min-height:100vh;letter-spacing:-.005em}
 .ash *{box-sizing:border-box}
@@ -1668,5 +1641,283 @@ img {
 /* Ensure sidebar buttons stay accessible on mobile */
 @media(max-width:860px){
   .rail-act{padding:12px 12px;min-height:44px}
+}
+`;
+
+/** The dashboard view's own styles - same visual language as the feature
+ *  pages (components/feature/styles.ts): warm off-white, ink, hairlines,
+ *  6-8px corners, Poppins headings. Nothing here leaks outside .db. */
+const DASH_CSS = `
+.db{--ink:#16181d;--ink2:#4a4f59;--mute:#7b808b;--line:#e8e5df;--line2:#f0ede8;--soft:#f7f5f1;--warm:#f4f0eb;--red:${IN};
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:#fbfaf8;min-height:100vh;overflow-x:clip}
+.db *{box-sizing:border-box}
+.db h1,.db h2,.db h3{font-family:Poppins,Inter,sans-serif;letter-spacing:-.015em;margin:0;color:var(--ink)}
+.db p{margin:0}
+.db button{font-family:inherit}
+
+/* sidebar */
+.db-side{position:fixed;top:0;left:0;bottom:0;width:248px;background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:40;transition:transform .22s ease}
+.db-brand{padding:18px 20px 8px}
+.db-me{display:flex;align-items:center;gap:10px;margin:6px 14px 4px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--soft)}
+.db-ava{width:34px;height:34px;border-radius:6px;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:Poppins,Inter,sans-serif;font-weight:600;font-size:15px;flex:none}
+.db-me b{display:block;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.db-me small{display:block;font-size:12px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.db-nav{flex:1;overflow-y:auto;padding:2px 10px 14px;scrollbar-width:thin}
+.db-nav-lbl{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding:16px 10px 6px}
+.db-navi{position:relative;display:flex;align-items:center;gap:10px;width:100%;height:36px;padding:0 10px;border:0;background:none;border-radius:6px;font-size:13.5px;font-weight:500;color:var(--ink2);cursor:pointer;text-align:left}
+.db-navi:hover{background:var(--soft);color:var(--ink)}
+.db-navi svg{color:var(--mute);flex:none}
+.db-navi img{width:26px;height:22px;object-fit:contain;flex:none;margin:0 -3px 0 -4px}
+.db-navi span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.db-navi.on{background:var(--warm);color:var(--ink);font-weight:600}
+.db-navi.on::before{content:"";position:absolute;left:-10px;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--red)}
+.db-navi.on svg{color:var(--ink)}
+.db-side-foot{padding:12px 14px 16px;border-top:1px solid var(--line)}
+.db-signout{width:100%;height:36px;display:flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--line);border-radius:6px;background:#fff;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer}
+.db-signout:hover{background:var(--soft);color:var(--ink)}
+.db-scrim{position:fixed;inset:0;background:rgba(18,20,24,.4);z-index:39}
+
+/* top bar */
+.db-body{margin-left:248px;min-height:100vh}
+.db-top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:18px;height:64px;padding:0 28px;background:rgba(255,255,255,.95);backdrop-filter:saturate(1.4) blur(8px);border-bottom:1px solid var(--line)}
+.db-burger{display:none;width:38px;height:38px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);place-items:center;cursor:pointer;flex:none}
+.db-hello{min-width:0}
+.db-hello b{display:block;font-family:Poppins,Inter,sans-serif;font-size:16px;font-weight:600;white-space:nowrap}
+.db-hello small{display:block;font-size:12.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.db-top-search{flex:1;display:flex;justify-content:center;min-width:0}
+.db-top .fp-search{margin:0;width:100%;max-width:460px}
+.db-top .fp-search-box,.db-msearch .fp-search-box{height:40px;box-shadow:none;border-radius:6px;background:var(--soft)}
+.db-top .fp-search-box input,.db-msearch .fp-search-box input{font-size:14px}
+.db-top-r{display:flex;align-items:center;gap:10px;flex:none}
+.db-topbtn{display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 12px;border:1px solid var(--line);border-radius:6px;background:#fff;font-size:13px;font-weight:600;color:var(--ink);text-decoration:none}
+.db-topbtn:hover{background:var(--soft)}
+.db .ash-user-wrap{position:relative}
+.db .ash-top-ava{width:38px;height:38px;border-radius:6px;display:grid;place-items:center;background:var(--ink);color:#fff;font-family:Poppins,Inter,sans-serif;font-weight:600;font-size:15px;cursor:pointer;border:0}
+.db .ash-menu-scrim{position:fixed;inset:0;z-index:40}
+.db .ash-menu{position:absolute;top:calc(100% + 8px);right:0;z-index:41;width:290px;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 18px 44px rgba(22,24,29,.16);padding:14px}
+.db .ash-menu-head{display:flex;align-items:center;gap:11px;padding-bottom:12px;border-bottom:1px solid var(--line2)}
+.db .ash-menu-ava{width:38px;height:38px;border-radius:6px;flex:none;display:grid;place-items:center;background:var(--ink);color:#fff;font-weight:600}
+.db .ash-menu-id{min-width:0}
+.db .ash-menu-n{font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.db .ash-menu-e{font-size:12px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.db .ash-menu-rows{padding:8px 0 4px}
+.db .ash-menu-row{display:flex;justify-content:space-between;gap:12px;align-items:baseline;padding:7px 0}
+.db .ash-menu-row span{font-size:12px;color:var(--mute);flex:none}
+.db .ash-menu-row b{font-size:13px;font-weight:600;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.db .ash-menu-signout{width:100%;height:38px;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:8px;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:6px;font-size:13px;font-weight:600;cursor:pointer}
+.db .ash-menu-signout:hover{background:var(--soft)}
+
+/* page */
+.db-main{padding:28px 28px 72px}
+.db-wrap{max-width:1180px;margin:0 auto}
+.db-msearch{display:none;margin-bottom:16px}
+.db-msearch .fp-search{margin:0;max-width:none}
+.db-sec{scroll-margin-top:84px;margin-top:44px}
+.db-sec.db-first{margin-top:0}
+.db-sec-h{display:flex;justify-content:space-between;align-items:flex-end;gap:10px 20px;flex-wrap:wrap;margin-bottom:14px}
+.db-sec-h h2{font-size:21px;font-weight:600;line-height:1.25}
+.db-sec-h p{font-size:14px;color:var(--mute);margin-top:4px;max-width:70ch}
+.db-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:22px}
+.db-more{display:inline-flex;align-items:center;gap:6px;margin-top:18px;background:none;border:0;padding:0;font-size:13.5px;font-weight:600;color:var(--ink);text-decoration:none;cursor:pointer}
+.db-more:hover{text-decoration:underline;text-underline-offset:3px}
+.db-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:42px;padding:0 16px;border-radius:6px;border:1px solid #d9d5cd;background:#fff;color:var(--ink);font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap}
+.db-btn:hover{background:var(--soft)}
+.db-btn.pri{background:var(--ink);border-color:var(--ink);color:#fff}
+.db-btn.pri:hover{background:#2b2e35}
+.db-kicker{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.db-note{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--mute)}
+
+/* hero */
+.db-hero{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);background:var(--warm);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.db-hero-l{padding:32px 32px 28px}
+.db-hero h1{font-size:clamp(30px,3.4vw,44px);line-height:1.08;font-weight:700;margin-top:10px;text-wrap:balance}
+.db-hero-tag{font-size:15.5px;line-height:1.6;color:var(--ink2);margin-top:12px;max-width:54ch}
+.db-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.db-chips span{font-size:13px;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:6px;padding:6px 10px}
+.db-chips b{color:var(--ink);font-weight:600}
+.db-actions{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:22px}
+.db-hero-r{padding:32px 30px 28px;border-left:1px solid var(--line);background:#fff;display:flex;flex-direction:column}
+.db-big{font-family:Poppins,Inter,sans-serif;font-size:64px;font-weight:700;line-height:1;margin-top:10px;letter-spacing:-.03em}
+.db-big small{font-size:24px;color:var(--mute);font-weight:600;margin-left:2px}
+.db-big-l{font-size:16px;font-weight:600;margin-top:8px}
+.db-big-s{font-size:13px;color:var(--mute);margin-top:2px}
+.db-themes{display:grid;gap:10px;margin-top:auto;padding-top:22px}
+.db-theme{display:grid;grid-template-columns:minmax(0,120px) minmax(0,1fr) 28px;gap:10px;align-items:center;font-size:13px;color:var(--ink2)}
+.db-theme span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.db-theme b{text-align:right;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.db-stats{grid-column:1 / -1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);background:#fff}
+.db-stat{display:block;padding:16px 22px;min-width:0;text-decoration:none;color:var(--ink)}
+.db-stat+.db-stat{border-left:1px solid var(--line)}
+.db-stat span{display:block;font-size:12.5px;color:var(--mute)}
+.db-stat b{display:block;font-family:Poppins,Inter,sans-serif;font-size:22px;font-weight:600;margin-top:4px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.db-stat small{display:block;font-size:12.5px;color:var(--ink2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.db-stat-link:hover{background:var(--soft)}
+
+/* tools + overview cards */
+.db-tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}
+.db-tool{display:grid;grid-template-columns:38px minmax(0,1fr) 16px;gap:12px;align-items:start;padding:16px;background:#fff;border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink)}
+.db-tool:hover{border-color:#c9c4ba}
+.db-tool-ic{width:38px;height:38px;border-radius:6px;background:var(--warm);display:grid;place-items:center;color:var(--ink)}
+.db-tool b{display:block;font-size:14px;font-weight:600}
+.db-tool small{display:block;font-size:12.5px;color:var(--mute);line-height:1.45;margin-top:3px}
+.db-tool>svg{color:#b5b0a6;margin-top:3px}
+.db-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px;align-items:start}
+.db .ogd-cardhead{margin-bottom:16px}
+.db .ogd-cardhead-top{display:flex;align-items:center;gap:10px}
+.db .ogd-cardhead-ic{display:none}
+.db .ogd-cardhead h2{font-size:17px;font-weight:600}
+.db .ogd-cardhead p{font-size:13.5px;color:var(--mute);margin-top:4px;line-height:1.5;max-width:64ch}
+.db .ogd-pbars{display:flex;flex-direction:column;gap:16px}
+.db .ogd-pbar-top{display:flex;justify-content:space-between;gap:12px;margin-bottom:7px;font-size:14px}
+.db .ogd-pbar-top span{color:var(--ink2)}
+.db .ogd-pbar-top b{font-weight:600;font-variant-numeric:tabular-nums}
+.db .ogd-radar-chart{display:flex;justify-content:center;margin:0 0 4px}
+
+/* dimensions */
+.db-dims{padding:0;overflow:hidden}
+.db-dimtabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--line);scrollbar-width:thin;background:var(--soft)}
+.db-dimtab{flex:1 0 auto;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:92px;padding:14px 10px 12px;border:0;border-right:1px solid var(--line);background:none;cursor:pointer;color:var(--ink2)}
+.db-dimtab:last-child{border-right:0}
+.db-dimtab:hover{background:#fff}
+.db-dimtab span{font-size:12.5px;font-weight:600;white-space:nowrap}
+.db-dimtab b{font-family:Poppins,Inter,sans-serif;font-size:15px;font-weight:600;color:var(--ink)}
+.db-dimtab[aria-selected="true"]{background:#fff;color:var(--ink);box-shadow:inset 0 -2px 0 var(--ink)}
+.db-dimtab[aria-selected="true"] svg{color:var(--red)}
+.db-dimbody{position:relative;padding:22px}
+.db-pillar{float:right;width:180px;max-width:36%;height:auto;margin:0 0 12px 18px;border-radius:8px}
+.db .ogd-dimpanel{animation:none}
+.db .ogd-dimpanel-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}
+.db .ogd-dimpanel-head{display:flex;align-items:center;gap:12px}
+.db .ogd-dim-ic{display:none}
+.db .ogd-dimpanel-name{font-family:Poppins,Inter,sans-serif;font-size:20px;font-weight:600;margin-bottom:6px}
+.db .ogd-dim-result{display:inline-block;font-size:13px;color:var(--ink2);border:1px solid var(--line);border-radius:6px;padding:4px 10px;background:var(--soft)}
+.db .ogd-dim-result b{color:var(--ink);font-weight:600}
+.db .ogd-dimpanel-score{text-align:right;flex:none}
+.db .ogd-dimpanel-num{font-family:Poppins,Inter,sans-serif;font-size:34px;font-weight:700;line-height:1}
+.db .ogd-dim-delta{font-size:12px;font-weight:600;margin-top:4px}
+.db .ogd-dim-delta.up{color:#15803d}
+.db .ogd-dim-delta.down{color:var(--mute)}
+.db .ogd-dim-pct{display:inline-block;font-size:12.5px;color:var(--mute);margin-top:8px}
+.db .ogd-dim-text{font-size:14.5px;line-height:1.7;color:var(--ink2);max-width:72ch;margin-top:14px}
+.db .ogd-dim-subs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 28px;margin-top:18px}
+.db .ogd-dim-subrow{display:grid;grid-template-columns:minmax(0,130px) minmax(0,1fr) 28px;align-items:center;gap:10px}
+.db .ogd-dim-sublab{font-size:13px;color:var(--ink2)}
+.db .ogd-dim-subval{font-size:13px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.db .ogd-dim-lists{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line2)}
+.db .ogd-dim-list-h{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+.db .ogd-dim-list-h.good{color:#15803d}
+.db .ogd-dim-li{font-size:13.5px;line-height:1.55;color:var(--ink2);padding:7px 0;border-top:1px solid var(--line2)}
+.db .ogd-dim-li:first-child{border-top:0;padding-top:0}
+.db .ogd-dim-next{margin-top:18px;padding:12px 14px;background:var(--soft);border:1px solid var(--line);border-radius:6px;font-size:13.5px;color:var(--ink2)}
+.db .ogd-dim-next b{color:var(--ink);font-weight:600}
+
+/* fields */
+.db-fields{padding:6px 22px}
+.db-field{display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;align-items:start;padding:18px 0;border-top:1px solid var(--line2)}
+.db-field:first-child{border-top:0}
+.db-field-rk{font-family:Poppins,Inter,sans-serif;font-size:28px;font-weight:700;line-height:1;color:#c9c4ba}
+.db-field:first-child .db-field-rk{color:var(--red)}
+.db-field-top{display:flex;justify-content:space-between;gap:12px;margin-bottom:8px}
+.db-field-top b{font-size:16px;font-weight:600}
+.db-field-top span{font-family:Poppins,Inter,sans-serif;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+.db-field p{font-size:13.5px;color:var(--mute);margin-top:8px;line-height:1.5}
+.db-field p b{color:var(--ink2);font-weight:600}
+
+/* how you think */
+.db .ogd-mind{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 34px}
+.db .ogd-minilist-h{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-bottom:12px}
+.db .ogd-minirow{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr);align-items:center;gap:12px;margin-bottom:10px}
+.db .ogd-minilab{font-size:13.5px;color:var(--ink2);line-height:1.3}
+
+/* plan */
+.db .ogd-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:22px}
+.db .ogd-goal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.db .ogd-goal-prog{font-family:Poppins,Inter,sans-serif;font-size:16px;font-weight:600}
+.db .ogd-goal-prog small{font-size:11px;color:var(--mute)}
+.db .ogd-goal-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 32px;margin-top:4px}
+.db .ogd-goal-tag{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-bottom:6px;padding:0;background:none;display:block}
+.db .ogd-goal-item{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line2);cursor:pointer;padding:11px 0}
+.db .ogd-goal-box{width:20px;height:20px;border-radius:5px;border:1.5px solid #c9c4ba;flex:none;display:grid;place-items:center;color:#fff;margin-top:1px}
+.db .ogd-goal-item.done .ogd-goal-box{background:#15803d;border-color:#15803d}
+.db .ogd-goal-text{font-size:14px;line-height:1.5;color:var(--ink2)}
+.db .ogd-goal-item.done .ogd-goal-text{color:var(--mute);text-decoration:line-through}
+
+/* toolkit */
+.db-kit{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.db-kit>a{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink);overflow:hidden}
+.db-kit>a:hover{border-color:#c9c4ba}
+.db-kit-art{height:148px;background:var(--warm);display:grid;place-items:center;border-bottom:1px solid var(--line)}
+.db-kit-art img{max-height:120px;max-width:76%;width:auto;height:auto;transition:transform .2s}
+.db-kit>a:hover .db-kit-art img{transform:translateY(-3px)}
+.db-kit-b{padding:14px 16px 16px;display:flex;flex-direction:column;gap:4px;flex:1}
+.db-kit-b>b{font-size:15px;font-weight:600}
+.db-kit-b>small{font-size:13px;color:var(--mute);line-height:1.45}
+.db-kit-p{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:12px;font-size:12.5px;color:var(--mute)}
+.db-kit-p i{flex:1;height:4px;border-radius:2px;background:#ece9e3;overflow:hidden;display:block}
+.db-kit-p i b{display:block;height:100%;background:var(--ink)}
+.db-kit-open{font-weight:600;color:var(--ink)}
+.db-jobs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,380px);margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;text-decoration:none;color:var(--ink)}
+.db-jobs:hover{border-color:#c9c4ba}
+.db-jobs-t{display:flex;flex-direction:column;gap:6px;padding:24px 26px}
+.db-jobs-t>b{font-family:Poppins,Inter,sans-serif;font-size:19px;font-weight:600;line-height:1.3}
+.db-jobs-t>small{font-size:14px;color:var(--mute);line-height:1.5}
+.db-jobs img{width:100%;height:100%;min-height:180px;object-fit:cover;display:block}
+
+/* details */
+.db .ogd-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px}
+.db .ogd-detail{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid var(--line2)}
+.db .ogd-detail-k{font-size:13px;color:var(--mute)}
+.db .ogd-detail-v{font-size:14px;font-weight:600;text-align:right}
+
+@media (max-width:1180px){
+  .db-tools{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .db-kit{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:1000px){
+  .db-hero{grid-template-columns:minmax(0,1fr)}
+  .db-hero-r{border-left:0;border-top:1px solid var(--line)}
+  .db-themes{padding-top:16px}
+  .db .ogd-dim-lists{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:900px){
+  .db-side{transform:translateX(-102%)}
+  .db-side.open{transform:none;box-shadow:0 20px 60px rgba(18,20,24,.25)}
+  .db-body{margin-left:0}
+  .db-burger{display:grid}
+  .db-top{padding:0 14px;gap:12px}
+  .db-top-search{display:none}
+  .db-hello{flex:1}
+  .db-msearch{display:block}
+  .db-two{grid-template-columns:minmax(0,1fr)}
+  .db-jobs{grid-template-columns:minmax(0,1fr)}
+  .db-jobs img{min-height:0;height:180px}
+}
+@media (max-width:640px){
+  .db-main{padding:16px 14px 56px}
+  .db-topbtn span{display:none}
+  .db-topbtn{padding:0 10px}
+  .db-hero-l,.db-hero-r{padding:22px 18px}
+  .db-big{font-size:52px}
+  .db-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .db-stat{padding:14px 16px}
+  .db-stat:nth-child(3){border-left:0}
+  .db-stat:nth-child(n+3){border-top:1px solid var(--line)}
+  .db-stat b{font-size:19px}
+  .db-tools{grid-template-columns:minmax(0,1fr)}
+  .db-kit{grid-template-columns:minmax(0,1fr);gap:10px}
+  .db-kit>a{flex-direction:row}
+  .db-kit-art{width:108px;height:auto;min-height:100px;flex:none;border-bottom:0;border-right:1px solid var(--line)}
+  .db-kit-art img{max-height:70px;max-width:86%}
+  .db-kit-b{padding:12px 14px}
+  .db-kit-p{padding-top:8px}
+  .db-card:not(.db-dims),.db-dimbody{padding:18px 16px}
+  .db-fields{padding:4px 16px}
+  .db .ogd-mind,.db .ogd-goal-cols,.db .ogd-details,.db .ogd-dim-subs{grid-template-columns:minmax(0,1fr)}
+  .db-pillar{float:none;display:block;width:150px;max-width:60%;margin:0 auto 14px}
+  .db-sec{margin-top:36px}
+}
+@media print{
+  .db-side,.db-top,.db-msearch{display:none!important}
+  .db-body{margin-left:0}
 }
 `;

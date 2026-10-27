@@ -102,6 +102,13 @@ Registration category `"experienced_professional"` (label "Working Professionals
   - also shows a 16-week activity calendar with the current streak (a day counts with 1+ minute), and time spent per area;
   - reads the student's own data only: `progress.courses.*`, the Startups progress collections, `progress.legal`, the Scam Shield tally on this device, and `activity`;
   - the server page sends only course outlines (titles) to the browser, never lesson text or quiz answers.
+- **Student dashboard** (`/account`, `app/account/Dashboard.tsx`, every class):
+  - layout:
+    - a grouped menu on the left (Your results / Track / Explore / Create), with features shown by their 3D thumbnails;
+    - a top bar with a greeting and a search over results and tools;
+    - then Overview (profile hero, key numbers, OneGrasp tools, profile bars and radar), 8 Dimensions (tabs), Best-fit fields, How you think, My plan and Your toolkit (every feature's illustration and progress, plus the jobs board);
+  - the dashboard view uses `DASH_CSS`, scoped to `.db`. The report and feature views keep the original `LEGACY_CSS`, so the report looks exactly as before;
+  - `DashboardMobile.tsx` is not rendered anywhere: `/account` uses `Dashboard.tsx`, which is responsive.
 - **Institution portal** (`/institution`, `app/institution/**`, `components/institution/**`, `lib/institution/**`): a school's login (created at `/admin/institutions`) sees only students whose profile `institution` equals the institution's name or an alias. All data goes through server routes (`app/api/institution/**`, `app/api/admin/institutions`, `app/api/student/messages`) that verify the Firebase ID token with the Admin SDK - they need `FIREBASE_PROJECT_ID`/`FIREBASE_CLIENT_EMAIL`/`FIREBASE_PRIVATE_KEY` (503 without). Collections `institutions`, `institutionAccounts`, `institutionMessages` are server-only. Students see messages in `components/SchoolInbox.tsx` (dashboard + the no-assessment screen). Analytics/recommendations are pure functions in `lib/institution/analytics.ts`.
 - **Portal features** (pure logic in `lib/institution/features.ts`; server-only collections listed in `lib/institution/types.ts`):
   - parent alignment: public survey `/parent/[token]`;

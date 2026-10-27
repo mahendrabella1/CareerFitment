@@ -188,7 +188,7 @@ export function MyProgress({ courses, track }: { courses: CourseOutline[]; track
                 <Link key={r.key} href={r.href} className="fp-card mp-top" style={{ textDecoration: "none", color: "inherit" }}>
                   <span className="mp-rank">{i + 1}</span>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={featureArt(r.key).src} alt="" />
+                  <img src={featureArt(r.key).card} alt="" />
                   <b>{r.title}</b>
                   <span className="fp-display" style={{ fontSize: 26, fontWeight: 700 }}>{r.percent}%</span>
                   <span className="fp-bar" style={{ width: "100%" }}><i style={{ width: `${r.percent}%` }} /></span>
@@ -216,7 +216,7 @@ export function MyProgress({ courses, track }: { courses: CourseOutline[]; track
                   <div key={r.key} className="mp-feat">
                     <button className="mp-head" aria-expanded={isOpen} onClick={() => setOpenKey(isOpen ? null : r.key)}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={featureArt(r.key).src} alt="" />
+                      <img src={featureArt(r.key).thumb} alt="" />
                       <span style={{ minWidth: 0 }}>
                         <b>{r.title}</b>
                         <small>{r.done} of {r.total} lessons · {r.modules.filter((m) => m.done === m.total).length} of {r.modules.length} modules{r.seconds >= 60 ? ` · ${mins(r.seconds)}` : ""}{r.lastAt ? ` · last ${ago(r.lastAt)}` : ""}</small>
