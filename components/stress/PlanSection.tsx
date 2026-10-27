@@ -44,7 +44,7 @@ export function PlanSection({ result, plan, onChange }: { result: StressResult; 
       <div className="ws-sec-h">
         <div>
           <h2>Your 30-day plan</h2>
-          <p className="ws-sub ws-small">Built from your answers. Tick steps off as you go - it saves automatically.</p>
+          <p className="ws-sub ws-small">Built around your strongest stress drivers. Tick steps off as you go - it saves automatically.</p>
         </div>
       </div>
 

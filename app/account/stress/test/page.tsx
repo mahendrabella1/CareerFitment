@@ -34,5 +34,5 @@ function TestInner() {
     clearStressDraft();
     router.replace("/account/stress");
   };
-  return <StressTest band={band} onFinish={onFinish} exitHref="/account/stress" />;
+  return <StressTest band={band} onFinish={onFinish} onExit={() => router.push("/account/stress")} />;
 }

@@ -1,37 +1,15 @@
 "use client";
 /**
- * The small charts on the Workplace Stress Check results page. Thin marks,
- * hairline grids, one blue ramp for level; every chart has its numbers in
- * text next to it, so nothing is readable by colour alone.
+ * The small charts on the Workplace Stress Check results dashboard. Thin
+ * marks, hairline grids, one blue ramp for level and one colour per area;
+ * every chart has its numbers in text next to it, so nothing is readable by
+ * colour alone.
  */
 import { useEffect, useRef, useState } from "react";
-import { BANK } from "@/lib/stress/bank";
-import { LEVEL_META, LEVELS } from "@/lib/stress/content";
+import { LEVEL_META } from "@/lib/stress/content";
 import { COMPASS_CUT, LEVEL_CUTS, levelFor } from "@/lib/stress/scoring";
 import type { Quadrant } from "@/lib/stress/types";
 import { ACCENT } from "./styles";
-
-const SPANS = [LEVEL_CUTS.mild, LEVEL_CUTS.moderate - LEVEL_CUTS.mild, LEVEL_CUTS.high - LEVEL_CUTS.moderate, 100 - LEVEL_CUTS.high];
-
-/** Where the score sits on the Low / Mild / Moderate / High scale. */
-export function ScaleStrip({ value, avg }: { value: number; avg?: number | null }) {
-  const edge = value < 8 ? "translateX(-8px)" : value > 92 ? "translateX(calc(-100% + 8px))" : "translateX(-50%)";
-  return (
-    <div className="ws-scale" role="img" aria-label={`Score ${value} out of 100, ${LEVEL_META[levelFor(value)].label}${avg != null ? `; average at your stage ${avg}` : ""}`}>
-      <div className="ws-mark" style={{ left: `${value}%`, transform: "translateX(-1px)" }}>
-        <b style={{ transform: edge }}>You · {value}</b>
-        <i />
-      </div>
-      <div className="ws-scale-track">
-        {LEVELS.map((l, n) => <i key={l} style={{ flex: SPANS[n], background: LEVEL_META[l].color }} />)}
-      </div>
-      {avg != null && <span className="ws-avg" style={{ left: `${avg}%` }} title={`Average at your career stage: ${avg}`} />}
-      <div className="ws-scale-lbl">
-        {LEVELS.map((l, n) => <span key={l} style={{ flex: SPANS[n] }}>{LEVEL_META[l].label}</span>)}
-      </div>
-    </div>
-  );
-}
 
 /** One area's bar: the fill's shade is its level; white ticks mark the level cut-offs. */
 export function AreaTrack({ value, avg }: { value: number; avg?: number | null }) {
@@ -40,18 +18,6 @@ export function AreaTrack({ value, avg }: { value: number; avg?: number | null }
       <i style={{ width: `${Math.max(value, 1.5)}%`, background: LEVEL_META[levelFor(value)].color }} />
       {[LEVEL_CUTS.mild, LEVEL_CUTS.moderate, LEVEL_CUTS.high].map((c) => <s key={c} style={{ left: `${c}%` }} />)}
       {avg != null && <u style={{ left: `calc(${avg}% - 3px)` }} />}
-    </span>
-  );
-}
-
-/** How often (Never .. Almost always) as 4 small steps plus the words. */
-export function AnswerSeg({ index }: { index: number }) {
-  return (
-    <span className="ws-ans">
-      <span className="ws-seg" aria-hidden="true">
-        {[1, 2, 3, 4].map((n) => <i key={n} style={n <= index ? { background: LEVEL_META[levelFor(n * 25)].color } : undefined} />)}
-      </span>
-      <span>{BANK.scale.labels[index] ?? "-"}</span>
     </span>
   );
 }
@@ -164,6 +130,43 @@ function TrendSvg({ points, W }: { points: { label: string; value: number }[]; W
         <text x={x(points.length - 1)} y={y(points[points.length - 1].value) - 12} textAnchor="middle" fontSize="12.5" fontWeight="650" fill="#0b0b0b">{points[points.length - 1].value}</text>
       )}
     </svg>
+  );
+}
+
+/** Each area's share of all the stress reported, as a donut (4 segments, a
+ *  2px surface gap between them; the numbers are in the legend beside it). */
+export function ShareDonut({ parts, size = 168 }: { parts: { key: string; label: string; value: number; color: string }[]; size?: number }) {
+  const r = size / 2 - 14, c = 2 * Math.PI * r, cx = size / 2;
+  const total = parts.reduce((s, p) => s + p.value, 0);
+  const gap = total ? 2 : 0;
+  let acc = 0;
+  const top = [...parts].sort((a, b) => b.value - a.value)[0];
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img" aria-label={parts.map((p) => `${p.label} ${p.value}%`).join(", ")}>
+      <circle cx={cx} cy={cx} r={r} fill="none" stroke="#ece9e3" strokeWidth="18" />
+      {total > 0 && parts.map((p) => {
+        const len = (p.value / total) * c;
+        const el = (
+          <circle key={p.key} cx={cx} cy={cx} r={r} fill="none" stroke={p.color} strokeWidth="18"
+            strokeDasharray={`${Math.max(0, len - gap)} ${c}`} strokeDashoffset={-acc} transform={`rotate(-90 ${cx} ${cx})`}>
+            <title>{`${p.label}: ${p.value}% of your stress`}</title>
+          </circle>
+        );
+        acc += len;
+        return el;
+      })}
+      <text x={cx} y={cx - 2} textAnchor="middle" fontSize="26" fontWeight="700" fill="#16181d" fontFamily="Poppins, Inter, sans-serif">{total ? `${top.value}%` : "-"}</text>
+      <text x={cx} y={cx + 18} textAnchor="middle" fontSize="11.5" fill="#7b808b">{total ? top.label : "no stress"}</text>
+    </svg>
+  );
+}
+
+/** A thin horizontal bar in a given colour, 0-100. */
+export function Bar({ value, color, height = 8 }: { value: number; color: string; height?: number }) {
+  return (
+    <span style={{ display: "block", height, borderRadius: 4, background: "#ece9e3", overflow: "hidden" }} aria-hidden="true">
+      <span style={{ display: "block", height: "100%", width: `${Math.max(value, value > 0 ? 2 : 0)}%`, background: color, borderRadius: "0 4px 4px 0" }} />
+    </span>
   );
 }
 

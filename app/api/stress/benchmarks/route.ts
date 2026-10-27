@@ -16,8 +16,9 @@ import { AREAS, type Band } from "@/lib/stress/types";
 export const dynamic = "force-dynamic";
 
 const COLLECTION = "stressBenchmarks";
-/** Rows from the earlier 8-pillar check have no `v` and aren't comparable. */
-const VERSION = 3;
+/** Only rows from the current check (3-answer scale) are comparable; earlier
+ *  versions (no `v`, or v3's 5-point scale) are ignored. */
+const VERSION = 4;
 const MIN_N = 30;
 const cache = new Map<Band, { at: number; body: unknown }>();
 

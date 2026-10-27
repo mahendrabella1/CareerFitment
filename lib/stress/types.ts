@@ -48,7 +48,11 @@ export interface StressScores {
   level: Level;
   /** Each area 0-100: the mean of its answers. */
   areas: Record<AreaKey, number>;
-  /** Questions answered "Often" or "Almost always", strongest first. */
+  /** Each area's share of all the stress reported, in % (sums to 100, or all 0). */
+  contribution: Record<AreaKey, number>;
+  /** The stress drivers (lib/stress/drivers.ts), 0-100 each, strongest first. */
+  drivers: { key: string; score: number }[];
+  /** Questions answered "Often", strongest area first (used to pick the plan; never shown). */
   hotspots: Hotspot[];
   /** Harassment or unfair treatment reported at least "Rarely". */
   rights: { harassment: boolean; discrimination: boolean };

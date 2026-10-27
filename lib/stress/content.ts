@@ -3,7 +3,8 @@
  * career stage, the "work or workplace" quadrants and the action library the
  * 30-day plan is built from. Pure data + small pure helpers.
  */
-import { BANK, areaOf, itemById } from "./bank";
+import { BANK, areaOf } from "./bank";
+import { driverByKey } from "./drivers";
 import { AREAS, type AreaKey, type Band, type Level, type Quadrant, type StressScores } from "./types";
 import { valueOf } from "./scoring";
 
@@ -23,6 +24,10 @@ export const LEVEL_META: Record<Level, { label: string; color: string; range: st
   high: { label: "High", color: "#104281", range: "65-100" },
 };
 export const LEVELS: Level[] = ["low", "mild", "moderate", "high"];
+
+/** One colour per area (identity, not level) - the first four slots of the
+ *  validated categorical palette, used the same way in every chart. */
+export const AREA_COLOR: Record<AreaKey, string> = { workload: "#2a78d6", toxicity: "#eb6834", culture: "#1baf7a", career: "#eda100" };
 
 export const AREA_META: Record<AreaKey, { label: string; icon: string; question: string; text: Record<Level, string> }> = {
   workload: {
@@ -375,9 +380,16 @@ export function rankedPoints(s: StressScores, answers: Record<string, number>) {
     .sort((a, b) => b.value - a.value || s.areas[b.item.area] - s.areas[a.item.area] || a.n - b.n);
 }
 
-/** The actions that best address one area, from its own answers. */
+/** The drivers that are actually pushing stress up (intensity 50+), strongest first. */
+export const activeDrivers = (s: StressScores) => s.drivers.filter((d) => d.score >= 50);
+
+/** The actions that best address one area: its strongest drivers' actions first. */
 export function actionsForArea(area: AreaKey, s: StressScores, answers: Record<string, number>): string[] {
   const out: string[] = [];
+  for (const d of activeDrivers(s)) {
+    const def = driverByKey(d.key);
+    if (def?.area === area) for (const id of def.actions) if (!out.includes(id)) out.push(id);
+  }
   for (const p of rankedPoints(s, answers).filter((x) => x.item.area === area)) {
     for (const id of SOURCE_ACTIONS[p.item.source] ?? []) if (!out.includes(id)) out.push(id);
   }
@@ -386,7 +398,7 @@ export function actionsForArea(area: AreaKey, s: StressScores, answers: Record<s
 }
 
 /** The 30-day plan: support first when needed, the rights card when relevant,
- *  then 3 actions aimed at the strongest stress points (at most 2 per area). */
+ *  then 3 actions aimed at the strongest drivers (at most 2 per area). */
 export function planActionsFor(s: StressScores, answers: Record<string, number>): string[] {
   const out: string[] = [];
   if (s.support !== "none") out.push("talk");
@@ -400,6 +412,10 @@ export function planActionsFor(s: StressScores, answers: Record<string, number>)
     perArea[a.area] = (perArea[a.area] ?? 0) + 1;
     return true;
   };
+  for (const d of activeDrivers(s)) {
+    if (focus.length >= 3) break;
+    for (const id of driverByKey(d.key)?.actions ?? []) if (take(id)) break;
+  }
   for (const p of rankedPoints(s, answers)) {
     if (focus.length >= 3) break;
     for (const id of SOURCE_ACTIONS[p.item.source] ?? []) if (take(id)) break;
@@ -413,11 +429,20 @@ export function planActionsFor(s: StressScores, answers: Record<string, number>)
 
 const lower = (t: string) => t.charAt(0).toLowerCase() + t.slice(1);
 
-/** One plain sentence: where the stress comes from. */
+const and = (xs: string[], sep = " and ") => (xs.length < 2 ? xs.join("") : `${xs.slice(0, -1).join(", ")}${sep}${xs[xs.length - 1]}`);
+
+/** One plain sentence: where the stress is coming from - the top 3 predicted
+ *  drivers, each group followed by its own area. */
 export function summaryLine(s: StressScores): string {
+  const groups = new Map<AreaKey, string[]>();
+  for (const d of activeDrivers(s).slice(0, 3)) {
+    const def = driverByKey(d.key);
+    if (def) groups.set(def.area, [...(groups.get(def.area) ?? []), lower(def.label)]);
+  }
   const top = [...AREAS].filter((a) => s.areas[a] >= 25).sort((a, b) => s.areas[b] - s.areas[a]).slice(0, 2);
-  if (!top.length) return "Nothing stands out as a strong source of stress at work right now.";
-  const areas = top.map((a) => areaOf(a).title).join(" and ");
-  const points = s.hotspots.slice(0, 2).map((h) => itemById(h.id)?.label).filter(Boolean).map((l) => lower(l!));
-  return `Most of it comes from ${areas}${points.length ? ` - especially ${points.join(" and ")}` : ""}.`;
+  if (!groups.size && !top.length) return "Nothing stands out as a strong source of stress at work right now.";
+  if (!groups.size) return `Mild pressure, mostly from ${top.map((a) => areaOf(a).title).join(" and ")}.`;
+  const parts = [...groups].map(([a, labels]) => `${and(labels)} (${AREA_META[a].label})`);
+  const multi = [...groups.values()].some((l) => l.length > 1);
+  return `Your stress is coming mainly from ${and(parts, multi ? ", and " : " and ")}.`;
 }

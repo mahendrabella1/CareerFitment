@@ -8,7 +8,10 @@ import { AREA_META } from "@/lib/stress/content";
 import { AREAS, type AreaKey, type StressPlan, type StressResult } from "@/lib/stress/types";
 import { Sparkline, TrendChart } from "./charts";
 
-const PULSE = ["Light", "Manageable", "Noticeable", "Heavy", "Very heavy"];
+/** Three answers, like the check itself: stored as 0 / 50 / 100. */
+const PULSE = ["Light", "Manageable", "Heavy"];
+const STEP = 100 / (PULSE.length - 1);
+const pulseLabel = (v: number) => PULSE[Math.min(PULSE.length - 1, Math.max(0, Math.round(v / STEP)))];
 const DAY = 86400000;
 
 const weekKey = (d = new Date()) => {
@@ -52,18 +55,17 @@ export function ProgressSection({ result, history, plan, onChange, retakeHref }:
       <div style={{ display: "grid", gap: 16 }}>
         <section className="ws-card">
           <h3 className="ws-h3">This week, how heavy did each area feel?</h3>
-          <p className="ws-muted" style={{ marginTop: 2 }}>Takes 20 seconds. You can update it any time this week.<span className="ws-show-sm"> 1 = Light, 5 = Very heavy.</span></p>
+          <p className="ws-muted" style={{ marginTop: 2 }}>Takes 20 seconds. You can update it any time this week.</p>
           <div className="ws-pulse">
             {AREAS.map((a) => (
               <div key={a} className="ws-prow">
                 <span className="ws-arow-name">
                   <Icon name={AREA_META[a].icon} size={16} /> {AREA_META[a].label}
-                  {draft[a] !== undefined && <span className="ws-show-sm ws-muted" style={{ marginLeft: "auto" }}>{PULSE[draft[a]! / 25]}</span>}
                 </span>
                 <div className="ws-pbtns" role="radiogroup" aria-label={`${AREA_META[a].label} this week`}>
                   {PULSE.map((label, i) => (
-                    <button key={label} role="radio" aria-checked={draft[a] === i * 25} aria-label={label} onClick={() => pick(a, i * 25)} title={label}>
-                      <span className="ws-hide-sm">{label}</span><span className="ws-show-sm">{i + 1}</span>
+                    <button key={label} role="radio" aria-checked={draft[a] === i * STEP} onClick={() => pick(a, i * STEP)}>
+                      {label}
                     </button>
                   ))}
                 </div>
@@ -87,7 +89,7 @@ export function ProgressSection({ result, history, plan, onChange, retakeHref }:
               return (
                 <div key={a} className="ws-spark">
                   <span className="ws-label">{AREA_META[a].label}</span>
-                  <b style={{ display: "block", fontSize: 16, marginTop: 4 }}>{last !== undefined ? PULSE[last / 25] : "No check-in yet"}</b>
+                  <b style={{ display: "block", fontSize: 16, marginTop: 4 }}>{last !== undefined ? pulseLabel(last) : "No check-in yet"}</b>
                   <div style={{ margin: "8px 0 4px" }}>{vals.length > 0 && <Sparkline values={vals} />}</div>
                   <span className="ws-muted">
                     {delta === null ? `Check score ${result.scores.areas[a]}` : delta === 0 ? "Same as week 1" : delta < 0 ? "Lighter than week 1" : "Heavier than week 1"}

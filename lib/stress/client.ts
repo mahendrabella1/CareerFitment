@@ -14,10 +14,11 @@ import type { AreaKey, Band, StressPlan, StressResult, StressStore } from "./typ
 
 const MAX_RESULTS = 12;
 
-/** Results from before the four-area check (v1/v2) have a different shape and
- *  can't be shown on this page - they're left out, and dropped on the next save. */
+/** Results from an earlier version of the check (v1/v2 pillars, v3's 5-point
+ *  scale) were scored differently and can't be shown on this page - they're
+ *  left out, and dropped on the next save. */
 const isCurrent = (r: StressResult | undefined): r is StressResult =>
-  !!r && typeof r.scores?.overall === "number" && !!r.scores?.areas;
+  !!r && r.version === BANK.version && typeof r.scores?.overall === "number" && Array.isArray(r.scores?.drivers);
 
 export async function loadStress(uid: string): Promise<StressStore & { hadOlder: boolean }> {
   const db = getDb();

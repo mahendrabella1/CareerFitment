@@ -1,8 +1,8 @@
 {
-  "version": "wsc-v3",
-  "about": "OneGrasp Workplace Stress Check for working professionals (0-5, 5-15, 15+ years). Four areas - Workload, Toxic behaviour, Culture & psychological safety, Career & job security - in OneGrasp's own wording, one frequency scale and one time frame (the last 3 months), plus one closing coping question that is not scored into the areas. Item ids are stored in results - never reuse an id for a different question.",
+  "version": "wsc-v4",
+  "about": "OneGrasp Workplace Stress Check for working professionals (0-5, 5-15, 15+ years). Four areas - Workload, Toxic behaviour, Culture & psychological safety, Career & job security - in OneGrasp's own wording, three answers per question (Never / Sometimes / Often) over one time frame (the last 3 months), plus one closing coping question that is not scored into the areas. Item ids are stored in results - never reuse an id for a different question.",
   "recall": "In the last 3 months",
-  "scale": { "labels": ["Never", "Rarely", "Sometimes", "Often", "Almost always"], "values": [0, 25, 50, 75, 100] },
+  "scale": { "labels": ["Never", "Sometimes", "Often"], "values": [0, 50, 100] },
   "areas": [
     { "id": "workload", "title": "Workload", "short": "Tasks, deadlines, hours, control and clarity", "intro": "How much work you carry, and how it is organised." },
     { "id": "toxicity", "title": "Toxic behaviour", "short": "Fear-based leadership, gaslighting, gossip, harassment", "intro": "How people behave around you. A few questions are about difficult experiences - answer honestly; your answers are private to you." },
@@ -50,7 +50,7 @@
   "closing": {
     "id": "COPE",
     "text": "Overall, how are you coping with work right now?",
-    "options": ["Doing well", "Mostly okay", "Getting by", "Struggling", "Really struggling"],
-    "values": [0, 25, 50, 75, 100]
+    "options": ["Coping well", "Getting by", "Struggling"],
+    "values": [0, 50, 100]
   }
 }
