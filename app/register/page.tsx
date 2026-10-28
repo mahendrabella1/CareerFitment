@@ -15,7 +15,7 @@ import { Logo } from "@/app/Logo";
 import { Icon } from "@/app/Icons";
 import { useAuth, authErrorMessage } from "@/lib/auth/AuthProvider";
 import { getFirebaseAuth } from "@/lib/firebase/client";
-import { CLARITY_STAGES, journeyForCategory, PASSWORD_RULES, passwordIsValid, emailIsValid, phoneIsValid } from "@/lib/auth/formOptions";
+import { CLARITY_STAGES, journeyForCategory, PASSWORD_RULES, passwordIsValid, emailIsValid, phoneProblem } from "@/lib/auth/formOptions";
 import { trackEvent } from "@/lib/metaPixel";
 
 // One ink colour for every choice and button (the same look as the dashboard
@@ -115,7 +115,11 @@ function RegisterForm() {
 
   const nameOk = f.name.trim() !== "";
   const emailOk = emailIsValid(f.email);
-  const phoneOk = phoneIsValid(f.phone);
+  const phoneErr = phoneProblem(f.phone);
+  const phoneOk = phoneErr === null;
+  // The rest of the form appears only once the number is valid, so say why as
+  // soon as a full number has been typed - not only after pressing Start.
+  const phoneTyped = f.phone.replace(/\D/g, "").length >= 10;
   const pwOk = passwordIsValid(f.password);
   const step0Ok = nameOk && f.category !== "";
   const isPro = f.category === PRO;
@@ -325,7 +329,7 @@ function RegisterForm() {
 
               {emailOk && (
                 <div style={S.grid2} className="rin og-g2">
-                  <Field label="Phone number" value={f.phone} onChange={(v) => set("phone", v)} ok={phoneOk} touched={touched} placeholder="10-digit mobile" />
+                  <Field label="Phone number" value={f.phone} onChange={(v) => set("phone", v)} ok={phoneOk} touched={touched || phoneTyped} placeholder="10-digit mobile" type="tel" error={phoneErr ?? undefined} />
                   <Field label="Location (city)" value={f.city} onChange={(v) => set("city", v)} placeholder="Your city" optional />
                 </div>
               )}
@@ -422,8 +426,8 @@ function InstitutionalLinkBlocked({ reason, schoolName }: { reason: string; scho
 }
 
 /* --------------------------- reusable field ---------------------------- */
-function Field({ label, value, onChange, ok, touched, type = "text", placeholder, optional, autoFocus, locked }:
-  { label: string; value: string; onChange: (v: string) => void; ok?: boolean; touched?: boolean; type?: string; placeholder?: string; optional?: boolean; autoFocus?: boolean; locked?: boolean }) {
+function Field({ label, value, onChange, ok, touched, type = "text", placeholder, optional, autoFocus, locked, error }:
+  { label: string; value: string; onChange: (v: string) => void; ok?: boolean; touched?: boolean; type?: string; placeholder?: string; optional?: boolean; autoFocus?: boolean; locked?: boolean; /** Says what's wrong, instead of "Please enter a valid ...". */ error?: string }) {
   const invalid = touched && !optional && ok === false;
   return (
     <div style={{ position: "relative" }}>
@@ -433,7 +437,7 @@ function Field({ label, value, onChange, ok, touched, type = "text", placeholder
       </label>
       <input style={{ ...S.input, ...(invalid ? S.inputBad : {}), ...(locked ? { color: "#6b7280", cursor: "not-allowed" } : {}) }}
         type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} autoFocus={autoFocus} disabled={locked} readOnly={locked} />
-      {invalid && <div style={S.err}>Please enter a valid {label.toLowerCase()}.</div>}
+      {invalid && <div style={S.err}>{error || `Please enter a valid ${label.toLowerCase()}.`}</div>}
     </div>
   );
 }

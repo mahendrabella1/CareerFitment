@@ -20,9 +20,11 @@ import {
   signOut,
   updateProfile as updateFirebaseProfile,
   onAuthStateChanged,
+  type Auth,
   type User,
+  type UserCredential,
 } from "firebase/auth";
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc, serverTimestamp, type Firestore } from "firebase/firestore";
 import { firebaseReady, getFirebaseAuth, getDb } from "@/lib/firebase/client";
 import { setStorageScope } from "@/lib/progress/userStorage";
 import type { StudentActivity, StudentProgress } from "@/lib/progress/types";
@@ -237,6 +239,34 @@ interface AuthState {
 
 const AuthContext = createContext<AuthState | null>(null);
 
+const codeOf = (err: unknown) => (err as { code?: string })?.code ?? "";
+
+/**
+ * Create the account, surviving a dropped connection: a brief network failure
+ * is retried once. If the first try did reach Firebase and only its reply was
+ * lost, the retry is told "email already in use" - then the same email and
+ * password sign in to the account just made, as long as it has no profile yet
+ * (an existing profile means it's someone's older account: that error stands).
+ */
+async function createAccount(auth: Auth, db: Firestore, email: string, password: string): Promise<UserCredential> {
+  try {
+    return await createUserWithEmailAndPassword(auth, email, password);
+  } catch (err) {
+    if (codeOf(err) !== "auth/network-request-failed") throw err;
+  }
+  await new Promise((r) => setTimeout(r, 1500));
+  try {
+    return await createUserWithEmailAndPassword(auth, email, password);
+  } catch (again) {
+    if (codeOf(again) !== "auth/email-already-in-use") throw again;
+    let cred: UserCredential;
+    try { cred = await signInWithEmailAndPassword(auth, email, password); } catch { throw again; }
+    const existing = await getDoc(doc(db, "users", cred.user.uid));
+    if (existing.exists()) { await signOut(auth); throw again; }
+    return cred;
+  }
+}
+
 /** Map Firebase auth error codes to friendly messages. */
 export function authErrorMessage(err: unknown): string {
   const code = (err as { code?: string })?.code ?? "";
@@ -300,7 +330,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const db = getDb();
     if (!auth || !db) throw new Error("Accounts are not configured yet.");
 
-    const cred = await createUserWithEmailAndPassword(auth, input.email.trim(), input.password);
+    const cred = await createAccount(auth, db, input.email.trim(), input.password);
     await updateFirebaseProfile(cred.user, { displayName: input.name.trim() });
 
     const profileDoc: UserProfile = {

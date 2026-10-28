@@ -52,8 +52,30 @@ export const passwordIsValid = (pw: string) => PASSWORD_RULES.every((r) => r.tes
 export const emailIsValid = (email: string) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
-/** Loose phone check: 10–15 digits after stripping spaces/dashes/parens/+. */
-export const phoneIsValid = (phone: string) => {
-  const digits = phone.replace(/[\s\-()+]/g, "");
-  return /^\d{10,15}$/.test(digits);
-};
+/**
+ * What's wrong with a mobile number, or null when it looks real.
+ * Indian numbers (10 digits; "+91", "91" or "0" in front is fine) must start
+ * with 6, 7, 8 or 9, and obvious placeholders are refused: one digit
+ * repeated (9999999999, 9000000000), or a straight run (9876543210). A number
+ * written with another country code ("+44 ...") needs 8-15 digits.
+ */
+export function phoneProblem(phone: string): string | null {
+  const raw = phone.trim().replace(/[\s\-().]/g, "");
+  if (!raw) return "Please enter your mobile number.";
+  if (!/^\+?\d+$/.test(raw)) return "Use digits only.";
+  let d = raw.replace(/^\+/, "");
+  if (raw.startsWith("+") && !d.startsWith("91")) {
+    return /^\d{8,15}$/.test(d) ? null : "Enter the full number, with its country code.";
+  }
+  if (d.length === 12 && d.startsWith("91")) d = d.slice(2);
+  else if (d.length === 11 && d.startsWith("0")) d = d.slice(1);
+  if (d.length !== 10) return "Enter a 10-digit mobile number.";
+  if (!/^[6-9]/.test(d)) return "Indian mobile numbers start with 6, 7, 8 or 9.";
+  const counts = [...d].reduce<Record<string, number>>((c, x) => ({ ...c, [x]: (c[x] ?? 0) + 1 }), {});
+  const steps = [...d].slice(1).map((x, i) => (Number(x) - Number(d[i]) + 10) % 10);
+  const run = steps.every((s) => s === 1) || steps.every((s) => s === 9);
+  if (Math.max(...Object.values(counts)) >= 8 || run) return "That looks like a sample number - please enter your real mobile number.";
+  return null;
+}
+
+export const phoneIsValid = (phone: string) => phoneProblem(phone) === null;
