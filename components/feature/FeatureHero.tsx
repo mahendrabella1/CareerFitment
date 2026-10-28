@@ -2,8 +2,10 @@
 /**
  * The top of every feature home page: a warm band with the section's 3D
  * illustration, a two-line headline, one sentence, the search box, quick
- * links, the main buttons, a "Quick tour" button and a strip of numbers.
- * Opens the starter tour on the student's first visit.
+ * links, the main buttons, a "Quick tour" button and a strip of numbers -
+ * then "Start here": the feature's most useful things to do, as four big
+ * cards (lib/features/catalog.ts -> ctas). Opens the starter tour on the
+ * student's first visit.
  */
 import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
@@ -79,6 +81,22 @@ export function FeatureHero({ meta, search, placeholder, onQuery, popular, prima
         )}
       </div>
       {tour && <FeatureTour meta={meta} stats={tourStats} onClose={() => setTour(false)} />}
+      {meta.ctas && meta.ctas.length > 0 && (
+        <div className="fp-ctas-wrap">
+          <div className="fp-ctas-in">
+            <span className="fp-kicker">Start here</span>
+            <div className="fp-ctas">
+              {meta.ctas.map((c) => (
+                <Link key={c.href} href={c.href} className="fp-cta">
+                  <span className="fp-cta-ic" aria-hidden="true"><Icon name={c.icon} size={20} stroke={1.9} /></span>
+                  <span className="fp-cta-b"><b>{c.title}</b><small>{c.text}</small></span>
+                  <span className="fp-cta-go" aria-hidden="true"><Icon name="arrowRight" size={16} stroke={2} /></span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

@@ -15,6 +15,16 @@ export interface TourSlide {
   icon: string;
 }
 
+/** A "Start here" card on a feature's home page: one of its most useful or
+ *  most interesting things to do (components/feature/FeatureHero.tsx). */
+export interface FeatureCta {
+  /** Icon name from app/Icons.tsx. */
+  icon: string;
+  title: string;
+  text: string;
+  href: string;
+}
+
 export interface FeatureMeta {
   key: string;
   title: string;
@@ -28,6 +38,8 @@ export interface FeatureMeta {
   /** What the layout is, in a few words, for the tour's first slide. */
   style: string;
   tour: TourSlide[];
+  /** Up to four "Start here" cards under the hero. */
+  ctas?: FeatureCta[];
 }
 
 export const HERO_BG = "#f4f0eb";
@@ -43,6 +55,12 @@ export const FEATURES: Record<string, FeatureMeta> = {
       { icon: "shield", title: "Train with Scam Shield", text: "Quick games that teach you to spot a fake message, call or offer before it costs you." },
       { icon: "score", title: "Try a Money Lab", text: "Move a slider and see what an EMI, inflation or a salary slip really means." },
     ],
+    ctas: [
+      { icon: "play", title: "Play Money Life", text: "Run your money for 12 months and see where your choices lead.", href: "/account/money/play" },
+      { icon: "shield", title: "Play Safe or Scam", text: "Swipe through real messages - spot the scam before it costs you.", href: "/account/money/scam-shield/swipe" },
+      { icon: "score", title: "See what an EMI really costs", text: "Move a slider and watch the interest add up.", href: "/account/money/labs/emi" },
+      { icon: "book", title: "Read a money card", text: "One idea per card, in plain words - a minute each.", href: "/account/money/cards" },
+    ],
   },
   startups: {
     key: "startups", title: "Startups", href: "/account/startups", art: "startups", accent: "#c2410c",
@@ -53,6 +71,12 @@ export const FEATURES: Record<string, FeatureMeta> = {
       { icon: "exam", title: "Quizzes unlock the next step", text: "Pass a lesson's quiz to open the next one. Each module ends with a short test." },
       { icon: "flag", title: "Missions build your portfolio", text: "Every module's mission becomes a page of your Startup Portfolio." },
       { icon: "target", title: "Not sure where to start?", text: "Take the 2-minute placement quiz and we'll point you to the right module." },
+    ],
+    ctas: [
+      { icon: "target", title: "Take the placement quiz", text: "Two minutes - we'll point you to the right module.", href: "/account/startups/placement" },
+      { icon: "play", title: "Start module 1", text: "Founder Mindset: short video lessons, a quiz after each.", href: "/account/startups/builder/founder-mindset" },
+      { icon: "video", title: "Watch the video lessons", text: "Every lesson video in one place.", href: "/account/startups/videos" },
+      { icon: "flag", title: "Your startup portfolio", text: "Every mission you finish becomes a page here.", href: "/account/startups/portfolio" },
     ],
   },
   legal: {
@@ -65,6 +89,12 @@ export const FEATURES: Record<string, FeatureMeta> = {
       { icon: "doc", title: "Step-by-step guides", text: "Plain-word guides for common problems - from online fraud to unfair fees." },
       { icon: "answer", title: "Letters and tools", text: "Ready-to-send letters, an evidence log with deadlines, and rights cards for your phone." },
     ],
+    ctas: [
+      { icon: "signpost", title: "Find help for my situation", text: "Answer two questions - get the right guide and helpline.", href: "/account/legal#situation" },
+      { icon: "phone", title: "Emergency numbers", text: "112 first, then every helpline - one tap to call.", href: "/account/legal/help" },
+      { icon: "doc", title: "Draft a police complaint", text: "A ready-to-send draft - fill in the blanks and print.", href: "/account/legal/tools/police-complaint" },
+      { icon: "answer", title: "What would you do?", text: "Real-life scenarios - pick an answer and see why.", href: "/account/legal/learn" },
+    ],
   },
   exams: {
     key: "exams", title: "Entrance Exams", href: "/account/exams", art: "exams", accent: "#1d4ed8",
@@ -74,6 +104,12 @@ export const FEATURES: Record<string, FeatureMeta> = {
       { icon: "search", title: "Search the catalogue", text: "Every exam with its conducting body, eligibility, dates and official link." },
       { icon: "calendar", title: "See what you can take", text: "Fill in your profile once and see only the exams open to you now or soon." },
       { icon: "target", title: "Plan and practise", text: "A study planner with a syllabus tracker, and mock tests with analysis." },
+    ],
+    ctas: [
+      { icon: "calendar", title: "See exams I can take", text: "Fill in your profile once - see only the exams open to you.", href: "/account/exams/dashboard" },
+      { icon: "target", title: "Take a mock test", text: "Practise against the clock, then see where you lost marks.", href: "/account/exams/mocks" },
+      { icon: "book", title: "Plan my preparation", text: "A study planner with the official syllabus built in.", href: "/account/exams/planner" },
+      { icon: "route", title: "My stage roadmap", text: "What to do now, this year and next, for your class.", href: "/account/exams/roadmap" },
     ],
   },
   scholarships: {
@@ -85,6 +121,12 @@ export const FEATURES: Record<string, FeatureMeta> = {
       { icon: "calendar", title: "Never miss a deadline", text: "A deadline calendar and an application tracker keep everything in one place." },
       { icon: "doc", title: "Win it", text: "An essay helper and a document vault for the paperwork, then renewals once you've won." },
     ],
+    ctas: [
+      { icon: "search", title: "Find scholarships for me", text: "Fill in your profile once - see only the ones you qualify for.", href: "/account/scholarships/dashboard" },
+      { icon: "calendar", title: "Deadline calendar", text: "Every official date in one place, so you never miss one.", href: "/account/scholarships/calendar" },
+      { icon: "doc", title: "Get help with the essay", text: "Prompts and a checklist for a stronger application.", href: "/account/scholarships/essay" },
+      { icon: "shield", title: "Check for scams", text: "Real scholarships never ask you to pay. Spot the fakes.", href: "/account/scholarships/safety" },
+    ],
   },
   "study-abroad": {
     key: "study-abroad", title: "Study Abroad", href: "/account/study-abroad", art: "study-abroad", accent: "#6d28d9",
@@ -94,6 +136,12 @@ export const FEATURES: Record<string, FeatureMeta> = {
       { icon: "signpost", title: "Six steps, left to right", text: "Decide, pick a country, a course and universities, sort the money, then prepare." },
       { icon: "wallet", title: "Run the money check first", text: "The ROI calculator shows whether a degree abroad pays back - before you apply." },
       { icon: "shield", title: "Stay safe", text: "Check any agent or offer letter before you pay, and keep your documents in one vault." },
+    ],
+    ctas: [
+      { icon: "wallet", title: "Run the money check", text: "Does a degree abroad pay back? Find out before you apply.", href: "/account/study-abroad/roi" },
+      { icon: "globe", title: "Compare countries", text: "Up to four side by side: real costs, work rights, what's next.", href: "/account/study-abroad/countries" },
+      { icon: "award", title: "Scholarships abroad", text: "Funding you can apply for, by country and course.", href: "/account/study-abroad/scholarships" },
+      { icon: "shield", title: "Check an agent or offer", text: "Before you pay anyone, run these checks.", href: "/account/study-abroad/safety" },
     ],
   },
   research: {
@@ -105,6 +153,12 @@ export const FEATURES: Record<string, FeatureMeta> = {
       { icon: "flag", title: "Your project", text: "Pick a conference first, then plan every step back from its date." },
       { icon: "video", title: "Rehearse and share", text: "Practise your talk against the clock and share your research profile." },
     ],
+    ctas: [
+      { icon: "flag", title: "Start a research project", text: "Pick a conference, then plan every step back from its date.", href: "/account/research/projects/new" },
+      { icon: "search", title: "Find a conference", text: "Student conferences in India and worldwide.", href: "/account/research/conferences" },
+      { icon: "book", title: "Begin the studio", text: "Unit 1: what research is - the first of eight short units.", href: "/account/research/studio/what-is-research" },
+      { icon: "video", title: "Practise your talk", text: "Record a 3- or 10-minute take and compare your tries.", href: "/account/research/practice" },
+    ],
   },
   careers: {
     key: "careers", title: "Career Library", href: "/account/career-library", art: "careers", accent: "#1d4ed8",
@@ -114,6 +168,12 @@ export const FEATURES: Record<string, FeatureMeta> = {
       { icon: "search", title: "Search any career", text: "Type a job, a skill or a subject - doctor, design, coding - and open the career." },
       { icon: "clusters", title: "Browse by field", text: "Eight fields, from technology to trades. Pick one to see every career in it." },
       { icon: "route", title: "Degree roadmaps", text: "A year-by-year plan for 1,500+ roles: skills, internships, exams and jobs." },
+    ],
+    ctas: [
+      { icon: "route", title: "Degree roadmaps", text: "A year-by-year plan for 1,500+ roles: skills, exams, jobs.", href: "/account/career-library/roadmaps" },
+      { icon: "play", title: "Test-drive a career", text: "Live a day in a career - five real moments - before you choose it.", href: "/account/test-drive" },
+      { icon: "signpost", title: "Decide with your family", text: "Compare two paths side by side with facts, then decide together.", href: "/account/decision-room" },
+      { icon: "briefcase", title: "Jobs on your path", text: "Fresh internships and fresher jobs, checked for scam signs.", href: "/account/jobs" },
     ],
   },
   internships: {
@@ -125,6 +185,12 @@ export const FEATURES: Record<string, FeatureMeta> = {
       { icon: "award", title: "All of them are free", text: "No fees, no subscriptions. Many end with a certificate you can add to your CV." },
       { icon: "briefcase", title: "Real jobs too", text: "Ready for paid work? The Jobs board lists fresh internships and fresher jobs every day." },
     ],
+    ctas: [
+      { icon: "briefcase", title: "Fresh jobs and internships", text: "Paid openings, brought in every day.", href: "/account/jobs" },
+      { icon: "award", title: "Add it to your Career Passport", text: "Certificates and wins with proof, verified by your school.", href: "/account/passport" },
+      { icon: "user", title: "Build your website", text: "Your own portfolio site in minutes.", href: "/account/portfolio" },
+      { icon: "compass", title: "Career GPS", text: "Three small missions a week, picked for you.", href: "/account/gps" },
+    ],
   },
   progress: {
     key: "progress", title: "My Progress", href: "/account/progress", art: "progress", accent: "#db3433",
@@ -133,6 +199,16 @@ export const FEATURES: Record<string, FeatureMeta> = {
     tour: [],
   },
 };
+
+/** The feature a page belongs to: the one whose home is the longest prefix
+ *  of the path ("/account/scholarships/calendar" -> Scholarships). */
+export function featureForPath(path: string): FeatureMeta | undefined {
+  let best: FeatureMeta | undefined;
+  for (const f of Object.values(FEATURES)) {
+    if ((path === f.href || path.startsWith(`${f.href}/`)) && (!best || f.href.length > best.href.length)) best = f;
+  }
+  return best;
+}
 
 export const featureArt = (key: string) => {
   const art = FEATURES[key]?.art ?? key;

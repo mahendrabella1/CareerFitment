@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Icon } from "@/app/Icons";
+import { HeaderArt } from "@/components/course/shellFeature";
 
 /**
  * The shared look of every feature section (Legal, Scholarships, Exams,
@@ -8,7 +9,8 @@ import { Icon } from "@/app/Icons";
  * CoursePlayerShell on its root (class "fx"), which also sets --accent for
  * the section, so pages only add class names:
  *
- *   PageHeader      the title block at the top of every page
+ *   PageHeader      the title block at the top of every page - a panel in the
+ *                   feature's colour with its 3D illustration (shellFeature.tsx)
  *   .fx-card        a white card (thin border, no heavy shadow)
  *   .fx-lift        hover state for anything clickable
  *   .fx-chip        a filter pill (aria-pressed="true" when selected)
@@ -46,13 +48,16 @@ export const FX_CSS = `
 .fx-section{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#6b7280;margin:0 0 12px}
 .fx-narrow{margin-left:auto;margin-right:auto}
 
-.fx-ph{margin:0 0 24px}
+/* The page header: a panel in the feature's colour, like its home page's hero. */
+.fx-ph{position:relative;margin:0 0 24px;padding:22px 26px 22px 30px;border-radius:12px;background:color-mix(in srgb,var(--accent) 7%,#fbfaf8);border:1px solid color-mix(in srgb,var(--accent) 18%,#e8e5df);overflow:hidden}
+.fx-ph::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent)}
 .fx-ph-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:#4b5563;text-decoration:none;margin-bottom:14px}
 .fx-ph-back:hover{color:#111827}
-.fx-ph-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px 28px;align-items:start}
-.fx-ph-grid.has-aside{grid-template-columns:minmax(0,1fr) minmax(260px,380px)}
+.fx-ph-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px 28px;align-items:center}
+.fx-ph-grid.has-aside{grid-template-columns:minmax(0,1fr) minmax(260px,380px);align-items:start}
 .fx-ph-row{display:flex;align-items:flex-start;gap:16px;min-width:0}
-.fx-ph-ic{flex:none;width:52px;height:52px;border-radius:12px;display:grid;place-items:center;color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,#fff)}
+.fx-ph-ic{flex:none;width:52px;height:52px;border-radius:12px;display:grid;place-items:center;color:#fff;background:var(--accent);box-shadow:0 8px 18px -10px var(--accent)}
+.fx-ph-art{display:block;width:180px;height:128px;object-fit:contain;margin:-10px -8px -12px 0}
 .fx-ph-text{flex:1;min-width:0}
 .fx-ph-eyebrow{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
 .fx-ph-title{font-size:28px;line-height:1.2;font-weight:700;letter-spacing:-.02em;color:#111827;margin:0;text-wrap:balance}
@@ -64,8 +69,8 @@ export const FX_CSS = `
 .fx-ph-aside-t{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#111827;margin-bottom:6px}
 .fx-ph-aside-t span{color:var(--accent);display:grid}
 .fx-ph-aside ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
-@media (max-width:900px){.fx-ph-grid,.fx-ph-grid.has-aside{grid-template-columns:minmax(0,1fr)}}
-@media (max-width:640px){.fx-ph-title{font-size:23px}.fx-ph-ic{width:42px;height:42px;border-radius:10px}.fx-ph-row{gap:12px}}
+@media (max-width:900px){.fx-ph-grid.has-aside{grid-template-columns:minmax(0,1fr)}.fx-ph-art{width:130px;height:96px}}
+@media (max-width:640px){.fx-ph{padding:18px 16px 18px 20px}.fx-ph-grid{grid-template-columns:minmax(0,1fr)}.fx-ph-art{display:none}.fx-ph-title{font-size:23px}.fx-ph-ic{width:42px;height:42px;border-radius:10px}.fx-ph-row{gap:12px}}
 `;
 
 /** The title block at the top of a feature page. */
@@ -115,7 +120,7 @@ export function PageHeader({
             {actions && <div className="fx-ph-actions">{actions}</div>}
           </div>
         </div>
-        {aside}
+        {aside ?? <HeaderArt />}
       </div>
     </header>
   );

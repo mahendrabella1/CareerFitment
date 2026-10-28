@@ -5,16 +5,20 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon } from "@/app/Icons";
 import { FX_CSS } from "@/components/course/fx";
+import { ShellFeatureProvider } from "@/components/course/shellFeature";
 import { FP_CSS } from "@/components/feature/styles";
 import { useAuth } from "@/lib/auth/AuthProvider";
+import { featureForPath } from "@/lib/features/catalog";
 
 // One layout for every feature section (Money, Legal, Exams, Scholarships,
 // Study Abroad, Research, Startups, Career Library, Internships, My Progress):
 // a white top bar with breadcrumbs, the section's parts as tabs under it, and
 // the page. A section's home page is full width (its hero is a band across
 // the page) with the full menu one tap away; inner pages keep the menu docked
-// on the left. The accent colour is used sparingly - the current tab, the
-// headline's second line and small "you are here" marks.
+// on the left. The section's accent marks the current tab, the menu's section
+// icon and every inner page's header panel (with the feature's illustration -
+// components/course/shellFeature.tsx), so each feature keeps its own look on
+// every page, not only its home.
 const SHELL_CSS = `
 .cps{--bar:56px;min-height:100vh;background:#fbfaf8;color:#16181d;font-family:Inter,system-ui,"Segoe UI",sans-serif}
 .cps.has-tabs{--bar:101px}
@@ -31,16 +35,16 @@ const SHELL_CSS = `
 .cps-dash:hover{background:#f7f5f1}
 .cps-tabs{display:flex;gap:2px;height:44px;padding:0 14px;overflow-x:auto;scrollbar-width:none;border-top:1px solid #f0ede8}
 .cps-tabs::-webkit-scrollbar{display:none}
-.cps-tabs a{flex:none;display:flex;align-items:center;padding:0 12px;font-size:13.5px;font-weight:600;color:#7b808b;text-decoration:none;border-bottom:2px solid transparent;margin-bottom:-1px}
-.cps-tabs a:hover{color:#16181d}
-.cps-tabs a[aria-current="page"]{color:#16181d;border-bottom-color:#16181d}
+.cps-tabs a{flex:none;display:flex;align-items:center;padding:0 14px;font-size:13.5px;font-weight:600;color:#7b808b;text-decoration:none;border-bottom:3px solid transparent;margin-bottom:-1px;border-radius:6px 6px 0 0;transition:color .15s,background .15s}
+.cps-tabs a:hover{color:#16181d;background:#f7f5f1}
+.cps-tabs a[aria-current="page"]{color:var(--accent);border-bottom-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,#fff)}
 .cps-menu{display:none}
 .cps-body{display:grid;grid-template-columns:272px minmax(0,1fr);align-items:start}
 .cps-side{position:sticky;top:var(--bar);height:calc(100vh - var(--bar));overflow-y:auto;overscroll-behavior:contain;background:#fff;border-right:1px solid #e8e5df;padding:14px 12px 28px;scrollbar-width:thin}
 .cps-back{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:#4a4f59;text-decoration:none;padding:6px 10px;border-radius:6px}
 .cps-back:hover{background:#f7f5f1;color:#16181d}
 .cps-sec{display:flex;gap:10px;align-items:flex-start;padding:12px 10px 14px;margin-bottom:6px;border-bottom:1px solid #f0ede8}
-.cps-sec-ic{flex:none;width:34px;height:34px;border-radius:6px;display:grid;place-items:center;color:#16181d;background:#f4f0eb}
+.cps-sec-ic{flex:none;width:34px;height:34px;border-radius:6px;display:grid;place-items:center;color:#fff;background:var(--accent)}
 .cps-sec-t{font-size:15px;font-weight:700;line-height:1.3;color:#16181d}
 .cps-sec-s{font-size:12.5px;color:#7b808b;line-height:1.45;margin-top:2px}
 .cps-home{position:relative;display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;font-size:13.5px;font-weight:500;color:#374151;text-decoration:none;margin:2px 0 4px}
@@ -131,6 +135,7 @@ export function CoursePlayerShell({
   }, [sidebarOpen]);
 
   const onHome = !!homeHref && pathname === homeHref;
+  const feature = featureForPath(homeHref ?? pathname ?? "") ?? null;
   const sectionHref = homeHref ?? banner?.backHref ?? "/account";
   // A section's home page is full width; its menu opens as a drawer.
   const wide = !sidebar || onHome;
@@ -214,10 +219,10 @@ export function CoursePlayerShell({
             {loading ? (
               <div role="status" style={{ padding: "48px 16px", textAlign: "center", fontSize: 13.5, color: "#7b808b" }}>Loading your progress…</div>
             ) : (
-              <>
+              <ShellFeatureProvider feature={feature}>
                 {children}
                 {aside && !onHome && <div className="cps-foot">{aside}</div>}
-              </>
+              </ShellFeatureProvider>
             )}
           </div>
         </main>

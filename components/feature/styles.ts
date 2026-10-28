@@ -46,6 +46,21 @@ export const FP_CSS = `
 .fp-stat+.fp-stat{padding-left:20px;border-left:1px solid var(--line2)}
 .fp-stat b{display:block;font-family:Poppins,Inter,sans-serif;font-size:24px;font-weight:600;line-height:1.15;color:var(--ink)}
 .fp-stat span{font-size:13px;color:var(--mute)}
+/* "Start here": the feature's most useful things to do, on the hero band */
+.fp-ctas-in{max-width:1240px;margin:0 auto;padding:0 32px 30px}
+.fp-ctas-in>.fp-kicker{display:block;padding-top:18px;border-top:1px solid var(--line2)}
+.fp-ctas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:10px}
+.fp-cta{display:grid;grid-template-columns:40px minmax(0,1fr) 16px;gap:12px;align-items:start;padding:16px;background:#fff;border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink);transition:border-color .15s,transform .2s,box-shadow .2s}
+.fp-cta:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 10px 22px -14px rgba(22,24,29,.35)}
+.fp-cta-ic{width:40px;height:40px;border-radius:8px;display:grid;place-items:center;background:var(--accent);color:#fff}
+.fp-cta-b{min-width:0}
+.fp-cta-b b{display:block;font-size:14.5px;font-weight:600;line-height:1.3}
+.fp-cta-b small{display:block;font-size:12.5px;color:var(--mute);line-height:1.45;margin-top:3px}
+.fp-cta-go{color:var(--mute);margin-top:2px;transition:transform .2s,color .2s}
+.fp-cta:hover .fp-cta-go{color:var(--accent);transform:translateX(2px)}
+@media (max-width:1100px){.fp-ctas{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:1023px){.fp-ctas-in{padding:0 16px 22px}}
+@media (max-width:560px){.fp-ctas{grid-template-columns:minmax(0,1fr)}.fp-cta{padding:13px}}
 
 /* search */
 .fp-search{position:relative;margin-top:22px;max-width:640px}
