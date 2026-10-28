@@ -33,12 +33,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
+        {/* Inter, Plus Jakarta Sans and Poppins served from this site (public/fonts) - no
+            waiting on two Google domains before text can render. lib/report/exportReportHtml.ts
+            reads this stylesheet to embed the fonts in the downloaded report. */}
+        <link rel="preload" href="/fonts/files/inter-UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/files/poppins-pxiByp8kv8JHgFVrLEj6Z1xlFQ.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/files/poppins-pxiByp8kv8JHgFVrLCz7Z1xlFQ.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="stylesheet" href="/fonts/fonts.css" />
       </head>
       <body>
         <MetaPixel />

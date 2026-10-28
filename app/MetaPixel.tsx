@@ -37,22 +37,23 @@ export default function MetaPixel() {
 
   if (!META_PIXEL_ID) return null;
 
+  // Meta's snippet in two parts: the tiny `fbq` queue straight away, so every
+  // PageView, click and conversion is recorded from the first moment, and the
+  // ~217 KB fbevents.js only once the page has loaded and the browser is idle -
+  // it then sends everything queued so far.
   return (
     <>
       <Script id="meta-pixel-base" strategy="afterInteractive">
         {`
-          !function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          !function(f){if(f.fbq)return;var n=f.fbq=function(){n.callMethod?
           n.callMethod.apply(n,arguments):n.queue.push(arguments)};
           if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window, document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
+          n.queue=[]}(window);
           fbq('init', '${META_PIXEL_ID}');
           fbq('track', 'PageView');
         `}
       </Script>
+      <Script id="meta-pixel-lib" src="https://connect.facebook.net/en_US/fbevents.js" strategy="lazyOnload" />
       <noscript>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img

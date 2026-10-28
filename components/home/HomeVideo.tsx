@@ -5,10 +5,11 @@
  *
  * - Click mode (default, the hero tour): a play button; playing starts inside
  *   the click, so phones allow sound, then the native controls take over.
- * - `auto` (the zig-zag rows): plays muted and loops whenever at least half of
- *   it is on screen, and pauses when it leaves, with its own pause and sound
- *   buttons. Visitors who asked their device for less motion or to save data
- *   get click mode instead.
+ * - `auto` (the hero tour, the zig-zag rows): plays muted and loops whenever at
+ *   least half of it is on screen, and pauses when it leaves, with its own
+ *   pause and sound buttons. It waits for the page to finish loading first.
+ *   Visitors who asked their device for less motion or to save data get click
+ *   mode instead.
  *
  * Only one video plays sound at a time: turning sound on in one mutes the rest.
  */
@@ -73,12 +74,8 @@ export const HomeVideo = forwardRef<HomeVideoHandle, {
     return () => window.removeEventListener(SOUND_EVENT, off);
   }, [id]);
 
-  // Auto mode: play while on screen.
-  useEffect(() => {
-    if (!auto || !box.current || !("IntersectionObserver" in window)) return;
-    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || saveData) return;
-    setAutoOn(true);
+  /** Plays the video while at least half of it is on screen, pauses it when it leaves. */
+  const watch = (node: HTMLElement) => {
     const io = new IntersectionObserver(([e]) => {
       const v = el.current;
       if (!v) return;
@@ -91,8 +88,34 @@ export const HomeVideo = forwardRef<HomeVideoHandle, {
         v.pause();
       }
     }, { threshold: [0, 0.5] });
-    io.observe(box.current);
-    return () => io.disconnect();
+    io.observe(node);
+    return io;
+  };
+
+  // Auto mode: play while on screen - but only once the page has finished
+  // loading and the browser is idle, so a video never competes with the page's
+  // own code, fonts and images. The still shows until then.
+  useEffect(() => {
+    if (!auto || !box.current || !("IntersectionObserver" in window)) return;
+    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || saveData) return;
+    let io: IntersectionObserver | null = null;
+    let idle = 0;
+    const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number; cancelIdleCallback?: (h: number) => void };
+    const begin = () => {
+      if (!box.current) return;
+      setAutoOn(true);
+      io = watch(box.current);
+    };
+    const afterLoad = () => { idle = w.requestIdleCallback ? w.requestIdleCallback(begin, { timeout: 1500 }) : window.setTimeout(begin, 300); };
+    if (document.readyState === "complete") afterLoad();
+    else window.addEventListener("load", afterLoad, { once: true });
+    // `watch` only reads refs and `start` (a dependency), so it needn't be one.
+    return () => {
+      window.removeEventListener("load", afterLoad);
+      if (w.cancelIdleCallback) w.cancelIdleCallback(idle); else window.clearTimeout(idle);
+      io?.disconnect();
+    };
   }, [auto, start]);
 
   const togglePause = () => {

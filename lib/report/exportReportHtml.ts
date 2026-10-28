@@ -20,6 +20,8 @@ const JPEG_QUALITY = 0.8;
 const KEEP_AS_IS_BYTES = 80_000;
 const PARALLEL = 6;
 const URL_RE = /url\(\s*(['"]?)([^'")]+)\1\s*\)/g;
+/** The font stylesheet: the site's own copy (app/layout.tsx, public/fonts/fonts.css) or Google's. */
+const FONT_SHEET = /fonts\.googleapis\.com|\/fonts\/fonts\.css/;
 
 // Selectors for states a static file never has, removed before matching.
 const STATE_PSEUDO = /::?(?:before|after|first-line|first-letter|selection|placeholder|marker|backdrop|-webkit-[\w-]+|-moz-[\w-]+|hover|focus|focus-visible|focus-within|active|visited|link|target|checked|disabled|enabled|placeholder-shown|autofill)(?![\w-])/g;
@@ -135,6 +137,9 @@ function collectPageCss(root: Element): string {
   };
   for (const sheet of Array.from(document.styleSheets)) {
     if (sheet.ownerNode && root.contains(sheet.ownerNode)) continue; // travels inside the markup already
+    // The site's own font stylesheet: embeddedFontCss() adds its fonts with the files inlined. Its
+    // rules here would point at the live site and, coming later, override the embedded ones.
+    if (sheet.href && FONT_SHEET.test(sheet.href)) continue;
     let rules: CSSRuleList;
     try { rules = sheet.cssRules; } catch { continue; } // another site's stylesheet (fonts) - not readable
     const css = walk(rules, sheet.href || location.href);
@@ -143,10 +148,10 @@ function collectPageCss(root: Element): string {
   return out.join("\n");
 }
 
-/** The page's Google Fonts (Latin subset) with the font files embedded, so the
- *  file's text is the same width - and wraps the same - as on the site. */
+/** The page's fonts (Latin subset) with the font files embedded, so the file's
+ *  text is the same width - and wraps the same - as on the site. */
 async function embeddedFontCss(): Promise<string> {
-  const links = Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"][href*="fonts.googleapis.com"]'));
+  const links = Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')).filter((l) => FONT_SHEET.test(l.href));
   const blocks: string[] = [];
   for (const link of links) {
     try {
