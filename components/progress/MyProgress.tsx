@@ -1,12 +1,15 @@
 "use client";
 /**
- * My Progress - every feature's lessons in one place: overall completion,
- * the top three features, each feature's modules (done / pending) with a
- * "continue" link to the next lesson, an activity calendar with the current
- * streak, and time spent per area. Reads only the student's own data:
- * progress.courses.* (lib/progress/progressStore.ts), the Startups progress
- * collections (lib/startups/clientProgress.ts), progress.legal, the Scam
- * Shield tally on this device and users/{uid}.activity.
+ * My Progress - everything a student has done in every feature: lessons
+ * finished AND tools used (each calculator, tracker, finder and catalogue
+ * they've opened - lib/progress/featureTasks.ts), so time spent in a feature
+ * shows up as progress too. Overall completion, the top three features, each
+ * feature's modules and tools (done / still to do) with a "continue" link, an
+ * activity calendar with the current streak, and time spent per area. Reads
+ * only the student's own data: progress.courses.* and progress.visited.*
+ * (lib/progress/progressStore.ts, components/ActivityTracker.tsx), the
+ * Startups progress collections (lib/startups/clientProgress.ts),
+ * progress.legal, the Scam Shield tally on this device and users/{uid}.activity.
  */
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
@@ -19,6 +22,7 @@ import { fetchProgress } from "@/lib/startups/clientProgress";
 import { lessonStatus, moduleStatus, type ProgressMap } from "@/lib/startups/unlock";
 import type { PublicTrack } from "@/lib/startups/publicShape";
 import { FEATURES, featureArt } from "@/lib/features/catalog";
+import { tasksDone, type FeatureTaskSpec } from "@/lib/progress/featureTasks";
 import { CoursePlayerShell } from "@/components/course/CoursePlayerShell";
 import { FeatureHero } from "@/components/feature/FeatureHero";
 
@@ -28,15 +32,30 @@ export interface CourseOutline {
 }
 
 interface ModRow { title: string; done: number; total: number; lessons: { title: string; done: boolean }[] }
+interface ToolRow { label: string; href: string; done: boolean; note?: string }
 interface Row {
   key: string; title: string; href: string;
-  modules: ModRow[]; done: number; total: number; percent: number;
+  modules: ModRow[]; tools: ToolRow[];
+  lessonsDone: number; lessonsTotal: number; toolsDone: number;
+  /** Lessons + tools. */
+  done: number; total: number; percent: number;
   next?: { title: string; href: string };
   seconds: number; lastAt?: number; note?: string;
 }
 
-const ACTIVITY_KEY: Record<string, string> = { money: "money", legal: "legal", exams: "exams", scholarships: "scholarships", "study-abroad": "study_abroad", research: "research", startups: "startups" };
-const ONLY_TIME = ["careers", "internships", "jobs", "gps", "test_drive", "decision", "passport", "portfolio"];
+const ACTIVITY_KEY: Record<string, string> = { money: "money", legal: "legal", exams: "exams", scholarships: "scholarships", "study-abroad": "study_abroad", research: "research", startups: "startups", careers: "careers", internships: "internships" };
+const ONLY_TIME = ["jobs", "gps", "test_drive", "decision", "passport", "portfolio"];
+
+/** A feature's tools from its task list, with what's been opened. */
+function toolsFor(spec: FeatureTaskSpec | undefined, visited: string[] | undefined): ToolRow[] {
+  if (!spec) return [];
+  const { done, explored } = tasksDone(spec, visited);
+  return spec.tasks.map((t) => {
+    const n = explored[t.id] ?? 0;
+    const note = t.kind === "any" ? (t.count ? `${n} of ${t.count} opened` : n ? `${n} opened` : undefined) : undefined;
+    return { label: t.label, href: t.href, done: done.has(t.id), note };
+  });
+}
 const HEAT = ["#ece9e3", "#cfe5d2", "#93c79d", "#4f9c5f", "#256b36"];
 const WEEKS = 16;
 type Filter = "all" | "progress" | "todo" | "done";
@@ -64,11 +83,21 @@ const MP_CSS = `
 .mp-lessons{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .mp-lessons span{font-size:12.5px;padding:4px 9px;border-radius:5px;border:1px dashed #cfcac0;color:var(--ink2)}
 .mp-lessons span.is-done{border:1px solid #bfe0c6;background:#eef7f0;color:#14532d}
+.mp-lessons .mp-todo{font-size:12.5px;padding:4px 9px;border-radius:5px;border:1px solid var(--line);background:#fff;color:var(--ink);text-decoration:none}
+.mp-lessons .mp-todo:hover{border-color:var(--ink)}
+.mp-segs i.is-tools{flex:2}
+.mp-segs i.is-tools b{background:var(--accent,#16181d)}
 .mp-heat{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,12px);grid-auto-columns:12px;gap:3px;margin-top:12px;overflow-x:auto}
 .mp-heat i{width:12px;height:12px;border-radius:2px;display:block}
 @media (max-width:1100px){.mp-body{padding-left:16px}}
 @media (max-width:560px){.mp-head{grid-template-columns:48px minmax(0,1fr) 48px;gap:10px;padding:12px}.mp-head img{width:48px;height:36px}.mp-pct{font-size:17px}}
 `;
+
+/** "3 of 16 lessons · 5 of 21 tools used" (just the part that applies). */
+const summaryOf = (r: Row) => [
+  r.lessonsTotal ? `${r.lessonsDone} of ${r.lessonsTotal} lessons` : "",
+  r.tools.length ? `${r.toolsDone} of ${r.tools.length} tools used` : "",
+].filter(Boolean).join(" · ");
 
 const mins = (s: number) => (s >= 3600 ? `${Math.floor(s / 3600)} h ${Math.round((s % 3600) / 60)} min` : `${Math.max(0, Math.round(s / 60))} min`);
 const ago = (t?: number) => {
@@ -77,7 +106,7 @@ const ago = (t?: number) => {
   return d <= 0 ? "today" : d === 1 ? "yesterday" : d < 30 ? `${d} days ago` : new Date(t).toLocaleDateString("en-IN", { day: "numeric", month: "short" });
 };
 
-export function MyProgress({ courses, track }: { courses: CourseOutline[]; track: PublicTrack }) {
+export function MyProgress({ courses, track, tasks }: { courses: CourseOutline[]; track: PublicTrack; tasks: FeatureTaskSpec[] }) {
   const { user, profile } = useAuth();
   const meta = FEATURES.progress;
   const [startups, setStartups] = useState<ProgressMap | null>(null);
@@ -95,7 +124,27 @@ export function MyProgress({ courses, track }: { courses: CourseOutline[]; track
   const byFeature = activity?.byFeature ?? {};
   const lastBy = activity?.lastByFeature ?? {};
 
+  const visited = profile?.progress?.visited;
   const rows = useMemo<Row[]>(() => {
+    const row = (key: string, modules: ModRow[], nextLesson: Row["next"], note?: string): Row => {
+      const f = FEATURES[key];
+      const spec = tasks.find((t) => t.key === key);
+      const tools = toolsFor(spec, spec ? visited?.[spec.area] : undefined);
+      const lessonsTotal = modules.reduce((s, m) => s + m.total, 0);
+      const lessonsDone = modules.reduce((s, m) => s + m.done, 0);
+      const toolsDone = tools.filter((t) => t.done).length;
+      const total = lessonsTotal + tools.length;
+      const done = lessonsDone + toolsDone;
+      const nextTool = tools.find((t) => !t.done);
+      const act = ACTIVITY_KEY[key];
+      return {
+        key, title: f?.title ?? key, href: f?.href ?? "/account",
+        modules, tools, lessonsDone, lessonsTotal, toolsDone, done, total,
+        percent: total ? Math.round((done / total) * 100) : 0,
+        next: nextLesson ?? (nextTool ? { title: nextTool.label, href: nextTool.href } : undefined),
+        seconds: byFeature[act] ?? 0, lastAt: lastBy[act], note,
+      };
+    };
     const out: Row[] = courses.map((c) => {
       const f = FEATURES[c.key];
       const done = new Set(readCourseDone(c.key, profile?.progress?.courses?.[c.key]));
@@ -103,20 +152,14 @@ export function MyProgress({ courses, track }: { courses: CourseOutline[]; track
         const lessons = m.lessons.map((l) => ({ title: l.title, done: done.has(l.id) }));
         return { title: m.title, lessons, done: lessons.filter((l) => l.done).length, total: lessons.length };
       });
-      const total = modules.reduce((s, m) => s + m.total, 0);
-      const d = modules.reduce((s, m) => s + m.done, 0);
       const nextLesson = c.modules.flatMap((m) => m.lessons).find((l) => !done.has(l.id));
-      const act = ACTIVITY_KEY[c.key];
       let note: string | undefined;
       if (c.key === "legal" && profile?.progress?.legal?.done) note = `${profile.progress.legal.done} "What would you do?" scenarios played`;
       if (c.key === "money" && scam?.total) note = `Scam Shield: ${Math.round((scam.correct / scam.total) * 100)}% right over ${scam.total} questions`;
-      return {
-        key: c.key, title: f?.title ?? c.key, href: f?.href ?? "/account",
-        modules, done: d, total, percent: total ? Math.round((d / total) * 100) : 0,
-        next: nextLesson ? { title: nextLesson.title, href: `${f?.href}?lesson=${encodeURIComponent(nextLesson.id)}` } : undefined,
-        seconds: byFeature[act] ?? 0, lastAt: lastBy[act], note,
-      };
+      return row(c.key, modules, nextLesson ? { title: nextLesson.title, href: `${f?.href}?lesson=${encodeURIComponent(nextLesson.id)}` } : undefined, note);
     });
+    // Features with tools but no lessons.
+    for (const k of ["careers", "internships"]) if (tasks.some((t) => t.key === k)) out.push(row(k, [], undefined));
     // Startups: a lesson counts once its quiz is passed.
     const p = startups ?? { lessonBestPercent: {}, moduleTestBestPercent: {} };
     const sMods = track.modules.map((m) => {
@@ -128,18 +171,23 @@ export function MyProgress({ courses, track }: { courses: CourseOutline[]; track
     const nextMod = track.modules.find((m) => moduleStatus(m, p) !== "COMPLETED");
     const nextL = nextMod?.lessons.find((l) => lessonStatus(track, nextMod.slug, l.slug, p) !== "COMPLETED");
     out.push({
-      key: "startups", title: FEATURES.startups.title, href: FEATURES.startups.href, modules: sMods, done: sDone, total: sTotal,
+      key: "startups", title: FEATURES.startups.title, href: FEATURES.startups.href, modules: sMods, tools: [],
+      lessonsDone: sDone, lessonsTotal: sTotal, toolsDone: 0, done: sDone, total: sTotal,
       percent: sTotal ? Math.round((sDone / sTotal) * 100) : 0,
       next: nextMod && nextL ? { title: nextL.title, href: `/account/startups/${track.slug}/${nextMod.slug}/${nextL.slug}` } : undefined,
       seconds: byFeature.startups ?? 0, lastAt: lastBy.startups,
       note: `${track.modules.filter((m) => moduleStatus(m, p) === "COMPLETED").length} of ${track.modules.length} module tests passed`,
     });
     return out;
-  }, [courses, track, startups, profile, scam, byFeature, lastBy]);
+  }, [courses, track, tasks, visited, startups, profile, scam, byFeature, lastBy]);
 
   const total = rows.reduce((s, r) => s + r.total, 0);
   const done = rows.reduce((s, r) => s + r.done, 0);
   const overall = total ? Math.round((done / total) * 100) : 0;
+  const lessonsDone = rows.reduce((s, r) => s + r.lessonsDone, 0);
+  const lessonsTotal = rows.reduce((s, r) => s + r.lessonsTotal, 0);
+  const toolsDone = rows.reduce((s, r) => s + r.toolsDone, 0);
+  const toolsTotal = rows.reduce((s, r) => s + r.tools.length, 0);
   const top = [...rows].filter((r) => r.done > 0).sort((a, b) => b.percent - a.percent || b.done - a.done).slice(0, 3);
   const resume = [...rows].filter((r) => r.next && r.done > 0).sort((a, b) => (b.lastAt ?? 0) - (a.lastAt ?? 0))[0] ?? rows.find((r) => r.next);
   const shown = rows.filter((r) => filter === "all" || (filter === "done" ? r.percent === 100 : filter === "todo" ? r.done === 0 : r.done > 0 && r.percent < 100));
@@ -171,9 +219,9 @@ export function MyProgress({ courses, track }: { courses: CourseOutline[]; track
           primary={resume?.next ? { label: `Continue: ${resume.next.title.length > 30 ? `${resume.next.title.slice(0, 29)}…` : resume.next.title}`, href: resume.next.href } : undefined}
           secondary={{ label: "Back to dashboard", href: "/account" }}
           stats={[
-            { value: `${overall}%`, label: "of all lessons done" },
-            { value: `${done}/${total}`, label: "lessons finished" },
-            { value: streak, label: streak === 1 ? "day streak" : "day streak" },
+            { value: `${overall}%`, label: "done across every feature" },
+            { value: `${lessonsDone}/${lessonsTotal}`, label: "lessons finished" },
+            { value: `${toolsDone}/${toolsTotal}`, label: "tools used" },
             { value: mins(activity?.totalSec ?? 0), label: "time spent learning" },
           ]}
         />
@@ -181,7 +229,7 @@ export function MyProgress({ courses, track }: { courses: CourseOutline[]; track
         <section className="fp-sec">
           <div className="fp-sec-h"><div><h2>Top completed</h2><p>Your three strongest features so far.</p></div></div>
           {top.length === 0 ? (
-            <div className="fp-card" style={{ padding: 20 }}><p style={{ margin: 0, fontSize: 14, color: "var(--ink2)" }}>Finish your first lesson in any feature and it shows up here.</p></div>
+            <div className="fp-card" style={{ padding: 20 }}><p style={{ margin: 0, fontSize: 14, color: "var(--ink2)" }}>Finish a lesson or use a tool in any feature and it shows up here.</p></div>
           ) : (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 12 }}>
               {top.map((r, i) => (
@@ -192,7 +240,7 @@ export function MyProgress({ courses, track }: { courses: CourseOutline[]; track
                   <b>{r.title}</b>
                   <span className="fp-display" style={{ fontSize: 26, fontWeight: 700 }}>{r.percent}%</span>
                   <span className="fp-bar" style={{ width: "100%" }}><i style={{ width: `${r.percent}%` }} /></span>
-                  <small className="fp-muted">{r.done} of {r.total} lessons</small>
+                  <small className="fp-muted">{summaryOf(r)}</small>
                 </Link>
               ))}
             </div>
@@ -219,9 +267,10 @@ export function MyProgress({ courses, track }: { courses: CourseOutline[]; track
                       <img src={featureArt(r.key).thumb} alt="" />
                       <span style={{ minWidth: 0 }}>
                         <b>{r.title}</b>
-                        <small>{r.done} of {r.total} lessons · {r.modules.filter((m) => m.done === m.total).length} of {r.modules.length} modules{r.seconds >= 60 ? ` · ${mins(r.seconds)}` : ""}{r.lastAt ? ` · last ${ago(r.lastAt)}` : ""}</small>
+                        <small>{summaryOf(r)}{r.seconds >= 60 ? ` · ${mins(r.seconds)}` : ""}{r.lastAt ? ` · last ${ago(r.lastAt)}` : ""}</small>
                         <span className="mp-segs" aria-hidden="true">
                           {r.modules.map((m, i) => <i key={i} title={`${m.title}: ${m.done}/${m.total}`}><b style={{ width: `${m.total ? (m.done / m.total) * 100 : 0}%` }} /></i>)}
+                          {r.tools.length > 0 && <i className="is-tools" title={`Tools: ${r.toolsDone}/${r.tools.length}`}><b style={{ width: `${(r.toolsDone / r.tools.length) * 100}%` }} /></i>}
                         </span>
                       </span>
                       <span className="mp-pct">{r.percent}%</span>
@@ -240,6 +289,19 @@ export function MyProgress({ courses, track }: { courses: CourseOutline[]; track
                             </div>
                           </div>
                         ))}
+                        {r.tools.length > 0 && (
+                          <div className="mp-mod">
+                            <div className="mp-mod-h">
+                              <b>Tools and pages</b>
+                              <span className="fp-muted">{r.toolsDone === r.tools.length ? "All used" : `${r.toolsDone}/${r.tools.length} used`}</span>
+                            </div>
+                            <div className="mp-lessons">
+                              {r.tools.map((t) => t.done
+                                ? <span key={t.href + t.label} className="is-done">✓ {t.label}{t.note ? ` · ${t.note}` : ""}</span>
+                                : <Link key={t.href + t.label} href={t.href} className="mp-todo">{t.label} →</Link>)}
+                            </div>
+                          </div>
+                        )}
                         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 12 }}>
                           {r.next && <Link href={r.next.href} className="fp-btn fp-btn-pri fp-btn-sm">Continue: {r.next.title.length > 34 ? `${r.next.title.slice(0, 33)}…` : r.next.title}</Link>}
                           <Link href={r.href} className="fp-btn fp-btn-sm">Open {r.title}</Link>
@@ -257,7 +319,7 @@ export function MyProgress({ courses, track }: { courses: CourseOutline[]; track
             <div className="fp-card" style={{ padding: 18 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
                 <span className="fp-kicker">Activity</span>
-                <span className="fp-muted">{activeDays} active days in {WEEKS} weeks</span>
+                <span className="fp-muted">{activeDays} active days in {WEEKS} weeks{streak > 0 ? ` · ${streak}-day streak` : ""}</span>
               </div>
               <div className="mp-heat" role="img" aria-label={`${activeDays} active days in the last ${WEEKS} weeks; current streak ${streak} days`}>
                 {days.map((k) => <i key={k} title={`${dayLabel(k)}: ${mins(byDay[k] ?? 0)}`} style={{ background: HEAT[level(byDay[k] ?? 0)] }} />)}

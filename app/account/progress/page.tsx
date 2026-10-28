@@ -1,7 +1,7 @@
 /**
  * /account/progress - My Progress, for every class group. Built here on the
  * server so only the outline of each course (module and lesson titles, never
- * lesson text or quiz answers) reaches the browser.
+ * lesson text or quiz answers) and each feature's task list reach the browser.
  */
 import { MONEY_COURSE } from "@/data/courses/money";
 import { LEGAL_COURSE } from "@/data/courses/legal";
@@ -12,6 +12,7 @@ import { RESEARCH_COURSE } from "@/data/courses/research";
 import { BUILDER_TRACK } from "@/data/startups/content";
 import { toPublicTrack } from "@/lib/startups/publicShape";
 import type { CourseContent } from "@/lib/course/types";
+import { FEATURE_TASK_SPECS } from "@/lib/progress/buildFeatureTasks";
 import { MyProgress, type CourseOutline } from "@/components/progress/MyProgress";
 
 const outline = (c: CourseContent): CourseOutline => ({
@@ -21,5 +22,5 @@ const outline = (c: CourseContent): CourseOutline => ({
 
 export default function MyProgressPage() {
   const courses = [MONEY_COURSE, LEGAL_COURSE, EXAMS_COURSE, SCHOLARSHIPS_COURSE, STUDY_ABROAD_COURSE, RESEARCH_COURSE].map(outline);
-  return <MyProgress courses={courses} track={toPublicTrack(BUILDER_TRACK)} />;
+  return <MyProgress courses={courses} track={toPublicTrack(BUILDER_TRACK)} tasks={FEATURE_TASK_SPECS} />;
 }

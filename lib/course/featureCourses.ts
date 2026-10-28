@@ -27,6 +27,9 @@ export interface CourseNavGroup {
   /** Where the group's "Open" button goes - its first item when left out. */
   href?: string;
   cta?: string;
+  /** A catalogue (every scholarship, exam, country...): for My Progress it is
+   *  one task - "explored" once any entry is opened - not one per entry. */
+  directory?: boolean;
 }
 
 export interface FeatureCourse {
@@ -149,7 +152,7 @@ export const LEGAL_COURSE: FeatureCourse = {
       ],
     },
     {
-      title: "Guides", icon: "doc", blurb: "Step-by-step guides for common problems, written in plain words.", href: "/account/legal/guides", cta: "Browse the guides",
+      title: "Guides", directory: true, icon: "doc", blurb: "Step-by-step guides for common problems, written in plain words.", href: "/account/legal/guides", cta: "Browse the guides",
       items: [
         { href: "/account/legal/guides", label: "All guides", exact: true },
         ...LEGAL_GUIDES.map((g) => ({ href: `/account/legal/guides/${g.slug}`, label: `${g.number}. ${g.title}` })),
@@ -190,7 +193,7 @@ export const EXAMS_COURSE: FeatureCourse = {
       ],
     },
     {
-      title: "Exam directory", icon: "exam", blurb: "Every exam with its eligibility, dates and official links.", href: "/account/exams/dashboard", cta: "Find my exams",
+      title: "Exam directory", directory: true, icon: "exam", blurb: "Every exam with its eligibility, dates and official links.", href: "/account/exams/dashboard", cta: "Find my exams",
       items: EXAMS.map((e) => ({ href: `/account/exams/${e.slug}`, label: e.name, meta: e.body })),
     },
     {
@@ -226,7 +229,7 @@ export const SCHOLARSHIPS_COURSE: FeatureCourse = {
       ],
     },
     {
-      title: "All scholarships", icon: "award", blurb: "Every scholarship with its eligibility, amount and deadline.", href: "/account/scholarships/dashboard", cta: "Browse with filters",
+      title: "All scholarships", directory: true, icon: "award", blurb: "Every scholarship with its eligibility, amount and deadline.", href: "/account/scholarships/dashboard", cta: "Browse with filters",
       items: SCHOLARSHIPS.map((s) => ({ href: `/account/scholarships/${s.slug}`, label: s.name })),
     },
     {
@@ -264,11 +267,11 @@ export const STUDY_ABROAD_COURSE: FeatureCourse = {
       ],
     },
     {
-      title: "Countries", icon: "globe", blurb: "What studying in each country really costs and involves, and what changed this year.", href: "/account/study-abroad/countries", cta: "Compare countries",
+      title: "Countries", directory: true, icon: "globe", blurb: "What studying in each country really costs and involves, and what changed this year.", href: "/account/study-abroad/countries", cta: "Compare countries",
       items: STUDY_ABROAD_COUNTRIES.map((c) => ({ href: `/account/study-abroad/countries/${c.code.toLowerCase()}`, label: `${c.flag} ${c.name}` })),
     },
     {
-      title: "Courses", icon: "cap", blurb: "Course by course: the full cost, and where it can lead.", href: "/account/study-abroad/courses", cta: "Browse courses",
+      title: "Courses", directory: true, icon: "cap", blurb: "Course by course: the full cost, and where it can lead.", href: "/account/study-abroad/courses", cta: "Browse courses",
       items: STUDY_ABROAD_COURSES.map((c) => ({ href: `/account/study-abroad/courses/${c.slug}`, label: c.name })),
     },
     {

@@ -25,6 +25,9 @@ export interface StudentProgress {
   courses?: Record<string, CourseProgress>;
   goals?: GoalProgress;
   legal?: LegalPractice;
+  /** Feature pages opened, by activity area (components/ActivityTracker.tsx) -
+   *  what My Progress counts as tools used (lib/progress/featureTasks.ts). */
+  visited?: Record<string, string[]>;
 }
 
 /**

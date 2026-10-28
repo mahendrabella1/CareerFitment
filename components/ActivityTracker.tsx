@@ -14,18 +14,26 @@
  *
  * Only students are tracked: an admin or institution login has no student
  * profile, and their own pages are skipped anyway.
+ *
+ * It also notes each feature page a student opens, once, on
+ * progress.visited[area] - My Progress counts those as tools used
+ * (lib/progress/featureTasks.ts), so using a calculator or a tracker moves the
+ * progress bar, not only reading lessons.
  */
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { doc, increment, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, increment, updateDoc } from "firebase/firestore";
 import { getDb } from "@/lib/firebase/client";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { areaForPath, dayKey } from "@/lib/progress/activity";
+import { normalizePath } from "@/lib/progress/featureTasks";
 
 const TICK_SEC = 5;
 const IDLE_MS = 3 * 60 * 1000;
 const FLUSH_MS = 60 * 1000;
 const UNTRACKED = ["/admin", "/institution", "/signin", "/register"];
+/** Areas whose page visits count towards progress (the features with tasks). */
+const VISIT_AREAS = new Set(["money", "legal", "exams", "scholarships", "study_abroad", "research", "careers", "internships"]);
 
 export function ActivityTracker() {
   const { user, profile } = useAuth();
@@ -33,6 +41,27 @@ export function ActivityTracker() {
   const pathRef = useRef(pathname);
   useEffect(() => { pathRef.current = pathname; }, [pathname]);
   const uid = user && profile ? user.uid : null;
+
+  // Feature pages opened: written once per new page (the set starts from what
+  // the account already has, so returning to a page costs nothing).
+  const recorded = useRef<{ uid: string | null; paths: Set<string> }>({ uid: null, paths: new Set() });
+  useEffect(() => {
+    const db = getDb();
+    if (!uid || !db) return;
+    if (recorded.current.uid !== uid) {
+      const saved = Object.values(profile?.progress?.visited ?? {}).flat();
+      recorded.current = { uid, paths: new Set(saved) };
+    }
+    const path = normalizePath(pathname);
+    const area = areaForPath(path);
+    if (!VISIT_AREAS.has(area) || recorded.current.paths.has(path)) return;
+    recorded.current.paths.add(path);
+    updateDoc(doc(db, "users", uid), { [`progress.visited.${area}`]: arrayUnion(path) }).catch(() => {
+      recorded.current.paths.delete(path); // try again on the next visit
+    });
+    // profile is read only to seed the set for a new sign-in.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uid, pathname]);
 
   useEffect(() => {
     const db = getDb();

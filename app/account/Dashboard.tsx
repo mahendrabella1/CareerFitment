@@ -26,6 +26,7 @@ import Link from "next/link";
 import { useAuth, type AssessmentSummary, type CustomDimension, type UserProfile } from "@/lib/auth/AuthProvider";
 import { readGoals, saveGoals } from "@/lib/progress/progressStore";
 import { dayKey } from "@/lib/progress/activity";
+import { tasksDone, type FeatureTaskSpec } from "@/lib/progress/featureTasks";
 import { FEATURES, featureArt } from "@/lib/features/catalog";
 import { FeatureSearch, type SearchItem } from "@/components/feature/FeatureSearch";
 import { FP_CSS } from "@/components/feature/styles";
@@ -227,6 +228,14 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
     return top?.key || CANON[0];
   });
   const [menuOpen, setMenuOpen] = useState(false);
+  // Every feature's task list (/api/progress/tasks, a small file built once on
+  // the server) for the toolkit's progress bars - lessons finished + tools used.
+  const [taskSpecs, setTaskSpecs] = useState<FeatureTaskSpec[] | null>(null);
+  useEffect(() => {
+    let live = true;
+    fetch("/api/progress/tasks").then((r) => (r.ok ? r.json() : null)).then((d) => { if (live && Array.isArray(d)) setTaskSpecs(d); }).catch(() => undefined);
+    return () => { live = false; };
+  }, []);
   // Sidebar order must match render order, or the scroll-spy highlights the
   // wrong entry. Both are derived from the same list.
   const navItems: { id: string; label: string; icon: string; group: string; art?: string }[] = [
@@ -448,6 +457,8 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
     else if (i > 0) break;
   }
   const courseKey: Record<string, string> = { money: "money", legal: "legal", exams: "exams", scholarships: "scholarships", "study-abroad": "study-abroad", research: "research" };
+  const visited = profile?.progress?.visited;
+  const toolsUsedAll = (taskSpecs ?? []).reduce((n, s) => n + tasksDone(s, visited?.[s.area]).done.size, 0);
 
   const search: SearchItem[] = [
     ...navItems.filter((n) => n.group === RESULTS && shown(n)).map((n) => ({ label: n.label, kind: "Section", onSelect: () => go(n.id) })),
@@ -561,9 +572,13 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
               <div className="db-kit">
                 {TOOLKIT.map((t) => {
                   const f = FEATURES[t.key];
+                  // Lessons finished + tools used - the same count as My Progress.
                   const c = courseKey[t.key] ? courses[courseKey[t.key]] : undefined;
-                  const done = c?.done?.length ?? 0;
-                  const pct = c?.total ? Math.round((done / c.total) * 100) : 0;
+                  const spec = taskSpecs?.find((s) => s.key === t.key);
+                  const toolsUsed = spec ? tasksDone(spec, visited?.[spec.area]).done.size : 0;
+                  const total = (spec?.lessons ?? c?.total ?? 0) + (spec?.tasks.length ?? 0);
+                  const done = (c?.done?.length ?? 0) + toolsUsed;
+                  const pct = total ? Math.round((done / total) * 100) : 0;
                   return (
                     <Link key={t.key} href={t.href ?? f.href} {...NEW_TAB}>
                       <span className={`db-kit-art${t.photo ? " is-photo" : ""}`}>
@@ -575,7 +590,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                       <span className="db-kit-b">
                         <b>{t.title ?? f.title}</b>
                         <small>{t.text}</small>
-                        {c && done > 0 && <span className="db-kit-p"><i><b style={{ width: `${pct}%` }} /></i>{done}/{c.total}</span>}
+                        {total > 0 && done > 0 && <span className="db-kit-p"><i><b style={{ width: `${pct}%` }} /></i>{pct}%</span>}
                       </span>
                     </Link>
                   );
@@ -624,7 +639,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                   <div className="db-stat"><span>Interest code</span><b>{code || "-"}</b><small>From your career interests</small></div>
                   <div className="db-stat"><span>Strongest area</span><b>{strongest ? Math.round(strongest.score) : "-"}</b><small>{strongest ? (CAT_LABEL[strongest.key] ?? strongest.label) : ""}</small></div>
                   <div className="db-stat"><span>Emotional intelligence</span><b>{a.ei != null ? Math.round(a.ei) : "-"}</b><small>{eiResult || "Out of 100"}</small></div>
-                  <Link href="/account/progress" {...NEW_TAB} className="db-stat db-stat-link"><span>Learning so far</span><b>{lessonsDone} {lessonsDone === 1 ? "lesson" : "lessons"}</b><small>{streak > 0 ? `${streak}-day streak` : "Start any feature"} · My Progress →</small></Link>
+                  <Link href="/account/progress" {...NEW_TAB} className="db-stat db-stat-link"><span>Learning so far</span><b>{lessonsDone} {lessonsDone === 1 ? "lesson" : "lessons"}{toolsUsedAll ? ` · ${toolsUsedAll} ${toolsUsedAll === 1 ? "tool" : "tools"}` : ""}</b><small>{streak > 0 ? `${streak}-day streak` : "Start any feature"} · My Progress →</small></Link>
                 </div>
               </div>
 
