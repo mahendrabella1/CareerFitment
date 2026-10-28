@@ -32,9 +32,9 @@ import { FP_CSS } from "@/components/feature/styles";
 import { SchoolInbox } from "@/components/SchoolInbox";
 import { Logo } from "@/app/Logo";
 import dynamic from "next/dynamic";
-import { Icon, CATEGORY_ABBR } from "@/app/Icons";
+import { Icon } from "@/app/Icons";
 import { categoryLabel } from "@/lib/auth/formOptions";
-import { C, Ring, SkillBar, RadarChart, dimColor, type RadarDatum } from "@/app/account/viz";
+import { C, Ring, SkillBar, dimColor, type RadarDatum } from "@/app/account/viz";
 import { prepareStudentReport } from "@/lib/report/prepareStudentReport";
 // The full report is ~85KB of source behind a "Full report" click, and most
 // dashboard visits never open it. Loading it on demand keeps that weight off
@@ -144,7 +144,7 @@ const FEATURE_ROUTES: Record<string, string> = {
 // temporarily disabled - flip to true to bring it back.
 const SHOW_TOOLKIT = false;
 
-/** OneGrasp's signature tools, linked from the Overview for every class. */
+/** OneGrasp's signature tools - found through the dashboard search (no cards on the page). */
 const SIGNATURE = [
   { href: "/account/gps", icon: "compass", title: "Career GPS", text: "Three small missions a week, picked for you. Keep your streak going." },
   { href: "/account/test-drive", icon: "play", title: "Career Test-Drive", text: "Live a day in a career - five real moments - before you choose it." },
@@ -568,9 +568,9 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                     <Link key={t.key} href={t.href ?? f.href} {...NEW_TAB}>
                       <span className={`db-kit-art${t.photo ? " is-photo" : ""}`}>
                         {t.icon
-                          ? <Icon name={t.icon} size={30} stroke={1.5} />
+                          ? <Icon name={t.icon} size={52} stroke={1.3} />
                           // eslint-disable-next-line @next/next/no-img-element
-                          : <img src={t.photo ?? featureArt(t.key).thumb} alt="" loading="lazy" />}
+                          : <img src={t.photo ?? featureArt(t.key).card} alt="" loading="lazy" decoding="async" />}
                       </span>
                       <span className="db-kit-b">
                         <b>{t.title ?? f.title}</b>
@@ -628,32 +628,18 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                 </div>
               </div>
 
-              <div className="db-tools">
-                {SIGNATURE.map((f) => (
-                  <Link key={f.href} href={f.href} {...NEW_TAB} className="db-tool">
-                    <span className="db-tool-ic"><Icon name={f.icon} size={19} /></span>
-                    <span style={{ minWidth: 0 }}><b>{f.title}</b><small>{f.text}</small></span>
-                    <Icon name="arrowRight" size={16} stroke={2} />
-                  </Link>
-                ))}
-              </div>
-
-              <div className="db-two">
-                <div className="db-card">
-                  <CardHead icon="user" title="Profile at a glance" sub="Three quick reads of who you are at school and work." />
-                  <div className="ogd-pbars">
-                    {pbars.map((b) => (
-                      <div className="ogd-pbar" key={b.label}>
-                        <div className="ogd-pbar-top"><span>{b.label}</span><b>{Math.round(b.score)}</b></div>
-                        <SkillBar value={b.score} color={INK} height={7} track="#ece9e3" />
-                      </div>
-                    ))}
-                  </div>
-                  <button className="db-more" onClick={() => go("dimensions")}>All eight dimensions <Icon name="arrowRight" size={14} stroke={2} /></button>
+              <div className="db-card db-glance">
+                <CardHead icon="user" title="Profile at a glance" sub="Three quick reads of who you are at school and work." />
+                <div className="ogd-pbars">
+                  {pbars.map((b) => (
+                    <div className="ogd-pbar" key={b.label}>
+                      <div className="ogd-pbar-top"><span>{b.label}</span><b>{Math.round(b.score)}</b></div>
+                      <SkillBar value={b.score} color={INK} height={7} track="#ece9e3" />
+                    </div>
+                  ))}
                 </div>
-                <div className="db-card">
-                  <CardHead icon="pulse" title="Your shape" sub="Your eight scores, with the dotted line showing a typical student." />
-                  <div className="ogd-radar-chart"><RadarChart data={radar} color={IN} abbr={CATEGORY_ABBR} /></div>
+                <div className="db-glance-a">
+                  <button className="db-more" onClick={() => go("dimensions")}>All eight dimensions <Icon name="arrowRight" size={14} stroke={2} /></button>
                   <Link href={REPORT_HREF} {...NEW_TAB} className="db-more">Read the detailed analysis <Icon name="arrowRight" size={14} stroke={2} /></Link>
                 </div>
               </div>
@@ -763,21 +749,6 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
               .map((x) => (
                 <section key={x.id} id={x.id} className="db-sec">{x.node}</section>
               ))}
-
-            {/* ===== DETAILS ===== */}
-            <section className="db-sec">
-              <div className="db-sec-h"><div><h2>Your details</h2></div></div>
-              <div className="db-card">
-                <div className="ogd-details">
-                  <Detail k="Full name" v={name || "-"} />
-                  <Detail k="Email" v={email || profile?.email || "-"} />
-                  <Detail k="Phone" v={profile?.phone || "-"} />
-                  <Detail k="School / College / Company" v={profile?.institution || "-"} />
-                  <Detail k="Desired career" v={profile?.desiredCareer || "-"} />
-                  <Detail k="Current status" v={profile?.clarity || "-"} />
-                </div>
-              </div>
-            </section>
           </div>
         </main>
       </div>
@@ -795,16 +766,6 @@ function CardHead({ icon, title, sub }: { icon: string; title: string; sub?: str
         <h2>{title}</h2>
       </div>
       {sub ? <p>{sub}</p> : null}
-    </div>
-  );
-}
-
-
-function Detail({ k, v }: { k: string; v: string }) {
-  return (
-    <div className="ogd-detail">
-      <span className="ogd-detail-k">{k}</span>
-      <span className="ogd-detail-v">{v}</span>
     </div>
   );
 }
@@ -1742,14 +1703,9 @@ const DASH_CSS = `
 .db-stat-link:hover{background:var(--soft)}
 
 /* tools + overview cards */
-.db-tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}
-.db-tool{display:grid;grid-template-columns:38px minmax(0,1fr) 16px;gap:12px;align-items:start;padding:16px;background:#fff;border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink)}
-.db-tool:hover{border-color:#c9c4ba}
-.db-tool-ic{width:38px;height:38px;border-radius:6px;background:var(--warm);display:grid;place-items:center;color:var(--ink)}
-.db-tool b{display:block;font-size:14px;font-weight:600}
-.db-tool small{display:block;font-size:12.5px;color:var(--mute);line-height:1.45;margin-top:3px}
-.db-tool>svg{color:#b5b0a6;margin-top:3px}
-.db-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px;align-items:start}
+.db-glance{margin-top:16px}
+.db .db-glance .ogd-pbars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 32px}
+.db-glance-a{display:flex;flex-wrap:wrap;gap:6px 24px}
 .db .ogd-cardhead{margin-bottom:16px}
 .db .ogd-cardhead-top{display:flex;align-items:center;gap:10px}
 .db .ogd-cardhead-ic{display:none}
@@ -1841,15 +1797,15 @@ const DASH_CSS = `
 .db-report small{display:block;font-size:14px;color:var(--ink2);margin-top:4px;line-height:1.5}
 .db-report-a{display:flex;gap:10px;flex-wrap:wrap}
 .db-kit{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.db-kit>a{display:grid;grid-template-columns:84px minmax(0,1fr);background:#fff;border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink);overflow:hidden;min-height:92px}
-.db-kit>a:hover{border-color:#c9c4ba}
-.db-kit-art{background:var(--warm);display:grid;place-items:center;border-right:1px solid var(--line);color:var(--ink)}
-.db-kit-art img{width:70px;height:58px;object-fit:contain;transition:transform .2s}
+.db-kit>a{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink);overflow:hidden;transition:border-color .15s,transform .2s}
+.db-kit>a:hover{border-color:#c9c4ba;transform:translateY(-2px)}
+.db-kit-art{height:136px;background:var(--warm);display:grid;place-items:center;border-bottom:1px solid var(--line);color:var(--ink)}
+.db-kit-art img{width:76%;height:118px;object-fit:contain;transition:transform .25s}
 .db-kit-art.is-photo img{width:100%;height:100%;object-fit:cover}
-.db-kit>a:hover .db-kit-art img{transform:translateY(-2px)}
+.db-kit>a:hover .db-kit-art img{transform:scale(1.05)}
 .db-kit>a:hover .db-kit-art.is-photo img{transform:none}
-.db-kit-b{padding:12px 14px;display:flex;flex-direction:column;justify-content:center;gap:3px;min-width:0}
-.db-kit-b>b{font-size:14.5px;font-weight:600;line-height:1.3}
+.db-kit-b{padding:12px 14px 14px;display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.db-kit-b>b{font-size:15px;font-weight:600;line-height:1.3}
 .db-kit-b>small{font-size:12.5px;color:var(--mute);line-height:1.4}
 .db-kit-p{display:flex;align-items:center;gap:8px;padding-top:6px;font-size:11.5px;color:var(--mute);font-variant-numeric:tabular-nums}
 .db-kit-p i{flex:1;height:4px;border-radius:2px;background:#ece9e3;overflow:hidden;display:block}
@@ -1862,7 +1818,6 @@ const DASH_CSS = `
 .db .ogd-detail-v{font-size:14px;font-weight:600;text-align:right}
 
 @media (max-width:1240px){
-  .db-tools{grid-template-columns:repeat(2,minmax(0,1fr))}
   .db-kit{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media (max-width:760px){
@@ -1883,7 +1838,7 @@ const DASH_CSS = `
   .db-top-search{display:none}
   .db-hello{flex:1}
   .db-msearch{display:block}
-  .db-two{grid-template-columns:minmax(0,1fr)}
+  .db .db-glance .ogd-pbars{grid-template-columns:minmax(0,1fr)}
 }
 @media (max-width:640px){
   .db-main{padding:16px 14px 56px}
@@ -1896,8 +1851,12 @@ const DASH_CSS = `
   .db-stat:nth-child(3){border-left:0}
   .db-stat:nth-child(n+3){border-top:1px solid var(--line)}
   .db-stat b{font-size:19px}
-  .db-tools{grid-template-columns:minmax(0,1fr)}
-  .db-kit{grid-template-columns:minmax(0,1fr);gap:8px}
+  .db-kit{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .db-kit-art{height:104px}
+  .db-kit-art img{height:88px}
+  .db-kit-b{padding:10px 11px 12px}
+  .db-kit-b>b{font-size:14px}
+  .db-kit-b>small{font-size:12px}
   .db-report{padding:18px 16px}
   .db-report b{font-size:19px}
   .db-report-a{width:100%}
