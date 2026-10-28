@@ -37,6 +37,7 @@ import { Icon } from "@/app/Icons";
 import { categoryLabel } from "@/lib/auth/formOptions";
 import { C, Ring, SkillBar, dimColor, type RadarDatum } from "@/app/account/viz";
 import { prepareStudentReport } from "@/lib/report/prepareStudentReport";
+import { ReportBook } from "@/components/report/ReportBook";
 // The full report is ~85KB of source behind a "Full report" click, and most
 // dashboard visits never open it. Loading it on demand keeps that weight off
 // the dashboard's own first paint.
@@ -413,19 +414,23 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
           // adapted into the same AssessmentSummary shape 9-10 uses, so the
           // report is genuinely identical (same code, CSS, images) rather
           // than a separately designed report per class that drifts from it.
-          <FullReport
-            a={rep.summary}
-            name={name}
-            institution={profile?.institution || undefined}
-            studentClass={profile?.category ? categoryLabel(profile.category) : undefined}
-            hideCareerFitSections={rep.hideCareerFitSections}
-            extraSheets={[
-              ...rep.extraSheets,
-              ...extraSections
-                .filter((x) => x.inFullReport)
-                .map((x) => ({ id: x.id, kicker: x.label, node: x.reportNode ?? x.node })),
-            ]}
-          />
+          // Read as a book - one sheet at a time with a page turn - or as the
+          // long page ("Scroll view"); the report itself is the same either way.
+          <ReportBook stickBelow=".ogd-reportbar">
+            <FullReport
+              a={rep.summary}
+              name={name}
+              institution={profile?.institution || undefined}
+              studentClass={profile?.category ? categoryLabel(profile.category) : undefined}
+              hideCareerFitSections={rep.hideCareerFitSections}
+              extraSheets={[
+                ...rep.extraSheets,
+                ...extraSections
+                  .filter((x) => x.inFullReport)
+                  .map((x) => ({ id: x.id, kicker: x.label, node: x.reportNode ?? x.node })),
+              ]}
+            />
+          </ReportBook>
         )}
       </div>
     );
