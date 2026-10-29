@@ -121,6 +121,16 @@ const TOOLKIT: { key: string; text: string; href?: string; title?: string; photo
   { key: "portfolio", title: "Build your website", href: "/account/portfolio", icon: "user", text: "Your own portfolio site in minutes." },
 ];
 
+/** Logos on the AI & Certifications tile (public/ai/logos, from Wikimedia
+ *  Commons). Each is a provider of a course or a tool listed in lib/ai/catalog.ts
+ *  - Microsoft for Copilot - and sized by eye so they look the same weight. */
+const AI_BRANDS = [
+  { name: "Google", logo: "/ai/logos/google.svg", h: 21 },
+  { name: "Microsoft", logo: "/ai/logos/microsoft.svg", h: 19 },
+  { name: "IBM", logo: "/ai/logos/ibm.svg", h: 18 },
+  { name: "Harvard University", logo: "/ai/logos/harvard.svg", h: 30 },
+];
+
 /** Everything the dashboard opens - features, tools, the report - opens in a
  *  new tab, so this tab always stays on the dashboard. */
 const NEW_TAB = { target: "_blank", rel: "noopener" } as const;
@@ -590,7 +600,13 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                   <span className="db-kit-b">
                     <span className="db-new">New</span>
                     <b>{FEATURES.ai.title}</b>
-                    <small>Free AI courses that end in a real certificate - YUVA AI for All, Harvard, Google, IBM, Kaggle - and AI tools rated for your age.</small>
+                    <small>Free AI courses that end in a real certificate - starting with the Government of India&apos;s YUVA AI for All - and AI tools rated for your age.</small>
+                    <span className="db-kit-logos">
+                      <span>Courses and tools from</span>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      {AI_BRANDS.map((b) => <img key={b.name} src={b.logo} alt={b.name} style={{ height: b.h }} loading="lazy" decoding="async" />)}
+                      <span>and more</span>
+                    </span>
                   </span>
                   <span className="db-btn pri" aria-hidden="true">Explore <Icon name="arrowRight" size={15} stroke={2} /></span>
                 </Link>
@@ -1855,6 +1871,9 @@ const DASH_CSS = `
 .db-kit-new .db-kit-b{padding:14px 10px}
 .db-kit-new .db-kit-b>small{font-size:13.5px;max-width:620px}
 .db-kit-new .db-btn{flex:none;margin-right:18px}
+.db-kit-logos{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;margin-top:10px}
+.db-kit-logos>span{font-size:12px;color:var(--mute)}
+.db-kit-logos img{display:block;width:auto}
 .db-new{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:#a21caf;border-radius:999px;padding:2px 8px;margin-bottom:2px}
 @media (max-width:700px){.db-kit>a.db-kit-new{flex-direction:column;align-items:stretch}.db-kit-new .db-kit-art{width:100%}.db-kit-new .db-btn{display:none}}
 
