@@ -13,6 +13,9 @@ import { Icon } from "@/app/Icons";
 import { scopedKey } from "@/lib/progress/userStorage";
 import { CATEGORIES, QUESTIONS, type CatKey, type InterviewQ } from "@/lib/interview/questions";
 import { JobReadyShell, authedPost } from "@/components/jobready/JobReadyShell";
+import { addReview, loadRoleQuestions, saveRoleQuestions, type RoleQuestion } from "@/components/jobready/useResume";
+import { useAuth } from "@/lib/auth/AuthProvider";
+import { stageOf } from "@/lib/resume/resume";
 
 const MAX_SEC = 180;
 const AUDIO_MIME = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg"];
@@ -43,12 +46,17 @@ function Practice() {
   const [i, setI] = useState(0);
   const [results, setResults] = useState<Record<string, number>>({});
   const [role, setRole] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+  const { profile } = useAuth();
 
   useEffect(() => {
     const id = params.get("q");
     const one = QUESTIONS.find((x) => x.id === id);
     if (one) setSet([one]);
-    try { setRole(localStorage.getItem(scopedKey("onegrasp.interview.role")) || ""); } catch { /* storage blocked */ }
+    // ?role= from "Jobs for you" ("Practise for it"); otherwise the last role used here.
+    const fromJob = params.get("role");
+    try { setRole(fromJob || localStorage.getItem(scopedKey("onegrasp.interview.role")) || ""); } catch { setRole(fromJob || ""); }
   }, [params]);
 
   const start = (cat: CatKey | "mixed") => {
@@ -57,6 +65,23 @@ function Practice() {
     setI(0); setResults({});
   };
   const saveRole = (v: string) => { setRole(v); try { localStorage.setItem(scopedKey("onegrasp.interview.role"), v); } catch { /* storage blocked */ } };
+  // Questions written for this role by the AI (kept, so a second round doesn't regenerate them).
+  const roleRound = async () => {
+    const target = role.trim();
+    setErr("");
+    const kept = loadRoleQuestions();
+    let qs = kept && kept.target.toLowerCase() === target.toLowerCase() ? kept.questions : null;
+    if (!qs) {
+      setBusy(true);
+      try {
+        qs = (await authedPost<{ questions: RoleQuestion[] }>("/api/resume/ai", { action: "questions", target, stage: stageOf(profile?.category) })).questions;
+        saveRoleQuestions({ target, questions: qs });
+      } catch (e) { setErr(e instanceof Error ? e.message : "That didn't work."); return; } finally { setBusy(false); }
+    }
+    if (!qs.length) { setErr("No questions came back - try a clearer role name."); return; }
+    setSet(shuffle(qs).slice(0, 5).map((x, n) => ({ id: `custom-${n}`, cat: "situational", q: x.q, why: "Whether you have the knowledge and judgement this role needs.", how: x.how, answer: "", avoid: "" })));
+    setI(0); setResults({});
+  };
 
   if (!set) {
     return (
@@ -67,9 +92,11 @@ function Practice() {
           <input id="mi-role" className="mi-in" value={role} onChange={(e) => saveRole(e.target.value)} placeholder="e.g. Data analyst internship, B.Tech admission, scholarship interview" />
           <h2 style={{ margin: "18px 0 8px", fontSize: 15, fontWeight: 600 }}>Choose a round</h2>
           <div className="mi-rounds">
+            <button className="mi-round is-role" disabled={busy || role.trim().length < 3} onClick={() => void roleRound()}><b>{busy ? "Writing your questions…" : "Questions for my role"}</b><small>{role.trim().length >= 3 ? `5 role-specific questions for ${role.trim()}, written by AI` : "Type the role above first"}</small></button>
             <button className="mi-round" onClick={() => start("mixed")}><b>Quick round</b><small>&quot;Tell me about yourself&quot; plus 4 mixed questions</small></button>
             {CATEGORIES.map((c) => <button key={c.key} className="mi-round" onClick={() => start(c.key)}><b>{c.label}</b><small>5 questions · {c.text}</small></button>)}
           </div>
+          {err && <p className="mi-err">{err}</p>}
         </div>
         <Privacy />
         <style dangerouslySetInnerHTML={{ __html: MI_CSS }} />
@@ -194,9 +221,11 @@ function Answer({ q, role, last, onNext }: { q: InterviewQ; role: string; last: 
       const body = new FormData();
       body.append("questionId", q.id);
       if (role) body.append("role", role);
+      if (q.id.startsWith("custom")) { body.append("question", q.q); body.append("how", q.how); }
       if (mode === "audio" && r.current.audioBlob) body.append("audio", r.current.audioBlob, `answer.${ext(r.current.audioBlob.type)}`);
       else body.append("text", typed);
       const d = await authedPost<Report>("/api/interview/feedback", body);
+      if (d.total != null) addReview({ id: q.id, q: q.q, total: d.total, at: Date.now() });
       setReport(d); setPhase("result");
     } catch (e) {
       setErr(e instanceof Error ? e.message : "That didn't work - please try again.");
@@ -210,7 +239,7 @@ function Answer({ q, role, last, onNext }: { q: InterviewQ; role: string; last: 
   return (
     <div className="mi-card">
       <div className="mi-q">
-        <span className="fp-kicker" style={{ border: 0, padding: 0 }}>{CATEGORIES.find((c) => c.key === q.cat)?.label}</span>
+        <span className="fp-kicker" style={{ border: 0, padding: 0 }}>{q.id.startsWith("custom") ? `For your role${role ? `: ${role}` : ""}` : CATEGORIES.find((c) => c.key === q.cat)?.label}</span>
         <h1>{q.q}</h1>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
           <button className="fp-link" style={{ fontSize: 13 }} onClick={speak}><Icon name="audio" size={13} stroke={2} /> Read it aloud</button>
@@ -305,7 +334,7 @@ function Feedback({ report, q }: { report: Report; q: InterviewQ }) {
       {report.improved && (
         <div className="mi-better"><h3>A stronger version of your answer</h3><p>{report.improved}</p><small>Fill in anything in [brackets] with your own detail - or leave it out.</small></div>
       )}
-      <details className="mi-model"><summary>Compare with the model answer</summary><p>{q.answer}</p></details>
+      {q.answer && <details className="mi-model"><summary>Compare with the model answer</summary><p>{q.answer}</p></details>}
       {report.transcript && <button className="fp-link" style={{ fontSize: 13, marginTop: 8 }} onClick={() => setShowT(!showT)}>{showT ? "Hide" : "Show"} what we heard</button>}
       {showT && <p className="mi-transcript">{report.transcript}</p>}
     </div>
@@ -323,6 +352,8 @@ const MI_CSS = `
 .mi-rounds{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:8px}
 .mi-round{all:unset;box-sizing:border-box;cursor:pointer;padding:12px 14px;border:1px solid var(--line);border-radius:7px;background:#fff}
 .mi-round:hover,.mi-round:focus-visible{border-color:var(--accent)}
+.mi-round.is-role{border-color:color-mix(in srgb,var(--accent) 40%,#fff);background:color-mix(in srgb,var(--accent) 4%,#fff)}
+.mi-round:disabled{opacity:.55;cursor:default}
 .mi-round b{display:block;font-size:14px;font-weight:600}
 .mi-round small{display:block;font-size:12.5px;color:var(--mute);margin-top:2px;line-height:1.4}
 .mi-top{display:flex;justify-content:space-between;align-items:center;margin:10px 0 8px;font-size:13px;color:var(--mute)}

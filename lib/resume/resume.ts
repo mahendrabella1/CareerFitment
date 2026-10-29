@@ -102,6 +102,16 @@ const words = (s: string) => s.trim().split(/\s+/).filter(Boolean);
 export const skillList = (r: Resume) => r.skills.flatMap((g) => g.items.split(/[,;|]/)).map((s) => s.trim()).filter(Boolean);
 const filled = (e: Entry) => !!(e.title.trim() || e.org.trim() || e.bullets.some((b) => b.trim()));
 
+/** Adds skills to the first group (or a new "Skills" group), skipping ones already listed. */
+export function addSkills(r: Resume, add: string[]): Resume {
+  const have = new Set(skillList(r).map((s) => s.toLowerCase()));
+  const fresh = add.map((s) => s.trim()).filter((s, i, a) => s && !have.has(s.toLowerCase()) && a.findIndex((x) => x.trim().toLowerCase() === s.toLowerCase()) === i);
+  if (!fresh.length) return r;
+  const groups = r.skills.length ? [...r.skills] : [{ label: "Skills", items: "" }];
+  groups[0] = { ...groups[0], items: [groups[0].items.trim(), ...fresh].filter(Boolean).join(", ") };
+  return { ...r, skills: groups };
+}
+
 export function hasSection(r: Resume, k: SectionKey): boolean {
   switch (k) {
     case "summary": return !!r.summary.trim();

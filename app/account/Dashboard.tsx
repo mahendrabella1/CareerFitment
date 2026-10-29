@@ -160,7 +160,7 @@ const FEATURE_ROUTES: Record<string, string> = {
   "ai": "/account/ai",
   "communication": "/account/communication",
   "spotlight": "/account/spotlight",
-  "jobready": "/account/resume",
+  "jobready": "/account/resume/plan",
 };
 
 // Career-toolkit (colleges/exams/internships/scholarships/careers) is
@@ -500,7 +500,9 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
     { label: "Today's speaking challenge", kind: "Tool", hint: "Communication Lab - 1 minute, out loud", href: "/account/communication/practice", newTab: true },
     { label: `${FEATURES.spotlight.title} - career boosters`, kind: "Feature", hint: "Conferences, research writing, ISBN, ISSN, Awardees Magazine", href: FEATURES.spotlight.href, newTab: true },
     { label: "Submit an abstract", kind: "Tool", hint: "Spotlight - present at a OneGrasp conference", href: "/account/spotlight/conferences", newTab: true },
-    { label: "Resume builder", kind: "Tool", hint: "An ATS-friendly resume, checked against a job post - download as PDF", href: "/account/resume", newTab: true },
+    { label: "My job plan", kind: "Tool", hint: "Resume, matching jobs and interview practice - six steps to an offer", href: "/account/resume/plan", newTab: true },
+    { label: "Resume builder", kind: "Tool", hint: "An ATS-friendly resume with AI help for your role - download as PDF", href: "/account/resume", newTab: true },
+    { label: "Jobs for you", kind: "Tool", hint: "Live jobs matched to your resume, with a fit score and cover letter", href: "/account/resume/jobs", newTab: true },
     { label: "Interview questions", kind: "Tool", hint: "The 100 most common questions with model answers", href: "/account/interview", newTab: true },
     { label: "Mock interview", kind: "Tool", hint: "Answer out loud, get feedback on content and delivery", href: "/account/interview/practice", newTab: true },
     ...fits.slice(0, 3).map((f) => ({ label: f.name, kind: "Best-fit field", onSelect: () => go("fields") })),

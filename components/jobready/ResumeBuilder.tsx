@@ -7,60 +7,32 @@
  * keeps real, selectable text, which is what applicant-tracking systems read.
  */
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { doc, updateDoc } from "firebase/firestore";
 import { Icon } from "@/app/Icons";
-import { useAuth } from "@/lib/auth/AuthProvider";
-import { getDb } from "@/lib/firebase/client";
-import { scopedKey } from "@/lib/progress/userStorage";
-import { categoryLabel } from "@/lib/auth/formOptions";
 import {
-  EXPERIENCE_LABEL, SECTION_LABEL, SECTION_ORDER, atsCheck, blankEntry, dateRange, emptyResume, hasSection, normalise, plainText, stageOf,
+  EXPERIENCE_LABEL, SECTION_LABEL, SECTION_ORDER, atsCheck, blankEntry, dateRange, hasSection, plainText, skillList,
   type Entry, type Resume, type Stage,
 } from "@/lib/resume/resume";
 import { authedPost } from "./JobReadyShell";
+import { addSkills, takeJob, useResume, type JobHandoff } from "./useResume";
+import { CoverLetter } from "./CoverLetter";
 
-const KEY = "onegrasp.resume.v1";
 type ListKey = "education" | "experience" | "projects";
 
 export function ResumeBuilder() {
-  const { profile, user, loading } = useAuth();
-  const stage = stageOf(profile?.category);
-  const [r, setR] = useState<Resume | null>(null);
-  const [status, setStatus] = useState<"idle" | "saving" | "saved" | "local">("idle");
+  const { r, set, stage, status } = useResume();
   const [view, setView] = useState<"preview" | "ats" | "job">("preview");
   const [jd, setJd] = useState("");
+  const [job, setJob] = useState<JobHandoff | null>(null);
 
-  // Load once: the newer of the account copy and this browser's copy, else a fresh one from the profile.
+  // A job sent from "Jobs for you": open "Match a job" with its description.
   useEffect(() => {
-    if (r || loading || (user && !profile)) return;
-    const base = profile ? emptyResume({
-      name: profile.name, email: profile.email, phone: profile.phone, city: profile.city, institution: profile.institution,
-      desiredCareer: profile.desiredCareer, classLabel: stageOf(profile.category) === "school" ? categoryLabel(profile.category) : "",
-    }) : emptyResume();
-    let local: unknown = null;
-    try { local = JSON.parse(localStorage.getItem(scopedKey(KEY)) || "null"); } catch { /* storage blocked */ }
-    const saved = (profile as unknown as { resume?: Resume } | null)?.resume;
-    const pick = [saved, local as Resume | null].filter(Boolean).sort((a, b) => (b!.updatedAt || 0) - (a!.updatedAt || 0))[0];
-    setR(pick ? normalise(pick, base) : base);
-  }, [profile, user, loading, r]);
-
-  useEffect(() => {
-    if (!r || !r.updatedAt) return;
-    const clean = JSON.parse(JSON.stringify(r)) as Resume;
-    try { localStorage.setItem(scopedKey(KEY), JSON.stringify(clean)); } catch { /* storage blocked */ }
-    setStatus("saving");
-    const t = window.setTimeout(async () => {
-      const db = getDb();
-      if (!db || !user) { setStatus("local"); return; }
-      try { await updateDoc(doc(db, "users", user.uid), { resume: clean }); setStatus("saved"); } catch { setStatus("local"); }
-    }, 2000);
-    return () => window.clearTimeout(t);
-  }, [r, user]);
+    const j = takeJob();
+    if (j) { setJob(j); setJd(j.jd); setView("job"); }
+  }, []);
 
   const ats = useMemo(() => (r ? atsCheck(r, stage, view === "job" ? jd : "") : null), [r, stage, jd, view]);
   if (!r || !ats) return <p className="fp-muted" style={{ padding: 24 }}>Loading your resume…</p>;
 
-  const set = (fn: (x: Resume) => Resume) => setR((x) => (x ? { ...fn(x), updatedAt: Date.now() } : x));
   // Prints the resume alone from a hidden frame - nothing else on the page can reach the PDF.
   const print = () => {
     const src = document.querySelector(".rb-print .rb-paper");
@@ -99,9 +71,7 @@ export function ResumeBuilder() {
 
       <div className="rb-grid">
         <div className="rb-edit">
-          <Card title="Target role" hint="The job or course you're applying for - the AI uses it to tailor wording.">
-            <input className="rb-in" value={r.target} placeholder="e.g. Data Analyst intern" onChange={(e) => set((x) => ({ ...x, target: e.target.value }))} />
-          </Card>
+          <RoleKitCard r={r} stage={stage} set={set} />
 
           <Card title="Contact">
             <div className="rb-2">
@@ -160,7 +130,7 @@ export function ResumeBuilder() {
           </div>
           {view === "preview" && <Paper r={r} stage={stage} />}
           {view === "ats" && <AtsPanel ats={ats} />}
-          {view === "job" && <JobPanel r={r} stage={stage} jd={jd} setJd={setJd} ats={ats} />}
+          {view === "job" && <JobPanel r={r} stage={stage} jd={jd} setJd={setJd} ats={ats} job={job} />}
         </div>
       </div>
       {/* The copy "Download PDF" prints (see print()). */}
@@ -191,6 +161,42 @@ function Suggest({ text, onUse, onDrop }: { text: string; onUse: () => void; onD
       <p>{text}</p>
       <div style={{ display: "flex", gap: 8 }}><button className="fp-btn fp-btn-pri fp-btn-sm" onClick={onUse}>Use this</button><button className="fp-btn fp-btn-sm" onClick={onDrop}>Keep mine</button></div>
     </div>
+  );
+}
+
+/** Target role + the AI "role kit": skills employers ask for (tap to add the ones you have), what recruiters look for, projects to fill gaps. */
+function RoleKitCard({ r, stage, set }: { r: Resume; stage: Stage; set: (fn: (x: Resume) => Resume) => void }) {
+  const [busy, setBusy] = useState(false);
+  const [kit, setKit] = useState<{ skills: string[]; focus: string[]; projects: string[] } | null>(null);
+  const [err, setErr] = useState("");
+  const mine = new Set(skillList(r).map((s) => s.toLowerCase()));
+  const get = async () => {
+    setBusy(true); setErr("");
+    try { setKit(await authedPost("/api/resume/ai", { action: "role", target: r.target, stage, skills: skillList(r) })); }
+    catch (e) { setErr(e instanceof Error ? e.message : "That didn't work."); } finally { setBusy(false); }
+  };
+  return (
+    <Card title="Target role" hint="The job you're applying for. The AI tailors every suggestion to it."
+      action={<button className="rb-ai" disabled={busy || r.target.trim().length < 3} onClick={() => void get()}>{busy ? "Building your kit…" : kit ? "Refresh role kit" : "Get the role kit"}</button>}>
+      <input className="rb-in" value={r.target} placeholder="e.g. Data Analyst intern" onChange={(e) => { set((x) => ({ ...x, target: e.target.value })); setKit(null); }} />
+      {err && <p className="rb-err" style={{ marginTop: 8 }}>{err}</p>}
+      {kit && (
+        <div className="rb-kit">
+          <span className="fp-kicker" style={{ border: 0, padding: 0 }}>Skills employers ask for - tap the ones you have</span>
+          <div className="rb-kit-sk">
+            {kit.skills.map((s) => {
+              const on = mine.has(s.toLowerCase());
+              return <button key={s} className={on ? "is-on" : ""} disabled={on} onClick={() => set((x) => addSkills(x, [s]))}>{on ? "✓ " : "+ "}{s}</button>;
+            })}
+          </div>
+          <span className="fp-kicker" style={{ border: 0, padding: 0 }}>What recruiters look for first</span>
+          <ul>{kit.focus.map((f) => <li key={f}>{f}</li>)}</ul>
+          <span className="fp-kicker" style={{ border: 0, padding: 0 }}>Projects that would make your case stronger</span>
+          <ul>{kit.projects.map((p) => <li key={p}>{p}</li>)}</ul>
+          <small className="rb-hint" style={{ display: "block", margin: 0 }}>Add only skills you can show. Missing ones are a plan, not a line on your resume yet.</small>
+        </div>
+      )}
+    </Card>
   );
 }
 
@@ -241,13 +247,15 @@ function EntryEditor({ kind, e, target, upd, remove, up, down }: { kind: ListKey
   const [busy, setBusy] = useState(false);
   const [sug, setSug] = useState<string[] | null>(null);
   const [err, setErr] = useState("");
-  const improve = async () => {
+  const [notesOpen, setNotesOpen] = useState(false);
+  const [notes, setNotes] = useState("");
+  const ask = async (body: Record<string, unknown>) => {
     setBusy(true); setErr("");
-    try {
-      const d = await authedPost<{ bullets: string[] }>("/api/resume/ai", { action: "bullets", title: e.title, org: e.org, bullets: e.bullets.filter((b) => b.trim()), target });
-      setSug(d.bullets);
-    } catch (x) { setErr(x instanceof Error ? x.message : "That didn't work."); } finally { setBusy(false); }
+    try { setSug((await authedPost<{ bullets: string[] }>("/api/resume/ai", { title: e.title, org: e.org, target, ...body })).bullets); }
+    catch (x) { setErr(x instanceof Error ? x.message : "That didn't work."); } finally { setBusy(false); }
   };
+  const improve = () => ask({ action: "bullets", bullets: e.bullets.filter((b) => b.trim()) });
+  const draft = () => ask({ action: "draft", notes });
   return (
     <div className="rb-entry">
       <div className="rb-2">
@@ -261,10 +269,20 @@ function EntryEditor({ kind, e, target, upd, remove, up, down }: { kind: ListKey
       <Field label={kind === "education" ? "Highlights (optional, one per line)" : "Bullet points (one per line)"}>
         <textarea className="rb-in" rows={kind === "education" ? 2 : 4} value={e.bullets.join("\n")} placeholder={kind === "education" ? "e.g. Ranked 3rd in the department" : "e.g. Built a dashboard tracking weekly sales for 15 stores"} onChange={(x) => upd({ bullets: x.target.value.split("\n") })} />
       </Field>
+      {notesOpen && (
+        <div className="rb-notes">
+          <Field label="In your own words: what did you do, with what, and what came of it?">
+            <textarea className="rb-in" rows={3} value={notes} onChange={(x) => setNotes(x.target.value)} placeholder="e.g. helped the college placement cell clean student data in Excel, made a weekly report for the placement officer, about 600 students" />
+          </Field>
+          <button className="fp-btn fp-btn-pri fp-btn-sm" disabled={busy || notes.trim().length < 20} onClick={() => void draft()}>{busy ? "Writing…" : "Write the bullets"}</button>
+        </div>
+      )}
       {err && <p className="rb-err">{err}</p>}
-      {sug && <Suggest text={sug.map((b) => `• ${b}`).join("\n")} onUse={() => { upd({ bullets: sug }); setSug(null); }} onDrop={() => setSug(null)} />}
+      {sug && <Suggest text={sug.map((b) => `• ${b}`).join("\n")} onUse={() => { upd({ bullets: sug }); setSug(null); setNotesOpen(false); }} onDrop={() => setSug(null)} />}
       <div className="rb-entry-a">
-        {kind !== "education" && <button className="rb-ai" disabled={busy || !e.bullets.some((b) => b.trim())} onClick={() => void improve()}>{busy ? "Improving…" : "Improve bullets with AI"}</button>}
+        {kind !== "education" && (e.bullets.some((b) => b.trim())
+          ? <button className="rb-ai" disabled={busy} onClick={() => void improve()}>{busy ? "Improving…" : "Improve bullets with AI"}</button>
+          : <button className="rb-ai" onClick={() => setNotesOpen(!notesOpen)}>{notesOpen ? "Close" : "Write with AI from a description"}</button>)}
         <span style={{ flex: 1 }} />
         {up && <button className="rb-mini" onClick={up} aria-label="Move up">↑</button>}
         {down && <button className="rb-mini" onClick={down} aria-label="Move down">↓</button>}
@@ -323,7 +341,7 @@ function AtsPanel({ ats }: { ats: ReturnType<typeof atsCheck> }) {
   );
 }
 
-function JobPanel({ r, stage, jd, setJd, ats }: { r: Resume; stage: Stage; jd: string; setJd: (s: string) => void; ats: ReturnType<typeof atsCheck> }) {
+function JobPanel({ r, stage, jd, setJd, ats, job }: { r: Resume; stage: Stage; jd: string; setJd: (s: string) => void; ats: ReturnType<typeof atsCheck>; job: JobHandoff | null }) {
   const [busy, setBusy] = useState(false);
   const [ai, setAi] = useState<{ missing: string[]; suggestions: string[] } | null>(null);
   const [err, setErr] = useState("");
@@ -335,7 +353,8 @@ function JobPanel({ r, stage, jd, setJd, ats }: { r: Resume; stage: Stage; jd: s
   };
   return (
     <div className="rb-ats">
-      <p className="rb-hint" style={{ margin: "0 0 8px" }}>Paste a job or internship post. You&apos;ll see which of its key terms your resume already has - add the missing ones you genuinely have.</p>
+      {job && <p style={{ margin: "0 0 8px", fontSize: 14 }}>Tailoring for <b>{job.title}</b> at <b>{job.company}</b></p>}
+      <p className="rb-hint" style={{ margin: "0 0 8px" }}>Paste a job or internship post - or pick one from <a href="/account/resume/jobs" className="fp-link" style={{ fontSize: 12.5 }}>Jobs for you</a>. You&apos;ll see which of its key terms your resume already has - add the missing ones you genuinely have.</p>
       <textarea ref={box} className="rb-in" rows={7} value={jd} onChange={(e) => { setJd(e.target.value); setAi(null); }} placeholder="Paste the job description here" />
       {ats.keywords && (
         <>
@@ -350,6 +369,12 @@ function JobPanel({ r, stage, jd, setJd, ats }: { r: Resume; stage: Stage; jd: s
           <span className="fp-kicker" style={{ border: 0, padding: 0 }}>How to tailor it - only add what's true</span>
           {ai.missing.length > 0 && <p><b>Missing from your resume:</b> {ai.missing.join(", ")}</p>}
           <ul style={{ margin: "6px 0 0", paddingLeft: 18 }}>{ai.suggestions.map((s) => <li key={s}>{s}</li>)}</ul>
+        </div>
+      )}
+      {jd.trim().length >= 80 && (
+        <div style={{ marginTop: 14, paddingTop: 12, borderTop: "1px solid #f0ede8" }}>
+          <span className="fp-kicker" style={{ border: 0, padding: 0 }}>Cover letter</span>
+          <CoverLetter key={`${job?.title ?? ""}|${job?.company ?? ""}`} r={r} stage={stage} title={job?.title ?? ""} company={job?.company ?? ""} jd={jd} />
         </div>
       )}
     </div>
@@ -399,6 +424,14 @@ textarea.rb-in{resize:vertical}
 .rb-x{font-size:16px;line-height:1;padding:5px 10px}
 .rb-ai{border:1px solid color-mix(in srgb,var(--accent) 35%,#fff);background:color-mix(in srgb,var(--accent) 6%,#fff);color:var(--accent);border-radius:6px;padding:5px 10px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap}
 .rb-ai:disabled{opacity:.5;cursor:default}
+.rb-kit{display:grid;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #f0ede8}
+.rb-kit ul{margin:0 0 4px;padding-left:18px;font-size:13.5px;line-height:1.55;color:var(--ink2)}
+.rb-kit-sk{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.rb-kit-sk button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 11px;font:inherit;font-size:12.5px;color:var(--ink2);cursor:pointer}
+.rb-kit-sk button:hover{border-color:var(--accent);color:var(--accent)}
+.rb-kit-sk button.is-on{background:#ecfdf3;border-color:#bbf7d0;color:#166534;cursor:default}
+.rb-notes{display:grid;gap:8px;justify-items:start;padding:10px;border:1px dashed var(--line);border-radius:6px;background:#fff}
+.rb-notes .rb-f{width:100%}
 .rb-sug{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:6px;padding:10px 12px;background:#fff;font-size:13.5px;line-height:1.55;color:var(--ink2)}
 .rb-sug p{margin:4px 0 8px;white-space:pre-line}
 .rb-err{margin:0;font-size:13px;color:#b42318}

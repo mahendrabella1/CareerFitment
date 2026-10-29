@@ -11,7 +11,7 @@ export const PAGE_SIZE = 20;
 export const EMPLOYMENT_TYPES: EmploymentType[] = ["Internship", "Full-time", "Part-time", "Contract", "Temporary"];
 export const WORKPLACE_TYPES: WorkplaceType[] = ["Remote", "Hybrid", "On-site"];
 
-const LIST_COLUMNS = "id,source,title,company,company_logo,location,employment_type,workplace_type,experience_hint,is_fresher,salary_text,apply_url,source_url,attribution,category,role_match,trust_level,trust_flags,reported_count,posted_at,last_seen_at";
+export const LIST_COLUMNS = "id,source,title,company,company_logo,location,employment_type,workplace_type,experience_hint,is_fresher,salary_text,apply_url,source_url,attribution,category,role_match,trust_level,trust_flags,reported_count,posted_at,last_seen_at";
 
 const clip = (s: unknown, n: number) => (typeof s === "string" ? s.replace(/[\u0000-\u001f]/g, " ").trim().slice(0, n) : "");
 const likeSafe = (s: string) => s.replace(/[\\%_]/g, (c) => `\\${c}`);
@@ -47,7 +47,7 @@ function withReports(r: Row): JobListItem {
 }
 
 // Student-friendly = the "Fresher-friendly" filter's rule.
-const STUDENT_FRIENDLY = "is_fresher.eq.true,experience_hint.in.(internship,entry),employment_type.eq.Internship";
+export const STUDENT_FRIENDLY = "is_fresher.eq.true,experience_hint.in.(internship,entry),employment_type.eq.Internship";
 
 type Db = ReturnType<typeof getSupabaseClient>;
 

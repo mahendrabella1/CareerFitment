@@ -10,7 +10,9 @@ import { getFirebaseAuth } from "@/lib/firebase/client";
 import { CoursePlayerShell } from "@/components/course/CoursePlayerShell";
 
 const TABS = [
+  { href: "/account/resume/plan", label: "Your plan" },
   { href: "/account/resume", label: "Resume builder" },
+  { href: "/account/resume/jobs", label: "Jobs for you" },
   { href: "/account/interview", label: "Interview questions" },
   { href: "/account/interview/practice", label: "Mock interview" },
 ];
@@ -22,7 +24,7 @@ export function JobReadyShell({ children, wide }: { children: ReactNode; wide?: 
     <CoursePlayerShell
       accent={meta.accent}
       banner={{ title: meta.title, icon: "doc", backHref: "/account", backLabel: "Dashboard" }}
-      homeHref="/account/resume"
+      homeHref="/account/resume/plan"
       tabs={TABS.map((t) => ({ ...t, active: pathname === t.href }))}
     >
       <div className={`fp${wide ? " jr-wide" : ""}`} style={{ ["--accent" as string]: meta.accent }}>{children}</div>

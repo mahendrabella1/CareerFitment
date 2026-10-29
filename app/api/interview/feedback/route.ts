@@ -5,7 +5,7 @@ import { int, jsonChat, strList } from "@/lib/ai/llm";
 import { chargeDaily } from "@/lib/ai/quota";
 import { transcribe } from "@/lib/commLab/server";
 import { speechMetrics } from "@/lib/commLab/scoring";
-import { QUESTIONS } from "@/lib/interview/questions";
+import { QUESTIONS, type InterviewQ } from "@/lib/interview/questions";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -22,7 +22,14 @@ export async function POST(req: Request) {
     const { uid } = await caller(req);
     const body = await req.formData().catch(() => null);
     if (!body) throw new ApiError(400, "The answer didn't arrive - please try again.");
-    const q = QUESTIONS.find((x) => x.id === String(body.get("questionId") ?? ""));
+    const qid = String(body.get("questionId") ?? "");
+    let q: InterviewQ | undefined = QUESTIONS.find((x) => x.id === qid);
+    // A question written for the student's role (/api/resume/ai "questions") travels with its text.
+    if (!q && qid.startsWith("custom")) {
+      const text = String(body.get("question") ?? "").slice(0, 250).trim();
+      if (text.length < 8) throw new ApiError(400, "Unknown question.");
+      q = { id: qid, cat: "situational", q: text, why: "Whether you have the knowledge and judgement this role needs.", how: String(body.get("how") ?? "").slice(0, 400).trim() || "Answer directly, give a specific example, and explain your thinking.", answer: "", avoid: "" };
+    }
     if (!q) throw new ApiError(400, "Unknown question.");
     const role = String(body.get("role") ?? "").slice(0, 120).trim();
     const audio = body.get("audio");
