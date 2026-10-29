@@ -13,21 +13,25 @@ import { Icon } from "@/app/Icons";
 import { usePortal, type PortalUnread } from "@/components/institution/portalStore";
 import { formatAgoInline } from "@/lib/institution/analytics";
 
+// Grouped by what the school is doing: knowing its students, guiding them,
+// reading the whole picture, talking to them, and getting help.
 const NAV: { href: string; label: string; icon: string; group?: string; badge?: keyof PortalUnread }[] = [
-  { href: "/institution", label: "Overview", icon: "radar" },
-  { href: "/institution/students", label: "Students", icon: "users", group: "People" },
+  { href: "/institution", label: "Overview", icon: "home" },
+  { href: "/institution/students", label: "All students", icon: "users", group: "Students" },
+  { href: "/institution/counselling", label: "Counselling list", icon: "flag" },
   { href: "/institution/parents", label: "Parents", icon: "heart" },
   { href: "/institution/observations", label: "Teacher check", icon: "check" },
-  { href: "/institution/passport", label: "Career Passport", icon: "award", badge: "milestones" },
-  { href: "/institution/messages", label: "Messages", icon: "bell", group: "Engage" },
-  { href: "/institution/replies", label: "Student replies", icon: "answer", badge: "replies" },
-  { href: "/institution/decisions", label: "Decision briefs", icon: "signpost" },
+  { href: "/institution/decisions", label: "Decision briefs", icon: "signpost", group: "Guidance" },
   { href: "/institution/opportunities", label: "Opportunities", icon: "target" },
   { href: "/institution/mentors", label: "Peer mentors", icon: "route" },
-  { href: "/institution/journeys", label: "Career journeys", icon: "compass", group: "Insights" },
+  { href: "/institution/passport", label: "Career Passport", icon: "award", badge: "milestones" },
+  { href: "/institution/school-report", label: "School report", icon: "doc", group: "Insights" },
+  { href: "/institution/journeys", label: "Career journeys", icon: "compass" },
   { href: "/institution/life-skills", label: "Life skills", icon: "shield" },
-  { href: "/institution/future", label: "Future skills", icon: "sparkle" },
-  { href: "/institution/guide", label: "Guide", icon: "book", group: "Help" },
+  { href: "/institution/future", label: "Future skills", icon: "layers" },
+  { href: "/institution/messages", label: "Messages", icon: "bell", group: "Messages" },
+  { href: "/institution/replies", label: "Student replies", icon: "answer", badge: "replies" },
+  { href: "/institution/guide", label: "Guide", icon: "book", group: "Support" },
   { href: "/institution/onegrasp", label: "Ask OneGrasp", icon: "help", badge: "onegrasp" },
 ];
 
@@ -61,7 +65,7 @@ export default function PortalShell({ children }: { children: React.ReactNode })
                 {n.group && <div className="ip-nav-group">{n.group}</div>}
                 <Link href={n.href} className={on ? "on" : ""}>
                   <Icon name={n.icon} size={17} stroke={1.9} /> {n.label}
-                  {n.href === "/institution/students" && students && <span className="ip-badge" style={{ background: "var(--line)", color: "var(--ink2)" }}>{students.filter((s) => !s.archived).length}</span>}
+                  {n.href === "/institution/students" && students && <span className="ip-badge" style={{ background: "var(--line2)", color: "var(--ink3)" }}>{students.filter((s) => !s.archived).length}</span>}
                   {n.badge && unread[n.badge] > 0 && <span className="ip-badge" title="Waiting for you">{unread[n.badge]}</span>}
                 </Link>
               </div>

@@ -224,6 +224,38 @@ export const FEATURES: Record<string, FeatureMeta> = {
       { icon: "award", title: "Free AI courses", text: "More certificates in AI & Certifications.", href: "/account/ai" },
     ],
   },
+  spotlight: {
+    key: "spotlight", title: "Spotlight", href: "/account/spotlight", art: "spotlight", accent: "#a16207",
+    headline: ["Get published,", "get recognised"], layout: "catalogue", style: "OneGrasp's career boosters - paid services",
+    tagline: "Career boosters from OneGrasp: present your research at an international conference, publish a paper, get an ISBN for your book, start a journal with an ISSN, or be featured in Awardees Magazine.",
+    tour: [
+      { icon: "flask", title: "Present and publish", text: "Send your abstract to a OneGrasp international conference, or ask us where your paper should be published." },
+      { icon: "book", title: "Your own ISBN or ISSN", text: "The official rules in plain words - who can get one, what's needed - and help to get it right." },
+      { icon: "wallet", title: "Paid services, free to ask", text: "Send a request and the OneGrasp team replies with the fee and the next steps. Nothing is charged here." },
+    ],
+    ctas: [
+      { icon: "flask", title: "Submit an abstract", text: "Pick an upcoming OneGrasp conference and send your abstract.", href: "/account/spotlight/conferences" },
+      { icon: "doc", title: "Research writing help", text: "From your research question to a publication-ready draft.", href: "/account/spotlight/writing" },
+      { icon: "book", title: "Get an ISBN", text: "Who can get one, the rules, and help to apply.", href: "/account/spotlight/isbn" },
+      { icon: "star", title: "Write for Awardees Magazine", text: "Articles, blogs, stories and podcast interviews.", href: "/account/spotlight/magazine" },
+    ],
+  },
+  jobready: {
+    key: "jobready", title: "Resume & Interview", href: "/account/resume", art: "jobready", accent: "#be185d",
+    headline: ["An ATS-friendly resume,", "and interviews you've practised"], layout: "course", style: "A resume builder and interview practice",
+    tagline: "Build a resume that applicant-tracking systems can read, check it against a job post, and practise the 100 questions interviewers ask most - out loud, with feedback.",
+    tour: [
+      { icon: "doc", title: "Build your resume", text: "Fill in the sections for your stage and watch an ATS-safe resume take shape. Download it as a PDF." },
+      { icon: "target", title: "Check it like an ATS", text: "A score with the fixes that matter, and the job-post keywords you're missing." },
+      { icon: "audio", title: "Practise interviews", text: "100 common questions with model answers - then answer out loud and get feedback on what you said and how." },
+    ],
+    ctas: [
+      { icon: "doc", title: "Build my resume", text: "Starts with your details already filled in.", href: "/account/resume" },
+      { icon: "answer", title: "100 interview questions", text: "Why they ask, how to answer, a model answer.", href: "/account/interview" },
+      { icon: "audio", title: "Mock interview", text: "Answer out loud, camera optional, get feedback.", href: "/account/interview/practice" },
+      { icon: "briefcase", title: "Find jobs to apply for", text: "Fresh internships and fresher jobs.", href: "/account/jobs" },
+    ],
+  },
   progress: {
     key: "progress", title: "My Progress", href: "/account/progress", art: "progress", accent: "#db3433",
     headline: ["Everything you've done,", "in one place"], layout: "progress", style: "Your progress across every feature",

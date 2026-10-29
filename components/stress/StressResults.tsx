@@ -121,6 +121,9 @@ export function StressResults({ result, history, plan, benchmarks, firstName, on
           <Link className="ws-navi" href="/account/legal" {...NEW_TAB}><Icon name="scale" size={17} /><span>Law &amp; Rights</span></Link>
           <Link className="ws-navi" href="/jobs" {...NEW_TAB}><Icon name="briefcase" size={17} /><span>Jobs board</span></Link>
           <a className="ws-navi" href={`tel:${HELPLINE.number}`}><Icon name="phone" size={17} /><span>{HELPLINE.name} {HELPLINE.number}</span></a>
+          <div className="ws-side-lbl">Grow</div>
+          <Link className="ws-navi" href="/account/resume" {...NEW_TAB}><Icon name="doc" size={17} /><span>Resume &amp; interview</span></Link>
+          <Link className="ws-navi" href="/account/spotlight" {...NEW_TAB}><Icon name="sparkle" size={17} /><span>Spotlight: publish &amp; ISSN</span></Link>
         </nav>
         <div className="ws-side-foot">
           <Link className="ws-btn ws-btn-pri" style={{ width: "100%" }} href={retakeHref} {...NEW_TAB}>Retake the check</Link>

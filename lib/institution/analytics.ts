@@ -7,7 +7,7 @@
  * (active time by area and day). Nothing is estimated: a student with no
  * recorded time shows 0, not a guess.
  */
-import { categoryLabel } from "@/lib/auth/formOptions";
+import { CATEGORY_OPTIONS, categoryLabel } from "@/lib/auth/formOptions";
 import { AREA_LABEL, dayKey, lastDays } from "@/lib/progress/activity";
 import type { MessageKind, StudentRow } from "@/lib/institution/types";
 import { liveStreak, weekOf, type GpsState } from "@/lib/gps";
@@ -297,6 +297,36 @@ export function recommendationsFor(row: StudentRow, now: number = Date.now()): R
 }
 
 // ---------------------------------------------------------------- whole institution
+
+export interface ClassRollout {
+  category: string;
+  label: string;
+  students: number;
+  completed: number;
+  inProgress: number;
+  notStarted: number;
+  /** Share who have completed the assessment. */
+  pct: number;
+  /** Students still to finish (in progress or not started). */
+  pending: string[];
+}
+
+/** Assessment progress class by class, in class order. */
+export function rolloutByClass(rowsIn: StudentRow[]): ClassRollout[] {
+  const order = CATEGORY_OPTIONS.map((c) => c.value);
+  const map = new Map<string, ClassRollout>();
+  for (const r of rowsIn) {
+    if (r.archived) continue;
+    const k = r.category || "unknown";
+    const e = map.get(k) ?? { category: k, label: k === "unknown" ? "Class not stated" : categoryLabel(k), students: 0, completed: 0, inProgress: 0, notStarted: 0, pct: 0, pending: [] };
+    e.students++;
+    if (r.assessment.status === "completed") e.completed++;
+    else { e.pending.push(r.uid); if (r.assessment.status === "in_progress") e.inProgress++; else e.notStarted++; }
+    map.set(k, e);
+  }
+  const rank = (k: string) => { const i = order.indexOf(k); return i < 0 ? 99 : i; };
+  return [...map.values()].map((e) => ({ ...e, pct: Math.round((e.completed / e.students) * 100) })).sort((a, b) => rank(a.category) - rank(b.category));
+}
 
 /** Segment messages reach many students: "{name}" becomes each one's first name
  *  when they open it (app/api/student/messages). */

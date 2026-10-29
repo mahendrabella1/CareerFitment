@@ -25,7 +25,7 @@ export function HowItWorks({ id, title = "How this works", intro, steps, sync, a
     } catch { /* storage blocked: stays closed */ }
   }, [id]);
   return (
-    <div style={{ border: `1px solid ${accent}33`, background: `${accent}0a`, borderRadius: 14, padding: open ? "12px 16px 14px" : "8px 14px", marginBottom: 14 }}>
+    <div className="hiw" style={{ border: `1px solid ${accent}33`, background: `${accent}0a`, borderRadius: 14, padding: open ? "12px 16px 14px" : "8px 14px", marginBottom: 14 }}>
       <button onClick={() => setOpen((o) => !o)} aria-expanded={open}
         style={{ all: "unset", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, width: "100%", fontWeight: 800, fontSize: 13.5, color: accent }}>
         <span aria-hidden style={{ display: "grid", placeItems: "center", width: 20, height: 20, borderRadius: 999, background: accent, color: "#fff", fontSize: 12 }}>?</span>

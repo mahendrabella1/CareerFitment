@@ -101,6 +101,8 @@ const NAV: { id: string; label: string; icon: string; group: string; art?: strin
   { id: "startups", label: "Startups", icon: "flag", group: "Explore", art: "startups" },
   { id: "ai", label: "AI & Certifications", icon: "cpu", group: "Explore", art: "ai" },
   { id: "communication", label: "Communication Lab", icon: "audio", group: "Explore", art: "communication" },
+  { id: "spotlight", label: "Spotlight", icon: "sparkle", group: "Explore", art: "spotlight" },
+  { id: "jobready", label: "Resume & Interview", icon: "doc", group: "Create", art: "jobready" },
   { id: "portfolio", label: "Build your website", icon: "user", group: "Create" },
 ];
 const NAV_GROUPS = ["Explore", RESULTS, "Track", "Create"];
@@ -157,6 +159,8 @@ const FEATURE_ROUTES: Record<string, string> = {
   "certificates": "/account/certificates",
   "ai": "/account/ai",
   "communication": "/account/communication",
+  "spotlight": "/account/spotlight",
+  "jobready": "/account/resume",
 };
 
 // Career-toolkit (colleges/exams/internships/scholarships/careers) is
@@ -494,6 +498,11 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
     { label: FEATURES.ai.title, kind: "Feature", hint: "Free AI courses with free certificates, and AI tools", href: FEATURES.ai.href, newTab: true },
     { label: FEATURES.communication.title, kind: "Feature", hint: "Speaking, writing and listening - voice practice with feedback, your CQ", href: FEATURES.communication.href, newTab: true },
     { label: "Today's speaking challenge", kind: "Tool", hint: "Communication Lab - 1 minute, out loud", href: "/account/communication/practice", newTab: true },
+    { label: `${FEATURES.spotlight.title} - career boosters`, kind: "Feature", hint: "Conferences, research writing, ISBN, ISSN, Awardees Magazine", href: FEATURES.spotlight.href, newTab: true },
+    { label: "Submit an abstract", kind: "Tool", hint: "Spotlight - present at a OneGrasp conference", href: "/account/spotlight/conferences", newTab: true },
+    { label: "Resume builder", kind: "Tool", hint: "An ATS-friendly resume, checked against a job post - download as PDF", href: "/account/resume", newTab: true },
+    { label: "Interview questions", kind: "Tool", hint: "The 100 most common questions with model answers", href: "/account/interview", newTab: true },
+    { label: "Mock interview", kind: "Tool", hint: "Answer out loud, get feedback on content and delivery", href: "/account/interview/practice", newTab: true },
     ...fits.slice(0, 3).map((f) => ({ label: f.name, kind: "Best-fit field", onSelect: () => go("fields") })),
   ];
 

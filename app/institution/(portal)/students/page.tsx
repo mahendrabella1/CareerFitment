@@ -28,10 +28,13 @@ export default function StudentsPage() {
   const top = useRef<HTMLDivElement | null>(null);
   const now = Date.now();
 
-  // ?status=inactive from the Overview's "Where students stand" links.
+  // ?status=inactive or ?class=class_9_10, from links on the Overview.
   useEffect(() => {
-    const s = new URLSearchParams(window.location.search).get("status");
+    const p = new URLSearchParams(window.location.search);
+    const s = p.get("status");
     if (s && s in STATUS_META) setStatus(s as StudentStatus);
+    const c = p.get("class");
+    if (c) setCls(c === "unknown" ? "" : c);
   }, []);
 
   const active = useMemo(() => (students ?? []).filter((s) => !s.archived), [students]);
@@ -79,8 +82,8 @@ export default function StudentsPage() {
     <>
       <div className="ip-head">
         <div>
-          <h1 className="ip-h1">Students</h1>
-          <p className="ip-sub">{active.length} students · select students to message them, or open one for their full picture.</p>
+          <h1 className="ip-h1">All students</h1>
+          <p className="ip-sub">{active.length} students. Find anyone, filter by class or status, select students to message them, or open one for their full picture.</p>
         </div>
         <button className="ip-btn ghost" onClick={() => exportCsv(rows, now)}><Icon name="save" size={15} /> Export CSV</button>
         <button className="ip-btn" disabled={!picked.size} onClick={() => setCompose({ audience: { type: "students", uids: [...picked], label: `${picked.size} selected student${picked.size === 1 ? "" : "s"}` } })}>
@@ -150,7 +153,7 @@ export default function StudentsPage() {
             </table>
           </div>
         )}
-        {paged.pages > 1 && <div style={{ padding: 12, borderTop: "1px solid var(--line)" }}><Pager paged={paged} accent="#4c5fd5" noun="students" scrollTo={top} /></div>}
+        {paged.pages > 1 && <div style={{ padding: 12, borderTop: "1px solid var(--line)" }}><Pager paged={paged} accent="#3451b2" noun="students" scrollTo={top} /></div>}
       </div>
       {picked.size > 0 && (
         <p className="ip-muted" style={{ marginTop: 10 }}>

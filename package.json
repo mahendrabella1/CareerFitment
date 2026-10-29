@@ -14,7 +14,10 @@
     "test:certificates": "node --import ./tests/jobs/register.mjs --test \"tests/certificates/*.test.mjs\"",
     "test:ai": "node --import ./tests/jobs/register.mjs --test \"tests/ai/*.test.mjs\"",
     "test:commlab": "node --import ./tests/jobs/register.mjs --test \"tests/commLab/*.test.mjs\"",
-    "test:startups": "node --import ./tests/jobs/register.mjs --test \"tests/startups/*.test.mjs\""
+    "test:startups": "node --import ./tests/jobs/register.mjs --test \"tests/startups/*.test.mjs\"",
+    "test:boosters": "node --import ./tests/jobs/register.mjs --test \"tests/boosters/*.test.mjs\"",
+    "test:institution": "node --import ./tests/jobs/register.mjs --test \"tests/institution/*.test.mjs\"",
+    "test:jobready": "node --import ./tests/jobs/register.mjs --test \"tests/jobready/*.test.mjs\""
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.5.1",

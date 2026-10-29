@@ -11,6 +11,7 @@
  */
 import type { Firestore } from "firebase-admin/firestore";
 import { ApiError } from "@/lib/institution/server";
+import { jsonChat } from "@/lib/ai/llm";
 import { dayKey } from "@/lib/progress/activity";
 import type { Track, VoicePrompt, VoiceReport, TaskLesson, TaskReport } from "./types";
 import { fluencyScore, pronunciationScore, speechMetrics, type TimedWord } from "./scoring";
@@ -94,27 +95,10 @@ const WRITING_SCHEMA = {
   },
 } as const;
 
-/** One rubric call: Groq's Llama in JSON mode (the same model Career Test-Drive uses).
+/** One rubric call (lib/ai/llm.ts: DeepSeek when its key works, else Groq's Llama), JSON mode.
  *  Scores are clamped to their ranges afterwards, so a stray value can't break a report. */
 async function rubricJson(prompt: string, schema: Record<string, unknown>): Promise<Record<string, unknown>> {
-  const key = process.env.GROQ_API_KEY;
-  if (!key) throw new ApiError(503, "Feedback isn't switched on yet - the server needs GROQ_API_KEY.");
-  const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "llama-3.3-70b-versatile", temperature: 0.3, max_tokens: 1500, response_format: { type: "json_object" },
-      messages: [
-        { role: "system", content: "You score student practice fairly and kindly. Reply with one JSON object only." },
-        { role: "user", content: `${prompt}\n\nReturn ONLY a JSON object matching this JSON schema:\n${JSON.stringify(schema)}` },
-      ],
-    }),
-  });
-  const data = (await res.json().catch(() => ({}))) as { choices?: { message?: { content?: string } }[]; error?: { message?: string } };
-  if (res.status === 429) throw new ApiError(503, "Lots of students are practising right now - please try again in a minute.");
-  if (!res.ok) throw new ApiError(502, `The feedback service refused the request: ${data.error?.message ?? res.status}`);
-  try { return JSON.parse(data.choices?.[0]?.message?.content ?? "") as Record<string, unknown>; }
-  catch { throw new ApiError(502, "The feedback came back garbled - please try again."); }
+  return (await jsonChat({ system: "You score student practice fairly and kindly.", prompt, schema })).json;
 }
 
 const int = (v: unknown, max: number) => Math.min(max, Math.max(0, Math.round(Number(v) || 0)));
