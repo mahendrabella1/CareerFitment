@@ -75,7 +75,7 @@ export const FEATURES: Record<string, FeatureMeta> = {
     ctas: [
       { icon: "target", title: "Take the placement quiz", text: "Two minutes - we'll point you to the right module.", href: "/account/startups/placement" },
       { icon: "play", title: "Start module 1", text: "Founder Mindset: short video lessons, a quiz after each.", href: "/account/startups/builder/founder-mindset" },
-      { icon: "video", title: "Watch the video lessons", text: "Every lesson video in one place.", href: "/account/startups/videos" },
+      { icon: "wallet", title: "Funding for your startup", text: "Grants, loans and incubators - with amounts and deadlines.", href: "/account/startups/funding" },
       { icon: "flag", title: "Your startup portfolio", text: "Every mission you finish becomes a page here.", href: "/account/startups/portfolio" },
     ],
   },
@@ -206,6 +206,22 @@ export const FEATURES: Record<string, FeatureMeta> = {
       { icon: "cpu", title: "AI tools for you", text: "Rated for age, privacy and what's free.", href: "/account/ai/tools" },
       { icon: "shield", title: "Use AI safely", text: "Five rules, schoolwork honesty, deepfakes and scams.", href: "/account/ai/safety" },
       { icon: "check", title: "Your OneGrasp certificates", text: "Finish a OneGrasp course, get a certificate too.", href: "/account/certificates" },
+    ],
+  },
+  communication: {
+    key: "communication", title: "Communication Lab", href: "/account/communication", art: "communication", accent: "#0e7490",
+    headline: ["Speak, write and listen", "with confidence"], layout: "course", style: "A self-paced communication course for your class",
+    tagline: "Short videos, activities and voice practice with instant feedback - and your Communication Score (CQ) to show how far you've come.",
+    tour: [
+      { icon: "route", title: "A track for your class", text: "Class 6–8, 9–10, 11–12 or college - modules open one after another, week by week." },
+      { icon: "audio", title: "Practise out loud", text: "Record yourself and get feedback in seconds: your pace, filler words, pauses and three things to try next." },
+      { icon: "score", title: "Your CQ", text: "Speaking, writing, listening and reading roll into one Communication Score, with streaks, XP and badges." },
+    ],
+    ctas: [
+      { icon: "play", title: "Continue the course", text: "Pick up your next lesson.", href: "/account/communication#track" },
+      { icon: "audio", title: "Today's speaking challenge", text: "A new prompt every day - 1 minute.", href: "/account/communication/practice" },
+      { icon: "radar", title: "My CQ and progress", text: "Skills, trend, streak and badges.", href: "/account/communication/progress" },
+      { icon: "award", title: "Free AI courses", text: "More certificates in AI & Certifications.", href: "/account/ai" },
     ],
   },
   progress: {

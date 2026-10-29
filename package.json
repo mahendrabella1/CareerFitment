@@ -12,7 +12,9 @@
     "seed:firestore": "node scripts/upload_to_firestore.mjs",
     "test:progress": "node --import ./tests/jobs/register.mjs --test \"tests/progress/*.test.mjs\"",
     "test:certificates": "node --import ./tests/jobs/register.mjs --test \"tests/certificates/*.test.mjs\"",
-    "test:ai": "node --import ./tests/jobs/register.mjs --test \"tests/ai/*.test.mjs\""
+    "test:ai": "node --import ./tests/jobs/register.mjs --test \"tests/ai/*.test.mjs\"",
+    "test:commlab": "node --import ./tests/jobs/register.mjs --test \"tests/commLab/*.test.mjs\"",
+    "test:startups": "node --import ./tests/jobs/register.mjs --test \"tests/startups/*.test.mjs\""
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.5.1",

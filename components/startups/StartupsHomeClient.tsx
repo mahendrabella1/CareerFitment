@@ -23,6 +23,7 @@ const MORE = [
   { href: "/account/startups/placement", title: "Placement quiz", note: "2 minutes", icon: "target" },
   { href: "/account/startups/portfolio", title: "Your Startup Portfolio", note: "Everything you've written", icon: "doc" },
   { href: "/account/startups/videos", title: "Video library", note: "Expert talks per module", icon: "video" },
+  { href: "/account/startups/funding", title: "Funding for startups", note: "Grants, loans and incubators", icon: "wallet" },
 ];
 
 function Chevron() {

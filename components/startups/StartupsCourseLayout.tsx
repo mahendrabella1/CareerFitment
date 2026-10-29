@@ -51,6 +51,7 @@ export function StartupsCourseLayout({ track, children }: { track: PublicTrack; 
       { href: "/account/startups/placement", label: "Placement quiz", meta: "2 min" },
       { href: "/account/startups/portfolio", label: "Your Startup Portfolio" },
       { href: "/account/startups/videos", label: "Video library" },
+      { href: "/account/startups/funding", label: "Funding for startups", meta: "Grants, loans" },
     ].map((i) => ({ ...i, status: (pathname === i.href ? "current" : "todo") as ItemStatus })),
   });
 
@@ -82,12 +83,13 @@ export function StartupsCourseLayout({ track, children }: { track: PublicTrack; 
     />
   );
 
-  const extras = ["/account/startups/placement", "/account/startups/portfolio", "/account/startups/videos"];
+  const extras = ["/account/startups/placement", "/account/startups/portfolio", "/account/startups/videos", "/account/startups/funding"];
   const tabs = [
     { href: "/account/startups", label: "Course", active: !extras.some((h) => pathname === h) },
     { href: extras[0], label: "Placement quiz", active: pathname === extras[0] },
     { href: extras[1], label: "Your portfolio", active: pathname === extras[1] },
     { href: extras[2], label: "Video library", active: pathname === extras[2] },
+    { href: extras[3], label: "Funding", active: pathname === extras[3] },
   ];
 
   return (

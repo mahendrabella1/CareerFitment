@@ -21,6 +21,7 @@ import { loadScamTally } from "@/lib/money/localProgress";
 import { fetchProgress } from "@/lib/startups/clientProgress";
 import { lessonStatus, moduleStatus, type ProgressMap } from "@/lib/startups/unlock";
 import type { PublicTrack } from "@/lib/startups/publicShape";
+import { bandOf, cqOf, trackIdFor } from "@/lib/commLab/scoring";
 import { FEATURES, featureArt } from "@/lib/features/catalog";
 import { tasksDone, type FeatureTaskSpec } from "@/lib/progress/featureTasks";
 import { CoursePlayerShell } from "@/components/course/CoursePlayerShell";
@@ -43,7 +44,7 @@ interface Row {
   seconds: number; lastAt?: number; note?: string;
 }
 
-const ACTIVITY_KEY: Record<string, string> = { money: "money", legal: "legal", exams: "exams", scholarships: "scholarships", "study-abroad": "study_abroad", research: "research", startups: "startups", careers: "careers", internships: "internships", ai: "ai" };
+const ACTIVITY_KEY: Record<string, string> = { money: "money", legal: "legal", exams: "exams", scholarships: "scholarships", "study-abroad": "study_abroad", research: "research", startups: "startups", careers: "careers", internships: "internships", ai: "ai", communication: "communication" };
 const ONLY_TIME = ["jobs", "gps", "test_drive", "decision", "passport", "portfolio"];
 
 /** A feature's tools from its task list, with what's been opened. */
@@ -106,7 +107,10 @@ const ago = (t?: number) => {
   return d <= 0 ? "today" : d === 1 ? "yesterday" : d < 30 ? `${d} days ago` : new Date(t).toLocaleDateString("en-IN", { day: "numeric", month: "short" });
 };
 
-export function MyProgress({ courses, track, tasks }: { courses: CourseOutline[]; track: PublicTrack; tasks: FeatureTaskSpec[] }) {
+/** A Communication Lab track's outline (titles only), from the server page. */
+export interface LabOutline { id: string; modules: { id: string; title: string; lessons: { id: string; title: string }[] }[] }
+
+export function MyProgress({ courses, track, tasks, labTracks = [] }: { courses: CourseOutline[]; track: PublicTrack; tasks: FeatureTaskSpec[]; labTracks?: LabOutline[] }) {
   const { user, profile } = useAuth();
   const meta = FEATURES.progress;
   const [startups, setStartups] = useState<ProgressMap | null>(null);
@@ -178,8 +182,22 @@ export function MyProgress({ courses, track, tasks }: { courses: CourseOutline[]
       seconds: byFeature.startups ?? 0, lastAt: lastBy.startups,
       note: `${track.modules.filter((m) => moduleStatus(m, p) === "COMPLETED").length} of ${track.modules.length} module tests passed`,
     });
+    // Communication Lab: the student's own track (by class), when it has modules open.
+    const lab = labTracks.find((t) => t.id === trackIdFor(profile?.category));
+    if (lab?.modules.length) {
+      const doneIds = profile?.commLab?.lessons ?? {};
+      const lMods = lab.modules.map((m) => {
+        const lessons = m.lessons.map((l) => ({ title: l.title, done: doneIds[l.id]?.s === "completed" }));
+        return { title: m.title, lessons, done: lessons.filter((l) => l.done).length, total: lessons.length };
+      });
+      const nextMod = lab.modules.find((m) => m.lessons.some((l) => doneIds[l.id]?.s !== "completed"));
+      const nextL = nextMod?.lessons.find((l) => doneIds[l.id]?.s !== "completed");
+      const cq = cqOf(profile?.commLab?.skills ?? {}, lab.id).cq;
+      out.push(row("communication", lMods, nextMod && nextL ? { title: nextL.title, href: `/account/communication/${lab.id}/${nextMod.id}/${nextL.id}` } : undefined,
+        cq !== null ? `CQ ${cq} (${bandOf(cq)})` : undefined));
+    }
     return out;
-  }, [courses, track, tasks, visited, startups, profile, scam, byFeature, lastBy]);
+  }, [courses, track, tasks, visited, startups, profile, scam, byFeature, lastBy, labTracks]);
 
   const total = rows.reduce((s, r) => s + r.total, 0);
   const done = rows.reduce((s, r) => s + r.done, 0);

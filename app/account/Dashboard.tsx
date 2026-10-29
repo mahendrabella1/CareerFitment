@@ -28,6 +28,7 @@ import { readGoals, saveGoals } from "@/lib/progress/progressStore";
 import { dayKey } from "@/lib/progress/activity";
 import { tasksDone, type FeatureTaskSpec } from "@/lib/progress/featureTasks";
 import { FEATURES, featureArt } from "@/lib/features/catalog";
+import { bandOf, cqOf, streakOf, trackIdFor } from "@/lib/commLab/scoring";
 import { FeatureSearch, type SearchItem } from "@/components/feature/FeatureSearch";
 import { FP_CSS } from "@/components/feature/styles";
 import { SchoolInbox } from "@/components/SchoolInbox";
@@ -99,6 +100,7 @@ const NAV: { id: string; label: string; icon: string; group: string; art?: strin
   { id: "research", label: "Research", icon: "pulse", group: "Explore", art: "research" },
   { id: "startups", label: "Startups", icon: "flag", group: "Explore", art: "startups" },
   { id: "ai", label: "AI & Certifications", icon: "cpu", group: "Explore", art: "ai" },
+  { id: "communication", label: "Communication Lab", icon: "audio", group: "Explore", art: "communication" },
   { id: "portfolio", label: "Build your website", icon: "user", group: "Create" },
 ];
 const NAV_GROUPS = ["Explore", RESULTS, "Track", "Create"];
@@ -154,6 +156,7 @@ const FEATURE_ROUTES: Record<string, string> = {
   "progress": "/account/progress",
   "certificates": "/account/certificates",
   "ai": "/account/ai",
+  "communication": "/account/communication",
 };
 
 // Career-toolkit (colleges/exams/internships/scholarships/careers) is
@@ -231,6 +234,9 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
   // `stale` = saved by an earlier version of the assessment: no usable scores.
   const prepared = useMemo(() => prepareStudentReport(savedSummary, { sheets: false }), [savedSummary]);
   const a = prepared.summary;
+  // Communication Lab's CQ and streak for its tile (lib/commLab/scoring.ts - no course content).
+  const labCq = useMemo(() => cqOf(profile?.commLab?.skills ?? {}, trackIdFor(profile?.category)), [profile]);
+  const labStreak = useMemo(() => streakOf(profile?.commLab?.days ?? [], dayKey()).current, [profile]);
   // Opened from REPORT_HREF: this tab is the report's own.
   const [reportTab] = useState(() => typeof window !== "undefined" && new URLSearchParams(window.location.search).get("view") === "report");
   const [view, setView] = useState<"dashboard" | "report" | "feature">(reportTab ? "report" : "dashboard");
@@ -486,6 +492,8 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
     ...SIGNATURE.map((s) => ({ label: s.title, kind: "Tool", hint: s.text, href: s.href, newTab: true })),
     { label: "My certificates", kind: "Page", hint: "Finish a course, get a certificate to share", href: "/account/certificates", newTab: true },
     { label: FEATURES.ai.title, kind: "Feature", hint: "Free AI courses with free certificates, and AI tools", href: FEATURES.ai.href, newTab: true },
+    { label: FEATURES.communication.title, kind: "Feature", hint: "Speaking, writing and listening - voice practice with feedback, your CQ", href: FEATURES.communication.href, newTab: true },
+    { label: "Today's speaking challenge", kind: "Tool", hint: "Communication Lab - 1 minute, out loud", href: "/account/communication/practice", newTab: true },
     ...fits.slice(0, 3).map((f) => ({ label: f.name, kind: "Best-fit field", onSelect: () => go("fields") })),
   ];
 
@@ -591,7 +599,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                 <Link href="/account/progress" {...NEW_TAB} className="db-more" style={{ marginTop: 0 }}>See my progress <Icon name="arrowRight" size={14} stroke={2} /></Link>
               </div>
               <div className="db-kit">
-                {/* The newest feature, across the whole row above the twelve tiles. */}
+                {/* The two newest features, side by side above the twelve tiles. */}
                 <Link href={FEATURES.ai.href} {...NEW_TAB} className="db-kit-new">
                   <span className="db-kit-art">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -607,8 +615,25 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                       {AI_BRANDS.map((b) => <img key={b.name} src={b.logo} alt={b.name} style={{ height: b.h }} loading="lazy" decoding="async" />)}
                       <span>and more</span>
                     </span>
+                    <span className="db-kit-go" aria-hidden="true">Explore <Icon name="arrowRight" size={14} stroke={2} /></span>
                   </span>
-                  <span className="db-btn pri" aria-hidden="true">Explore <Icon name="arrowRight" size={15} stroke={2} /></span>
+                </Link>
+                <Link href={FEATURES.communication.href} {...NEW_TAB} className="db-kit-new is-lab">
+                  <span className="db-kit-art">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={featureArt("communication").card} alt="" loading="lazy" decoding="async" />
+                  </span>
+                  <span className="db-kit-b">
+                    <span className="db-new">New</span>
+                    <b>{FEATURES.communication.title}</b>
+                    <small>Speak, write and listen with confidence: short videos and activities, voice practice with instant feedback, and your Communication Score.</small>
+                    <span className="db-kit-cq">
+                      {labCq.cq !== null
+                        ? <><b>CQ {labCq.cq}</b> · {bandOf(labCq.cq)}{labStreak ? ` · ${labStreak}-day streak` : ""}</>
+                        : <>Today&apos;s 1-minute speaking challenge is ready</>}
+                    </span>
+                    <span className="db-kit-go" aria-hidden="true">{labCq.cq !== null ? "Continue" : "Start"} <Icon name="arrowRight" size={14} stroke={2} /></span>
+                  </span>
                 </Link>
                 {TOOLKIT.map((t) => {
                   const f = FEATURES[t.key];
@@ -1865,17 +1890,22 @@ const DASH_CSS = `
 .db-kit-p{display:flex;align-items:center;gap:8px;padding-top:6px;font-size:11.5px;color:var(--mute);font-variant-numeric:tabular-nums}
 .db-kit-p i{flex:1;height:4px;border-radius:2px;background:#ece9e3;overflow:hidden;display:block}
 .db-kit-p i b{display:block;height:100%;background:var(--ink)}
-.db-kit>a.db-kit-new{grid-column:1/-1;flex-direction:row;align-items:center;gap:6px;border-color:color-mix(in srgb,#a21caf 30%,var(--line));background:linear-gradient(100deg,color-mix(in srgb,#a21caf 6%,#fff),#fff 60%)}
-.db-kit-new .db-kit-art{flex:none;width:220px;height:124px;border-bottom:0;background:transparent}
-.db-kit-new .db-kit-art img{width:100%;height:112px}
-.db-kit-new .db-kit-b{padding:14px 10px}
-.db-kit-new .db-kit-b>small{font-size:13.5px;max-width:620px}
-.db-kit-new .db-btn{flex:none;margin-right:18px}
+.db-kit>a.db-kit-new{grid-column:span 2;flex-direction:row;align-items:center;gap:0;border-color:color-mix(in srgb,#a21caf 30%,var(--line));background:linear-gradient(100deg,color-mix(in srgb,#a21caf 6%,#fff),#fff 60%)}
+.db-kit>a.db-kit-new.is-lab{border-color:color-mix(in srgb,#0e7490 30%,var(--line));background:linear-gradient(100deg,color-mix(in srgb,#0e7490 7%,#fff),#fff 60%)}
+.db-kit-new .db-kit-art{flex:none;width:160px;height:auto;padding-left:12px;border-bottom:0;background:transparent}
+.db-kit-new .db-kit-art img{width:100%;height:auto;max-height:112px}
+.db-kit-new .db-kit-b{padding:16px 16px 16px 12px}
+.db-kit-new .db-kit-b>small{font-size:13px}
+.db-kit-go{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;margin-top:12px;height:32px;padding:0 12px;border-radius:6px;background:var(--ink);color:#fff;font-size:13px;font-weight:600}
+.db-kit-cq{margin-top:10px;font-size:13px;color:var(--ink2)}
+.db-kit-cq b{color:#0e7490}
+.is-lab .db-new{background:#0e7490}
 .db-kit-logos{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;margin-top:10px}
 .db-kit-logos>span{font-size:12px;color:var(--mute)}
 .db-kit-logos img{display:block;width:auto}
 .db-new{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:#a21caf;border-radius:999px;padding:2px 8px;margin-bottom:2px}
-@media (max-width:700px){.db-kit>a.db-kit-new{flex-direction:column;align-items:stretch}.db-kit-new .db-kit-art{width:100%}.db-kit-new .db-btn{display:none}}
+@media (max-width:1240px){.db-kit>a.db-kit-new{grid-column:1/-1}}
+@media (max-width:700px){.db-kit>a.db-kit-new{flex-direction:column;align-items:stretch}.db-kit-new .db-kit-art{width:100%;padding:12px 0 0}.db-kit-new .db-kit-art img{max-height:120px;object-fit:contain}}
 
 /* details */
 .db .ogd-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px}

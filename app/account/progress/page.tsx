@@ -13,6 +13,7 @@ import { BUILDER_TRACK } from "@/data/startups/content";
 import { toPublicTrack } from "@/lib/startups/publicShape";
 import type { CourseContent } from "@/lib/course/types";
 import { FEATURE_TASK_SPECS } from "@/lib/progress/buildFeatureTasks";
+import { TRACKS as COMM_LAB_TRACKS } from "@/lib/commLab/content";
 import { MyProgress, type CourseOutline } from "@/components/progress/MyProgress";
 
 const outline = (c: CourseContent): CourseOutline => ({
@@ -22,5 +23,6 @@ const outline = (c: CourseContent): CourseOutline => ({
 
 export default function MyProgressPage() {
   const courses = [MONEY_COURSE, LEGAL_COURSE, EXAMS_COURSE, SCHOLARSHIPS_COURSE, STUDY_ABROAD_COURSE, RESEARCH_COURSE].map(outline);
-  return <MyProgress courses={courses} track={toPublicTrack(BUILDER_TRACK)} tasks={FEATURE_TASK_SPECS} />;
+  const labTracks = COMM_LAB_TRACKS.map((t) => ({ id: t.id, modules: t.modules.map((m) => ({ id: m.id, title: m.title, lessons: m.lessons.map((l) => ({ id: l.id, title: l.title })) })) }));
+  return <MyProgress courses={courses} track={toPublicTrack(BUILDER_TRACK)} tasks={FEATURE_TASK_SPECS} labTracks={labTracks} />;
 }
