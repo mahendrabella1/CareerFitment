@@ -8,6 +8,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import FullReport from "@/app/account/FullReport";
+import { ReportBook } from "@/components/report/ReportBook";
 import { Icon } from "@/app/Icons";
 import { categoryLabel } from "@/lib/auth/formOptions";
 import { apiFetch } from "@/lib/institution/client";
@@ -27,7 +28,7 @@ export default function InstitutionReportPage({ params }: { params: { uid: strin
   }, [params.uid]);
 
   const bar = (
-    <div className="og-noprint" style={{ position: "sticky", top: 0, zIndex: 40, display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "12px 20px", background: "rgba(255,255,255,.94)", backdropFilter: "blur(10px)", borderBottom: "1px solid var(--line)" }}>
+    <div className="og-noprint ip-repbar" style={{ position: "sticky", top: 0, zIndex: 40, display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "12px 20px", background: "rgba(255,255,255,.94)", backdropFilter: "blur(10px)", borderBottom: "1px solid var(--line)" }}>
       <Link href={`/institution/students/${params.uid}`} className="ip-btn ghost sm" style={{ textDecoration: "none" }}><Icon name="chevronLeft" size={15} /> Back to student</Link>
       {p && <div style={{ flex: 1, minWidth: 160 }}><b>{p.name}</b><div className="ip-muted" style={{ fontSize: 12 }}>{[p.category ? categoryLabel(p.category) : "", p.institution].filter(Boolean).join(" · ")}</div></div>}
       {p?.latestAssessment && <button className="ip-btn ghost sm" onClick={() => window.print()}><Icon name="save" size={14} /> Print / PDF</button>}
@@ -48,14 +49,17 @@ export default function InstitutionReportPage({ params }: { params: { uid: strin
       {report.stale ? (
         <div className="ip-empty">This report was made by an earlier version of the assessment and can&apos;t be shown with the current scoring. Ask {p.name} to retake the assessment.</div>
       ) : (
-        <FullReport
-          a={report.summary}
-          name={p.name}
-          institution={p.institution || undefined}
-          studentClass={p.category ? categoryLabel(p.category) : undefined}
-          hideCareerFitSections={report.hideCareerFitSections}
-          extraSheets={report.extraSheets}
-        />
+        // The same book the student reads (one page at a time, fitted to the screen).
+        <ReportBook stickBelow=".ip-repbar">
+          <FullReport
+            a={report.summary}
+            name={p.name}
+            institution={p.institution || undefined}
+            studentClass={p.category ? categoryLabel(p.category) : undefined}
+            hideCareerFitSections={report.hideCareerFitSections}
+            extraSheets={report.extraSheets}
+          />
+        </ReportBook>
       )}
     </div>
   );

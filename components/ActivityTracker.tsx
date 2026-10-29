@@ -33,7 +33,7 @@ const IDLE_MS = 3 * 60 * 1000;
 const FLUSH_MS = 60 * 1000;
 const UNTRACKED = ["/admin", "/institution", "/signin", "/register"];
 /** Areas whose page visits count towards progress (the features with tasks). */
-const VISIT_AREAS = new Set(["money", "legal", "exams", "scholarships", "study_abroad", "research", "careers", "internships"]);
+const VISIT_AREAS = new Set(["money", "legal", "exams", "scholarships", "study_abroad", "research", "careers", "internships", "ai"]);
 
 export function ActivityTracker() {
   const { user, profile } = useAuth();

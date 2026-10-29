@@ -22,6 +22,8 @@ export function tourSeen(key: string): boolean {
 function markSeen(key: string) {
   try { window.localStorage.setItem(seenKey(key), "1"); } catch { /* private mode */ }
 }
+/** Fired on window when a tour closes - the certificate pop-up waits for it. */
+export const TOUR_CLOSED = "onegrasp:tour-closed";
 
 export function FeatureTour({ meta, onClose, stats }: { meta: FeatureMeta; onClose: () => void; stats?: string }) {
   const slides = [
@@ -34,7 +36,7 @@ export function FeatureTour({ meta, onClose, stats }: { meta: FeatureMeta; onClo
   const last = i === slides.length - 1;
   const art = featureArt(meta.key);
 
-  const close = () => { markSeen(meta.key); onClose(); };
+  const close = () => { markSeen(meta.key); onClose(); window.dispatchEvent(new Event(TOUR_CLOSED)); };
   const next = () => (last ? close() : setI((n) => n + 1));
   const prev = () => setI((n) => Math.max(0, n - 1));
 

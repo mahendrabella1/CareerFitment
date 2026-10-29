@@ -22,6 +22,7 @@ import { Icon } from "@/app/Icons";
 import { C } from "@/app/account/viz";
 import { S as SHARED, Center, emailReport } from "../../adminShared";
 import FullReport from "@/app/account/FullReport";
+import { ReportBook } from "@/components/report/ReportBook";
 import { prepareStudentReport } from "@/lib/report/prepareStudentReport";
 import { useDetailedRoadmapsReady } from "@/lib/report/useDetailedRoadmaps";
 
@@ -112,14 +113,17 @@ export default function AdminReportPage({ params }: { params: { uid: string } })
           <BackLink />
         </Center>
       ) : (
-        <FullReport
-          a={report.summary}
-          name={viewing.name}
-          institution={viewing.institution || undefined}
-          studentClass={viewing.category ? categoryLabel(viewing.category) : undefined}
-          hideCareerFitSections={report.hideCareerFitSections}
-          extraSheets={report.extraSheets}
-        />
+        // The same book the student reads (one page at a time, fitted to the screen).
+        <ReportBook stickBelow=".og-adm-repbar">
+          <FullReport
+            a={report.summary}
+            name={viewing.name}
+            institution={viewing.institution || undefined}
+            studentClass={viewing.category ? categoryLabel(viewing.category) : undefined}
+            hideCareerFitSections={report.hideCareerFitSections}
+            extraSheets={report.extraSheets}
+          />
+        </ReportBook>
       )}
     </div>
   );

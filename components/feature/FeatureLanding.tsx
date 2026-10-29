@@ -25,6 +25,7 @@ import { useFeatureCourse } from "@/components/course/FeatureCourseLayout";
 import { FeatureHero } from "./FeatureHero";
 import type { SearchItem } from "./FeatureSearch";
 import { LessonDrawer, useCourseProgress, type CourseProgressApi } from "./LessonDrawer";
+import { CertificatePromo } from "@/components/certificates/CertificatePromo";
 
 interface Part extends CourseNavGroup { href?: string }
 
@@ -87,6 +88,17 @@ export function FeatureLanding({ content, topSlot, afterBar }: { content: Course
           ]}
         />
       </div>
+      <CertificatePromo
+        courseKey={content.key}
+        done={progress.completed}
+        total={progress.total}
+        lessons={progress.total}
+        minutes={progress.minutes}
+        loaded={progress.ready}
+        justFinished={progress.justFinished}
+        next={progress.next ? { label: progress.completed ? "Continue the course" : "Start the first lesson", onClick: () => setLesson(progress.next!.lesson.id) } : undefined}
+        lessonAccount={{ total: progress.total, account: progress.account }}
+      />
       <Body meta={meta} content={content} parts={parts} progress={progress} open={setLesson} topSlot={topSlot} />
       {lesson && <LessonDrawer lessonId={lesson} progress={progress} onGo={setLesson} onClose={() => setLesson(null)} />}
     </div>

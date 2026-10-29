@@ -192,6 +192,22 @@ export const FEATURES: Record<string, FeatureMeta> = {
       { icon: "compass", title: "Career GPS", text: "Three small missions a week, picked for you.", href: "/account/gps" },
     ],
   },
+  ai: {
+    key: "ai", title: "AI & Certifications", href: "/account/ai", art: "ai", accent: "#a21caf",
+    headline: ["Learn AI for free,", "get certified"], layout: "listing", style: "Free AI courses and safe AI tools",
+    tagline: "Free AI courses that end in a real certificate, and AI tools rated for safety and age - picked for your class.",
+    tour: [
+      { icon: "award", title: "Free courses, free certificates", text: "From the Government of India's YUVA AI for All to Harvard, Google, IBM and Kaggle - every one ends in a free certificate or badge." },
+      { icon: "layers", title: "Four levels", text: "AI Aware, AI User, AI Maker, AI Builder. Everyone starts with AI Aware: what AI is, where it goes wrong and how to stay safe." },
+      { icon: "shield", title: "Tools rated for you", text: "Each AI tool has a rating card - age, privacy, what's free - and you only see the ones allowed at your age." },
+    ],
+    ctas: [
+      { icon: "award", title: "Free certificate courses", text: "Courses that end in a free certificate or badge.", href: "/account/ai/courses" },
+      { icon: "cpu", title: "AI tools for you", text: "Rated for age, privacy and what's free.", href: "/account/ai/tools" },
+      { icon: "shield", title: "Use AI safely", text: "Five rules, schoolwork honesty, deepfakes and scams.", href: "/account/ai/safety" },
+      { icon: "check", title: "Your OneGrasp certificates", text: "Finish a OneGrasp course, get a certificate too.", href: "/account/certificates" },
+    ],
+  },
   progress: {
     key: "progress", title: "My Progress", href: "/account/progress", art: "progress", accent: "#db3433",
     headline: ["Everything you've done,", "in one place"], layout: "progress", style: "Your progress across every feature",

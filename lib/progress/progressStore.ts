@@ -9,7 +9,7 @@
  * the two disagree the newer one wins - the account copy is read once at
  * sign-in, so on this device the local copy is usually the fresher.
  */
-import { doc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { getDb } from "@/lib/firebase/client";
 import { scopedKey, storageScope } from "@/lib/progress/userStorage";
 import type { CourseProgress, GoalProgress, LegalPractice } from "@/lib/progress/types";
@@ -68,6 +68,27 @@ export function saveCourseDone(key: string, done: string[], total: number): void
   const updatedAt = Date.now();
   writeLocal(courseKey(key), done, updatedAt);
   writeAccount(`progress.courses.${key}`, { done, total, updatedAt } satisfies CourseProgress);
+}
+
+/** Saves the course's ticks to the account and waits for it - the server
+ *  reads them from there before it issues a certificate. */
+export async function pushCourseDone(key: string, total: number, account?: CourseProgress): Promise<void> {
+  const uid = storageScope();
+  const db = getDb();
+  if (!uid || !db) return;
+  const done = readCourseDone(key, account);
+  await updateDoc(doc(db, "users", uid), { [`progress.courses.${key}`]: { done, total, updatedAt: Date.now() } satisfies CourseProgress });
+}
+
+/** Records something opened outside the app (a provider's course or tool) as
+ *  a visited page, so it counts in My Progress like any page of the feature. */
+export function recordVisit(area: string, path: string): void {
+  const uid = storageScope();
+  const db = getDb();
+  if (!uid || !db) return;
+  updateDoc(doc(db, "users", uid), { [`progress.visited.${area}`]: arrayUnion(path) }).catch(() => {
+    // Offline: it's only a progress tick - the next visit records it.
+  });
 }
 
 // ---------------------------------------------------------------- legal scenarios

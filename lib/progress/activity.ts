@@ -23,6 +23,7 @@ export const ACTIVITY_AREAS: ActivityArea[] = [
   { key: "research", label: "Research", paths: ["/account/research", "/account/features/research"] },
   { key: "startups", label: "Startups", paths: ["/account/startups", "/account/features/startups"] },
   { key: "internships", label: "Internships", paths: ["/account/internships", "/account/internships-new", "/account/features/internships", "/dashboard/internships"] },
+  { key: "ai", label: "AI & certifications", paths: ["/account/ai"] },
   { key: "jobs", label: "Jobs", paths: ["/account/jobs", "/jobs"] },
   { key: "portfolio", label: "Portfolio", paths: ["/account/portfolio", "/portfolio"] },
   { key: "passport", label: "Career Passport", paths: ["/account/passport"] },

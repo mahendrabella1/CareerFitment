@@ -37,8 +37,9 @@ service cloud.firestore {
     // admin's archive.
     function adminOnlyUserFields() {
       // testDrives and decision (with the parents' answer) are written only by
-      // the server routes, so a student can't forge a parent's "We agree".
-      return ['institution', 'institutionalLinkCode', 'archived', 'archivedAt', 'testDrives', 'decision'];
+      // the server routes, so a student can't forge a parent's "We agree";
+      // certificates only by /api/certificates once a course is finished.
+      return ['institution', 'institutionalLinkCode', 'archived', 'archivedAt', 'testDrives', 'decision', 'certificates'];
     }
     // TODO once the payment routes write `paid` with the Admin SDK (today
     // app/PaymentGate.tsx markPaid() writes it from the browser), add

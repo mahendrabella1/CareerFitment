@@ -87,6 +87,7 @@ const NAV: { id: string; label: string; icon: string; group: string; art?: strin
   { id: "mind", label: "How you think", icon: "multiple_intelligence", group: RESULTS },
   { id: "plan", label: "My plan", icon: "check", group: RESULTS },
   { id: "progress", label: "My Progress", icon: "score", group: "Track", art: "progress" },
+  { id: "certificates", label: "Certificates", icon: "award", group: "Track" },
   { id: "careers", label: "Career Library", icon: "briefcase", group: "Explore", art: "careers" },
   { id: "exams", label: "Entrance Exams", icon: "edit", group: "Explore", art: "exams" },
   { id: "resources", label: "Scholarships", icon: "star", group: "Explore", art: "scholarships" },
@@ -97,6 +98,7 @@ const NAV: { id: string; label: string; icon: string; group: string; art?: strin
   { id: "legal", label: "Law & Rights", icon: "shield", group: "Explore", art: "legal" },
   { id: "research", label: "Research", icon: "pulse", group: "Explore", art: "research" },
   { id: "startups", label: "Startups", icon: "flag", group: "Explore", art: "startups" },
+  { id: "ai", label: "AI & Certifications", icon: "cpu", group: "Explore", art: "ai" },
   { id: "portfolio", label: "Build your website", icon: "user", group: "Create" },
 ];
 const NAV_GROUPS = ["Explore", RESULTS, "Track", "Create"];
@@ -140,6 +142,8 @@ const FEATURE_ROUTES: Record<string, string> = {
   "resources": "/account/scholarships",
   "portfolio": "/account/portfolio",
   "progress": "/account/progress",
+  "certificates": "/account/certificates",
+  "ai": "/account/ai",
 };
 
 // Career-toolkit (colleges/exams/internships/scholarships/careers) is
@@ -416,7 +420,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
           // than a separately designed report per class that drifts from it.
           // Read as a book - one sheet at a time with a page turn - or as the
           // long page ("Scroll view"); the report itself is the same either way.
-          <ReportBook stickBelow=".ogd-reportbar">
+          <ReportBook stickBelow=".ogd-reportbar" resumeKey={savedSummary.completedAt}>
             <FullReport
               a={rep.summary}
               name={name}
@@ -470,6 +474,8 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
     { label: "Full report", kind: "Report", hint: "Every page of your assessment", onSelect: openReport },
     ...TOOLKIT.map((t) => ({ label: t.title ?? FEATURES[t.key].title, kind: "Feature", hint: t.text, href: t.href ?? FEATURES[t.key].href, newTab: true })),
     ...SIGNATURE.map((s) => ({ label: s.title, kind: "Tool", hint: s.text, href: s.href, newTab: true })),
+    { label: "My certificates", kind: "Page", hint: "Finish a course, get a certificate to share", href: "/account/certificates", newTab: true },
+    { label: FEATURES.ai.title, kind: "Feature", hint: "Free AI courses with free certificates, and AI tools", href: FEATURES.ai.href, newTab: true },
     ...fits.slice(0, 3).map((f) => ({ label: f.name, kind: "Best-fit field", onSelect: () => go("fields") })),
   ];
 
@@ -575,6 +581,19 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                 <Link href="/account/progress" {...NEW_TAB} className="db-more" style={{ marginTop: 0 }}>See my progress <Icon name="arrowRight" size={14} stroke={2} /></Link>
               </div>
               <div className="db-kit">
+                {/* The newest feature, across the whole row above the twelve tiles. */}
+                <Link href={FEATURES.ai.href} {...NEW_TAB} className="db-kit-new">
+                  <span className="db-kit-art">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={featureArt("ai").card} alt="" loading="lazy" decoding="async" />
+                  </span>
+                  <span className="db-kit-b">
+                    <span className="db-new">New</span>
+                    <b>{FEATURES.ai.title}</b>
+                    <small>Free AI courses that end in a real certificate - YUVA AI for All, Harvard, Google, IBM, Kaggle - and AI tools rated for your age.</small>
+                  </span>
+                  <span className="db-btn pri" aria-hidden="true">Explore <Icon name="arrowRight" size={15} stroke={2} /></span>
+                </Link>
                 {TOOLKIT.map((t) => {
                   const f = FEATURES[t.key];
                   // Lessons finished + tools used - the same count as My Progress.
@@ -1830,6 +1849,14 @@ const DASH_CSS = `
 .db-kit-p{display:flex;align-items:center;gap:8px;padding-top:6px;font-size:11.5px;color:var(--mute);font-variant-numeric:tabular-nums}
 .db-kit-p i{flex:1;height:4px;border-radius:2px;background:#ece9e3;overflow:hidden;display:block}
 .db-kit-p i b{display:block;height:100%;background:var(--ink)}
+.db-kit>a.db-kit-new{grid-column:1/-1;flex-direction:row;align-items:center;gap:6px;border-color:color-mix(in srgb,#a21caf 30%,var(--line));background:linear-gradient(100deg,color-mix(in srgb,#a21caf 6%,#fff),#fff 60%)}
+.db-kit-new .db-kit-art{flex:none;width:220px;height:124px;border-bottom:0;background:transparent}
+.db-kit-new .db-kit-art img{width:100%;height:112px}
+.db-kit-new .db-kit-b{padding:14px 10px}
+.db-kit-new .db-kit-b>small{font-size:13.5px;max-width:620px}
+.db-kit-new .db-btn{flex:none;margin-right:18px}
+.db-new{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:#a21caf;border-radius:999px;padding:2px 8px;margin-bottom:2px}
+@media (max-width:700px){.db-kit>a.db-kit-new{flex-direction:column;align-items:stretch}.db-kit-new .db-kit-art{width:100%}.db-kit-new .db-btn{display:none}}
 
 /* details */
 .db .ogd-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px}

@@ -18,8 +18,11 @@ export function useCourseProgress(content: CourseContent) {
   const { profile } = useAuth();
   const account = profile?.progress?.courses?.[content.key];
   const [done, setDone] = useState<string[]>([]);
+  const [ready, setReady] = useState(false);
+  /** The last lesson was ticked off on this visit (the certificate pop-up). */
+  const [justFinished, setJustFinished] = useState(false);
 
-  useEffect(() => { setDone(readCourseDone(content.key, account)); }, [content.key, account]);
+  useEffect(() => { setDone(readCourseDone(content.key, account)); setReady(true); }, [content.key, account]);
 
   const lessons = useMemo<FlatLesson[]>(
     () => content.modules.flatMap((m, mi) => m.lessons.map((lesson, i) => ({ lesson, module: m, moduleIndex: mi, index: i }))),
@@ -34,10 +37,14 @@ export function useCourseProgress(content: CourseContent) {
     const nextDone = value ? [...done, id] : done.filter((x) => x !== id);
     setDone(nextDone);
     saveCourseDone(content.key, nextDone, lessons.length);
-  }, [done, content.key, lessons.length]);
+    if (value) { const all = new Set(nextDone); if (lessons.every((x) => all.has(x.lesson.id))) setJustFinished(true); }
+  }, [done, content.key, lessons]);
 
   return {
     lessons,
+    ready,
+    justFinished,
+    account,
     doneSet,
     total,
     completed,

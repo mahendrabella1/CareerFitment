@@ -43,7 +43,7 @@ interface Row {
   seconds: number; lastAt?: number; note?: string;
 }
 
-const ACTIVITY_KEY: Record<string, string> = { money: "money", legal: "legal", exams: "exams", scholarships: "scholarships", "study-abroad": "study_abroad", research: "research", startups: "startups", careers: "careers", internships: "internships" };
+const ACTIVITY_KEY: Record<string, string> = { money: "money", legal: "legal", exams: "exams", scholarships: "scholarships", "study-abroad": "study_abroad", research: "research", startups: "startups", careers: "careers", internships: "internships", ai: "ai" };
 const ONLY_TIME = ["jobs", "gps", "test_drive", "decision", "passport", "portfolio"];
 
 /** A feature's tools from its task list, with what's been opened. */
@@ -159,7 +159,7 @@ export function MyProgress({ courses, track, tasks }: { courses: CourseOutline[]
       return row(c.key, modules, nextLesson ? { title: nextLesson.title, href: `${f?.href}?lesson=${encodeURIComponent(nextLesson.id)}` } : undefined, note);
     });
     // Features with tools but no lessons.
-    for (const k of ["careers", "internships"]) if (tasks.some((t) => t.key === k)) out.push(row(k, [], undefined));
+    for (const k of ["careers", "internships", "ai"]) if (tasks.some((t) => t.key === k)) out.push(row(k, [], undefined));
     // Startups: a lesson counts once its quiz is passed.
     const p = startups ?? { lessonBestPercent: {}, moduleTestBestPercent: {} };
     const sMods = track.modules.map((m) => {

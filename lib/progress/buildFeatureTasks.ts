@@ -2,8 +2,8 @@
  * Every feature's task list for My Progress (lib/progress/featureTasks.ts),
  * built from the same menus the feature pages use (lib/course/featureCourses.ts):
  * each tool page is a task, each catalogue group ("directory") is one task,
- * and the feature's home page is not one. Career Library and Internships have
- * no course menu, so their tasks are listed here.
+ * and the feature's home page is not one. Career Library, Internships and AI &
+ * Certifications have no course menu, so their tasks are listed here.
  *
  * Server-only in practice: the menus pull in every catalogue's data. Pages
  * import it on the server (app/account/progress/page.tsx); the dashboard
@@ -18,6 +18,7 @@ import { SCHOLARSHIPS_COURSE } from "@/data/courses/scholarships";
 import { STUDY_ABROAD_COURSE } from "@/data/courses/studyAbroad";
 import { RESEARCH_COURSE } from "@/data/courses/research";
 import type { CourseContent } from "@/lib/course/types";
+import { COURSES as AI_COURSES, TOOLS as AI_TOOLS } from "@/lib/ai/catalog";
 import { normalizePath, type FeatureTask, type FeatureTaskSpec } from "./featureTasks";
 
 const lessonsIn = (c: CourseContent) => c.modules.reduce((n, m) => n + m.lessons.length, 0);
@@ -73,6 +74,19 @@ export const FEATURE_TASK_SPECS: FeatureTaskSpec[] = [
     tasks: [
       { id: "/account/internships-new", label: "Browse free programmes", href: "/account/internships-new", kind: "page", exact: true, group: "Explore" },
       { id: "internships:programme", label: "Open a programme", href: "/account/internships-new", kind: "any", group: "Explore" },
+    ],
+  },
+  // AI & Certifications: courses and tools open on the provider's site, so
+  // "Go to course" / "Open tool" record /account/ai/courses/<slug> and
+  // /account/ai/tools/<slug> (components/ai/*, recordVisit).
+  {
+    key: "ai", area: "ai", home: "/account/ai", lessons: 0,
+    tasks: [
+      { id: "/account/ai/courses", label: "Browse free certificate courses", href: "/account/ai/courses", kind: "page", exact: true, group: "Learn" },
+      { id: "ai:course", label: "Start a free course", href: "/account/ai/courses", kind: "any", count: AI_COURSES.length, group: "Learn" },
+      { id: "/account/ai/tools", label: "Browse AI tools", href: "/account/ai/tools", kind: "page", exact: true, group: "Use" },
+      { id: "ai:tool", label: "Try an AI tool", href: "/account/ai/tools", kind: "any", count: AI_TOOLS.length, group: "Use" },
+      { id: "/account/ai/safety", label: "Use AI safely", href: "/account/ai/safety", kind: "page", group: "Use" },
     ],
   },
 ];

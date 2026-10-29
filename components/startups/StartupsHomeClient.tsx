@@ -17,6 +17,7 @@ import { readinessScore } from "@/lib/startups/scoring";
 import { FEATURES } from "@/lib/features/catalog";
 import { FeatureHero } from "@/components/feature/FeatureHero";
 import type { SearchItem } from "@/components/feature/FeatureSearch";
+import { CertificatePromo } from "@/components/certificates/CertificatePromo";
 
 const MORE = [
   { href: "/account/startups/placement", title: "Placement quiz", note: "2 minutes", icon: "target" },
@@ -63,6 +64,11 @@ export function StartupsHomeClient({ track }: { track: PublicTrack }) {
   const nextLesson = nextModule?.lessons.find((l) => l.slug === next?.lessonSlug);
   const nextHref = nextLesson && nextModule ? `/account/startups/${track.slug}/${nextModule.slug}/${nextLesson.slug}` : null;
   const started = Object.keys(p.lessonBestPercent).length > 0;
+  // The certificate needs every module test passed.
+  const testsPassed = track.modules.filter((m) => moduleStatus(m, p) === "COMPLETED").length;
+  const testDue = !nextHref ? track.modules.find((m) => moduleStatus(m, p) !== "COMPLETED") : undefined;
+  const certNext = nextHref ? { label: started ? "Continue learning" : "Start lesson 1", href: nextHref }
+    : testDue ? { label: `Take the ${testDue.title} test`, href: `/account/startups/${track.slug}/${testDue.slug}/test` } : undefined;
   const expanded = open ?? new Set(nextModule ? [nextModule.slug] : track.modules.slice(0, 1).map((m) => m.slug));
 
   const search = useMemo<SearchItem[]>(() => [
@@ -92,6 +98,17 @@ export function StartupsHomeClient({ track }: { track: PublicTrack }) {
           { value: `${Math.round(minutes / 60 * 10) / 10} h`, label: "of learning" },
           { value: `${percent}%`, label: progress ? `done - ${doneCount} of ${lessons.length} lessons` : "loading your progress" },
         ]}
+      />
+
+      <CertificatePromo
+        courseKey="startups"
+        done={testsPassed}
+        total={track.modules.length}
+        unit="module tests"
+        lessons={lessons.length}
+        minutes={minutes}
+        loaded={progress !== null}
+        next={certNext}
       />
 
       <div className="fp-two fp-sec">

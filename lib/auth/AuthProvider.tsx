@@ -187,6 +187,8 @@ export interface UserProfile {
   progress?: StudentProgress;
   /** Active time in the app, written by components/ActivityTracker.tsx. */
   activity?: StudentActivity;
+  /** Course certificates issued, by course key - written only by the server (lib/certificates/server.ts). */
+  certificates?: Record<string, { id: string; issuedAt: number }>;
   /** Working professionals only: years of work experience ("0-5", "5-15", "15+"). */
   experienceBand?: string;
   /** Working professionals' Stress & Resilience Check (lib/stress/types.ts). */
