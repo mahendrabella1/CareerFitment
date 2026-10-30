@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { fail, requireAdmin } from "@/lib/institution/server";
 import { envKey, keyShape } from "@/lib/ai/keys";
+import { groqExtras, groqModels } from "@/lib/ai/llm";
 import { isFirestoreConfigured } from "@/lib/firebase/admin";
 
 export const dynamic = "force-dynamic";
@@ -32,10 +33,31 @@ export async function GET(req: Request) {
     if (!groq) checks.push({ name: "Groq", env: "GROQ_API_KEY", state: "missing", detail: "Not set. Voice feedback (speech-to-text) can't work without it.", shape: gShape, usedBy: "Communication Lab voice, mock interviews, AI feedback fallback, Test-Drive" });
     else {
       const r = await probe("https://api.groq.com/openai/v1/models", groq);
+      // An accepted key isn't enough: Groq retires models (llama-3.3-70b-versatile went on 16 Aug 2026).
+      const live = new Set((Array.isArray(r.body.data) ? r.body.data as { id?: string }[] : []).map((m) => String(m.id ?? "")));
+      const chat = groqModels().find((m) => live.has(m));
+      const whisper = live.has("whisper-large-v3-turbo");
+      // One tiny real request with the same settings jsonChat() sends, so a rejected parameter shows up here too.
+      let reply = "";
+      if (chat) {
+        try {
+          const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST", headers: { Authorization: `Bearer ${groq}`, "Content-Type": "application/json" }, signal: AbortSignal.timeout(20_000), cache: "no-store",
+            body: JSON.stringify({ model: chat, temperature: 0, max_tokens: 100 + groqExtras(chat).headroom, response_format: { type: "json_object" }, ...groqExtras(chat).extra, messages: [{ role: "user", content: "Reply with this JSON object only: {\"ok\": true}" }] }),
+          });
+          const body = (await res.json().catch(() => ({}))) as Record<string, unknown> & { choices?: { message?: { content?: string } }[] };
+          let ok = false; try { ok = JSON.parse(body.choices?.[0]?.message?.content ?? "").ok === true; } catch { /* reported below */ }
+          reply = res.ok ? (ok ? "Test reply: OK." : "Test reply came back, but not as the expected JSON.") : `Test reply failed (${res.status}: ${errMsg(body) || "no message"}).`;
+        } catch (e) { reply = `Test reply failed (${e instanceof Error ? e.message : "no answer"}).`; }
+      }
+      const replyOk = reply === "Test reply: OK.";
       checks.push({
         name: "Groq", env: "GROQ_API_KEY", shape: gShape, usedBy: "Communication Lab voice, mock interviews, AI feedback fallback, Test-Drive",
-        state: r.status === 200 ? "ok" : "bad",
-        detail: r.status === 200 ? `Accepted. ${Array.isArray(r.body.data) ? `${(r.body.data as unknown[]).length} models available.` : ""}`
+        state: r.status === 200 ? (chat && whisper && replyOk ? (chat === groqModels()[0] ? "ok" : "warn") : "bad") : "bad",
+        detail: r.status === 200
+          ? [`Key accepted.`,
+            chat ? `Feedback model: ${chat}${chat === groqModels()[0] ? "" : ` (${groqModels()[0]} isn't available - set GROQ_MODEL to a current model)`}. ${reply}` : `None of the feedback models (${groqModels().join(", ")}) exist on Groq any more - set GROQ_MODEL in Vercel to a current chat model and redeploy.`,
+            whisper ? "Speech-to-text: whisper-large-v3-turbo." : "whisper-large-v3-turbo is no longer listed - voice falls back to the browser's speech recognition."].join(" ")
           : r.status === 401 || r.status === 403 ? `Rejected by Groq (${r.status}: ${errMsg(r.body) || "invalid key"}). Create a new key at console.groq.com, set it in Vercel, and redeploy.`
           : `Groq answered ${r.status || "nothing"}${errMsg(r.body) ? `: ${errMsg(r.body)}` : ""}.`,
       });

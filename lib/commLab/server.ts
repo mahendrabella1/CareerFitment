@@ -4,7 +4,7 @@
  *
  *   audio -> Groq Whisper (transcript + word timestamps)        GROQ_API_KEY
  *         -> metrics in code (WPM, fillers, pauses, clarity) -> fluency and pronunciation marks
- *         -> Groq's Llama scores content, structure, grammar, tone and writes the feedback
+ *         -> the rubric model (lib/ai/llm.ts: DeepSeek or Groq's GPT-OSS) scores content, structure, grammar, tone and writes the feedback
  *
  * Everything runs on GROQ_API_KEY. The recording is never stored: it is sent
  * for transcription and dropped; only the transcript and scores go back.
@@ -101,7 +101,7 @@ const WRITING_SCHEMA = {
   },
 } as const;
 
-/** One rubric call (lib/ai/llm.ts: DeepSeek when its key works, else Groq's Llama), JSON mode.
+/** One rubric call (lib/ai/llm.ts: DeepSeek when its key works, else Groq's GPT-OSS), JSON mode.
  *  Scores are clamped to their ranges afterwards, so a stray value can't break a report. */
 async function rubricJson(prompt: string, schema: Record<string, unknown>): Promise<Record<string, unknown>> {
   return (await jsonChat({ system: "You score student practice fairly and kindly.", prompt, schema })).json;

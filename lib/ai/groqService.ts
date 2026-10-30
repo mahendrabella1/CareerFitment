@@ -7,6 +7,7 @@
  * Frontend calls /api/ai/search endpoint
  */
 import { envKey } from "./keys";
+import { groqExtras, groqModels } from "./llm";
 
 // CRITICAL: API key from environment variable ONLY
 // Set in .env.local or deployment environment: GROQ_API_KEY=gsk_...
@@ -157,7 +158,8 @@ export async function askEducationQuestion(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "mixtral-8x7b-32768", // or latest available model
+        model: groqModels()[0], // mixtral-8x7b-32768 was retired by Groq; lib/ai/llm.ts keeps the current one
+        ...groqExtras(groqModels()[0]).extra,
         messages: [
           {
             role: "system",
@@ -166,7 +168,7 @@ export async function askEducationQuestion(
           ...messages,
         ],
         temperature: 0.7,
-        max_tokens: 1024,
+        max_tokens: 1024 + groqExtras(groqModels()[0]).headroom,
         top_p: 0.9,
       }),
     });
