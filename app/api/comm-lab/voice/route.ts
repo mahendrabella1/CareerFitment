@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getFirestore } from "@/lib/firebase/admin";
 import { ApiError, caller, fail } from "@/lib/institution/server";
 import { findPrompt } from "@/lib/commLab/content";
-import { analyseSpeech, chargeQuota } from "@/lib/commLab/server";
+import { analyseSpeech, browserTranscriptFrom, chargeQuota } from "@/lib/commLab/server";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     if (audio.size > MAX_BYTES) throw new ApiError(413, "That recording is too long - keep it under 2 minutes.");
     if (audio.type && !/^audio\/|^video\/(webm|mp4)/.test(audio.type)) throw new ApiError(415, "That file isn't an audio recording.");
     await chargeQuota(await getFirestore(), uid);
-    return NextResponse.json({ report: await analyseSpeech(found.prompt, found.track, audio) });
+    return NextResponse.json({ report: await analyseSpeech(found.prompt, found.track, audio, browserTranscriptFrom(form)) });
   } catch (e) {
     return fail(e);
   }

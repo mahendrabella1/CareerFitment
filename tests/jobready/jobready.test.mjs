@@ -1,12 +1,15 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { SECTION_ORDER, addSkills, atsCheck, emptyResume, jdKeywords, normalise, plainText, skillList, stageOf } from "../../lib/resume/resume.ts";
+import { SECTION_ORDER, addSkills, emptyResume, jdKeywords, normalise, orderFor, plainText, skillList, stageOf } from "../../lib/resume/resume.ts";
+import { atsReport, bulletIssues, clichesIn, parsedView } from "../../lib/resume/ats.ts";
+import { documentModel, pdfSafe, tokens, TEMPLATES } from "../../lib/resume/templates.ts";
 import { CATEGORIES, QUESTIONS } from "../../lib/interview/questions.ts";
 import { fitJob, searchTerms } from "../../lib/resume/match.ts";
 import { skillsIn } from "../../lib/resume/skills.ts";
 
 const good = () => {
   const r = emptyResume({ name: "Asha Rao", email: "asha@example.com", phone: "+91 98765 43210", city: "Pune", institution: "XYZ College" });
+  r.contact.linkedin = "linkedin.com/in/asharao";
   r.summary = "Final-year B.Com student with hands-on GST filing and reconciliation experience from a CA-firm internship. Skilled in Excel, Power BI and clear client communication, looking for a financial analyst internship.";
   r.education[0] = { ...r.education[0], title: "B.Com", start: "Jun 2023", end: "May 2026", score: "CGPA 8.4/10", bullets: [] };
   r.experience = [{ id: "x", title: "Audit Intern", org: "Rao & Co.", place: "Pune", start: "May 2025", end: "Jul 2025", bullets: ["Reconciled GST returns for 15 clients with zero errors", "Built an Excel tracker that cut monthly reporting from 2 days to 2 hours", "Prepared 30 invoices a week"] }];
@@ -22,38 +25,85 @@ test("stage and section order", () => {
   assert.equal(SECTION_ORDER.school[1], "education");
 });
 
-test("a strong resume passes the ATS check", () => {
-  const a = atsCheck(good(), "college");
-  const bad = a.checks.filter((c) => c.state !== "pass").map((c) => c.id);
-  assert.deepEqual(bad, [], `unexpected: ${bad.join(", ")}`);
+test("a strong resume passes every ATS check", () => {
+  const a = atsReport(good(), "college");
+  const bad = a.checks.filter((c) => c.state !== "pass").map((c) => `${c.id}: ${c.detail}`);
+  assert.deepEqual(bad, [], `unexpected: ${bad.join(" | ")}`);
   assert.equal(a.score, 100);
+  assert.equal(a.band, "Strong");
+  assert.deepEqual(a.areas.map((x) => x.area), ["parse", "content", "sections"], "no job post = no match area");
 });
 
 test("the ATS check catches the common problems", () => {
   const r = good();
   r.contact.email = "not-an-email";
-  r.summary = "I am hard working.";
-  r.experience[0].bullets = ["Responsible for [N] client files", "My job was data entry"];
+  r.contact.linkedin = "";
+  r.summary = "I am a hard-working team player.";
+  r.experience[0].bullets = ["Responsible for [N] client files", "My job was data entry", "Manage the invoices"];
   r.experience[0].start = "2025";
-  const by = Object.fromEntries(atsCheck(r, "college").checks.map((c) => [c.id, c.state]));
-  assert.equal(by.contact, "fail");
+  const by = Object.fromEntries(atsReport(r, "college").checks.map((c) => [c.id, c.state]));
+  assert.equal(by.email, "fail");
+  assert.equal(by.linkedin, "warn");
   assert.equal(by.summary, "warn");
-  assert.equal(by.verbs, "warn");
+  assert.equal(by.verbs, "fail");
+  assert.equal(by.weak, "warn");
+  assert.equal(by.numbers, "fail");
   assert.equal(by.person, "warn");
+  assert.equal(by.cliches, "warn");
   assert.equal(by.placeholders, "fail");
+  assert.equal(by.tense, "warn", "Manage in a role that ended");
   assert.equal(by.dates, "warn", "Mon YYYY mixed with YYYY");
+  assert.ok(atsReport(r, "college").score < 70);
 });
 
-test("job-description keywords and match", () => {
-  const jd = "We are hiring a Financial Analyst intern. You will build Power BI dashboards, work in Excel and SQL, and support GST compliance. Power BI and SQL experience required. Strong Excel skills.";
+test("bullet issues and clichés, line by line", () => {
+  assert.deepEqual(bulletIssues("Built a sales dashboard used by 15 store managers every week", { wantNumber: true }), []);
+  assert.match(bulletIssues("Responsible for social media")[0], /Weak opening/);
+  assert.match(bulletIssues("Manage the club budget of 50,000", { ongoing: false }).join(" "), /past tense/);
+  assert.match(bulletIssues("Organised the annual fest for students", { wantNumber: true }).join(" "), /number/);
+  assert.match(bulletIssues("The report was prepared by me every month for the team").join(" "), /Passive/);
+  assert.deepEqual(clichesIn("A hard-working, detail-oriented team player").sort(), ["detail-oriented", "hard-working", "team player"]);
+  assert.deepEqual(clichesIn("Built a team of five"), []);
+});
+
+test("job match: real skills from the post, the title, repeated terms", () => {
+  const jd = "Financial Analyst Intern\nWe are hiring a Financial Analyst intern. You will build Power BI dashboards, work in Excel and SQL, and support GST compliance. Power BI and SQL experience required. Strong Excel skills.";
   const k = jdKeywords(jd);
   assert.ok(k.includes("power bi"), k.join(", "));
-  assert.ok(k.includes("sql") && k.includes("excel"));
   assert.ok(!k.includes("the") && !k.includes("experience"));
-  const a = atsCheck(good(), "college", jd);
-  assert.ok(a.keywords.matched.includes("excel"));
-  assert.ok(a.keywords.missing.includes("sql"));
-  assert.ok(a.checks.some((c) => c.id === "keywords"));
+  const a = atsReport(good(), "college", { jd });
+  assert.ok(a.keywords.skillsMatched.includes("excel") && a.keywords.skillsMatched.includes("power bi"));
+  assert.ok(a.keywords.skillsMissing.includes("sql"));
+  assert.ok(a.checks.some((c) => c.id === "hard-skills") && a.checks.some((c) => c.id === "title"));
+  assert.ok(a.areas.some((x) => x.area === "match"));
+});
+
+test("section order, hidden and custom sections reach the page and the text", () => {
+  const r = good();
+  r.sectionOrder = ["experience", "summary"];
+  r.hidden = ["skills"];
+  r.custom = [{ id: "c1", title: "Publications", items: ["Rao, A. (2025). GST for small shops. Journal X.", " "] }, { id: "c2", title: "", items: ["ignored"] }];
+  const o = orderFor(r, "college");
+  assert.equal(o[0], "experience");
+  assert.equal(o[1], "summary");
+  assert.ok(!o.includes("skills"));
+  const t = plainText(r, "college");
+  assert.ok(t.indexOf("INTERNSHIPS & EXPERIENCE") < t.indexOf("SUMMARY"));
+  assert.ok(!t.includes("SKILLS") && t.includes("PUBLICATIONS") && !t.includes("ignored"));
+  const m = documentModel(r, "college");
+  assert.deepEqual(m.blocks.map((b) => b.title), ["Internships & Experience", "Summary", "Education", "Publications"]);
+  assert.equal(m.contact.join(" | "), "Pune | +91 98765 43210 | asha@example.com");
+  assert.deepEqual(parsedView(r, "college").sections, ["Internships & Experience", "Summary", "Education", "Publications"]);
+});
+
+test("templates: every one is complete; sizes scale; PDF-safe text", () => {
+  assert.equal(TEMPLATES.length, 4);
+  for (const t of TEMPLATES) for (const f of ["font", "nameSize", "headingSize", "base", "entry"]) assert.ok(t[f], `${t.id}.${f}`);
+  const m = tokens({ template: "modern", accent: "#111", size: "m", margins: "normal", paper: "A4" });
+  const l = tokens({ template: "modern", accent: "#111", size: "l", margins: "narrow", paper: "Letter" });
+  assert.ok(l.base > m.base && l.margin < m.margin && l.paper.h < m.paper.h);
+  assert.equal(pdfSafe("Saved ₹1.2 lakh → 20% ★"), "Saved Rs. 1.2 lakh -> 20% ");
+  assert.equal(normalise({}, emptyResume()).design.template, "modern", "old saves get the default design");
 });
 
 test("plain text keeps reading order and skips empty sections", () => {

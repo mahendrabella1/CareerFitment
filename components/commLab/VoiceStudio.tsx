@@ -15,6 +15,7 @@ import { getFirebaseAuth } from "@/lib/firebase/client";
 import type { LessonRef } from "@/lib/commLab/content";
 import { durationOk, levelLabel } from "@/lib/commLab/scoring";
 import type { VoiceAttempt, VoicePrompt, VoiceReport, VoiceScores } from "@/lib/commLab/types";
+import { startBrowserStt, type BrowserTranscript } from "@/lib/speech/browserStt";
 import { useCommLab } from "./CommLabProvider";
 
 type Phase = "idle" | "consent" | "blocked" | "countdown" | "recording" | "preview" | "sending" | "report" | "error";
@@ -36,7 +37,7 @@ export function VoiceStudio({ prompt, lessonRef, heading }: { prompt: VoicePromp
   const [report, setReport] = useState<VoiceReport | null>(null);
   const [agree, setAgree] = useState(false);
   const [speaking, setSpeaking] = useState(false);
-  const rec = useRef<{ recorder?: MediaRecorder; stream?: MediaStream; ctx?: AudioContext; raf?: number; tick?: number; started?: number; pausedAt?: number; pausedFor: number; levels: number[] }>({ pausedFor: 0, levels: [] });
+  const rec = useRef<{ recorder?: MediaRecorder; stream?: MediaStream; ctx?: AudioContext; raf?: number; tick?: number; started?: number; pausedAt?: number; pausedFor: number; levels: number[]; stt?: { stop: () => Promise<BrowserTranscript> }; heard?: Promise<BrowserTranscript> }>({ pausedFor: 0, levels: [] });
   const canvas = useRef<HTMLCanvasElement>(null);
   const history: VoiceAttempt[] = lab.state.voice[prompt.id] ?? [];
   const needsConsent = lab.minor && !lab.state.consent;
@@ -47,7 +48,9 @@ export function VoiceStudio({ prompt, lessonRef, heading }: { prompt: VoicePromp
     if (r.tick) window.clearInterval(r.tick);
     r.stream?.getTracks().forEach((t) => t.stop());
     r.ctx?.close().catch(() => undefined);
-    rec.current = { pausedFor: 0, levels: [] };
+    if (r.stt) void r.stt.stop();
+    // Keep what the browser heard - it's sent with the recording.
+    rec.current = { pausedFor: 0, levels: [], heard: r.heard };
   };
   useEffect(() => () => { cleanup(); if (typeof speechSynthesis !== "undefined") speechSynthesis.cancel(); }, []);
   useEffect(() => () => { if (url) URL.revokeObjectURL(url); }, [url]);
@@ -79,6 +82,10 @@ export function VoiceStudio({ prompt, lessonRef, heading }: { prompt: VoicePromp
     const chunks: Blob[] = [];
     recorder.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
     recorder.onstop = () => {
+      // What the browser heard, kept as a fallback transcript for the server.
+      const s = rec.current.stt;
+      rec.current.stt = undefined;
+      rec.current.heard = s ? s.stop() : undefined;
       const b = new Blob(chunks, { type: recorder.mimeType || mime || "audio/webm" });
       setBlob(b);
       setUrl(URL.createObjectURL(b));
@@ -91,6 +98,8 @@ export function VoiceStudio({ prompt, lessonRef, heading }: { prompt: VoicePromp
     r.pausedFor = 0;
     r.levels = [];
     recorder.start(250);
+    r.heard = undefined;
+    r.stt = startBrowserStt() ?? undefined;
     setElapsed(0); setPaused(false); setPhase("recording");
     r.tick = window.setInterval(() => {
       const now = rec.current.pausedAt ?? Date.now();
@@ -147,6 +156,9 @@ export function VoiceStudio({ prompt, lessonRef, heading }: { prompt: VoicePromp
       const form = new FormData();
       form.append("audio", blob, `recording.${blob.type.includes("mp4") || blob.type.includes("aac") ? "m4a" : "webm"}`);
       form.append("promptId", prompt.id);
+      const heard = await rec.current.heard?.catch(() => undefined);
+      if (heard?.text) { form.append("browserText", heard.text); form.append("browserConfidence", String(heard.confidence)); }
+      form.append("durationSec", String(Math.round(elapsed)));
       const res = await fetch("/api/comm-lab/voice", { method: "POST", headers: { Authorization: `Bearer ${token}` }, body: form });
       const data = (await res.json().catch(() => ({}))) as { report?: VoiceReport; error?: string };
       if (!res.ok || !data.report) throw new Error(data.error || "Couldn't analyse that recording - please try again.");
@@ -317,6 +329,7 @@ export function VoiceReportView({ report, previous, audioUrl, targetSec }: { rep
   const stars = Math.round(report.total / 20);
   return (
     <div className="vs-report">
+      {report.note && <p className="fp-muted" style={{ margin: "0 0 10px", fontSize: 12.5 }}><Icon name="info" size={13} stroke={2} /> {report.note}</p>}
       <div className="vs-score">
         <div>
           <span className="vs-score-n">{report.total}<small>/100</small></span>

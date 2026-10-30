@@ -14,6 +14,7 @@ import { scopedKey } from "@/lib/progress/userStorage";
 import { CATEGORIES, QUESTIONS, type CatKey, type InterviewQ } from "@/lib/interview/questions";
 import { JobReadyShell, authedPost } from "@/components/jobready/JobReadyShell";
 import { addReview, loadRoleQuestions, saveRoleQuestions, type RoleQuestion } from "@/components/jobready/useResume";
+import { startBrowserStt, type BrowserTranscript } from "@/lib/speech/browserStt";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { stageOf } from "@/lib/resume/resume";
 
@@ -151,7 +152,7 @@ function Answer({ q, role, last, onNext }: { q: InterviewQ; role: string; last: 
   const [playback, setPlayback] = useState<{ url: string; video: boolean } | null>(null);
   const [showModel, setShowModel] = useState(false);
   const live = useRef<HTMLVideoElement>(null);
-  const r = useRef<{ stream?: MediaStream; audio?: MediaRecorder; video?: MediaRecorder; audioChunks: Blob[]; videoChunks: Blob[]; tick?: number; audioBlob?: Blob }>({ audioChunks: [], videoChunks: [] });
+  const r = useRef<{ stream?: MediaStream; audio?: MediaRecorder; video?: MediaRecorder; audioChunks: Blob[]; videoChunks: Blob[]; tick?: number; audioBlob?: Blob; stt?: { stop: () => Promise<BrowserTranscript> }; heard?: Promise<BrowserTranscript> }>({ audioChunks: [], videoChunks: [] });
   const supported = typeof window !== "undefined" && typeof MediaRecorder !== "undefined" && !!navigator.mediaDevices?.getUserMedia;
 
   const stopStream = () => { r.current.stream?.getTracks().forEach((t) => t.stop()); r.current.stream = undefined; };
@@ -199,6 +200,8 @@ function Answer({ q, role, last, onNext }: { q: InterviewQ; role: string; last: 
         video.start(1000);
       }
       audio.start(1000);
+      r.current.heard = undefined;
+      r.current.stt = startBrowserStt() ?? undefined;
       setSec(0); setPhase("recording");
       const t0 = Date.now();
       r.current.tick = window.setInterval(() => { const s = Math.floor((Date.now() - t0) / 1000); setSec(s); if (s >= MAX_SEC) stop(); }, 250);
@@ -209,6 +212,8 @@ function Answer({ q, role, last, onNext }: { q: InterviewQ; role: string; last: 
 
   const stop = () => {
     window.clearInterval(r.current.tick);
+    // What the browser heard - a fallback transcript if the server's speech-to-text is down.
+    if (r.current.stt) { r.current.heard = r.current.stt.stop(); r.current.stt = undefined; }
     r.current.audio?.state === "recording" && r.current.audio.stop();
     r.current.video?.state === "recording" && r.current.video.stop();
     window.setTimeout(stopStream, 300);
@@ -222,8 +227,12 @@ function Answer({ q, role, last, onNext }: { q: InterviewQ; role: string; last: 
       body.append("questionId", q.id);
       if (role) body.append("role", role);
       if (q.id.startsWith("custom")) { body.append("question", q.q); body.append("how", q.how); }
-      if (mode === "audio" && r.current.audioBlob) body.append("audio", r.current.audioBlob, `answer.${ext(r.current.audioBlob.type)}`);
-      else body.append("text", typed);
+      if (mode === "audio" && r.current.audioBlob) {
+        body.append("audio", r.current.audioBlob, `answer.${ext(r.current.audioBlob.type)}`);
+        const heard = await r.current.heard?.catch(() => undefined);
+        if (heard?.text) { body.append("browserText", heard.text); body.append("browserConfidence", String(heard.confidence)); }
+        body.append("durationSec", String(sec));
+      } else body.append("text", typed);
       const d = await authedPost<Report>("/api/interview/feedback", body);
       if (d.total != null) addReview({ id: q.id, q: q.q, total: d.total, at: Date.now() });
       setReport(d); setPhase("result");

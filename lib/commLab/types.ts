@@ -143,6 +143,8 @@ export interface VoiceReport {
   feedback: { strengths: string[]; improvements: string[]; nextTip: string };
   /** Too short or too quiet to score: the report says so instead of scoring. */
   unscored?: string;
+  /** How this report was measured, when it differs from usual (e.g. the browser's transcript). */
+  note?: string;
 }
 
 export interface VoiceAttempt extends Omit<VoiceReport, "transcript"> { at: number; transcript: string }

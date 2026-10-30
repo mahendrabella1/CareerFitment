@@ -7,6 +7,7 @@
  * Neither provider hears audio: speech-to-text stays on Groq Whisper.
  */
 import { ApiError } from "@/lib/institution/server";
+import { envKey } from "./keys";
 
 export interface JsonChat {
   system: string;
@@ -23,9 +24,9 @@ let deepseekDownUntil = 0;
 
 function providers(): Provider[] {
   const out: Provider[] = [];
-  const ds = process.env.DEEPSEEK_API_KEY;
-  if (ds && Date.now() > deepseekDownUntil) out.push({ name: "deepseek", url: "https://api.deepseek.com/chat/completions", key: ds, model: process.env.DEEPSEEK_MODEL || "deepseek-flash" });
-  const groq = process.env.GROQ_API_KEY;
+  const ds = envKey("DEEPSEEK_API_KEY");
+  if (ds && Date.now() > deepseekDownUntil) out.push({ name: "deepseek", url: "https://api.deepseek.com/chat/completions", key: ds, model: envKey("DEEPSEEK_MODEL") || "deepseek-flash" });
+  const groq = envKey("GROQ_API_KEY");
   if (groq) out.push({ name: "groq", url: "https://api.groq.com/openai/v1/chat/completions", key: groq, model: "llama-3.3-70b-versatile" });
   return out;
 }
@@ -53,8 +54,11 @@ export async function jsonChat(req: JsonChat): Promise<{ json: Record<string, un
       if (!res.ok) {
         const msg = data.error?.message ?? String(res.status);
         if (p.name === "deepseek" && (res.status === 401 || res.status === 402 || /balance/i.test(msg))) deepseekDownUntil = Date.now() + 15 * 60_000;
-        console.error(`[ai] ${p.name} ${res.status}: ${msg}`);
-        last = res.status === 429 ? new ApiError(503, "Lots of people are using this right now - please try again in a minute.") : new ApiError(502, `The AI service refused the request: ${msg}`);
+        const auth = res.status === 401 || res.status === 403 || res.status === 402;
+        console.error(`[ai] ${p.name} ${res.status}: ${msg}${auth ? ` - check ${p.name === "groq" ? "GROQ_API_KEY" : "DEEPSEEK_API_KEY / balance"} at /admin/ai-status` : ""}`);
+        last = res.status === 429 ? new ApiError(503, "Lots of people are using this right now - please try again in a minute.")
+          : auth ? new ApiError(503, "AI feedback is paused: the AI service didn't accept OneGrasp's key. The team has been alerted - please try again later.")
+          : new ApiError(502, "The AI service couldn't answer just now - please try again.");
         continue;
       }
       const text = (data.choices?.[0]?.message?.content ?? "").replace(/^```(?:json)?\s*|\s*```$/g, "");

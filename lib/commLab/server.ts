@@ -12,6 +12,7 @@
 import type { Firestore } from "firebase-admin/firestore";
 import { ApiError } from "@/lib/institution/server";
 import { jsonChat } from "@/lib/ai/llm";
+import { envKey } from "@/lib/ai/keys";
 import { dayKey } from "@/lib/progress/activity";
 import type { Track, VoicePrompt, VoiceReport, TaskLesson, TaskReport } from "./types";
 import { fluencyScore, pronunciationScore, speechMetrics, type TimedWord } from "./scoring";
@@ -35,7 +36,7 @@ const audience = (t: Track) => (t.id === "t4" ? "an undergraduate student in Ind
 interface Transcript { text: string; words: TimedWord[]; segmentLogprobs: number[]; durationSec: number }
 
 export async function transcribe(audio: File): Promise<Transcript> {
-  const key = process.env.GROQ_API_KEY;
+  const key = envKey("GROQ_API_KEY");
   if (!key) throw new ApiError(503, "Voice feedback isn't switched on yet - the server needs a speech-to-text key (GROQ_API_KEY).");
   const form = new FormData();
   form.append("file", audio, audio.name || "recording.webm");
@@ -53,6 +54,11 @@ export async function transcribe(audio: File): Promise<Transcript> {
     words?: { word: string; start: number; end: number }[];
     segments?: { avg_logprob?: number }[];
   };
+  if (res.status === 401 || res.status === 403) {
+    console.error(`[voice] Groq rejected GROQ_API_KEY (${res.status}: ${data.error?.message ?? ""}) - create a new key at console.groq.com, set it in Vercel and redeploy. Check /admin/ai-status.`);
+    throw new ApiError(503, "Voice feedback is paused: the speech service didn't accept OneGrasp's key. The team has been alerted - please try again later.");
+  }
+  if (res.status === 429) throw new ApiError(503, "Lots of people are practising right now - please try again in a minute.");
   if (!res.ok) throw new ApiError(502, `Speech-to-text failed: ${data.error?.message ?? res.status}`);
   return {
     text: (data.text ?? "").trim(),
@@ -109,8 +115,38 @@ const three = (v: unknown, fallback: string) => {
 
 // ------------------------------------------------------------------ speech
 
-export async function analyseSpeech(prompt: VoicePrompt, track: Track, audio: File): Promise<VoiceReport> {
-  const stt = await transcribe(audio);
+/** What the student's browser heard (lib/speech/browserStt.ts), sent with the audio. */
+export interface BrowserTranscript { text: string; confidence: number; durationSec: number }
+
+/** The browser's transcript as a fallback, from a form's browserText / browserConfidence / durationSec. */
+export function browserTranscriptFrom(form: FormData | null | undefined): BrowserTranscript | null {
+  const text = String(form?.get("browserText") ?? "").replace(/\s+/g, " ").trim().slice(0, 6000);
+  if (text.split(" ").filter(Boolean).length < 3) return null;
+  return { text, confidence: Math.min(1, Math.max(0, Number(form?.get("browserConfidence")) || 0)), durationSec: Math.min(600, Math.max(0, Number(form?.get("durationSec")) || 0)) };
+}
+
+/**
+ * Whisper first; if the speech service is unavailable (no key, a rejected
+ * key, an outage) and the browser heard the answer, use the browser's
+ * transcript - no word timings, so pauses aren't measured, and the browser's
+ * confidence stands in for clarity.
+ */
+export async function transcribeOrFallback(audio: File, fallback: BrowserTranscript | null): Promise<Transcript & { source: "whisper" | "browser" }> {
+  try {
+    return { ...(await transcribe(audio)), source: "whisper" };
+  } catch (e) {
+    if (!fallback) throw e;
+    console.warn("[voice] speech-to-text failed, using the browser's transcript:", e instanceof Error ? e.message : e);
+    return {
+      text: fallback.text, words: [], durationSec: fallback.durationSec,
+      segmentLogprobs: fallback.confidence > 0 ? [Math.log(Math.max(0.05, fallback.confidence))] : [],
+      source: "browser",
+    };
+  }
+}
+
+export async function analyseSpeech(prompt: VoicePrompt, track: Track, audio: File, fallback: BrowserTranscript | null = null): Promise<VoiceReport> {
+  const stt = await transcribeOrFallback(audio, fallback);
   const metrics = speechMetrics({ transcript: stt.text, words: stt.words, durationSec: stt.durationSec, segmentLogprobs: stt.segmentLogprobs });
   const wordCount = stt.words.length || stt.text.split(/\s+/).filter(Boolean).length;
   const empty = { content: 0, structure: 0, fluency: 0, pronunciation: 0, grammar: 0, tone: 0 };
@@ -147,6 +183,7 @@ Use encouraging, age-appropriate language. Do not mention the rubric numbers in 
       improvements: three(llm.improvements, "Try once more, a little slower."),
       nextTip: String(llm.next_tip ?? "").trim() || "Record it again tomorrow and compare.",
     },
+    ...(stt.source === "browser" ? { note: "Your browser transcribed this recording, so pauses weren't measured and clarity is estimated." } : {}),
   };
 }
 

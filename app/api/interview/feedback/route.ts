@@ -3,7 +3,7 @@ import { getFirestore } from "@/lib/firebase/admin";
 import { ApiError, caller, fail } from "@/lib/institution/server";
 import { int, jsonChat, strList } from "@/lib/ai/llm";
 import { chargeDaily } from "@/lib/ai/quota";
-import { transcribe } from "@/lib/commLab/server";
+import { browserTranscriptFrom, transcribeOrFallback } from "@/lib/commLab/server";
 import { speechMetrics } from "@/lib/commLab/scoring";
 import { QUESTIONS, type InterviewQ } from "@/lib/interview/questions";
 
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
 
     let delivery: null | { durationSec: number; wpm: number; fillers: number; fillersPerMin: number; longPauses: number } = null;
     if (audio && typeof audio !== "string" && audio.size > 0) {
-      const stt = await transcribe(audio);
+      const stt = await transcribeOrFallback(audio, browserTranscriptFrom(body));
       const m = speechMetrics({ transcript: stt.text, words: stt.words, durationSec: stt.durationSec, segmentLogprobs: stt.segmentLogprobs });
       text = stt.text.trim();
       delivery = { durationSec: m.durationSec, wpm: m.wpm, fillers: m.fillerCount, fillersPerMin: m.fillersPerMin, longPauses: m.longPauses };

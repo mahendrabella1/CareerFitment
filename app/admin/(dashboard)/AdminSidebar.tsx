@@ -12,8 +12,9 @@ const NAV = [
   { href: "/admin/institutional", label: "Institutional links", icon: "school", group: "Schools" },
   { href: "/admin/payment", label: "Payment settings", icon: "card", group: "Billing" },
   { href: "/admin/coupons", label: "Coupon codes", icon: "bookmark", group: "Billing" },
+  { href: "/admin/ai-status", label: "AI & keys", icon: "cpu", group: "System" },
 ];
-const GROUPS = ["Students", "Schools", "Billing"];
+const GROUPS = ["Students", "Schools", "Billing", "System"];
 
 export default function AdminSidebar() {
   const pathname = usePathname();

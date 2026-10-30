@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getFirestore } from "@/lib/firebase/admin";
 import { ApiError, caller, fail } from "@/lib/institution/server";
 import { testDriveSlug, validTestDrive, type TestDrive, type TestDriveResult } from "@/lib/testDrive";
+import { envKey } from "@/lib/ai/keys";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -114,11 +115,11 @@ async function generate(career: string, grounding: string): Promise<{ json: Omit
     const data = (await res.json().catch(() => ({}))) as { content?: { type: string; text?: string }[]; error?: { message?: string } };
     if (!res.ok) throw new ApiError(502, `The AI service refused the request: ${data.error?.message ?? res.status}`);
     text = (data.content ?? []).filter((c) => c.type === "text").map((c) => c.text ?? "").join("");
-  } else if (process.env.GROQ_API_KEY) {
+  } else if (envKey("GROQ_API_KEY")) {
     model = "llama-3.3-70b-versatile";
     const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
-      headers: { Authorization: `Bearer ${process.env.GROQ_API_KEY}`, "Content-Type": "application/json" },
+      headers: { Authorization: `Bearer ${envKey("GROQ_API_KEY")}`, "Content-Type": "application/json" },
       body: JSON.stringify({ model, temperature: 0.6, max_tokens: 4000, response_format: { type: "json_object" }, messages: [{ role: "user", content: prompt }] }),
     });
     const data = (await res.json().catch(() => ({}))) as { choices?: { message?: { content?: string } }[]; error?: { message?: string } };

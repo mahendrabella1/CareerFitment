@@ -11,7 +11,8 @@ import Link from "next/link";
 import { Icon } from "@/app/Icons";
 import { loadTracker } from "@/lib/jobs/student";
 import type { TrackedJob } from "@/lib/jobs/types";
-import { atsCheck, plainText, skillList } from "@/lib/resume/resume";
+import { plainText, skillList } from "@/lib/resume/resume";
+import { atsReport } from "@/lib/resume/ats";
 import { JobReadyShell, authedPost } from "@/components/jobready/JobReadyShell";
 import { loadPractised, loadReviews, useResume, type Review } from "@/components/jobready/useResume";
 
@@ -28,7 +29,7 @@ function Plan() {
   const [reviews, setReviews] = useState<Review[]>([]);
   useEffect(() => { if (user) void loadTracker(user.uid).then(setTracker).catch(() => undefined); }, [user]);
   useEffect(() => { setPractised(loadPractised().size); setReviews(loadReviews()); }, []);
-  const ats = useMemo(() => (r ? atsCheck(r, stage) : null), [r, stage]);
+  const ats = useMemo(() => (r ? atsReport(r, stage) : null), [r, stage]);
   if (!r || !ats) return <p className="fp-muted" style={{ padding: 24 }}>Loading your plan…</p>;
 
   const apps = Object.entries(tracker).map(([id, t]) => ({ id, ...t })).sort((a, b) => b.updatedAt - a.updatedAt);
