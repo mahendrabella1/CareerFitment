@@ -1,9 +1,8 @@
 /**
- * Communication Lab content (spec "communication-lab.md" v1.0). The MVP
- * (spec §20) builds modules 1-2 of Track T1 (Class 6-8) and Track T4
- * (Undergraduate); the rest of every track's curriculum is listed as
- * planned. Every track has a daily voice challenge, so Class 9-12 students
- * can practise before their own modules open.
+ * Communication Lab content (spec "communication-lab.md" v1.0). Every
+ * track's full curriculum (spec §4) is built: modules 1-2 of T1 and T4 live
+ * here (the MVP, spec §20), the rest in lib/commLab/modules/t1-t4.ts.
+ * Every track also has a daily voice challenge.
  *
  * Videos are public YouTube embeds that allow embedding (checked October
  * 2026 with YouTube's oEmbed and the watch page's playableInEmbed). Their
@@ -13,8 +12,11 @@
  */
 import type { Lesson, Module, Track, VoicePrompt } from "./types";
 import { trackIdFor } from "./scoring";
-
-const v = (p: Omit<VoicePrompt, "tips"> & { tips?: string[] }): VoicePrompt => ({ tips: ["Breathe in before you start.", "Speak a little slower than feels natural.", "Pause instead of saying \"um\"."], ...p });
+import { v } from "./modules/shared";
+import { T1_M3, T1_M4, T1_M5, T1_M6 } from "./modules/t1";
+import { T2_M1, T2_M2, T2_M3, T2_M4, T2_M5, T2_M6 } from "./modules/t2";
+import { T3_M1, T3_M2, T3_M3, T3_M4, T3_M5, T3_M6, T3_M7 } from "./modules/t3";
+import { T4_M3, T4_M4, T4_M5, T4_M6, T4_M7, T4_M8 } from "./modules/t4";
 
 // ------------------------------------------------------------------ T1 · Class 6-8
 
@@ -437,53 +439,26 @@ const DAILY_T4: VoicePrompt[] = [
 export const TRACKS: Track[] = [
   {
     id: "t1", code: "T1", title: "Speak with Confidence", level: "Class 6–8", focus: "Confidence, vocabulary, storytelling", weeks: 8,
-    modules: [T1_M1, T1_M2],
-    planned: [
-      { title: "Story Time", lessons: "Video: story structure; Activity: story arc", voice: "1-min storytelling" },
-      { title: "Listen Like a Pro", lessons: "Audio clips; Quiz", voice: "Retell what you heard" },
-      { title: "Show and Tell", lessons: "Video: speaking in front of class; Task: prepare object talk", voice: "1-min show and tell" },
-      { title: "My Big Talk (capstone)", lessons: "Task: 2-min talk on a chosen topic", voice: "Final 2-min talk" },
-    ],
+    modules: [T1_M1, T1_M2, T1_M3, T1_M4, T1_M5, T1_M6],
+    planned: [],
     daily: DAILY_T1,
   },
   {
     id: "t2", code: "T2", title: "Express Clearly", level: "Class 9–10", focus: "Structured expression, exam writing, debate", weeks: 8,
-    modules: [],
-    planned: [
-      { title: "Clear Thinking, Clear Speaking", lessons: "Video: structure (PEE/PREP); Quiz", voice: "1-min structured answer" },
-      { title: "Pronunciation and Fluency", lessons: "Video: stress and intonation; Activity: minimal pairs", voice: "Tongue-twister and read-aloud" },
-      { title: "Writing Letters and Emails", lessons: "Video: formats; Task: formal letter", voice: "None" },
-      { title: "Essay and Paragraph Writing", lessons: "Video: essay structure; Task: 250-word essay", voice: "Read your essay aloud" },
-      { title: "Debate and Elocution", lessons: "Video: debate basics; Activity: rebuttal practice", voice: "90-sec argument" },
-      { title: "Capstone: Speak and Write", lessons: "Task: essay + speech on same topic", voice: "2-min speech" },
-    ],
+    modules: [T2_M1, T2_M2, T2_M3, T2_M4, T2_M5, T2_M6],
+    planned: [],
     daily: DAILY_T2,
   },
   {
     id: "t3", code: "T3", title: "College and Career Ready", level: "Class 11–12", focus: "College readiness, GD, interviews, SOP", weeks: 10,
-    modules: [],
-    planned: [
-      { title: "Communication Foundations", lessons: "Video; Self-assessment", voice: "1-min introduction" },
-      { title: "Active Listening and Note-taking", lessons: "Audio clips; Task: note-taking sheet", voice: "Summarise a 3-min audio" },
-      { title: "Group Discussion (GD)", lessons: "Video: GD rules; Activity: GD scenario", voice: "GD opening statement" },
-      { title: "Interview Basics", lessons: "Video: common questions; Activity: STAR method", voice: "Mock interview answers (3 questions)" },
-      { title: "SOP and Personal Statement", lessons: "Video; Task: draft SOP", voice: "Read-aloud of SOP opening" },
-      { title: "MUN and Public Speaking", lessons: "Video; Activity: position paper", voice: "2-min opening speech" },
-      { title: "Capstone: Mock Admission Interview", lessons: "Task", voice: "5-min mock interview" },
-    ],
+    modules: [T3_M1, T3_M2, T3_M3, T3_M4, T3_M5, T3_M6, T3_M7],
+    planned: [],
     daily: DAILY_T3,
   },
   {
     id: "t4", code: "T4", title: "Professional Communication", level: "Undergraduate", focus: "Professional communication, interviews, presentations", weeks: 12,
-    modules: [T4_M1, T4_M2],
-    planned: [
-      { title: "Presentation Skills", lessons: "Video; Task: 5-slide deck", voice: "3-min presentation" },
-      { title: "Group Discussion and HR Rounds", lessons: "Video; Activity: GD simulation", voice: "GD speech + HR answer" },
-      { title: "Interview Mastery", lessons: "Video; Activity: STAR builder", voice: "Mock interview (5 questions)" },
-      { title: "Workplace Communication", lessons: "Video; Activity: feedback and conflict scenarios", voice: "Role-play: giving feedback" },
-      { title: "IELTS/TOEFL-style Speaking", lessons: "Video; Activity: cue cards", voice: "Part 1, 2, 3 simulation" },
-      { title: "Capstone: Career Communication Portfolio", lessons: "Task: compile portfolio", voice: "Final 5-min mock interview" },
-    ],
+    modules: [T4_M1, T4_M2, T4_M3, T4_M4, T4_M5, T4_M6, T4_M7, T4_M8],
+    planned: [],
     daily: DAILY_T4,
   },
 ];

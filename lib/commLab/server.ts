@@ -161,7 +161,7 @@ export async function analyseSpeech(prompt: VoicePrompt, track: Track, audio: Fi
   const pronunciation = pronunciationScore(metrics.clarity);
   const llm = await rubricJson(
     `You are a friendly communication coach for ${audience(track)}.
-Prompt given to the student: "${prompt.text}"${prompt.passage ? `\nPassage they were asked to read aloud: "${prompt.passage}"` : ""}
+Prompt given to the student: "${prompt.text}"${prompt.passage ? `\nPassage they were asked to read aloud: "${prompt.passage}"` : ""}${prompt.listen ? `\nClip they listened to before answering (judge how accurately and completely they retold or used it): "${prompt.listen}"` : ""}
 Target duration: ${prompt.minSec}-${prompt.maxSec} seconds (aim: ${prompt.targetSec} s). They spoke for ${metrics.durationSec} s.
 Transcript (from speech-to-text, so small errors may be the transcriber's): "${stt.text}"
 Measured: ${metrics.wpm} words per minute (healthy 110-150), ${metrics.fillerCount} filler words (${metrics.fillersPerMin} per minute; healthy under 3), ${metrics.longPauses} pauses over 1.5 s.
@@ -192,7 +192,7 @@ Use encouraging, age-appropriate language. Do not mention the rubric numbers in 
 export async function reviewWriting(task: TaskLesson, track: Track, text: string): Promise<TaskReport> {
   const llm = await rubricJson(
     `You are a friendly writing coach for ${audience(track)}.
-The task: "${task.instructions}"
+The task: "${task.instructions}"${task.listen ? `\nThe talk they listened to (judge how accurately and completely the writing captures it): "${task.listen}"` : ""}
 Rubric criteria (score each 0-10, in this order):
 ${task.rubric.map((r, i) => `${i + 1}. ${r}`).join("\n")}
 

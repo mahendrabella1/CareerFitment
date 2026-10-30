@@ -49,6 +49,38 @@ function Toast() {
 
 // ------------------------------------------------------------------ charts (one series each: the Lab's accent, no legend)
 
+/**
+ * A listening clip, read aloud by the browser in an Indian English voice where
+ * there is one. The words are never shown - the point is to listen. Counts plays.
+ */
+export function ListenClip({ text, label = "Play the clip" }: { text: string; label?: string }) {
+  const [on, setOn] = useState(false);
+  const [plays, setPlays] = useState(0);
+  const ok = typeof window !== "undefined" && "speechSynthesis" in window;
+  const play = () => {
+    if (!ok) return;
+    if (on) { speechSynthesis.cancel(); setOn(false); return; }
+    const u = new SpeechSynthesisUtterance(text);
+    const voices = speechSynthesis.getVoices();
+    const v = voices.find((x) => x.lang === "en-IN") ?? voices.find((x) => x.lang.startsWith("en"));
+    if (v) u.voice = v;
+    u.rate = 0.92;
+    u.onend = () => setOn(false);
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+    setOn(true);
+    setPlays((n) => n + 1);
+  };
+  return (
+    <div className="lab-clip">
+      <button type="button" className="fp-btn fp-btn-sm" onClick={play} disabled={!ok}>
+        <Icon name={on ? "close" : "audio"} size={14} stroke={2} /> {on ? "Stop" : plays ? "Play it again" : label}
+      </button>
+      <span className="fp-muted" style={{ fontSize: 12.5 }}>{ok ? (plays ? `Played ${plays} time${plays === 1 ? "" : "s"} - listen once more if you need to.` : "Listen carefully - the words aren't shown.") : "This browser can't play the clip - try Chrome or Edge."}</span>
+    </div>
+  );
+}
+
 export function ProgressRing({ pct, size = 84, label }: { pct: number; size?: number; label?: string }) {
   const r = (size - 10) / 2, c = 2 * Math.PI * r;
   return (
@@ -178,6 +210,7 @@ export function BadgeShelf({ track, state }: { track: Track; state: CommLabState
 }
 
 export const LAB_CSS = `
+.lab-clip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 14px;margin:0 0 14px;background:var(--soft);border:1px solid var(--line);border-radius:8px}
 .cl .cl-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .cl .cl-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:6px;min-width:0}
 .cl .cl-card h3{font-size:15px;font-weight:600;margin:0}

@@ -23,6 +23,8 @@ export interface VoicePrompt {
   targetSec: number;
   /** Read aloud by the browser as a model answer. */
   modelAnswer?: string;
+  /** A listening clip: read aloud by the browser (never shown), for "listen, then retell" prompts. */
+  listen?: string;
 }
 
 interface LessonBase {
@@ -56,6 +58,8 @@ export interface QuizLesson extends LessonBase {
   assessment?: boolean;
   /** An unscored question to think about after the quiz. */
   reflection?: string;
+  /** A listening clip the questions are about: read aloud by the browser, never shown. */
+  listen?: string;
 }
 
 export type Activity =
@@ -72,6 +76,8 @@ export interface TaskLesson extends LessonBase {
   maxWords: number;
   /** What the AI reviewer (and the student) checks. */
   rubric: string[];
+  /** A listening clip the writing is based on (e.g. notes on a talk): read aloud by the browser, never shown. */
+  listen?: string;
 }
 
 export interface VoiceLesson extends LessonBase { type: "voice"; prompt: VoicePrompt }

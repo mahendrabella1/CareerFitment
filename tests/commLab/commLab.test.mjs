@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { TRACKS, findLesson, findPrompt, trackForCategory, dailyPrompt } from "../../lib/commLab/content.ts";
-import { bandOf, countFillers, cqOf, earnedBadges, fluencyScore, lessonUnlocked, moduleStatus, moduleUnlocked, pronunciationScore, skillScore, speechMetrics, streakOf } from "../../lib/commLab/scoring.ts";
+import { BADGES, bandOf, countFillers, cqOf, earnedBadges, fluencyScore, lessonUnlocked, moduleStatus, moduleUnlocked, pronunciationScore, skillScore, speechMetrics, streakOf } from "../../lib/commLab/scoring.ts";
 import { EMPTY_STATE } from "../../lib/commLab/types.ts";
 
 test("content: unique ids, valid answers, every prompt findable", () => {
@@ -22,8 +22,34 @@ test("content: unique ids, valid answers, every prompt findable", () => {
     }
     for (const p of t.daily) assert.equal(findPrompt(p.id)?.track, t);
   }
-  // MVP (spec §20): T1 and T4, two modules each.
-  assert.deepEqual(TRACKS.map((t) => t.modules.length), [2, 0, 0, 2]);
+  // The full curriculum (spec §4): 6, 6, 7 and 8 modules, nothing left as planned.
+  assert.deepEqual(TRACKS.map((t) => t.modules.length), [6, 6, 7, 8]);
+  assert.deepEqual(TRACKS.map((t) => t.planned.length), [0, 0, 0, 0]);
+});
+
+test("content: module ids, badges and lesson ids follow the conventions", () => {
+  const badges = new Set(BADGES.map((b) => b.id));
+  for (const t of TRACKS) {
+    t.modules.forEach((m, i) => {
+      assert.equal(m.id, `m${i + 1}`, `${t.id}: modules in order`);
+      assert.ok(!badges.has(m.badge.id), `duplicate badge ${m.badge.id}`); badges.add(m.badge.id);
+      assert.equal(m.lessons[0].type, "video", `${t.id}/${m.id} opens with a video`);
+      m.lessons.forEach((l, j) => assert.equal(l.id, `${t.id}-${m.id}-l${j + 1}`));
+      for (const l of m.lessons) {
+        if (l.type === "voice") assert.equal(l.prompt.id, `${t.id}-${m.id}-voice`);
+        if (l.type === "task") assert.ok(l.minWords < l.maxWords && l.rubric.length >= 3, l.id);
+        if (l.type === "activity" && l.activity.kind === "order") assert.ok(l.activity.items.length >= 3, l.id);
+      }
+    });
+  }
+  // Listening lessons carry their clip (spec: T1 "Listen Like a Pro", T3 "Active Listening").
+  assert.ok(findLesson("t1-m4-l3").lesson.listen && findLesson("t1-m4-l6").lesson.prompt.listen);
+  assert.ok(findLesson("t3-m2-l5").lesson.listen && findLesson("t3-m2-l6").lesson.prompt.listen);
+  // T2 "Writing Letters and Emails" has no voice lesson, and its badge still opens (spec: voice "None").
+  const letters = TRACKS[1].modules[2];
+  assert.ok(!letters.lessons.some((l) => l.type === "voice"));
+  const all = Object.fromEntries(letters.lessons.map((l) => [l.id, { s: "completed", at: 1, attempts: 1 }]));
+  assert.ok(moduleStatus(letters, all).badge);
 });
 
 test("track assignment follows the student's class", () => {

@@ -191,7 +191,6 @@ export const BADGES: BadgeDef[] = [
   { id: "fluency-star", title: "Fluency Star", how: "Speak at 110-150 words a minute with fewer than 3 fillers a minute." },
   { id: "wordsmith", title: "Wordsmith", how: "Score 80 or more on a writing task." },
   { id: "module-master", title: "Module Master", how: "Finish every lesson in a module." },
-  { id: "debate-champ", title: "Debate Champ", how: "Comes with the Debate and Elocution module." },
 ];
 
 /** The general badges a state has earned (module badges are awarded with the module). */

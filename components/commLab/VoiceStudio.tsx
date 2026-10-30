@@ -17,6 +17,7 @@ import { durationOk, levelLabel } from "@/lib/commLab/scoring";
 import type { VoiceAttempt, VoicePrompt, VoiceReport, VoiceScores } from "@/lib/commLab/types";
 import { startBrowserStt, type BrowserTranscript } from "@/lib/speech/browserStt";
 import { useCommLab } from "./CommLabProvider";
+import { ListenClip } from "./LabParts";
 
 type Phase = "idle" | "consent" | "blocked" | "countdown" | "recording" | "preview" | "sending" | "report" | "error";
 
@@ -78,7 +79,8 @@ export function VoiceStudio({ prompt, lessonRef, heading }: { prompt: VoicePromp
 
   const startRecording = (stream: MediaStream) => {
     const mime = pickMime();
-    const recorder = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
+    // 64 kb/s keeps the longest prompts (5-minute mock interviews, ~2.6 MB) under the upload limit on every browser.
+    const recorder = new MediaRecorder(stream, { ...(mime ? { mimeType: mime } : {}), audioBitsPerSecond: 64000 });
     const chunks: Blob[] = [];
     recorder.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
     recorder.onstop = () => {
@@ -192,6 +194,7 @@ export function VoiceStudio({ prompt, lessonRef, heading }: { prompt: VoicePromp
       <div className="vs-prompt">
         {heading}
         <p className="vs-text">{prompt.text}</p>
+        {prompt.listen && <div style={{ marginTop: 12 }}><ListenClip text={prompt.listen} label="Play the clip first" /></div>}
         {prompt.passage && <blockquote className="vs-passage">{prompt.passage}</blockquote>}
         <div className="vs-meta">
           <span><Icon name="clock" size={14} stroke={2} /> Aim for {prompt.targetSec} seconds (up to {fmt(prompt.maxSec)})</span>

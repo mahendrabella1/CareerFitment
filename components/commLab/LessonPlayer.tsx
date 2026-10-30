@@ -13,6 +13,7 @@ import { PASS_PERCENT, lessonUnlocked, moduleStatus, moduleUnlocked } from "@/li
 import type { Activity, ActivityLesson, Question, QuizLesson, ReadingLesson, TaskLesson, TaskReport, VideoLesson } from "@/lib/commLab/types";
 import { useCommLab } from "./CommLabProvider";
 import { VoiceStudio } from "./VoiceStudio";
+import { ListenClip } from "./LabParts";
 
 export function LessonPlayer({ refL }: { refL: LessonRef }) {
   const lab = useCommLab();
@@ -208,7 +209,9 @@ function QuizBlock({ questions, onScore, best, passMark }: { questions: Question
       {questions.map((q, qi) => (
         <fieldset key={q.q} className="cl-q">
           <legend>{qi + 1}. {q.q}</legend>
-          {q.options.map((o, oi) => {
+          {/* Options in a fixed shuffled order per question, so the answer isn't always in the same place. */}
+          {seeded(q.options.map((_, i) => i), q.q).map((oi) => {
+            const o = q.options[oi];
             const cls = checked ? (oi === q.answer ? " is-right" : answers[qi] === oi ? " is-wrong" : "") : "";
             return (
               <label key={o} className={`cl-opt${cls}`}>
@@ -242,6 +245,7 @@ function QuizBlockLesson({ refL, lesson }: { refL: LessonRef; lesson: QuizLesson
   const [reflection, setReflection] = useState("");
   return (
     <>
+      {lesson.listen && <ListenClip text={lesson.listen} label="Play the clip, then answer" />}
       <QuizBlock questions={lesson.questions} passMark={PASS_PERCENT} best={lab.progress(lesson.id)?.best}
         onScore={(s) => lab.recordScore(refL, s, (Date.now() - started.current) / 1000)} />
       {lesson.reflection && (
@@ -443,6 +447,7 @@ function TaskBlock({ refL, lesson }: { refL: LessonRef; lesson: TaskLesson }) {
   return (
     <>
       <p className="lp-ask">{lesson.instructions}</p>
+      {lesson.listen && <ListenClip text={lesson.listen} label="Play the talk - as often as you need" />}
       <details className="lp-rubric"><summary>How it&apos;s checked</summary><ul>{lesson.rubric.map((r) => <li key={r}>{r}</li>)}</ul></details>
       <textarea className="lp-text" rows={10} value={text} onChange={(e) => setText(e.target.value)} disabled={busy || left <= 0} aria-label="Your writing" placeholder="Write here…" />
       <div className="lp-cta">

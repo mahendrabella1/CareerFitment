@@ -87,8 +87,8 @@ export function LabHome() {
               <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
                 <ProgressRing pct={pct} label={`${pct}% of the ${t.level} track done`} />
                 <div style={{ minWidth: 0 }}>
-                  <h3>{next ? next.l.title : "Every open lesson done!"}</h3>
-                  <small className="fp-muted">{next ? `Module ${next.mi + 1}: ${next.m.title} · ${TYPE_LABEL[next.l.type]} · ${next.l.minutes} min` : "New modules are on the way."}</small>
+                  <h3>{next ? next.l.title : t.planned.length ? "Every open lesson done!" : "Track complete!"}</h3>
+                  <small className="fp-muted">{next ? `Module ${next.mi + 1}: ${next.m.title} · ${TYPE_LABEL[next.l.type]} · ${next.l.minutes} min` : t.planned.length ? "New modules are on the way." : "Keep your CQ growing with the daily challenge."}</small>
                 </div>
               </div>
             ) : <p className="fp-muted" style={{ margin: 0 }}>The {t.level} track ({t.title}) opens in the next update. Until then, do the daily challenge - it counts towards your CQ.</p>}
@@ -146,7 +146,7 @@ export function TrackPage({ trackId }: { trackId: string }) {
   const own = t.id === lab.track.id;
   return (
     <>
-      <PageHeader icon="route" eyebrow={`${t.code} · ${t.level}${own ? " · your track" : " · preview"}`} title={t.title} subtitle={t.focus} meta={[`${t.weeks} weeks`, `${t.modules.length + t.planned.length} modules`, t.modules.length ? `${t.modules.length} open now` : "Opens soon"]} />
+      <PageHeader icon="route" eyebrow={`${t.code} · ${t.level}${own ? " · your track" : " · preview"}`} title={t.title} subtitle={t.focus} meta={[`${t.weeks} weeks`, `${t.modules.length + t.planned.length} modules`, ...(t.planned.length ? [t.modules.length ? `${t.modules.length} open now` : "Opens soon"] : [`${t.modules.reduce((n, m) => n + m.lessons.length, 0)} lessons`])]} />
       <section className="fp-sec" style={{ marginTop: 24 }}>
         <ModuleList track={t} state={lab.state} preview={!own} />
       </section>

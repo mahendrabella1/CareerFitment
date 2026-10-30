@@ -7,7 +7,7 @@ import { analyseSpeech, browserTranscriptFrom, chargeQuota } from "@/lib/commLab
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
-/** Under Vercel's 4.5 MB request limit; a 2-minute recording is about 0.5 MB. */
+/** Under Vercel's 4.5 MB request limit; the studio records at 64 kb/s, so even a 5.5-minute mock interview is about 2.6 MB. */
 const MAX_BYTES = 4 * 1024 * 1024;
 
 /**
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     const found = findPrompt(String(form?.get("promptId") ?? ""));
     if (!found) throw new ApiError(400, "Unknown practice prompt.");
     if (!(audio instanceof File) || !audio.size) throw new ApiError(400, "No recording was received - please record again.");
-    if (audio.size > MAX_BYTES) throw new ApiError(413, "That recording is too long - keep it under 2 minutes.");
+    if (audio.size > MAX_BYTES) throw new ApiError(413, "That recording is too large to send - please record a shorter take.");
     if (audio.type && !/^audio\/|^video\/(webm|mp4)/.test(audio.type)) throw new ApiError(415, "That file isn't an audio recording.");
     await chargeQuota(await getFirestore(), uid);
     return NextResponse.json({ report: await analyseSpeech(found.prompt, found.track, audio, browserTranscriptFrom(form)) });
