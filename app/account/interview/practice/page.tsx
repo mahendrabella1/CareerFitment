@@ -152,11 +152,14 @@ function Answer({ q, role, last, onNext }: { q: InterviewQ; role: string; last: 
   const [playback, setPlayback] = useState<{ url: string; video: boolean } | null>(null);
   const [showModel, setShowModel] = useState(false);
   const live = useRef<HTMLVideoElement>(null);
-  const r = useRef<{ stream?: MediaStream; audio?: MediaRecorder; video?: MediaRecorder; audioChunks: Blob[]; videoChunks: Blob[]; tick?: number; audioBlob?: Blob; stt?: { stop: () => Promise<BrowserTranscript> }; heard?: Promise<BrowserTranscript> }>({ audioChunks: [], videoChunks: [] });
+  const r = useRef<{ stream?: MediaStream; audio?: MediaRecorder; video?: MediaRecorder; audioChunks: Blob[]; videoChunks: Blob[]; tick?: number; audioBlob?: Blob; stt?: { stop: () => Promise<BrowserTranscript> }; heard?: Promise<BrowserTranscript>; ctx?: AudioContext; raf?: number; level: number; peak: number }>({ audioChunks: [], videoChunks: [], level: 0, peak: 0 });
+  // Microphone level (0-1) while recording, and the loudest moment - a silent mic is the usual reason nothing is heard.
+  const [level, setLevel] = useState(0);
+  const [peak, setPeak] = useState(0);
   const supported = typeof window !== "undefined" && typeof MediaRecorder !== "undefined" && !!navigator.mediaDevices?.getUserMedia;
 
   const stopStream = () => { r.current.stream?.getTracks().forEach((t) => t.stop()); r.current.stream = undefined; };
-  useEffect(() => () => { stopStream(); window.clearInterval(r.current.tick); if (playback) URL.revokeObjectURL(playback.url); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => () => { stopStream(); window.clearInterval(r.current.tick); if (r.current.raf) cancelAnimationFrame(r.current.raf); void r.current.ctx?.close().catch(() => undefined); if (playback) URL.revokeObjectURL(playback.url); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Camera preview while ready/recording.
   useEffect(() => {
@@ -202,9 +205,27 @@ function Answer({ q, role, last, onNext }: { q: InterviewQ; role: string; last: 
       audio.start(1000);
       r.current.heard = undefined;
       r.current.stt = startBrowserStt() ?? undefined;
+      r.current.level = 0; r.current.peak = 0; setLevel(0); setPeak(0);
+      try {
+        const ctx = new AudioContext();
+        const analyser = ctx.createAnalyser();
+        analyser.fftSize = 512;
+        ctx.createMediaStreamSource(new MediaStream(stream.getAudioTracks())).connect(analyser);
+        r.current.ctx = ctx;
+        const buf = new Uint8Array(analyser.fftSize);
+        const read = () => {
+          analyser.getByteTimeDomainData(buf);
+          let sum = 0;
+          for (const v of buf) sum += ((v - 128) / 128) ** 2;
+          r.current.level = Math.min(1, Math.sqrt(sum / buf.length) * 4);
+          r.current.peak = Math.max(r.current.peak, r.current.level);
+          r.current.raf = requestAnimationFrame(read);
+        };
+        read();
+      } catch { r.current.peak = 1; /* no meter - recording still works, and we can't tell it's silent */ }
       setSec(0); setPhase("recording");
       const t0 = Date.now();
-      r.current.tick = window.setInterval(() => { const s = Math.floor((Date.now() - t0) / 1000); setSec(s); if (s >= MAX_SEC) stop(); }, 250);
+      r.current.tick = window.setInterval(() => { const s = Math.floor((Date.now() - t0) / 1000); setSec(s); setLevel(r.current.level); setPeak(r.current.peak); if (s >= MAX_SEC) stop(); }, 250);
     } catch {
       setErr("Allow the microphone in your browser to answer out loud - or type your answer instead.");
     }
@@ -212,6 +233,9 @@ function Answer({ q, role, last, onNext }: { q: InterviewQ; role: string; last: 
 
   const stop = () => {
     window.clearInterval(r.current.tick);
+    if (r.current.raf) cancelAnimationFrame(r.current.raf);
+    void r.current.ctx?.close().catch(() => undefined); r.current.ctx = undefined;
+    setPeak(r.current.peak); setLevel(0);
     // What the browser heard - a fallback transcript if the server's speech-to-text is down.
     if (r.current.stt) { r.current.heard = r.current.stt.stop(); r.current.stt = undefined; }
     r.current.audio?.state === "recording" && r.current.audio.stop();
@@ -270,10 +294,12 @@ function Answer({ q, role, last, onNext }: { q: InterviewQ; role: string; last: 
             ) : (
               <>
                 <span className="mi-dot" aria-hidden="true" /> <b style={{ fontVariantNumeric: "tabular-nums" }}>{mmss(sec)}</b><span className="fp-muted"> / {mmss(MAX_SEC)} · aim for 1-2 minutes</span>
+                <span className="mi-level" role="meter" aria-label="Microphone level" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(level * 100)}><i style={{ width: `${Math.round(level * 100)}%` }} /></span>
                 <button className="fp-btn fp-btn-pri" style={{ marginLeft: "auto" }} onClick={stop}>Stop</button>
               </>
             )}
           </div>
+          {phase === "recording" && sec >= 3 && peak < SILENT && <MicHelp live />}
           {!supported && <p className="fp-muted" style={{ marginTop: 8 }}>This browser can&apos;t record - type your answer instead.</p>}
         </div>
       )}
@@ -281,6 +307,7 @@ function Answer({ q, role, last, onNext }: { q: InterviewQ; role: string; last: 
       {(phase === "recorded" || (phase === "sending" && playback)) && (
         <div className="mi-rec">
           {playback && (playback.video ? <video className="mi-video" src={playback.url} controls playsInline /> : <audio src={playback.url} controls style={{ width: "100%" }} />)}
+          {peak < SILENT && <MicHelp />}
           <div className="mi-rec-row">
             <button className="fp-btn fp-btn-pri" disabled={phase === "sending"} onClick={() => void send("audio")}>{phase === "sending" ? "Listening to your answer…" : "Get feedback"}</button>
             <button className="fp-btn" disabled={phase === "sending"} onClick={again}>Record again</button>
@@ -312,12 +339,34 @@ function Answer({ q, role, last, onNext }: { q: InterviewQ; role: string; last: 
   );
 }
 
+/** Below this (0-1, the meter's scale) the microphone sent no real sound - a muted or wrong input. */
+const SILENT = 0.03;
+
+function MicHelp({ live = false }: { live?: boolean }) {
+  return (
+    <div className="mi-mic" role="alert">
+      <b>{live ? "We can't hear your microphone." : "Your recording looks silent."}</b>
+      <ul>
+        <li>Check the microphone isn&apos;t muted (a key on many laptops, or the headset&apos;s switch).</li>
+        <li>Choose the right microphone: click the icon at the left of the web address → Site settings → Microphone.</li>
+        <li>On Windows: Settings → System → Sound → Input - speak and watch the bar move.</li>
+        <li>Close other apps using the microphone (Zoom, Meet, Teams), then record again.</li>
+      </ul>
+    </div>
+  );
+}
+
 function Feedback({ report, q }: { report: Report; q: InterviewQ }) {
   const [showT, setShowT] = useState(false);
   const d = report.delivery;
   const pace = d ? (d.wpm < 110 ? "a little slow" : d.wpm > 160 ? "fast - slow down a little" : "a good pace") : "";
   const rows = useMemo(() => report.scores ? ([["Relevance", report.scores.relevance, "Answers what was asked"], ["Structure", report.scores.structure, "Clear start, middle and end"], ["Specifics", report.scores.specifics, "Real examples and results"], ["Impression", report.scores.impression, "Confident and positive"]] as const) : [], [report.scores]);
-  if (report.unscored) return <div className="mi-fb"><p style={{ margin: 0 }}>{report.unscored}</p></div>;
+  if (report.unscored) return (
+    <div className="mi-fb">
+      <p style={{ margin: 0 }}>{report.unscored}</p>
+      {report.delivery && (report.transcript ? <p className="mi-transcript">What we heard: &ldquo;{report.transcript}&rdquo;</p> : <MicHelp />)}
+    </div>
+  );
   return (
     <div className="mi-fb">
       <div className="mi-fb-top">
@@ -401,6 +450,11 @@ const MI_CSS = `
 .mi-better small{font-size:12px;color:var(--mute)}
 .mi-model summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink2)}
 .mi-model p{margin:8px 0 0;font-size:13.5px;line-height:1.6;color:var(--ink2)}
+.mi-level{display:inline-block;width:90px;height:6px;border-radius:999px;background:#f0efed;overflow:hidden;vertical-align:middle;margin-left:4px}
+.mi-level i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .12s linear}
+.mi-mic{margin-top:10px;padding:10px 12px;border:1px solid #f1d9a8;background:#fffaf0;border-radius:6px;font-size:13px;line-height:1.5;color:var(--ink2)}
+.mi-mic b{display:block;color:var(--ink);margin-bottom:4px}
+.mi-mic ul{margin:0;padding-left:18px}
 .mi-transcript{margin:6px 0 0;padding:10px 12px;background:#fcfcfb;border-radius:6px;font-size:13px;line-height:1.6;color:var(--ink2)}
 @media (max-width:640px){.mi-fb-top{grid-template-columns:minmax(0,1fr)}.mi-del{grid-template-columns:repeat(2,minmax(0,1fr))}.mi-del > div:nth-child(3){border-left:0}.mi-del > div:nth-child(n+3){border-top:1px solid var(--line)}.mi-two{grid-template-columns:minmax(0,1fr)}}
 `;

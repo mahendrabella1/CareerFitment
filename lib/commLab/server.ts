@@ -132,17 +132,30 @@ export function browserTranscriptFrom(form: FormData | null | undefined): Browse
  * confidence stands in for clarity.
  */
 export async function transcribeOrFallback(audio: File, fallback: BrowserTranscript | null): Promise<Transcript & { source: "whisper" | "browser" }> {
+  const fromBrowser = (f: BrowserTranscript) => ({
+    text: f.text, words: [], durationSec: f.durationSec,
+    segmentLogprobs: f.confidence > 0 ? [Math.log(Math.max(0.05, f.confidence))] : [],
+    source: "browser" as const,
+  });
+  const count = (t: string) => t.split(/\s+/).filter(Boolean).length;
+  const about = `${Math.round(audio.size / 1024)} KB ${audio.type || "no type"}`;
+  let whisper: Transcript;
   try {
-    return { ...(await transcribe(audio)), source: "whisper" };
+    whisper = await transcribe(audio);
   } catch (e) {
     if (!fallback) throw e;
-    console.warn("[voice] speech-to-text failed, using the browser's transcript:", e instanceof Error ? e.message : e);
-    return {
-      text: fallback.text, words: [], durationSec: fallback.durationSec,
-      segmentLogprobs: fallback.confidence > 0 ? [Math.log(Math.max(0.05, fallback.confidence))] : [],
-      source: "browser",
-    };
+    console.warn(`[voice] speech-to-text failed (${about}), using the browser's transcript:`, e instanceof Error ? e.message : e);
+    return fromBrowser(fallback);
   }
+  const w = count(whisper.text), b = fallback ? count(fallback.text) : 0;
+  // Whisper can come back (nearly) empty for a recording it couldn't decode while the browser heard
+  // the whole answer - then the browser's words are the better record of what was said.
+  if (fallback && b >= 5 && w < b / 2) {
+    console.warn(`[voice] Whisper heard ${w} words, the browser ${b} (${about}) - using the browser's transcript`);
+    return fromBrowser(fallback);
+  }
+  if (w < 5) console.warn(`[voice] Whisper heard only ${w} words (${about}, ${Math.round(whisper.durationSec)} s; the browser heard ${b})`);
+  return { ...whisper, source: "whisper" };
 }
 
 export async function analyseSpeech(prompt: VoicePrompt, track: Track, audio: File, fallback: BrowserTranscript | null = null): Promise<VoiceReport> {

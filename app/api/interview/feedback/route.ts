@@ -46,7 +46,10 @@ export async function POST(req: Request) {
     }
     const words = text.split(/\s+/).filter(Boolean).length;
     if (words < 12) {
-      return NextResponse.json({ transcript: text, delivery, unscored: delivery ? "We couldn't hear enough to review this. Find a quiet spot, check the microphone and answer for at least 30 seconds." : "Write a fuller answer - at least two or three sentences." });
+      const unscored = !delivery ? "Write a fuller answer - at least two or three sentences."
+        : words === 0 ? "We couldn't hear any words in your recording. Play it back - if it's silent, check your microphone using the tips below and record again."
+        : `We only caught ${words} word${words === 1 ? "" : "s"} - too few to review. Answer in two or three full sentences (about 30 seconds or more) and try again.`;
+      return NextResponse.json({ transcript: text, delivery, unscored });
     }
 
     const { json } = await jsonChat({
