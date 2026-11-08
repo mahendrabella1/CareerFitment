@@ -22,6 +22,9 @@ import { fetchProgress } from "@/lib/startups/clientProgress";
 import { lessonStatus, moduleStatus, type ProgressMap } from "@/lib/startups/unlock";
 import type { PublicTrack } from "@/lib/startups/publicShape";
 import { bandOf, cqOf, trackIdFor } from "@/lib/commLab/scoring";
+import { SECTIONS, SECTION_LABEL } from "@/lib/aptitude/core";
+import { EMPTY_APT, aptitudeScore, scoreBand } from "@/lib/aptitude/scoring";
+import { aptTrackById, aptTrackFor, topicInfo } from "@/lib/aptitude/tracks";
 import { FEATURES, featureArt } from "@/lib/features/catalog";
 import { tasksDone, type FeatureTaskSpec } from "@/lib/progress/featureTasks";
 import { CoursePlayerShell } from "@/components/course/CoursePlayerShell";
@@ -44,7 +47,7 @@ interface Row {
   seconds: number; lastAt?: number; note?: string;
 }
 
-const ACTIVITY_KEY: Record<string, string> = { money: "money", legal: "legal", exams: "exams", scholarships: "scholarships", "study-abroad": "study_abroad", research: "research", startups: "startups", careers: "careers", internships: "internships", ai: "ai", communication: "communication" };
+const ACTIVITY_KEY: Record<string, string> = { money: "money", legal: "legal", exams: "exams", scholarships: "scholarships", "study-abroad": "study_abroad", research: "research", startups: "startups", careers: "careers", internships: "internships", ai: "ai", communication: "communication", aptitude: "aptitude" };
 const ONLY_TIME = ["jobs", "gps", "test_drive", "decision", "passport", "portfolio"];
 
 /** A feature's tools from its task list, with what's been opened. */
@@ -195,6 +198,21 @@ export function MyProgress({ courses, track, tasks, labTracks = [] }: { courses:
       const cq = cqOf(profile?.commLab?.skills ?? {}, lab.id).cq;
       out.push(row("communication", lMods, nextMod && nextL ? { title: nextL.title, href: `/account/communication/${lab.id}/${nextMod.id}/${nextL.id}` } : undefined,
         cq !== null ? `CQ ${cq} (${bandOf(cq)})` : undefined));
+    }
+    // Aptitude Lab: the student's track - its sections as modules, a topic done once a full set (10+) is answered.
+    {
+      const al = profile?.aptitudeLab;
+      const t = aptTrackById(al?.track) ?? aptTrackFor(profile?.category);
+      const stats = al?.topics ?? {};
+      const done = (id: string) => (stats[id]?.n ?? 0) >= 10;
+      const aMods = SECTIONS.filter((sec) => t.topics.some((x) => topicInfo(x.id)?.section === sec)).map((sec) => {
+        const lessons = t.topics.filter((x) => topicInfo(x.id)?.section === sec).map((x) => ({ title: topicInfo(x.id)!.title, done: done(x.id) }));
+        return { title: SECTION_LABEL[sec], lessons, done: lessons.filter((l) => l.done).length, total: lessons.length };
+      });
+      const nextT = t.topics.find((x) => !done(x.id));
+      const sc = aptitudeScore({ ...EMPTY_APT, ...al, topics: { ...stats } }, t).score;
+      out.push(row("aptitude", aMods, nextT ? { title: topicInfo(nextT.id)!.title, href: `/account/aptitude/topic/${nextT.id}` } : undefined,
+        sc !== null ? `Aptitude Score ${sc} (${scoreBand(sc)})` : undefined));
     }
     return out;
   }, [courses, track, tasks, visited, startups, profile, scam, byFeature, lastBy, labTracks]);

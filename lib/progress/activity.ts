@@ -25,6 +25,7 @@ export const ACTIVITY_AREAS: ActivityArea[] = [
   { key: "internships", label: "Internships", paths: ["/account/internships", "/account/internships-new", "/account/features/internships", "/dashboard/internships"] },
   { key: "ai", label: "AI & certifications", paths: ["/account/ai"] },
   { key: "communication", label: "Communication Lab", paths: ["/account/communication"] },
+  { key: "aptitude", label: "Aptitude Lab", paths: ["/account/aptitude"] },
   { key: "spotlight", label: "Spotlight", paths: ["/account/spotlight"] },
   { key: "jobready", label: "Resume & interview", paths: ["/account/resume", "/account/interview"] },
   { key: "jobs", label: "Jobs", paths: ["/account/jobs", "/jobs"] },

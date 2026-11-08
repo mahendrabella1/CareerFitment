@@ -29,6 +29,8 @@ import { dayKey } from "@/lib/progress/activity";
 import { tasksDone, type FeatureTaskSpec } from "@/lib/progress/featureTasks";
 import { FEATURES, featureArt } from "@/lib/features/catalog";
 import { bandOf, cqOf, streakOf, trackIdFor } from "@/lib/commLab/scoring";
+import { EMPTY_APT, aptitudeScore, scoreBand } from "@/lib/aptitude/scoring";
+import { aptTrackById, aptTrackFor } from "@/lib/aptitude/tracks";
 import { FeatureSearch, type SearchItem } from "@/components/feature/FeatureSearch";
 import { FP_CSS } from "@/components/feature/styles";
 import { SchoolInbox } from "@/components/SchoolInbox";
@@ -101,6 +103,7 @@ const NAV: { id: string; label: string; icon: string; group: string; art?: strin
   { id: "startups", label: "Startups", icon: "flag", group: "Explore", art: "startups" },
   { id: "ai", label: "AI & Certifications", icon: "cpu", group: "Explore", art: "ai" },
   { id: "communication", label: "Communication Lab", icon: "audio", group: "Explore", art: "communication" },
+  { id: "aptitude", label: "Aptitude Lab", icon: "aptitude", group: "Explore", art: "aptitude" },
   { id: "spotlight", label: "Spotlight", icon: "sparkle", group: "Explore", art: "spotlight" },
   { id: "jobready", label: "Resume & Interview", icon: "doc", group: "Create", art: "jobready" },
   { id: "portfolio", label: "Build your website", icon: "user", group: "Create" },
@@ -159,6 +162,7 @@ const FEATURE_ROUTES: Record<string, string> = {
   "certificates": "/account/certificates",
   "ai": "/account/ai",
   "communication": "/account/communication",
+  "aptitude": "/account/aptitude",
   "spotlight": "/account/spotlight",
   "jobready": "/account/resume/plan",
 };
@@ -241,6 +245,12 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
   // Communication Lab's CQ and streak for its tile (lib/commLab/scoring.ts - no course content).
   const labCq = useMemo(() => cqOf(profile?.commLab?.skills ?? {}, trackIdFor(profile?.category)), [profile]);
   const labStreak = useMemo(() => streakOf(profile?.commLab?.days ?? [], dayKey()).current, [profile]);
+  // Aptitude Lab's score and today's ten for its tile (lib/aptitude/scoring.ts + tracks.ts - no questions loaded).
+  const apt = useMemo(() => {
+    const s = { ...EMPTY_APT, ...profile?.aptitudeLab, topics: { ...profile?.aptitudeLab?.topics } };
+    const t = aptTrackById(s.track) ?? aptTrackFor(profile?.category);
+    return { score: aptitudeScore(s, t).score, streak: streakOf(s.days ?? [], dayKey()).current, today: s.daily?.[dayKey()], track: t };
+  }, [profile]);
   // Opened from REPORT_HREF: this tab is the report's own.
   const [reportTab] = useState(() => typeof window !== "undefined" && new URLSearchParams(window.location.search).get("view") === "report");
   const [view, setView] = useState<"dashboard" | "report" | "feature">(reportTab ? "report" : "dashboard");
@@ -498,6 +508,9 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
     { label: FEATURES.ai.title, kind: "Feature", hint: "Free AI courses with free certificates, and AI tools", href: FEATURES.ai.href, newTab: true },
     { label: FEATURES.communication.title, kind: "Feature", hint: "Speaking, writing and listening - voice practice with feedback, your CQ", href: FEATURES.communication.href, newTab: true },
     { label: "Today's speaking challenge", kind: "Tool", hint: "Communication Lab - 1 minute, out loud", href: "/account/communication/practice", newTab: true },
+    { label: FEATURES.aptitude.title, kind: "Feature", hint: "Maths, reasoning and English practice with worked solutions, mock tests, your Aptitude Score", href: FEATURES.aptitude.href, newTab: true },
+    { label: "Today's 10 aptitude questions", kind: "Tool", hint: "Aptitude Lab - a new mixed set every day", href: "/account/aptitude/daily", newTab: true },
+    { label: "Aptitude mock test", kind: "Tool", hint: "Aptitude Lab - timed, in the style of entrance and placement tests", href: "/account/aptitude/mock", newTab: true },
     { label: `${FEATURES.spotlight.title} - career boosters`, kind: "Feature", hint: "Conferences, research writing, ISBN, ISSN, Awardees Magazine", href: FEATURES.spotlight.href, newTab: true },
     { label: "Submit an abstract", kind: "Tool", hint: "Spotlight - present at a OneGrasp conference", href: "/account/spotlight/conferences", newTab: true },
     { label: "My job plan", kind: "Tool", hint: "Resume, matching jobs and interview practice - six steps to an offer", href: "/account/resume/plan", newTab: true },
@@ -610,7 +623,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                 <Link href="/account/progress" {...NEW_TAB} className="db-more" style={{ marginTop: 0 }}>See my progress <Icon name="arrowRight" size={14} stroke={2} /></Link>
               </div>
               <div className="db-kit">
-                {/* The two newest features, side by side above the twelve tiles. */}
+                {/* The newest features above the twelve tiles: AI and the Communication Lab side by side, then the Aptitude Lab across. */}
                 <Link href={FEATURES.ai.href} {...NEW_TAB} className="db-kit-new">
                   <span className="db-kit-art">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -644,6 +657,23 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                         : <>Today&apos;s 1-minute speaking challenge is ready</>}
                     </span>
                     <span className="db-kit-go" aria-hidden="true">{labCq.cq !== null ? "Continue" : "Start"} <Icon name="arrowRight" size={14} stroke={2} /></span>
+                  </span>
+                </Link>
+                <Link href={FEATURES.aptitude.href} {...NEW_TAB} className="db-kit-new is-apt">
+                  <span className="db-kit-art">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={featureArt("aptitude").card} alt="" loading="lazy" decoding="async" />
+                  </span>
+                  <span className="db-kit-b">
+                    <span className="db-new">New</span>
+                    <b>{FEATURES.aptitude.title}</b>
+                    <small>Maths, reasoning and English practice with a worked solution for every question, and timed mock tests in the style of {apt.track.id === "a4" ? "campus placement tests" : apt.track.id === "a3" ? "CUET and entrance tests" : "Olympiad and NMMS tests"}.</small>
+                    <span className="db-kit-cq">
+                      {apt.score !== null
+                        ? <><b>Aptitude Score {apt.score}</b> · {scoreBand(apt.score)}{apt.streak ? ` · ${apt.streak}-day streak` : ""}{apt.today !== undefined ? ` · today ${apt.today}/10` : ""}</>
+                        : apt.today !== undefined ? <>Today&apos;s 10 done: {apt.today}/10</> : <>Today&apos;s 10 questions are ready - about 8 minutes</>}
+                    </span>
+                    <span className="db-kit-go" aria-hidden="true">{apt.score !== null || apt.today !== undefined ? "Continue" : "Start"} <Icon name="arrowRight" size={14} stroke={2} /></span>
                   </span>
                 </Link>
                 {TOOLKIT.map((t) => {
@@ -1911,6 +1941,9 @@ const DASH_CSS = `
 .db-kit-cq{margin-top:10px;font-size:13px;color:var(--ink2)}
 .db-kit-cq b{color:#0e7490}
 .is-lab .db-new{background:#0e7490}
+.db-kit>a.db-kit-new.is-apt{grid-column:1/-1;border-color:color-mix(in srgb,#0369a1 30%,var(--line));background:linear-gradient(100deg,color-mix(in srgb,#0369a1 7%,#fff),#fff 45%)}
+.is-apt .db-new{background:#0369a1}
+.is-apt .db-kit-cq b{color:#0369a1}
 .db-kit-logos{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;margin-top:10px}
 .db-kit-logos>span{font-size:12px;color:var(--mute)}
 .db-kit-logos img{display:block;width:auto}

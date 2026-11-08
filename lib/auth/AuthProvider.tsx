@@ -7,6 +7,7 @@
 
 import type { StressStore } from "@/lib/stress/types";
 import type { CommLabState } from "@/lib/commLab/types";
+import type { AptitudeState } from "@/lib/aptitude/scoring";
 import {
   createContext,
   useContext,
@@ -192,6 +193,8 @@ export interface UserProfile {
   certificates?: Record<string, { id: string; issuedAt: number }>;
   /** Communication Lab progress, written by the student's browser (components/commLab/CommLabProvider.tsx). */
   commLab?: Partial<CommLabState>;
+  /** Aptitude Lab practice progress, written by the student's browser (components/aptitude/AptitudeProvider.tsx). Not the assessment's aptitude result (aptitudePct). */
+  aptitudeLab?: Partial<AptitudeState>;
   /** Working professionals only: years of work experience ("0-5", "5-15", "15+"). */
   experienceBand?: string;
   /** Working professionals' Stress & Resilience Check (lib/stress/types.ts). */

@@ -224,6 +224,23 @@ export const FEATURES: Record<string, FeatureMeta> = {
       { icon: "award", title: "Free AI courses", text: "More certificates in AI & Certifications.", href: "/account/ai" },
     ],
   },
+  aptitude: {
+    key: "aptitude", title: "Aptitude Lab", href: "/account/aptitude", art: "aptitude", accent: "#0369a1",
+    headline: ["Think faster,", "score higher"], layout: "course", style: "Aptitude practice and mock tests for your class",
+    tagline: "Maths, reasoning and English practice with a worked solution for every question, a new ten-question set every day, and timed mock tests in the style of real entrance and placement exams.",
+    tour: [
+      { icon: "aptitude", title: "Learn a topic, then practise", text: "Each topic starts with a short concept card - the method, an example, a shortcut and the common mistake - then ten questions." },
+      { icon: "check", title: "A worked solution every time", text: "Answer and see straight away how to solve it. Maths and reasoning questions are fresh every time, so you never run out." },
+      { icon: "exam", title: "Timed mock tests", text: "In the style of Olympiad, NMMS, CUET and campus placement tests - with a score for each section." },
+      { icon: "score", title: "Your Aptitude Score", text: "Accuracy and speed in each section, your strongest and weakest topics, and levels that rise as you improve." },
+    ],
+    ctas: [
+      { icon: "calendar", title: "Today's 10", text: "Ten mixed questions - about 8 minutes.", href: "/account/aptitude/daily" },
+      { icon: "exam", title: "Take a mock test", text: "Timed, scored by section.", href: "/account/aptitude/mock" },
+      { icon: "score", title: "My aptitude progress", text: "Accuracy, speed and weak topics.", href: "/account/aptitude/progress" },
+      { icon: "audio", title: "Communication Lab", text: "Speaking and writing practice.", href: "/account/communication" },
+    ],
+  },
   spotlight: {
     key: "spotlight", title: "Spotlight", href: "/account/spotlight", art: "spotlight", accent: "#a16207",
     headline: ["Get published,", "get recognised"], layout: "catalogue", style: "OneGrasp's career boosters - paid services",
