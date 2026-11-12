@@ -4,6 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AuthProvider } from "@/lib/auth/AuthProvider";
 import { ActivityTracker } from "@/components/ActivityTracker";
 import MetaPixel from "@/app/MetaPixel";
+import { BRAND, DEFAULT_DESCRIPTION, DEFAULT_TITLE, KEYWORDS, SITE_NAME, SITE_URL } from "@/lib/seo/site";
 import "./globals.css";
 import "./landing-premium.css";
 import "./hero-cine.css";
@@ -11,10 +12,29 @@ import "./home-sections.css";
 import "./report-premium.css";
 import "./exam-premium.css";
 
+// Search and sharing defaults for every page (lib/seo/site.ts). Public pages set
+// their own title and canonical address with pageMetadata(); private areas are
+// kept out of search by an X-Robots-Tag header (next.config.js). No canonical
+// here - a root canonical would be inherited by every page.
 export const metadata: Metadata = {
-  title: "OneGrasp Career Fitment",
-  description:
-    "Category-based career fitment assessments with a 60+ question journey and fit summary.",
+  metadataBase: new URL(SITE_URL),
+  title: { default: DEFAULT_TITLE, template: `%s | ${BRAND}` },
+  description: DEFAULT_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: KEYWORDS,
+  authors: [{ name: BRAND, url: "https://onegrasp.com" }],
+  creator: BRAND,
+  publisher: BRAND,
+  category: "education",
+  openGraph: { type: "website", siteName: SITE_NAME, locale: "en_IN", title: DEFAULT_TITLE, description: DEFAULT_DESCRIPTION },
+  twitter: { card: "summary_large_image", title: DEFAULT_TITLE, description: DEFAULT_DESCRIPTION },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
+  // Set in Vercel once the site is added to Google Search Console / Bing Webmaster Tools (HTML-tag method).
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
+    other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION } : undefined,
+  },
+  formatDetection: { telephone: false },
 };
 
 // Critical for phones: render at device width (not the 980px fallback) so every

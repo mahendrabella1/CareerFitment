@@ -328,6 +328,8 @@ export default function Landing({ onStart }: { onStart: () => void }) {
           <div className="hm-foot-links">
             <a href={`tel:${CONTACT.phone}`}>{CONTACT.phoneLabel}</a>
             <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+            <a href="/features">All features</a>
+            <a href="/blogs">Blog</a>
             <a href="/jobs">Jobs board</a>
             <a href="/signin">Sign in</a>
           </div>

@@ -6,13 +6,15 @@
  * No JobPosting structured data on purpose: some sources (Remotive) forbid
  * resubmitting their listings to Google Jobs and similar boards.
  */
-import type { Metadata } from "next";
 import { JobBoard } from "@/components/jobs/JobBoard";
+import { pageMetadata } from "@/lib/seo/site";
 
-export const metadata: Metadata = {
-  title: "Jobs and internships | OneGrasp",
+export const metadata = pageMetadata({
+  title: "Jobs and internships for students and freshers",
   description: "Internships and entry-level jobs, updated daily, each checked for scam warning signs. Apply on the employer's own site.",
-};
+  path: "/jobs",
+  keywords: ["internships for students", "jobs for freshers", "remote internships India", "entry level jobs"],
+});
 
 export default function JobsPage() {
   return <JobBoard variant="public" />;

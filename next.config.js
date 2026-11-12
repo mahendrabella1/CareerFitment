@@ -57,11 +57,24 @@ const nextConfig = {
   // every image. Their names aren't versioned, so images get a week (a replaced
   // image shows within a week, at once after a hard refresh); the font files are
   // versioned by name and never change, so they get a year.
+  // "/blog" is a common guess for the blog's address; the blog lives at /blogs.
+  async redirects() {
+    return [
+      { source: "/blog", destination: "/blogs", permanent: true },
+      { source: "/blog/:slug", destination: "/blogs/:slug", permanent: true },
+    ];
+  },
   async headers() {
     const week = [{ key: "Cache-Control", value: "public, max-age=604800, stale-while-revalidate=86400" }];
     const year = [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }];
+    // Kept out of search (but still crawlable, so shared links get their previews):
+    // signed-in areas, admin, the school portal, parent and shared-report links,
+    // student passports, the old /careers pages and the /testing sandbox.
+    const noindex = [{ key: "X-Robots-Tag", value: "noindex, nofollow" }];
+    const PRIVATE = ["/account", "/admin", "/institution", "/parent", "/r", "/report", "/passport", "/careers", "/testing", "/api"];
     return [
       { source: "/:path*", headers: SECURITY_HEADERS },
+      ...PRIVATE.flatMap((p) => [{ source: p, headers: noindex }, { source: `${p}/:path*`, headers: noindex }]),
       ...["home", "features", "jobs", "report", "illustrations", "gallery"].map((dir) => ({ source: `/${dir}/:path*`, headers: week })),
       { source: "/onegrasp-logo-tight.png", headers: week },
       { source: "/why-this-matters.png", headers: week },
