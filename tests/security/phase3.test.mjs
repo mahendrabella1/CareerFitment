@@ -14,7 +14,12 @@ before(() => {
   globalThis.fetch = async (url, init = {}) => {
     if (String(url).includes("accounts:lookup")) {
       const { idToken } = JSON.parse(init.body || "{}");
-      return new Response(JSON.stringify(idToken === "good-token" ? { users: [{ email: "student@example.com", localId: "uid-student", emailVerified: true }] } : { error: {} }), { status: idToken === "good-token" ? 200 : 400 });
+      const users = {
+        "good-token": { email: "student@example.com", localId: "uid-student", emailVerified: true },
+        "admin-unverified": { email: "support@onegrasp.com", localId: "uid-admin", emailVerified: false },
+      };
+      const u = users[idToken];
+      return new Response(JSON.stringify(u ? { users: [u] } : { error: {} }), { status: u ? 200 : 400 });
     }
     return new Response("{}", { status: 200 });
   };
@@ -60,4 +65,17 @@ test("C-03: the paid paper is scored only for signed-in, paid accounts while pay
   assert.match(code("lib/payments/gate.ts"), /snap\.get\("paid"\) === true/);
   assert.match(code("lib/payments/gate.ts"), /status: 402/);
   assert.match(read("app/NewExam.tsx"), /Authorization: `Bearer \$\{idToken\}`/);
+});
+
+test("M-03: an admin needs a verified email - in the rules, the admin API and send-report", async () => {
+  const { requireAdmin } = await import("../../lib/institution/server.ts");
+  const req = new Request("https://test.local/api/admin/x", { headers: { Authorization: "Bearer admin-unverified" } });
+  await assert.rejects(requireAdmin(req), (e) => e.status === 403 && /Verify the admin email/.test(e.message));
+  for (const p of ["firestore.rules", "storage.rules"]) {
+    const rules = read(p);
+    const fn = rules.slice(rules.indexOf("function isAdmin()"), rules.indexOf("}", rules.indexOf("function isAdmin()")));
+    assert.match(fn, /email_verified == true/, p);
+  }
+  assert.match(code("app/api/admin/send-report/route.ts"), /id\.emailVerified && isAdmin\(id\.email\)/);
+  assert.match(read("app/admin/layout.tsx"), /<VerifyAdminEmail user=\{user\}/, "the admin page offers the verification link");
 });

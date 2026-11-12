@@ -9,10 +9,13 @@ service cloud.firestore {
 
     // ---------- Helpers ----------
 
-    // Admins (keep in sync with lib/auth/admins.ts).
+    // Admins (keep in sync with lib/auth/admins.ts). The email must be
+    // verified, so nobody can create an account with the admin's address
+    // before the real admin has proven it (security audit M-03).
     function isAdmin() {
       return request.auth != null
-        && request.auth.token.email in ['support@onegrasp.com'];
+        && request.auth.token.email in ['support@onegrasp.com']
+        && request.auth.token.email_verified == true;
     }
     function signedIn() {
       return request.auth != null;

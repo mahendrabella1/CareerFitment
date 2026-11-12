@@ -19,7 +19,7 @@ function fail(message: string, status = 400) {
 async function verifyAdminEmail(idToken: string): Promise<string | null> {
   try {
     const id = await verifySignIn(idToken);
-    return id?.email && isAdmin(id.email) ? id.email : null;
+    return id?.email && id.emailVerified && isAdmin(id.email) ? id.email : null;
   } catch {
     return null;
   }

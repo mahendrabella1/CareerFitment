@@ -18,9 +18,10 @@ service firebase.storage {
     function isOwner(uid) {
       return signedIn() && request.auth.uid == uid;
     }
-    // Keep in sync with lib/auth/admins.ts and isAdmin() in firestore.rules.
+    // Keep in sync with lib/auth/admins.ts and isAdmin() in firestore.rules
+    // (a verified email is required - security audit M-03).
     function isAdmin() {
-      return signedIn() && request.auth.token.email in ['support@onegrasp.com'];
+      return signedIn() && request.auth.token.email in ['support@onegrasp.com'] && request.auth.token.email_verified == true;
     }
     function allowedUpload() {
       return request.resource.size < 10 * 1024 * 1024

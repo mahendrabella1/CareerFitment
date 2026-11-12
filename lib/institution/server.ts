@@ -37,7 +37,7 @@ export function fail(e: unknown) {
   return NextResponse.json({ error: "Something went wrong on the server. Please try again." }, { status: 500 });
 }
 
-export interface Caller { uid: string; email: string }
+export interface Caller { uid: string; email: string; emailVerified?: boolean }
 
 /** What a student sees when the server isn't set up; the reason goes to the server log. */
 const SETUP_PROBLEM = "This feature isn't available right now - please try again later or contact support@onegrasp.com.";
@@ -85,6 +85,8 @@ export async function caller(req: Request): Promise<Caller> {
 export async function requireAdmin(req: Request): Promise<Caller & { db: Firestore }> {
   const c = await caller(req);
   if (!isAdmin(c.email)) throw new ApiError(403, "Only OneGrasp administrators can do this.");
+  // A verified email, so an account made with the admin's address can't act as admin (security audit M-03).
+  if (!c.emailVerified) throw new ApiError(403, "Verify the admin email address first - open /admin for a verification link.");
   return { ...c, db: await getFirestore() };
 }
 

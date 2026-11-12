@@ -10,6 +10,7 @@
  */
 
 import { useState } from "react";
+import { sendEmailVerification } from "firebase/auth";
 import { useAuth, authErrorMessage } from "@/lib/auth/AuthProvider";
 import { isAdmin, ADMIN_LOGIN_EMAIL } from "@/lib/auth/admins";
 import { Icon } from "@/app/Icons";
@@ -65,6 +66,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </div>
     );
   }
+  // The rules and the admin API accept an admin only with a verified email
+  // (security audit M-03), so say so and offer the link instead of failing quietly.
+  if (admin && user && !user.emailVerified) return <VerifyAdminEmail user={user} logout={logout} />;
   if (!admin) {
     return (
       <Center>
@@ -80,6 +84,33 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <style dangerouslySetInnerHTML={{ __html: ADMIN_CSS }} />
       {children}
     </AdminAuthProvider>
+  );
+}
+
+function VerifyAdminEmail({ user, logout }: { user: import("firebase/auth").User; logout: () => Promise<void> }) {
+  const [state, setState] = useState<"idle" | "sent" | "error">("idle");
+  const send = async () => {
+    try { await sendEmailVerification(user); setState("sent"); } catch { setState("error"); }
+  };
+  const recheck = async () => {
+    try { await user.reload(); await user.getIdToken(true); } catch { /* reload below */ }
+    window.location.reload();
+  };
+  return (
+    <Center>
+      <style dangerouslySetInnerHTML={{ __html: ADMIN_CSS }} />
+      <div style={{ maxWidth: 420, textAlign: "left" }}>
+        <h1 style={{ ...S.loginTitle, marginBottom: 8 }}>Verify the admin email</h1>
+        <p style={{ color: C.ink3, fontSize: 14, lineHeight: 1.6 }}>
+          For security, admin access needs a verified email address. Send a link to <b>{user.email}</b>, open it from that inbox, then come back here.
+        </p>
+        {state === "sent" && <p style={{ fontSize: 14, color: "#1a7f37" }}>Sent - check the inbox (and spam) for a message from Firebase.</p>}
+        {state === "error" && <div style={S.error}>The email couldn&apos;t be sent just now - please try again in a minute.</div>}
+        <button style={S.loginBtn} onClick={() => void send()}>{state === "sent" ? "Send it again" : "Send verification email"}</button>
+        <button style={S.linkBtn} onClick={() => void recheck()}>I&apos;ve verified it - continue</button>
+        <button style={{ ...S.linkBtn, marginLeft: 12 }} onClick={() => void logout()}>Sign out</button>
+      </div>
+    </Center>
   );
 }
 
