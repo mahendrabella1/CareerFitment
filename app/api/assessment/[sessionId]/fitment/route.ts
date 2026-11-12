@@ -1,85 +1,11 @@
-import { NextResponse } from "next/server";
-import { logged, GENERIC_ERROR } from "@/lib/security/serverError";
-import { getSupabaseAdmin } from "@/lib/supabase/client";
-import { isLocalAssessmentMode } from "@/lib/assessmentMode";
-import { getLocalFitment } from "@/lib/localMode/service";
-import { computeFitment } from "@/lib/engine/fitment/computeFitment";
+// Retired (security audit M-07): part of the old pre-registration exam flow,
+// which no page starts any more (app/assessment-experience.tsx sends everyone
+// through /register, the payment gate and NewExam). It used to accept
+// anonymous writes; it now answers 410 Gone. The old code is in git history.
+import { retired } from "@/lib/security/retired";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(
-  _req: Request,
-  { params }: { params: { sessionId: string } }
-) {
-  if (isLocalAssessmentMode()) {
-    try {
-      const data = await getLocalFitment(params.sessionId);
-      return NextResponse.json({
-        success: true,
-        message: "Fitment computed (local mode)",
-        statusCode: 200,
-        data,
-      });
-    } catch (err) {
-      const detail = err instanceof Error ? err.message : String(err);
-      console.error("[assessment/fitment]", detail);
-      const notFound = /not found/i.test(detail);
-      const message = notFound ? "This assessment session wasn't found." : GENERIC_ERROR;
-      return NextResponse.json(
-        { success: false, message, statusCode: notFound ? 404 : 500, data: null },
-        { status: notFound ? 404 : 500 }
-      );
-    }
-  }
-
-  // Supabase path: pull computed scores, shape them like /score, run the matcher.
-  const admin = getSupabaseAdmin();
-  const { data, error } = await admin
-    .from("session_scores")
-    .select(
-      "raw_score, normalized_score, scoring_strategy, blueprint_parameters(name), sub_traits(name)"
-    )
-    .eq("session_id", params.sessionId);
-
-  if (error) {
-    return NextResponse.json(
-      { success: false, message: logged("assessment/fitment", error), statusCode: 500, data: null },
-      { status: 500 }
-    );
-  }
-
-  const byParam = new Map<
-    string,
-    {
-      parameterName: string;
-      scoringStrategy: string;
-      subTraits: { subTraitName: string; rawScore: number; normalizedScore: number }[];
-    }
-  >();
-  for (const row of data ?? []) {
-    const name = (row as any).blueprint_parameters?.name ?? "Unknown";
-    const bucket = byParam.get(name) ?? {
-      parameterName: name,
-      scoringStrategy: (row as any).scoring_strategy,
-      subTraits: [] as {
-        subTraitName: string;
-        rawScore: number;
-        normalizedScore: number;
-      }[],
-    };
-    bucket.subTraits.push({
-      subTraitName: (row as any).sub_traits?.name ?? "Unknown",
-      rawScore: Number((row as any).raw_score ?? 0),
-      normalizedScore: Number((row as any).normalized_score ?? 0),
-    });
-    byParam.set(name, bucket);
-  }
-
-  const result = computeFitment([...byParam.values()]);
-  return NextResponse.json({
-    success: true,
-    message: "Fitment computed",
-    statusCode: 200,
-    data: result,
-  });
+export async function GET() {
+  return retired();
 }

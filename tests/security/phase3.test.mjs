@@ -79,3 +79,14 @@ test("M-03: an admin needs a verified email - in the rules, the admin API and se
   assert.match(code("app/api/admin/send-report/route.ts"), /id\.emailVerified && isAdmin\(id\.email\)/);
   assert.match(read("app/admin/layout.tsx"), /<VerifyAdminEmail user=\{user\}/, "the admin page offers the verification link");
 });
+
+test("M-07: the unreachable legacy exam endpoints are retired (410); report links and leads still work", async () => {
+  for (const [p, m] of [["app/api/assessment/generate/route.ts", "POST"], ["app/api/assessment/[sessionId]/answers/route.ts", "POST"], ["app/api/assessment/[sessionId]/complete/route.ts", "POST"], ["app/api/assessment/[sessionId]/score/route.ts", "GET"], ["app/api/assessment/[sessionId]/fitment/route.ts", "GET"], ["app/api/assessment/[sessionId]/programmes/route.ts", "GET"]]) {
+    const mod = await import(`../../${p}`);
+    assert.equal((await mod[m]()).status, 410, p);
+  }
+  // Nothing in the app can start the old flow.
+  const exp = read("app/assessment-experience.tsx");
+  assert.equal(exp.match(/\bstartAssessment\(/g).length, 1, "defined, never called");
+  for (const p of ["app/api/report/[sessionId]/route.ts", "app/api/leads/route.ts", "app/api/assessment/completion-email/route.ts"]) assert.ok(!read(p).includes("retired()"), `${p} still in use`);
+});

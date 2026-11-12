@@ -1,71 +1,11 @@
-import { NextResponse } from "next/server";
-import { GENERIC_ERROR } from "@/lib/security/serverError";
-import { getSupabaseAdmin } from "@/lib/supabase/client";
-import { generateSession } from "@/lib/engine/selectionEngine";
-import { isLocalAssessmentMode } from "@/lib/assessmentMode";
-import { generateLocalSession } from "@/lib/localMode/service";
+// Retired (security audit M-07): part of the old pre-registration exam flow,
+// which no page starts any more (app/assessment-experience.tsx sends everyone
+// through /register, the payment gate and NewExam). It used to accept
+// anonymous writes; it now answers 410 Gone. The old code is in git history.
+import { retired } from "@/lib/security/retired";
 
 export const dynamic = "force-dynamic";
 
-export async function POST(req: Request) {
-  let body: { journeyCode?: string; userId?: string | null };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json(
-      { success: false, message: "Invalid JSON body", statusCode: 400, data: null },
-      { status: 400 }
-    );
-  }
-
-  if (!body.journeyCode) {
-    return NextResponse.json(
-      { success: false, message: "journeyCode is required", statusCode: 400, data: null },
-      { status: 400 }
-    );
-  }
-
-  
-  // IMPORTANT: Class 6/7 (career_discovery) should use Class6Assessment/Class7Assessment components
-  // which load from JSON files directly. This API should NEVER be called for career_discovery.
-  if (body.journeyCode === "career_discovery") {
-    console.warn("⚠️ API /assessment/generate called for career_discovery journey - should use JSON files instead");
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Career Discovery assessment should use dedicated components, not API",
-        statusCode: 400,
-        data: null,
-      },
-      { status: 400 }
-    );
-  }
-
-  try {
-    const session = isLocalAssessmentMode()
-      ? await generateLocalSession(body.journeyCode, body.userId ?? null)
-      : await generateSession(getSupabaseAdmin(), body.journeyCode, body.userId ?? null);
-
-    const gaps = session.parameters.filter((p) => p.status !== "live");
-    const message =
-      gaps.length > 0
-        ? `Session generated with ${gaps.length} parameter(s) incomplete: ${gaps
-            .map((g) => g.name)
-            .join(", ")}`
-        : "Session generated";
-
-    return NextResponse.json({
-      success: true,
-      message,
-      statusCode: 200,
-      data: session,
-    });
-  } catch (err) {
-    console.error("[assessment/generate]", err instanceof Error ? err.message : err);
-    const message = GENERIC_ERROR;
-    return NextResponse.json(
-      { success: false, message, statusCode: 500, data: null },
-      { status: 500 }
-    );
-  }
+export async function POST() {
+  return retired();
 }
