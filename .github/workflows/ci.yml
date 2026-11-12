@@ -1,0 +1,32 @@
+# Type-check and test every push and pull request (security audit L-07).
+# npm audit is reported but doesn't fail the build - it flags issues that need a
+# decision (e.g. a framework upgrade), not a reflex.
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - name: npm audit (report only)
+        run: npm audit --omit=dev || true

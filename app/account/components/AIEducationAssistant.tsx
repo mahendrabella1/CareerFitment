@@ -14,6 +14,7 @@
 import { useState, useRef, useEffect } from "react";
 import { colors, spacing, typography, radius, shadows } from "@/app/account/designTokens";
 import { Card, SectionHeader } from "@/app/account/components";
+import { getFirebaseAuth } from "@/lib/firebase/client";
 
 interface AIMessage {
   role: "user" | "assistant";
@@ -57,7 +58,7 @@ export function AIEducationAssistant({ studentId, context, onClose }: AssistantP
 
   async function loadDefaultQuestions() {
     try {
-      const response = await fetch(`/api/ai/search?type=questions&studentId=${studentId}`);
+      const response = await fetch("/api/ai/search?type=questions");
       const data = await response.json();
       if (data.success) {
         setSuggestedQuestions(data.questions);
@@ -78,12 +79,14 @@ export function AIEducationAssistant({ studentId, context, onClose }: AssistantP
     setLoading(true);
 
     try {
+      // The server identifies the student from their sign-in, never from studentId.
+      const token = await getFirebaseAuth()?.currentUser?.getIdToken().catch(() => "");
+      if (!token) { setError("Please sign in to ask a question."); return; }
       const response = await fetch("/api/ai/search", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           question: input,
-          studentId,
           context,
           messages: [...messages, userMessage],
         }),
@@ -102,7 +105,7 @@ export function AIEducationAssistant({ studentId, context, onClose }: AssistantP
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
-      setRemainingPrompts(data.remainingPrompts);
+      if (typeof data.remainingPrompts === "number") setRemainingPrompts(data.remainingPrompts);
     } catch (err) {
       setError("Network error. Please try again.");
       console.error(err);

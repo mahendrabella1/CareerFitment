@@ -170,7 +170,7 @@ export function ReviewForm() {
           <label style={label}>University email<input type="email" value={draft.universityEmail ?? ""} onChange={(e) => set({ universityEmail: e.target.value.trim() })} style={input} /></label>
         ) : (
           <label style={label}>Offer letter, student ID or degree certificate (PDF or image)
-            <input type="file" accept=".pdf,image/*" onChange={(e) => setProof(e.target.files?.[0] ?? null)} style={{ fontSize: 13 }} />
+            <input type="file" accept=".pdf,image/png,image/jpeg,image/webp,image/heic,image/heif" onChange={(e) => setProof(e.target.files?.[0] ?? null)} style={{ fontSize: 13 }} />
           </label>
         )}
         <label style={{ ...label, marginTop: 10 }}>Name to show (first name and surname initial)<input value={draft.displayName} onChange={(e) => set({ displayName: e.target.value })} placeholder="e.g. Priya S" style={input} /></label>

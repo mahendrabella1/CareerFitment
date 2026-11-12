@@ -18,7 +18,10 @@
     "test:boosters": "node --import ./tests/jobs/register.mjs --test \"tests/boosters/*.test.mjs\"",
     "test:institution": "node --import ./tests/jobs/register.mjs --test \"tests/institution/*.test.mjs\"",
     "test:jobready": "node --import ./tests/jobs/register.mjs --test \"tests/jobready/*.test.mjs\"",
-    "test:aptitude": "node --import ./tests/jobs/register.mjs --test \"tests/aptitude/*.test.mjs\""
+    "test:aptitude": "node --import ./tests/jobs/register.mjs --test \"tests/aptitude/*.test.mjs\"",
+    "test": "node --import ./tests/jobs/register.mjs --test \"tests/**/*.test.mjs\"",
+    "test:security": "node --import ./tests/jobs/register.mjs --test \"tests/security/*.test.mjs\"",
+    "test:rules": "firebase emulators:exec --only firestore,storage --project demo-onegrasp \"node --test tests/rules/*.spec.mjs\""
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.5.1",

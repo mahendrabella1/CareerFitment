@@ -20,6 +20,8 @@ function findFile(base) {
 }
 
 export async function resolve(specifier, context, next) {
+  // Route handlers import "next/server"; outside the Next bundler Node needs the file name.
+  if (specifier === "next/server") return next("next/server.js", context);
   let base = null;
   if (specifier.startsWith("@/")) base = path.join(ROOT, specifier.slice(2));
   else if ((specifier.startsWith("./") || specifier.startsWith("../")) && context.parentURL?.startsWith("file:")) {

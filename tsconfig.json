@@ -36,6 +36,7 @@
   ],
   "exclude": [
     "node_modules",
+    "**/*.test.ts",
     "careerr counselling",
     "project"
   ]

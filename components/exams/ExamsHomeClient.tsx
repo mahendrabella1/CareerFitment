@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth/AuthProvider";
+import { getFirebaseAuth } from "@/lib/firebase/client";
 import { EXAMS, type ExamDef } from "@/data/exams/exams";
 import { evaluate, type Verdict } from "@/lib/exams/eligibility";
 import { fetchExamProfile, saveExamProfile, type ExamProfile } from "@/lib/exams/clientProfile";
@@ -134,10 +135,13 @@ export function ExamsHomeClient() {
       const followedExams = EXAMS.filter((e) => followed.has(e.slug));
       const alertsSent = await fetchAlertsSentKeys(user.uid);
       const due = dueAlerts(followedExams, alertsSent);
+      // The server sends to this account's own verified email and looks the exam up by slug.
+      const token = due.length ? await getFirebaseAuth()?.currentUser?.getIdToken().catch(() => "") : "";
+      if (!token) return;
       for (const alert of due) {
         const res = await fetch("/api/exams/send-alert", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ to: user.email, examName: alert.examName, message: alert.message, officialUrl: EXAMS.find((e) => e.slug === alert.examSlug)?.officialUrl }),
+          method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ examSlug: alert.examSlug, message: alert.message }),
         }).then((r) => r.json()).catch(() => ({ success: false }));
         if (res.success) await recordAlertSent(user.uid, alert.examSlug, alert.eventKind);
       }

@@ -1,0 +1,52 @@
+rules_version = '2';
+
+// Firebase Storage rules for OneGrasp (security audit H-07). The app stores
+// files in three places, all written from the student's own browser:
+//   scholarshipVault/{uid}/...   - Scholarships → Document vault (lib/scholarships/clientVault.ts)
+//   studyAbroadVault/{uid}/...   - Study Abroad → Document vault (lib/studyAbroad/clientVault.ts)
+//   reviewVerification/{uid}/... - proof attached to a study-abroad review (lib/studyAbroad/clientReviews.ts)
+// Only the owner may read, list, add or delete their own files; admins may read
+// review proofs to verify them. Uploads must be a PDF, an image or a Word file
+// under 10 MB, and a file can't be overwritten. Everything else is denied.
+// Deploy with `firebase deploy --only storage` - keep this file identical to
+// what is deployed.
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn() {
+      return request.auth != null;
+    }
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+    // Keep in sync with lib/auth/admins.ts and isAdmin() in firestore.rules.
+    function isAdmin() {
+      return signedIn() && request.auth.token.email in ['support@onegrasp.com'];
+    }
+    function allowedUpload() {
+      return request.resource.size < 10 * 1024 * 1024
+        && (request.resource.contentType == 'application/pdf'
+          || request.resource.contentType.matches('image/(png|jpeg|webp|heic|heif)')
+          || request.resource.contentType == 'application/msword'
+          || request.resource.contentType == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    }
+
+    match /scholarshipVault/{uid}/{file} {
+      allow read, delete: if isOwner(uid);
+      allow create: if isOwner(uid) && allowedUpload();
+    }
+
+    match /studyAbroadVault/{uid}/{file} {
+      allow read, delete: if isOwner(uid);
+      allow create: if isOwner(uid) && allowedUpload();
+    }
+
+    match /reviewVerification/{uid}/{file} {
+      allow read: if isOwner(uid) || isAdmin();
+      allow create: if isOwner(uid) && allowedUpload();
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -87,7 +87,8 @@ export async function getCoupons(): Promise<Coupon[]> {
     }).filter((c) => c.code);
   } catch (e) {
     console.error("[coupons] could not read the coupons collection:", e instanceof Error ? e.message : e);
-    return [...FALLBACK_COUPONS];
+    // An outage must never make the free code work (security audit H-03): keep only paid discounts.
+    return FALLBACK_COUPONS.filter((c) => c.percentOff < 100);
   }
 }
 

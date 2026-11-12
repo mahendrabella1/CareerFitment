@@ -3,6 +3,7 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth/AuthProvider";
+import { getFirebaseAuth } from "@/lib/firebase/client";
 import { SCHOLARSHIPS, SCHOLARSHIP_TYPE_LABEL, cycleDate, liveStatus, type ScholarshipDef } from "@/data/scholarships/scholarships";
 import { evaluate, SITUATIONS, type Verdict } from "@/lib/scholarships/eligibility";
 import { fetchScholarshipProfile, saveScholarshipProfile, type StoredScholarshipProfile } from "@/lib/scholarships/clientProfile";
@@ -260,10 +261,13 @@ export function ScholarshipsHomeClient() {
       const alertsSent = await fetchAlertsSentKeys(user.uid);
       const matched = byVerdict.ELIGIBLE.map((r) => ({ scholarship: r.scholarship, closesAt: closesAtOf(r.scholarship) }));
       const due = dueScholarshipAlerts(matched, alertsSent);
+      // The server sends to this account's own verified email and looks the scholarship up by slug.
+      const token = due.length ? await getFirebaseAuth()?.currentUser?.getIdToken().catch(() => "") : "";
+      if (!token) return;
       for (const alert of due) {
         const res = await fetch("/api/scholarships/send-alert", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ to: user.email, scholarshipName: alert.scholarshipName, message: alert.message, officialUrl: SCHOLARSHIPS.find((s) => s.slug === alert.scholarshipSlug)?.officialUrl }),
+          method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ scholarshipSlug: alert.scholarshipSlug, message: alert.message }),
         }).then((r) => r.json()).catch(() => ({ success: false }));
         if (res.success) await recordAlertSent(user.uid, alert.scholarshipSlug, alert.eventKind);
       }

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { safeInternalPath } from "@/lib/security/sanitize";
 import { ApiError, fail, requireInstitution, studentsOf } from "@/lib/institution/server";
 import { categoryLabel } from "@/lib/auth/formOptions";
 import { sendMessageEmails } from "@/lib/institution/messageEmail";
@@ -72,7 +73,8 @@ export async function POST(req: Request) {
     const kind = KINDS.includes(body.kind as MessageKind) ? (body.kind as MessageKind) : "message";
     const title = String(body.title ?? "").trim().slice(0, 120);
     const text = String(body.body ?? "").trim().slice(0, 2000);
-    const link = typeof body.link === "string" && /^\/[A-Za-z0-9/_\-?=&.#]*$/.test(body.link) ? body.link : undefined;
+    // A path on this site only - "//other-site" or "/\other-site" would leave it (security audit L-03).
+    const link = typeof body.link === "string" && /^\/[A-Za-z0-9/_\-?=&.#]*$/.test(body.link) ? safeInternalPath(body.link) ?? undefined : undefined;
     if (!title) throw new ApiError(400, "Add a title.");
     if (!text) throw new ApiError(400, "Write the message.");
 

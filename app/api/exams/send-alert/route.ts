@@ -1,21 +1,26 @@
-// Stateless deadline-alert email, mirroring app/api/startups/grade/route.ts's
-// own shape - no server-side auth check (this app has none anywhere), no
-// Firestore access here at all. The client already knows which alert is due
-// (lib/exams/alertLogic.ts, run against data it already read) and records
-// the "sent" dedup entry itself after this call succeeds
-// (lib/exams/clientFollow.ts's recordAlertSent) - this route only sends.
+// Deadline-alert email for an exam the signed-in student follows. The client
+// works out which alert is due (lib/exams/alertLogic.ts) and records the "sent"
+// entry itself afterwards (lib/exams/clientFollow.ts recordAlertSent); this
+// route only sends.
+//
+// Security audit H-01: it used to send whatever the body said to whatever
+// address the body named - an open mail relay with OneGrasp's name on it. Now:
+// the caller must be signed in, the email goes only to their own verified
+// address, the exam (its name and link) comes from our own data by slug, and
+// the message is one line of plain text.
 import { NextResponse } from "next/server";
 import { sendExamDeadlineEmail } from "@/lib/exams/alertEmail";
+import { examBySlug } from "@/data/exams/exams";
+import { bearerIdentity } from "@/lib/security/requestAuth";
+import { plainText, safeHttpUrl } from "@/lib/security/sanitize";
 
 export async function POST(req: Request) {
-  const body = (await req.json().catch(() => null)) as {
-    to?: string; name?: string | null; examName?: string; message?: string; officialUrl?: string;
-  } | null;
-  if (!body?.to || !body.examName || !body.message) {
-    return NextResponse.json({ success: false, error: "bad_request" }, { status: 400 });
-  }
-  const sent = await sendExamDeadlineEmail({
-    to: body.to, name: body.name ?? null, examName: body.examName, message: body.message, officialUrl: body.officialUrl ?? "",
-  });
+  const who = await bearerIdentity(req);
+  if (!who?.email) return NextResponse.json({ success: false, error: "sign_in" }, { status: 401 });
+  const body = (await req.json().catch(() => null)) as { examSlug?: unknown; message?: unknown } | null;
+  const exam = examBySlug(String(body?.examSlug ?? ""));
+  const message = plainText(body?.message, 200);
+  if (!exam || !message) return NextResponse.json({ success: false, error: "bad_request" }, { status: 400 });
+  const sent = await sendExamDeadlineEmail({ to: who.email, name: null, examName: exam.name, message, officialUrl: safeHttpUrl(exam.officialUrl) });
   return NextResponse.json({ success: sent });
 }

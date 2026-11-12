@@ -1,184 +1,66 @@
 /**
- * API Route: POST /api/ai/search
+ * API Route: /api/ai/search - the AI education assistant
+ * (app/account/components/AIEducationAssistant.tsx).
  *
- * Secure backend endpoint for AI education search
- * - Validates API key on backend (never exposed to frontend)
- * - Tracks prompt usage
- * - Validates questions
- * - Returns personalized responses
+ * Security audit H-02: it used to answer anyone, for any "studentId", with no
+ * limit and with a caller-supplied conversation (including system messages)
+ * sent straight to the model. Now:
+ *   - the caller must be signed in (Firebase ID token); the uid comes from the token;
+ *   - 20 questions per student per day (lib/ai/quota.ts chargeDaily, server-only aiUsage);
+ *   - only user/assistant messages are forwarded - the last 10, each cut to
+ *     2,000 characters - and the question to 1,000;
+ *   - errors reaching the browser are generic; details go to the server log.
  */
-
 import { NextRequest, NextResponse } from "next/server";
-import {
-  askEducationQuestion,
-  validateQuestion,
-  getRemainingPrompts,
-  type StudentContext,
-  type AIMessage,
-} from "@/lib/ai/groqService";
+import { askEducationQuestion, validateQuestion, type StudentContext } from "@/lib/ai/groqService";
+import { cleanHistory } from "@/lib/ai/searchHistory";
+import { envKey } from "@/lib/ai/keys";
+import { chargeDaily } from "@/lib/ai/quota";
+import { getFirestore } from "@/lib/firebase/admin";
+import { ApiError, caller } from "@/lib/institution/server";
 
-/**
- * POST /api/ai/search
- *
- * Body:
- * {
- *   "question": string,
- *   "studentId": string,
- *   "context": StudentContext,
- *   "messages": AIMessage[]  // conversation history
- * }
- *
- * Response:
- * {
- *   "success": boolean,
- *   "message": string,
- *   "remainingPrompts": number,
- *   "error": string (if failed)
- * }
- */
+export const dynamic = "force-dynamic";
+
+const DAILY_LIMIT = 20;
+const MAX_QUESTION = 1000;
+
+const fail = (status: number, error: string) => NextResponse.json({ success: false, error }, { status });
+
 export async function POST(request: NextRequest) {
   try {
-    // Check if Groq API key is configured
-    if (!process.env.GROQ_API_KEY) {
-      console.error("GROQ_API_KEY not configured");
-      return NextResponse.json(
-        {
-          success: false,
-          error: "AI service not available. Please contact support.",
-        },
-        { status: 500 }
-      );
-    }
+    const { uid } = await caller(request);
+    if (!envKey("GROQ_API_KEY")) return fail(503, "The AI assistant isn't available right now.");
 
-    const body = await request.json();
-    const { question, studentId, context, messages } = body;
+    const body = (await request.json().catch(() => null)) as { question?: unknown; context?: unknown; messages?: unknown } | null;
+    const question = String(body?.question ?? "").trim().slice(0, MAX_QUESTION);
+    const context = body?.context && typeof body.context === "object" ? (body.context as StudentContext) : null;
+    if (!question || !context || JSON.stringify(context).length > 4000) return fail(400, "Please type a question.");
 
-    // Validate input
-    if (!question || !studentId || !context) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Missing required fields: question, studentId, context",
-        },
-        { status: 400 }
-      );
-    }
-
-    // Validate question is in scope
     const validation = validateQuestion(question);
-    if (!validation.valid) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: validation.reason || "Invalid question",
-        },
-        { status: 400 }
-      );
-    }
+    if (!validation.valid) return fail(400, validation.reason || "Please ask a question about studies or careers.");
 
-    // TODO: In production, fetch actual usage from database
-    // For now, assume student has prompts remaining
-    const estimatedRemaining = 7; // Would come from database
-
-    if (estimatedRemaining <= 0) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "You've used all your questions for this month. Check back next month!",
-          remainingPrompts: 0,
-        },
-        { status: 429 }
-      );
-    }
-
-    // Build message history for Groq
-    const conversationMessages: AIMessage[] = messages || [];
-    conversationMessages.push({
-      role: "user",
-      content: question,
-    });
-
-    // Call Groq API
-    const response = await askEducationQuestion(conversationMessages, context as StudentContext);
-
-    // TODO: In production, save to database:
-    // - conversation log
-    // - update usedPrompts count
-    // - track timestamp
-
-    return NextResponse.json(
-      {
-        success: true,
-        message: response.message,
-        remainingPrompts: estimatedRemaining - 1,
-        tokensUsed: response.tokensUsed,
-        model: response.model,
-      },
-      { status: 200 }
-    );
+    const used = await chargeDaily(await getFirestore(), uid, "search", DAILY_LIMIT, `That's ${DAILY_LIMIT} questions today - ask again tomorrow.`);
+    const response = await askEducationQuestion(cleanHistory(body?.messages, question), context);
+    return NextResponse.json({ success: true, message: response.message, remainingPrompts: Math.max(0, DAILY_LIMIT - used) });
   } catch (error) {
-    console.error("AI search error:", error);
-
-    const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
-
-    return NextResponse.json(
-      {
-        success: false,
-        error: `Failed to get response: ${errorMessage}`,
-      },
-      { status: 500 }
-    );
+    if (error instanceof ApiError) return fail(error.status, error.message);
+    console.error("[ai/search]", error instanceof Error ? error.message : error);
+    return fail(500, "The AI assistant couldn't answer just now - please try again.");
   }
 }
 
-/**
- * GET /api/ai/search?type=questions&studentId=...
- *
- * Get default suggested questions for the student
- */
+/** GET /api/ai/search?type=questions - suggested starter questions (static, no student data). */
 export async function GET(request: NextRequest) {
-  try {
-    const searchParams = request.nextUrl.searchParams;
-    const type = searchParams.get("type");
-    const studentId = searchParams.get("studentId");
-
-    if (type === "questions" && studentId) {
-      // TODO: Fetch student context from database
-      // For now, return generic questions
-
-      const defaultQuestions = [
-        "Which careers match my profile?",
-        "What subjects should I focus on?",
-        "What should I do after Class 10?",
-        "Which colleges should I target?",
-        "What entrance exams should I take?",
-        "How should I prepare for my future?",
-      ];
-
-      return NextResponse.json(
-        {
-          success: true,
-          questions: defaultQuestions,
-        },
-        { status: 200 }
-      );
-    }
-
-    return NextResponse.json(
-      {
-        success: false,
-        error: "Invalid request",
-      },
-      { status: 400 }
-    );
-  } catch (error) {
-    console.error("AI questions error:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: "Failed to get questions",
-      },
-      { status: 500 }
-    );
-  }
+  if (request.nextUrl.searchParams.get("type") !== "questions") return fail(400, "Invalid request");
+  return NextResponse.json({
+    success: true,
+    questions: [
+      "Which careers match my profile?",
+      "What subjects should I focus on?",
+      "What should I do after Class 10?",
+      "Which colleges should I target?",
+      "What entrance exams should I take?",
+      "How should I prepare for my future?",
+    ],
+  });
 }

@@ -5,12 +5,17 @@ import { sendLeadNotificationEmail } from "@/lib/leadEmail";
 import { razorpayKeySecret } from "@/lib/razorpay";
 import { getPaymentSettings } from "@/lib/paymentSettings";
 import { priceWithCoupon } from "@/lib/coupons";
-import { emailFromToken } from "@/lib/firebaseIdentity";
+import { identityFromToken } from "@/lib/firebaseIdentity";
+import { getFirestore, isFirestoreConfigured } from "@/lib/firebase/admin";
+import { ORDER_ID_RE, PAYMENT_ID_RE, claimPayment } from "@/lib/payments/claim";
 
 // POST /api/payment/verify - verifies the Razorpay signature server-side (the
-// security-critical step; never trust the client). The signed-in client records
-// "paid" in Firestore itself (allowed by the user's own security rule), so this
-// route needs no admin credentials. Email is best-effort.
+// security-critical step; never trust the client), then - when this deployment
+// has Firebase admin credentials and the caller is signed in - ties the payment
+// to that one account (lib/payments/claim.ts, security audit H-04): a payment
+// already used by another account is refused with 409. The browser still
+// records "paid" too until the rules lock that field (audit C-03). Email is
+// best-effort.
 export async function POST(req: Request) {
   // Same trimmed value the order route authenticated with - the signature is an
   // HMAC keyed on it, so any drift here would reject every genuine payment.
@@ -37,6 +42,9 @@ export async function POST(req: Request) {
   if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
     return NextResponse.json({ success: false, message: "Missing payment details" }, { status: 400 });
   }
+  if (!ORDER_ID_RE.test(String(razorpay_order_id)) || !PAYMENT_ID_RE.test(String(razorpay_payment_id)) || !/^[a-f0-9]{64}$/i.test(String(razorpay_signature))) {
+    return NextResponse.json({ success: false, message: "Invalid payment details" }, { status: 400 });
+  }
 
   // Verify signature = HMAC_SHA256(order_id|payment_id, secret).
   const expected = crypto
@@ -53,10 +61,26 @@ export async function POST(req: Request) {
   // passed. The amount is re-derived from the same coupon rules the order was
   // priced with - for REPORTING only; the money itself was fixed when Razorpay
   // accepted the order, and the signature above is what proves it was paid.
-  const email = (await emailFromToken(idToken)) || String(profile?.email || "");
+  const who = await identityFromToken(idToken);
+  const email = who.email || String(profile?.email || "");
   const settings = await getPaymentSettings();
   const priced = await priceWithCoupon(settings.amountPaise, coupon);
   const amount = priced.payablePaise;
+
+  // One payment, one account.
+  if (who.uid && isFirestoreConfigured()) {
+    try {
+      const result = await claimPayment(await getFirestore(), {
+        uid: who.uid, paymentId: razorpay_payment_id, orderId: razorpay_order_id, amountPaise: amount, couponCode: priced.coupon?.code ?? null,
+      });
+      if (result === "claimed_by_other") {
+        return NextResponse.json({ success: false, message: "This payment has already been used by another account. Please contact support@onegrasp.com." }, { status: 409 });
+      }
+      if (result === "already_yours") return NextResponse.json({ success: true, paymentId: razorpay_payment_id });
+    } catch (e) {
+      console.error("[payment/verify] could not record the payment:", e instanceof Error ? e.message : e);
+    }
+  }
   const p = profile || {};
   const name = String(p.name || "");
   void Promise.all([

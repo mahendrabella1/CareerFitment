@@ -46,7 +46,7 @@ export function AbroadDocumentVaultClient() {
                 <span style={{ fontSize: 13.5, fontWeight: 700, color: "#0f172a" }}>{ABROAD_VAULT_DOC_LABELS[kind]}</span>
                 <label style={{ fontSize: 11.5, fontWeight: 700, color: "#fff", background: ACCENT, padding: "6px 12px", borderRadius: 8, cursor: "pointer" }}>
                   {uploading === kind ? "Uploading…" : existing.length ? "Replace" : "Upload"}
-                  <input type="file" style={{ display: "none" }} onChange={(e) => { const f = e.target.files?.[0]; if (f) onUpload(kind, f); e.target.value = ""; }} />
+                  <input type="file" accept=".pdf,.doc,.docx,image/png,image/jpeg,image/webp,image/heic,image/heif" style={{ display: "none" }} onChange={(e) => { const f = e.target.files?.[0]; if (f) onUpload(kind, f); e.target.value = ""; }} />
                 </label>
               </div>
               {existing.map((f) => (

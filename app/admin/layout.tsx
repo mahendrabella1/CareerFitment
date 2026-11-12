@@ -10,30 +10,22 @@
  */
 
 import { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useAuth, authErrorMessage } from "@/lib/auth/AuthProvider";
 import { isAdmin, ADMIN_LOGIN_EMAIL } from "@/lib/auth/admins";
-import { getFirebaseAuth } from "@/lib/firebase/client";
 import { Icon } from "@/app/Icons";
 import { C } from "@/app/account/viz";
 import { ADMIN_CSS, Center, AdminAuthProvider } from "./adminShared";
 
-/**
- * ⚠️ DEV-ONLY admin shortcut. Lets the redesigned /admin be reviewed with a
- * hardcoded credential, WITHOUT a live Firebase admin user. Automatically
- * disabled in production builds (NODE_ENV === "production").
- * REMOVE this block (and the `bypass` logic below) before shipping.
- */
-const DEV_ADMIN = { email: "support@onegrasp.com", password: "onegrasp@2026" };
-const DEV_BYPASS_ENABLED = process.env.NODE_ENV !== "production";
-
+// Sign-in is an ordinary Firebase sign-in with the admin's own password; whether
+// the account is an admin is decided by lib/auth/admins.ts here and by
+// isAdmin() in firestore.rules for every read. There is no built-in password,
+// shortcut or account creation on this page (security audit C-01).
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { ready, loading, user, logout, signIn } = useAuth();
-  const [bypass, setBypass] = useState(false); // DEV-ONLY local admin shortcut
-  const admin = isAdmin(user?.email) || bypass;
+  const admin = isAdmin(user?.email);
 
   const [email, setEmail] = useState(ADMIN_LOGIN_EMAIL);
-  const [password, setPassword] = useState(DEV_BYPASS_ENABLED ? DEV_ADMIN.password : "");
+  const [password, setPassword] = useState("");
   const [signingIn, setSigningIn] = useState(false);
   const [loginError, setLoginError] = useState("");
 
@@ -41,44 +33,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     e.preventDefault();
     setLoginError("");
     setSigningIn(true);
-    const isDevAdmin = email.trim().toLowerCase() === DEV_ADMIN.email && password === DEV_ADMIN.password;
     try {
-      // Real Firebase sign-in - sets request.auth so Firestore rules allow the reads.
       await signIn(email, password);
     } catch (err) {
-      const code = (err as { code?: string })?.code || "";
-      const notFound = code.includes("user-not-found") || code.includes("invalid-credential");
-      // DEV-ONLY: bootstrap the admin account so the hardcoded credential becomes
-      // a real Firebase admin the first time it's used (rules then pass on data).
-      if (DEV_BYPASS_ENABLED && isDevAdmin && notFound) {
-        try {
-          const auth = getFirebaseAuth();
-          if (auth) await createUserWithEmailAndPassword(auth, DEV_ADMIN.email, DEV_ADMIN.password);
-          // onAuthStateChanged picks up the new session → dashboard + data load.
-          return;
-        } catch (e2) {
-          const c2 = (e2 as { code?: string })?.code || "";
-          if (c2.includes("operation-not-allowed")) {
-            setLoginError("Enable Email/Password sign-in in Firebase → Authentication → Sign-in method, then try again.");
-          } else if (DEV_BYPASS_ENABLED) {
-            // Last resort: show the redesigned shell without live data.
-            setBypass(true);
-          } else {
-            setLoginError(authErrorMessage(e2));
-          }
-        }
-      } else {
-        setLoginError(authErrorMessage(err));
-      }
+      setLoginError(authErrorMessage(err));
     } finally {
       setSigningIn(false);
     }
   }
 
-  if (!ready && !DEV_BYPASS_ENABLED) return <Center>Accounts aren’t configured on this deployment yet.</Center>;
-  if (loading && !bypass) return <Center>Loading…</Center>;
+  if (!ready) return <Center>Accounts aren’t configured on this deployment yet.</Center>;
+  if (loading) return <Center>Loading…</Center>;
 
-  if (!user && !bypass) {
+  if (!user) {
     return (
       <div style={{ minHeight: "100vh", background: "#fbfaf8", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, fontFamily: "Inter, system-ui, Segoe UI, sans-serif", color: INK }}>
         <style dangerouslySetInnerHTML={{ __html: ADMIN_CSS }} />
@@ -90,7 +57,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <label style={S.loginLabel}>Email</label>
           <input style={S.loginInput} type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="admin@onegrasp.com" />
           <label style={{ ...S.loginLabel, marginTop: 12 }}>Password</label>
-          <input style={S.loginInput} type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+          <input style={S.loginInput} type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
           <button type="submit" style={{ ...S.loginBtn, ...(signingIn ? { opacity: 0.6 } : {}) }} disabled={signingIn}>
             {signingIn ? "Signing in…" : "Sign in"}
           </button>
@@ -109,7 +76,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <AdminAuthProvider value={{ email: user?.email || DEV_ADMIN.email, logout: async () => { setBypass(false); await logout(); } }}>
+    <AdminAuthProvider value={{ email: user?.email || "", logout }}>
       <style dangerouslySetInnerHTML={{ __html: ADMIN_CSS }} />
       {children}
     </AdminAuthProvider>

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { safeInternalPath } from "@/lib/security/sanitize";
 import { ApiError, belongsTo, fail, requireAdmin } from "@/lib/institution/server";
 import { categoryLabel } from "@/lib/auth/formOptions";
 import { sendMessageEmails } from "@/lib/institution/messageEmail";
@@ -61,7 +62,8 @@ export async function POST(req: Request) {
         && (!insts.length || insts.some((i) => belongsTo(i, d.get("institution"))))
         && (!classes.length || classes.includes(String(d.get("category") || ""))));
       if (!targets.length) throw new ApiError(400, "No students match.");
-      const link = typeof b.link === "string" && /^\/[A-Za-z0-9/_\-?=&.#]*$/.test(b.link) ? b.link : undefined;
+      // A path on this site only - "//other-site" or "/\other-site" would leave it (security audit L-03).
+    const link = typeof b.link === "string" && /^\/[A-Za-z0-9/_\-?=&.#]*$/.test(b.link) ? safeInternalPath(b.link) ?? undefined : undefined;
       const ref = db.collection("institutionMessages").doc();
       const label = [insts.length ? insts.map((i) => i.name).join(", ") : "All students", classes.length ? classes.map(categoryLabel).join(", ") : ""].filter(Boolean).join(" · ");
       const m: InstitutionMessage = {

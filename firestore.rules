@@ -55,8 +55,14 @@ service cloud.firestore {
     // The school, archive and link fields are admin/server-only after sign-up.
     match /users/{uid} {
       allow read: if signedIn() && (request.auth.uid == uid || isAdmin());
+      // Sign-up may set `institution` (the form asks for it) but nothing else
+      // admin-only, can't start out paid and can't claim another uid
+      // (security audit H-05).
       allow create: if isAdmin() || (signedIn() && request.auth.uid == uid
-        && request.resource.data.get('archived', false) == false);
+        && request.resource.data.get('archived', false) == false
+        && request.resource.data.get('paid', false) == false
+        && request.resource.data.get('uid', uid) == uid
+        && !request.resource.data.keys().hasAny(['institutionalLinkCode', 'archivedAt', 'testDrives', 'decision', 'certificates', 'boosterRequests']));
       allow update: if isAdmin() || (signedIn() && request.auth.uid == uid
         && !request.resource.data.diff(resource.data).affectedKeys().hasAny(adminOnlyUserFields()));
       // Deleting their own document would also delete an archive flag.
@@ -238,9 +244,9 @@ service cloud.firestore {
     }
 
     // ---------- Everything else denied by default ----------
-    // (leads, assessmentSessions, question_banks, couponRedemptions and
-    // stressBenchmarks are used server-side with the Admin SDK, which
-    // bypasses these rules.)
+    // (leads, assessmentSessions, question_banks, couponRedemptions,
+    // stressBenchmarks and payments are used server-side with the Admin SDK,
+    // which bypasses these rules.)
     match /{document=**} {
       allow read, write: if false;
     }
