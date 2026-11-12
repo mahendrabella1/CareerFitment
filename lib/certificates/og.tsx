@@ -12,10 +12,11 @@ export const OG_SIZE = { width: 1200, height: 630 };
 type OgFont = { name: string; data: ArrayBuffer; weight: 400 | 600 | 700; style: "normal" };
 
 async function googleFont(family: string, weight: number, text: string): Promise<ArrayBuffer> {
-  const css = await (await fetch(`https://fonts.googleapis.com/css2?family=${family}:wght@${weight}&text=${encodeURIComponent(text)}`)).text();
+  // force-cache: Next 15 no longer caches fetch by default; the font files never change.
+  const css = await (await fetch(`https://fonts.googleapis.com/css2?family=${family}:wght@${weight}&text=${encodeURIComponent(text)}`, { cache: "force-cache" })).text();
   const src = css.match(/src: url\((.+?)\) format\('(opentype|truetype)'\)/);
   if (!src) throw new Error("no font");
-  const res = await fetch(src[1]);
+  const res = await fetch(src[1], { cache: "force-cache" });
   if (!res.ok) throw new Error("no font");
   return res.arrayBuffer();
 }

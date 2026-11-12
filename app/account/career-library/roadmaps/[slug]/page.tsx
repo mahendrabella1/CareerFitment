@@ -4,12 +4,13 @@
  * /account/career-library/roadmaps/[slug] - one degree roadmap, with links to
  * the same career's roadmaps for other degrees and courses.
  */
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import { LevelBadge, RoadmapBody, useRoadmapCatalog } from "@/components/careers/DegreeRoadmaps";
 import { loadRoadmap, type RoleRoadmap } from "@/lib/report/roleRoadmapGrad";
 
-export default function DegreeRoadmapPage({ params }: { params: { slug: string } }) {
+export default function DegreeRoadmapPage(props: { params: Promise<{ slug: string }> }) {
+  const params = use(props.params);
   const slug = decodeURIComponent(params.slug);
   const catalog = useRoadmapCatalog();
   const [rm, setRm] = useState<RoleRoadmap | null | undefined>(undefined);

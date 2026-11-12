@@ -4,7 +4,8 @@ import { syllabusFor } from "@/data/exams/syllabus";
 import { StudyPlanner } from "@/components/exams/StudyPlanner";
 import { PageHeader } from "@/components/course/fx";
 
-export default function ExamPlanPage({ params }: { params: { examSlug: string } }) {
+export default async function ExamPlanPage(props: { params: Promise<{ examSlug: string }> }) {
+  const params = await props.params;
   const exam = examBySlug(params.examSlug);
   if (!exam) notFound();
   const syllabus = syllabusFor(exam.slug);

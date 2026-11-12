@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import { fetchPublicProfile, type ResearchProfileDoc } from "@/lib/research/clientProfile";
 import { PublicProfileView } from "@/components/research/PublicProfileView";
 
 /** Public research profile, linked from a learner's poster QR code. */
-export default function PublicResearchProfilePage({ params }: { params: { slug: string } }) {
+export default function PublicResearchProfilePage(props: { params: Promise<{ slug: string }> }) {
+  const params = use(props.params);
   const [profile, setProfile] = useState<ResearchProfileDoc | null | "error" | undefined>(undefined);
 
   useEffect(() => {

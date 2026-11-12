@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { fetchProject, fetchAbstracts, saveAbstractDraft, submitAbstract, type ResearchProject, type AbstractVersion } from "@/lib/research/clientProgress";
 import { RUBRIC_ITEMS } from "@/lib/research/rubric";
@@ -9,7 +9,8 @@ import { PageHeader } from "@/components/course/fx";
 const ACCENT = "#7c3aed";
 const TEMPLATE = "Background (1-2 sentences): why the topic matters.\n\nAim (1 sentence): the question you tried to answer.\n\nMethod (2 sentences): what you did, with whom, how many.\n\nResults (2-3 sentences): the main findings, with numbers.\n\nConclusion (1-2 sentences): what it means and what could come next.";
 
-export default function AbstractPage({ params }: { params: { id: string } }) {
+export default function AbstractPage(props: { params: Promise<{ id: string }> }) {
+  const params = use(props.params);
   const { user } = useAuth();
   const [project, setProject] = useState<ResearchProject | null | undefined>(undefined);
   const [versions, setVersions] = useState<AbstractVersion[]>([]);

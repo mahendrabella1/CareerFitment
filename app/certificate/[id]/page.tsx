@@ -12,8 +12,9 @@ import { loadCertificate } from "./load";
 
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const h = headers();
+export async function generateMetadata(props: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const params = await props.params;
+  const h = await headers();
   const host = h.get("x-forwarded-host") || h.get("host");
   const base = host ? new URL(`${h.get("x-forwarded-proto") || "https"}://${host}`) : undefined;
   const r = await loadCertificate(params.id);
@@ -31,7 +32,8 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   };
 }
 
-export default async function CertificatePage({ params }: { params: { id: string } }) {
+export default async function CertificatePage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const r = await loadCertificate(params.id);
   return <CertificatePublic cert={r.state === "ok" ? r.cert : null} problem={r.state === "offline" ? "offline" : r.state === "missing" ? "missing" : undefined} />;
 }

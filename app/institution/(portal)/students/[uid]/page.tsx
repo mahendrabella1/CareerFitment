@@ -1,7 +1,7 @@
 "use client";
 
 /** /institution/students/[uid] - one student's full picture, with suggested next steps to send. */
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import { Icon } from "@/app/Icons";
 import { categoryLabel } from "@/lib/auth/formOptions";
@@ -34,7 +34,8 @@ interface Detail {
 
 const KIND_LABEL: Record<MessageKind, string> = { message: "Message", reminder: "Reminder", alert: "Alert", recommendation: "Recommendation" };
 
-export default function StudentPage({ params }: { params: { uid: string } }) {
+export default function StudentPage(props: { params: Promise<{ uid: string }> }) {
+  const params = use(props.params);
   const [d, setD] = useState<Detail | null>(null);
   const [error, setError] = useState("");
   const [compose, setCompose] = useState<ComposePreset | null>(null);

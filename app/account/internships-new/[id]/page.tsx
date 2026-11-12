@@ -1,4 +1,5 @@
-'use client';
+'use client';;
+import { use } from "react";
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -88,7 +89,8 @@ const cardStyle: CSSProperties = {
   padding: '32px',
 };
 
-export default function InternshipDetailPage({ params }: { params: { id: string } }) {
+export default function InternshipDetailPage(props: { params: Promise<{ id: string }> }) {
+  const params = use(props.params);
   const allInternships = getAllInternships();
   const internship = allInternships.find((p: any) => p.id === params.id) as UnifiedInternship | undefined;
 

@@ -131,7 +131,9 @@ test("2.9/L-04: one lockfile (pnpm, as Vercel uses), patched nodemailer, no plac
   const major = (v) => Number(String(v).replace(/^[^\d]*/, "").split(".")[0]);
   const [maj, min] = String(pkg.dependencies.nodemailer).replace(/^[^\d]*/, "").split(".").map(Number);
   assert.ok(maj > 10 || (maj === 10 && min >= 1), "nodemailer >= 10.1.4 fixes the advisories");
-  assert.equal(major(pkg.dependencies.next), 14, "framework majors are a separate step");
+  // 3.10 (H-06): Next.js was upgraded on its own branch; never below the release that fixes every advisory.
+  const [nMaj, nMin, nPatch] = String(pkg.dependencies.next).replace(/^[^\d]*/, "").split(".").map(Number);
+  assert.ok(nMaj > 15 || (nMaj === 15 && (nMin > 5 || (nMin === 5 && nPatch >= 28))), "next >= 15.5.28");
   assert.equal(major(pkg.dependencies.firebase), 12, "firebase not downgraded");
   assert.ok(!read("pnpm-workspace.yaml").includes("set this to"));
   assert.match(read(".github/workflows/ci.yml"), /pnpm install --frozen-lockfile/);

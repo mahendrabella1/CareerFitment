@@ -7,7 +7,8 @@ import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
 
-export default function UniversityPage({ params }: { params: { slug: string } }) {
+export default async function UniversityPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const uni = universityBySlug(params.slug);
   if (!uni) notFound();
   const country = STUDY_ABROAD_COUNTRIES.find((c) => c.code === uni.countryCode);

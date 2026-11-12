@@ -29,7 +29,8 @@ async function resolve(token: string) {
   return { db, uid, institutionId, user, child: String(user.get("name") || "your child").split(" ")[0], school: String(inst.get("name") || "the school"), survey: survey.exists ? (survey.data() as ParentSurvey) : null };
 }
 
-export async function GET(_req: Request, { params }: { params: { token: string } }) {
+export async function GET(_req: Request, props: { params: Promise<{ token: string }> }) {
+  const params = await props.params;
   try {
     const r = await resolve(params.token);
     // The parent window: the child's decision sheet and this week's Career GPS.
@@ -54,7 +55,8 @@ export async function GET(_req: Request, { params }: { params: { token: string }
   }
 }
 
-export async function POST(req: Request, { params }: { params: { token: string } }) {
+export async function POST(req: Request, props: { params: Promise<{ token: string }> }) {
+  const params = await props.params;
   try {
     const r = await resolve(params.token);
     const b = (await req.json().catch(() => ({}))) as Record<string, unknown>;

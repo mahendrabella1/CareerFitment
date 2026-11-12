@@ -4,7 +4,8 @@ import { getJob, isUuid } from "@/lib/jobs/search";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
+export async function GET(_req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   if (!isUuid(params.id)) return NextResponse.json({ error: "Not found" }, { status: 404 });
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return NextResponse.json({ error: "Jobs are not set up on this deployment yet." }, { status: 503 });

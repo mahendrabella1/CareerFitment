@@ -14,7 +14,8 @@ export const dynamic = 'force-dynamic';
 
 const SLUG = /^[a-z0-9-]{3,80}$/;
 
-export async function GET(_req: Request, { params }: { params: { slug: string } }) {
+export async function GET(_req: Request, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   try {
     if (!SLUG.test(params.slug ?? '')) {
       return NextResponse.json({ error: 'Invalid portfolio link' }, { status: 400 });

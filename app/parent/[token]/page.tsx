@@ -7,7 +7,7 @@
  *   - the child's Family Decision Room sheet, with "We agree" / "Let's discuss"
  *   - this week's Career GPS progress
  */
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { Logo } from "@/app/Logo";
 import { HowItWorks } from "@/components/HowItWorks";
 import { pathView, type FamilyDecision, type PathView } from "@/lib/decisionRoom";
@@ -56,7 +56,8 @@ const CSS = `
 @media (max-width:520px){.ps-row{grid-template-columns:1fr}.ps-card{padding:18px}.ps-gps b{font-size:18px}.ps-tbl{min-width:0;font-size:12.5px}.ps-tbl th,.ps-tbl td{padding:8px 5px}.ps-tbl tbody th{font-size:10px;letter-spacing:.02em}}
 `;
 
-export default function ParentFamilyPage({ params }: { params: { token: string } }) {
+export default function ParentFamilyPage(props: { params: Promise<{ token: string }> }) {
+  const params = use(props.params);
   const [info, setInfo] = useState<Info | null>(null);
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);

@@ -4,6 +4,9 @@ import { LessonPage } from "@/components/commLab/LabPages";
 export const generateStaticParams = () =>
   TRACKS.flatMap((t) => t.modules.flatMap((m) => m.lessons.map((l) => ({ trackId: t.id, moduleId: m.id, lessonId: l.id }))));
 
-export default function CommLabLessonPage({ params }: { params: { trackId: string; moduleId: string; lessonId: string } }) {
+export default async function CommLabLessonPage(
+  props: { params: Promise<{ trackId: string; moduleId: string; lessonId: string }> }
+) {
+  const params = await props.params;
   return <LessonPage lessonId={params.lessonId} />;
 }

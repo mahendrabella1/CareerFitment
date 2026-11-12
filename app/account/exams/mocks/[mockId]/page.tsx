@@ -3,7 +3,8 @@ import { mockById } from "@/data/exams/mocks";
 import { MockTestRunner } from "@/components/exams/MockTestRunner";
 import { PageHeader } from "@/components/course/fx";
 
-export default function MockTestPage({ params }: { params: { mockId: string } }) {
+export default async function MockTestPage(props: { params: Promise<{ mockId: string }> }) {
+  const params = await props.params;
   const mock = mockById(params.mockId);
   if (!mock) notFound();
   return (

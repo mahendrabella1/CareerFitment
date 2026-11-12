@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { getUnit, STUDIO_UNITS } from "@/data/research/studioUnits";
@@ -9,7 +9,8 @@ import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
 
-export default function StudioUnitPage({ params }: { params: { unit: string } }) {
+export default function StudioUnitPage(props: { params: Promise<{ unit: string }> }) {
+  const params = use(props.params);
   const unit = getUnit(params.unit);
   const { user } = useAuth();
   const [text, setText] = useState("");

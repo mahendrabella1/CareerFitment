@@ -12,10 +12,8 @@ export const dynamic = "force-dynamic";
 // score breakdown + career fitment + the captured student details (if any).
 // Sessions live in the local store regardless of Firestore (per the chosen
 // Questions+Leads cloud scope), so the score/fitment helpers apply either way.
-export async function GET(
-  _req: Request,
-  { params }: { params: { sessionId: string } }
-) {
+export async function GET(_req: Request, props: { params: Promise<{ sessionId: string }> }) {
+  const params = await props.params;
   try {
     const [score, fitment, lead] = await Promise.all([
       getLocalScore(params.sessionId),

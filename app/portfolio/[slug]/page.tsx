@@ -4,7 +4,7 @@
  * /portfolio/[slug] - a student's public portfolio page (made public from
  * /account/portfolio). Shows only what /api/portfolio/public/[slug] returns.
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, use } from 'react';
 import Link from 'next/link';
 import { Mail, Phone, Link as LinkIcon } from 'lucide-react';
 import type { PortfolioProfile } from '@/lib/data/portfolioSchema';
@@ -53,7 +53,8 @@ const span = (start?: string, end?: string, current?: boolean) => {
   return a || b ? `${a || '…'} – ${b || '…'}` : '';
 };
 
-export default function PublicPortfolioPage({ params }: { params: { slug: string } }) {
+export default function PublicPortfolioPage(props: { params: Promise<{ slug: string }> }) {
+  const params = use(props.params);
   const [portfolio, setPortfolio] = useState<PortfolioProfile | null>(null);
   const [error, setError] = useState<string | null>(null);
 

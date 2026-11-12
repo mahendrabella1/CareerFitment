@@ -3,6 +3,7 @@ import { ModulePage } from "@/components/commLab/LabPages";
 
 export const generateStaticParams = () => TRACKS.flatMap((t) => t.modules.map((m) => ({ trackId: t.id, moduleId: m.id })));
 
-export default function CommLabModulePage({ params }: { params: { trackId: string; moduleId: string } }) {
+export default async function CommLabModulePage(props: { params: Promise<{ trackId: string; moduleId: string }> }) {
+  const params = await props.params;
   return <ModulePage trackId={params.trackId} moduleId={params.moduleId} />;
 }

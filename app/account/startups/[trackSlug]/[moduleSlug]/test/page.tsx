@@ -6,7 +6,8 @@ import { toPublicTrack } from "@/lib/startups/publicShape";
 import { ModuleTestClient } from "@/components/startups/ModuleTestClient";
 import { StartupsCourseLayout } from "@/components/startups/StartupsCourseLayout";
 
-export default function ModuleTestPage({ params }: { params: { trackSlug: string; moduleSlug: string } }) {
+export default async function ModuleTestPage(props: { params: Promise<{ trackSlug: string; moduleSlug: string }> }) {
+  const params = await props.params;
   const { trackSlug, moduleSlug } = params;
   const track = getTrack(trackSlug);
   const idx = track?.modules.findIndex((m) => m.slug === moduleSlug) ?? -1;

@@ -3,12 +3,13 @@ import { getAllCareers } from "@/lib/data/careerLibraryData";
 import type { Career } from "@/lib/data/schema";
 
 interface CareerDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default function CareerDetailPage({ params }: CareerDetailPageProps) {
+export default async function CareerDetailPage(props: CareerDetailPageProps) {
+  const params = await props.params;
   const allCareers = getAllCareers();
   const career = allCareers.find(c => c.id === params.id);
 

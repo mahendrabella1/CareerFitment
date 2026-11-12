@@ -140,7 +140,7 @@ export default function PortfolioPage() {
   const [busy, setBusy] = useState(false);
   const [toast, setToast] = useState('');
   const [adding, setAdding] = useState<SectionId | null>(null);
-  const toastTimer = useRef<ReturnType<typeof setTimeout>>();
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
     if (loading || !user) return;

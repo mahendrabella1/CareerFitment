@@ -3,6 +3,7 @@
  * Uses real images from Unsplash/Pexels with SVG fallback
  */
 
+import type { JSX } from 'react';
 import { getImageForRole } from './careerRoleImages';
 
 /**

@@ -30,7 +30,7 @@ export default function CareerDetailPage() {
   const [saved, setSaved] = useState(false);
 
   const title = Array.isArray(params.title) ? params.title[0] : params.title;
-  const decodedTitle = decodeURIComponent(title);
+  const decodedTitle = decodeURIComponent(title ?? '');
 
   const allCareers = useMemo(() => CAREER_LIBRARY_930_PLUS, []);
   const career = useMemo(() =>

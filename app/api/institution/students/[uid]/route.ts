@@ -13,7 +13,8 @@ export const maxDuration = 30;
  * institution's messages to them with read status, and Startups course
  * progress. Never returns in-progress exam answers or payment details.
  */
-export async function GET(req: Request, { params }: { params: { uid: string } }) {
+export async function GET(req: Request, props: { params: Promise<{ uid: string }> }) {
+  const params = await props.params;
   try {
     const { institution, db } = await requireInstitution(req);
     const data = await studentOf(db, institution, params.uid);

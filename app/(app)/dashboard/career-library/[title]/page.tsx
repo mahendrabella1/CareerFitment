@@ -32,7 +32,7 @@ export default function CareerDetailPage() {
   const [saved, setSaved] = useState(false);
 
   const title = Array.isArray(params.title) ? params.title[0] : params.title;
-  const decodedTitle = decodeURIComponent(title);
+  const decodedTitle = decodeURIComponent(title ?? '');
 
   const career = CAREER_LIBRARY.find(c => c.title.toLowerCase() === decodedTitle.toLowerCase());
 

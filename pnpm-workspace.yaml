@@ -6,3 +6,7 @@ minimumReleaseAgeExclude:
 onlyBuiltDependencies:
   - '@firebase/util'
   - protobufjs
+# recharts 2 checks chart parts with react-is; React 19 needs react-is 19, or
+# parts wrapped in a fragment are silently dropped (recharts' React 19 guidance).
+overrides:
+  recharts>react-is: ^19.0.0

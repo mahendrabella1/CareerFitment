@@ -21,7 +21,8 @@ async function owner(req: Request, id: string) {
   return uid;
 }
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const uid = await owner(req, params.id);
     const snap = await (await getFirestore()).collection(PORTFOLIOS).doc(uid).get();
@@ -32,7 +33,8 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   }
 }
 
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+export async function PATCH(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const uid = await owner(req, params.id);
     const body = (await req.json().catch(() => ({}))) as Record<string, unknown>;
@@ -42,7 +44,8 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   }
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const uid = await owner(req, params.id);
     const ref = (await getFirestore()).collection(PORTFOLIOS).doc(uid);

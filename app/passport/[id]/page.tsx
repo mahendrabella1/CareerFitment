@@ -1,7 +1,7 @@
 "use client";
 
 /** /passport/[id] - a student's public Career Passport (opened from its QR code). */
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { Logo } from "@/app/Logo";
 import { KIND_LABEL } from "@/lib/institution/passport";
 import { safeHttpUrl } from "@/lib/security/sanitize";
@@ -26,7 +26,8 @@ const CSS = `
 .pv-m small{color:#63636f;font-size:12.5px}
 `;
 
-export default function PassportView({ params }: { params: { id: string } }) {
+export default function PassportView(props: { params: Promise<{ id: string }> }) {
+  const params = use(props.params);
   const [p, setP] = useState<Passport | null>(null);
   const [error, setError] = useState("");
   useEffect(() => {

@@ -5,7 +5,7 @@
  * it, for their own institution only (the server route refuses anyone
  * else's student). Outside the portal shell so it prints on its own.
  */
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import FullReport from "@/app/account/FullReport";
 import { ReportBook } from "@/components/report/ReportBook";
@@ -18,7 +18,8 @@ import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 
 interface Profile { name: string; email: string; institution: string; category: string; latestAssessment: AssessmentSummary | null }
 
-export default function InstitutionReportPage({ params }: { params: { uid: string } }) {
+export default function InstitutionReportPage(props: { params: Promise<{ uid: string }> }) {
+  const params = use(props.params);
   const [p, setP] = useState<Profile | null>(null);
   const [error, setError] = useState("");
   const roadmapsReady = useDetailedRoadmapsReady(p?.latestAssessment);

@@ -5,7 +5,10 @@ import { toPublicTrack } from "@/lib/startups/publicShape";
 import { LessonClient } from "@/components/startups/LessonClient";
 import { StartupsCourseLayout } from "@/components/startups/StartupsCourseLayout";
 
-export default function LessonPage({ params }: { params: { trackSlug: string; moduleSlug: string; lessonSlug: string } }) {
+export default async function LessonPage(
+  props: { params: Promise<{ trackSlug: string; moduleSlug: string; lessonSlug: string }> }
+) {
+  const params = await props.params;
   const { trackSlug, moduleSlug, lessonSlug } = params;
   const track = getTrack(trackSlug);
   const module = getModule(trackSlug, moduleSlug);

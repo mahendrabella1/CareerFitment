@@ -1,4 +1,5 @@
-"use client";
+"use client";;
+import { use } from "react";
 
 import Link from "next/link";
 import { CompoundingLab } from "@/components/money/CompoundingLab";
@@ -35,7 +36,8 @@ const LAB_CSS = `
 @media (max-width:640px){.lab-work{padding:16px}}
 `;
 
-export default function LabPage({ params }: { params: { labSlug: string } }) {
+export default function LabPage(props: { params: Promise<{ labSlug: string }> }) {
+  const params = use(props.params);
   const slug = params.labSlug;
   const lab = labBySlug(slug);
 

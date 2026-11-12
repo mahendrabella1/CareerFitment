@@ -10,7 +10,8 @@ export const dynamic = "force-dynamic";
  * date). Public, like the certificate's own page: the id is the proof, and
  * nothing else about the student is returned.
  */
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
+export async function GET(_req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     if (!isFirestoreConfigured()) throw new ApiError(503, "Certificates can't be checked right now.");
     const cert = await readCertificate(await getFirestore(), params.id);

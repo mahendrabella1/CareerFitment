@@ -389,7 +389,7 @@ function ChapterBar({ sink, onPick }: { sink: TimeSink; onPick: (t: number) => v
 /** Content below the fold slides in once as it's reached ([data-rv] =
  *  "" up, "left", "right", "zoom"). Anything already on screen at load is
  *  left alone, so nothing visible ever blinks. Off for reduced motion. */
-function useReveal(root: RefObject<HTMLElement>) {
+function useReveal(root: RefObject<HTMLElement | null>) {
   useEffect(() => {
     const el = root.current;
     if (!el || !("IntersectionObserver" in window) || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;

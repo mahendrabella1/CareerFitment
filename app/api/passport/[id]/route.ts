@@ -11,7 +11,8 @@ export const dynamic = "force-dynamic";
  * its QR code): first name and initial, class, institution, best-fit areas
  * and ONLY institution-verified milestones. No contact details.
  */
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
+export async function GET(_req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     if (!isFirestoreConfigured()) throw new ApiError(503, "This service isn't available right now.");
     if (!/^[A-Za-z0-9_-]{8,40}$/.test(params.id)) throw new ApiError(404, "Passport not found.");

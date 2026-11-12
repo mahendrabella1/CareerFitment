@@ -14,7 +14,8 @@ const TITLES: Record<string, string> = {
   "scam-of-the-week": "Scam of the Week",
 };
 
-export default function ScamModePage({ params }: { params: { mode: string } }) {
+export default async function ScamModePage(props: { params: Promise<{ mode: string }> }) {
+  const params = await props.params;
   const mode = params.mode;
   if (!TITLES[mode]) notFound();
 

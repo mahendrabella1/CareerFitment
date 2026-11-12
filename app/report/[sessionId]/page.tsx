@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 // import ReportView, { type ReportData } from "../ReportView"; // Module doesn't exist
 type ReportData = any;
 
 type Envelope<T> = { success: boolean; message: string; data: T };
 
-export default function ReportPage({ params }: { params: { sessionId: string } }) {
+export default function ReportPage(props: { params: Promise<{ sessionId: string }> }) {
+  const params = use(props.params);
   const [data, setData] = useState<ReportData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);

@@ -12,7 +12,7 @@
  * or a refresh, not just click-through from the table.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import { doc, getDoc } from "firebase/firestore";
 import { getDb } from "@/lib/firebase/client";
@@ -26,7 +26,8 @@ import { ReportBook } from "@/components/report/ReportBook";
 import { prepareStudentReport } from "@/lib/report/prepareStudentReport";
 import { useDetailedRoadmapsReady } from "@/lib/report/useDetailedRoadmaps";
 
-export default function AdminReportPage({ params }: { params: { uid: string } }) {
+export default function AdminReportPage(props: { params: Promise<{ uid: string }> }) {
+  const params = use(props.params);
   const [viewing, setViewing] = useState<UserProfile | null | "loading" | "error">("loading");
   const [sent, setSent] = useState<string>("");
   const roadmapsReady = useDetailedRoadmapsReady(viewing && typeof viewing === "object" ? viewing.latestAssessment : null);

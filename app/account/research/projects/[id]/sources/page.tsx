@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import { fetchProject, addSource, type ResearchProject } from "@/lib/research/clientProgress";
 import { safeHttpUrl } from "@/lib/security/sanitize";
@@ -8,10 +8,11 @@ import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
 
-export default function SourcesPage({ params }: { params: { id: string } }) {
+export default function SourcesPage(props: { params: Promise<{ id: string }> }) {
+  const params = use(props.params);
   const [project, setProject] = useState<ResearchProject | null | undefined>(undefined);
-  const [title, setTitle] = useState(""); const [url, setUrl] = useState("");
-  const [authors, setAuthors] = useState(""); const [year, setYear] = useState(""); const [note, setNote] = useState("");
+  const [title, setTitle] = useState("");const [url, setUrl] = useState("");
+  const [authors, setAuthors] = useState("");const [year, setYear] = useState("");const [note, setNote] = useState("");
 
   const load = () => fetchProject(params.id).then(setProject);
   useEffect(() => { load(); }, [params.id]);

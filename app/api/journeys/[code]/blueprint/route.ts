@@ -5,10 +5,8 @@ import { getLocalBlueprint } from "@/lib/localMode/service";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(
-  _req: Request,
-  { params }: { params: { code: string } }
-) {
+export async function GET(_req: Request, props: { params: Promise<{ code: string }> }) {
+  const params = await props.params;
   if (isLocalAssessmentMode()) {
     try {
       const data = await getLocalBlueprint(params.code);

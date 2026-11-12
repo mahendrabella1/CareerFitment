@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import { fetchProject, markStepDone, type ResearchProject } from "@/lib/research/clientProgress";
 import { STUDIO_UNITS } from "@/data/research/studioUnits";
@@ -8,7 +8,8 @@ import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
 
-export default function ProjectTrackerPage({ params }: { params: { id: string } }) {
+export default function ProjectTrackerPage(props: { params: Promise<{ id: string }> }) {
+  const params = use(props.params);
   const [project, setProject] = useState<ResearchProject | null | undefined>(undefined);
 
   useEffect(() => { fetchProject(params.id).then(setProject); }, [params.id]);

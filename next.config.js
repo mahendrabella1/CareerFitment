@@ -51,9 +51,8 @@ const nextConfig = {
   poweredByHeader: false,
   // @react-pdf/renderer (used to build the emailed PDF) ships native-ish font
   // deps that must not be webpack-bundled - require it at runtime instead.
-  experimental: {
-    serverComponentsExternalPackages: ["@react-pdf/renderer"],
-  },
+  // (Next 15 moved this out of `experimental`.)
+  serverExternalPackages: ["@react-pdf/renderer"],
   // Files in public/ are otherwise sent with max-age=0, so every visit re-checks
   // every image. Their names aren't versioned, so images get a week (a replaced
   // image shows within a week, at once after a hard refresh); the font files are

@@ -13,7 +13,7 @@ The audit's own files (reports, `remediation.patch`, `files/`, `PRODUCTION_DEPLO
 | `npm run build` | OK; `/account` first-load JS 747 kB (unchanged) |
 | Built site run locally (`next start`) | all security headers sent, CSP report-only, no `X-Powered-By`; a retired endpoint answers 410 |
 | `pnpm install --frozen-lockfile` (pnpm 10, as Vercel) | passes |
-| `pnpm audit --prod` | 64 → 34 (5/30/26/3 → 3 low / 13 moderate / 15 high / 3 critical). What's left is `next@14` and packages it pins, plus the `@grpc/grpc-js` 1.9 that `@firebase/firestore` pins - see 3.10 |
+| `pnpm audit --prod` | 64 → 34 (5/30/26/3 → 3 low / 13 moderate / 15 high / 3 critical); after the Next.js 15 upgrade (3.10) → 9 (1 low / 2 moderate / 6 high / **0 critical**) |
 | Secret scan of the tracked tree | only public browser identifiers: the Firebase web API key (`lib/firebase/client.ts`, `lib/firebaseIdentity.ts`) and the Razorpay key id (`lib/razorpay.ts`). Both were already on `main`; no secret was added |
 | `npm run test:rules` (Firestore/Storage emulator) | **not run** - needs Java, which isn't installed on this machine |
 
@@ -50,7 +50,7 @@ The audit's own files (reports, `remediation.patch`, `files/`, `PRODUCTION_DEPLO
 | 3.7 P-04 | No change needed | - | The redeem route already enforces `maxStudents` inside a transaction; only contention under heavy load remains |
 | 3.8 M-07 | Done | cd63b5c | The six unreachable legacy `/api/assessment/*` endpoints answer 410. `/api/leads`, completion-email and `/api/report/[sessionId]` are kept |
 | 3.9 CSP | Done (report-only) | 5898751 | Built from what the code loads (the plan's draft wasn't available). Not enforced |
-| 3.10 H-06 | **Not started** | - | Next.js major upgrade - separate branch `chore/next-upgrade` after this one is merged. No 14.x fix exists (14.2.35 is the last); the fixes need ≥ 15.5.28. The critical image-optimizer RCEs probably don't reach this site (no `next/image` is used, and on Vercel `/_next/image` is served by Vercel), but the upgrade is the fix - do it soon |
+| 3.10 H-06 | Done (2026-11-13) | branch `chore/next-upgrade` | Next.js 14.2.35 → 15.5.29 and React 18 → 19.3, on its own branch after the above was live. Official `next-async-request-api` codemod (45 files: `params`/`searchParams`/`headers()` are now awaited, `use()` in client pages); `serverExternalPackages` moved out of `experimental`; 5 React 19 type fixes; certificate preview fonts keep `force-cache` (Next 15 stopped caching fetch by default); `react-is` 19 for recharts (with 18, chart parts inside a fragment silently vanish - reproduced). Checks: type-check clean, 138/138 tests, build OK with all 257 routes the same static/dynamic type as on 14, `/account` 747 → 755 kB, 11 pages loaded in headless Chrome with no errors, frozen pnpm install passes. `pnpm audit --prod` 34 → 9, **0 critical**: what's left is postcss/nanoid/source-map-js pinned by Next (build-time only, on our own CSS) and `@grpc/grpc-js` 1.9 pinned by the Firebase browser SDK (the flaw is in gRPC server code, which the site doesn't run) |
 
 ## Only the owner can do these
 
