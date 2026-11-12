@@ -41,9 +41,9 @@ export interface Coupon {
 
 // Used only when the `coupons` collection is empty or unreachable (a fresh
 // deployment before an admin has opened /admin/coupons, or a Firestore
-// outage) - the same two codes this app has always shipped with, so payment
-// never silently breaks. Once an admin adds a real coupon in /admin/coupons,
-// this fallback is never consulted again.
+// outage), so the advertised sale price never silently breaks. It holds only
+// the sale discount: a 100%-off code here would be public to anyone reading
+// the source (security audit H-03). Free codes live in /admin/coupons.
 const FALLBACK_COUPONS: readonly Coupon[] = [
   {
     code: OFFER.autoCouponCode,
@@ -51,13 +51,6 @@ const FALLBACK_COUPONS: readonly Coupon[] = [
     label: `${OFFER.name} - ${OFFER.discountPct}% off`,
     auto: true,
     note: "Applied automatically - no code needed",
-  },
-  {
-    code: OFFER.freeCouponCode,
-    percentOff: 100,
-    label: "Free access - 100% off",
-    auto: false,
-    note: "Your assessment fee is fully waived",
   },
 ];
 

@@ -43,8 +43,9 @@ export const OFFER = {
 
   /** Applied for the student the moment the payment screen opens. */
   autoCouponCode: "OG15",
-  /** Typed in by hand; takes the fee to zero. */
-  freeCouponCode: "OGNOW",
+  // There is no built-in free code any more (security audit H-03) - a 100%-off
+  // code shipped in the source was public to anyone. Free codes for schools or
+  // campaigns are created, limited and switched off in /admin/coupons.
 } as const;
 
 /** Whether sale styling (banner, strike-through, % badges) should be shown. */

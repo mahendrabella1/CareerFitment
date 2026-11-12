@@ -60,7 +60,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
     invalidCode: false,
   });
 
-  // Coupon box (the hand-typed path - OGNOW and anything added later). Starts
+  // Coupon box (the hand-typed path - any code from /admin/coupons). Starts
   // collapsed; `openCouponBox` reveals it and puts the cursor straight in, so
   // "click here" costs exactly one click and no aiming.
   const [couponInput, setCouponInput] = useState("");
@@ -217,7 +217,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
   }, [refreshProfile]);
 
   /**
-   * OGNOW and friends: no Razorpay order exists, so nothing to check out.
+   * A 100%-off code from /admin/coupons: no Razorpay order exists, so nothing to check out.
    * `codeOverride` lets a just-applied coupon redeem itself immediately
    * (see applyTypedCoupon below) without waiting on the `priced` state
    * update to land first - `setPriced` from that same call hasn't committed
@@ -401,7 +401,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
               is already applied by the time anyone reads this - an empty box
               sitting under a discounted price invites people to hunt for a
               better one. It stays available for the student who does hold a
-              code (OGNOW), one click away and focused the moment it opens. */}
+              code, one click away and focused the moment it opens. */}
           <div className="pg-coupon">
             {!couponOpen ? (
               <button className="pg-coupon-toggle" onClick={openCouponBox} disabled={busy}>
@@ -418,7 +418,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
                     value={couponInput}
                     // Never put a real code here. A placeholder is read by
                     // every student who opens this box, including the ones
-                    // about to pay - an example like "OGNOW" hands them a
+                    // about to pay - a real code as the example would hand them a
                     // 100%-off code (lib/coupons.ts) for free.
                     placeholder="ENTER CODE"
                     autoCapitalize="characters"

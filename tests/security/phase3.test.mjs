@@ -39,8 +39,7 @@ test("C-03: only the server can mark an account paid", () => {
 
 test("C-03: the free-code route needs a sign-in and records the waiver itself", async () => {
   const { POST } = await import("../../app/api/payment/redeem/route.ts");
-  const { OFFER } = await import("../../lib/offer.ts");
-  const r = await quiet(() => POST(json({ code: OFFER.freeCouponCode || "ANYCODE" })));
+  const r = await quiet(() => POST(json({ code: "OGNOW" })));
   // Either the code is no longer free (H-03) or, if it is, a sign-in is required - never a silent unlock.
   assert.ok([400, 401].includes(r.status), String(r.status));
   const src = code("app/api/payment/redeem/route.ts");
