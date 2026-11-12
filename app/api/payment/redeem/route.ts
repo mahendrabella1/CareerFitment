@@ -17,11 +17,10 @@ export const maxDuration = 30;
 // any code that isn't a full waiver is refused, so this can never become a
 // "pay ₹0" bypass of the real fee.
 //
-// It matches the security model already in place: the signed-in client writes
-// its own `paid` flag (its Firestore rule allows only its own document), which
-// is why no admin credentials are required for the unlock itself. When admin
-// credentials DO exist we additionally log the redemption, so the team can see
-// who used a free code without trusting the browser to report it.
+// The caller must be signed in, and this route writes the waiver to
+// users/{uid} with the Admin SDK (security audit C-03) - the payment fields
+// are server-only in firestore.rules, so the browser can no longer mark itself
+// paid. Every redemption is also logged in couponRedemptions.
 export async function POST(req: Request) {
   let body: {
     code?: unknown;
@@ -64,27 +63,31 @@ export async function POST(req: Request) {
   }
 
   const { email: tokenEmail, uid } = await identityFromToken(body.idToken);
+  if (!uid) return NextResponse.json({ success: false, reason: "sign_in", message: "Please sign in again, then apply the code." }, { status: 401 });
+  if (!isFirestoreConfigured()) {
+    console.error("[payment/redeem] no Firebase admin credentials - can't record the waiver");
+    return NextResponse.json({ success: false, message: "We couldn't apply the code right now - please try again later." }, { status: 503 });
+  }
   const p = body.profile || {};
   const email = tokenEmail || String(p.email || "");
   const name = String(p.name || "");
   const code = priced.coupon.code;
 
-  // Audit trail - best-effort, and only where admin credentials exist.
-  if (isFirestoreConfigured()) {
-    try {
-      const db = await getFirestore();
-      await db.collection("couponRedemptions").add({
-        code,
-        uid: uid || null,
-        email: email || null,
-        name: name || null,
-        phone: String(p.phone || "") || null,
-        waivedPaise: settings.amountPaise,
-        redeemedAt: new Date().toISOString(),
-      });
-    } catch (e) {
-      console.error("[payment] could not log coupon redemption:", e instanceof Error ? e.message : e);
-    }
+  // Unlock the account (server-only fields) and keep the audit trail, together.
+  try {
+    const db = await getFirestore();
+    const at = new Date().toISOString();
+    const batch = db.batch();
+    batch.set(db.collection("users").doc(uid), {
+      paid: true, paymentStatus: "paid", paidAt: at, paymentId: `COUPON-${code}`, couponCode: code, amountPaid: 0, paymentVerifiedBy: "server",
+    }, { merge: true });
+    batch.set(db.collection("couponRedemptions").doc(), {
+      code, uid, email: email || null, name: name || null, phone: String(p.phone || "") || null, waivedPaise: settings.amountPaise, redeemedAt: at,
+    });
+    await batch.commit();
+  } catch (e) {
+    console.error("[payment/redeem] could not record the waiver:", e instanceof Error ? e.message : e);
+    return NextResponse.json({ success: false, message: "We couldn't apply the code just now - please try again." }, { status: 500 });
   }
 
   // Same CRM + notification side-effects a real payment fires, marked as a

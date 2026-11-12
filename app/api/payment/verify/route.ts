@@ -13,9 +13,11 @@ import { ORDER_ID_RE, PAYMENT_ID_RE, claimPayment } from "@/lib/payments/claim";
 // security-critical step; never trust the client), then - when this deployment
 // has Firebase admin credentials and the caller is signed in - ties the payment
 // to that one account (lib/payments/claim.ts, security audit H-04): a payment
-// already used by another account is refused with 409. The browser still
-// records "paid" too until the rules lock that field (audit C-03). Email is
-// best-effort.
+// already used by another account is refused with 409. This route is the only
+// place a card/UPI payment marks an account paid - the payment fields are
+// server-only in firestore.rules (audit C-03). If recording fails the client
+// gets an error and retries; the payment itself is safe either way (Razorpay
+// holds it, and the signature can be checked again). Email is best-effort.
 export async function POST(req: Request) {
   // Same trimmed value the order route authenticated with - the signature is an
   // HMAC keyed on it, so any drift here would reject every genuine payment.
@@ -67,19 +69,23 @@ export async function POST(req: Request) {
   const priced = await priceWithCoupon(settings.amountPaise, coupon);
   const amount = priced.payablePaise;
 
-  // One payment, one account.
-  if (who.uid && isFirestoreConfigured()) {
-    try {
-      const result = await claimPayment(await getFirestore(), {
-        uid: who.uid, paymentId: razorpay_payment_id, orderId: razorpay_order_id, amountPaise: amount, couponCode: priced.coupon?.code ?? null,
-      });
-      if (result === "claimed_by_other") {
-        return NextResponse.json({ success: false, message: "This payment has already been used by another account. Please contact support@onegrasp.com." }, { status: 409 });
-      }
-      if (result === "already_yours") return NextResponse.json({ success: true, paymentId: razorpay_payment_id });
-    } catch (e) {
-      console.error("[payment/verify] could not record the payment:", e instanceof Error ? e.message : e);
+  // One payment, one account - and only the server marks it paid.
+  if (!who.uid) return NextResponse.json({ success: false, reason: "sign_in", message: "Please sign in again - your payment is safe and will be applied." }, { status: 401 });
+  if (!isFirestoreConfigured()) {
+    console.error("[payment/verify] no Firebase admin credentials - can't record the payment");
+    return NextResponse.json({ success: false, reason: "retry", message: `Your payment went through but we couldn't record it yet. Please try again, or write to support@onegrasp.com with payment ID ${razorpay_payment_id}.` }, { status: 503 });
+  }
+  try {
+    const result = await claimPayment(await getFirestore(), {
+      uid: who.uid, paymentId: razorpay_payment_id, orderId: razorpay_order_id, amountPaise: amount, couponCode: priced.coupon?.code ?? null,
+    });
+    if (result === "claimed_by_other") {
+      return NextResponse.json({ success: false, message: "This payment has already been used by another account. Please contact support@onegrasp.com." }, { status: 409 });
     }
+    if (result === "already_yours") return NextResponse.json({ success: true, paymentId: razorpay_payment_id });
+  } catch (e) {
+    console.error("[payment/verify] could not record the payment:", e instanceof Error ? e.message : e);
+    return NextResponse.json({ success: false, reason: "retry", message: `Your payment went through but we couldn't record it yet. Please try again, or write to support@onegrasp.com with payment ID ${razorpay_payment_id}.` }, { status: 500 });
   }
   const p = profile || {};
   const name = String(p.name || "");

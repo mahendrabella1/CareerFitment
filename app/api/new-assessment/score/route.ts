@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { rateLimited } from "@/lib/security/rateLimit";
+import { requirePaidCaller } from "@/lib/payments/gate";
 import { scoreAssessment } from "@/lib/newAssessment/scoring";
 import { scoreClass6Assessment, type Class6Response } from "@/lib/newAssessment/class6Scoring";
 import { scoreClass7Assessment, type Class7Response } from "@/lib/newAssessment/class7Scoring";
@@ -17,6 +18,9 @@ export async function POST(req: Request) {
   // Per-IP flood limit (security audit M-04) - generous, as a school lab often shares one IP.
   const limited = await rateLimited(req, "score", 300, 600);
   if (limited) return limited;
+  // The paid paper: only accounts the payment routes marked paid (security audit C-03).
+  const unpaid = await requirePaidCaller(req);
+  if (unpaid) return unpaid;
   let body: {
     stage?: StageKey;
     category?: string;

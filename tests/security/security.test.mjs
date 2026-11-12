@@ -148,8 +148,18 @@ test("H-04: the verify route refuses malformed Razorpay ids before anything else
   assert.equal(r.status, 400);
   r = await POST(json({ razorpay_order_id: "order_ABC12345", razorpay_payment_id: "pay_ABC12345", razorpay_signature: "0".repeat(64) }));
   assert.equal(r.status, 400, "bad signature");
-  r = await POST(json({ razorpay_order_id: "order_ABC12345", razorpay_payment_id: "pay_ABC12345", razorpay_signature: sign("order_ABC12345", "pay_ABC12345") }));
-  assert.equal(r.status, 200, "a genuine signature still verifies");
+  // A genuine signature verifies - and then the server must record it against a signed-in account (C-03).
+  const good = { razorpay_order_id: "order_ABC12345", razorpay_payment_id: "pay_ABC12345", razorpay_signature: sign("order_ABC12345", "pay_ABC12345") };
+  r = await POST(json(good));
+  assert.equal(r.status, 401, "no sign-in, nothing recorded");
+  const err = console.error; console.error = () => {};
+  try {
+    r = await POST(json({ ...good, idToken: "good-token" }));
+  } finally { console.error = err; }
+  const body = await r.json();
+  assert.equal(r.status, 500, "recording failed here (fake credentials) - so it says so instead of pretending");
+  assert.equal(body.reason, "retry");
+  assert.match(body.message, /pay_ABC12345/, "the student gets the payment ID to quote");
   delete process.env.RAZORPAY_KEY_SECRET;
 });
 

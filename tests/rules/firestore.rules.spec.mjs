@@ -59,7 +59,17 @@ test("payments are server-only", async () => {
 test("C-03: a student can't mark themselves paid", async () => {
   await seed("users/alice", signup);
   await assertFails(updateDoc(doc(student(), "users/alice"), { paid: true, paymentStatus: "paid" }));
+  for (const field of ["paymentStatus", "paidAt", "paymentId", "amountPaid", "couponCode", "paymentVerifiedBy"]) {
+    await assertFails(updateDoc(doc(student(), "users/alice"), { [field]: "x" }));
+  }
   await assertSucceeds(updateDoc(doc(student(), "users/alice"), { desiredCareer: "Doctor" }), "ordinary fields still save");
+});
+
+test("C-03: the server path (Admin SDK) and admins can still mark an account paid", async () => {
+  await seed("users/alice", signup);
+  await env.withSecurityRulesDisabled((ctx) => updateDoc(doc(ctx.firestore(), "users/alice"), { paid: true, paymentStatus: "paid", paymentVerifiedBy: "server" }));
+  await assertSucceeds(getDoc(doc(student(), "users/alice")));
+  await assertSucceeds(updateDoc(doc(admin(true), "users/alice"), { paid: false }));
 });
 
 test("M-03: an admin email must be verified", async () => {

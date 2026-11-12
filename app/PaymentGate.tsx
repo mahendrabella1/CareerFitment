@@ -2,12 +2,17 @@
 
 /**
  * PaymentGate - shown before the exam when the signed-in user hasn't paid.
+ *
+ * The browser never marks an account paid (security audit C-03): the payment
+ * fields are server-only in firestore.rules, and /api/payment/verify (card or
+ * UPI) and /api/payment/redeem (a 100%-off code) write them with the Admin SDK
+ * after checking the payment or the code. Here we only ask, then re-read the
+ * profile.
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { doc, setDoc } from "firebase/firestore";
-import type { UserProfile } from "@/lib/auth/AuthProvider";
-import { getFirebaseAuth, getDb } from "@/lib/firebase/client";
+import { useAuth, type UserProfile } from "@/lib/auth/AuthProvider";
+import { getFirebaseAuth } from "@/lib/firebase/client";
 import { trackEvent } from "@/lib/metaPixel";
 import { formatPaise } from "@/lib/offer";
 
@@ -39,6 +44,7 @@ function loadScript(src: string): Promise<boolean> {
 }
 
 export default function PaymentGate({ profile, onPaid }: { profile: UserProfile; onPaid: () => void }) {
+  const { refreshProfile } = useAuth();
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const [checking, setChecking] = useState(true);
@@ -205,23 +211,10 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
     setPriced((p) => ({ ...p, coupon: null, free: false, payablePaise: p.basePaise }));
   }
 
-  /**
-   * Record "paid" under the user. The server has already verified the payment
-   * (signature) or the waiver (coupon re-priced server-side) by the time this
-   * runs; the write itself needs no admin creds because a user may write their
-   * own document per the Firestore rules.
-   */
-  const markPaid = useCallback(async (fields: Record<string, unknown>) => {
-    try {
-      const db = getDb();
-      const uid = getFirebaseAuth()?.currentUser?.uid;
-      if (db && uid) {
-        await setDoc(doc(db, "users", uid), {
-          paid: true, paymentStatus: "paid", paidAt: new Date().toISOString(), ...fields,
-        }, { merge: true });
-      }
-    } catch { /* verified server-side already - proceed regardless */ }
-  }, []);
+  /** The server has marked the account paid - read the profile back so every screen agrees. */
+  const paidOnServer = useCallback(async () => {
+    try { await refreshProfile(); } catch { /* the exam opens anyway; the server already holds the record */ }
+  }, [refreshProfile]);
 
   /**
    * OGNOW and friends: no Razorpay order exists, so nothing to check out.
@@ -257,7 +250,7 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
         throw new Error(data?.message || "That coupon could not be applied.");
       }
       trackEvent("Purchase", { value: 0, currency: "INR", content_name: `Career Assessment fee (coupon ${code})` });
-      await markPaid({ paymentId: `COUPON-${code}`, couponCode: code, amountPaid: 0 });
+      await paidOnServer();
       onPaid();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Something went wrong.");
@@ -272,15 +265,9 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
     try {
       const ok = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
       if (!ok || !window.Razorpay) {
-        console.warn("[PaymentGate] Razorpay not available, using demo mode");
-        // Demo mode - mark as paid without actual payment
-        await markPaid({
-          paymentId: "DEMO-" + Date.now(),
-          amountPaid: priced.payablePaise / 100,
-          demoMode: true,
-        });
-        onPaid();
-        return;
+        // The payment window couldn't load (often an ad blocker or a flaky
+        // connection). This used to unlock the exam for free; it must not.
+        throw new Error("The payment window couldn't open. Please turn off any ad blocker for this site, check your connection and try again.");
       }
 
       const couponCode = priced.coupon?.code;
@@ -328,20 +315,23 @@ export default function PaymentGate({ profile, onPaid }: { profile: UserProfile;
               name: profile?.name, email: profile?.email, phone: profile?.phone,
               institution: profile?.institution, category: profile?.category, desiredCareer: profile?.desiredCareer,
             };
-            const v = await fetch("/api/payment/verify", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ ...resp, idToken, profile: details, coupon: couponCode }),
-            });
-            const vd = await v.json();
+            // The server checks the signature and records the payment. A hiccup
+            // while recording ("retry") is tried again a couple of times - the
+            // payment is already safe with Razorpay.
+            let vd: { success?: boolean; message?: string; reason?: string; paymentId?: string } = {};
+            for (let attempt = 0; attempt < 3; attempt++) {
+              const v = await fetch("/api/payment/verify", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ ...resp, idToken, profile: details, coupon: couponCode }),
+              });
+              vd = await v.json().catch(() => ({ success: false, reason: "retry" }));
+              if (vd.success || vd.reason !== "retry") break;
+              await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
+            }
             if (!vd.success) { setErr(vd.message || "Payment could not be verified."); setBusy(false); return; }
             trackEvent("Purchase", { value: order.amount / 100, currency: "INR", content_name: "Career Assessment fee" });
-            await markPaid({
-              paymentId: vd.paymentId || resp.razorpay_payment_id,
-              orderId: resp.razorpay_order_id,
-              couponCode: couponCode || null,
-              amountPaid: order.amount / 100,
-            });
+            await paidOnServer();
             onPaid();
           } catch {
             setErr("Payment verification failed. If you were charged, contact support@onegrasp.com.");

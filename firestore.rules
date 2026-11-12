@@ -39,14 +39,13 @@ service cloud.firestore {
       // testDrives and decision (with the parents' answer) are written only by
       // the server routes, so a student can't forge a parent's "We agree";
       // certificates only by /api/certificates once a course is finished;
-      // boosterRequests (Spotlight) only by /api/boosters/request.
-      return ['institution', 'institutionalLinkCode', 'archived', 'archivedAt', 'testDrives', 'decision', 'certificates', 'boosterRequests'];
+      // boosterRequests (Spotlight) only by /api/boosters/request; the
+      // payment fields only by /api/payment/verify, /api/payment/redeem and
+      // /api/institutional/redeem after they've checked the payment, coupon or
+      // school link (security audit C-03) - so nobody can mark themselves paid.
+      return ['institution', 'institutionalLinkCode', 'archived', 'archivedAt', 'testDrives', 'decision', 'certificates', 'boosterRequests',
+        'paid', 'paymentStatus', 'paidAt', 'paymentId', 'amountPaid', 'couponCode', 'paymentVerifiedBy'];
     }
-    // TODO once the payment routes write `paid` with the Admin SDK (today
-    // app/PaymentGate.tsx markPaid() writes it from the browser), add
-    // 'paid', 'paymentStatus', 'paidAt', 'paymentId', 'amountPaid' and
-    // 'couponCode' above and require paid == false on create - until then a
-    // student can mark themselves paid from the browser console.
 
     // ---------- Accounts and admin ----------
 

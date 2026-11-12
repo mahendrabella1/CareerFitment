@@ -538,8 +538,10 @@ function NewExamInner({ category, name, onExit, scoring }: ExamProps) {
     if (!data) return;
     setSubmitting(true);
     try {
+      // Signed in: the server checks the account has paid before scoring (security audit C-03).
+      const idToken = await getFirebaseAuth()?.currentUser?.getIdToken().catch(() => "");
       const res = await fetch(scoring?.url ?? "/api/new-assessment/score", {
-        method: "POST", headers: { "Content-Type": "application/json" },
+        method: "POST", headers: { "Content-Type": "application/json", ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}) },
         body: JSON.stringify({
           stage: data.stage, chosenSets: data.chosenSets, answers, category,
           ...(scoring?.extraBody ?? {}),
