@@ -90,3 +90,23 @@ test("M-07: the unreachable legacy exam endpoints are retired (410); report link
   assert.equal(exp.match(/\bstartAssessment\(/g).length, 1, "defined, never called");
   for (const p of ["app/api/report/[sessionId]/route.ts", "app/api/leads/route.ts", "app/api/assessment/completion-email/route.ts"]) assert.ok(!read(p).includes("retired()"), `${p} still in use`);
 });
+
+test("M-01 (3.9): a Content-Security-Policy is sent report-only - it lists, never blocks", async () => {
+  const { createRequire } = await import("node:module");
+  const config = createRequire(import.meta.url)("../../next.config.js");
+  const all = (await config.headers()).find((h) => h.source === "/:path*").headers;
+  const csp = all.find((h) => h.key === "Content-Security-Policy-Report-Only");
+  assert.ok(csp, "report-only header present");
+  assert.ok(!all.some((h) => h.key === "Content-Security-Policy"), "not enforced yet");
+  const dir = Object.fromEntries(csp.value.split(";").map((d) => d.trim().split(/\s+/)).map(([k, ...v]) => [k, v]));
+  // What the site really loads must be allowed, or the report fills with noise.
+  assert.ok(dir["script-src"].includes("https://checkout.razorpay.com"), "Razorpay checkout");
+  assert.ok(dir["script-src"].includes("https://connect.facebook.net"), "Meta Pixel");
+  assert.ok(dir["script-src"].includes("https://www.youtube.com"), "YouTube IFrame API");
+  assert.ok(dir["frame-src"].includes("https://www.youtube-nocookie.com"), "lesson videos");
+  assert.ok(dir["frame-src"].includes("https://*.razorpay.com"), "payment window");
+  assert.ok(dir["connect-src"].includes("https://*.googleapis.com"), "Firebase");
+  assert.ok(dir["media-src"].includes("https://onegrasp.com"), "home videos");
+  assert.deepEqual(dir["object-src"], ["'none'"]);
+  assert.deepEqual(dir["frame-ancestors"], ["'self'"]);
+});
