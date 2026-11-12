@@ -2,20 +2,15 @@
 // pattern as lib/studentEmail.ts (no SMTP configured, or a mail outage,
 // must never throw into the caller). Simpler template since this is a
 // recurring utility notification, not a one-time completion email.
-import nodemailer from "nodemailer";
+import { getMailer } from "@/lib/mail";
 
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://careerfitment.onegrasp.com").replace(/\/+$/, "");
 const SUPPORT = "support@onegrasp.com";
 
+// The shared SMTP connection (lib/mail.ts).
 function getTransporter() {
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) return null;
-  const host = String(SMTP_HOST).replace(/^[a-z]+:\/\//i, "").replace(/[:/].*$/, "").trim();
-  const port = Number(SMTP_PORT || 465);
-  return {
-    transporter: nodemailer.createTransport({ host, port, secure: port === 465, auth: { user: SMTP_USER, pass: SMTP_PASS } }),
-    from: SMTP_USER,
-  };
+  const m = getMailer();
+  return m ? { transporter: m.transporter, from: m.from } : null;
 }
 
 const esc = (v: unknown) =>

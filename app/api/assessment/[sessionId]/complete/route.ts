@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logged, GENERIC_ERROR } from "@/lib/security/serverError";
 import { getScoringStrategy } from "@/lib/engine/scoring/registry";
 import { ScoredResponse } from "@/lib/engine/scoring/types";
 import { getSupabaseAdmin } from "@/lib/supabase/client";
@@ -21,8 +22,10 @@ export async function POST(
         data: result,
       });
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Unknown error";
-      const notFound = /not found/i.test(message);
+      const detail = err instanceof Error ? err.message : String(err);
+      console.error("[assessment/complete]", detail);
+      const notFound = /not found/i.test(detail);
+      const message = notFound ? "This assessment session wasn't found." : GENERIC_ERROR;
       return NextResponse.json(
         { success: false, message, statusCode: notFound ? 404 : 500, data: null },
         { status: notFound ? 404 : 500 }
@@ -39,7 +42,7 @@ export async function POST(
     .eq("session_id", sessionId);
   if (sqErr) {
     return NextResponse.json(
-      { success: false, message: sqErr.message, statusCode: 500, data: null },
+      { success: false, message: logged("assessment/complete", sqErr), statusCode: 500, data: null },
       { status: 500 }
     );
   }
@@ -50,7 +53,7 @@ export async function POST(
     .eq("session_id", sessionId);
   if (rErr) {
     return NextResponse.json(
-      { success: false, message: rErr.message, statusCode: 500, data: null },
+      { success: false, message: logged("assessment/complete", rErr), statusCode: 500, data: null },
       { status: 500 }
     );
   }
@@ -116,7 +119,7 @@ export async function POST(
     const { error: insErr } = await admin.from("session_scores").insert(scoreRows);
     if (insErr) {
       return NextResponse.json(
-        { success: false, message: insErr.message, statusCode: 500, data: null },
+        { success: false, message: logged("assessment/complete", insErr), statusCode: 500, data: null },
         { status: 500 }
       );
     }
@@ -128,7 +131,7 @@ export async function POST(
     .eq("id", sessionId);
   if (updErr) {
     return NextResponse.json(
-      { success: false, message: updErr.message, statusCode: 500, data: null },
+      { success: false, message: logged("assessment/complete", updErr), statusCode: 500, data: null },
       { status: 500 }
     );
   }

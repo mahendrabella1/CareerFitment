@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logged, GENERIC_ERROR } from "@/lib/security/serverError";
 import { getSupabaseAdmin } from "@/lib/supabase/client";
 import { isLocalAssessmentMode } from "@/lib/assessmentMode";
 import { getLocalFitment } from "@/lib/localMode/service";
@@ -20,8 +21,10 @@ export async function GET(
         data,
       });
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Unknown error";
-      const notFound = /not found/i.test(message);
+      const detail = err instanceof Error ? err.message : String(err);
+      console.error("[assessment/fitment]", detail);
+      const notFound = /not found/i.test(detail);
+      const message = notFound ? "This assessment session wasn't found." : GENERIC_ERROR;
       return NextResponse.json(
         { success: false, message, statusCode: notFound ? 404 : 500, data: null },
         { status: notFound ? 404 : 500 }
@@ -40,7 +43,7 @@ export async function GET(
 
   if (error) {
     return NextResponse.json(
-      { success: false, message: error.message, statusCode: 500, data: null },
+      { success: false, message: logged("assessment/fitment", error), statusCode: 500, data: null },
       { status: 500 }
     );
   }

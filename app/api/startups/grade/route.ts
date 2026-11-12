@@ -1,15 +1,17 @@
 import { NextResponse } from "next/server";
+import { rateLimited } from "@/lib/security/rateLimit";
 import { getLesson, getModule } from "@/data/startups/content";
 import { gradeQuiz, type SubmittedAnswer } from "@/lib/startups/scoring";
 
-// Stateless grading, mirroring new-assessment/score/route.ts's own shape -
-// no server-side auth check (this app has none anywhere; identity + access
-// control live in Firestore security rules once the client persists the
-// graded result - see lib/startups/clientProgress.ts). Re-reads the real
-// question bank from data/startups/content.ts every time, so a client can
-// never submit a forged "correct" answer that was never actually checked
-// server-side.
+// Stateless grading: it needs no sign-in because it stores nothing - the
+// student's browser saves the graded result (lib/startups/clientProgress.ts),
+// where Firestore rules apply. Re-reads the real question bank from
+// data/startups/content.ts every time, so a client can never submit a forged
+// "correct" answer that was never checked here. Rate-limited per IP.
 export async function POST(req: Request) {
+  // Per-IP flood limit (security audit M-04) - generous, as a school lab often shares one IP.
+  const limited = await rateLimited(req, "startups-grade", 300, 600);
+  if (limited) return limited;
   const body = await req.json().catch(() => null) as {
     trackSlug?: string; moduleSlug?: string; lessonSlug?: string;
     kind?: "LESSON" | "MODULE_TEST"; answers?: SubmittedAnswer[];

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { GENERIC_ERROR } from "@/lib/security/serverError";
 import {
   getLocalScore,
   getLocalFitment,
@@ -40,8 +41,10 @@ export async function GET(
       data: { student, score, fitment },
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    const notFound = /not found/i.test(message);
+    const detail = err instanceof Error ? err.message : String(err);
+    console.error("[report]", detail);
+    const notFound = /not found/i.test(detail);
+    const message = notFound ? "This report wasn't found." : GENERIC_ERROR;
     return NextResponse.json(
       { success: false, message, statusCode: notFound ? 404 : 500, data: null },
       { status: notFound ? 404 : 500 }

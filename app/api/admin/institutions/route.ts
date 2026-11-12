@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAuthUser, deleteAuthUser, updateAuthUser } from "@/lib/firebase/adminAuth";
-import { ApiError, fail, institutionNames, normName, requireAdmin, usernameEmail, USERNAME_RE } from "@/lib/institution/server";
+import { ApiError, clearInstitutionsCache, fail, institutionNames, normName, requireAdmin, usernameEmail, USERNAME_RE } from "@/lib/institution/server";
 import type { Institution, InstitutionAccount } from "@/lib/institution/types";
 
 export const dynamic = "force-dynamic";
@@ -75,6 +75,7 @@ function cleanAliases(v: unknown, name: string): string[] {
 }
 
 export async function POST(req: Request) {
+  clearInstitutionsCache(); // a school is being added or changed - re-read the list next time
   try {
     const { db, email } = await requireAdmin(req);
     const body = (await req.json().catch(() => ({}))) as Record<string, unknown>;
@@ -124,6 +125,7 @@ export async function POST(req: Request) {
 }
 
 export async function PATCH(req: Request) {
+  clearInstitutionsCache(); // a school is being added or changed - re-read the list next time
   try {
     const { db } = await requireAdmin(req);
     const body = (await req.json().catch(() => ({}))) as Record<string, unknown>;

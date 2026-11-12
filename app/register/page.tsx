@@ -144,9 +144,11 @@ function RegisterForm() {
       });
       setDone(true);
       trackEvent("CompleteRegistration", { content_name: f.category, status: true });
+      // Signed in by now: the server takes the email from this token (security audit M-04).
+      const leadToken = await getFirebaseAuth()?.currentUser?.getIdToken().catch(() => "");
       void fetch("/api/crm-lead", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...(leadToken ? { Authorization: `Bearer ${leadToken}` } : {}) },
         body: JSON.stringify({
           name: f.name, email: f.email, phone: f.phone,
           institution: f.institution, category: f.category, city: f.city, age: f.age,

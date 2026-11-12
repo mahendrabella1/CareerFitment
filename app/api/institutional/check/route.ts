@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rateLimited } from "@/lib/security/rateLimit";
 import { isFirestoreConfigured, getFirestore } from "@/lib/firebase/admin";
 
 export const dynamic = "force-dynamic";
@@ -24,6 +25,9 @@ const CODE_RE = /^[A-Z0-9-]{4,32}$/;
  * between this check and the student submitting the form.
  */
 export async function GET(req: Request) {
+  // Per-IP flood limit (security audit M-04) - generous, as a school lab often shares one IP.
+  const limited = await rateLimited(req, "inst-check", 120, 600);
+  if (limited) return limited;
   const code = new URL(req.url).searchParams.get("code")?.trim().toUpperCase() || "";
   if (!CODE_RE.test(code)) return NextResponse.json({ valid: false, reason: "not_found" });
   if (!isFirestoreConfigured()) return NextResponse.json({ valid: false, reason: "not_found" });

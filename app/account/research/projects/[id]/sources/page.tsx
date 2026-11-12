@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { fetchProject, addSource, type ResearchProject } from "@/lib/research/clientProgress";
+import { safeHttpUrl } from "@/lib/security/sanitize";
 import { PageHeader } from "@/components/course/fx";
 
 const ACCENT = "#7c3aed";
@@ -35,7 +36,7 @@ export default function SourcesPage({ params }: { params: { id: string } }) {
           <div key={i} style={{ border: "1px solid #eee", borderRadius: 10, padding: "12px 16px" }}>
             <div style={{ fontWeight: 700, fontSize: 13.5, color: "#1a1a1a" }}>{s.title}</div>
             {(s.authors || s.year) && <div style={{ fontSize: 11.5, color: "#999" }}>{[s.authors, s.year].filter(Boolean).join(" · ")}</div>}
-            {s.url && <a href={s.url} target="_blank" rel="noreferrer" style={{ fontSize: 11.5, color: ACCENT }}>{s.url}</a>}
+            {safeHttpUrl(s.url) ? <a href={safeHttpUrl(s.url)} target="_blank" rel="noreferrer" style={{ fontSize: 11.5, color: ACCENT }}>{s.url}</a> : s.url ? <span style={{ fontSize: 11.5 }}>{s.url}</span> : null}
             {s.note && <p style={{ fontSize: 12.5, color: "#555", margin: "6px 0 0" }}>{s.note}</p>}
           </div>
         ))}

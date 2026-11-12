@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer";
+import { getMailer } from "@/lib/mail";
 
 interface EmailOptions {
   to: string;
@@ -11,22 +11,11 @@ interface EmailOptions {
   }>;
 }
 
-let transporter: nodemailer.Transporter | null = null;
-
+// The shared SMTP connection (lib/mail.ts) - SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS like every other sender.
 function getTransporter() {
-  if (transporter) return transporter;
-
-  transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || "587"),
-    secure: process.env.SMTP_SECURE === "true", // true for 465, false for other ports
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASSWORD,
-    },
-  });
-
-  return transporter;
+  const m = getMailer();
+  if (!m) throw new Error("Email is not configured (SMTP_HOST, SMTP_USER, SMTP_PASS).");
+  return m.transporter;
 }
 
 export async function sendCredentialsEmail(

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logged } from "@/lib/security/serverError";
 import { getSupabaseAdmin } from "@/lib/supabase/client";
 
 export const dynamic = "force-dynamic";
@@ -77,7 +78,7 @@ export async function GET(
       return NextResponse.json(
         {
           success: false,
-          message: `Failed to fetch programme mappings: ${mappingError.message}`,
+          message: logged("assessment/programmes", mappingError, "Couldn't load programme suggestions - please try again."),
           statusCode: 500,
           data: null,
         },
@@ -133,11 +134,11 @@ export async function GET(
       { status: 200 }
     );
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown error";
+    console.error("[assessment/programmes]", error instanceof Error ? error.message : error);
     return NextResponse.json(
       {
         success: false,
-        message: `Error fetching programme recommendations: ${message}`,
+        message: "Couldn't load programme suggestions - please try again.",
         statusCode: 500,
         data: null,
       },

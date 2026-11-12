@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import { Logo } from "@/app/Logo";
 import { KIND_LABEL } from "@/lib/institution/passport";
+import { safeHttpUrl } from "@/lib/security/sanitize";
 
 interface Passport {
   name: string; className: string; institution: string; fits: string[];
@@ -55,7 +56,7 @@ export default function PassportView({ params }: { params: { id: string } }) {
                 <span className="pv-tick" aria-label="Verified">✓</span>
                 <div>
                   <b>{m.title}</b>
-                  <small>{KIND_LABEL[m.kind] ?? m.kind} · {new Date(m.date).toLocaleDateString("en-IN", { month: "short", year: "numeric" })} · verified by {m.verifiedBy || "the institution"}{m.evidenceUrl && <> · <a href={m.evidenceUrl} target="_blank" rel="noreferrer">see proof ↗</a></>}</small>
+                  <small>{KIND_LABEL[m.kind] ?? m.kind} · {new Date(m.date).toLocaleDateString("en-IN", { month: "short", year: "numeric" })} · verified by {m.verifiedBy || "the institution"}{safeHttpUrl(m.evidenceUrl) && <> · <a href={safeHttpUrl(m.evidenceUrl)} target="_blank" rel="noreferrer">see proof ↗</a></>}</small>
                 </div>
               </div>
             ))}

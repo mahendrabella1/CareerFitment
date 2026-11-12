@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Icon } from "@/app/Icons";
 import { loadTracker } from "@/lib/jobs/student";
+import { safeHttpUrl } from "@/lib/security/sanitize";
 import type { TrackedJob } from "@/lib/jobs/types";
 import { plainText, skillList } from "@/lib/resume/resume";
 import { atsReport } from "@/lib/resume/ats";
@@ -105,7 +106,7 @@ function AppRow({ a, name, phone, skills }: { a: TrackedJob & { id: string }; na
       <div className="pl-app-h">
         <span><b>{a.title}</b><small>{a.company} · {a.status[0].toUpperCase() + a.status.slice(1)} · updated {days <= 0 ? "today" : `${days} day${days === 1 ? "" : "s"} ago`}{due ? " · follow up now" : ""}</small></span>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-          {a.status === "saved" && <a href={a.applyUrl} target="_blank" rel="noopener noreferrer" className="fp-btn fp-btn-sm fp-btn-pri">Apply</a>}
+          {a.status === "saved" && safeHttpUrl(a.applyUrl) && <a href={safeHttpUrl(a.applyUrl)} target="_blank" rel="noopener noreferrer" className="fp-btn fp-btn-sm fp-btn-pri">Apply</a>}
           {a.status === "applied" && <button className={`fp-btn fp-btn-sm${due ? " fp-btn-pri" : ""}`} onClick={() => setOpen(open === "follow" ? "" : "follow")}>Follow-up email</button>}
           {(a.status === "interview" || a.status === "offer") && <button className="fp-btn fp-btn-sm" onClick={() => setOpen(open === "thanks" ? "" : "thanks")}>Thank-you note</button>}
         </div>

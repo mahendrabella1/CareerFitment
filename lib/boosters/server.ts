@@ -6,7 +6,7 @@
  * Reply-To and their file attached. The email is best-effort - the saved copy
  * is the record, and the page tells the student if the email didn't go.
  */
-import nodemailer from "nodemailer";
+import { getMailer } from "@/lib/mail";
 import { randomBytes } from "crypto";
 import type { Firestore } from "firebase-admin/firestore";
 import { ApiError } from "@/lib/institution/server";
@@ -61,12 +61,10 @@ export async function saveRequest(db: Firestore, uid: string, signInEmail: strin
   });
 }
 
+// The shared SMTP connection (lib/mail.ts).
 function transport() {
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) return null;
-  const host = String(SMTP_HOST).replace(/^[a-z]+:\/\//i, "").replace(/[:/].*$/, "").trim();
-  const port = Number(SMTP_PORT || 465);
-  return { mail: nodemailer.createTransport({ host, port, secure: port === 465, auth: { user: SMTP_USER, pass: SMTP_PASS } }), from: SMTP_USER };
+  const m = getMailer();
+  return m ? { mail: m.transporter, from: m.from } : null;
 }
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);

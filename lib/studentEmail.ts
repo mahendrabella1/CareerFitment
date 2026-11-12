@@ -13,21 +13,16 @@
 //
 // Best-effort throughout: no SMTP configured, or a mail outage, must never turn
 // into a failed assessment submission.
-import nodemailer from "nodemailer";
+import { getMailer } from "@/lib/mail";
 
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://careerfitment.onegrasp.com").replace(/\/+$/, "");
 const SUPPORT = "support@onegrasp.com";
 const LOGO = "https://onegrasp.com/wp-content/uploads/2026/07/onegrasp-logo.png";
 
+// The shared SMTP connection (lib/mail.ts).
 function getTransporter() {
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) return null;
-  const host = String(SMTP_HOST).replace(/^[a-z]+:\/\//i, "").replace(/[:/].*$/, "").trim();
-  const port = Number(SMTP_PORT || 465);
-  return {
-    transporter: nodemailer.createTransport({ host, port, secure: port === 465, auth: { user: SMTP_USER, pass: SMTP_PASS } }),
-    from: SMTP_USER,
-  };
+  const m = getMailer();
+  return m ? { transporter: m.transporter, from: m.from } : null;
 }
 
 /** Escape anything that came from the student before it goes into HTML. */

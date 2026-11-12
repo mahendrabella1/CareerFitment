@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { getMailer } from "@/lib/mail";
 import { isAdmin } from "@/lib/auth/admins";
+import { verifySignIn } from "@/lib/firebase/adminAuth";
 import type { AssessmentSummary } from "@/lib/auth/AuthProvider";
 import { DOMAINS, categoryDeepDive, roadmap, stageLabelOf } from "@/lib/report/knowledge";
 import { renderReportPdf } from "@/lib/report/reportPdf";
@@ -9,28 +10,16 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 30; // give the SMTP handshake room on serverless
 
-// Public Firebase web API key (safe to expose) - used to verify the caller's
-// ID token via the Firebase Auth REST API (no admin SDK / service account).
-const FIREBASE_API_KEY = "AIzaSyA3fUy9CkpoNf-vjrhswJQNwqy0qSr2cL0";
-
 function fail(message: string, status = 400) {
   return NextResponse.json({ success: false, message, data: null }, { status });
 }
 
-/** Verify a Firebase ID token and return the email if it belongs to an admin. */
+/** The caller's email when their ID token is valid and belongs to an admin - the
+ *  same check every signed-in route uses (lib/firebase/adminAuth.ts verifySignIn). */
 async function verifyAdminEmail(idToken: string): Promise<string | null> {
   try {
-    const res = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${FIREBASE_API_KEY}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idToken }),
-      }
-    );
-    const data = (await res.json()) as { users?: { email?: string }[] };
-    const email = data?.users?.[0]?.email ?? null;
-    return email && isAdmin(email) ? email : null;
+    const id = await verifySignIn(idToken);
+    return id?.email && isAdmin(id.email) ? id.email : null;
   } catch {
     return null;
   }
@@ -131,19 +120,10 @@ export async function POST(req: Request) {
     );
   }
 
-  // Sanitize the host - env vars sometimes get a protocol/path/port pasted in
-  // (e.g. "https://smtp.hostinger.com"), which breaks DNS. Keep the bare host.
-  const host = String(SMTP_HOST).replace(/^[a-z]+:\/\//i, "").replace(/[:/].*$/, "").trim();
-  const port = Number(SMTP_PORT || 465);
-  const transporter = nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465, // 465 = SSL, 587 = STARTTLS
-    auth: { user: SMTP_USER, pass: SMTP_PASS },
-    connectionTimeout: 12000,
-    greetingTimeout: 12000,
-    socketTimeout: 15000,
-  });
+  // The shared SMTP connection (lib/mail.ts) - it cleans a pasted "https://" or port off the host.
+  const mailer = getMailer();
+  if (!mailer) return fail("Email is not configured on this deployment.", 500);
+  const { transporter, host, port } = mailer;
 
   // Verify connection/credentials first so failures return a clear reason.
   try {

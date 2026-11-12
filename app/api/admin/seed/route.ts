@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : 'Seeding failed',
+        error: 'Seeding failed - see the server log.',
       },
       { status: 500 }
     );

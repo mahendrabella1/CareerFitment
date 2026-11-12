@@ -1,5 +1,5 @@
 # Type-check and test every push and pull request (security audit L-07).
-# npm audit is reported but doesn't fail the build - it flags issues that need a
+# The dependency audit is reported but doesn't fail the build - it flags issues that need a
 # decision (e.g. a framework upgrade), not a reflex.
 name: CI
 
@@ -21,12 +21,16 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+      # Same package manager and lockfile as Vercel (pnpm-lock.yaml).
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npm run typecheck
-      - run: npm test
-      - name: npm audit (report only)
-        run: npm audit --omit=dev || true
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run typecheck
+      - run: pnpm test
+      - name: pnpm audit (report only)
+        run: pnpm audit --prod || true

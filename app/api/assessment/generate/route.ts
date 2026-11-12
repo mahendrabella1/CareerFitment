@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { GENERIC_ERROR } from "@/lib/security/serverError";
 import { getSupabaseAdmin } from "@/lib/supabase/client";
 import { generateSession } from "@/lib/engine/selectionEngine";
 import { isLocalAssessmentMode } from "@/lib/assessmentMode";
@@ -60,7 +61,8 @@ export async function POST(req: Request) {
       data: session,
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error generating session";
+    console.error("[assessment/generate]", err instanceof Error ? err.message : err);
+    const message = GENERIC_ERROR;
     return NextResponse.json(
       { success: false, message, statusCode: 500, data: null },
       { status: 500 }

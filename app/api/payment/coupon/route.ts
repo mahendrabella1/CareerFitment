@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rateLimited } from "@/lib/security/rateLimit";
 import { getPaymentSettings } from "@/lib/paymentSettings";
 import { priceWithCoupon, autoCoupon, toPublicCoupon } from "@/lib/coupons";
 import { OFFER } from "@/lib/offer";
@@ -16,6 +17,9 @@ export const dynamic = "force-dynamic";
 // An unknown code is not an error: it comes back 200 with valid:false, so the
 // screen can say "that code isn't valid" without the student seeing a failure.
 export async function POST(req: Request) {
+  // Per-IP flood limit (security audit M-04) - generous, as a school lab often shares one IP.
+  const limited = await rateLimited(req, "coupon", 60, 600);
+  if (limited) return limited;
   let body: { code?: unknown } = {};
   try {
     body = await req.json();

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rateLimited } from "@/lib/security/rateLimit";
 import { scoreAssessment } from "@/lib/newAssessment/scoring";
 import { scoreClass6Assessment, type Class6Response } from "@/lib/newAssessment/class6Scoring";
 import { scoreClass7Assessment, type Class7Response } from "@/lib/newAssessment/class7Scoring";
@@ -13,6 +14,9 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
+  // Per-IP flood limit (security audit M-04) - generous, as a school lab often shares one IP.
+  const limited = await rateLimited(req, "score", 300, 600);
+  if (limited) return limited;
   let body: {
     stage?: StageKey;
     category?: string;

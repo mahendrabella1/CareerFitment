@@ -6,8 +6,9 @@
 // details the client passed instead of failing the payment.
 
 // Public Firebase web API key (safe to expose - it identifies the project, it
-// does not authorise anything on its own).
-const FIREBASE_API_KEY = "AIzaSyA3fUy9CkpoNf-vjrhswJQNwqy0qSr2cL0";
+// does not authorise anything on its own). From the environment, with the
+// project's existing public value as the fallback so nothing breaks.
+const FIREBASE_API_KEY = process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyA3fUy9CkpoNf-vjrhswJQNwqy0qSr2cL0";
 
 export async function emailFromToken(idToken?: string): Promise<string> {
   if (!idToken) return "";
@@ -23,17 +24,18 @@ export async function emailFromToken(idToken?: string): Promise<string> {
   }
 }
 
-/** Same lookup, but returns the uid too - used to key a coupon redemption. */
-export async function identityFromToken(idToken?: string): Promise<{ email: string; uid: string }> {
-  if (!idToken) return { email: "", uid: "" };
+/** Same lookup, but returns the uid (and whether the email is verified) too. */
+export async function identityFromToken(idToken?: string): Promise<{ email: string; uid: string; emailVerified: boolean }> {
+  if (!idToken) return { email: "", uid: "", emailVerified: false };
   try {
     const res = await fetch(
       `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${FIREBASE_API_KEY}`,
       { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ idToken }) }
     );
-    const data = (await res.json()) as { users?: { email?: string; localId?: string }[] };
-    return { email: data?.users?.[0]?.email || "", uid: data?.users?.[0]?.localId || "" };
+    const data = (await res.json()) as { users?: { email?: string; localId?: string; emailVerified?: boolean }[] };
+    const u = data?.users?.[0];
+    return { email: u?.email || "", uid: u?.localId || "", emailVerified: u?.emailVerified === true };
   } catch {
-    return { email: "", uid: "" };
+    return { email: "", uid: "", emailVerified: false };
   }
 }

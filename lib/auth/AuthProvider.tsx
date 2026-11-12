@@ -19,6 +19,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
+  sendEmailVerification,
   signOut,
   updateProfile as updateFirebaseProfile,
   onAuthStateChanged,
@@ -362,6 +363,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       createdAt: serverTimestamp(),
     });
     setProfile(profileDoc);
+    // Ask Firebase to send the "verify your email" message (security audit
+    // M-06). Best-effort: it never delays or fails sign-up, and unverified
+    // accounts aren't blocked from anything yet.
+    void sendEmailVerification(cred.user).catch(() => {});
   }
 
   async function refreshProfile() {

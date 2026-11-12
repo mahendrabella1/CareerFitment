@@ -25,7 +25,7 @@ export class AuthAdminError extends Error {
 
 // ---------------------------------------------------------------- sign-in check
 
-const verified = new Map<string, { uid: string; email: string; until: number }>();
+const verified = new Map<string, { uid: string; email: string; emailVerified: boolean; until: number }>();
 
 function tokenExpiry(token: string): number {
   try {
@@ -39,10 +39,10 @@ function tokenExpiry(token: string): number {
 /** The account an ID token belongs to, or null when it isn't valid. A
  *  verified token is remembered (until it expires, at most 5 minutes) so a
  *  page's several calls don't each repeat the lookup. */
-export async function verifySignIn(token: string): Promise<{ uid: string; email: string } | null> {
+export async function verifySignIn(token: string): Promise<{ uid: string; email: string; emailVerified: boolean } | null> {
   const now = Date.now();
   const hit = verified.get(token);
-  if (hit && hit.until > now) return { uid: hit.uid, email: hit.email };
+  if (hit && hit.until > now) return { uid: hit.uid, email: hit.email, emailVerified: hit.emailVerified };
   const id = await identityFromToken(token);
   if (!id.uid) return null;
   if (verified.size > 1000) verified.clear();

@@ -10,6 +10,7 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'rea
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { apiFetch } from '@/lib/institution/client';
+import { safeHttpUrl } from '@/lib/security/sanitize';
 import type {
   PortfolioCertification, PortfolioEducation, PortfolioExperience, PortfolioProfile, PortfolioSkill,
 } from '@/lib/data/portfolioSchema';
@@ -374,7 +375,7 @@ export default function PortfolioPage() {
               <>
                 <div className="pf-item-t">{x.name}</div>
                 {(x.issuer || x.issueDate) && <div className="pf-item-s">{[x.issuer, fmtMonth(x.issueDate)].filter(Boolean).join(' · ')}</div>}
-                {x.credentialUrl && <a className="pf-item-d" href={x.credentialUrl} target="_blank" rel="noopener noreferrer" style={{ color: ACCENT }}>View certificate ↗</a>}
+                {safeHttpUrl(x.credentialUrl) && <a className="pf-item-d" href={safeHttpUrl(x.credentialUrl)} target="_blank" rel="noopener noreferrer" style={{ color: ACCENT }}>View certificate ↗</a>}
               </>
             )}
             onSave={(certifications) => save({ certifications })}

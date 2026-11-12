@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logged, GENERIC_ERROR } from "@/lib/security/serverError";
 import { getSupabaseAdmin } from "@/lib/supabase/client";
 import { isLocalAssessmentMode } from "@/lib/assessmentMode";
 import { saveLocalAnswer } from "@/lib/localMode/service";
@@ -35,8 +36,10 @@ export async function POST(
         data,
       });
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Unknown error";
-      const notFound = /not found|not assigned/i.test(message);
+      const detail = err instanceof Error ? err.message : String(err);
+      console.error("[assessment/answers]", detail);
+      const notFound = /not found|not assigned/i.test(detail);
+      const message = notFound ? "This assessment session isn't available." : GENERIC_ERROR;
       return NextResponse.json(
         { success: false, message, statusCode: notFound ? 403 : 500, data: null },
         { status: notFound ? 403 : 500 }
@@ -57,7 +60,7 @@ export async function POST(
 
   if (aErr) {
     return NextResponse.json(
-      { success: false, message: aErr.message, statusCode: 500, data: null },
+      { success: false, message: logged("assessment/answers", aErr), statusCode: 500, data: null },
       { status: 500 }
     );
   }
@@ -84,7 +87,7 @@ export async function POST(
 
   if (error) {
     return NextResponse.json(
-      { success: false, message: error.message, statusCode: 500, data: null },
+      { success: false, message: logged("assessment/answers", error), statusCode: 500, data: null },
       { status: 500 }
     );
   }

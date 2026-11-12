@@ -15,6 +15,7 @@
  */
 import { addDoc, collection, doc, getDoc, getDocs, orderBy, query, setDoc, updateDoc, where, serverTimestamp, Timestamp } from "firebase/firestore";
 import { getDb } from "@/lib/firebase/client";
+import { safeHttpUrl } from "@/lib/security/sanitize";
 import type { Level, PlanStep } from "@/lib/research/plan";
 import type { RubricScores } from "@/lib/research/rubric";
 
@@ -90,7 +91,8 @@ export async function addSource(projectId: string, source: Source): Promise<void
   if (!db) return;
   const project = await fetchProject(projectId);
   if (!project) return;
-  await updateDoc(doc(db, PROJECTS, projectId), { sources: [...project.sources, source] });
+  // Only http(s) links are kept, so a saved source can never become a javascript: link (security audit L-02).
+  await updateDoc(doc(db, PROJECTS, projectId), { sources: [...project.sources, { ...source, url: safeHttpUrl(source.url) }] });
 }
 
 export interface AbstractVersion {

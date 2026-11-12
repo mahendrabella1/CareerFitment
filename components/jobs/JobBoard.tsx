@@ -24,6 +24,7 @@ import { CATEGORY_SHORT, JOB_CATEGORIES } from "@/lib/jobs/clusters";
 import { isOnPath, loadTracker, pathCareers, saveTracked, TRACK_STATUSES } from "@/lib/jobs/student";
 import type { EmploymentType, JobDetail, JobListItem, JobSearchResult, JobStats, TrackStatus, TrackedJob, WorkplaceType } from "@/lib/jobs/types";
 import { loadRoadmapCatalog } from "@/lib/report/roleRoadmapGrad";
+import { safeHttpUrl } from "@/lib/security/sanitize";
 
 const TYPES: EmploymentType[] = ["Internship", "Full-time", "Part-time", "Contract"];
 const PLACES: WorkplaceType[] = ["Remote", "Hybrid", "On-site"];
@@ -900,7 +901,7 @@ function MyJobs({ tracked, onMove, onBrowse }: { tracked: [string, TrackedJob][]
                 <b>{t.title}</b>
                 <span>{t.company}</span>
                 <div className="jb-row-links">
-                  <a className="jb-link" href={t.applyUrl} target="_blank" rel="noopener">Original listing ↗</a>
+                  {safeHttpUrl(t.applyUrl) && <a className="jb-link" href={safeHttpUrl(t.applyUrl)} target="_blank" rel="noopener">Original listing ↗</a>}
                   <label className="jb-select jb-select-sm">
                     <span className="jb-sr">Move to</span>
                     <select value={t.status} onChange={(e) => onMove(id, t, (e.target.value || null) as TrackStatus | null)}>

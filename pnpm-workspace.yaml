@@ -1,6 +1,8 @@
 allowBuilds:
-  '@firebase/util': set this to true or false
-  protobufjs: set this to true or false
+  '@firebase/util': true
+  protobufjs: true
+minimumReleaseAgeExclude:
+  - firebase-admin@14.5.1
 onlyBuiltDependencies:
   - '@firebase/util'
   - protobufjs

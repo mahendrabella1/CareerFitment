@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Mail, Phone, Link as LinkIcon } from 'lucide-react';
 import type { PortfolioProfile } from '@/lib/data/portfolioSchema';
+import { safeHttpUrl } from '@/lib/security/sanitize';
 
 const CSS = `
 .pp{min-height:100vh;background:#f6f7f9;color:#111827;font-family:Inter,system-ui,'Segoe UI',sans-serif}
@@ -89,7 +90,7 @@ export default function PublicPortfolioPage({ params }: { params: { slug: string
     { href: p.github, label: 'GitHub' },
     { href: p.website, label: 'Website' },
     { href: p.twitter, label: 'X (Twitter)' },
-  ].filter((l) => l.href);
+  ].map((l) => ({ ...l, href: safeHttpUrl(l.href) })).filter((l) => l.href);
   const updated = new Date(p.lastUpdated);
 
   return (
@@ -149,7 +150,7 @@ export default function PublicPortfolioPage({ params }: { params: { slug: string
                 <div key={x.id} className="pp-item">
                   <div className="pp-t">{x.name}</div>
                   {(x.issuer || x.issueDate) && <div className="pp-s">{[x.issuer, fmtMonth(x.issueDate)].filter(Boolean).join(' · ')}</div>}
-                  {x.credentialUrl && <a className="pp-d" style={{ color: '#2563eb' }} href={x.credentialUrl} target="_blank" rel="noopener noreferrer">View certificate ↗</a>}
+                  {safeHttpUrl(x.credentialUrl) && <a className="pp-d" style={{ color: '#2563eb' }} href={safeHttpUrl(x.credentialUrl)} target="_blank" rel="noopener noreferrer">View certificate ↗</a>}
                 </div>
               ))}
             </section>

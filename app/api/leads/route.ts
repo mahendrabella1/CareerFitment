@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rateLimited } from "@/lib/security/rateLimit";
 import { isLocalAssessmentMode } from "@/lib/assessmentMode";
 import { isAuthorizedAdmin } from "@/lib/adminAuth";
 import {
@@ -36,6 +37,9 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+  // Per-IP flood limit (security audit M-04) - generous, as a school lab often shares one IP.
+  const limited = await rateLimited(req, "leads", 30, 600);
+  if (limited) return limited;
   let body: {
     name?: string;
     email?: string;
@@ -109,7 +113,8 @@ export async function POST(req: Request) {
       data: lead,
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
+    console.error("[leads]", err instanceof Error ? err.message : err);
+    const message = "We couldn't save your details - please check them and try again.";
     return NextResponse.json(
       { success: false, message, statusCode: 400, data: null },
       { status: 400 }

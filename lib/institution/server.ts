@@ -29,13 +29,18 @@ export function fail(e: unknown) {
   if (e instanceof ApiError) return NextResponse.json({ error: e.message }, { status: e.status });
   if (e instanceof AuthAdminError) {
     console.error("[institution] Firebase Auth admin call failed:", e.code, e.message);
-    return NextResponse.json({ error: `Firebase Authentication refused the change: ${e.message}` }, { status: 502 });
+    // Say plainly when a login name is taken; anything else (e.g. a credentials problem) stays in the log.
+    const msg = e.code === "auth/email-already-exists" ? "That username or email is already in use." : e.code === "auth/invalid-password" ? "That password is too weak - use at least 6 characters." : "Firebase Authentication refused the change - please try again or contact support.";
+    return NextResponse.json({ error: msg }, { status: 502 });
   }
   console.error("[institution]", e instanceof Error ? e.message : e);
   return NextResponse.json({ error: "Something went wrong on the server. Please try again." }, { status: 500 });
 }
 
 export interface Caller { uid: string; email: string }
+
+/** What a student sees when the server isn't set up; the reason goes to the server log. */
+const SETUP_PROBLEM = "This feature isn't available right now - please try again later or contact support@onegrasp.com.";
 
 /** The Firebase project an ID token was issued for (its `aud` claim). */
 function tokenProject(token: string): string | null {
@@ -55,7 +60,8 @@ function tokenProject(token: string): string | null {
  */
 export async function caller(req: Request): Promise<Caller> {
   if (!isFirestoreConfigured()) {
-    throw new ApiError(503, "This deployment has no Firebase admin credentials (FIREBASE_PROJECT_ID / FIREBASE_CLIENT_EMAIL / FIREBASE_PRIVATE_KEY).");
+    console.error("[institution] no Firebase admin credentials: set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL and FIREBASE_PRIVATE_KEY");
+    throw new ApiError(503, SETUP_PROBLEM);
   }
   const header = req.headers.get("authorization") || "";
   const token = header.startsWith("Bearer ") ? header.slice(7).trim() : "";
@@ -66,8 +72,9 @@ export async function caller(req: Request): Promise<Caller> {
   const signInProject = tokenProject(token);
   const credsProject = adminProjectId();
   if (signInProject && credsProject && signInProject !== credsProject) {
-    console.error(`[institution] admin credentials are for project "${credsProject}" but users sign in to "${signInProject}"`);
-    throw new ApiError(503, `Server setup problem: the Firebase admin credentials on this deployment are for project "${credsProject}", but users sign in to "${signInProject}". Set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL and FIREBASE_PRIVATE_KEY from a service account of "${signInProject}".`);
+    // The details stay in the server log (security audit L-01).
+    console.error(`[institution] admin credentials are for project "${credsProject}" but users sign in to "${signInProject}" - set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL and FIREBASE_PRIVATE_KEY from a service account of "${signInProject}"`);
+    throw new ApiError(503, SETUP_PROBLEM);
   }
 
   const id = await verifySignIn(token);
@@ -163,14 +170,28 @@ export async function rowsOf(db: Firestore, inst: Institution): Promise<StudentR
 }
 
 /** The institution a student's `institution` names, if it has a portal login. */
+// Every school, read at most once a minute per server instance (performance
+// audit P-03) - this runs on every student message and milestone request, and
+// the list only changes when an admin edits a school.
+let institutionsCache: { at: number; list: Institution[] } | null = null;
+const INSTITUTIONS_TTL_MS = 60_000;
+
+export async function allInstitutions(db: Firestore): Promise<Institution[]> {
+  if (institutionsCache && Date.now() - institutionsCache.at < INSTITUTIONS_TTL_MS) return institutionsCache.list;
+  const snap = await db.collection("institutions").get();
+  const list = snap.docs.map((d) => ({ ...(d.data() as Institution), id: d.id }));
+  institutionsCache = { at: Date.now(), list };
+  return list;
+}
+
+/** Forget the cached list (after an admin adds, renames or removes a school). */
+export function clearInstitutionsCache(): void {
+  institutionsCache = null;
+}
+
 export async function institutionForStudent(db: Firestore, institution: unknown): Promise<Institution | null> {
   if (!normName(institution)) return null;
-  const snap = await db.collection("institutions").get();
-  for (const d of snap.docs) {
-    const inst = { ...(d.data() as Institution), id: d.id };
-    if (belongsTo(inst, institution)) return inst;
-  }
-  return null;
+  return (await allInstitutions(db)).find((inst) => belongsTo(inst, institution)) ?? null;
 }
 
 /** Random URL-safe id for public links (parent surveys, passports). */

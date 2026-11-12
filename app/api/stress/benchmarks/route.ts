@@ -6,12 +6,19 @@
  * the server-only collection stressBenchmarks/{uid}, so each person counts once.
  * GET ?band=0-5: deciles of the overall score and each area for that band, once
  * at least MIN_N people have taken the current check; until then { ready: false }.
+ *
+ * Performance audit P-06: GET reads one summary document per band
+ * (stressBenchmarks/_summary_{band}, a score histogram kept up to date by each
+ * POST in the same transaction - lib/stress/benchmarkSummary.ts) instead of
+ * every row. If the summary doesn't exist yet, GET scans once, answers from
+ * the rows and writes the summary.
  */
 import { NextResponse } from "next/server";
 import { getFirestore, isFirestoreConfigured } from "@/lib/firebase/admin";
 import { verifySignIn } from "@/lib/firebase/adminAuth";
 import { isBand } from "@/lib/stress/bank";
 import { AREAS, type Band } from "@/lib/stress/types";
+import { applyRow, decilesFromHistogram, summaryFromRows, summaryId, type BenchmarkRow, type BenchmarkSummary } from "@/lib/stress/benchmarkSummary";
 
 export const dynamic = "force-dynamic";
 
@@ -24,11 +31,9 @@ const cache = new Map<Band, { at: number; body: unknown }>();
 
 const num = (v: unknown) => (typeof v === "number" && Number.isFinite(v) && v >= 0 && v <= 100 ? Math.round(v) : null);
 
-/** Values at 0, 10, ... 100% of the sorted list. */
-function deciles(values: number[]): number[] {
-  const s = [...values].sort((a, b) => a - b);
-  return Array.from({ length: 11 }, (_, i) => s[Math.min(s.length - 1, Math.round((i / 10) * (s.length - 1)))]);
-}
+const bodyFrom = (s: BenchmarkSummary) => s.n < MIN_N
+  ? { ready: false, n: s.n, needed: MIN_N }
+  : { ready: true, n: s.n, overall: decilesFromHistogram(s.overall), areas: Object.fromEntries(AREAS.map((a) => [a, decilesFromHistogram(s.areas[a] ?? [])])) };
 
 export async function GET(req: Request) {
   const band = new URL(req.url).searchParams.get("band");
@@ -38,16 +43,18 @@ export async function GET(req: Request) {
   if (hit && Date.now() - hit.at < 10 * 60_000) return NextResponse.json(hit.body);
   try {
     const db = await getFirestore();
-    const snap = await db.collection(COLLECTION).where("band", "==", band).limit(20_000).get();
-    const rows = snap.docs.map((d) => d.data()).filter((r) => r.v === VERSION);
-    const body = rows.length < MIN_N
-      ? { ready: false, n: rows.length, needed: MIN_N }
-      : {
-          ready: true,
-          n: rows.length,
-          overall: deciles(rows.map((r) => r.overall as number)),
-          areas: Object.fromEntries(AREAS.map((a) => [a, deciles(rows.map((r) => (r.areas?.[a] as number) ?? 0))])),
-        };
+    const ref = db.collection(COLLECTION).doc(summaryId(band));
+    const saved = (await ref.get()).data() as BenchmarkSummary | undefined;
+    let summary: BenchmarkSummary;
+    if (saved?.kind === "summary" && saved.v === VERSION) summary = saved;
+    else {
+      // First time for this band (or after a version change): scan once and keep the result.
+      const snap = await db.collection(COLLECTION).where("band", "==", band).limit(20_000).get();
+      const rows = snap.docs.map((d) => d.data()).filter((r) => r.v === VERSION) as BenchmarkRow[];
+      summary = summaryFromRows(VERSION, band, AREAS, rows);
+      await ref.set(summary);
+    }
+    const body = bodyFrom(summary);
     cache.set(band, { at: Date.now(), body });
     return NextResponse.json(body);
   } catch (e) {
@@ -72,8 +79,26 @@ export async function POST(req: Request) {
   }
   try {
     const db = await getFirestore();
-    await db.collection(COLLECTION).doc(who.uid).set({ v: VERSION, band: body.band, overall, areas, at: new Date().toISOString() });
-    cache.delete(body.band);
+    const band = body.band;
+    const rowRef = db.collection(COLLECTION).doc(who.uid);
+    await db.runTransaction(async (tx) => {
+      const old = (await tx.get(rowRef)).data() as ({ v?: number; band?: Band } & BenchmarkRow) | undefined;
+      const oldBand = old?.v === VERSION && isBand(old.band) ? old.band : null;
+      const bands = [...new Set([band, ...(oldBand ? [oldBand] : [])])];
+      const refs = bands.map((b) => db.collection(COLLECTION).doc(summaryId(b)));
+      const sums = await Promise.all(refs.map((r) => tx.get(r)));
+      // Summaries that exist are kept in step; a band without one is built from a scan on its next GET.
+      bands.forEach((b, i) => {
+        let s = sums[i].data() as BenchmarkSummary | undefined;
+        if (s?.kind !== "summary" || s.v !== VERSION) return;
+        if (oldBand === b && old) s = applyRow(s, old, -1);
+        if (b === band) s = applyRow(s, { overall, areas }, 1);
+        tx.set(refs[i], s);
+      });
+      tx.set(rowRef, { v: VERSION, band, overall, areas, at: new Date().toISOString() });
+    });
+    cache.delete(band);
+    for (const b of cache.keys()) cache.delete(b);
     return NextResponse.json({ ok: true });
   } catch (e) {
     console.error("[stress] benchmark save failed:", e instanceof Error ? e.message : e);
