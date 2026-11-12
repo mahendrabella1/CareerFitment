@@ -24,7 +24,8 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useAuth, type AssessmentSummary, type CustomDimension, type UserProfile } from "@/lib/auth/AuthProvider";
-import { readGoals, saveGoals } from "@/lib/progress/progressStore";
+import { readGoals, recordVisit, saveGoals } from "@/lib/progress/progressStore";
+import { YearPlanStrip } from "@/components/yearPlan/YearPlanStrip";
 import { dayKey } from "@/lib/progress/activity";
 import { tasksDone, type FeatureTaskSpec } from "@/lib/progress/featureTasks";
 import { FEATURES, featureArt } from "@/lib/features/catalog";
@@ -89,6 +90,7 @@ const NAV: { id: string; label: string; icon: string; group: string; art?: strin
   { id: "fields", label: "Best-fit fields", icon: "compass", group: RESULTS },
   { id: "mind", label: "How you think", icon: "multiple_intelligence", group: RESULTS },
   { id: "plan", label: "My plan", icon: "check", group: RESULTS },
+  { id: "year-plan", label: "Year Plan", icon: "calendar", group: "Track", art: "progress" },
   { id: "progress", label: "My Progress", icon: "score", group: "Track", art: "progress" },
   { id: "certificates", label: "Certificates", icon: "award", group: "Track" },
   { id: "careers", label: "Career Library", icon: "briefcase", group: "Explore", art: "careers" },
@@ -158,6 +160,7 @@ const FEATURE_ROUTES: Record<string, string> = {
   "startups": "/account/startups",
   "resources": "/account/scholarships",
   "portfolio": "/account/portfolio",
+  "year-plan": "/account/year-plan",
   "progress": "/account/progress",
   "certificates": "/account/certificates",
   "ai": "/account/ai",
@@ -254,6 +257,10 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
   // Opened from REPORT_HREF: this tab is the report's own.
   const [reportTab] = useState(() => typeof window !== "undefined" && new URLSearchParams(window.location.search).get("view") === "report");
   const [view, setView] = useState<"dashboard" | "report" | "feature">(reportTab ? "report" : "dashboard");
+  // The Year Plan's "Read your full report" task ticks from this (once per student).
+  useEffect(() => {
+    if (view === "report" && profile?.latestAssessment && !profile.progress?.visited?.dashboard?.includes("/account/report")) recordVisit("dashboard", "/account/report");
+  }, [view, profile]);
   const [navOpen, setNavOpen] = useState(false);
   const [active, setActive] = useState("overview");
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
@@ -617,6 +624,7 @@ export default function Dashboard({ a: savedSummary, profile, email, onSignOut, 
                   <button className="db-btn" onClick={() => go("overview")}>See my profile</button>
                 </div>
               </div>
+              <YearPlanStrip />
 
               <div className="db-sec-h" style={{ marginTop: 28 }}>
                 <div><h2>Your toolkit</h2><p>Everything OneGrasp gives you - pick up where you left off.</p></div>

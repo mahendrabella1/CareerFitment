@@ -33,7 +33,11 @@ const IDLE_MS = 3 * 60 * 1000;
 const FLUSH_MS = 60 * 1000;
 const UNTRACKED = ["/admin", "/institution", "/signin", "/register"];
 /** Areas whose page visits count towards progress (the features with tasks). */
-const VISIT_AREAS = new Set(["money", "legal", "exams", "scholarships", "study_abroad", "research", "careers", "internships", "ai"]);
+const VISIT_AREAS = new Set([
+  "money", "legal", "exams", "scholarships", "study_abroad", "research", "careers", "internships", "ai",
+  // The Year Plan (lib/yearPlan) also counts pages opened in these:
+  "startups", "communication", "aptitude", "spotlight", "jobready", "jobs", "portfolio", "passport", "test_drive", "decision", "gps",
+]);
 
 export function ActivityTracker() {
   const { user, profile } = useAuth();

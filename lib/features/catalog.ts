@@ -276,6 +276,12 @@ export const FEATURES: Record<string, FeatureMeta> = {
       { icon: "audio", title: "Mock interview", text: "Answer out loud, get feedback.", href: "/account/interview/practice" },
     ],
   },
+  "year-plan": {
+    key: "year-plan", title: "Year Plan", href: "/account/year-plan", art: "progress", accent: "#4338ca",
+    headline: ["40 weeks to explore", "everything, step by step"], layout: "progress", style: "A week-by-week plan for your class",
+    tagline: "A few tasks a week - lessons, labs and tools in a sensible order for your class. They tick themselves as you do them.",
+    tour: [],
+  },
   progress: {
     key: "progress", title: "My Progress", href: "/account/progress", art: "progress", accent: "#db3433",
     headline: ["Everything you've done,", "in one place"], layout: "progress", style: "Your progress across every feature",

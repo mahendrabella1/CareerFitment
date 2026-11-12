@@ -19,6 +19,7 @@ const NAV: { href: string; label: string; icon: string; group?: string; badge?: 
   { href: "/institution", label: "Overview", icon: "home" },
   { href: "/institution/students", label: "All students", icon: "users", group: "Students" },
   { href: "/institution/counselling", label: "Counselling list", icon: "flag" },
+  { href: "/institution/year-plan", label: "Year Plan", icon: "calendar" },
   { href: "/institution/parents", label: "Parents", icon: "heart" },
   { href: "/institution/observations", label: "Teacher check", icon: "check" },
   { href: "/institution/decisions", label: "Decision briefs", icon: "signpost", group: "Guidance" },
