@@ -13,6 +13,7 @@ import { dueScholarshipAlerts } from "@/lib/scholarships/alertLogic";
 import { StatusChip } from "@/components/scholarships/StatusChip";
 import { Icon } from "@/app/Icons";
 import { PageHeader } from "@/components/course/fx";
+import { UPLOADS_ENABLED } from "@/lib/features/uploads";
 
 const ACCENT = "#166534";
 
@@ -288,7 +289,7 @@ export function ScholarshipsHomeClient() {
         <Link href="/account/scholarships/applications" className="fx-btn" style={TOOL}><Icon name="clusters" size={15} />My applications</Link>
         <Link href="/account/scholarships/won" className="fx-btn" style={TOOL}><Icon name="award" size={15} />Money won and renewals</Link>
         <Link href="/account/scholarships/essay" className="fx-btn" style={TOOL}><Icon name="answer" size={15} />Essay helper</Link>
-        <Link href="/account/scholarships/vault" className="fx-btn" style={TOOL}><Icon name="lock" size={15} />Document vault</Link>
+        {UPLOADS_ENABLED && <Link href="/account/scholarships/vault" className="fx-btn" style={TOOL}><Icon name="lock" size={15} />Document vault</Link>}
         <Link href="/account/scholarships/safety" className="fx-btn" style={{ ...TOOL, color: "#b91c1c" }}><Icon name="shield" size={15} />Scam warnings</Link>
       </div>
 

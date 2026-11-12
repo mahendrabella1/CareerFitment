@@ -9,6 +9,7 @@ import { STUDY_ABROAD_COURSES } from "@/data/studyAbroad/courses";
 import { UNIVERSITIES } from "@/data/studyAbroad/universities";
 import { STUDIO_UNITS } from "@/data/research/studioUnits";
 import { LETTER_TEMPLATES } from "@/lib/legal/templates";
+import { UPLOADS_ENABLED } from "@/lib/features/uploads";
 
 export interface CourseNavItem {
   href: string;
@@ -233,12 +234,13 @@ export const SCHOLARSHIPS_COURSE: FeatureCourse = {
       items: SCHOLARSHIPS.map((s) => ({ href: `/account/scholarships/${s.slug}`, label: s.name })),
     },
     {
-      title: "Track and prepare", icon: "calendar", blurb: "Deadlines, applications, essays and documents, all in one place.", cta: "Open the calendar",
+      title: "Track and prepare", icon: "calendar", blurb: UPLOADS_ENABLED ? "Deadlines, applications, essays and documents, all in one place." : "Deadlines, applications and essays, all in one place.", cta: "Open the calendar",
       items: [
         { href: "/account/scholarships/calendar", label: "Deadline calendar", meta: "Official dates" },
         { href: "/account/scholarships/applications", label: "Applications" },
         { href: "/account/scholarships/essay", label: "Essay helper" },
-        { href: "/account/scholarships/vault", label: "Document vault" },
+        // Hidden while file uploads are off (lib/features/uploads.ts).
+        ...(UPLOADS_ENABLED ? [{ href: "/account/scholarships/vault", label: "Document vault" }] : []),
         { href: "/account/scholarships/won", label: "Money won and renewals" },
         { href: "/account/scholarships/safety", label: "Scam warnings" },
       ],
@@ -291,9 +293,12 @@ export const STUDY_ABROAD_COURSE: FeatureCourse = {
       ],
     },
     {
-      title: "Prepare", icon: "shield", blurb: "Keep your documents ready, and check an agent or offer before you pay.", cta: "Open the vault",
+      title: "Prepare", icon: "shield",
+      blurb: UPLOADS_ENABLED ? "Keep your documents ready, and check an agent or offer before you pay." : "Check an agent or offer before you pay.",
+      cta: UPLOADS_ENABLED ? "Open the vault" : "Open safety checks",
       items: [
-        { href: "/account/study-abroad/vault", label: "Document vault" },
+        // Hidden while file uploads are off (lib/features/uploads.ts).
+        ...(UPLOADS_ENABLED ? [{ href: "/account/study-abroad/vault", label: "Document vault" }] : []),
         { href: "/account/study-abroad/safety", label: "Safety checks" },
       ],
     },

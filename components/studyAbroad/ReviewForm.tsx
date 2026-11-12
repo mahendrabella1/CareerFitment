@@ -6,6 +6,7 @@ import { useAuth } from "@/lib/auth/AuthProvider";
 import { UNIVERSITIES } from "@/data/studyAbroad/universities";
 import { REVIEW_AREAS, submitReview, type ReviewDraft } from "@/lib/studyAbroad/clientReviews";
 import { scopedKey } from "@/lib/progress/userStorage";
+import { UPLOADS_ENABLED } from "@/lib/features/uploads";
 
 const ACCENT = "#7c3aed";
 const DRAFT_KEY = "onegrasp.abroad.reviewDraft.v1";
@@ -34,7 +35,12 @@ export function ReviewForm() {
   useEffect(() => {
     try {
       const raw = window.localStorage.getItem(scopedKey(DRAFT_KEY));
-      if (raw) setDraft({ ...EMPTY, ...(JSON.parse(raw) as ReviewDraft) });
+      if (raw) {
+        const saved = { ...EMPTY, ...(JSON.parse(raw) as ReviewDraft) };
+        // Document upload is off while Storage isn't enabled (lib/features/uploads.ts).
+        if (!UPLOADS_ENABLED && saved.verification === "document") saved.verification = "university_email";
+        setDraft(saved);
+      }
     } catch {
       // No saved draft.
     }
@@ -164,7 +170,7 @@ export function ReviewForm() {
         <p style={pText}>Your real identity is never shown. Staff check your proof, then delete any document, and keep only a &quot;Verified student&quot; or &quot;Verified alumni&quot; badge.</p>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 8 }}>
           <label style={radio}><input type="radio" checked={draft.verification === "university_email"} onChange={() => set({ verification: "university_email" })} style={{ accentColor: ACCENT }} /> University email address</label>
-          <label style={radio}><input type="radio" checked={draft.verification === "document"} onChange={() => set({ verification: "document" })} style={{ accentColor: ACCENT }} /> Upload a document</label>
+          {UPLOADS_ENABLED && <label style={radio}><input type="radio" checked={draft.verification === "document"} onChange={() => set({ verification: "document" })} style={{ accentColor: ACCENT }} /> Upload a document</label>}
         </div>
         {draft.verification === "university_email" ? (
           <label style={label}>University email<input type="email" value={draft.universityEmail ?? ""} onChange={(e) => set({ universityEmail: e.target.value.trim() })} style={input} /></label>

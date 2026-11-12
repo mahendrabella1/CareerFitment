@@ -4,6 +4,7 @@ import Link from "next/link";
 import { STUDY_ABROAD_COUNTRIES } from "@/data/studyAbroad/countries";
 import { STUDY_ABROAD_COURSES } from "@/data/studyAbroad/courses";
 import { PageHeader } from "@/components/course/fx";
+import { UPLOADS_ENABLED } from "@/lib/features/uploads";
 
 const ACCENT = "#7c3aed";
 
@@ -28,7 +29,7 @@ export function StudyAbroadHomeClient() {
         <Card href="/account/study-abroad/countries" title="Compare countries" desc={`${STUDY_ABROAD_COUNTRIES.length} real country profiles with a "what changed" feed for each.`} color={ACCENT} />
         <Card href="/account/study-abroad/courses" title="Popular courses" desc={`${STUDY_ABROAD_COURSES.length} course pages with an honest "study it in India instead?" comparison.`} color={ACCENT} />
         <Card href="/account/features/study-abroad" title="Browse universities" desc="Search and filter universities by country, budget and programme." color="#2563eb" />
-        <Card href="/account/study-abroad/vault" title="Document vault" desc="Passport, transcripts, test scores and more - upload once, reuse everywhere." color={ACCENT} />
+        {UPLOADS_ENABLED && <Card href="/account/study-abroad/vault" title="Document vault" desc="Passport, transcripts, test scores and more - upload once, reuse everywhere." color={ACCENT} />}
         <Card href="/account/study-abroad/safety" title="Safety & MBBS/NMC checklist" desc="Avoid fraud, and the real rules for an MBBS abroad to count in India." color="#dc2626" />
         <Card href="/account/scholarships" title="Scholarships for abroad" desc="Chevening, Fulbright-Nehru, DAAD, Erasmus Mundus and more - in the Scholarships section." color="#166534" />
       </div>

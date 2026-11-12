@@ -6,6 +6,8 @@
  * #f4f0eb background, which the hero band matches so the picture has no edge.
  */
 
+import { UPLOADS_ENABLED } from "@/lib/features/uploads";
+
 export type FeatureLayout = "path" | "course" | "helpdesk" | "catalogue" | "board" | "library" | "listing" | "progress";
 
 export interface TourSlide {
@@ -119,7 +121,7 @@ export const FEATURES: Record<string, FeatureMeta> = {
     tour: [
       { icon: "search", title: "Search and filter", text: "Every scholarship with its eligibility, amount and deadline in one list." },
       { icon: "calendar", title: "Never miss a deadline", text: "A deadline calendar and an application tracker keep everything in one place." },
-      { icon: "doc", title: "Win it", text: "An essay helper and a document vault for the paperwork, then renewals once you've won." },
+      { icon: "doc", title: "Win it", text: UPLOADS_ENABLED ? "An essay helper and a document vault for the paperwork, then renewals once you've won." : "An essay helper for your applications, then renewals once you've won." },
     ],
     ctas: [
       { icon: "search", title: "Find scholarships for me", text: "Fill in your profile once - see only the ones you qualify for.", href: "/account/scholarships/dashboard" },
@@ -135,7 +137,7 @@ export const FEATURES: Record<string, FeatureMeta> = {
     tour: [
       { icon: "signpost", title: "Six steps, left to right", text: "Decide, pick a country, a course and universities, sort the money, then prepare." },
       { icon: "wallet", title: "Run the money check first", text: "The ROI calculator shows whether a degree abroad pays back - before you apply." },
-      { icon: "shield", title: "Stay safe", text: "Check any agent or offer letter before you pay, and keep your documents in one vault." },
+      { icon: "shield", title: "Stay safe", text: UPLOADS_ENABLED ? "Check any agent or offer letter before you pay, and keep your documents in one vault." : "Check any agent or offer letter before you pay." },
     ],
     ctas: [
       { icon: "wallet", title: "Run the money check", text: "Does a degree abroad pay back? Find out before you apply.", href: "/account/study-abroad/roi" },
