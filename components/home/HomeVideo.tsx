@@ -161,7 +161,7 @@ export const HomeVideo = forwardRef<HomeVideoHandle, {
       {!started && (
         <button type="button" className="hm-video-cover" onClick={() => play(start, true)} aria-label={`Play: ${title}, ${video.length}`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={video.poster} alt="" loading={eager ? "eager" : "lazy"} decoding="async" />
+          <img src={video.poster} alt={`${title} - video preview`} loading={eager ? "eager" : "lazy"} decoding="async" />
           <span className="hm-play"><Icon name="play" size={22} /></span>
           <span className="hm-len">{video.length}</span>
         </button>

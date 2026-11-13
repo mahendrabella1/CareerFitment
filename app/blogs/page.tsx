@@ -39,7 +39,7 @@ export default function BlogIndex() {
               {POSTS.filter((p) => p.category === c).map((p) => (
                 <a key={p.slug} href={`/blogs/${p.slug}`} className="pub-card">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <span className="pub-card-img"><img src={p.image} alt="" loading="lazy" /></span>
+                  <span className="pub-card-img"><img src={p.image} alt={`${p.category} illustration`} loading="lazy" /></span>
                   <span className="pub-card-b"><small>{readMinutes(p)} min read · {day(p.date)}</small><b>{p.title}</b><p>{p.description}</p></span>
                 </a>
               ))}

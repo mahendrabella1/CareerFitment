@@ -96,6 +96,36 @@ test("the dashboard's light list of career pages matches the pages; old library 
   assert.match(lib, /href=\{careerHref\(career\)\}/);
 });
 
+test("every public page's search title fits 60 characters and its description 160", async () => {
+  const { searchTitle, searchDescription, DEFAULT_TITLE, DEFAULT_DESCRIPTION } = await import("../../lib/seo/site.ts");
+  const { howTo, summary, cut } = await import("../../lib/seo/careers.ts");
+  const pages = [
+    ...FEATURE_PAGES.map((f) => [f.title, f.description]),
+    ...POSTS.map((p) => [p.title, p.description]),
+    // as app/careers/[slug]/page.tsx builds them
+    ...CAREER_PAGES.map((c) => [`${howTo(c).replace(/^How to become/, "How to Become")} in India - Stream, Exams, Colleges and Roadmap`, `${cut(summary(c), 110)} Stream, subjects, entrance exams, colleges and a step-by-step roadmap.`]),
+  ];
+  for (const [t, d] of pages) {
+    const shown = searchTitle(t).text;
+    assert.ok(shown.length <= 60, `title ${shown.length}: ${shown}`);
+    assert.ok(!/…$/.test(shown) || t.length > 60, `${t} needlessly cut`);
+    const desc = searchDescription(d);
+    assert.ok(desc.length <= 160 && desc.length >= 60, `description ${desc.length}: ${d}`);
+  }
+  assert.ok(DEFAULT_TITLE.length <= 60 && DEFAULT_DESCRIPTION.length <= 160, "home");
+  assert.equal(searchTitle("How to Choose a Stream After Class 10: A Step-by-Step Guide").text, "How to Choose a Stream After Class 10 | OneGrasp");
+  // Private pages get the plain site name, not the home page's title.
+  assert.match(readFileSync("app/layout.tsx", "utf8"), /title: \{ default: SITE_NAME/);
+});
+
+test("public styles are real stylesheets, not written into every page", () => {
+  for (const [f, css] of [["app/Landing.tsx", "./landing-home.css"], ["components/seo/PublicShell.tsx", "./public.css"], ["components/enquiries/EnquiryForm.tsx", "./enquiry.css"]]) {
+    const src = readFileSync(f, "utf8");
+    assert.ok(src.includes(`import "${css}";`), `${f} imports ${css}`);
+    assert.ok(!/dangerouslySetInnerHTML=\{\{ __html: (CSS|PUB_CSS) \}\}/.test(src), `${f} has no inline style block`);
+  }
+});
+
 test("privacy policy, terms and social profiles", async () => {
   const { PRIVACY, TERMS } = await import("../../lib/seo/legal.ts");
   const text = JSON.stringify(PRIVACY);

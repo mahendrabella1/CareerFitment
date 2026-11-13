@@ -32,7 +32,7 @@ export function StoryGrid() {
           <button key={s.key} type="button" className={`hm-st ${s.w > s.h ? "is-wide" : "is-tall"}`} onClick={() => setOpen(i)} aria-label={`${s.caption} - open photo`}
             data-rv="zoom" style={{ transitionDelay: `${(i % STORIES_FIRST) * 55}ms` }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`/home/stories/${s.key}.webp`} alt="" width={s.w} height={s.h} loading="lazy" decoding="async" style={s.pos ? { objectPosition: s.pos } : undefined} />
+            <img src={`/home/stories/${s.key}.webp`} alt={s.caption} width={s.w} height={s.h} loading="lazy" decoding="async" style={s.pos ? { objectPosition: s.pos } : undefined} />
             <span className="hm-st-cap"><b>{s.caption}</b><small>{TAG_LABEL[s.tag]}</small></span>
           </button>
         ))}

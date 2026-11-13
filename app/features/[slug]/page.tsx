@@ -38,7 +38,8 @@ export default async function FeaturePage(props: { params: Promise<{ slug: strin
             <p className="pub-lead">{f.description}</p>
             <div className="pub-hero-a">
               <a href="/register" className="pub-btn pri">Start the assessment</a>
-              <a href={f.dashboard} className="pub-btn ghost">Open in my dashboard</a>
+              {/* nofollow: crawlers shouldn't wander into the signed-in area (it's noindex anyway). */}
+              <a href={f.dashboard} className="pub-btn ghost" rel="nofollow">Open in my dashboard</a>
             </div>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}

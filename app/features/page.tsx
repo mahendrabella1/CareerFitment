@@ -36,7 +36,7 @@ export default function FeaturesPage() {
               {FEATURE_PAGES.filter((f) => f.group === g).map((f) => (
                 <a key={f.slug} href={`/features/${f.slug}`} className="pub-card">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <span className="pub-card-img"><img src={f.image} alt="" loading="lazy" /></span>
+                  <span className="pub-card-img"><img src={f.image} alt={`${f.name} illustration`} loading="lazy" /></span>
                   <span className="pub-card-b"><small>{f.who}</small><b>{f.name}</b><p>{f.description}</p></span>
                 </a>
               ))}

@@ -18,7 +18,9 @@ import "./exam-premium.css";
 // here - a root canonical would be inherited by every page.
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: DEFAULT_TITLE, template: `%s | ${BRAND}` },
+  // Pages without their own title (the signed-in areas, which aren't indexed) get the plain
+  // site name - not the home page's title, which search tools flagged as duplicated hundreds of times.
+  title: { default: SITE_NAME, template: `%s | ${BRAND}` },
   description: DEFAULT_DESCRIPTION,
   applicationName: SITE_NAME,
   keywords: KEYWORDS,
