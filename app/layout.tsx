@@ -30,9 +30,13 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: DEFAULT_TITLE, description: DEFAULT_DESCRIPTION },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
   // Set in Vercel once the site is added to Google Search Console / Bing Webmaster Tools (HTML-tag method).
+  // Read on the server when the page is built, so no NEXT_PUBLIC_ prefix is needed (the code is public
+  // anyway - it's printed in the page for Google to find); the prefixed names still work.
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
-    other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION } : undefined,
+    google: process.env.GOOGLE_SITE_VERIFICATION || process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
+    other: (process.env.BING_SITE_VERIFICATION || process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION)
+      ? { "msvalidate.01": (process.env.BING_SITE_VERIFICATION || process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION)! }
+      : undefined,
   },
   formatDetection: { telephone: false },
 };
