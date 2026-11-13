@@ -18,6 +18,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
           </a>
           <nav className="pub-links" aria-label="Main">
             <a href="/features">Features</a>
+            <a href="/careers">Careers</a>
             <a href="/blogs">Blog</a>
             <a href="/jobs">Jobs</a>
             <a href="/features/for-schools">For schools</a>
@@ -49,6 +50,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
               <b>OneGrasp</b>
               <ul>
                 <li><a href="/">Home</a></li>
+                <li><a href="/careers">How to become... (360 careers)</a></li>
                 <li><a href="/blogs">Blog</a></li>
                 <li><a href="/jobs">Jobs board</a></li>
                 <li><a href="/register">Take the assessment</a></li>
@@ -138,6 +140,34 @@ const PUB_CSS = `
 .pub-art .pub-tip{border-left:3px solid var(--acc);background:#fdf6f5;padding:12px 16px;border-radius:0 10px 10px 0;margin:18px 0}
 .pub-art .pub-tip p{margin:0;font-size:16px}
 .pub-meta{font-size:13.5px;color:var(--ink3)}
+.pub-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0;border:1px solid var(--line);border-radius:12px;background:#fff;margin:22px 0 0}
+.pub-facts>div{padding:14px 18px;border-left:1px solid var(--line)}
+.pub-facts>div:first-child{border-left:0}
+.pub-facts small{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+.pub-facts b{display:block;font-size:15px;line-height:1.45;margin-top:3px;font-weight:600}
+.pub-steps{list-style:none;counter-reset:s;margin:12px 0 0;padding:0;display:grid;gap:8px;max-width:760px}
+.pub-steps li{counter-increment:s;position:relative;padding:10px 14px 10px 50px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:15.5px}
+.pub-steps li::before{content:counter(s);position:absolute;left:12px;top:9px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;background:var(--bg2);color:var(--acc)}
+.pub-chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0;padding:0;list-style:none}
+.pub-chips li{font-size:14px;padding:5px 12px;border:1px solid var(--line);border-radius:999px;background:#fff}
+.pub-dl{display:grid;grid-template-columns:minmax(120px,170px) minmax(0,1fr);gap:8px 18px;margin:12px 0 0;max-width:820px}
+.pub-dl dt{font-weight:600;font-size:15px}
+.pub-dl dd{margin:0;font-size:15.5px;color:#292524;line-height:1.65}
+.pub-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px 22px;margin-top:6px}
+.pub-groups h3{margin:12px 0 4px;font-size:15px}
+.pub-groups ul{margin:0;padding-left:20px}
+.pub-groups li{font-size:15.5px;line-height:1.6;margin:4px 0;color:#292524}
+.pub-years{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px}
+.pub-years div{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fff}
+.pub-years b{display:block;font-size:13px;color:var(--acc);text-transform:uppercase;letter-spacing:.05em}
+.pub-years p{margin:4px 0 0;font-size:15px;line-height:1.55}
+.pub-note{font-size:13.5px;color:var(--ink3);margin-top:28px;max-width:760px}
+.pub-idx{columns:3 240px;column-gap:28px;margin:8px 0 0;padding:0;list-style:none}
+.pub-idx li{break-inside:avoid;margin:0 0 7px;font-size:15px}
+.pub-idx a{text-decoration:none}
+.pub-idx a:hover{text-decoration:underline;color:var(--acc)}
+.pub-idx small{color:var(--ink3);font-size:12.5px}
+@media (max-width:860px){.pub-facts>div{border-left:0;border-top:1px solid var(--line)}.pub-facts>div:first-child{border-top:0}.pub-dl{grid-template-columns:1fr}.pub-dl dt{margin-top:6px}}
 .pub-foot{border-top:1px solid var(--line);background:#fafaf9;padding:36px 0 24px;margin-top:24px}
 .pub-foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:24px}
 .pub-foot b{font-size:14px}

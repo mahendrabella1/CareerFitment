@@ -68,11 +68,29 @@ test("feature pages: unique, well-formed, and every link goes somewhere real", (
   assert.ok(!/₹\s?\d|Rs\.?\s?\d|free career (test|assessment)/i.test(text), "no prices or 'free test' claims");
 });
 
+test("career pages: one per researched roadmap, unique addresses, full content, old ids redirected", async () => {
+  const { CAREER_PAGES, careerFaqs, groupsOf, schoolFacts, howTo, clean } = await import("../../lib/seo/careers.ts");
+  assert.equal(CAREER_PAGES.length, 360);
+  assert.equal(new Set(CAREER_PAGES.map((c) => c.slug)).size, CAREER_PAGES.length, "unique slugs");
+  for (const c of CAREER_PAGES) {
+    assert.match(c.slug, /^[a-z0-9]+(-[a-z0-9]+)*$/, c.slug);
+    assert.ok(c.domain && c.domain !== "Other", `${c.name}: has a field`);
+    assert.ok(c.roadmap.completeRoadmap.length >= 3 && schoolFacts(c).length >= 2 && c.roadmap.jobOptions.length >= 3, `${c.name}: content`);
+    assert.ok(careerFaqs(c).length >= 2, `${c.name}: FAQs`);
+    for (const f of ["topColleges", "skills", "pgSpecialization", "afterUgPathways"]) for (const g of groupsOf(c.roadmap[f], f)) assert.ok(g.items.length > 0, `${c.name}: ${f} group has items`);
+  }
+  assert.equal(howTo(CAREER_PAGES.find((c) => c.slug === "aerospace-engineer")), "How to become an Aerospace Engineer");
+  assert.ok(!CAREER_PAGES.some((c) => /\bLogin\b/.test(clean(JSON.stringify(c.roadmap)))), "link-text artefacts cleaned");
+  const page = readFileSync("app/careers/[slug]/page.tsx", "utf8");
+  assert.match(page, /permanentRedirect\(`\/careers\/\$\{match\.slug\}`\)/, "old /careers/<id> links still work");
+});
+
 test("sitemap lists every public page on the canonical domain; robots blocks only the API", () => {
   const urls = sitemap().map((e) => e.url);
   assert.ok(urls.every((u) => u.startsWith(SITE_URL)), "canonical domain");
   for (const f of FEATURE_PAGES) assert.ok(urls.includes(`${SITE_URL}/features/${f.slug}`), f.slug);
   for (const p of POSTS) assert.ok(urls.includes(`${SITE_URL}/blogs/${p.slug}`), p.slug);
+  assert.ok(urls.includes(`${SITE_URL}/careers/software-engineer`) && urls.filter((u) => u.includes("/careers/")).length === 360, "career pages");
   assert.ok(!urls.some((u) => /\/(account|admin|institution|parent|passport|api)\b/.test(u)), "no private pages");
   const r = robots();
   assert.deepEqual(r.rules[0].disallow, ["/api/"], "shared links keep their previews");
@@ -86,7 +104,7 @@ test("private areas carry noindex; the root layout sets the base URL but no site
     const rule = headers.find((h) => h.source === `${p}/:path*`);
     assert.ok(rule?.headers.some((h) => h.key === "X-Robots-Tag" && /noindex/.test(h.value)), `${p} noindex`);
   }
-  for (const p of ["/features", "/blogs", "/jobs", "/register"]) assert.ok(!headers.some((h) => h.source.startsWith(p) && h.headers.some((x) => x.key === "X-Robots-Tag")), `${p} indexable`);
+  for (const p of ["/features", "/blogs", "/careers", "/jobs", "/register"]) assert.ok(!headers.some((h) => h.source.startsWith(p) && h.headers.some((x) => x.key === "X-Robots-Tag")), `${p} indexable`);
   const redirects = await config.redirects();
   assert.ok(redirects.some((r) => r.source === "/blog" && r.destination === "/blogs" && r.permanent));
   const layout = readFileSync("app/layout.tsx", "utf8");

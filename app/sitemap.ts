@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo/site";
 import { FEATURE_PAGES } from "@/lib/seo/features";
 import { POSTS } from "@/lib/blog";
+import { CAREER_PAGES } from "@/lib/seo/careers";
 
 /** /sitemap.xml - every public page search engines should know about. Private
  *  areas (dashboard, admin, portal, shared links) are deliberately left out. */
@@ -12,6 +13,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: u("/"), lastModified: now, changeFrequency: "weekly", priority: 1 },
     { url: u("/features"), lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     ...FEATURE_PAGES.map((f) => ({ url: u(`/features/${f.slug}`), lastModified: now, changeFrequency: "monthly" as const, priority: 0.8 })),
+    { url: u("/careers"), lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    ...CAREER_PAGES.map((c) => ({ url: u(`/careers/${c.slug}`), lastModified: now, changeFrequency: "monthly" as const, priority: 0.7 })),
     { url: u("/blogs"), lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     ...POSTS.map((p) => ({ url: u(`/blogs/${p.slug}`), lastModified: new Date(p.updated ?? p.date), changeFrequency: "monthly" as const, priority: 0.7 })),
     { url: u("/jobs"), lastModified: now, changeFrequency: "daily", priority: 0.6 },

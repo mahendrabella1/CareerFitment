@@ -69,9 +69,10 @@ const nextConfig = {
     const year = [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }];
     // Kept out of search (but still crawlable, so shared links get their previews):
     // signed-in areas, admin, the school portal, parent and shared-report links,
-    // student passports, the old /careers pages and the /testing sandbox.
+    // student passports and the /testing sandbox. (/careers is public: the
+    // "How to become..." pages, lib/seo/careers.ts.)
     const noindex = [{ key: "X-Robots-Tag", value: "noindex, nofollow" }];
-    const PRIVATE = ["/account", "/admin", "/institution", "/parent", "/r", "/report", "/passport", "/careers", "/testing", "/api"];
+    const PRIVATE = ["/account", "/admin", "/institution", "/parent", "/r", "/report", "/passport", "/testing", "/api"];
     return [
       { source: "/:path*", headers: SECURITY_HEADERS },
       ...PRIVATE.flatMap((p) => [{ source: p, headers: noindex }, { source: `${p}/:path*`, headers: noindex }]),

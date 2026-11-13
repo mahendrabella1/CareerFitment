@@ -10,6 +10,7 @@ export const DEEPER: Record<string, Block[]> = {
   "how-to-choose-stream-after-10th": [
     { h2: "What if you're still unsure?" },
     { p: "Being unsure is normal. If two streams look equally good, choose the one that keeps more of your shortlisted careers open and that you'd be willing to study hard for two years. You can still specialise later - many people do." },
+    { p: "To see which stream each career needs, browse the [roadmaps for 360 careers](/careers) - every page starts with the stream and subjects to take in Class 11-12." },
   ],
   "career-options-after-12th-science": [
     { h2: "A simple way to shortlist" },
@@ -368,6 +369,7 @@ export const MORE: Record<string, Block[]> = {
       "**Food technology and nutrition** - safety, processing and health.",
     ] },
     { p: "These fields often combine subjects, so they suit students who enjoy more than one area of science - and they're growing as industries change." },
+    { p: "For any career on these lists, see [step-by-step roadmaps for 360 careers](/careers) - the subjects, exams, colleges and skills for each, such as [how to become a software engineer](/careers/software-engineer) or [a doctor](/careers/doctor-mbbs)." },
   ],
   "career-options-after-12th-commerce": [
     { h2: "Newer and growing Commerce careers" },
@@ -379,6 +381,7 @@ export const MORE: Record<string, Block[]> = {
       "**Human resources** - hiring, training and people policies.",
     ] },
     { p: "Many of these value practical skills and internships as much as the degree, so start building a portfolio of small projects early." },
+    { p: "Explore the [roadmaps for 360 careers](/careers) - the Commerce, Finance and Business sections show the subjects, exams and colleges for each." },
   ],
   "career-options-after-12th-arts-humanities": [
     { h2: "Newer and growing Humanities careers" },
@@ -389,6 +392,7 @@ export const MORE: Record<string, Block[]> = {
       "**Counselling and wellbeing** - growing demand in schools, colleges and workplaces, with further study in psychology.",
       "**Heritage, museums and tourism** - history and culture as a career.",
     ] },
+    { p: "See the [step-by-step roadmaps for 360 careers](/careers) - including law, psychology, media, design and public service." },
   ],
   "what-is-a-psychometric-career-test": [
     { h2: "How results usually look" },
