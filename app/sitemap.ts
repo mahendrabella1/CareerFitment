@@ -20,5 +20,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: u("/jobs"), lastModified: now, changeFrequency: "daily", priority: 0.6 },
     { url: u("/register"), lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: u("/signin"), lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: u("/privacy"), lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: u("/terms"), lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: u("/privacy/request"), lastModified: now, changeFrequency: "yearly", priority: 0.2 },
   ];
 }

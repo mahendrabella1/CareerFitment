@@ -10,7 +10,8 @@ import { POSTS_CAREERS } from "./posts-careers";
 import { POSTS_SKILLS } from "./posts-skills";
 import { POSTS_MONEY } from "./posts-money";
 import { POSTS_WORK } from "./posts-work";
-import { DEEPER, MORE, TAKEAWAYS } from "./deeper";
+import { POSTS_MORE } from "./posts-more";
+import { DEEPER, DEEPER_MORE, MORE, TAKEAWAYS } from "./deeper";
 
 export type Block = { h2: string } | { h3: string } | { p: string } | { ul: string[] } | { ol: string[] } | { tip: string };
 export interface Post {
@@ -33,7 +34,7 @@ export interface Post {
 /** Key takeaways after the opening paragraph; the deeper sections before the
  *  closing paragraph (the one pointing to a feature). */
 function withDeeper(p: Post): Post {
-  const extra = [...(DEEPER[p.slug] ?? []), ...(MORE[p.slug] ?? [])];
+  const extra = [...(DEEPER[p.slug] ?? []), ...(DEEPER_MORE[p.slug] ?? []), ...(MORE[p.slug] ?? [])];
   const take = TAKEAWAYS[p.slug];
   let body = p.body;
   if (extra.length) {
@@ -45,7 +46,7 @@ function withDeeper(p: Post): Post {
   return { ...p, body };
 }
 
-export const POSTS: Post[] = [...POSTS_CAREERS, ...POSTS_SKILLS, ...POSTS_MONEY, ...POSTS_WORK]
+export const POSTS: Post[] = [...POSTS_CAREERS, ...POSTS_SKILLS, ...POSTS_MONEY, ...POSTS_WORK, ...POSTS_MORE]
   .map(withDeeper)
   .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
 

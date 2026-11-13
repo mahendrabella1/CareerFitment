@@ -8,6 +8,7 @@ const NAV = [
   { href: "/admin", label: "Users", icon: "user", group: "Students" },
   { href: "/admin/archives", label: "Archives", icon: "archive", group: "Students" },
   { href: "/admin/messages", label: "Messages", icon: "bell", group: "Students" },
+  { href: "/admin/requests", label: "Requests", icon: "flag", group: "Students" },
   { href: "/admin/institutions", label: "Institution logins", icon: "users", group: "Schools" },
   { href: "/admin/institutional", label: "Institutional links", icon: "school", group: "Schools" },
   { href: "/admin/payment", label: "Payment settings", icon: "card", group: "Billing" },

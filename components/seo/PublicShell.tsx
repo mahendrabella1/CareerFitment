@@ -5,6 +5,7 @@
  * reach every public page in a click or two. Server-rendered, no client JS.
  */
 import { FEATURE_PAGES } from "@/lib/seo/features";
+import { SocialLinks } from "./SocialLinks";
 
 export function PublicShell({ children }: { children: React.ReactNode }) {
   return (
@@ -37,6 +38,8 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
               <b>OneGrasp Career Fitment</b>
               <p>The career assessment, report and dashboard for students from Class 6 to college - and tools for schools and working professionals.</p>
               <p><a href="mailto:support@onegrasp.com">support@onegrasp.com</a> · <a href="tel:+918977760442">+91 89777 60442</a></p>
+              <SocialLinks size={16} />
+              <p style={{ marginTop: 14 }}><a href="/privacy">Privacy Policy</a> · <a href="/terms">Terms of Use</a> · <a href="/privacy/request">Delete my data</a></p>
             </div>
             <nav aria-label="Features">
               <b>Features</b>

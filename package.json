@@ -21,6 +21,7 @@
     "test:aptitude": "node --import ./tests/jobs/register.mjs --test \"tests/aptitude/*.test.mjs\"",
     "test:yearplan": "node --import ./tests/jobs/register.mjs --test \"tests/yearPlan/*.test.mjs\"",
     "test:seo": "node --import ./tests/jobs/register.mjs --test \"tests/seo/*.test.mjs\"",
+    "test:enquiries": "node --import ./tests/jobs/register.mjs --test \"tests/enquiries/*.test.mjs\"",
     "test": "node --import ./tests/jobs/register.mjs --test \"tests/**/*.test.mjs\"",
     "test:security": "node --import ./tests/jobs/register.mjs --test \"tests/security/*.test.mjs\"",
     "test:rules": "firebase emulators:exec --only firestore,storage --project demo-onegrasp \"node --test tests/rules/*.spec.mjs\""

@@ -12,6 +12,7 @@
 import ROADMAPS from "@/data/class-11-12/career-roadmaps-detailed.json";
 import { CAREERS_1112 } from "@/lib/report/careerfit1112";
 import type { DetailedCareerRoadmap } from "@/lib/report/careerRoadmapDetailed1112";
+import { careerSlug } from "./careerSlug";
 
 export interface CareerPage {
   slug: string;
@@ -23,8 +24,7 @@ export interface CareerPage {
   roadmap: DetailedCareerRoadmap;
 }
 
-export const careerSlug = (name: string) =>
-  name.toLowerCase().replace(/&/g, " and ").replace(/\+/g, " plus ").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+export { careerSlug };
 
 /** Known link-text left in the research notes ("... JEE rank. IIT Bombay Login"). */
 export const clean = (s: string) => s.replace(/\s+(IIT Bombay )?Login(?=$|")/g, "").replace(/\s{2,}/g, " ").trim();

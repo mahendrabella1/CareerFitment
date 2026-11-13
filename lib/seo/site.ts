@@ -5,6 +5,7 @@
  * titles and canonical URLs with pageMetadata().
  */
 import type { Metadata } from "next";
+import { SOCIAL } from "@/components/seo/SocialLinks";
 
 /** The one address every page is canonical to (Vercel's *.vercel.app copies point here). */
 export const SITE_URL = "https://careerfitment.onegrasp.com";
@@ -53,6 +54,8 @@ export const ORGANIZATION_LD = {
   email: "support@onegrasp.com",
   areaServed: "IN",
   description: "Career assessments, reports and a learning dashboard for students from Class 6 to college, and tools for schools and working professionals.",
+  sameAs: SOCIAL.map((s) => s.href),
+  contactPoint: { "@type": "ContactPoint", contactType: "customer support", email: "support@onegrasp.com", telephone: "+91-89777-60442", areaServed: "IN" },
 };
 
 export const WEBSITE_LD = {

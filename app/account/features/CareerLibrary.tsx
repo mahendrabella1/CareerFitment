@@ -5,6 +5,14 @@ import Link from "next/link";
 import { colors, spacing, typography, radius, shadows } from "@/app/account/designTokens";
 import { getAllCareers, searchCareers } from "@/lib/data/careerLibraryData";
 import type { Career } from "@/lib/data/schema";
+import { careerSlug } from "@/lib/seo/careerSlug";
+import { CAREER_PAGE_SLUGS } from "@/lib/seo/careerSlugList";
+
+/** The career's public "How to become" page when it has one, else the same career in the dashboard's library. */
+const careerHref = (c: Career) => {
+  const slug = careerSlug(c.name);
+  return CAREER_PAGE_SLUGS.has(slug) ? `/careers/${slug}` : `/account/career-library/${encodeURIComponent(c.name)}`;
+};
 
 const CLUSTERS = [
   { id: "tech", label: "Information Technology", icon: "💻", color: "#3b5bdb" },
@@ -154,7 +162,7 @@ export default function CareerLibrary() {
           </div>
           <div style={styles.trendingList}>
             {filtered.slice(0, 3).map((career) => (
-              <Link key={career.id} href={`/careers/${career.id}`} style={styles.trendingItem}>
+              <Link key={career.id} href={careerHref(career)} style={styles.trendingItem}>
                 <div style={styles.trendingItemIcon}>🎯</div>
                 <div style={styles.trendingItemContent}>
                   <div style={styles.trendingItemName}>{career.name}</div>
@@ -222,7 +230,7 @@ export default function CareerLibrary() {
 
           <div style={styles.careersGrid}>
             {paginatedCareers.map((career) => (
-              <Link key={career.id} href={`/careers/${career.id}`} style={styles.careerCard}>
+              <Link key={career.id} href={careerHref(career)} style={styles.careerCard}>
                 <div style={styles.careerCardTitle}>{career.name}</div>
                 <div style={styles.careerCardCluster}>{career.clusterId}</div>
                 <div style={{fontSize: '12px', color: '#64748b', marginTop: '8px'}}>

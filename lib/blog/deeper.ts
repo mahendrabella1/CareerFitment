@@ -357,6 +357,54 @@ export const DEEPER: Record<string, Block[]> = {
   ],
 };
 
+/** Deeper sections for the second batch of posts (lib/blog/posts-more.ts). */
+export const DEEPER_MORE: Record<string, Block[]> = {
+  "career-options-after-12th-without-maths": [
+    { h2: "How to choose between them" },
+    { ol: [
+      "Notice what you enjoy doing, not just studying: arguing a case, helping people, making things look good, writing, or caring for patients.",
+      "Shortlist three careers and read their roadmaps - the stream, the exams and the colleges for each.",
+      "Check the exact eligibility of two or three courses you'd apply to.",
+      "Build a small portfolio early if your field values one - writing samples for media, a sketchbook for design, debates for law.",
+    ] },
+    { h2: "Skills that matter more than Maths here" },
+    { ul: [
+      "**Reading and writing well** - for law, media, psychology and policy.",
+      "**Speaking with confidence** - interviews, debates, client work and counselling.",
+      "**Visual and creative thinking** - for design and media.",
+      "**Basic numbers and spreadsheets** - still useful everywhere, even without Maths as a subject.",
+    ] },
+  ],
+  "how-to-choose-a-college-after-12th": [
+    { h2: "Questions to ask on a campus visit" },
+    { ul: [
+      "How many hours a week of practical or lab work does this course have?",
+      "Which companies hired from this course last year, and how many students?",
+      "What do students do if they want to switch specialisation?",
+      "What support is there for internships, research and higher studies?",
+    ] },
+  ],
+  "career-options-after-graduation-ba-bsc-bcom": [
+    { h2: "Mistakes to avoid" },
+    { ul: [
+      "Joining a master's only because friends are - without knowing what it leads to.",
+      "Preparing for government exams for years with no backup plan.",
+      "Waiting for the perfect job instead of starting and learning.",
+      "Ignoring internships and projects in the final year.",
+    ] },
+    { p: "Whichever route you choose, write down why - and what you'll check after six months to know whether it's working." },
+  ],
+  "medical-careers-other-than-mbbs": [
+    { h2: "What to do this year" },
+    { ol: [
+      "Pick three of these careers and read their roadmaps.",
+      "Find out which entrance exam or admission route each course you like uses in your state.",
+      "Prepare for NEET-UG if your shortlist includes courses that use it - it keeps several doors open at once.",
+      "Talk to a nurse, physiotherapist or pharmacist about a normal working day.",
+    ] },
+  ],
+};
+
 /** Extra depth for the most-searched topics, added after DEEPER. */
 export const MORE: Record<string, Block[]> = {
   "career-options-after-12th-science": [
@@ -480,4 +528,8 @@ export const TAKEAWAYS: Record<string, string[]> = {
   "parents-guide-to-career-conversations": ["Listen before advising.", "Separate your hopes from your child's strengths.", "Look at evidence together and agree on the next step."],
   "career-guidance-in-schools": ["Assess every student by class.", "Give everyone a structured weekly plan.", "Use counsellor time for the students who need it most, and report simply."],
   "workplace-stress-causes-and-what-to-do": ["Most work stress comes from workload, toxic behaviour, culture or job security.", "Work out whether it's the work or the workplace.", "Take one small action per cause, and get support if you're struggling."],
+  "career-options-after-12th-without-maths": ["Law, psychology, design, media, healthcare, commerce and teaching don't need Maths.", "Engineering, architecture and economics honours usually do.", "Always check the exact course's eligibility."],
+  "how-to-choose-a-college-after-12th": ["Check recognition and approvals first - and the UGC's fake-university list.", "Look at the course's own accreditation, faculty and real placement data.", "Add up the full cost, and be wary of 'guaranteed admission' offers."],
+  "career-options-after-graduation-ba-bsc-bcom": ["Five routes: a job, PG study, professional courses, government exams, or a venture/abroad.", "Research two routes properly before choosing.", "Try before you commit, and keep your resume ready."],
+  "medical-careers-other-than-mbbs": ["Healthcare has many respected careers beyond MBBS.", "Admission routes differ: NEET-UG for some, state or university exams for others.", "Choose by the daily work you'd enjoy."],
 };

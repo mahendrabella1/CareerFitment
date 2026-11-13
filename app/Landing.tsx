@@ -29,6 +29,8 @@ import { Icon } from "@/app/Icons";
 import { featureArt } from "@/lib/features/catalog";
 import { HomeVideo, type HomeVideoHandle } from "@/components/home/HomeVideo";
 import { StoryGrid } from "@/components/home/StoryGrid";
+import { EnquiryForm } from "@/components/enquiries/EnquiryForm";
+import { SocialLinks } from "@/components/seo/SocialLinks";
 import {
   CONTACT, DIMENSIONS, FACTS, FAQ, FEATURES, REPORT_VIDEO, SCHOOLS_VIDEO, SCHOOL_POINTS,
   STAGES, STEPS, TOOLS, TOUR, TOUR_CHAPTERS, TOUR_END,
@@ -231,11 +233,31 @@ export default function Landing({ onStart }: { onStart: () => void }) {
               <p className="hm-sub">A portal for your institution: every student&apos;s results and progress in one place, and the tools to reach the ones who need you.</p>
               <ul className="hm-ticks">{SCHOOL_POINTS.map((p) => <li key={p}>{p}</li>)}</ul>
               <div className="hm-actions">
-                <a className="hm-btn hm-btn-pri hm-btn-lg" href={`mailto:${CONTACT.email}?subject=${encodeURIComponent("OneGrasp for our school")}`}>Book a demo <Icon name="arrowRight" size={17} /></a>
+                <a className="hm-btn hm-btn-pri hm-btn-lg" href="#partner" onClick={(e) => { e.preventDefault(); goTo("partner"); }}>Partner with us <Icon name="arrowRight" size={17} /></a>
                 <a className="hm-btn hm-btn-lg" href={`tel:${CONTACT.phone}`}><Icon name="phone" size={15} /> {CONTACT.phoneLabel}</a>
               </div>
             </div>
             <div className="hm-zz-media" data-rv="right"><HomeVideo video={SCHOOLS_VIDEO} title="The OneGrasp institution portal" auto /></div>
+          </div>
+        </section>
+
+        {/* ---------- school partnership form (lib/enquiries) ---------- */}
+        <section id="partner" className="hm-sec hm-sheet hm-bg-white">
+          <div className="hm-in hm-partner">
+            <div className="hm-partner-copy">
+              <span className="hm-kicker">Work with us</span>
+              <h2>Want to bring OneGrasp to your school?</h2>
+              <p className="hm-sub">Tell us a little about your school or college. Our team will get in touch to show you the portal, plan a rollout for your classes and answer your questions.</p>
+              <ul className="hm-ticks">
+                <li>An assessment, report and Year Plan for every student</li>
+                <li>A portal for counsellors and leadership</li>
+                <li>Help planning the rollout, class by class</li>
+              </ul>
+              <p className="hm-partner-alt">Prefer to talk? Call <a href={`tel:${CONTACT.phone}`}>{CONTACT.phoneLabel}</a> or email <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>.</p>
+            </div>
+            <div className="hm-partner-form">
+              <EnquiryForm kind="school" submitLabel="Send to the OneGrasp team" doneTitle="Thank you - we've got it." doneText="Our team will get in touch with you soon by email or phone." />
+            </div>
           </div>
         </section>
 
@@ -329,10 +351,15 @@ export default function Landing({ onStart }: { onStart: () => void }) {
             <a href={`tel:${CONTACT.phone}`}>{CONTACT.phoneLabel}</a>
             <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
             <a href="/features">All features</a>
+            <a href="/careers">Careers</a>
             <a href="/blogs">Blog</a>
             <a href="/jobs">Jobs board</a>
+            <a href="#partner" onClick={(e) => { e.preventDefault(); goTo("partner"); }}>Partner with us</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
             <a href="/signin">Sign in</a>
           </div>
+          <SocialLinks color="#cfd4dc" size={16} />
           <span className="hm-copy">© {new Date().getFullYear()} OneGrasp</span>
         </div>
       </footer>
@@ -624,6 +651,12 @@ const CSS = `
 .hm-foot-links a{color:#cfd4dc;text-decoration:none}
 .hm-foot-links a:hover{color:#fff}
 .hm-copy{font-size:12.5px;color:#6b7280}
+.hm-partner{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:48px;align-items:start}
+.hm-partner .hm-ticks{margin:18px 0 0}
+.hm-partner-alt{font-size:14px;color:#57534e;margin-top:18px}
+.hm-partner-alt a{color:inherit}
+.hm-partner-form{background:#fff;border:1px solid #e7e5e4;border-radius:16px;padding:24px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+@media (max-width:900px){.hm-partner{grid-template-columns:1fr;gap:24px}.hm-partner-form{padding:18px}}
 
 /* motion - cheap: transforms and opacity only */
 @keyframes hmUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}

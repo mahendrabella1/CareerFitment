@@ -9,7 +9,9 @@ const { POSTS, wordsIn, relatedPosts } = await import("../../lib/blog/index.ts")
 const { FEATURE_PAGES } = await import("../../lib/seo/features.ts");
 const { default: sitemap } = await import("../../app/sitemap.ts");
 const { default: robots } = await import("../../app/robots.ts");
-const { SITE_URL } = await import("../../lib/seo/site.ts");
+const { SITE_URL, ORGANIZATION_LD } = await import("../../lib/seo/site.ts");
+const { CAREER_PAGES } = await import("../../lib/seo/careers.ts");
+const CAREER_SLUGS = new Set(CAREER_PAGES.map((c) => c.slug));
 
 const pages = [];
 (function walk(dir, segs) {
@@ -23,6 +25,7 @@ const routeExists = (href) => {
   const parts = href.split(/[?#]/)[0].split("/").filter(Boolean);
   if (parts[0] === "features" && parts.length === 2) return FEATURE_PAGES.some((f) => f.slug === parts[1]);
   if (parts[0] === "blogs" && parts.length === 2) return POSTS.some((p) => p.slug === parts[1]);
+  if (parts[0] === "careers" && parts.length === 2) return CAREER_SLUGS.has(parts[1]);
   return pages.some((s) => s.length === parts.length && s.every((x, i) => x === parts[i] || /^\[[^.]+\]$/.test(x)));
 };
 const linksIn = (p) => p.body.flatMap((b) => [b.p, b.tip, ...(b.ul ?? []), ...(b.ol ?? [])].filter(Boolean)).flatMap((t) => [...t.matchAll(/\]\(([^)]+)\)/g)].map((m) => m[1]));
@@ -49,8 +52,8 @@ test("20-30 blog posts, each a complete, well-formed article", () => {
 });
 
 test("every extra section belongs to a real post", async () => {
-  const { DEEPER, MORE, TAKEAWAYS } = await import("../../lib/blog/deeper.ts");
-  for (const k of [...Object.keys(DEEPER), ...Object.keys(MORE), ...Object.keys(TAKEAWAYS)]) assert.ok(POSTS.some((p) => p.slug === k), k);
+  const { DEEPER, DEEPER_MORE, MORE, TAKEAWAYS } = await import("../../lib/blog/deeper.ts");
+  for (const k of [...Object.keys(DEEPER), ...Object.keys(DEEPER_MORE), ...Object.keys(MORE), ...Object.keys(TAKEAWAYS)]) assert.ok(POSTS.some((p) => p.slug === k), k);
 });
 
 test("feature pages: unique, well-formed, and every link goes somewhere real", () => {
@@ -83,6 +86,29 @@ test("career pages: one per researched roadmap, unique addresses, full content, 
   assert.ok(!CAREER_PAGES.some((c) => /\bLogin\b/.test(clean(JSON.stringify(c.roadmap)))), "link-text artefacts cleaned");
   const page = readFileSync("app/careers/[slug]/page.tsx", "utf8");
   assert.match(page, /permanentRedirect\(`\/careers\/\$\{match\.slug\}`\)/, "old /careers/<id> links still work");
+});
+
+test("the dashboard's light list of career pages matches the pages; old library links go straight there", async () => {
+  const { CAREER_PAGE_SLUGS } = await import("../../lib/seo/careerSlugList.ts");
+  assert.deepEqual([...CAREER_PAGE_SLUGS].sort(), [...CAREER_SLUGS].sort(), "regenerate lib/seo/careerSlugList.ts");
+  const lib = readFileSync("app/account/features/CareerLibrary.tsx", "utf8");
+  assert.ok(!lib.includes("/careers/${career.id}"), "no links to the old /careers/<id> pages");
+  assert.match(lib, /href=\{careerHref\(career\)\}/);
+});
+
+test("privacy policy, terms and social profiles", async () => {
+  const { PRIVACY, TERMS } = await import("../../lib/seo/legal.ts");
+  const text = JSON.stringify(PRIVACY);
+  // Every outside service the app sends personal data to is named.
+  for (const s of ["Firebase", "Vercel", "Razorpay", "Groq", "DeepSeek", "Twilio", "Meta Pixel", "Upstash", "Supabase"]) assert.ok(text.includes(s), `privacy names ${s}`);
+  for (const s of ["not stored", "Data Protection Board", "/privacy/request", "under 18"]) assert.ok(text.includes(s), `privacy says ${s}`);
+  assert.ok(JSON.stringify(TERMS).includes("not guarantees"));
+  const urls = sitemap().map((e) => e.url);
+  for (const p of ["/privacy", "/terms", "/privacy/request"]) assert.ok(urls.includes(`${SITE_URL}${p}`), p);
+  const { SOCIAL } = await import("../../components/seo/SocialLinks.tsx");
+  assert.deepEqual(SOCIAL.map((s) => s.name), ["Facebook", "Instagram", "LinkedIn", "YouTube"]);
+  assert.ok(SOCIAL.every((s) => s.href.startsWith("https://www.") && /onegrasp/i.test(s.href)));
+  assert.deepEqual(ORGANIZATION_LD.sameAs, SOCIAL.map((s) => s.href));
 });
 
 test("sitemap lists every public page on the canonical domain; robots blocks only the API", () => {
